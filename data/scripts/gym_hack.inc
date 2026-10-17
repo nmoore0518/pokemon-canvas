@@ -112,6 +112,42 @@ EventScript_GymHack_UseFlashlight::
 	releaseall
 	end
 
+@ Rock Smash: Sledgehammer
+EventScript_GymHack_SmashRockWithItem::
+	bufferitemname STR_VAR_2, ITEM_SLEDGEHAMMER
+	msgbox Text_GymHack_WantToSmashWithItem, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_CancelSmash
+	goto EventScript_GymHack_SmashWithItem
+
+EventScript_GymHack_UseSledgehammer::
+	lockall
+	bufferitemname STR_VAR_2, ITEM_SLEDGEHAMMER
+EventScript_GymHack_SmashWithItem::
+	msgbox Text_GymHack_PlayerUsedItem, MSGBOX_DEFAULT
+	closemessage
+	playse SE_M_ROCK_THROW
+	setvar VAR_0x8004, FALSE
+	goto EventScript_SmashRock
+
+@ Waterfall: Rocket Boots
+EventScript_GymHack_WaterfallWithItem::
+	bufferitemname STR_VAR_2, ITEM_ROCKET_BOOTS
+	msgbox Text_GymHack_WantToWaterfallWithItem, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
+	goto EventScript_GymHack_ClimbWaterfall
+
+EventScript_GymHack_UseRocketBoots::
+	lockall
+	bufferitemname STR_VAR_2, ITEM_ROCKET_BOOTS
+EventScript_GymHack_ClimbWaterfall::
+	msgbox Text_GymHack_PlayerUsedItem, MSGBOX_DEFAULT
+	hidefollowernpc
+	setfieldeffectargument 0, 0
+	special GymHack_SkipNextShowMon
+	dofieldeffect FLDEFF_USE_WATERFALL
+	callnative FollowerNPC_WarpSetEnd
+	goto EventScript_EndWaterfall
+
 Text_GymHack_PlayerUsedItem::
 	.string "{PLAYER} used the {STR_VAR_2}!$"
 
@@ -129,6 +165,15 @@ Text_GymHack_AteSpinach::
 	.string "{PLAYER} ate the {STR_VAR_2}!\p"
 	.string "{PLAYER}'s STRENGTH made it\n"
 	.string "possible to move boulders around!$"
+
+Text_GymHack_WantToSmashWithItem::
+	.string "It's a rugged rock, but it looks\n"
+	.string "like it could be smashed.\p"
+	.string "Use the {STR_VAR_2}?$"
+
+Text_GymHack_WantToWaterfallWithItem::
+	.string "It's a large waterfall.\n"
+	.string "Use the {STR_VAR_2}?$"
 
 Text_GymHack_SwitchedOnFlashlight::
 	.string "{PLAYER} switched on the\n"

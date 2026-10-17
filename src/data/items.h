@@ -16180,6 +16180,38 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_CanOfSpinach,
         .iconPalette = gItemIconPalette_CanOfSpinach,
     },
+
+    [ITEM_SLEDGEHAMMER] =
+    {
+        .name = ITEM_NAME("Sledgehammer"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A heavy hammer that\n"
+            "can smash cracked\n"
+            "rocks to pieces."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_Sledgehammer,
+        .iconPic = gItemIcon_Sledgehammer,
+        .iconPalette = gItemIconPalette_Sledgehammer,
+    },
+
+    [ITEM_ROCKET_BOOTS] =
+    {
+        .name = ITEM_NAME("Rocket Boots"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Jet-powered boots\n"
+            "that blast you up\n"
+            "waterfalls."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_RocketBoots,
+        .iconPic = gItemIcon_RocketBoots,
+        .iconPalette = gItemIconPalette_RocketBoots,
+    },
 };
 
 #undef ITEM_NAME

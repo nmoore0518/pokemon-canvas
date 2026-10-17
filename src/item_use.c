@@ -1591,6 +1591,8 @@ void ItemUseOutOfBattle_TownMap(u8 taskId)
 static const u8 sText_GymHack_NeedBadge[] = _("A new BADGE is required to use\nthat outside of battle.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_GymHack_CutHint[] = _("Face a small tree that can be cut\ndown, then use this.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_GymHack_SurfHint[] = _("Face the water, then use this to\nSURF.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_GymHack_SmashHint[] = _("Face a cracked rock, then use this\nto smash it.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_GymHack_WaterfallHint[] = _("SURF up to the bottom of a\nwaterfall, then use this.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_GymHack_StrengthActive[] = _("You can already move boulders\naround.{PAUSE_UNTIL_PRESS}");
 
 static const u8 *sGymHackItemScript;
@@ -1683,6 +1685,30 @@ void ItemUseOutOfBattle_CanOfSpinach(u8 taskId)
         DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_StrengthActive);
     else
         GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseCanOfSpinach);
+}
+
+void ItemUseOutOfBattle_Sledgehammer(u8 taskId)
+{
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_ROCK_SMASH))
+        return;
+    if (CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG)
+     || CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_BREAKABLE_ROCK))
+        GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseSledgehammer);
+    else
+        DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_SmashHint);
+}
+
+void ItemUseOutOfBattle_RocketBoots(u8 taskId)
+{
+    s16 x, y;
+
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_WATERFALL))
+        return;
+    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    if (IsPlayerSurfingNorth() && MetatileBehavior_IsWaterfall(MapGridGetMetatileBehaviorAt(x, y)))
+        GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseRocketBoots);
+    else
+        DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_WaterfallHint);
 }
 
 #undef tUsingRegisteredKeyItem

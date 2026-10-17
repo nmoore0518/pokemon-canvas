@@ -53,6 +53,8 @@ void ItemUseOutOfBattle_Flashlight(u8 taskId);
 void ItemUseOutOfBattle_BoogieBoard(u8 taskId);
 void ItemUseOutOfBattle_HotAirBalloon(u8 taskId);
 void ItemUseOutOfBattle_CanOfSpinach(u8 taskId);
+void ItemUseOutOfBattle_Sledgehammer(u8 taskId);
+void ItemUseOutOfBattle_RocketBoots(u8 taskId);
 
 bool8 ItemfinderCheckForHiddenItems(const struct MapEvents *, u8);
 enum Direction GetDirectionToHiddenItem(s16, s16);

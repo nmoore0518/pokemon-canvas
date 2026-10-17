@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Draw the 24x24 bag icons for the HM key items (Hedge Clippers, Flashlight, Boogie Board,
-Hot Air Balloon, Can of Spinach).
+Hot Air Balloon, Can of Spinach, Sledgehammer, Rocket Boots).
 
 Writes graphics/items/icons/<name>.png and graphics/items/icon_palettes/<name>.pal.
 Each icon is drawn with palette indices, then given a dark 1px outline like the
@@ -122,7 +122,38 @@ def can_of_spinach():
          (230, 238, 246), (65, 172, 74), (24, 98, 41), (156, 230, 139)])
 
 
+def sledgehammer():
+    # 2 head, 3 head light, 4 handle, 5 handle dark
+    img = new()
+    d = ImageDraw.Draw(img)
+    d.line([(4, 21), (14, 9)], fill=4, width=3)                       # handle
+    d.line([(4, 22), (6, 20)], fill=5, width=2)                       # grip
+    d.polygon([(10, 6), (16, 0), (23, 7), (17, 13)], fill=2)          # head
+    d.line([(12, 6), (16, 2)], fill=3)
+    d.line([(17, 3), (21, 7)], fill=3)
+    save("sledgehammer", finish(img), [TRANSPARENT_COLOR, (41, 41, 49), (106, 115, 131),
+         (189, 197, 213), (189, 131, 74), (131, 82, 41)])
+
+
+def rocket_boots():
+    # 2 boot, 3 boot light, 4 sole, 5 flame outer, 6 flame inner
+    img = new()
+    d = ImageDraw.Draw(img)
+    d.polygon([(10, 22), (12, 17), (14, 22)], fill=5)                 # flames
+    d.polygon([(16, 22), (18, 17), (20, 22)], fill=5)
+    d.polygon([(11, 22), (12, 19), (13, 22)], fill=6)
+    d.polygon([(17, 22), (18, 19), (19, 22)], fill=6)
+    d.rectangle([(9, 2), (15, 13)], fill=2)                           # shaft
+    d.polygon([(9, 13), (21, 13), (22, 16), (9, 16)], fill=2)         # foot
+    d.rectangle([(9, 16), (22, 17)], fill=4)                          # sole
+    d.line([(10, 3), (10, 12)], fill=3)
+    d.rectangle([(9, 6), (15, 7)], fill=4)                            # stripe
+    save("rocket_boots", finish(img), [TRANSPARENT_COLOR, (41, 41, 49), (213, 57, 57),
+         (255, 148, 131), (238, 238, 246), (255, 164, 41), (255, 238, 115)])
+
+
 if __name__ == "__main__":
-    for f in (hedge_clippers, flashlight, boogie_board, hot_air_balloon, can_of_spinach):
+    for f in (hedge_clippers, flashlight, boogie_board, hot_air_balloon, can_of_spinach,
+              sledgehammer, rocket_boots):
         f()
     print("icons written")

@@ -28,5 +28,7 @@ extern const u8 EventScript_GymHack_UseHedgeClippers[];
 extern const u8 EventScript_GymHack_UseFlashlight[];
 extern const u8 EventScript_GymHack_UseBoogieBoard[];
 extern const u8 EventScript_GymHack_UseCanOfSpinach[];
+extern const u8 EventScript_GymHack_UseSledgehammer[];
+extern const u8 EventScript_GymHack_UseRocketBoots[];
 
 #endif // GUARD_GYM_HACK_H

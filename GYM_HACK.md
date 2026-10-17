@@ -62,11 +62,11 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     game explains why and reloads the map in place, so a rival who walked up resets.
   - The Elite Four and Champion are checked once, at the League door in the Indigo Plateau lobby,
     so the player can't get stuck between Elite Four rooms.
-- **Evolution toggle**: party menu → STOP EVOLVING / ALLOW EVOLVING. Stored in a spare bit of the
+- **Evolution toggle**: party menu → EVOLVE: ON / EVOLVE: OFF (shows the current setting; selecting it switches). Stored in a spare bit of the
   Pokémon's data (`MON_DATA_EVOLUTION_LOCKED`, formerly unused), so old saves load fine. Blocks
   level-up, trade and friendship evolution like an Everstone, but evolution stones still work.
 - **HM key items**: Hedge Clippers (Cut), Flashlight (Flash), Boogie Board (Surf), Hot Air Balloon
-  (Fly), Can of Spinach (Strength). Given by the same NPCs right after each HM. They need the same
+  (Fly), Can of Spinach (Strength), Sledgehammer (Rock Smash), Rocket Boots (Waterfall). Given by the same NPCs right after each HM. They need the same
   badges as the HMs. Walking up to a tree, boulder or water offers the item when no party Pokémon
   knows the move (`checkfieldmove` returns `FIELD_MOVE_USER_ITEM`); they can also be used from the
   bag or registered to SELECT. Icons drawn by `tools/gym_hack/make_hm_item_icons.py`.

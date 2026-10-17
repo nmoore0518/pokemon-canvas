@@ -394,6 +394,8 @@ u32 GymHack_GetFieldMoveItem(u32 fieldMove)
     case FIELD_MOVE_SURF:     return ITEM_BOOGIE_BOARD;
     case FIELD_MOVE_FLY:      return ITEM_HOT_AIR_BALLOON;
     case FIELD_MOVE_STRENGTH: return ITEM_CAN_OF_SPINACH;
+    case FIELD_MOVE_ROCK_SMASH: return ITEM_SLEDGEHAMMER;
+    case FIELD_MOVE_WATERFALL:  return ITEM_ROCKET_BOOTS;
     }
     return ITEM_NONE;
 }

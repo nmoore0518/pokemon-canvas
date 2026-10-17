@@ -821,8 +821,9 @@ struct
     [MENU_CATALOG_MOWER]   = {COMPOUND_STRING("Lawn mower"),      CursorCb_CatalogMower},
     [MENU_CHANGE_FORM]     = {COMPOUND_STRING("Change form"),     CursorCb_ChangeForm},
     [MENU_CHANGE_ABILITY]  = {COMPOUND_STRING("Change Ability"),  CursorCb_ChangeAbility},
-    [MENU_LOCK_EVOLUTION]  = {COMPOUND_STRING("STOP EVOLVING"),   CursorCb_ToggleEvolution},
-    [MENU_UNLOCK_EVOLUTION] = {COMPOUND_STRING("ALLOW EVOLVING"), CursorCb_ToggleEvolution},
+    // Shows the current setting; selecting it switches it
+    [MENU_LOCK_EVOLUTION]  = {COMPOUND_STRING("EVOLVE: ON"),      CursorCb_ToggleEvolution},
+    [MENU_UNLOCK_EVOLUTION] = {COMPOUND_STRING("EVOLVE: OFF"),    CursorCb_ToggleEvolution},
 };
 
 static const u8 sPartyMenuAction_SummarySwitchCancel[] = {MENU_SUMMARY, MENU_SWITCH, MENU_CANCEL1};

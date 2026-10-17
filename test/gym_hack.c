@@ -356,8 +356,11 @@ TEST("GymHack: each HM key item matches its field move")
     EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_SURF), ITEM_BOOGIE_BOARD);
     EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_FLY), ITEM_HOT_AIR_BALLOON);
     EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_STRENGTH), ITEM_CAN_OF_SPINACH);
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_ROCK_SMASH), ITEM_SLEDGEHAMMER);
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_WATERFALL), ITEM_ROCKET_BOOTS);
     EXPECT_EQ(GetItemPocket(ITEM_HEDGE_CLIPPERS), POCKET_KEY_ITEMS);
     EXPECT_EQ(GetItemPocket(ITEM_CAN_OF_SPINACH), POCKET_KEY_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_ROCKET_BOOTS), POCKET_KEY_ITEMS);
 }
 
 TEST("GymHack: a tree can be cut with the Hedge Clippers instead of a Pokemon")

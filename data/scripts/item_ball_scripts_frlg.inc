@@ -616,6 +616,8 @@ FourIsland_IcefallCave_1F_EventScript_ItemUltraBall::
 
 FourIsland_IcefallCave_1F_EventScript_ItemHM07::
 	finditem ITEM_HM07
+	@ Gym Trainer hack: the Rocket Boots come with HM07
+	giveitem ITEM_ROCKET_BOOTS
 	end
 
 FourIsland_IcefallCave_B1F_EventScript_ItemFullRestore::
