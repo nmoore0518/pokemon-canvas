@@ -1,0 +1,2900 @@
+/*
+Rival teams for the Gym Trainer hack.
+
+The rival specializes in the type that counters the player's (see src/gym_hack.c).
+Each RIVAL_TEAM_<STAGE>_<TYPE> entry replaces the original rival battle at that stage.
+Edit species, levels, held items and moves here just like trainers_frlg.party.
+Pokemon without listed moves use their normal level-up moves for their level.
+*/
+
+=== RIVAL_TEAM_LAB_FIRE ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Charmander
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_WATER ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Squirtle
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_FIGHTING ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Tyrogue
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_PSYCHIC ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Ralts
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_DARK ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Poochyena
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_GROUND ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Sandshrew
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_STEEL ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Beldum
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_ICE ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Spheal
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_ELECTRIC ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Pikachu
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_POISON ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Ekans
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_GRASS ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Bulbasaur
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_LAB_ROCK ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Larvitar
+Level: 5
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_FIRE ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Growlithe
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Charmander
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_WATER ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Psyduck
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Squirtle
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_FIGHTING ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Machop
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Tyrogue
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_PSYCHIC ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Natu
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ralts
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_DARK ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Murkrow
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Poochyena
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_GROUND ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Diglett
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Sandshrew
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_STEEL ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Aron
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Beldum
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_ICE ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Swinub
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Spheal
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_ELECTRIC ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Mareep
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Pikachu
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_POISON ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Zubat
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ekans
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_GRASS ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Oddish
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Bulbasaur
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_ROUTE22_EARLY_ROCK ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Geodude
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Larvitar
+Level: 9
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+=== RIVAL_TEAM_CERULEAN_FIRE ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Growlithe
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Vulpix
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Numel
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Charmeleon
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_WATER ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Psyduck
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Poliwag
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Krabby
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Wartortle
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_FIGHTING ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Machop
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Mankey
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Makuhita
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Tyrogue
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_PSYCHIC ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Natu
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Drowzee
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Spoink
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ralts
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_DARK ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Murkrow
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Houndour
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Sneasel
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Mightyena
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_GROUND ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Diglett
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Cubone
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Phanpy
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Sandshrew
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_STEEL ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Aron
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Mawile
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Skarmory
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Beldum
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_ICE ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Swinub
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Snorunt
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Smoochum
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Spheal
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_ELECTRIC ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Flaaffy
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Voltorb
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Magnemite
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Pikachu
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_POISON ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Zubat
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Grimer
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Koffing
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ekans
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_GRASS ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Oddish
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Bellsprout
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Exeggcute
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ivysaur
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_CERULEAN_ROCK ===
+Name: TERRY
+Class: Rival Early Frlg
+Pic: Rival Early Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Geodude
+Level: 17
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Onix
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Omanyte
+Level: 15
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Larvitar
+Level: 18
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_FIRE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Growlithe
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Numel
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Vulpix
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Charmeleon
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_WATER ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Psyduck
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Krabby
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Poliwag
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Wartortle
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_FIGHTING ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Machop
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Makuhita
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Mankey
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Hitmontop
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_PSYCHIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Natu
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Spoink
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Drowzee
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Kirlia
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_DARK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Murkrow
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Sneasel
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Houndour
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Mightyena
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_GROUND ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Diglett
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Phanpy
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Cubone
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Sandshrew
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_STEEL ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Aron
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Skarmory
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Mawile
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Metang
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_ICE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Swinub
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Smoochum
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Snorunt
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Spheal
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_ELECTRIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Flaaffy
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Magnemite
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Voltorb
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Pikachu
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_POISON ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Zubat
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Koffing
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Grimer
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ekans
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_GRASS ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Oddish
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Exeggcute
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Bellsprout
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Ivysaur
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SS_ANNE_ROCK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Geodude
+Level: 19
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Omanyte
+Level: 16
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Onix
+Level: 18
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Larvitar
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_FIRE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Growlithe
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Ponyta
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Magby
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Vulpix
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Charmeleon
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_WATER ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Psyduck
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Horsea
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Gyarados
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Poliwag
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Wartortle
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_FIGHTING ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Machop
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Meditite
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Hitmonlee
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mankey
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Hitmontop
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_PSYCHIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Xatu
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Kadabra
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mr. Mime
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Drowzee
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Kirlia
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_DARK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Murkrow
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Sableye
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Absol
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Houndour
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mightyena
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_GROUND ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Diglett
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Trapinch
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Rhyhorn
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Cubone
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Sandslash
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_STEEL ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Aron
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Steelix
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Magnemite
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mawile
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Metang
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_ICE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Swinub
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Delibird
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Lapras
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Snorunt
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Spheal
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_ELECTRIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Flaaffy
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Electrike
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Elekid
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Voltorb
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Pikachu
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_POISON ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Golbat
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Gulpin
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Seviper
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Grimer
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Arbok
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_GRASS ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Gloom
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Breloom
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Cacnea
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Bellsprout
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Ivysaur
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_POKEMON_TOWER_ROCK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Graveler
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Kabuto
+Level: 23
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Aerodactyl
+Level: 22
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Onix
+Level: 20
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Larvitar
+Level: 25
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+=== RIVAL_TEAM_SILPH_FIRE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Arcanine
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Ponyta
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Magmar
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Vulpix
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Charizard
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_WATER ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Golduck
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Seadra
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Gyarados
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Poliwhirl
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Blastoise
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_FIGHTING ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Machoke
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Medicham
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Hitmonlee
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Primeape
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Hitmontop
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_PSYCHIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Xatu
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Alakazam
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mr. Mime
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Hypno
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Gardevoir
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_DARK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Murkrow
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Sableye
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Absol
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Houndoom
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mightyena
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_GROUND ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Dugtrio
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Vibrava
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Rhyhorn
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Marowak
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Sandslash
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_STEEL ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Lairon
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Steelix
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Magneton
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Mawile
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Metang
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_ICE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Piloswine
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Delibird
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Lapras
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Snorunt
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Sealeo
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_ELECTRIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Ampharos
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Manectric
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Electabuzz
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Electrode
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Raichu
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_POISON ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Golbat
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Swalot
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Seviper
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Grimer
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Arbok
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_GRASS ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Vileplume
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Breloom
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Cacturne
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Weepinbell
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Venusaur
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_SILPH_ROCK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Graveler
+Level: 37
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Kabuto
+Level: 38
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Aerodactyl
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Onix
+Level: 35
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Pupitar
+Level: 40
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_FIRE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Arcanine
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Camerupt
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Rapidash
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Magmar
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Ninetales
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Charizard
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_WATER ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Golduck
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Kingler
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Seadra
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Gyarados
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Politoed
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Blastoise
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_FIGHTING ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Machamp
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Hariyama
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Medicham
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Hitmonlee
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Primeape
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Hitmontop
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_PSYCHIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Xatu
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Grumpig
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Alakazam
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Mr. Mime
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Hypno
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Gardevoir
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_DARK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Murkrow
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Sneasel
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Sableye
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Absol
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Houndoom
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Mightyena
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_GROUND ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Dugtrio
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Donphan
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Flygon
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Rhydon
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Marowak
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Sandslash
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_STEEL ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Aggron
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Skarmory
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Steelix
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Magneton
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Mawile
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Metagross
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_ICE ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Piloswine
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Jynx
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Delibird
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Lapras
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Glalie
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Walrein
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_ELECTRIC ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Ampharos
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Magneton
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Manectric
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Electabuzz
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Electrode
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Raichu
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_POISON ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Crobat
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Weezing
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Swalot
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Seviper
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Muk
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Arbok
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_GRASS ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Vileplume
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Exeggutor
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Breloom
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Cacturne
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Victreebel
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Venusaur
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_ROUTE22_LATE_ROCK ===
+Name: TERRY
+Class: Rival Late Frlg
+Pic: Rival Late Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+
+Golem
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Omastar
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Kabutops
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Aerodactyl
+Level: 45
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Onix
+Level: 47
+IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
+
+Pupitar
+Level: 53
+IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_FIRE ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Arcanine
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Ninetales
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Camerupt
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Rapidash
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Magmar
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Charizard @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_WATER ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Golduck
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Politoed
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Kingler
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Kingdra
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Gyarados
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Blastoise @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_FIGHTING ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Machamp
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Primeape
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hariyama
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Medicham
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hitmonlee
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hitmontop @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_PSYCHIC ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Xatu
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hypno
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Grumpig
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Alakazam
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Mr. Mime
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Gardevoir @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_DARK ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Murkrow
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Houndoom
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Sneasel
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Sableye
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Absol
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Mightyena @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_GROUND ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Dugtrio
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Marowak
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Donphan
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Flygon
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Rhydon
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Sandslash @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_STEEL ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Aggron
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Mawile
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Skarmory
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Steelix
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Magneton
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Metagross @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_ICE ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Piloswine
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Glalie
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Jynx
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Delibird
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Lapras
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Walrein @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_ELECTRIC ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Ampharos
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Electrode
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Magneton
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Manectric
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Electabuzz
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Raichu @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_POISON ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Crobat
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Muk
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Weezing
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Swalot
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Seviper
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Arbok @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_GRASS ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Vileplume
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Victreebel
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Exeggutor
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Breloom
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Cacturne
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Venusaur @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_FIRST_ROCK ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Golem
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Onix
+Level: 57
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Omastar
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Kabutops
+Level: 59
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Aerodactyl
+Level: 61
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Tyranitar @ Sitrus Berry
+Level: 63
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_FIRE ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Arcanine
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Ninetales
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Camerupt
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Rapidash
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Magmar
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Charizard @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_WATER ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Golduck
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Politoed
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Kingler
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Kingdra
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Gyarados
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Blastoise @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_FIGHTING ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Machamp
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Primeape
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hariyama
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Medicham
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hitmonlee
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hitmontop @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_PSYCHIC ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Xatu
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Hypno
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Grumpig
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Alakazam
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Mr. Mime
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Gardevoir @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_DARK ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Murkrow
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Houndoom
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Sneasel
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Sableye
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Absol
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Mightyena @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_GROUND ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Dugtrio
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Marowak
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Donphan
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Flygon
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Rhydon
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Sandslash @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_STEEL ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Aggron
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Mawile
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Skarmory
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Steelix
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Magneton
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Metagross @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_ICE ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Piloswine
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Glalie
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Jynx
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Delibird
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Lapras
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Walrein @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_ELECTRIC ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Ampharos
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Electrode
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Magneton
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Manectric
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Electabuzz
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Raichu @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_POISON ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Crobat
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Muk
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Weezing
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Swalot
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Seviper
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Arbok @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_GRASS ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Vileplume
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Victreebel
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Exeggutor
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Breloom
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Cacturne
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Venusaur @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+=== RIVAL_TEAM_CHAMPION_REMATCH_ROCK ===
+Name: TERRY
+Class: Champion Frlg
+Pic: Champion Rival Frlg
+Gender: Male
+Music: Serious
+Items: Full Restore / Full Restore / Full Restore / Full Restore
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability
+Mugshot: Yellow
+
+Golem
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Onix
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Omastar
+Level: 72
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Kabutops
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Aerodactyl
+Level: 73
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+
+Tyranitar @ Sitrus Berry
+Level: 75
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe

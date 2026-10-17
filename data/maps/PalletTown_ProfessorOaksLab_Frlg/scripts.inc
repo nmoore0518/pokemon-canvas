@@ -1064,13 +1064,13 @@ PalletTown_ProfessorOaksLab_Movement_RivalExit::
 	walk_down
 	step_end
 
-PalletTown_ProfessorOaksLab_EventScript_BulbasaurBall::
-	lock
-	faceplayer
+@ Gym Trainer hack: the Poke Ball shelf (replaces the table with three balls).
+PalletTown_ProfessorOaksLab_EventScript_BallShelf::
+	lockall
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ChooseType
 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
-	release
+	releaseall
 	end
 
 @ Gym Trainer hack: choose one of 17 types. The order of this list must
@@ -1088,62 +1088,40 @@ PalletTown_ProfessorOaksLab_EventScript_ChooseType::
 	msgbox PalletTown_ProfessorOaksLab_Text_OakConfirmType, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
 	special GymHack_LockInPlayerType
-	call PalletTown_ProfessorOaksLab_EventScript_SetRivalStarter
+	call PalletTown_ProfessorOaksLab_EventScript_SetRivalSpot
 	goto PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_CancelTypeMenu::
 	closemessage
-	release
+	releaseall
 	end
 
-@ The rival takes one of the three Kanto starters (see src/gym_hack.c).
-PalletTown_ProfessorOaksLab_EventScript_SetRivalStarter::
-	switch PLAYER_STARTER_NUM
-	case 0, PalletTown_ProfessorOaksLab_EventScript_RivalGetsCharmander
-	case 1, PalletTown_ProfessorOaksLab_EventScript_RivalGetsBulbasaur
-	case 2, PalletTown_ProfessorOaksLab_EventScript_RivalGetsSquirtle
+@ PLAYER_STARTER_NUM decides where the rival walks to at the shelf (and how he
+@ later walks over to battle). Pick a spot that isn't where the player stands:
+@   0 = x10, 1 = x8, 2 = x9
+PalletTown_ProfessorOaksLab_EventScript_SetRivalSpot::
+	getplayerxy VAR_TEMP_5, VAR_TEMP_6
+	setvar PLAYER_STARTER_NUM, 2
+	call_if_eq VAR_TEMP_5, 8, PalletTown_ProfessorOaksLab_EventScript_RivalSpotRight
+	call_if_eq VAR_TEMP_5, 9, PalletTown_ProfessorOaksLab_EventScript_RivalSpotLeft
 	return
 
-PalletTown_ProfessorOaksLab_EventScript_RivalGetsCharmander::
-	setvar RIVAL_STARTER_SPECIES, SPECIES_CHARMANDER
-	setvar RIVAL_STARTER_ID, LOCALID_CHARMANDER_BALL
+PalletTown_ProfessorOaksLab_EventScript_RivalSpotRight::
+	setvar PLAYER_STARTER_NUM, 0
 	return
 
-PalletTown_ProfessorOaksLab_EventScript_RivalGetsBulbasaur::
-	setvar RIVAL_STARTER_SPECIES, SPECIES_BULBASAUR
-	setvar RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL
-	return
-
-PalletTown_ProfessorOaksLab_EventScript_RivalGetsSquirtle::
-	setvar RIVAL_STARTER_SPECIES, SPECIES_SQUIRTLE
-	setvar RIVAL_STARTER_ID, LOCALID_SQUIRTLE_BALL
-	return
-
-@ Remove the ball the player picked, unless it's the one the rival is
-@ about to take; then remove another ball instead.
-PalletTown_ProfessorOaksLab_EventScript_RemovePlayerBall::
-	goto_if_ne VAR_LAST_TALKED, RIVAL_STARTER_ID, PalletTown_ProfessorOaksLab_EventScript_RemoveTalkedBall
-	goto_if_ne RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL, PalletTown_ProfessorOaksLab_EventScript_RemoveBulbasaurBall
-	removeobject LOCALID_SQUIRTLE_BALL
-	return
-
-PalletTown_ProfessorOaksLab_EventScript_RemoveTalkedBall::
-	removeobject VAR_LAST_TALKED
-	return
-
-PalletTown_ProfessorOaksLab_EventScript_RemoveBulbasaurBall::
-	removeobject LOCALID_BULBASAUR_BALL
+PalletTown_ProfessorOaksLab_EventScript_RivalSpotLeft::
+	setvar PLAYER_STARTER_NUM, 1
 	return
 
 PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter::
 	hidemonpic
-	release
+	releaseall
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_ChoseStarter::
 	hidemonpic
-	call PalletTown_ProfessorOaksLab_EventScript_RemovePlayerBall
 	msgbox PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic
 	call EventScript_RestorePrevTextColor
 	setflag FLAG_SYS_POKEMON_GET
@@ -1193,8 +1171,8 @@ PalletTown_ProfessorOaksLab_EventScript_RivalWalksToBulbasaur::
 
 PalletTown_ProfessorOaksLab_EventScript_RivalTakesStarter::
 	textcolor NPC_TEXT_COLOR_MALE
-	msgbox PalletTown_ProfessorOaksLab_Text_RivalIllTakeThisOneThen
-	removeobject RIVAL_STARTER_ID
+	special GymHack_BufferRivalChoice
+	msgbox PalletTown_ProfessorOaksLab_Text_RivalPicksType
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	bufferspeciesname STR_VAR_1, RIVAL_STARTER_SPECIES
 	message PalletTown_ProfessorOaksLab_Text_RivalReceivedMonFromOak
@@ -1203,7 +1181,7 @@ PalletTown_ProfessorOaksLab_EventScript_RivalTakesStarter::
 	waitfanfare
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3
 	call_if_set FLAG_OPENED_START_MENU, PalletTown_ProfessorOaksLab_EventScript_ReadyEndSignLadyScene
-	release
+	releaseall
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_ReadyEndSignLadyScene::
@@ -1238,27 +1216,9 @@ PalletTown_ProfessorOaksLab_Movement_RivalWalksToBulbasaur::
 	walk_in_place_faster_up
 	step_end
 
-PalletTown_ProfessorOaksLab_EventScript_SquirtleBall::
-	lock
-	faceplayer
-	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ChooseType
-	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
-	release
-	end
-
-PalletTown_ProfessorOaksLab_EventScript_CharmanderBall::
-	lock
-	faceplayer
-	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ChooseType
-	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
-	release
-	end
-
 PalletTown_ProfessorOaksLab_EventScript_LastPokeBall::
 	msgbox PalletTown_ProfessorOaksLab_Text_OaksLastMon
-	release
+	releaseall
 	end
 
 PalletTown_ProfessorOaksLab_EventScript_Aide1::
@@ -1337,6 +1297,12 @@ PalletTown_ProfessorOaksLab_Text_RivalGoChoosePlayer::
 	.string "{RIVAL}: Heh, I don't need to be\n"
 	.string "greedy like you. I'm mature!\p"
 	.string "Go ahead and choose, {PLAYER}!$"
+
+PalletTown_ProfessorOaksLab_Text_RivalPicksType::
+	.string "{RIVAL}: {STR_VAR_2}, huh?\p"
+	.string "Then I'll specialize in {STR_VAR_3}!\n"
+	.string "{STR_VAR_3} beats {STR_VAR_2} any day!\p"
+	.string "I'll take this one!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalIllTakeThisOneThen::
 	.string "{RIVAL}: I'll take this one, then!$"
@@ -1618,11 +1584,12 @@ PalletTown_ProfessorOaksLab_Text_BlankEncyclopedia::
 	.string "pages are blank.$"
 
 PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
-	.string "Those are POKé BALLS.\n"
-	.string "They contain POKéMON!$"
+	.string "A shelf packed with POKé BALLS.\n"
+	.string "They hold POKéMON of every type!$"
 
 PalletTown_ProfessorOaksLab_Text_OaksLastMon::
-	.string "That's PROF. OAK's last POKéMON.$"
+	.string "These POKé BALLS are waiting for\n"
+	.string "future GYM LEADERS.$"
 
 PalletTown_ProfessorOaksLab_Text_PressStartToOpenMenu::
 	.string "Press START to open the MENU!$"

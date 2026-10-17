@@ -330,6 +330,8 @@
 // The player's chosen specialty type (a TYPE_* constant). 0 (TYPE_NONE) until a starter is picked.
 // 0x40F7 is unused by both the Emerald and FireRed scripts.
 #define VAR_PLAYER_TYPE                                  0x40F7
+// The rival's specialty type (TYPE_*), set at the same time as VAR_PLAYER_TYPE.
+#define VAR_RIVAL_TYPE                                   0x40F8
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

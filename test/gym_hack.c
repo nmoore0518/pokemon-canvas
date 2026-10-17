@@ -8,6 +8,10 @@
 #include "gym_hack.h"
 #include "pokemon.h"
 #include "string_util.h"
+#include "battle_util.h"
+#include "data.h"
+#include "constants/opponents.h"
+#include "constants/rival_teams.h"
 #include "constants/species.h"
 #include "constants/vars.h"
 
@@ -79,16 +83,6 @@ TEST("GymHack: menu labels name the starter's primary type")
     }
 }
 
-TEST("GymHack: rival always takes one of the three Kanto starters")
-{
-    u32 i;
-    for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
-    {
-        ChooseStarter(i);
-        EXPECT_LT(VarGet(VAR_TEMP_1), 3);
-    }
-}
-
 TEST("GymHack: confirming locks in the starter's primary type")
 {
     VarSet(VAR_PLAYER_TYPE, TYPE_NONE);
@@ -99,4 +93,79 @@ TEST("GymHack: confirming locks in the starter's primary type")
     ChooseStarter(13); // Ralts: Psychic/Fairy, primary Psychic
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_PSYCHIC);
+}
+
+TEST("GymHack: rival's type is never the player's and always beats it")
+{
+    u32 i;
+    for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
+    {
+        u32 playerType = gSpeciesInfo[ChooseStarter(i)].types[0];
+        u32 rivalType = GymHack_GetRivalTypeFor(playerType);
+        EXPECT_NE(rivalType, playerType);
+        EXPECT_GT(GetTypeModifier(rivalType, playerType), UQ_4_12(1.0));
+    }
+}
+
+TEST("GymHack: confirming sets the rival's type and starter")
+{
+    ChooseStarter(6); // Charmander (Fire)
+    GymHack_LockInPlayerType();
+    EXPECT_EQ(VarGet(VAR_RIVAL_TYPE), TYPE_WATER);
+    EXPECT_EQ(VarGet(VAR_TEMP_3), SPECIES_SQUIRTLE);
+}
+
+static const u16 sRivalTrainerIds[][3] =
+{
+    { TRAINER_RIVAL_OAKS_LAB_SQUIRTLE, TRAINER_RIVAL_OAKS_LAB_BULBASAUR, TRAINER_RIVAL_OAKS_LAB_CHARMANDER },
+    { TRAINER_RIVAL_ROUTE22_EARLY_SQUIRTLE, TRAINER_RIVAL_ROUTE22_EARLY_BULBASAUR, TRAINER_RIVAL_ROUTE22_EARLY_CHARMANDER },
+    { TRAINER_RIVAL_CERULEAN_SQUIRTLE, TRAINER_RIVAL_CERULEAN_BULBASAUR, TRAINER_RIVAL_CERULEAN_CHARMANDER },
+    { TRAINER_RIVAL_SS_ANNE_SQUIRTLE, TRAINER_RIVAL_SS_ANNE_BULBASAUR, TRAINER_RIVAL_SS_ANNE_CHARMANDER },
+    { TRAINER_RIVAL_POKEMON_TOWER_SQUIRTLE, TRAINER_RIVAL_POKEMON_TOWER_BULBASAUR, TRAINER_RIVAL_POKEMON_TOWER_CHARMANDER },
+    { TRAINER_RIVAL_SILPH_SQUIRTLE, TRAINER_RIVAL_SILPH_BULBASAUR, TRAINER_RIVAL_SILPH_CHARMANDER },
+    { TRAINER_RIVAL_ROUTE22_LATE_SQUIRTLE, TRAINER_RIVAL_ROUTE22_LATE_BULBASAUR, TRAINER_RIVAL_ROUTE22_LATE_CHARMANDER },
+    { TRAINER_CHAMPION_FIRST_SQUIRTLE, TRAINER_CHAMPION_FIRST_BULBASAUR, TRAINER_CHAMPION_FIRST_CHARMANDER },
+    { TRAINER_CHAMPION_REMATCH_SQUIRTLE, TRAINER_CHAMPION_REMATCH_BULBASAUR, TRAINER_CHAMPION_REMATCH_CHARMANDER },
+};
+static const u8 sRivalPartySizes[] = { 1, 2, 4, 4, 5, 5, 6, 6, 6 };
+
+TEST("GymHack: every rival battle uses his type-specialist team")
+{
+    u32 i, stage, v, m, n;
+    for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
+    {
+        u32 rivalType;
+        ChooseStarter(i);
+        GymHack_LockInPlayerType();
+        rivalType = VarGet(VAR_RIVAL_TYPE);
+        for (stage = 0; stage < ARRAY_COUNT(sRivalTrainerIds); stage++)
+        {
+            for (v = 0; v < 3; v++)
+            {
+                const struct Trainer *t = GetTrainerStructFromId(sRivalTrainerIds[stage][v]);
+                EXPECT(t == GymHack_GetRivalTrainer(sRivalTrainerIds[stage][v]));
+                EXPECT(t != NULL);
+                EXPECT_EQ((u32)t->partySize, (u32)sRivalPartySizes[stage]);
+                for (m = 0; m < t->partySize; m++)
+                {
+                    u32 species = t->party[m].species;
+                    // Two lines are borrowed from a secondary type (see gen_rival_teams.py)
+                    bool32 borrowed = (rivalType == TYPE_STEEL && (species == SPECIES_MAGNEMITE || species == SPECIES_MAGNETON))
+                                   || (rivalType == TYPE_ICE && species == SPECIES_LAPRAS);
+                    if (!borrowed)
+                        EXPECT_EQ(gSpeciesInfo[species].types[0], rivalType);
+                    for (n = m + 1; n < t->partySize; n++)
+                        EXPECT_NE(species, t->party[n].species);
+                }
+                // His ace (last slot) is the starter of his type
+                if (stage == 0)
+                    EXPECT_EQ(t->party[0].species, GymHack_GetStarterSpeciesForType(rivalType));
+            }
+        }
+    }
+}
+
+TEST("GymHack: other trainers are untouched")
+{
+    EXPECT(GymHack_GetRivalTrainer(TRAINER_LEADER_BROCK) == NULL);
 }
