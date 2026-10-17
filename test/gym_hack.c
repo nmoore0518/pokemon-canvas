@@ -10,6 +10,9 @@
 #include "string_util.h"
 #include "battle_util.h"
 #include "data.h"
+#include "battle_setup.h"
+#include "test/overworld_script.h"
+#include "constants/gym_hack.h"
 #include "constants/opponents.h"
 #include "constants/rival_teams.h"
 #include "constants/species.h"
@@ -33,7 +36,7 @@ static const u8 *const sMenuLabels[GYM_HACK_STARTER_COUNT] =
     GymHack_Text_TypeSteel, GymHack_Text_TypeWater,
 };
 
-static u32 ChooseStarter(u32 menuIndex)
+static u32 GymHackTest_ChooseStarter(u32 menuIndex)
 {
     gSpecialVar_Result = menuIndex;
     GymHack_PrepareStarterChoice();
@@ -52,7 +55,7 @@ TEST("GymHack: every non-Flying type has exactly one starter")
     u32 seen[NUMBER_OF_MON_TYPES] = {0};
 
     for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
-        seen[gSpeciesInfo[ChooseStarter(i)].types[0]]++;
+        seen[gSpeciesInfo[GymHackTest_ChooseStarter(i)].types[0]]++;
 
     for (j = 0; j < NUMBER_OF_MON_TYPES; j++)
     {
@@ -67,7 +70,7 @@ TEST("GymHack: menu labels name the species they give")
 {
     u32 i;
     for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
-        EXPECT(StringEndsWith(sMenuLabels[i], GetSpeciesName(ChooseStarter(i))));
+        EXPECT(StringEndsWith(sMenuLabels[i], GetSpeciesName(GymHackTest_ChooseStarter(i))));
 }
 
 TEST("GymHack: menu labels name the starter's primary type")
@@ -76,7 +79,7 @@ TEST("GymHack: menu labels name the starter's primary type")
     u8 prefix[32];
     for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
     {
-        u32 species = ChooseStarter(i);
+        u32 species = GymHackTest_ChooseStarter(i);
         u8 *end = StringCopy(prefix, gTypesInfo[gSpeciesInfo[species].types[0]].name);
         // Label format is "<Type> - <Species>"
         EXPECT_EQ(StringCompareN(sMenuLabels[i], prefix, end - prefix), 0);
@@ -86,11 +89,11 @@ TEST("GymHack: menu labels name the starter's primary type")
 TEST("GymHack: confirming locks in the starter's primary type")
 {
     VarSet(VAR_PLAYER_TYPE, TYPE_NONE);
-    ChooseStarter(0); // Clefairy: Fairy in modern typing
+    GymHackTest_ChooseStarter(0); // Clefairy: Fairy in modern typing
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_FAIRY);
 
-    ChooseStarter(13); // Ralts: Psychic/Fairy, primary Psychic
+    GymHackTest_ChooseStarter(13); // Ralts: Psychic/Fairy, primary Psychic
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_PSYCHIC);
 }
@@ -100,7 +103,7 @@ TEST("GymHack: rival's type is never the player's and always beats it")
     u32 i;
     for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
     {
-        u32 playerType = gSpeciesInfo[ChooseStarter(i)].types[0];
+        u32 playerType = gSpeciesInfo[GymHackTest_ChooseStarter(i)].types[0];
         u32 rivalType = GymHack_GetRivalTypeFor(playerType);
         EXPECT_NE(rivalType, playerType);
         EXPECT_GT(GetTypeModifier(rivalType, playerType), UQ_4_12(1.0));
@@ -109,7 +112,7 @@ TEST("GymHack: rival's type is never the player's and always beats it")
 
 TEST("GymHack: confirming sets the rival's type and starter")
 {
-    ChooseStarter(6); // Charmander (Fire)
+    GymHackTest_ChooseStarter(6); // Charmander (Fire)
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_RIVAL_TYPE), TYPE_WATER);
     EXPECT_EQ(VarGet(VAR_TEMP_3), SPECIES_SQUIRTLE);
@@ -135,7 +138,7 @@ TEST("GymHack: every rival battle uses his type-specialist team")
     for (i = 0; i < GYM_HACK_STARTER_COUNT; i++)
     {
         u32 rivalType;
-        ChooseStarter(i);
+        GymHackTest_ChooseStarter(i);
         GymHack_LockInPlayerType();
         rivalType = VarGet(VAR_RIVAL_TYPE);
         for (stage = 0; stage < ARRAY_COUNT(sRivalTrainerIds); stage++)
@@ -168,4 +171,131 @@ TEST("GymHack: every rival battle uses his type-specialist team")
 TEST("GymHack: other trainers are untouched")
 {
     EXPECT(GymHack_GetRivalTrainer(TRAINER_LEADER_BROCK) == NULL);
+}
+
+// ---- Team rules ----
+
+static void SetPlayerType(u32 type)
+{
+    VarSet(VAR_PLAYER_TYPE, type);
+}
+
+TEST("GymHack: a full team of the player's type is legal")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARMANDER, 10;
+        givemon SPECIES_VULPIX, 10;
+        givemon SPECIES_GROWLITHE, 10;
+        givemon SPECIES_PONYTA, 10;
+        givemon SPECIES_MAGBY, 10;
+        givemon SPECIES_NUMEL, 10;
+    );
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_OK);
+}
+
+TEST("GymHack: a Pokemon of another primary type breaks the rules")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARMANDER, 10;
+        givemon SPECIES_SQUIRTLE, 10;
+    );
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_WRONG_TYPE);
+    EXPECT_EQ(StringCompare(gStringVar1, GetSpeciesName(SPECIES_SQUIRTLE)), 0);
+    EXPECT_EQ(StringCompare(gStringVar2, gTypesInfo[TYPE_WATER].name), 0);
+    EXPECT_EQ(StringCompare(gStringVar3, gTypesInfo[TYPE_FIRE].name), 0);
+}
+
+TEST("GymHack: only the primary type counts")
+{
+    // Gyarados is Water/Flying: fine for Water, not for Flying-adjacent teams
+    SetPlayerType(TYPE_WATER);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_GYARADOS, 30;);
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_OK);
+
+    // Swablu (Normal/Flying) isn't a Dragon yet
+    SetPlayerType(TYPE_DRAGON);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_DRATINI, 10; givemon SPECIES_SWABLU, 10;);
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_WRONG_TYPE);
+}
+
+TEST("GymHack: two of the same species break the rules")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARMANDER, 10;
+        givemon SPECIES_VULPIX, 10;
+        givemon SPECIES_CHARMANDER, 12;
+    );
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_DUPLICATE);
+    EXPECT_EQ(StringCompare(gStringVar1, GetSpeciesName(SPECIES_CHARMANDER)), 0);
+}
+
+TEST("GymHack: different stages of one family are allowed")
+{
+    SetPlayerType(TYPE_GHOST);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_GASTLY, 10;
+        givemon SPECIES_HAUNTER, 30;
+        givemon SPECIES_GENGAR, 40;
+    );
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_OK);
+}
+
+TEST("GymHack: eggs are ignored")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARMANDER, 10;
+        giveegg SPECIES_SQUIRTLE;
+    );
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_OK);
+}
+
+TEST("GymHack: no rules before a type is chosen")
+{
+    SetPlayerType(TYPE_NONE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_SQUIRTLE, 5; givemon SPECIES_SQUIRTLE, 5;);
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_OK);
+}
+
+TEST("GymHack: rules apply to gym leaders and the rival, not other trainers")
+{
+    EXPECT(GymHack_IsRuleBattleTrainer(TRAINER_LEADER_BROCK));
+    EXPECT(GymHack_IsRuleBattleTrainer(TRAINER_LEADER_GIOVANNI));
+    EXPECT(GymHack_IsRuleBattleTrainer(TRAINER_RIVAL_CERULEAN_SQUIRTLE));
+    EXPECT(GymHack_IsRuleBattleTrainer(TRAINER_RIVAL_ROUTE22_LATE_CHARMANDER));
+    // The League is checked at its door instead
+    EXPECT(!GymHack_IsRuleBattleTrainer(TRAINER_ELITE_FOUR_LORELEI));
+    EXPECT(!GymHack_IsRuleBattleTrainer(TRAINER_CHAMPION_FIRST_SQUIRTLE));
+    EXPECT(!GymHack_IsRuleBattleTrainer(TRAINER_NONE));
+}
+
+TEST("GymHack: a gym leader battle with an illegal team is replaced")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_SQUIRTLE, 10;);
+    TRAINER_BATTLE_PARAM.opponentA = TRAINER_LEADER_BROCK;
+    TRAINER_BATTLE_PARAM.opponentB = TRAINER_NONE;
+    EXPECT(GymHack_GetBlockedBattleScript() != NULL);
+    EXPECT_EQ(gSpecialVar_Result, GYM_HACK_TEAM_WRONG_TYPE);
+
+    // A legal team battles normally, and so does an ordinary trainer
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_CHARMANDER, 10;);
+    EXPECT(GymHack_GetBlockedBattleScript() == NULL);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_SQUIRTLE, 10;);
+    TRAINER_BATTLE_PARAM.opponentA = TRAINER_ELITE_FOUR_LORELEI;
+    EXPECT(GymHack_GetBlockedBattleScript() == NULL);
 }

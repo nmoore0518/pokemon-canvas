@@ -34,6 +34,24 @@ IndigoPlateau_PokemonCenter_1F_EventScript_SeviiIslandComplete::
 	release
 	end
 
+@ Gym Trainer hack: the Elite Four and Champion follow the team rules. They are
+@ checked here, at the door, so the player can't get stuck inside the League.
+IndigoPlateau_PokemonCenter_1F_EventScript_LeagueTeamCheck::
+	lockall
+	special GymHack_CheckTeamSpecial
+	goto_if_eq VAR_RESULT, GYM_HACK_TEAM_OK, IndigoPlateau_PokemonCenter_1F_EventScript_LeagueTeamOk
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	call EventScript_GymHack_ShowTeamRuleMessage
+	closemessage
+	applymovement LOCALID_PLAYER, Common_Movement_WalkDown
+	waitmovement 0
+	releaseall
+	end
+
+IndigoPlateau_PokemonCenter_1F_EventScript_LeagueTeamOk::
+	releaseall
+	end
+
 IndigoPlateau_PokemonCenter_1F_EventScript_GymGuy::
 	msgbox IndigoPlateau_PokemonCenter_1F_Text_GymGuyAdvice, MSGBOX_NPC
 	end

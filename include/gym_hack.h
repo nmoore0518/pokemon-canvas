@@ -9,6 +9,12 @@ void GymHack_PrepareStarterChoice(void);
 void GymHack_LockInPlayerType(void);
 void GymHack_BufferRivalChoice(void);
 
+void GymHack_CheckTeamSpecial(void);
+void GymHack_WarpInPlace(void);
+
+u32 GymHack_CheckTeam(void);
+bool32 GymHack_IsRuleBattleTrainer(u32 trainerId);
+const u8 *GymHack_GetBlockedBattleScript(void);
 u32 GymHack_GetRivalTypeFor(u32 playerType);
 u32 GymHack_GetStarterSpeciesForType(u32 type);
 

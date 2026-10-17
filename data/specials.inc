@@ -643,3 +643,5 @@ gSpecials::
 	def_special GymHack_PrepareStarterChoice
 	def_special GymHack_LockInPlayerType
 	def_special GymHack_BufferRivalChoice
+	def_special GymHack_CheckTeamSpecial
+	def_special GymHack_WarpInPlace

@@ -4,6 +4,10 @@
 // menu. The menu order in data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
 // must match sStarters below.
 //
+// Team rules: in gym leader and rival battles (and to enter the Elite Four),
+// every Pokemon in the party must have the player's type as its primary type,
+// and no two may be the same species.
+//
 // Rival: once the player's type is locked in, the rival specializes in the
 // type that counters it. Every rival battle in the game is swapped for his
 // team for that type (src/data/rival_teams_frlg.party).
@@ -26,6 +30,12 @@
 #include "string_util.h"
 #include "constants/opponents.h"
 #include "constants/rival_teams.h"
+#include "battle_setup.h"
+#include "field_player_avatar.h"
+#include "field_screen_effect.h"
+#include "fieldmap.h"
+#include "overworld.h"
+#include "constants/gym_hack.h"
 #include "constants/species.h"
 #include "constants/vars.h"
 
@@ -230,4 +240,117 @@ const struct Trainer *GymHack_GetRivalTrainer(u16 trainerId)
     }
 #endif
     return NULL;
+}
+
+// ---------------------------------------------------------------------------
+// Team rules
+// ---------------------------------------------------------------------------
+
+// Checks the player's party against the rules. On a violation, buffers text
+// for the message: WRONG_TYPE -> STR_VAR_1 = the Pokemon's nickname,
+// STR_VAR_2 = its type, STR_VAR_3 = the player's type; DUPLICATE ->
+// STR_VAR_1 = the species name. Eggs don't count.
+u32 GymHack_CheckTeam(void)
+{
+    u32 playerType = VarGet(VAR_PLAYER_TYPE);
+    u32 i, j;
+
+    if (playerType == TYPE_NONE)
+        return GYM_HACK_TEAM_OK;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
+        if (species == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
+            continue;
+
+        if (GetPrimaryType(species) != playerType)
+        {
+            GetMonData(&gPlayerParty[i], MON_DATA_NICKNAME, gStringVar1);
+            StringGet_Nickname(gStringVar1);
+            StringCopy(gStringVar2, gTypesInfo[GetPrimaryType(species)].name);
+            StringCopy(gStringVar3, gTypesInfo[playerType].name);
+            return GYM_HACK_TEAM_WRONG_TYPE;
+        }
+
+        for (j = i + 1; j < PARTY_SIZE; j++)
+        {
+            u32 other = GetMonData(&gPlayerParty[j], MON_DATA_SPECIES);
+            if (other == SPECIES_NONE || GetMonData(&gPlayerParty[j], MON_DATA_IS_EGG))
+                continue;
+            if (GET_BASE_SPECIES_ID(other) == GET_BASE_SPECIES_ID(species))
+            {
+                StringCopy(gStringVar1, GetSpeciesName(species));
+                return GYM_HACK_TEAM_DUPLICATE;
+            }
+        }
+    }
+    return GYM_HACK_TEAM_OK;
+}
+
+// Battles where the rules are checked right before the battle starts. The
+// Elite Four and Champion are checked once, at the door to the League
+// (IndigoPlateau_PokemonCenter_1F), so a player can never get stuck inside.
+bool32 GymHack_IsRuleBattleTrainer(u32 trainerId)
+{
+#if IS_FRLG
+    switch (trainerId)
+    {
+    case TRAINER_LEADER_BROCK:
+    case TRAINER_LEADER_MISTY:
+    case TRAINER_LEADER_LT_SURGE:
+    case TRAINER_LEADER_ERIKA:
+    case TRAINER_LEADER_KOGA:
+    case TRAINER_LEADER_SABRINA:
+    case TRAINER_LEADER_BLAINE:
+    case TRAINER_LEADER_GIOVANNI:
+        return TRUE;
+    }
+    {
+        u32 stage = GetRivalStage(trainerId);
+        return stage != RIVAL_STAGE_NONE
+            && stage != RIVAL_STAGE_CHAMPION_FIRST
+            && stage != RIVAL_STAGE_CHAMPION_REMATCH;
+    }
+#else
+    return FALSE;
+#endif
+}
+
+extern const u8 EventScript_GymHack_TeamNotAllowed[];
+
+// Called by the dotrainerbattle script command (src/scrcmd.c) just before a
+// trainer battle starts. Returns the script to run instead when the battle
+// isn't allowed, or NULL to battle normally.
+const u8 *GymHack_GetBlockedBattleScript(void)
+{
+    u32 result;
+
+    if (!GymHack_IsRuleBattleTrainer(TRAINER_BATTLE_PARAM.opponentA)
+     && !GymHack_IsRuleBattleTrainer(TRAINER_BATTLE_PARAM.opponentB))
+        return NULL;
+    result = GymHack_CheckTeam();
+    if (result == GYM_HACK_TEAM_OK)
+        return NULL;
+    gSpecialVar_Result = result;
+    return EventScript_GymHack_TeamNotAllowed;
+}
+
+// special: VAR_RESULT = GymHack_CheckTeam()
+void GymHack_CheckTeamSpecial(void)
+{
+    gSpecialVar_Result = GymHack_CheckTeam();
+}
+
+// special: reloads the current map with the player where they stand. Used
+// after a blocked battle so that a rival who walked up for a scripted battle
+// is put back, ready to try again once the team is fixed.
+void GymHack_WarpInPlace(void)
+{
+    s16 x, y;
+    PlayerGetDestCoords(&x, &y);
+    SetWarpDestination(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum,
+                       WARP_ID_NONE, x - MAP_OFFSET, y - MAP_OFFSET);
+    DoDiveWarp();
+    ResetInitialPlayerAvatarState();
 }

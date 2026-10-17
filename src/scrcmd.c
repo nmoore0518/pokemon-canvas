@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_hack.h"
 #include "frontier_util.h"
 #include "battle_setup.h"
 #include "battle_util.h"
@@ -2416,6 +2417,14 @@ bool8 ScrCmd_trainerbattle(struct ScriptContext *ctx)
 bool8 ScrCmd_dotrainerbattle(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE | SCREFF_HARDWARE);
+
+    // Gym Trainer hack: enforce the team rules for gym leader and rival battles
+    const u8 *blocked = GymHack_GetBlockedBattleScript();
+    if (blocked != NULL)
+    {
+        ctx->scriptPtr = blocked;
+        return FALSE;
+    }
 
     BattleSetup_StartTrainerBattle();
     return TRUE;

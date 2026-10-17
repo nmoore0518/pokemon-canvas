@@ -54,6 +54,14 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   type-specialist team at battle time (`GymHack_GetRivalTrainer`).
   12 types are possible rival types. Steel and Ice borrow one line each from a secondary
   type (Magnemite/Magneton, Lapras), because those types have too few non-legendary lines.
+- **Team rules** (`GymHack_CheckTeam`): every non-egg Pokémon in the party must have the player's
+  type as its primary type, and no two may be the same species (different stages of one family are
+  fine). Ordinary trainers and wild battles have no rules.
+  - Gym leaders and rival battles are checked when the battle is about to start
+    (`ScrCmd_dotrainerbattle` → `GymHack_GetBlockedBattleScript`). If the team breaks a rule, the
+    game explains why and reloads the map in place, so a rival who walked up resets.
+  - The Elite Four and Champion are checked once, at the League door in the Indigo Plateau lobby,
+    so the player can't get stuck between Elite Four rooms.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -65,6 +73,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/data/rival_teams_frlg.party` | The rival's teams |
 | `test/gym_hack.c` | Automated tests (`make check BUILD=firered TESTS="GymHack"`) |
 | `data/maps/PalletTown_ProfessorOaksLab_Frlg/` | Oak's lab: type menu, shelf, rival's pick |
+| `data/scripts/gym_hack.inc` | Team-rule messages (wording can be edited here) |
+| `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
 | `.github/workflows/build-rom.yml` | Automatic ROM builds |
 
@@ -82,7 +92,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
 2. Type identity
    - [x] 17-starter type selection in Oak's lab (Poké Ball shelf)
    - [x] Rival specializes in a counter type
-   - [ ] Type + no-duplicates check for gym, rival and Elite Four battles
+   - [x] Type + no-duplicates check for gym, rival and Elite Four battles
 3. [ ] Evolution toggle per Pokémon (no held item); HMs as key items
 4. [ ] All 386 Pokémon in the wild; type finder (DexNav-based)
 5. [ ] Gym builder and challengers
