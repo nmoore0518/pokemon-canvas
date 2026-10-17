@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gym_hack.h"
+#include "overworld.h"
 #include "main.h"
 #include "text.h"
 #include "menu.h"
@@ -2486,7 +2488,15 @@ static void CB_ExitFlyMap(void)
                 struct RegionMap* tempRegionMap = &sFlyMap->regionMap;
 
                 SetFlyDestination(tempRegionMap);
+                gGymHackFlyFromItem = FALSE;
                 ReturnToFieldFromFlyMapSelect();
+            }
+            else if (gGymHackFlyFromItem)
+            {
+                // Gym Trainer hack: opened with the Hot Air Balloon
+                gGymHackFlyFromItem = FALSE;
+                gSkipShowMonAnim = FALSE;
+                SetMainCallback2(CB2_ReturnToField);
             }
             else
             {

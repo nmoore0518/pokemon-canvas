@@ -62,6 +62,14 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     game explains why and reloads the map in place, so a rival who walked up resets.
   - The Elite Four and Champion are checked once, at the League door in the Indigo Plateau lobby,
     so the player can't get stuck between Elite Four rooms.
+- **Evolution toggle**: party menu → STOP EVOLVING / ALLOW EVOLVING. Stored in a spare bit of the
+  Pokémon's data (`MON_DATA_EVOLUTION_LOCKED`, formerly unused), so old saves load fine. Blocks
+  level-up, trade and friendship evolution like an Everstone, but evolution stones still work.
+- **HM key items**: Hedge Clippers (Cut), Flashlight (Flash), Boogie Board (Surf), Hot Air Balloon
+  (Fly), Can of Spinach (Strength). Given by the same NPCs right after each HM. They need the same
+  badges as the HMs. Walking up to a tree, boulder or water offers the item when no party Pokémon
+  knows the move (`checkfieldmove` returns `FIELD_MOVE_USER_ITEM`); they can also be used from the
+  bag or registered to SELECT. Icons drawn by `tools/gym_hack/make_hm_item_icons.py`.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -73,7 +81,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/data/rival_teams_frlg.party` | The rival's teams |
 | `test/gym_hack.c` | Automated tests (`make check BUILD=firered TESTS="GymHack"`) |
 | `data/maps/PalletTown_ProfessorOaksLab_Frlg/` | Oak's lab: type menu, shelf, rival's pick |
-| `data/scripts/gym_hack.inc` | Team-rule messages (wording can be edited here) |
+| `data/scripts/gym_hack.inc` | Team-rule messages, HM key item scripts and text |
+| `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
 | `.github/workflows/build-rom.yml` | Automatic ROM builds |
@@ -93,6 +102,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] 17-starter type selection in Oak's lab (Poké Ball shelf)
    - [x] Rival specializes in a counter type
    - [x] Type + no-duplicates check for gym, rival and Elite Four battles
-3. [ ] Evolution toggle per Pokémon (no held item); HMs as key items
+3. [x] Evolution toggle per Pokémon (no held item); HMs as key items
 4. [ ] All 386 Pokémon in the wild; type finder (DexNav-based)
 5. [ ] Gym builder and challengers

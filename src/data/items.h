@@ -16099,6 +16099,87 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_PokeshiDoll,
         .iconPalette = gItemIconPalette_PokeshiDoll,
     },
+
+    // Gym Trainer hack: key items that work like HMs outside of battle
+    [ITEM_HEDGE_CLIPPERS] =
+    {
+        .name = ITEM_NAME("Hedge Clippers"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Sturdy clippers for\n"
+            "cutting down small\n"
+            "trees in your way."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_HedgeClippers,
+        .iconPic = gItemIcon_HedgeClippers,
+        .iconPalette = gItemIconPalette_HedgeClippers,
+    },
+
+    [ITEM_FLASHLIGHT] =
+    {
+        .name = ITEM_NAME("Flashlight"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A bright light that\n"
+            "lights up dark\n"
+            "caves."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_Flashlight,
+        .iconPic = gItemIcon_Flashlight,
+        .iconPalette = gItemIconPalette_Flashlight,
+    },
+
+    [ITEM_BOOGIE_BOARD] =
+    {
+        .name = ITEM_NAME("Boogie Board"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A board for riding\n"
+            "across the water.\n"
+            "Lets you SURF."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_BoogieBoard,
+        .iconPic = gItemIcon_BoogieBoard,
+        .iconPalette = gItemIconPalette_BoogieBoard,
+    },
+
+    [ITEM_HOT_AIR_BALLOON] =
+    {
+        .name = ITEM_NAME("Hot Air Balloon"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Flies you to any\n"
+            "town you have\n"
+            "visited before."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_HotAirBalloon,
+        .iconPic = gItemIcon_HotAirBalloon,
+        .iconPalette = gItemIconPalette_HotAirBalloon,
+    },
+
+    [ITEM_CAN_OF_SPINACH] =
+    {
+        .name = ITEM_NAME("Can of Spinach"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Eat it to gain the\n"
+            "STRENGTH to push\n"
+            "big boulders."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_CanOfSpinach,
+        .iconPic = gItemIcon_CanOfSpinach,
+        .iconPalette = gItemIconPalette_CanOfSpinach,
+    },
 };
 
 #undef ITEM_NAME

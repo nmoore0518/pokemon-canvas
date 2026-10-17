@@ -24,6 +24,9 @@ FuchsiaCity_WardensHouse_EventScript_GiveGoldTeeth::
 	call_if_eq VAR_RESULT, MALE, FuchsiaCity_WardensHouse_EventScript_WardenThanksMale
 	call_if_eq VAR_RESULT, FEMALE, FuchsiaCity_WardensHouse_EventScript_WardenThanksFemale
 	giveitem_msg FuchsiaCity_WardensHouse_Text_ReceivedHM04FromWarden, ITEM_HM04
+	@ Gym Trainer hack: key item that works like the HM outside of battle
+	msgbox Text_GymHack_AndTakeThisToo
+	giveitem ITEM_CAN_OF_SPINACH
 	setflag FLAG_GOT_HM04
 	removeitem ITEM_GOLD_TEETH
 	release

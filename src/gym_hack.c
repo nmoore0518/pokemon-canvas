@@ -36,6 +36,9 @@
 #include "fieldmap.h"
 #include "overworld.h"
 #include "constants/gym_hack.h"
+#include "constants/field_move.h"
+#include "constants/items.h"
+#include "item.h"
 #include "constants/species.h"
 #include "constants/vars.h"
 
@@ -260,13 +263,13 @@ u32 GymHack_CheckTeam(void)
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        u32 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
-        if (species == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
+        u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
+        if (species == SPECIES_NONE || GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG))
             continue;
 
         if (GetPrimaryType(species) != playerType)
         {
-            GetMonData(&gPlayerParty[i], MON_DATA_NICKNAME, gStringVar1);
+            GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_NICKNAME, gStringVar1);
             StringGet_Nickname(gStringVar1);
             StringCopy(gStringVar2, gTypesInfo[GetPrimaryType(species)].name);
             StringCopy(gStringVar3, gTypesInfo[playerType].name);
@@ -275,8 +278,8 @@ u32 GymHack_CheckTeam(void)
 
         for (j = i + 1; j < PARTY_SIZE; j++)
         {
-            u32 other = GetMonData(&gPlayerParty[j], MON_DATA_SPECIES);
-            if (other == SPECIES_NONE || GetMonData(&gPlayerParty[j], MON_DATA_IS_EGG))
+            u32 other = GetMonData(&gParties[B_TRAINER_PLAYER][j], MON_DATA_SPECIES);
+            if (other == SPECIES_NONE || GetMonData(&gParties[B_TRAINER_PLAYER][j], MON_DATA_IS_EGG))
                 continue;
             if (GET_BASE_SPECIES_ID(other) == GET_BASE_SPECIES_ID(species))
             {
@@ -353,4 +356,56 @@ void GymHack_WarpInPlace(void)
                        WARP_ID_NONE, x - MAP_OFFSET, y - MAP_OFFSET);
     DoDiveWarp();
     ResetInitialPlayerAvatarState();
+}
+
+// ---------------------------------------------------------------------------
+// Evolution toggle (party menu: STOP EVOLVING / ALLOW EVOLVING)
+// ---------------------------------------------------------------------------
+
+bool32 GymHack_SpeciesCanEvolve(u32 species)
+{
+    const struct Evolution *evolutions = GetSpeciesEvolutions(species);
+    u32 i;
+
+    if (evolutions == NULL)
+        return FALSE;
+    for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
+    {
+        if (SanitizeSpeciesId(evolutions[i].targetSpecies) != SPECIES_NONE)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// ---------------------------------------------------------------------------
+// HM key items: each works like its HM outside of battle (src/item_use.c for
+// using them from the bag; checkfieldmove and the field move scripts for
+// walking up to a tree, boulder or water).
+// ---------------------------------------------------------------------------
+
+EWRAM_DATA bool8 gGymHackFlyFromItem = FALSE;
+
+u32 GymHack_GetFieldMoveItem(u32 fieldMove)
+{
+    switch (fieldMove)
+    {
+    case FIELD_MOVE_CUT:      return ITEM_HEDGE_CLIPPERS;
+    case FIELD_MOVE_FLASH:    return ITEM_FLASHLIGHT;
+    case FIELD_MOVE_SURF:     return ITEM_BOOGIE_BOARD;
+    case FIELD_MOVE_FLY:      return ITEM_HOT_AIR_BALLOON;
+    case FIELD_MOVE_STRENGTH: return ITEM_CAN_OF_SPINACH;
+    }
+    return ITEM_NONE;
+}
+
+bool32 GymHack_HasFieldMoveItem(u32 fieldMove)
+{
+    u32 item = GymHack_GetFieldMoveItem(fieldMove);
+    return item != ITEM_NONE && CheckBagHasItem(item, 1);
+}
+
+// special: the next field move animation skips the "Pokemon pops out" part
+void GymHack_SkipNextShowMon(void)
+{
+    gSkipShowMonAnim = TRUE;
 }

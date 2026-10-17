@@ -1052,6 +1052,13 @@ enum __attribute__((packed)) Item
     ITEM_TATSUGIRINITE = 872,
     ITEM_GLIMMORANITE = 873,
 
+    // Gym Trainer hack: key items that work like HMs outside of battle
+    ITEM_HEDGE_CLIPPERS = 874,
+    ITEM_FLASHLIGHT = 875,
+    ITEM_BOOGIE_BOARD = 876,
+    ITEM_HOT_AIR_BALLOON = 877,
+    ITEM_CAN_OF_SPINACH = 878,
+
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
 };

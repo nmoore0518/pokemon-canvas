@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_hack.h"
 #include "malloc.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -110,6 +111,8 @@ enum {
     MENU_CATALOG_MOWER,
     MENU_CHANGE_FORM,
     MENU_CHANGE_ABILITY,
+    MENU_LOCK_EVOLUTION,   // Gym Trainer hack
+    MENU_UNLOCK_EVOLUTION, // Gym Trainer hack
     MENU_FIELD_MOVES
 };
 
@@ -482,6 +485,7 @@ static void CursorCb_CatalogFan(u8);
 static void CursorCb_CatalogMower(u8);
 static void CursorCb_ChangeForm(u8);
 static void CursorCb_ChangeAbility(u8);
+static void CursorCb_ToggleEvolution(u8);
 void TryItemHoldFormChange(struct Pokemon *mon, s8 slotId, enum BattleTrainer trainer);
 static void ShowMoveSelectWindow(u8 slot);
 static void Task_HandleWhichMoveInput(u8 taskId);
@@ -2969,6 +2973,12 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
             }
         }
     }
+
+    // Gym Trainer hack: evolution on/off
+    if (GetMonData(&mons[slotId], MON_DATA_EVOLUTION_LOCKED))
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_UNLOCK_EVOLUTION);
+    else if (GymHack_SpeciesCanEvolve(GetMonData(&mons[slotId], MON_DATA_SPECIES)))
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_LOCK_EVOLUTION);
 
     if (!InBattlePike())
     {
@@ -6956,6 +6966,24 @@ static void CursorCb_ChangeForm(u8 taskId)
 {
     gSpecialVar_Result = 0;
     TryMultichoiceFormChange(taskId);
+}
+
+// Gym Trainer hack: turn evolution off/on for a Pokemon without using its held item slot
+static void CursorCb_ToggleEvolution(u8 taskId)
+{
+    static const u8 sText_EvolutionOff[] = _("{STR_VAR_1} will no longer evolve.\nEvolution stones still work.{PAUSE_UNTIL_PRESS}");
+    static const u8 sText_EvolutionOn[] = _("{STR_VAR_1} can evolve again.{PAUSE_UNTIL_PRESS}");
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gPartyMenu.slotId];
+    bool8 locked = !GetMonData(mon, MON_DATA_EVOLUTION_LOCKED);
+
+    PlaySE(SE_SELECT);
+    SetMonData(mon, MON_DATA_EVOLUTION_LOCKED, &locked);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+    GetMonNickname(mon, gStringVar1);
+    StringExpandPlaceholders(gStringVar4, locked ? sText_EvolutionOff : sText_EvolutionOn);
+    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
 }
 
 static void CursorCb_ChangeAbility(u8 taskId)

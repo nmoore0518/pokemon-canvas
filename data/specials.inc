@@ -645,3 +645,4 @@ gSpecials::
 	def_special GymHack_BufferRivalChoice
 	def_special GymHack_CheckTeamSpecial
 	def_special GymHack_WarpInPlace
+	def_special GymHack_SkipNextShowMon

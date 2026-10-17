@@ -9,6 +9,11 @@
 #include "pokemon.h"
 #include "string_util.h"
 #include "battle_util.h"
+#include "field_player_avatar.h"
+#include "item.h"
+#include "constants/field_move.h"
+#include "constants/items.h"
+#include "constants/moves.h"
 #include "data.h"
 #include "battle_setup.h"
 #include "test/overworld_script.h"
@@ -298,4 +303,83 @@ TEST("GymHack: a gym leader battle with an illegal team is replaced")
     RUN_OVERWORLD_SCRIPT(givemon SPECIES_SQUIRTLE, 10;);
     TRAINER_BATTLE_PARAM.opponentA = TRAINER_ELITE_FOUR_LORELEI;
     EXPECT(GymHack_GetBlockedBattleScript() == NULL);
+}
+
+// ---- Evolution toggle ----
+
+TEST("GymHack: a Pokemon with evolution turned off doesn't evolve by level")
+{
+    bool8 locked = TRUE;
+    struct Pokemon mon;
+    CreateMon(&mon, SPECIES_CHARMANDER, 20, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_CHARMELEON);
+    SetMonData(&mon, MON_DATA_EVOLUTION_LOCKED, &locked);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_NONE);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_TRADE, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_NONE);
+    locked = FALSE;
+    SetMonData(&mon, MON_DATA_EVOLUTION_LOCKED, &locked);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_CHARMELEON);
+}
+
+TEST("GymHack: evolution stones still work with evolution turned off")
+{
+    bool8 locked = TRUE;
+    struct Pokemon mon;
+    CreateMon(&mon, SPECIES_GROWLITHE, 20, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(&mon, MON_DATA_EVOLUTION_LOCKED, &locked);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_FIRE_STONE, NULL, NULL, CHECK_EVO), SPECIES_ARCANINE);
+}
+
+TEST("GymHack: the evolution setting is kept in the PC")
+{
+    bool8 locked = TRUE;
+    struct Pokemon mon;
+    struct BoxPokemon *box;
+    CreateMon(&mon, SPECIES_GASTLY, 10, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(&mon, MON_DATA_EVOLUTION_LOCKED, &locked);
+    box = &mon.box;
+    EXPECT_EQ(GetBoxMonData(box, MON_DATA_EVOLUTION_LOCKED), TRUE);
+}
+
+TEST("GymHack: only Pokemon that can evolve get the evolution option")
+{
+    EXPECT(GymHack_SpeciesCanEvolve(SPECIES_GASTLY));
+    EXPECT(!GymHack_SpeciesCanEvolve(SPECIES_TAUROS));
+}
+
+// ---- HM key items ----
+
+TEST("GymHack: each HM key item matches its field move")
+{
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_CUT), ITEM_HEDGE_CLIPPERS);
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_FLASH), ITEM_FLASHLIGHT);
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_SURF), ITEM_BOOGIE_BOARD);
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_FLY), ITEM_HOT_AIR_BALLOON);
+    EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_STRENGTH), ITEM_CAN_OF_SPINACH);
+    EXPECT_EQ(GetItemPocket(ITEM_HEDGE_CLIPPERS), POCKET_KEY_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_CAN_OF_SPINACH), POCKET_KEY_ITEMS);
+}
+
+TEST("GymHack: a tree can be cut with the Hedge Clippers instead of a Pokemon")
+{
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_CHARMANDER, 10;);
+    RUN_OVERWORLD_SCRIPT(checkfieldmove FIELD_MOVE_CUT;);
+    EXPECT_EQ(gSpecialVar_Result, PARTY_SIZE);
+
+    RUN_OVERWORLD_SCRIPT(additem ITEM_HEDGE_CLIPPERS; checkfieldmove FIELD_MOVE_CUT;);
+    EXPECT_EQ(gSpecialVar_Result, FIELD_MOVE_USER_ITEM);
+
+    // A Pokemon that knows Cut is still used first
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_BULBASAUR, 10, move1=MOVE_CUT; checkfieldmove FIELD_MOVE_CUT;);
+    EXPECT_EQ(gSpecialVar_Result, 1);
+}
+
+TEST("GymHack: the Boogie Board lets the player surf")
+{
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_CHARMANDER, 10;);
+    EXPECT(!GymHack_HasFieldMoveItem(FIELD_MOVE_SURF) || PartyHasMonWithSurf());
+    RUN_OVERWORLD_SCRIPT(additem ITEM_BOOGIE_BOARD;);
+    EXPECT(PartyHasMonWithSurf());
 }

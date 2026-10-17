@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gym_hack.h"
+#include "constants/field_move.h"
 #include "main.h"
 #include "bike.h"
 #include "event_data.h"
@@ -1626,6 +1628,9 @@ bool8 PartyHasMonWithSurf(void)
             if (MonKnowsMove(&gParties[B_TRAINER_PLAYER][i], MOVE_SURF))
                 return TRUE;
         }
+        // Gym Trainer hack: the Boogie Board works too
+        if (GymHack_HasFieldMoveItem(FIELD_MOVE_SURF))
+            return TRUE;
     }
     return FALSE;
 }

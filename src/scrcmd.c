@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gym_hack.h"
+#include "constants/gym_hack.h"
 #include "frontier_util.h"
 #include "battle_setup.h"
 #include "battle_util.h"
@@ -2316,6 +2317,13 @@ bool8 ScrCmd_checkfieldmove(struct ScriptContext *ctx)
             gSpecialVar_0x8004 = species;
             break;
         }
+    }
+
+    // Gym Trainer hack: the matching key item works when no Pokemon knows the move
+    if (gSpecialVar_Result == PARTY_SIZE && GymHack_HasFieldMoveItem(fieldMove))
+    {
+        gSpecialVar_Result = FIELD_MOVE_USER_ITEM;
+        gSpecialVar_0x8004 = SPECIES_NONE;
     }
 
     return FALSE;

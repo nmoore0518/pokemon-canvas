@@ -2112,3 +2112,15 @@ const u16 gItemIconPalette_SwapSnack[] = INCGFX_U16("graphics/items/icon_palette
 
 const u32 gItemIcon_TwiceSpicedRadish[] = INCGFX_U32("graphics/items/icons/twice_spiced_radish.png", ".4bpp.smol");
 const u16 gItemIconPalette_TwiceSpicedRadish[] = INCGFX_U16("graphics/items/icon_palettes/twice_spiced_radish.pal", ".gbapal");
+
+// Gym Trainer hack: HM key items
+const u32 gItemIcon_HedgeClippers[] = INCGFX_U32("graphics/items/icons/hedge_clippers.png", ".4bpp.smol");
+const u16 gItemIconPalette_HedgeClippers[] = INCGFX_U16("graphics/items/icon_palettes/hedge_clippers.pal", ".gbapal");
+const u32 gItemIcon_Flashlight[] = INCGFX_U32("graphics/items/icons/flashlight.png", ".4bpp.smol");
+const u16 gItemIconPalette_Flashlight[] = INCGFX_U16("graphics/items/icon_palettes/flashlight.pal", ".gbapal");
+const u32 gItemIcon_BoogieBoard[] = INCGFX_U32("graphics/items/icons/boogie_board.png", ".4bpp.smol");
+const u16 gItemIconPalette_BoogieBoard[] = INCGFX_U16("graphics/items/icon_palettes/boogie_board.pal", ".gbapal");
+const u32 gItemIcon_HotAirBalloon[] = INCGFX_U32("graphics/items/icons/hot_air_balloon.png", ".4bpp.smol");
+const u16 gItemIconPalette_HotAirBalloon[] = INCGFX_U16("graphics/items/icon_palettes/hot_air_balloon.pal", ".gbapal");
+const u32 gItemIcon_CanOfSpinach[] = INCGFX_U32("graphics/items/icons/can_of_spinach.png", ".4bpp.smol");
+const u16 gItemIconPalette_CanOfSpinach[] = INCGFX_U16("graphics/items/icon_palettes/can_of_spinach.pal", ".gbapal");

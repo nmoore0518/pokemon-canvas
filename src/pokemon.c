@@ -2393,6 +2393,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_IS_SHADOW:
             retVal = GetSubstruct3(boxMon)->isShadow;
             break;
+        case MON_DATA_EVOLUTION_LOCKED:
+            retVal = GetSubstruct3(boxMon)->evolutionLocked;
+            break;
         case MON_DATA_DYNAMAX_LEVEL:
             retVal = GetSubstruct3(boxMon)->dynamaxLevel;
             break;
@@ -2839,6 +2842,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             break;
         case MON_DATA_IS_SHADOW:
             SET8(GetSubstruct3(boxMon)->isShadow);
+            break;
+        case MON_DATA_EVOLUTION_LOCKED:
+            SET8(GetSubstruct3(boxMon)->evolutionLocked);
             break;
         case MON_DATA_DYNAMAX_LEVEL:
             SET8(GetSubstruct3(boxMon)->dynamaxLevel);
@@ -4421,6 +4427,13 @@ enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode m
     if (holdEffect == HOLD_EFFECT_PREVENT_EVOLVE
         && mode != EVO_MODE_ITEM_CHECK
         && (P_KADABRA_EVERSTONE < GEN_4 || species != SPECIES_KADABRA))
+        return SPECIES_NONE;
+
+    // Gym Trainer hack: the player can turn evolution off from the party menu.
+    // It works like an Everstone, except that evolution stones still work.
+    if (GetMonData(mon, MON_DATA_EVOLUTION_LOCKED, 0)
+        && mode != EVO_MODE_ITEM_USE
+        && mode != EVO_MODE_ITEM_CHECK)
         return SPECIES_NONE;
 
     switch (mode)

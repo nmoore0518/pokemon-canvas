@@ -1,4 +1,7 @@
 #include "global.h"
+#include "gym_hack.h"
+#include "field_move.h"
+#include "region_map.h"
 #include "item_use.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -1578,6 +1581,108 @@ void ItemUseOutOfBattle_TownMap(u8 taskId)
     {
         gTasks[taskId].func = ItemUseOnFieldCB_TownMap;
     }
+}
+
+// ---------------------------------------------------------------------------
+// Gym Trainer hack: key items that work like HMs outside of battle.
+// They follow the same badge requirements as the HM moves.
+// ---------------------------------------------------------------------------
+
+static const u8 sText_GymHack_NeedBadge[] = _("A new BADGE is required to use\nthat outside of battle.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_GymHack_CutHint[] = _("Face a small tree that can be cut\ndown, then use this.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_GymHack_SurfHint[] = _("Face the water, then use this to\nSURF.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_GymHack_StrengthActive[] = _("You can already move boulders\naround.{PAUSE_UNTIL_PRESS}");
+
+static const u8 *sGymHackItemScript;
+
+static void ItemUseOnFieldCB_GymHackScript(u8 taskId)
+{
+    LockPlayerFieldControls();
+    ScriptContext_SetupScript(sGymHackItemScript);
+    DestroyTask(taskId);
+}
+
+static void GymHack_UseItemWithScript(u8 taskId, const u8 *script)
+{
+    sGymHackItemScript = script;
+    sItemUseOnFieldCB = ItemUseOnFieldCB_GymHackScript;
+    SetUpItemUseOnFieldCallback(taskId);
+}
+
+static bool32 GymHack_CheckBadge(u8 taskId, enum FieldMove fieldMove)
+{
+    if (IsFieldMoveUnlocked(fieldMove))
+        return TRUE;
+    DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_NeedBadge);
+    return FALSE;
+}
+
+void ItemUseOutOfBattle_HedgeClippers(u8 taskId)
+{
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_CUT))
+        return;
+    if (CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG)
+     || CheckObjectGraphicsInFrontOfPlayer(OBJ_EVENT_GFX_CUTTABLE_TREE))
+        GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseHedgeClippers);
+    else
+        DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_CutHint);
+}
+
+void ItemUseOutOfBattle_Flashlight(u8 taskId)
+{
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_FLASH))
+        return;
+    if (gMapHeader.cave == TRUE && !FlagGet(FLAG_SYS_USE_FLASH))
+        GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseFlashlight);
+    else
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+}
+
+void ItemUseOutOfBattle_BoogieBoard(u8 taskId)
+{
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_SURF))
+        return;
+    if (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING) && IsPlayerFacingSurfableFishableWater())
+        GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseBoogieBoard);
+    else
+        DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_SurfHint);
+}
+
+void ItemUseOutOfBattle_HotAirBalloon(u8 taskId)
+{
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_FLY))
+        return;
+    if (!Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType))
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+        return;
+    }
+    // Fly without a Pokemon: skip the "Pokemon pops out" animation and
+    // come back to the field (not the party menu) if the map is cancelled.
+    gSkipShowMonAnim = TRUE;
+    gGymHackFlyFromItem = TRUE;
+    if (!gTasks[taskId].tUsingRegisteredKeyItem)
+    {
+        gBagMenu->newScreenCallback = CB2_OpenFlyMap;
+        Task_FadeAndCloseBagMenu(taskId);
+    }
+    else
+    {
+        DestroyTask(taskId);
+        ScriptUnfreezeObjectEvents();
+        UnlockPlayerFieldControls();
+        SetMainCallback2(CB2_OpenFlyMap);
+    }
+}
+
+void ItemUseOutOfBattle_CanOfSpinach(u8 taskId)
+{
+    if (!GymHack_CheckBadge(taskId, FIELD_MOVE_STRENGTH))
+        return;
+    if (FlagGet(FLAG_SYS_USE_STRENGTH))
+        DisplayCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem, sText_GymHack_StrengthActive);
+    else
+        GymHack_UseItemWithScript(taskId, EventScript_GymHack_UseCanOfSpinach);
 }
 
 #undef tUsingRegisteredKeyItem

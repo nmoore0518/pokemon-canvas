@@ -19,6 +19,9 @@ Route2_EastBuilding_EventScript_Aide::
 	checkitemspace ITEM_HM05
 	goto_if_eq VAR_RESULT, FALSE, Aide_EventScript_NoRoomForItem
 	giveitem_msg Route2_EastBuilding_Text_ReceivedHM05FromAide, ITEM_HM05
+	@ Gym Trainer hack: key item that works like the HM outside of battle
+	msgbox Text_GymHack_AndTakeThisToo
+	giveitem ITEM_FLASHLIGHT
 	setflag FLAG_GOT_HM05
 	msgbox Route2_EastBuilding_Text_ExplainHM05
 	release

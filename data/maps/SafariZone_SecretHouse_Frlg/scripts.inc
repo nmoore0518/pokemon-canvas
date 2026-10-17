@@ -9,6 +9,9 @@ SafariZone_SecretHouse_EventScript_Attendant::
 	checkitemspace ITEM_HM03
 	goto_if_eq VAR_RESULT, FALSE, SafariZone_SecretHouse_EventScript_NoRoomForHM03
 	giveitem_msg SafariZone_SecretHouse_Text_ReceivedHM03FromAttendant, ITEM_HM03
+	@ Gym Trainer hack: key item that works like the HM outside of battle
+	msgbox Text_GymHack_AndTakeThisToo
+	giveitem ITEM_BOOGIE_BOARD
 	msgbox SafariZone_SecretHouse_Text_ExplainSurf
 	setflag FLAG_GOT_HM03
 	release

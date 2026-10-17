@@ -39,3 +39,103 @@ Text_GymHack_Duplicate::
 	.string "You have more than one\n"
 	.string "{STR_VAR_1}!\p"
 	.string "Leave one in a PC and come back.$"
+
+@ ---------------------------------------------------------------------------
+@ HM key items. "...WithItem" scripts run when walking up to a tree, boulder or
+@ water with no Pokemon that knows the move; "Use..." scripts run when the
+@ item is used from the bag.
+@ ---------------------------------------------------------------------------
+
+@ Cut: Hedge Clippers
+EventScript_GymHack_CutTreeWithItem::
+	bufferitemname STR_VAR_2, ITEM_HEDGE_CLIPPERS
+	msgbox Text_GymHack_WantToCutWithItem, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_CancelCut
+	goto EventScript_GymHack_CutWithItem
+
+EventScript_GymHack_UseHedgeClippers::
+	lockall
+	bufferitemname STR_VAR_2, ITEM_HEDGE_CLIPPERS
+EventScript_GymHack_CutWithItem::
+	msgbox Text_GymHack_PlayerUsedItem, MSGBOX_DEFAULT
+	closemessage
+	playse SE_M_CUT
+	setvar VAR_0x8004, FALSE
+	goto EventScript_CutTreeDown
+
+@ Strength: Can of Spinach
+EventScript_GymHack_StrengthWithItem::
+	bufferitemname STR_VAR_2, ITEM_CAN_OF_SPINACH
+	msgbox Text_GymHack_WantToStrengthWithItem, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
+	goto EventScript_GymHack_EatSpinach
+
+EventScript_GymHack_UseCanOfSpinach::
+	lockall
+	bufferitemname STR_VAR_2, ITEM_CAN_OF_SPINACH
+EventScript_GymHack_EatSpinach::
+	setflag FLAG_SYS_USE_STRENGTH
+	playse SE_M_STRENGTH
+	msgbox Text_GymHack_AteSpinach, MSGBOX_DEFAULT
+	releaseall
+	end
+
+@ Surf: Boogie Board
+EventScript_GymHack_SurfWithItem::
+	lockall
+	msgbox gText_WantToUseSurf, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, EventScript_ReleaseUseSurf
+	goto EventScript_GymHack_SurfOnBoard
+
+EventScript_GymHack_UseBoogieBoard::
+	lockall
+EventScript_GymHack_SurfOnBoard::
+	bufferitemname STR_VAR_2, ITEM_BOOGIE_BOARD
+	msgbox Text_GymHack_PlayerUsedItem, MSGBOX_DEFAULT
+	closemessage
+	setfieldeffectargument 0, 0
+	special GymHack_SkipNextShowMon
+	dofieldeffect FLDEFF_USE_SURF
+	releaseall
+	end
+
+@ Flash: Flashlight
+EventScript_GymHack_UseFlashlight::
+	lockall
+	bufferitemname STR_VAR_2, ITEM_FLASHLIGHT
+	msgbox Text_GymHack_SwitchedOnFlashlight, MSGBOX_DEFAULT
+	closemessage
+	playse SE_M_REFLECT
+	setflag FLAG_SYS_USE_FLASH
+	animateflash 1
+	setflashlevel 1
+	releaseall
+	end
+
+Text_GymHack_PlayerUsedItem::
+	.string "{PLAYER} used the {STR_VAR_2}!$"
+
+Text_GymHack_WantToCutWithItem::
+	.string "This tree looks like it can be\n"
+	.string "CUT down!\p"
+	.string "Use the {STR_VAR_2}?$"
+
+Text_GymHack_WantToStrengthWithItem::
+	.string "It's a big boulder, but with a\n"
+	.string "little STRENGTH it could be moved.\p"
+	.string "Eat the {STR_VAR_2}?$"
+
+Text_GymHack_AteSpinach::
+	.string "{PLAYER} ate the {STR_VAR_2}!\p"
+	.string "{PLAYER}'s STRENGTH made it\n"
+	.string "possible to move boulders around!$"
+
+Text_GymHack_SwitchedOnFlashlight::
+	.string "{PLAYER} switched on the\n"
+	.string "{STR_VAR_2}!$"
+
+@ Said by the NPCs who give out HMs, right before the matching key item
+Text_GymHack_AndTakeThisToo::
+	.string "Oh, and take this, too!\p"
+	.string "It does the same job outside of\n"
+	.string "battle, no POKéMON needed.$"
