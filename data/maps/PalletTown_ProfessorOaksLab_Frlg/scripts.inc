@@ -1368,7 +1368,7 @@ PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
 	.string "Every GYM LEADER masters a single\n"
 	.string "type of POKéMON.\p"
 	.string "These POKé BALLS can give you a\n"
-	.string "POKéMON of any type but FLYING.\p"
+	.string "POKéMON of any type.\p"
 	.string "Pick the type you'll build your\n"
 	.string "GYM around. Choose wisely!\p"
 	.string "Once you've chosen, there's no\n"
@@ -1380,7 +1380,7 @@ PalletTown_ProfessorOaksLab_Text_OakBePatientRival::
 
 PalletTown_ProfessorOaksLab_Text_OakWhichOneWillYouChoose::
 	.string "OAK: Now, {PLAYER}.\p"
-	.string "Check a POKé BALL on the table\n"
+	.string "Check a POKé BALL on the shelf\n"
 	.string "and choose your type.$"
 
 PalletTown_ProfessorOaksLab_Text_OakHeyDontGoAwayYet::
