@@ -638,3 +638,7 @@ gSpecials::
 	def_special UpdateTrainerCardPhotoIcons
 	def_special StickerManGetBragFlags
 	def_special CheckAddCoins
+
+@ Gym Trainer hack
+	def_special GymHack_PrepareStarterChoice
+	def_special GymHack_LockInPlayerType

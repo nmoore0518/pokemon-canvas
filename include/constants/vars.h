@@ -326,6 +326,11 @@
 
 #define VAR_TEMP_TRANSFERRED_SPECIES  VAR_TEMP_1
 
+// ---- Gym Trainer hack ----
+// The player's chosen specialty type (a TYPE_* constant). 0 (TYPE_NONE) until a starter is picked.
+// 0x40F7 is unused by both the Emerald and FireRed scripts.
+#define VAR_PLAYER_TYPE                                  0x40F7
+
 #if TESTING
 #define TESTING_VARS_START                  0x9000
 #define TESTING_VAR_DIFFICULTY              (TESTING_VARS_START + 0x0)

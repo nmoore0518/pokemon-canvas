@@ -1067,43 +1067,74 @@ PalletTown_ProfessorOaksLab_Movement_RivalExit::
 PalletTown_ProfessorOaksLab_EventScript_BulbasaurBall::
 	lock
 	faceplayer
-	setvar PLAYER_STARTER_NUM, 0
-	setvar PLAYER_STARTER_SPECIES, SPECIES_BULBASAUR
-	setvar RIVAL_STARTER_SPECIES, SPECIES_CHARMANDER
-	setvar RIVAL_STARTER_ID, LOCALID_CHARMANDER_BALL
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
+	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ChooseType
 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
 	release
 	end
 
-PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice::
+@ Gym Trainer hack: choose one of 17 types. The order of this list must
+@ match sStarters in src/gym_hack.c.
+PalletTown_ProfessorOaksLab_EventScript_ChooseType::
 	applymovement LOCALID_OAKS_LAB_PROF_OAK, Common_Movement_FaceRight
 	waitmovement 0
-	showmonpic PLAYER_STARTER_SPECIES, 10, 3
 	textcolor NPC_TEXT_COLOR_MALE
-	goto_if_eq PLAYER_STARTER_NUM, 0, PalletTown_ProfessorOaksLab_EventScript_ConfirmBulbasaur
-	goto_if_eq PLAYER_STARTER_NUM, 1, PalletTown_ProfessorOaksLab_EventScript_ConfirmSquirtle
-	goto_if_eq PLAYER_STARTER_NUM, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmCharmander
+	message PalletTown_ProfessorOaksLab_Text_WhichType
+	waitmessage
+	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypeFairy, GymHack_Text_TypeBug, GymHack_Text_TypeDark, GymHack_Text_TypeDragon, GymHack_Text_TypeElectric, GymHack_Text_TypeFighting, GymHack_Text_TypeFire, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass, GymHack_Text_TypeGround, GymHack_Text_TypeIce, GymHack_Text_TypeNormal, GymHack_Text_TypePoison, GymHack_Text_TypePsychic, GymHack_Text_TypeRock, GymHack_Text_TypeSteel, GymHack_Text_TypeWater
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_CancelTypeMenu
+	special GymHack_PrepareStarterChoice
+	showmonpic PLAYER_STARTER_SPECIES, 10, 3
+	msgbox PalletTown_ProfessorOaksLab_Text_OakConfirmType, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
+	special GymHack_LockInPlayerType
+	call PalletTown_ProfessorOaksLab_EventScript_SetRivalStarter
+	goto PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
 	end
 
-PalletTown_ProfessorOaksLab_EventScript_ConfirmBulbasaur::
-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
-	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
+PalletTown_ProfessorOaksLab_EventScript_CancelTypeMenu::
+	closemessage
+	release
 	end
 
-PalletTown_ProfessorOaksLab_EventScript_ConfirmSquirtle::
-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
-	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
-	end
+@ The rival takes one of the three Kanto starters (see src/gym_hack.c).
+PalletTown_ProfessorOaksLab_EventScript_SetRivalStarter::
+	switch PLAYER_STARTER_NUM
+	case 0, PalletTown_ProfessorOaksLab_EventScript_RivalGetsCharmander
+	case 1, PalletTown_ProfessorOaksLab_EventScript_RivalGetsBulbasaur
+	case 2, PalletTown_ProfessorOaksLab_EventScript_RivalGetsSquirtle
+	return
 
-PalletTown_ProfessorOaksLab_EventScript_ConfirmCharmander::
-	msgbox PalletTown_ProfessorOaksLab_Text_OakChoosingCharmander, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, PalletTown_ProfessorOaksLab_EventScript_ChoseStarter
-	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
-	end
+PalletTown_ProfessorOaksLab_EventScript_RivalGetsCharmander::
+	setvar RIVAL_STARTER_SPECIES, SPECIES_CHARMANDER
+	setvar RIVAL_STARTER_ID, LOCALID_CHARMANDER_BALL
+	return
+
+PalletTown_ProfessorOaksLab_EventScript_RivalGetsBulbasaur::
+	setvar RIVAL_STARTER_SPECIES, SPECIES_BULBASAUR
+	setvar RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL
+	return
+
+PalletTown_ProfessorOaksLab_EventScript_RivalGetsSquirtle::
+	setvar RIVAL_STARTER_SPECIES, SPECIES_SQUIRTLE
+	setvar RIVAL_STARTER_ID, LOCALID_SQUIRTLE_BALL
+	return
+
+@ Remove the ball the player picked, unless it's the one the rival is
+@ about to take; then remove another ball instead.
+PalletTown_ProfessorOaksLab_EventScript_RemovePlayerBall::
+	goto_if_ne VAR_LAST_TALKED, RIVAL_STARTER_ID, PalletTown_ProfessorOaksLab_EventScript_RemoveTalkedBall
+	goto_if_ne RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL, PalletTown_ProfessorOaksLab_EventScript_RemoveBulbasaurBall
+	removeobject LOCALID_SQUIRTLE_BALL
+	return
+
+PalletTown_ProfessorOaksLab_EventScript_RemoveTalkedBall::
+	removeobject VAR_LAST_TALKED
+	return
+
+PalletTown_ProfessorOaksLab_EventScript_RemoveBulbasaurBall::
+	removeobject LOCALID_BULBASAUR_BALL
+	return
 
 PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter::
 	hidemonpic
@@ -1112,7 +1143,7 @@ PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter::
 
 PalletTown_ProfessorOaksLab_EventScript_ChoseStarter::
 	hidemonpic
-	removeobject VAR_LAST_TALKED
+	call PalletTown_ProfessorOaksLab_EventScript_RemovePlayerBall
 	msgbox PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic
 	call EventScript_RestorePrevTextColor
 	setflag FLAG_SYS_POKEMON_GET
@@ -1210,12 +1241,8 @@ PalletTown_ProfessorOaksLab_Movement_RivalWalksToBulbasaur::
 PalletTown_ProfessorOaksLab_EventScript_SquirtleBall::
 	lock
 	faceplayer
-	setvar PLAYER_STARTER_NUM, 1
-	setvar PLAYER_STARTER_SPECIES, SPECIES_SQUIRTLE
-	setvar RIVAL_STARTER_SPECIES, SPECIES_BULBASAUR
-	setvar RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
+	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ChooseType
 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
 	release
 	end
@@ -1223,12 +1250,8 @@ PalletTown_ProfessorOaksLab_EventScript_SquirtleBall::
 PalletTown_ProfessorOaksLab_EventScript_CharmanderBall::
 	lock
 	faceplayer
-	setvar PLAYER_STARTER_NUM, 2
-	setvar PLAYER_STARTER_SPECIES, SPECIES_CHARMANDER
-	setvar RIVAL_STARTER_SPECIES, SPECIES_SQUIRTLE
-	setvar RIVAL_STARTER_ID, LOCALID_SQUIRTLE_BALL
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
-	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
+	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ChooseType
 	msgbox PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls
 	release
 	end
@@ -1374,16 +1397,16 @@ PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
 	.string "Oh, that's right, I told you to\n"
 	.string "come! Just wait!\p"
 	.string "Here, {PLAYER}.\p"
-	.string "There are three POKéMON here.\p"
-	.string "Haha!\p"
-	.string "The POKéMON are held inside\n"
-	.string "these POKé BALLS.\p"
-	.string "When I was young, I was a serious\n"
-	.string "POKéMON TRAINER.\p"
-	.string "But now, in my old age, I have\n"
-	.string "only these three left.\p"
-	.string "You can have one.\n"
-	.string "Go on, choose!$"
+	.string "So, you want to become a\n"
+	.string "GYM LEADER!\p"
+	.string "Every GYM LEADER masters a single\n"
+	.string "type of POKéMON.\p"
+	.string "These POKé BALLS can give you a\n"
+	.string "POKéMON of any type but FLYING.\p"
+	.string "Pick the type you'll build your\n"
+	.string "GYM around. Choose wisely!\p"
+	.string "Once you've chosen, there's no\n"
+	.string "going back!$"
 
 PalletTown_ProfessorOaksLab_Text_OakBePatientRival::
 	.string "OAK: Be patient, {RIVAL}.\n"
@@ -1391,10 +1414,8 @@ PalletTown_ProfessorOaksLab_Text_OakBePatientRival::
 
 PalletTown_ProfessorOaksLab_Text_OakWhichOneWillYouChoose::
 	.string "OAK: Now, {PLAYER}.\p"
-	.string "Inside those three POKé BALLS are\n"
-	.string "POKéMON.\p"
-	.string "Which one will you choose for\n"
-	.string "yourself?$"
+	.string "Check a POKé BALL on the table\n"
+	.string "and choose your type.$"
 
 PalletTown_ProfessorOaksLab_Text_OakHeyDontGoAwayYet::
 	.string "OAK: Hey!\n"
@@ -1417,6 +1438,70 @@ PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
 	.string "It's very easy to raise.\p"
 	.string "So, {PLAYER}, you want to go with\n"
 	.string "the GRASS POKéMON BULBASAUR?$"
+
+PalletTown_ProfessorOaksLab_Text_WhichType::
+	.string "OAK: Which type will you\n"
+	.string "specialize in?$"
+
+PalletTown_ProfessorOaksLab_Text_OakConfirmType::
+	.string "OAK: Ah, the {STR_VAR_2} type!\n"
+	.string "Then your partner is {STR_VAR_1}.\p"
+	.string "Remember, your GYM will only use\n"
+	.string "{STR_VAR_2}-type POKéMON.\p"
+	.string "So, {PLAYER}, is {STR_VAR_2}\n"
+	.string "your final choice?$"
+
+GymHack_Text_TypeFairy::
+	.string "Fairy - Clefairy$"
+
+GymHack_Text_TypeBug::
+	.string "Bug - Caterpie$"
+
+GymHack_Text_TypeDark::
+	.string "Dark - Poochyena$"
+
+GymHack_Text_TypeDragon::
+	.string "Dragon - Dratini$"
+
+GymHack_Text_TypeElectric::
+	.string "Electric - Pikachu$"
+
+GymHack_Text_TypeFighting::
+	.string "Fighting - Tyrogue$"
+
+GymHack_Text_TypeFire::
+	.string "Fire - Charmander$"
+
+GymHack_Text_TypeGhost::
+	.string "Ghost - Gastly$"
+
+GymHack_Text_TypeGrass::
+	.string "Grass - Bulbasaur$"
+
+GymHack_Text_TypeGround::
+	.string "Ground - Sandshrew$"
+
+GymHack_Text_TypeIce::
+	.string "Ice - Spheal$"
+
+GymHack_Text_TypeNormal::
+	.string "Normal - Porygon$"
+
+GymHack_Text_TypePoison::
+	.string "Poison - Ekans$"
+
+GymHack_Text_TypePsychic::
+	.string "Psychic - Ralts$"
+
+GymHack_Text_TypeRock::
+	.string "Rock - Larvitar$"
+
+GymHack_Text_TypeSteel::
+	.string "Steel - Beldum$"
+
+GymHack_Text_TypeWater::
+	.string "Water - Squirtle$"
+
 
 PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic::
 	.string "This POKéMON is really quite\n"
