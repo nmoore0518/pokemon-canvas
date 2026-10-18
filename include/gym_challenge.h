@@ -42,7 +42,9 @@ void GymChallenge_BufferRecord(void);
 void GymChallenge_NextChallenger(void);
 void GymChallenge_RecordWin(void);
 void GymChallenge_RecordLoss(void);
-u16 GymChallenge_GetPlayerSide(void);
+void GymChallenge_PlanPlayerWalk(void);
+void GymChallenge_PlanChallengerWalk(void);
+bool32 GymChallenge_FindPath(s32 fromX, s32 fromY, s32 toX, s32 toY, s32 blockX, s32 blockY, bool32 allowMat, u8 face, u8 *out);
 void GymChallenge_BufferVictorList(void);
 
 #endif // GUARD_GYM_CHALLENGE_H

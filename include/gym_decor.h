@@ -30,6 +30,7 @@ extern const struct GymDecor gGymDecor[GYM_DECOR_COUNT];
 
 bool32 GymDecor_IsUnlocked(u32 id);
 u32 GymDecor_CountOwned(u32 id);
+bool32 GymDecor_FindPlaced(u32 id, s32 *x, s32 *y);
 u32 GymDecor_CountPlaced(u32 id);
 u32 GymDecor_CountAvailable(u32 id);
 u32 GymDecor_NumPlaced(void);

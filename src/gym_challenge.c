@@ -15,6 +15,9 @@
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "field_player_avatar.h"
+#include "fieldmap.h"
+#include "malloc.h"
+#include "metatile_behavior.h"
 #include "gym_decor.h"
 #include "money.h"
 #include "pokemon.h"
@@ -27,6 +30,9 @@
 #include "constants/species.h"
 #include "constants/trainers.h"
 #include "constants/battle_ai.h"
+#include "constants/event_object_movement.h"
+#include "constants/gym_decor.h"
+#include "constants/gym_room.h"
 
 #define GYM_CHALLENGE_MAGIC 0x4347   // "GC"
 
@@ -690,21 +696,154 @@ void GymChallenge_RecordLoss(void)
     save->streak = 0;
 }
 
-// Special: where the player stands next to the aide (0 below, 1 left, 2 right, 3 above), so the
-// script can walk them to the spot below the aide where challengers come to battle.
-u16 GymChallenge_GetPlayerSide(void)
+// ---------------------------------------------------------------------------
+// Getting everyone to the battle stage
+// ---------------------------------------------------------------------------
+// The leader stands on the stage's top mark and challengers on the bottom one (see BATTLE_STAGE
+// in tools/gym_hack/build_gym_decor.py). With no stage, they battle below the aide. The walks are
+// found with a breadth-first search over the room and written as movement scripts here.
+
+#define PATH_MAX_STEPS 120
+
+EWRAM_DATA u8 gGymChallengePlayerPath[PATH_MAX_STEPS + 2];
+EWRAM_DATA u8 gGymChallengeChallengerPath[PATH_MAX_STEPS + 2];
+EWRAM_DATA static s8 sLeaderX, sLeaderY, sChallengerX, sChallengerY;
+
+static bool32 IsMat(s32 x, s32 y)
 {
-    struct ObjectEvent *aide = &gObjectEvents[GetObjectEventIdByLocalIdAndMap(VarGet(VAR_LAST_TALKED),
-                                                gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup)];
-    s16 x, y;
-    PlayerGetDestCoords(&x, &y);
-    if (y > aide->currentCoords.y)
-        return 0;
-    if (x < aide->currentCoords.x)
-        return 1;
-    if (x > aide->currentCoords.x)
-        return 2;
-    return 3;
+    return y == GYM_ROOM_HEIGHT - 2 && x >= GYM_MAT_X0 && x <= GYM_MAT_X1;
+}
+
+static bool32 IsPassable(s32 x, s32 y, s32 blockX, s32 blockY)
+{
+    s32 mx = x + MAP_OFFSET, my = y + MAP_OFFSET;
+    if (x < 0 || y < 0 || x >= GYM_ROOM_WIDTH || y >= GYM_ROOM_HEIGHT)
+        return FALSE;
+    if ((x == blockX && y == blockY) || (x == GYM_AIDE_X && y == GYM_AIDE_Y))
+        return FALSE;
+    if (MapGridGetCollisionAt(mx, my) || MapGridGetElevationAt(mx, my) != 3)
+        return FALSE;
+    // No walking over spinners (a scripted walk doesn't spin, and it would look wrong)
+    return !MetatileBehavior_IsForcedMovementTile(MapGridGetMetatileBehaviorAt(mx, my));
+}
+
+// Writes the walk from (fromX, fromY) to (toX, toY) into `out`, ending with a turn to `face`.
+// (blockX, blockY) is a square someone else stands on. Returns FALSE if there's no way.
+bool32 GymChallenge_FindPath(s32 fromX, s32 fromY, s32 toX, s32 toY, s32 blockX, s32 blockY, bool32 allowMat, u8 face, u8 *out)
+{
+    static const s8 dx[] = {0, 0, -1, 1}, dy[] = {1, -1, 0, 0};
+    static const u8 walk[] = {MOVEMENT_ACTION_WALK_NORMAL_DOWN, MOVEMENT_ACTION_WALK_NORMAL_UP,
+                              MOVEMENT_ACTION_WALK_NORMAL_LEFT, MOVEMENT_ACTION_WALK_NORMAL_RIGHT};
+    u32 cells = GYM_ROOM_WIDTH * GYM_ROOM_HEIGHT;
+    s16 *from = Alloc(cells * sizeof(s16));
+    u8 *dir = Alloc(cells);
+    s16 *queue = Alloc(cells * sizeof(s16));
+    s32 head = 0, tail = 0, i, n = 0, cur;
+    bool32 found = FALSE;
+
+    for (i = 0; i < (s32)cells; i++)
+        from[i] = -1;
+    if (fromX < 0 || fromY < 0 || fromX >= GYM_ROOM_WIDTH || fromY >= GYM_ROOM_HEIGHT)
+        goto done;
+    from[fromX + fromY * GYM_ROOM_WIDTH] = fromX + fromY * GYM_ROOM_WIDTH;
+    queue[tail++] = fromX + fromY * GYM_ROOM_WIDTH;
+    while (head < tail)
+    {
+        s32 x, y;
+        cur = queue[head++];
+        x = cur % GYM_ROOM_WIDTH;
+        y = cur / GYM_ROOM_WIDTH;
+        if (x == toX && y == toY)
+        {
+            found = TRUE;
+            break;
+        }
+        for (i = 0; i < 4; i++)
+        {
+            s32 nx = x + dx[i], ny = y + dy[i], next = nx + ny * GYM_ROOM_WIDTH;
+            if (nx < 0 || ny < 0 || nx >= GYM_ROOM_WIDTH || ny >= GYM_ROOM_HEIGHT || from[next] >= 0)
+                continue;
+            if (!IsPassable(nx, ny, blockX, blockY) || (!allowMat && IsMat(nx, ny)))
+                continue;
+            from[next] = cur;
+            dir[next] = i;
+            queue[tail++] = next;
+        }
+    }
+    if (found)
+    {
+        // Walk back from the goal to count the steps, then write them in order
+        s32 steps = 0, c;
+        for (c = cur; c != fromX + fromY * GYM_ROOM_WIDTH; c = from[c])
+            steps++;
+        if (steps > PATH_MAX_STEPS)
+        {
+            found = FALSE;
+            goto done;
+        }
+        n = steps;
+        for (c = cur; c != fromX + fromY * GYM_ROOM_WIDTH; c = from[c])
+            out[--steps] = walk[dir[c]];
+    }
+done:
+    out[n] = face;
+    out[n + 1] = MOVEMENT_ACTION_STEP_END;
+    Free(from);
+    Free(dir);
+    Free(queue);
+    return found;
+}
+
+// Special: plans the player's walk to the leader's spot (into gGymChallengePlayerPath).
+// VAR_RESULT: 1 = to the battle stage, 2 = below the aide (no stage placed),
+// 3 = below the aide (the stage can't be reached), 0 = nowhere reachable.
+void GymChallenge_PlanPlayerWalk(void)
+{
+    s16 px, py;
+    s32 sx, sy;
+    PlayerGetDestCoords(&px, &py);
+    px -= MAP_OFFSET;
+    py -= MAP_OFFSET;
+    if (GymDecor_FindPlaced(GYM_DECOR_BATTLE_STAGE, &sx, &sy))
+    {
+        sLeaderX = sx + 1;
+        sLeaderY = sy + 1;
+        sChallengerX = sx + 1;
+        sChallengerY = sy + 3;
+        if (GymChallenge_FindPath(px, py, sLeaderX, sLeaderY, -1, -1, FALSE, MOVEMENT_ACTION_FACE_DOWN, gGymChallengePlayerPath)
+         && GymChallenge_FindPath(GYM_CHALLENGER_START_X, GYM_CHALLENGER_START_Y, sChallengerX, sChallengerY,
+                                  sLeaderX, sLeaderY, TRUE, MOVEMENT_ACTION_FACE_UP, gGymChallengeChallengerPath))
+        {
+            gSpecialVar_Result = 1;
+            return;
+        }
+        gSpecialVar_Result = 3;
+    }
+    else
+    {
+        gSpecialVar_Result = 2;
+    }
+    sLeaderX = GYM_AIDE_X;
+    sLeaderY = GYM_AIDE_Y + 1;
+    sChallengerX = GYM_AIDE_X;
+    sChallengerY = GYM_AIDE_Y + 2;
+    if (!GymChallenge_FindPath(px, py, sLeaderX, sLeaderY, -1, -1, FALSE, MOVEMENT_ACTION_FACE_DOWN, gGymChallengePlayerPath))
+        gSpecialVar_Result = 0;
+}
+
+// Special: plans a challenger's walk (into gGymChallengeChallengerPath). VAR_0x8004: 0 = in, from
+// the door to their mark; 1 = back out. VAR_RESULT = FALSE if there's no way, and then
+// VAR_0x8005/6 = their mark, to put them there directly.
+void GymChallenge_PlanChallengerWalk(void)
+{
+    if (gSpecialVar_0x8004 == 0)
+        gSpecialVar_Result = GymChallenge_FindPath(GYM_CHALLENGER_START_X, GYM_CHALLENGER_START_Y, sChallengerX, sChallengerY,
+                                                   sLeaderX, sLeaderY, TRUE, MOVEMENT_ACTION_FACE_UP, gGymChallengeChallengerPath);
+    else
+        gSpecialVar_Result = GymChallenge_FindPath(sChallengerX, sChallengerY, GYM_CHALLENGER_START_X, GYM_CHALLENGER_START_Y,
+                                                   sLeaderX, sLeaderY, TRUE, MOVEMENT_ACTION_FACE_DOWN, gGymChallengeChallengerPath);
+    gSpecialVar_0x8005 = sChallengerX;
+    gSpecialVar_0x8006 = sChallengerY;
 }
 
 // Special: the statue's list of challengers who beat the player, newest first, two to a page,

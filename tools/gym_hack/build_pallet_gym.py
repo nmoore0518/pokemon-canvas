@@ -172,6 +172,9 @@ def write(grid):
 // The aide who sends in challengers
 #define GYM_AIDE_X {AIDE_SPOT[0]}
 #define GYM_AIDE_Y {AIDE_SPOT[1]}
+// Where challengers come in (the middle of the mat)
+#define GYM_CHALLENGER_START_X {CHALLENGER_SPOT[0]}
+#define GYM_CHALLENGER_START_Y {CHALLENGER_SPOT[1]}
 // Where the player is put back when they finish decorating
 #define GYM_PC_FRONT_X {PC_FRONT[0]}
 #define GYM_PC_FRONT_Y {PC_FRONT[1]}

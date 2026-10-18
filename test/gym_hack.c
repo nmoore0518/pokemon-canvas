@@ -608,9 +608,10 @@ TEST("GymHack: decor: every decoration has a name, a price and fits the gym")
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
         EXPECT(gGymDecor[i].name != NULL);
-        EXPECT_GT(gGymDecor[i].price, 0);
+        if (i != GYM_DECOR_BATTLE_STAGE)
+            EXPECT_GT(gGymDecor[i].price, 0);
         EXPECT_LE(gGymDecor[i].width, 4);
-        EXPECT_LE(gGymDecor[i].height, 4);
+        EXPECT_LE(gGymDecor[i].height, 5);
         EXPECT_LE(GetStringWidth(FONT_NORMAL, gGymDecor[i].name, 0), 13 * 8); // the list sits at x 15
     }
 }
@@ -973,4 +974,21 @@ TEST("GymHack: challenge: aide and statue messages fit the message box")
         }
     }
     Free(buf);
+}
+
+TEST("GymHack: decor: the battle stage is free, always in storage, and never sold")
+{
+    s32 x, y;
+    GymDecor_ClearAll();
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_BATTLE_STAGE), 1);
+    EXPECT_EQ(gGymDecor[GYM_DECOR_BATTLE_STAGE].price, 0);
+    gSpecialVar_0x8004 = GYM_DECOR_BATTLE_STAGE;
+    GymDecor_TryBuy();
+    EXPECT_NE(gSpecialVar_Result, 0);
+    EXPECT(!GymDecor_FindPlaced(GYM_DECOR_BATTLE_STAGE, &x, &y));
+    EXPECT(GymDecor_Place(GYM_DECOR_BATTLE_STAGE, 3, 5));
+    EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_BATTLE_STAGE), 0);   // only one
+    EXPECT(GymDecor_FindPlaced(GYM_DECOR_BATTLE_STAGE, &x, &y));
+    EXPECT_EQ(x, 3);
+    EXPECT_EQ(y, 5);
 }

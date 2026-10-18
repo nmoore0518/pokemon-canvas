@@ -20,6 +20,9 @@
 // The aide who sends in challengers
 #define GYM_AIDE_X 15
 #define GYM_AIDE_Y 23
+// Where challengers come in (the middle of the mat)
+#define GYM_CHALLENGER_START_X 12
+#define GYM_CHALLENGER_START_Y 26
 // Where the player is put back when they finish decorating
 #define GYM_PC_FRONT_X 8
 #define GYM_PC_FRONT_Y 26

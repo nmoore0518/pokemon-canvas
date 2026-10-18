@@ -99,7 +99,27 @@ bool32 GymDecor_IsUnlocked(u32 id)
 
 u32 GymDecor_CountOwned(u32 id)
 {
+    // The battle stage is free and always in storage (one of it)
+    if (id == GYM_DECOR_BATTLE_STAGE)
+        return 1;
     return GetSave()->owned[id];
+}
+
+// Where decoration `id` is placed (its top-left block), if it is
+bool32 GymDecor_FindPlaced(u32 id, s32 *x, s32 *y)
+{
+    struct GymDecorSave *save = GetSave();
+    u32 i;
+    for (i = 0; i < save->numPlaced; i++)
+    {
+        if (save->placed[i].id == id)
+        {
+            *x = save->placed[i].x;
+            *y = save->placed[i].y;
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 u32 GymDecor_CountPlaced(u32 id)
@@ -296,7 +316,7 @@ void GymDecor_PushShopList(void)
     u32 i, n = 0;
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
-        if (GymDecor_IsUnlocked(i))
+        if (GymDecor_IsUnlocked(i) && gGymDecor[i].price != 0)   // free ones aren't sold
         {
             PushItem(i);
             n++;
@@ -334,7 +354,7 @@ void GymDecor_TryBuy(void)
 {
     u32 id = gSpecialVar_0x8004;
     struct GymDecorSave *save = GetSave();
-    if (id >= GYM_DECOR_COUNT || save->owned[id] == 0xFF)
+    if (id >= GYM_DECOR_COUNT || save->owned[id] == 0xFF || gGymDecor[id].price == 0)
     {
         gSpecialVar_Result = 2;
         return;

@@ -13,10 +13,28 @@ GymChallenge_EventScript_Aide::
 	special GymHack_CheckTeamSpecial
 	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, GymChallenge_EventScript_TeamBreaksRules
 	special HealPlayerParty
+	special GymChallenge_PlanPlayerWalk
+	goto_if_eq VAR_RESULT, 0, GymChallenge_EventScript_CantReachSpot
+	call_if_eq VAR_RESULT, 2, GymChallenge_EventScript_NoStage
+	call_if_eq VAR_RESULT, 3, GymChallenge_EventScript_StageBlocked
 	msgbox GymChallenge_Text_TakeYourPlace
 	closemessage
-	call GymChallenge_EventScript_WalkToBattleSpot
+	applymovement LOCALID_PLAYER, gGymChallengePlayerPath
+	waitmovement 0
 	goto GymChallenge_EventScript_NextChallenger
+	end
+
+GymChallenge_EventScript_NoStage::
+	msgbox GymChallenge_Text_NoStage
+	return
+
+GymChallenge_EventScript_StageBlocked::
+	msgbox GymChallenge_Text_StageBlocked
+	return
+
+GymChallenge_EventScript_CantReachSpot::
+	msgbox GymChallenge_Text_CantReachSpot
+	release
 	end
 
 GymChallenge_EventScript_AideNotYet::
@@ -34,31 +52,6 @@ GymChallenge_EventScript_TeamBreaksRules::
 	release
 	end
 
-@ From wherever they talked to the aide, to the spot just below the aide
-GymChallenge_EventScript_WalkToBattleSpot::
-	specialvar VAR_RESULT, GymChallenge_GetPlayerSide
-	call_if_eq VAR_RESULT, 1, GymChallenge_EventScript_WalkFromLeft
-	call_if_eq VAR_RESULT, 2, GymChallenge_EventScript_WalkFromRight
-	call_if_eq VAR_RESULT, 3, GymChallenge_EventScript_WalkFromAbove
-	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	return
-
-GymChallenge_EventScript_WalkFromLeft::
-	applymovement LOCALID_PLAYER, GymChallenge_Movement_FromLeft
-	waitmovement 0
-	return
-
-GymChallenge_EventScript_WalkFromRight::
-	applymovement LOCALID_PLAYER, GymChallenge_Movement_FromRight
-	waitmovement 0
-	return
-
-GymChallenge_EventScript_WalkFromAbove::
-	applymovement LOCALID_PLAYER, GymChallenge_Movement_FromAbove
-	waitmovement 0
-	return
-
 GymChallenge_EventScript_NextChallenger::
 	special GymChallenge_NextChallenger
 	call_if_eq VAR_RESULT, GYM_CHALLENGER_FAMOUS, GymChallenge_EventScript_AnnounceFamous
@@ -67,7 +60,10 @@ GymChallenge_EventScript_NextChallenger::
 	closemessage
 	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
 	addobject LOCALID_PALLET_GYM_CHALLENGER
-	applymovement LOCALID_PALLET_GYM_CHALLENGER, GymChallenge_Movement_ChallengerWalkIn
+	setvar VAR_0x8004, 0
+	special GymChallenge_PlanChallengerWalk
+	call_if_eq VAR_RESULT, FALSE, GymChallenge_EventScript_ChallengerJumpsIn
+	applymovement LOCALID_PALLET_GYM_CHALLENGER, gGymChallengeChallengerPath
 	waitmovement 0
 	msgbox gGymChallengeIntroText
 	closemessage
@@ -92,15 +88,22 @@ GymChallenge_EventScript_AnnounceTownsfolk::
 	msgbox GymChallenge_Text_AnnounceTownsfolk
 	return
 
+@ No way from the door to their mark (the room is walled off): they're just there
+GymChallenge_EventScript_ChallengerJumpsIn::
+	setobjectxy LOCALID_PALLET_GYM_CHALLENGER, VAR_0x8005, VAR_0x8006
+	return
+
 GymChallenge_EventScript_ChallengerLeaves::
 	closemessage
-	applymovement LOCALID_PALLET_GYM_CHALLENGER, GymChallenge_Movement_ChallengerWalkOut
+	setvar VAR_0x8004, 1
+	special GymChallenge_PlanChallengerWalk
+	goto_if_eq VAR_RESULT, FALSE, GymChallenge_EventScript_ChallengerGone
+	applymovement LOCALID_PALLET_GYM_CHALLENGER, gGymChallengeChallengerPath
 	waitmovement 0
 	playse SE_EXIT
+GymChallenge_EventScript_ChallengerGone::
 	removeobject LOCALID_PALLET_GYM_CHALLENGER
 	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
-	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
 	return
 
 GymChallenge_EventScript_Won::
@@ -169,37 +172,6 @@ GymChallenge_EventScript_StatueNoLeader::
 	end
 
 @ ---- Movement ----
-GymChallenge_Movement_FromLeft:
-	walk_down
-	walk_right
-	step_end
-
-GymChallenge_Movement_FromRight:
-	walk_down
-	walk_left
-	step_end
-
-GymChallenge_Movement_FromAbove:
-	walk_left
-	walk_down
-	walk_down
-	walk_right
-	step_end
-
-GymChallenge_Movement_ChallengerWalkIn:
-	walk_right
-	walk_right
-	walk_right
-	walk_up
-	step_end
-
-GymChallenge_Movement_ChallengerWalkOut:
-	walk_down
-	walk_left
-	walk_left
-	walk_left
-	step_end
-
 @ ---- Text ----
 GymChallenge_Text_AideNotYet::
 	.string "Hello! I'm one of PROF. OAK's\n"
@@ -229,6 +201,19 @@ GymChallenge_Text_TeamBreaksRules::
 	.string "Hold on! LEAGUE rules: a GYM\n"
 	.string "LEADER battles with one type.\p"
 	.string "Fix your team, then come see me!$"
+
+GymChallenge_Text_NoStage::
+	.string "Tip: put the BATTLE STAGE anywhere\n"
+	.string "in the GYM using the PC.\p"
+	.string "Until then, we'll battle right here!$"
+
+GymChallenge_Text_StageBlocked::
+	.string "Hmm, there's no way to the BATTLE\n"
+	.string "STAGE. We'll battle right here!$"
+
+GymChallenge_Text_CantReachSpot::
+	.string "Hmm… the decorations are in the\n"
+	.string "way. Clear a path first!$"
 
 GymChallenge_Text_TakeYourPlace::
 	.string "Take your place, LEADER!$"

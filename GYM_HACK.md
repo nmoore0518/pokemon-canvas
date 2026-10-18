@@ -134,8 +134,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     it with a magic number and clears it on a new game or an older save. Record mixing never
     touches it.
   - Capacity: up to 256 kinds of decoration (255 of each), and 650 placed pieces (more than the
-    room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 19 pieces
-    so far use 118 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots,
+    room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 20 pieces
+    so far use 133 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots,
     and the water (1) and trash can (2) use all of them, so pieces with new colors from other
     tilesets need palettes merged or shared (the importer would have to fold similar colors into
     existing palettes). Furniture and anything drawn in the existing gym/indoor colors costs no
@@ -165,6 +165,12 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     finale will take that over.
   - The player's team must follow the one-type rule. The party is healed between battles, and a
     loss doesn't white out (`B_FLAG_NO_WHITEOUT` = `FLAG_GYM_CHALLENGE_BATTLE`).
+  - Where: the BATTLE STAGE, a free decoration that's always in the PC's storage (one of it).
+    The player stands on its top mark and challengers on the bottom one. Starting from the aide,
+    the player walks there, and each challenger walks from the door to it and back out, along
+    paths found at run time (`GymChallenge_FindPath`: a search over the room that avoids
+    decorations, the aide, spinners and water). With no stage placed, or none reachable, they
+    battle just below the aide.
   - Challengers (one trainer slot, `TRAINER_GYM_CHALLENGER`, built at run time and returned by
     `GetTrainerStructFromId`). Every team's average level is the player's party average.
     - Random trainers: random class and name, 4-6 different fully evolved Pokémon (base stats

@@ -92,6 +92,11 @@ DECORATIONS = [
          desc="Spins TRAINERS right.", cells=[["g:28A~"]]),
     dict(key="SPINNER_STOP", name="STOP TILE", price=1000, unlock=BADGE[8], keep=True,
          desc="Stops a spinning TRAINER.", cells=[["g:28D~"]]),
+    # --- Free, and always in storage: where gym challenges are fought (src/gym_challenge.c) ---
+    # The leader stands on the top mark (column 1, row 1), challengers on the bottom one (row 3).
+    dict(key="BATTLE_STAGE", name="BATTLE STAGE", price=0, unlock=None,
+         desc="Challengers battle you here.",
+         cells=[[f"art:STAGE:{x}:{y}" for x in range(3)] for y in range(5)]),
 ]
 
 # Fixed pieces of the gym itself (not for sale)
@@ -191,6 +196,10 @@ class Tileset:
         if spec == "wall":
             marker = self.add(FLOOR_TILES + MARKER_TILES, with_layer(MB_NORMAL, LAYER_NORMAL))
             return FLOOR, True, marker
+        if spec.startswith("art:"):
+            _, name, cx, cy = spec.split(":")
+            return self.add(art_tiles(self.tiles_img, name, int(cx), int(cy)) + GYM_MT[FLOOR - 0x280][4:],
+                            with_layer(MB_NORMAL, LAYER_NORMAL)), False, None
         if spec.startswith("x:"):
             parts = spec.split(":")
             name, mid = parts[1], int(parts[2], 16)
@@ -219,6 +228,60 @@ class Tileset:
             return self.add(src, attr), False, None
         # furniture: the gym floor underneath, the furniture's own top layer above
         return self.add(FLOOR_TILES + src[4:], attr), not walkable, None
+
+
+# ---------------------------------------------------------------------------
+# Pixel art drawn in the gym floor's colors (palette 12)
+ART_PAL = 12
+WHITE, LIGHT, DARK, CLAY, CLAY_LIGHT = 5, 4, 1, 6, 7
+
+
+def stage_art():
+    """The battle stage: a clay court with white lines, a center circle and two start marks."""
+    w, h = 48, 80
+    px = [[CLAY_LIGHT] * w for _ in range(h)]
+    for y in range(h):
+        for x in range(w):
+            if x in (0, w - 1) or y in (0, h - 1):
+                px[y][x] = DARK
+            elif x in (2, 3, w - 4, w - 3) or y in (2, 3, h - 4, h - 3):
+                px[y][x] = WHITE
+            elif y in (h // 2 - 1, h // 2):
+                px[y][x] = WHITE
+            elif (x + y) % 6 == 0:
+                px[y][x] = CLAY
+    def ring(cx, cy, r0, r1, color):
+        for y in range(h):
+            for x in range(w):
+                d = (x - cx + 0.5) ** 2 + (y - cy + 0.5) ** 2
+                if r0 * r0 <= d <= r1 * r1:
+                    px[y][x] = color
+    ring(24, 40, 5.5, 7, WHITE)
+    for cy in (24, 56):                  # the two start marks, on rows 1 and 3
+        ring(24, cy, 0, 5, LIGHT)
+        ring(24, cy, 5, 6.5, WHITE)
+    return px
+
+
+ART = {"STAGE": stage_art}
+_ART_CACHE = {}
+
+
+def art_tiles(tiles_img, name, cx, cy):
+    """The 4 tile entries for block (cx, cy) of a piece of art, adding its tiles once."""
+    if name not in _ART_CACHE:
+        _ART_CACHE[name] = (ART[name](), {})
+    px, done = _ART_CACHE[name]
+    entries = []
+    for ty in range(2):
+        for tx in range(2):
+            key = (cx * 2 + tx, cy * 2 + ty)
+            if key not in done:
+                x0, y0 = key[0] * 8, key[1] * 8
+                tile = [px[y0 + y][x0 + x] for y in range(8) for x in range(8)]
+                done[key] = append_tile(tiles_img, tile) | (ART_PAL << 12)
+            entries.append(done[key])
+    return entries
 
 
 # A dotted outline, shown on invisible walls while decorating (gym palette 12, index 7: dark)
@@ -278,6 +341,7 @@ def build():
     tiles = Image.open(SRC / "tiles.png")
     tiles_img = [tiles, count_used_tiles(tiles)]
     MARKER_TILES[:] = make_marker_tiles(tiles_img)
+    _ART_CACHE.clear()
 
     ts = Tileset(tiles_img)
     catalog = []
@@ -347,7 +411,7 @@ def preview(catalog, out):
     from PIL import Image, ImageDraw
     prim = rm.Tileset(rm.tileset_dir("gTileset_BuildingFrlg"))
     sec = rm.Tileset(DST)
-    cell_w, cell_h = 120, 112
+    cell_w, cell_h = 120, 144
     cols = 6
     img = Image.new("RGB", (cols * cell_w, ((len(catalog) + cols - 1) // cols) * cell_h), (40, 40, 48))
     d = ImageDraw.Draw(img)

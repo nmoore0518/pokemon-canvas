@@ -19,6 +19,7 @@ static const u16 sGymDecorBlocks_SPINNER_DOWN[] = { 0x28B };
 static const u16 sGymDecorBlocks_SPINNER_LEFT[] = { 0x289 };
 static const u16 sGymDecorBlocks_SPINNER_RIGHT[] = { 0x28A };
 static const u16 sGymDecorBlocks_SPINNER_STOP[] = { 0x28D };
+static const u16 sGymDecorBlocks_BATTLE_STAGE[] = { 0x2F4, 0x2F5, 0x2F6, 0x2F7, 0x2F8, 0x2F9, 0x2FA, 0x2FB, 0x2FC, 0x2FD, 0x2FE, 0x2FF, 0x300, 0x301, 0x302 };
 
 const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
 {
@@ -229,6 +230,17 @@ const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
         .width = 1,
         .height = 1,
         .blocks = sGymDecorBlocks_SPINNER_STOP,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_BATTLE_STAGE] =
+    {
+        .name = COMPOUND_STRING("BATTLE STAGE"),
+        .description = COMPOUND_STRING("Challengers battle you here."),
+        .price = 0,
+        .unlockFlag = 0,
+        .width = 3,
+        .height = 5,
+        .blocks = sGymDecorBlocks_BATTLE_STAGE,
         .editBlocks = NULL,
     },
 };
