@@ -441,11 +441,11 @@ for x in range(30, 35):
     elev[4][x] = 0
 elev[7][8] = elev[7][29] = 0  # mailbox tops
 
-TOWN_SIGN = (23, 2)
+TOWN_SIGN = (23, 13)
 put(*TOWN_SIGN, 0x003)
 
 # Middle-left house (second neighbor)
-grass(3, 17, 12, 23)
+grass(3, 17, 13, 23)
 HOUSE2_DOOR = house(6, 17, "purple")
 mailbox(5, 20)
 flowers(11, 19, 12, 21)
@@ -674,7 +674,7 @@ WARPS = [
 
 OAK_START = (21, 13)          # where Oak appears before walking up to the player
 OAK_RATING_START = (13, 43)   # where Oak appears after the Elite Four (foot of the stairs)
-SIGN_LADY_HOME = (14, 25)
+SIGN_LADY_HOME = (7, 24)
 SIGN_LADY_AT_SIGN = (TIPS_SIGN[0], TIPS_SIGN[1] + 1)
 SIGN_LADY_AT_EXIT = (NORTH_EXIT[0], 2)
 FAT_MAN_HOME = (46, 12)
