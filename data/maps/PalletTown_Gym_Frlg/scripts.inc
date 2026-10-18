@@ -1,5 +1,6 @@
 PalletTown_Gym_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, PalletTown_Gym_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, PalletTown_Gym_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, PalletTown_Gym_OnFrame
 	.byte 0
 
@@ -7,6 +8,21 @@ PalletTown_Gym_Frlg_MapScripts::
 PalletTown_Gym_OnLoad::
 	special GymDecor_DrawRoom
 	end
+
+@ No challenger until the aide sends one in; no aide during Oak's first visit
+PalletTown_Gym_OnTransition::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_HideAide
+	call_if_ne VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_ShowAide
+	end
+
+PalletTown_Gym_EventScript_HideAide::
+	setflag FLAG_HIDE_PALLET_GYM_AIDE
+	return
+
+PalletTown_Gym_EventScript_ShowAide::
+	clearflag FLAG_HIDE_PALLET_GYM_AIDE
+	return
 
 PalletTown_Gym_OnFrame::
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_OakShowsGym
@@ -76,7 +92,7 @@ PalletTown_Gym_Movement_OakLeave::
 	step_end
 
 PalletTown_Gym_EventScript_GymStatue::
-	msgbox PalletTown_Gym_Text_GymStatue, MSGBOX_SIGN
+	goto GymChallenge_EventScript_Statue
 	end
 
 PalletTown_Gym_Text_OakHereWeAre::

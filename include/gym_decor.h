@@ -26,7 +26,7 @@ extern const struct GymDecor gGymDecor[GYM_DECOR_COUNT];
 
 // How many decorations the save can hold
 #define GYM_DECOR_MAX_TYPES  256
-#define GYM_DECOR_MAX_PLACED 700
+#define GYM_DECOR_MAX_PLACED 650   // the room has about 500 free squares; the rest of the space holds gym challenge records
 
 bool32 GymDecor_IsUnlocked(u32 id);
 u32 GymDecor_CountOwned(u32 id);
@@ -37,6 +37,7 @@ bool32 GymDecor_CanPlace(u32 id, s32 x, s32 y);
 bool32 GymDecor_Place(u32 id, s32 x, s32 y);
 bool32 GymDecor_RemoveAt(s32 x, s32 y);
 void GymDecor_ClearAll(void);
+void *GymDecor_GetSpareSaveSpace(u32 *size);
 
 // Specials
 void GymDecor_DrawRoom(void);

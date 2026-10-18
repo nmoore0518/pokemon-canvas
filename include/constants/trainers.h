@@ -521,6 +521,8 @@ enum TrainerClassID
     TRAINER_CLASS_RUIN_MANIAC_FRLG,
     TRAINER_CLASS_LADY_FRLG,
     TRAINER_CLASS_PAINTER_FRLG,
+    TRAINER_CLASS_NURSE,        // Gym Trainer hack: townsfolk challengers
+    TRAINER_CLASS_MR,
 
     TRAINER_CLASS_COUNT,
 };

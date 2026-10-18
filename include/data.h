@@ -280,6 +280,8 @@ static inline u16 GetPartnerIdFromTrainerId(u16 trainerId)
 
 // Gym Trainer hack: swaps rival battles for the rival's type-specialist team (src/gym_hack.c)
 const struct Trainer *GymHack_GetRivalTrainer(u16 trainerId);
+// Gym Trainer hack: the current challenger at the player's gym (src/gym_challenge.c)
+const struct Trainer *GymChallenge_GetTrainer(u16 trainerId);
 
 static inline const struct Trainer *GetTrainerStructFromId(u16 trainerId)
 {
@@ -287,6 +289,9 @@ static inline const struct Trainer *GetTrainerStructFromId(u16 trainerId)
     const struct Trainer *rivalTeam = GymHack_GetRivalTrainer(trainerId);
     if (rivalTeam != NULL)
         return rivalTeam;
+    const struct Trainer *challenger = GymChallenge_GetTrainer(trainerId);
+    if (challenger != NULL)
+        return challenger;
     enum DifficultyLevel difficulty;
 
     if (IsPartnerTrainerId(trainerId))

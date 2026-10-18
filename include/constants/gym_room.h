@@ -17,6 +17,9 @@
 // The doormat (on row GYM_ROOM_HEIGHT - 2), kept clear while decorating
 #define GYM_MAT_X0 11
 #define GYM_MAT_X1 13
+// The aide who sends in challengers
+#define GYM_AIDE_X 15
+#define GYM_AIDE_Y 23
 // Where the player is put back when they finish decorating
 #define GYM_PC_FRONT_X 8
 #define GYM_PC_FRONT_Y 26

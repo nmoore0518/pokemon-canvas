@@ -45,6 +45,10 @@ RESERVED = (PC[0] - 1, H - 6, STATUES[1] + 2, H - 1)
 PLAYER_START = (CENTER, H - 3)
 OAK_SPOT = (CENTER, H - 5)
 RIVAL_SPOT = (CENTER + 1, H - 3)
+# Oak's aide runs the gym challenges (data/scripts/gym_challenge.inc). Challengers appear on the
+# mat and walk to the spot below the aide, where the player stands to battle.
+AIDE_SPOT = (15, H - 5)
+CHALLENGER_SPOT = (CENTER, H - 2)
 
 
 def block(m, collision, elevation):
@@ -103,12 +107,12 @@ def write(grid):
 
     MAP_DIR.mkdir(exist_ok=True)
 
-    def person(local_id, gfx, pos, facing):
+    def person(local_id, gfx, pos, facing, script="0x0", flag="FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL"):
         return {"local_id": local_id, "type": "object", "graphics_id": gfx, "x": pos[0], "y": pos[1],
                 "elevation": 3, "movement_type": f"MOVEMENT_TYPE_FACE_{facing}", "movement_range_x": 1,
                 "movement_range_y": 1, "trainer_type": "TRAINER_TYPE_NONE",
-                "trainer_sight_or_berry_tree_id": "0", "script": "0x0",
-                "flag": "FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL"}
+                "trainer_sight_or_berry_tree_id": "0", "script": script,
+                "flag": flag}
 
     m = {
         "id": "MAP_PALLET_TOWN_GYM",
@@ -130,6 +134,10 @@ def write(grid):
         "object_events": [
             person("LOCALID_PALLET_GYM_OAK", "OBJ_EVENT_GFX_PROF_OAK", OAK_SPOT, "DOWN"),
             person("LOCALID_PALLET_GYM_RIVAL", "OBJ_EVENT_GFX_BLUE", RIVAL_SPOT, "UP"),
+            person("LOCALID_PALLET_GYM_AIDE", "OBJ_EVENT_GFX_SCIENTIST", AIDE_SPOT, "DOWN",
+                   "GymChallenge_EventScript_Aide", "FLAG_HIDE_PALLET_GYM_AIDE"),
+            person("LOCALID_PALLET_GYM_CHALLENGER", "OBJ_EVENT_GFX_VAR_0", CHALLENGER_SPOT, "UP",
+                   "0x0", "FLAG_HIDE_PALLET_GYM_CHALLENGER"),
         ],
         "warp_events": [{"x": x, "y": H - 2, "elevation": 3, "dest_map": "MAP_PALLET_TOWN", "dest_warp_id": "7"}
                         for x in MAT],
@@ -161,6 +169,9 @@ def write(grid):
 // The doormat (on row GYM_ROOM_HEIGHT - 2), kept clear while decorating
 #define GYM_MAT_X0 {MAT[0]}
 #define GYM_MAT_X1 {MAT[-1]}
+// The aide who sends in challengers
+#define GYM_AIDE_X {AIDE_SPOT[0]}
+#define GYM_AIDE_Y {AIDE_SPOT[1]}
 // Where the player is put back when they finish decorating
 #define GYM_PC_FRONT_X {PC_FRONT[0]}
 #define GYM_PC_FRONT_Y {PC_FRONT[1]}

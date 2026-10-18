@@ -659,3 +659,10 @@ gSpecials::
 	def_special StatItems_Apply
 	def_special StatItems_OpenEvEditor, waitstate=1
 	def_special GymHack_PalletMart, waitstate=1
+	def_special GymChallenge_IsOpen
+	def_special GymChallenge_BufferRecord
+	def_special GymChallenge_NextChallenger
+	def_special GymChallenge_RecordWin
+	def_special GymChallenge_RecordLoss
+	def_special GymChallenge_GetPlayerSide
+	def_special GymChallenge_BufferVictorList

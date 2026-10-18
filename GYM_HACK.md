@@ -133,7 +133,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     (`gSaveBlock1Ptr->secretBases`, 3,200 bytes that FireRed never uses). `src/gym_decor.c` marks
     it with a magic number and clears it on a new game or an older save. Record mixing never
     touches it.
-  - Capacity: up to 256 kinds of decoration (255 of each), and 700 placed pieces (more than the
+  - Capacity: up to 256 kinds of decoration (255 of each), and 650 placed pieces (more than the
     room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 19 pieces
     so far use 118 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots,
     and the water (1) and trash can (2) use all of them, so pieces with new colors from other
@@ -158,6 +158,31 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     from the rival at Pokémon Tower; a Multivitamin from Giovanni at Silph Co. Flags
     `FLAG_GOT_SILVER_CAP_FROM_*` etc. in `include/constants/flags.h`. If the bag is full the
     gift goes to the PC.
+- **Gym challenges** (`src/gym_challenge.c`, `data/scripts/gym_challenge.inc`): once the player
+  runs the gym, Oak's aide (standing right of the entrance statues) sends in challengers one at a
+  time, Battle Frontier style, until one beats the player.
+  - For now this opens when the player becomes Champion (`GymChallenge_IsOpen`); the rival/Oak
+    finale will take that over.
+  - The player's team must follow the one-type rule. The party is healed between battles, and a
+    loss doesn't white out (`B_FLAG_NO_WHITEOUT` = `FLAG_GYM_CHALLENGE_BATTLE`).
+  - Challengers (one trainer slot, `TRAINER_GYM_CHALLENGER`, built at run time and returned by
+    `GetTrainerStructFromId`). Every team's average level is the player's party average.
+    - Random trainers: random class and name, 4-6 different fully evolved Pokémon (base stats
+      420+) from the first 386, legendaries included; some hold items. Smart AI.
+    - Famous (every 7th challenger in a streak, and 1 in 6 otherwise): the eight gym leaders,
+      the Elite Four, the rival (his type team, with his name), Giovanni and Oak (his own team).
+      Their real teams are levelled to match and evolve if the new level calls for it; leaders
+      with fewer than 4 Pokémon get extras of their type.
+    - Townsfolk (1 in 12): Mom, Nurse Joy, Bill, Daisy and Mr. Fuji, with teams made for them.
+      They use the nearest existing battle pictures (Breeder, Aroma Lady, PokéManiac, Beauty,
+      Gentleman) since FireRed has none of their own.
+  - Each win pays 2,000 + 200 per win in the streak (doubled for famous and townsfolk; capped
+    at 40) and an item: Rare Candy, Nugget, vitamins, Full Restore, PP Up, Silver Bottle Cap...
+    Famous challengers, every 10th win and 1 win in 16 give something rare (Gold Bottle Cap,
+    Ability Capsule, Cilantro, Multivitamin or a Master Ball).
+  - Saved (in the secret base space after the decorations): current streak (kept if you stop),
+    best streak, wins and losses, and the last 20 challengers who beat the player, shown on the
+    gym statue. The Pallet Town sign names the player as leader.
 - **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
   reveals he wants it for himself and challenges the player to prove they're good enough.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
@@ -179,6 +204,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
+| `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `tools/gym_hack/playtest/` | Headless emulator harness used to playtest scenes |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
@@ -211,5 +237,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [ ] More decorations: pool edges, teleport pads (need warp scripting), working trash-can
          switch puzzle, Cinnabar/Saffron/Celadon pieces, house decorating
    - [x] Stat training items: bottle caps, Ability Capsule, Cilantro, Multivitamin (shop + gifts)
+   - [x] Post-game gym challenges: random/famous/townsfolk challengers, streaks, rewards, statue
    - [ ] Final rival battle for the gym after the League, then Oak's challenge (twist)
    - [ ] Challengers and the ninth badge after becoming Leader

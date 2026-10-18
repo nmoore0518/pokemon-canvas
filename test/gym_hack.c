@@ -773,3 +773,204 @@ TEST("GymHack: items: gift and item messages fit the message box")
     }
     Free(buf);
 }
+
+// ---- Gym challenges ----
+#include "gym_challenge.h"
+#include "data.h"
+#include "constants/opponents.h"
+#include "battle_setup.h"
+
+extern u8 gGymChallengeIntroText[], gGymChallengeAfterText[], gGymChallengeWinText[];
+
+static void GivePlayerTeamAt(u32 level1, u32 level2)
+{
+    ZeroPlayerPartyMons();
+    ScriptGiveMon(SPECIES_GROWLITHE, level1, ITEM_NONE);
+    ScriptGiveMon(SPECIES_PONYTA, level2, ITEM_NONE);
+}
+
+static u32 ChallengerAverageLevel(void)
+{
+    const struct Trainer *t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+    u32 i, total = 0;
+    for (i = 0; i < t->partySize; i++)
+        total += t->party[i].lvl;
+    return (total + t->partySize / 2) / t->partySize;
+}
+
+TEST("GymHack: challenge: random challengers bring 4-6 different strong Pokemon at the player's level")
+{
+    u32 run, i, j;
+    GivePlayerTeamAt(50, 60);
+    EXPECT_EQ(GymChallenge_PlayerAverageLevel(), 55);
+    for (run = 0; run < 50; run++)
+    {
+        const struct Trainer *t;
+        GymChallenge_Generate(GYM_CHALLENGER_TRAINER, 0);
+        t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        EXPECT_GE((u32)t->partySize, 4);
+        EXPECT_LE((u32)t->partySize, 6);
+        EXPECT_EQ(ChallengerAverageLevel(), 55);
+        EXPECT_NE(t->trainerName[0], EOS);
+        for (i = 0; i < t->partySize; i++)
+        {
+            EXPECT_GE(t->party[i].species, 1);
+            EXPECT_LE(t->party[i].species, SPECIES_DEOXYS);
+            EXPECT_GE(GetSpeciesBaseStatTotal(t->party[i].species), 420);
+            for (j = 0; j < i; j++)
+                EXPECT_NE(t->party[i].species, t->party[j].species);
+        }
+    }
+}
+
+TEST("GymHack: challenge: famous challengers and townsfolk have full teams at the player's level")
+{
+    u32 i;
+    GivePlayerTeamAt(70, 70);
+    for (i = 0; i < GymChallenge_CountFamous(); i++)
+    {
+        const struct Trainer *t;
+        GymChallenge_Generate(GYM_CHALLENGER_FAMOUS, i);
+        t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        EXPECT_GE((u32)t->partySize, 4);
+        EXPECT_GE(ChallengerAverageLevel(), 68);
+        EXPECT_LE(ChallengerAverageLevel(), 72);
+        EXPECT_NE(t->trainerName[0], EOS);
+    }
+    for (i = 0; i < GymChallenge_CountTownsfolk(); i++)
+    {
+        GymChallenge_Generate(GYM_CHALLENGER_TOWNSFOLK, i);
+        EXPECT_GE((u32)GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->partySize, 4);
+        EXPECT_EQ(ChallengerAverageLevel(), 70);
+    }
+    // Early-game Pokémon on a famous team grow up (Brock's Geodude at level 70)
+    EXPECT_EQ(GymChallenge_EvolveForLevel(SPECIES_GEODUDE, 70), SPECIES_GOLEM);
+    EXPECT_EQ(GymChallenge_EvolveForLevel(SPECIES_GEODUDE, 30), SPECIES_GRAVELER);
+    EXPECT_EQ(GymChallenge_EvolveForLevel(SPECIES_GEODUDE, 20), SPECIES_GEODUDE);
+}
+
+TEST("GymHack: challenge: the battle builds the generated team")
+{
+    const struct Trainer *t;
+    u32 i;
+    GivePlayerTeamAt(40, 40);
+    GymChallenge_Generate(GYM_CHALLENGER_TRAINER, 0);
+    t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+    ZeroEnemyPartyMons();
+    CreateNPCTrainerPartyFromTrainer(gParties[B_TRAINER_OPPONENT_A], t);
+    for (i = 0; i < t->partySize; i++)
+    {
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_OPPONENT_A][i], MON_DATA_SPECIES), t->party[i].species);
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_OPPONENT_A][i], MON_DATA_LEVEL), t->party[i].lvl);
+    }
+}
+
+TEST("GymHack: challenge: wins build a streak, a loss ends it and goes on the statue")
+{
+    struct GymChallengeSave *save;
+    u32 i;
+    memset(gSaveBlock1Ptr->secretBases, 0xFF, sizeof(gSaveBlock1Ptr->secretBases));
+    save = GymChallenge_GetSave();
+    EXPECT_EQ(save->streak, 0);
+    EXPECT_EQ(save->numVictors, 0);
+    GivePlayerTeamAt(50, 50);
+    SetMoney(&gSaveBlock1Ptr->money, 0);
+    for (i = 0; i < 3; i++)
+    {
+        GymChallenge_Generate(GYM_CHALLENGER_TRAINER, 0);
+        GymChallenge_RecordWin();
+        EXPECT_EQ(gSpecialVar_Result, TRUE);       // each one beats the best streak
+        EXPECT_NE(gSpecialVar_0x8009, ITEM_NONE);
+    }
+    EXPECT_EQ(save->streak, 3);
+    EXPECT_EQ(save->bestStreak, 3);
+    EXPECT_GT(GetMoney(&gSaveBlock1Ptr->money), 6000);
+    GymChallenge_Generate(GYM_CHALLENGER_FAMOUS, GymChallenge_CountFamous() - 1);   // Oak
+    GymChallenge_RecordLoss();
+    EXPECT_EQ(save->streak, 0);
+    EXPECT_EQ(save->bestStreak, 3);
+    EXPECT_EQ(save->wins, 3);
+    EXPECT_EQ(save->losses, 1);
+    EXPECT_EQ(save->numVictors, 1);
+    EXPECT_EQ(save->victors[0].streak, 3);
+    EXPECT_EQ(StringCompare(save->victors[0].name, COMPOUND_STRING("OAK")), 0);
+    GymChallenge_BufferVictorList();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    EXPECT_EQ(StringCompare(gStringVar4, COMPOUND_STRING("{PKMN} PROF. OAK")), 0);
+    // The decorations are untouched
+    EXPECT_EQ(GymDecor_NumPlaced(), 0);
+}
+
+TEST("GymHack: challenge: every challenger line fits its text box")
+{
+    u32 i, run;
+    u8 *buf = Alloc(400);
+    GivePlayerTeamAt(50, 50);
+    StringCopy(gSaveBlock1Ptr->rivalName, COMPOUND_STRING("MMMMMMM"));
+    for (run = 0; run < 260; run++)
+    {
+        const u8 *texts[4];
+        if (run < GymChallenge_CountFamous())
+            GymChallenge_Generate(GYM_CHALLENGER_FAMOUS, run);
+        else if (run < GymChallenge_CountFamous() + GymChallenge_CountTownsfolk())
+            GymChallenge_Generate(GYM_CHALLENGER_TOWNSFOLK, run - GymChallenge_CountFamous());
+        else
+            GymChallenge_Generate(GYM_CHALLENGER_TRAINER, 0);
+        texts[0] = gGymChallengeIntroText;
+        texts[1] = gGymChallengeDefeatText;   // in battle: a narrower box
+        texts[2] = gGymChallengeAfterText;
+        texts[3] = gGymChallengeWinText;
+        for (i = 0; i < 4; i++)
+        {
+            u8 *line, *p;
+            StringCopy(buf, texts[i]);
+            for (line = p = buf; ; p++)
+            {
+                u8 c = *p;
+                if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+                {
+                    *p = EOS;
+                    if (GetStringWidth(FONT_NORMAL, line, 0) > (i == 1 ? 26 * 8 - 16 : 27 * 8 - 4))
+                        DebugPrintf("challenger line too wide: %S", line);
+                    EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), i == 1 ? 26 * 8 - 16 : 27 * 8 - 4);
+                    if (c == EOS)
+                        break;
+                    line = p + 1;
+                }
+            }
+        }
+    }
+    Free(buf);
+}
+
+extern const u8 GymChallenge_Text_AideNotYet[], GymChallenge_Text_AideWelcome[], GymChallenge_Text_ReadyToBattle[], GymChallenge_Text_NotNow[], GymChallenge_Text_TeamBreaksRules[], GymChallenge_Text_TakeYourPlace[], GymChallenge_Text_AnnounceTrainer[], GymChallenge_Text_AnnounceFamous[], GymChallenge_Text_AnnounceTownsfolk[], GymChallenge_Text_Won[], GymChallenge_Text_NewRecord[], GymChallenge_Text_LeftAGift[], GymChallenge_Text_KeepGoing[], GymChallenge_Text_TakeABreak[], GymChallenge_Text_Lost[], GymChallenge_Text_StatueNoLeader[], GymChallenge_Text_StatueLeader[], GymChallenge_Text_StatueUnbeaten[], GymChallenge_Text_StatueVictors[];
+
+TEST("GymHack: challenge: aide and statue messages fit the message box")
+{
+    static const u8 *const texts[] = {GymChallenge_Text_AideNotYet, GymChallenge_Text_AideWelcome, GymChallenge_Text_ReadyToBattle, GymChallenge_Text_NotNow, GymChallenge_Text_TeamBreaksRules, GymChallenge_Text_TakeYourPlace, GymChallenge_Text_AnnounceTrainer, GymChallenge_Text_AnnounceFamous, GymChallenge_Text_AnnounceTownsfolk, GymChallenge_Text_Won, GymChallenge_Text_NewRecord, GymChallenge_Text_LeftAGift, GymChallenge_Text_KeepGoing, GymChallenge_Text_TakeABreak, GymChallenge_Text_Lost, GymChallenge_Text_StatueNoLeader, GymChallenge_Text_StatueLeader, GymChallenge_Text_StatueUnbeaten, GymChallenge_Text_StatueVictors};
+    u8 *buf = Alloc(600);
+    u32 i;
+    StringCopy(gStringVar1, COMPOUND_STRING("65535"));
+    StringCopy(gStringVar2, COMPOUND_STRING("65535"));
+    StringCopy(gStringVar3, COMPOUND_STRING("COOLTRAINER XAVIER"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("aide line too wide: %S", line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}

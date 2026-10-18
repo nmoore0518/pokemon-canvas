@@ -2453,6 +2453,10 @@
 #define FLAG_GOT_CILANTRO_FROM_ERIKA        0x4AD
 #define FLAG_GOT_ABILITY_CAPSULE_FROM_KOGA  0x4AE
 #define FLAG_GOT_MULTIVITAMIN_FROM_GIOVANNI 0x4AF // Silph Co.
+// Gym challenges (src/gym_challenge.c)
+#define FLAG_GYM_CHALLENGE_BATTLE           0x025 // B_FLAG_NO_WHITEOUT: losing to a challenger doesn't white out
+#define FLAG_HIDE_PALLET_GYM_CHALLENGER     0x026 // set on entering the gym; cleared while a challenger is in
+#define FLAG_HIDE_PALLET_GYM_AIDE           0x027 // until Oak's gym scene is over
 
 #if TESTING
 #define TESTING_FLAGS_START                     0x5000

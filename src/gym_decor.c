@@ -125,6 +125,13 @@ u32 GymDecor_NumPlaced(void)
     return GetSave()->numPlaced;
 }
 
+// The secret base space left after the decorations (used by src/gym_challenge.c)
+void *GymDecor_GetSpareSaveSpace(u32 *size)
+{
+    *size = sizeof(((struct SaveBlock1 *)0)->secretBases) - sizeof(struct GymDecorSave);
+    return (u8 *)gSaveBlock1Ptr->secretBases + sizeof(struct GymDecorSave);
+}
+
 void GymDecor_ClearAll(void)
 {
     struct GymDecorSave *save = GetSave();

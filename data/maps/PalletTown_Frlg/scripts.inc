@@ -300,7 +300,13 @@ PalletTown_EventScript_House2Sign::
 	end
 
 PalletTown_EventScript_GymSign::
+	specialvar VAR_RESULT, GymChallenge_IsOpen
+	goto_if_eq VAR_RESULT, TRUE, PalletTown_EventScript_GymSignLeader
 	msgbox PalletTown_Text_GymSign, MSGBOX_SIGN
+	end
+
+PalletTown_EventScript_GymSignLeader::
+	msgbox PalletTown_Text_GymSignLeader, MSGBOX_SIGN
 	end
 
 PalletTown_EventScript_GymDoorLocked::
@@ -398,6 +404,10 @@ PalletTown_Text_House2::
 PalletTown_Text_GymSign::
 	.string "PALLET TOWN POKéMON GYM\n"
 	.string "LEADER: To be decided!$"
+
+PalletTown_Text_GymSignLeader::
+	.string "PALLET TOWN POKéMON GYM\n"
+	.string "LEADER: {PLAYER}$"
 
 PalletTown_Text_GymDoorLocked::
 	.string "The doors are locked tight.\p"
