@@ -2,9 +2,21 @@ EventScript_SetDefeatedEliteFourFlagsVars::
 	clearflag FLAG_HIDE_POSTGAME_GOSSIPERS
 	call EventScript_ResetEliteFour
 	special Script_UpdateTrainerFanClubGameClear
+	call_if_eq VAR_GYM_FINALE, GYM_FINALE_NONE, EventScript_GymHack_StartGymFinale
+	call_if_eq VAR_GYM_FINALE, GYM_FINALE_DONE, EventScript_TryReadyNationalDexScene
+	call EventScript_ResetLegendaries
+	return
+
+@ Gym Trainer hack: after the first Hall of Fame, Oak meets the player outside their house and
+@ challenges them for the gym (data/scripts/gym_finale.inc). The National Pokédex scene, which
+@ also starts outside the house, waits until that's over.
+EventScript_GymHack_StartGymFinale::
+	setvar VAR_GYM_FINALE, GYM_FINALE_OAK_WAITS
+	return
+
+EventScript_TryReadyNationalDexScene::
 	specialvar VAR_RESULT, IsNationalPokedexEnabled
 	call_if_eq VAR_RESULT, FALSE, EventScript_SetReadyTryGiveNationalDexScene
-	call EventScript_ResetLegendaries
 	return
 
 EventScript_SetReadyTryGiveNationalDexScene::

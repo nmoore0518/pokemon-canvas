@@ -19,4 +19,10 @@
 // Fairy) Oak warns that the type is a tough road
 #define GYM_HACK_HARD_STARTERS_FROM 14
 
+// VAR_GYM_FINALE: the gym after the League
+#define GYM_FINALE_NONE            0   // the League isn't won yet
+#define GYM_FINALE_OAK_WAITS       1   // Oak meets the player outside their house and takes them to the gym
+#define GYM_FINALE_OAK_IN_GYM      2   // the player put off Oak's challenge; he waits in the gym
+#define GYM_FINALE_DONE            3   // the player beat Oak: the gym is theirs
+
 #endif // GUARD_CONSTANTS_GYM_HACK_H

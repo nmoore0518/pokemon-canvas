@@ -46,6 +46,7 @@ PalletTown_EventScript_MoveSignLadyToRouteEntrance::
 	return
 
 PalletTown_OnFrame::
+	map_script_2 VAR_GYM_FINALE, GYM_FINALE_OAK_WAITS, GymFinale_EventScript_OakAtTheDoor
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_OAK, 2, PalletTown_EventScript_OakRatingScene
 	.2byte 0
 

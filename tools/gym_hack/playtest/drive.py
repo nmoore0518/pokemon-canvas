@@ -69,5 +69,14 @@ class GBA:
         a = self.sb1() + self.FLAGS + flag // 8
         v = self.peek32(a & ~3) >> (8 * (a & 3)) & 0xFF
         self.cmd(f'poke8 {a:#x} {v | 1 << (flag % 8)}')
+    VARS = 5008                      # SaveBlock1: vars (u16, from 0x4000)
+    def set_var(self, var, value):
+        a = self.sb1() + self.VARS + (var - 0x4000) * 2
+        v = self.peek32(a & ~3)
+        if a & 2:
+            v = (v & 0xFFFF) | (value << 16)
+        else:
+            v = (v & 0xFFFF0000) | value
+        self.cmd(f'poke32 {a & ~3:#x} {v}')
     def close(self):
         self.p.stdin.close(); self.p.wait()

@@ -73,11 +73,11 @@ const struct Trainer *GymChallenge_GetTrainer(u16 trainerId)
     return NULL;
 }
 
-// The challenges open once the player runs the gym. Until the rival/Oak finale exists, that's
-// after becoming Champion.
+// The challenges open once the gym is the player's: after beating Oak for it
+// (data/scripts/gym_finale.inc)
 bool8 GymChallenge_IsOpen(void)
 {
-    return FlagGet(FLAG_SYS_GAME_CLEAR);
+    return FlagGet(FLAG_PALLET_GYM_AWARDED);
 }
 
 u32 GymChallenge_PlayerAverageLevel(void)
@@ -552,6 +552,68 @@ static void GenerateTownsfolk(u32 index, u32 level)
         InitMon(&sChallengerMons[i], folk->team[i], ClampLevel(level + spread[i]), 31);
     VarSet(VAR_OBJ_GFX_ID_0, folk->gfx);
     SetTexts(folk->intro, folk->defeat, folk->after, folk->win);
+}
+
+// ---------------------------------------------------------------------------
+// Oak's battle for the gym (data/scripts/gym_finale.inc): his real team, built to be hard.
+// Levels: five above the player's average, and never below 65.
+// ---------------------------------------------------------------------------
+struct OakMon
+{
+    u16 species;
+    u16 item;
+    u8 nature;
+    const u8 *evs;
+    u16 moves[MAX_MON_MOVES];
+};
+
+static const u8 sEvs_PhysicalFast[] = {4, 252, 0, 0, 0, 252};   // HP Atk Def SpA SpD Spe
+static const u8 sEvs_SpecialFast[] = {4, 0, 0, 252, 0, 252};
+static const u8 sEvs_Bulky[] = {252, 4, 252, 0, 0, 0};
+
+static const struct OakMon sOakFinaleTeam[] =
+{
+    {SPECIES_TAUROS,    ITEM_CHOICE_BAND, NATURE_JOLLY, sEvs_PhysicalFast,
+        {MOVE_DOUBLE_EDGE, MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_ZEN_HEADBUTT}},
+    {SPECIES_EXEGGUTOR, ITEM_SITRUS_BERRY, NATURE_MODEST, sEvs_SpecialFast,
+        {MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_EXPLOSION}},
+    {SPECIES_ARCANINE,  ITEM_LEFTOVERS, NATURE_ADAMANT, sEvs_PhysicalFast,
+        {MOVE_FLARE_BLITZ, MOVE_EXTREME_SPEED, MOVE_CRUNCH, MOVE_WILL_O_WISP}},
+    {SPECIES_GYARADOS,  ITEM_LUM_BERRY, NATURE_JOLLY, sEvs_PhysicalFast,
+        {MOVE_DRAGON_DANCE, MOVE_WATERFALL, MOVE_EARTHQUAKE, MOVE_ICE_FANG}},
+    {SPECIES_SNORLAX,   ITEM_LEFTOVERS, NATURE_CAREFUL, sEvs_Bulky,
+        {MOVE_BODY_SLAM, MOVE_CURSE, MOVE_REST, MOVE_EARTHQUAKE}},
+    {SPECIES_DRAGONITE, ITEM_LUM_BERRY, NATURE_ADAMANT, sEvs_PhysicalFast,
+        {MOVE_DRAGON_DANCE, MOVE_OUTRAGE, MOVE_EXTREME_SPEED, MOVE_EARTHQUAKE}},
+};
+
+u32 GymChallenge_OakFinaleLevel(void)
+{
+    u32 level = GymChallenge_PlayerAverageLevel() + 5;
+    if (level < 65)
+        level = 65;
+    return ClampLevel(level);
+}
+
+// Special
+void GymChallenge_GenerateOakFinale(void)
+{
+    u32 level = GymChallenge_OakFinaleLevel(), i;
+    SetupTrainer(TRAINER_CLASS_PKMN_PROF_FRLG, TRAINER_PIC_PROFESSOR_OAK_FRLG, FALSE, COMPOUND_STRING("OAK"),
+                 ARRAY_COUNT(sOakFinaleTeam));
+    sChallenger.items[0] = ITEM_FULL_RESTORE;
+    sChallenger.items[1] = ITEM_FULL_RESTORE;
+    for (i = 0; i < ARRAY_COUNT(sOakFinaleTeam); i++)
+    {
+        const struct OakMon *oak = &sOakFinaleTeam[i];
+        InitMon(&sChallengerMons[i], oak->species, level, MAX_PER_STAT_IVS);
+        sChallengerMons[i].heldItem = oak->item;
+        sChallengerMons[i].nature = oak->nature;
+        sChallengerMons[i].ev = oak->evs;
+        memcpy(sChallengerMons[i].moves, oak->moves, sizeof(oak->moves));
+    }
+    sKind = GYM_CHALLENGER_FAMOUS;
+    StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ho… ho ho…\nSplendid. Truly splendid."));
 }
 
 void GymChallenge_Generate(u32 kind, u32 index)

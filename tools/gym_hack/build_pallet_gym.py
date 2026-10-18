@@ -132,8 +132,8 @@ def write(grid):
         "battle_scene": "MAP_BATTLE_SCENE_GYM",
         "connections": None,
         "object_events": [
-            person("LOCALID_PALLET_GYM_OAK", "OBJ_EVENT_GFX_PROF_OAK", OAK_SPOT, "DOWN"),
-            person("LOCALID_PALLET_GYM_RIVAL", "OBJ_EVENT_GFX_BLUE", RIVAL_SPOT, "UP"),
+            person("LOCALID_PALLET_GYM_OAK", "OBJ_EVENT_GFX_PROF_OAK", OAK_SPOT, "DOWN", "PalletTown_Gym_EventScript_Oak"),
+            person("LOCALID_PALLET_GYM_RIVAL", "OBJ_EVENT_GFX_BLUE", RIVAL_SPOT, "UP", "0x0", "FLAG_HIDE_PALLET_GYM_RIVAL"),
             person("LOCALID_PALLET_GYM_AIDE", "OBJ_EVENT_GFX_SCIENTIST", AIDE_SPOT, "DOWN",
                    "GymChallenge_EventScript_Aide", "FLAG_HIDE_PALLET_GYM_AIDE"),
             person("LOCALID_PALLET_GYM_CHALLENGER", "OBJ_EVENT_GFX_VAR_0", CHALLENGER_SPOT, "UP",

@@ -40,6 +40,8 @@ u32 GymChallenge_CountTownsfolk(void);
 bool8 GymChallenge_IsOpen(void);
 void GymChallenge_BufferRecord(void);
 void GymChallenge_NextChallenger(void);
+void GymChallenge_GenerateOakFinale(void);
+u32 GymChallenge_OakFinaleLevel(void);
 void GymChallenge_RecordWin(void);
 void GymChallenge_RecordLoss(void);
 void GymChallenge_BufferLastResult(void);

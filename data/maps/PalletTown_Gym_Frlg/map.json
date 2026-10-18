@@ -28,7 +28,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "0x0",
+      "script": "PalletTown_Gym_EventScript_Oak",
       "flag": "FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL"
     },
     {
@@ -44,7 +44,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL"
+      "flag": "FLAG_HIDE_PALLET_GYM_RIVAL"
     },
     {
       "local_id": "LOCALID_PALLET_GYM_AIDE",

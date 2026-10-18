@@ -190,8 +190,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 - **Gym challenges** (`src/gym_challenge.c`, `data/scripts/gym_challenge.inc`): once the player
   runs the gym, Oak's aide (standing right of the entrance statues) sends in challengers one at a
   time, Battle Frontier style, until one beats the player.
-  - For now this opens when the player becomes Champion (`GymChallenge_IsOpen`); the rival/Oak
-    finale will take that over.
+  - Opens once the player has beaten Oak for the gym (`GymChallenge_IsOpen`).
   - The player's team must follow the one-type rule. The party is healed between battles, and a
     loss doesn't white out (`B_FLAG_NO_WHITEOUT` = `FLAG_GYM_CHALLENGE_BATTLE`).
   - Where: the BATTLE STAGE, a free decoration that's always in the PC's storage (one of it).
@@ -225,13 +224,30 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Elder. A challenger who beats the player is presented with it (its picture shows on screen), and
   the statue lists them as having earned it.
   - BADGE PEDESTAL decoration: shows the badge on a stone plinth. Sold once
-    `FLAG_PALLET_GYM_AWARDED` is set (by the rival/Oak finale, still to come).
+    `FLAG_PALLET_GYM_AWARDED` is set (when the player beats Oak for the gym).
   - The gym tileset holds one badge (16 tiles from `GYM_BADGE_TILE_START`, palette slot 11, kept
     free for it); whenever the gym's tileset loads, `src/fieldmap.c` calls into gym_badge.c to copy
     the player's own badge and colors over it. To change the art, edit badge_art.py and run it,
     then `build_pallet_gym.py`.
-- **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
-  reveals he wants it for himself and challenges the player to prove they're good enough.
+- **The finale** (`data/scripts/gym_finale.inc`, `VAR_GYM_FINALE`):
+  - In the Champion's room (first time only), Oak walks in before the rival battle, heals the
+    player's team ("I want a fair fight!"), and announces that the winner becomes Champion and
+    Leader of the Pallet Town Gym. After the win he congratulates the player on both.
+  - After the Hall of Fame and credits, the next time the player steps out of their house, Oak
+    meets them at the door and takes them to the gym. There he has a crisis: it's his town, next
+    to his lab, and he won't hand it to a kid ("Remember when I said I'd run it myself? I wasn't
+    joking!"). He challenges the player for it.
+  - The player can put it off ("come challenge me in the GYM when you're ready"); Oak then waits
+    in the gym. The one-type and no-duplicate rules apply (he refuses an illegal team).
+  - The battle: Oak's team (Tauros, Exeggutor, Arcanine, Gyarados, Snorlax, Dragonite) with full
+    IVs, EVs, held items, competitive moves, two Full Restores and the smartest AI; five levels
+    above the player's average, never below 65. Champion battle music.
+    `GymChallenge_GenerateOakFinale` in `src/gym_challenge.c`.
+  - Losing sends the player home (no money lost), and the scene plays again when they step out.
+  - Winning: Oak apologizes and hands over the gym (`FLAG_PALLET_GYM_AWARDED`, which opens the
+    gym challenges and the badge pedestal), the League makes the player's badge official, and Oak
+    introduces his aide and explains the challenge system before leaving.
+  - The National Pokédex scene outside the house waits until the gym is the player's.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -287,5 +303,5 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Stat training items: bottle caps, Ability Capsule, Cilantro, Multivitamin (shop + gifts)
    - [x] Post-game gym challenges: random/famous/townsfolk challengers, streaks, rewards, statue
    - [x] The player's badge per type (art, award to challengers, pedestal decoration)
-   - [ ] Final rival battle for the gym after the League, then Oak's challenge (twist)
+   - [x] Finale: Oak in the Champion's room, then Oak's challenge for the gym after the credits
    - [ ] Challengers and the ninth badge after becoming Leader

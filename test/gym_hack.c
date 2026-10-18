@@ -1106,3 +1106,65 @@ TEST("GymHack: Oak's type-choice lines fit the message box")
     }
     Free(buf);
 }
+
+extern const u8 GymFinale_Text_OakComeToTheGym[], GymFinale_Text_OakHereWeAre[], GymFinale_Text_OakThinking[], GymFinale_Text_OakWontGiveItUp[], GymFinale_Text_OakYouCameBack[], GymFinale_Text_OakWillYouBattle[], GymFinale_Text_OakThenShowMe[], GymFinale_Text_OakComeBackWhenReady[], GymFinale_Text_OakRulesStillApply[], GymFinale_Text_OakStillHasIt[], GymFinale_Text_OakGivesUp[], GymFinale_Text_YourBadge[], GymFinale_Text_OakMeetMyAide[], GymFinale_Text_AideHello[], GymFinale_Text_OakHowItWorks[], GymFinale_Text_OakWait[], GymFinale_Text_OakMadeIt[], GymFinale_Text_PokemonHealed[], GymFinale_Text_OakThisBattleDecides[], GymFinale_Text_OakCongratulations[], GymFinale_Text_OakToRival[];
+
+TEST("GymHack: finale: Oak's team for the gym is six strong Pokemon above the player's level")
+{
+    const struct Trainer *t;
+    u32 i;
+    GivePlayerTeamAt(50, 54);
+    GymChallenge_GenerateOakFinale();
+    t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+    EXPECT_EQ((u32)t->partySize, 6);
+    for (i = 0; i < 6; i++)
+    {
+        EXPECT_EQ(t->party[i].lvl, 65);          // never below 65
+        EXPECT_NE(t->party[i].moves[0], MOVE_NONE);
+        EXPECT_NE(t->party[i].heldItem, ITEM_NONE);
+    }
+    GivePlayerTeamAt(80, 82);
+    GymChallenge_GenerateOakFinale();
+    EXPECT_EQ(GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->party[0].lvl, 86);
+    EXPECT_EQ(GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->trainerClass, TRAINER_CLASS_PKMN_PROF_FRLG);
+}
+
+TEST("GymHack: finale: the gym challenges open once the gym is awarded")
+{
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    FlagSet(FLAG_SYS_GAME_CLEAR);
+    EXPECT(!GymChallenge_IsOpen());
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    EXPECT(GymChallenge_IsOpen());
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    FlagClear(FLAG_SYS_GAME_CLEAR);
+}
+
+TEST("GymHack: finale: every line fits the message box")
+{
+    static const u8 *const texts[] = {GymFinale_Text_OakComeToTheGym, GymFinale_Text_OakHereWeAre, GymFinale_Text_OakThinking, GymFinale_Text_OakWontGiveItUp, GymFinale_Text_OakYouCameBack, GymFinale_Text_OakWillYouBattle, GymFinale_Text_OakThenShowMe, GymFinale_Text_OakComeBackWhenReady, GymFinale_Text_OakRulesStillApply, GymFinale_Text_OakStillHasIt, GymFinale_Text_OakGivesUp, GymFinale_Text_YourBadge, GymFinale_Text_OakMeetMyAide, GymFinale_Text_AideHello, GymFinale_Text_OakHowItWorks, GymFinale_Text_OakWait, GymFinale_Text_OakMadeIt, GymFinale_Text_PokemonHealed, GymFinale_Text_OakThisBattleDecides, GymFinale_Text_OakCongratulations, GymFinale_Text_OakToRival};
+    u8 *buf = Alloc(1600);
+    u32 i;
+    StringCopy(gSaveBlock1Ptr->rivalName, COMPOUND_STRING("MMMMMMM"));
+    StringCopy(gStringVar1, COMPOUND_STRING("INFESTATION BADGE"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("finale line too wide: %S", line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}

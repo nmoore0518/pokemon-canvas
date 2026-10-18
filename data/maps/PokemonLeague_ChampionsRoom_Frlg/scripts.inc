@@ -50,6 +50,7 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	applymovement LOCALID_PLAYER, PokemonLeague_ChampionsRoom_Movement_PlayerEnter
 	waitmovement 0
 	delay 20
+	call_if_unset FLAG_SYS_GAME_CLEAR, GymFinale_EventScript_OakBeforeChampion
 	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_Intro
 	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_RematchIntro
 	setflag FLAG_TEMP_3
@@ -73,11 +74,13 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	delay 25
 	specialvar VAR_RESULT, GetStarterPokemon
 	bufferspeciesname STR_VAR_1, VAR_RESULT
-	msgbox PokemonLeague_ChampionsRoom_Text_OakCongratulations
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_GymFinaleCongratulations
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_Congratulations
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterRight
 	applymovement LOCALID_KANTO_CHAMPIONS_ROOM_RIVAL, Common_Movement_WalkInPlaceFasterLeft
 	waitmovement 0
-	msgbox PokemonLeague_ChampionsRoom_Text_OakImDisappointedRival
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_GymFinaleOakToRival
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_OakToRival
 	closemessage
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
@@ -93,6 +96,23 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	waitstate
 	releaseall
 	end
+
+@ Gym Trainer hack: the first time, Oak congratulates the player on winning the gym too
+PokemonLeague_ChampionsRoom_EventScript_GymFinaleCongratulations::
+	msgbox GymFinale_Text_OakCongratulations
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_Congratulations::
+	msgbox PokemonLeague_ChampionsRoom_Text_OakCongratulations
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_GymFinaleOakToRival::
+	msgbox GymFinale_Text_OakToRival
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_OakToRival::
+	msgbox PokemonLeague_ChampionsRoom_Text_OakImDisappointedRival
+	return
 
 PokemonLeague_ChampionsRoom_EventScript_QuestLogEnd::
 	call PokemonLeague_ChampionsRoom_EventScript_StopSceneTrigger

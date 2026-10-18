@@ -9,23 +9,36 @@ PalletTown_Gym_OnLoad::
 	special GymDecor_DrawRoom
 	end
 
-@ No challenger until the aide sends one in; no aide during Oak's first visit
+@ Who's in the gym: no challenger until the aide sends one in; the aide except during Oak's first
+@ visit; the rival only in that visit; Oak in that visit and while he waits for the player's
+@ challenge after the League
 PalletTown_Gym_OnTransition::
 	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
-	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_HideAide
+	setflag FLAG_HIDE_PALLET_GYM_RIVAL
+	setflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL
+	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_FirstVisitPeople
 	call_if_ne VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_ShowAide
+	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_GYM, 3, PalletTown_Gym_EventScript_ShowOak
+	call_if_eq VAR_GYM_FINALE, GYM_FINALE_OAK_IN_GYM, PalletTown_Gym_EventScript_ShowOak
 	end
 
-PalletTown_Gym_EventScript_HideAide::
+PalletTown_Gym_EventScript_FirstVisitPeople::
 	setflag FLAG_HIDE_PALLET_GYM_AIDE
+	clearflag FLAG_HIDE_PALLET_GYM_RIVAL
+	clearflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL
 	return
 
 PalletTown_Gym_EventScript_ShowAide::
 	clearflag FLAG_HIDE_PALLET_GYM_AIDE
 	return
 
+PalletTown_Gym_EventScript_ShowOak::
+	clearflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL
+	return
+
 PalletTown_Gym_OnFrame::
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_OakShowsGym
+	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_GYM, 3, PalletTown_Gym_EventScript_OakWantsTheGym
 	.2byte 0
 
 @ Right after the first rival battle, Oak brings the player and the rival here.
@@ -67,6 +80,7 @@ PalletTown_Gym_EventScript_OakShowsGym::
 	removeobject LOCALID_PALLET_GYM_OAK
 	playse SE_EXIT
 	setflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL
+	setflag FLAG_HIDE_PALLET_GYM_RIVAL
 	setflag FLAG_PALLET_GYM_OPEN
 	setvar VAR_MAP_SCENE_PALLET_TOWN_GYM, 2
 	fadedefaultbgm

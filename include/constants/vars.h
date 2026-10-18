@@ -332,8 +332,11 @@
 #define VAR_PLAYER_TYPE                                  0x40F7
 // The rival's specialty type (TYPE_*), set at the same time as VAR_PLAYER_TYPE.
 #define VAR_RIVAL_TYPE                                   0x40F8
-// The Pallet Town Gym introduction: 0 = not yet, 1 = Oak is about to show the gym, 2 = done.
+// The Pallet Town Gym scenes: 0 = not yet, 1 = Oak is about to show the gym, 2 = nothing to play,
+// 3 = Oak has brought the player in for the finale (see VAR_GYM_FINALE).
 #define VAR_MAP_SCENE_PALLET_TOWN_GYM                    0x40F9
+// After the League: GYM_FINALE_* (include/constants/gym_hack.h)
+#define VAR_GYM_FINALE                                   0x40FA
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

@@ -662,6 +662,7 @@ gSpecials::
 	def_special GymChallenge_IsOpen
 	def_special GymChallenge_BufferRecord
 	def_special GymChallenge_NextChallenger
+	def_special GymChallenge_GenerateOakFinale
 	def_special GymChallenge_RecordWin
 	def_special GymChallenge_RecordLoss
 	def_special GymChallenge_BufferLastResult

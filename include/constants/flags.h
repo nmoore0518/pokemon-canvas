@@ -2457,6 +2457,7 @@
 #define FLAG_GYM_CHALLENGE_BATTLE           0x025 // B_FLAG_NO_WHITEOUT: losing to a challenger doesn't white out
 #define FLAG_HIDE_PALLET_GYM_CHALLENGER     0x026 // set on entering the gym; cleared while a challenger is in
 #define FLAG_HIDE_PALLET_GYM_AIDE           0x027 // until Oak's gym scene is over
+#define FLAG_HIDE_PALLET_GYM_RIVAL          0x078 // the rival in the gym (only in Oak's first gym scene)
 #define FLAG_PALLET_GYM_AWARDED             0x077 // the League has made the player the Gym Leader (after the rival and Oak)
 
 #if TESTING
