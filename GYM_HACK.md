@@ -87,6 +87,16 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   (Kanto, or the Sevii group the player is on) gets markers. Worked out live from the wild tables, so
   edits to the planner show up automatically (`GymHack_GetTypeFinderMapSecs`, `src/field_region_map.c`,
   marker art `graphics/gym_hack/type_finder_marker.png`).
+- **Pallet Town** is rebuilt and much bigger (60x52 blocks): raised yards for the rival and a
+  neighbor joined by a bridge over the north road, the player's gym on a rocky plateau in the middle,
+  Oak's lab on a grassy rise, a Pokémon Center and Poké Mart in the east, a lake and waterfall, and
+  the player's house on a peninsula below the cliffs. The whole map is drawn by
+  `tools/gym_hack/build_pallet_town.py`: edit the LAYOUT section (plain x/y coordinates) and run
+  `python3 tools/gym_hack/build_pallet_town.py preview.png`. It also writes the map's warps, signs and
+  people (`map.json`) and Oak's walking routes (`movements.inc`), worked out from the layout, so the
+  intro and post-League scenes follow the new streets. Don't hand-edit those two files or the
+  layout in Porymap; changes would be overwritten the next time the script runs.
+  The gym door is locked for now; the gym itself comes in the next step.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -100,6 +110,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `data/maps/PalletTown_ProfessorOaksLab_Frlg/` | Oak's lab: type menu, shelf, rival's pick |
 | `data/scripts/gym_hack.inc` | Team-rule messages, HM key item scripts and text |
 | `src/field_region_map.c` | Town Map screen: type finder markers |
+| `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
+| `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
@@ -122,4 +134,8 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Type + no-duplicates check for gym, rival and Elite Four battles
 3. [x] Evolution toggle per Pokémon (no held item); HMs as key items
 4. [x] All 386 Pokémon obtainable; gym type finder on the Town Map
-5. [ ] Gym builder and challengers
+5. Gym builder and challengers
+   - [x] Pallet Town redesign (gym plateau, Pokémon Center, Mart, player's house by the water)
+   - [ ] Gym interior and Oak showing the player their gym after the Pokédex
+   - [ ] Decorating the gym and house (secret-base style)
+   - [ ] Challengers and the ninth badge after becoming Champion

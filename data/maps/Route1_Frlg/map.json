@@ -22,7 +22,7 @@
     },
     {
       "map": "MAP_PALLET_TOWN",
-      "offset": 0,
+      "offset": -8,
       "direction": "down"
     }
   ],
@@ -56,12 +56,8 @@
       "flag": "0"
     }
   ],
-  "warp_events": [
-
-  ],
-  "coord_events": [
-
-  ],
+  "warp_events": [],
+  "coord_events": [],
   "bg_events": [
     {
       "type": "sign",

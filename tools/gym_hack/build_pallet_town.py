@@ -1,0 +1,670 @@
+#!/usr/bin/env python3
+"""Build the expanded Pallet Town map for the Gym Trainer hack.
+
+Usage: python3 tools/gym_hack/build_pallet_town.py [preview.png]
+
+Writes:
+  data/layouts/PalletTown_Frlg/map.bin (and the size in data/layouts/layouts.json)
+  data/tilesets/secondary/pallet_town_frlg/metatiles.bin + metatile_attributes.bin
+    (the original 89 metatiles, plus extra ones this script composes: roofs over grass,
+    the gym over rock, the bridge)
+and, with an argument, a preview PNG with a coordinate grid.
+
+The map is described below in plain coordinates (x to the right, y down, in 16x16 blocks).
+Edit the LAYOUT section and re-run to move things around.
+"""
+import json
+import struct
+import sys
+from collections import deque
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools/gym_hack"))
+import render_map as rm  # noqa: E402
+
+LAYOUT_BIN = ROOT / "data/layouts/PalletTown_Frlg/map.bin"
+SEC = ROOT / "data/tilesets/secondary/pallet_town_frlg"
+PRIM = ROOT / "data/tilesets/primary/general_frlg"
+ORIGINAL_SECONDARY_METATILES = 89
+FIRST_CUSTOM = 0x280 + ORIGINAL_SECONDARY_METATILES
+
+W, H = 60, 52
+
+# ---------------------------------------------------------------------------
+# Custom metatiles (appended to the Pallet Town tileset)
+# ---------------------------------------------------------------------------
+LAYER_NORMAL, LAYER_COVERED, LAYER_SPLIT = 0, 1, 2
+
+
+def read_metatiles(path):
+    data = path.read_bytes()
+    return [list(struct.unpack_from("<8H", data, i)) for i in range(0, len(data), 16)]
+
+
+def read_attrs(path):
+    data = path.read_bytes()
+    return [struct.unpack_from("<I", data, i)[0] for i in range(0, len(data), 4)]
+
+
+PRIM_MT = read_metatiles(PRIM / "metatiles.bin")
+PRIM_ATTR = read_attrs(PRIM / "metatile_attributes.bin")
+SEC_MT = read_metatiles(SEC / "metatiles.bin")[:ORIGINAL_SECONDARY_METATILES]
+SEC_ATTR = read_attrs(SEC / "metatile_attributes.bin")[:ORIGINAL_SECONDARY_METATILES]
+
+
+def entries(mid):
+    return list(PRIM_MT[mid] if mid < 0x280 else SEC_MT[mid - 0x280])
+
+
+def attr(mid):
+    return PRIM_ATTR[mid] if mid < 0x280 else SEC_ATTR[mid - 0x280]
+
+
+custom = {}  # name -> metatile id
+
+
+def add_custom(name, ents, attribute):
+    if name not in custom:
+        custom[name] = 0x280 + len(SEC_MT)
+        SEC_MT.append(list(ents))
+        SEC_ATTR.append(attribute)
+    return custom[name]
+
+
+def with_layer(attribute, layer):
+    return (attribute & ~0x60000000) | (layer << 29)
+
+
+GRASS_BASE = entries(0x008)[:4]
+ROCK_BASE = entries(0x071)[4:]   # the rock plateau's (opaque) surface tiles
+PATH_BASE = entries(0x296)[:4]
+
+
+def over(base, mid, name=None):
+    """Metatile `mid` with its ground (first layer) swapped for `base` tiles."""
+    e = entries(mid)
+    return add_custom(name or f"{mid:x}@{id(base)}", base + e[4:], with_layer(attr(mid), LAYER_NORMAL))
+
+
+def planks_over_path(mid):
+    """Bridge planks (top layer, drawn over anyone walking under) above the path."""
+    return add_custom(f"bridge{mid:x}", PATH_BASE + entries(mid)[:4], with_layer(0, LAYER_NORMAL))
+
+
+# ---------------------------------------------------------------------------
+# Map grid
+# ---------------------------------------------------------------------------
+mt = [[None] * W for _ in range(H)]
+coll = [[0] * W for _ in range(H)]
+elev = [[3] * W for _ in range(H)]
+ground = [["P"] * W for _ in range(H)]  # P path, G grass, X something else (counts as grass edge)
+trees = set()  # top-left corners of 2x2 trees
+
+
+def put(x, y, m, c=1, z=0, g="X"):
+    mt[y][x], coll[y][x], elev[y][x], ground[y][x] = m, c, z, g
+
+
+def walk(x, y, m, z=3, g="X"):
+    put(x, y, m, 0, z, g)
+
+
+def grass(x0, y0, x1, y1):
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            if ground[y][x] in "PG":
+                ground[y][x] = "G"
+
+
+def tree(x, y):
+    trees.add((x, y))
+    for dy in range(2):
+        for dx in range(2):
+            ground[y + dy][x + dx] = "T"
+
+
+def tree_rect(x0, y0, x1, y1):
+    """Fill with 2x2 trees on the even grid (x1/y1 inclusive, block corners)."""
+    for y in range(y0, y1 + 1, 2):
+        for x in range(x0, x1 + 1, 2):
+            tree(x, y)
+
+
+def stamp(x, y, rows, collide_rows=None, z=0, walkable=()):
+    for dy, row in enumerate(rows):
+        for dx, m in enumerate(row):
+            if (dx, dy) in walkable:
+                walk(x + dx, y + dy, m)
+            else:
+                put(x + dx, y + dy, m)
+
+
+def house(x, y, base=GRASS_BASE):
+    """Two-story Pallet house. (x, y) = top-left of the roof edge row. Returns the door."""
+    top = [over(base, m, f"house_top{m:x}") for m in (0x281, 0x282, 0x282, 0x282, 0x283)]
+    for dx, m in enumerate(top):
+        walk(x + dx, y, m)
+    stamp(x, y + 1, [
+        [0x289, 0x28A, 0x28A, 0x28A, 0x28B],
+        [0x291, 0x293, 0x292, 0x292, 0x294],
+        [0x298, 0x299, 0x29A, 0x29B, 0x29C],
+        [0x2A0, 0x2A3, 0x2A2, 0x2A1, 0x2A4],
+    ])
+    return (x + 1, y + 4)
+
+
+def mailbox(x, y):
+    walk(x, y, 0x2A5)
+    put(x, y + 1, 0x2AD)
+
+
+def lab(x, y):
+    """Oak's lab, 7 wide. (x, y) = top-left of the roof edge row. Returns the door."""
+    top = [over(GRASS_BASE, m, f"lab_top{m:x}") for m in (0x2A8, 0x2A9, 0x2A9, 0x2A9, 0x2A9, 0x2BD, 0x2B5)]
+    for dx, m in enumerate(top):
+        walk(x + dx, y, m)
+    stamp(x, y + 1, [
+        [0x2B0, 0x2B1, 0x2B1, 0x2B1, 0x2B1, 0x2B3, 0x2B4],
+        [0x2B8, 0x2B9, 0x2B9, 0x2B9, 0x2B9, 0x2BB, 0x2BC],
+        [0x2C0, 0x2C1, 0x2D0, 0x2C2, 0x2C3, 0x2C4, 0x2C5],
+        [0x2C8, 0x2C9, 0x2D8, 0x2AC, 0x2CB, 0x2CC, 0x2CD],
+    ])
+    return (x + 3, y + 4)
+
+
+def pokemon_center(x, y):
+    for dx, m in enumerate((0x17B, 0x17C, 0x17D, 0x17E, 0x17F)):
+        walk(x + dx, y, m)
+    stamp(x, y + 1, [
+        [0x048, 0x049, 0x04A, 0x04B, 0x187],
+        [0x050, 0x051, 0x052, 0x053, 0x18F],
+        [0x058, 0x059, 0x05A, 0x05B, 0x197],
+        [0x060, 0x061, 0x062, 0x186, 0x19F],
+    ])
+    return (x + 2, y + 4)
+
+
+def mart(x, y):
+    for dx, m in enumerate((0x028, 0x029, 0x02A, 0x02B)):
+        walk(x + dx, y, m)
+    stamp(x, y + 1, [
+        [0x030, 0x031, 0x032, 0x033],
+        [0x038, 0x039, 0x03A, 0x03B],
+        [0x040, 0x041, 0x062, 0x063],
+    ])
+    return (x + 2, y + 3)
+
+
+def gym(x, y):
+    """The player's gym, 7 wide, on the rock plateau. Returns the door."""
+    for dx, m in enumerate((0x139, 0x13A, 0x13A, 0x13A, 0x13A, 0x13A, 0x13B)):
+        walk(x + dx, y, over(ROCK_BASE, m, f"gym{m:x}"))
+    stamp(x, y + 1, [
+        [0x141, 0x142, 0x142, 0x142, 0x142, 0x142, 0x143],
+        [0x149, 0x14A, 0x14A, 0x14A, 0x14A, 0x14A, 0x14B],
+        [0x150, 0x151, 0x152, 0x153, 0x154, 0x155, 0x156],
+    ])
+    bottom = [0x158, 0x159, 0x15A, 0x15B, 0x15C, 0x15D, 0x15E]
+    for dx, m in enumerate(bottom):
+        m2 = over(ROCK_BASE, m, f"gym{m:x}")
+        if dx in (0, 1, 5, 6):
+            walk(x + dx, y + 4, m2)
+        else:
+            put(x + dx, y + 4, m2)
+    return (x + 3, y + 4)
+
+
+def pond(x0, y0, x1, y1, rim_row=True, openings=()):
+    """Water from (x0,y0) to (x1,y1) with a rock rim, plus a grassy rim row below it.
+    `openings`: x positions on the bottom rim row that stay water (e.g. a waterfall)."""
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            if y == y0:
+                m = 0x122 if x == x0 else 0x124 if x == x1 else 0x123
+            else:
+                m = 0x12A if x == x0 else 0x12C if x == x1 else 0x12B
+            put(x, y, m, 0, 1)
+    if rim_row:
+        y = y1 + 1
+        for x in range(x0, x1 + 1):
+            if x in openings:
+                put(x, y, 0x12B, 0, 1)
+            else:
+                walk(x, y, 0x132 if x == x0 else 0x134 if x == x1 else 0x133, g="G")
+
+
+def raised(x0, y0, x1, y1, interior, z, stairs=(), top=True):
+    """A raised block with a rocky rim. interior: 'grass' or 'rock'.
+    The bottom row is the cliff face; `stairs` lists x positions of stairs in it."""
+    zs = 0 if z != 3 else 3  # stairs between two different heights are transitions
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            left, right = x == x0, x == x1
+            if y == y0 and top:
+                put(x, y, 0x68 if left else 0x6A if right else 0x69)
+            elif y == y1:
+                if x in stairs:
+                    walk(x, y, 0x91 if x == min(stairs) else 0x89, z=zs)
+                else:
+                    put(x, y, 0x78 if left else 0x7A if right else 0x79)
+            elif left:
+                put(x, y, 0x70)
+            elif right:
+                put(x, y, 0x72)
+            elif interior == "rock":
+                walk(x, y, 0x71, z=z)
+            else:
+                ground[y][x] = "G"
+                elev[y][x] = z
+
+
+def cliff_band(x0, x1, y0, y1, stairs=(), falls=()):
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            if x in stairs:
+                walk(x, y, 0x91 if x == min(stairs) else 0x89)
+            elif x in falls:
+                m = 0x127 if y == y0 else 0x137 if y == y1 else 0x12F
+                put(x, y, m, 0, 1)
+            else:
+                put(x, y, 0x7C)
+
+
+def flowers(x0, y0, x1, y1):
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            walk(x, y, 0x004, g="G")
+
+
+def fence(x0, x1, y, m=0x284):
+    for x in range(x0, x1 + 1):
+        put(x, y, m)
+
+
+# ---------------------------------------------------------------------------
+# LAYOUT
+# ---------------------------------------------------------------------------
+NORTH_EXIT = (20, 21)
+# Route 21's water channel (its x 7..10) lines up with these columns
+CHANNEL = (30, 33)
+
+# Borders
+tree_rect(0, 0, 18, 0)
+tree_rect(22, 0, 58, 0)
+tree_rect(0, 2, 0, 36)
+tree_rect(58, 2, 58, 36)
+
+# Top-left yard (neighbor) and top-right yard (rival), joined by a bridge over the north road
+YARD_Z = 4
+raised(4, 3, 17, 12, "grass", YARD_Z, stairs=(10, 11))
+raised(23, 3, 37, 12, "grass", YARD_Z, stairs=(31, 32))
+NEIGHBOR_DOOR = house(9, 4)
+mailbox(8, 7)
+RIVAL_DOOR = house(30, 4)
+mailbox(29, 7)
+flowers(6, 5, 7, 6)
+flowers(15, 5, 16, 6)
+flowers(35, 5, 36, 6)
+pond(25, 5, 27, 6)
+for y in (7, 8):
+    for x in range(17, 24):
+        if x in (17, 23):
+            walk(x, y, 0x1BE if y == 7 else 0x1C6, z=YARD_Z)
+        else:
+            walk(x, y, planks_over_path(0x1BE if y == 7 else 0x1C6), z=15)
+for y in range(4, 12):  # the yards stand at height 4
+    for x in list(range(5, 17)) + list(range(24, 37)):
+        if elev[y][x] == 3:
+            elev[y][x] = YARD_Z
+# Roof edges behind the houses: neutral height so the player is drawn behind the roof
+for x in range(9, 14):
+    elev[4][x] = 0
+for x in range(30, 35):
+    elev[4][x] = 0
+elev[7][8] = elev[7][29] = 0  # mailbox tops
+
+TOWN_SIGN = (23, 2)
+put(*TOWN_SIGN, 0x003)
+
+# Middle-left house (second neighbor)
+grass(3, 17, 12, 23)
+HOUSE2_DOOR = house(6, 17)
+mailbox(5, 20)
+flowers(11, 19, 12, 21)
+
+# The gym plateau
+raised(14, 16, 26, 25, "rock", 3, stairs=(19, 20, 21))
+GYM_DOOR = gym(17, 17)
+grass(16, 26, 17, 27)
+GYM_SIGN = (17, 27)
+walk(17, 26, 0x160)
+put(*GYM_SIGN, 0x168)
+
+# Oak's lab on its grassy rise
+raised(29, 16, 46, 31, "grass", 3, stairs=(38, 39))
+LAB_DOOR = lab(35, 23)
+pond(41, 18, 44, 19)
+tree(31, 18)
+tree(31, 26)
+tree(43, 26)
+flowers(40, 28, 42, 29)
+LAB_SIGN = (34, 28)
+put(*LAB_SIGN, 0x003)
+
+# Garden with the trainer tips sign
+grass(10, 28, 17, 32)
+fence(11, 15, 28)
+TIPS_SIGN = (16, 28)
+put(*TIPS_SIGN, 0x002)
+flowers(11, 29, 14, 30)
+
+# Pokemon Center and Mart
+grass(48, 6, 56, 11)
+PC_DOOR = pokemon_center(50, 6)
+grass(49, 14, 56, 19)
+MART_DOOR = mart(51, 15)
+tree_rect(48, 22, 56, 30)
+
+# Lake, cliffs and the sea
+grass(2, 33, 57, 37)
+fence(14, 48, 33, 0x284)
+pond(16, 34, 47, 36, openings=(19, 20, 21))
+tree_rect(2, 34, 10, 34)
+tree_rect(48, 34, 56, 34)
+cliff_band(2, 57, 38, 42, stairs=(12, 13), falls=(19, 20, 21))
+# Peninsula with the player's house
+grass(2, 43, 16, 51)
+PLAYER_DOOR = house(5, 44)
+mailbox(4, 47)
+flowers(11, 45, 13, 46)
+tree_rect(0, 38, 0, 50)
+# The sea below the waterfall, draining south through Route 21's channel
+for y in range(43, 50):
+    for x in range(17, 58):
+        m = 0x12B
+        if y == 43:
+            m = 0x122 if x == 17 else 0x123
+            if x in (19, 20, 21):
+                m = 0x12B
+        elif x == 17:
+            m = 0x12A
+        put(x, y, m, 0, 1)
+for x in range(17, 58):
+    if CHANNEL[0] <= x <= CHANNEL[1]:
+        for y in (50, 51):
+            put(x, y, 0x12A if x == CHANNEL[0] else 0x12C if x == CHANNEL[1] else 0x12B, 0, 1)
+    else:
+        walk(x, 50, 0x132 if x == 17 else 0x134 if x == CHANNEL[0] - 1 else 0x133, g="G")
+        walk(x, 51, 0x008, g="G")
+tree_rect(18, 50, 28, 50)
+tree_rect(34, 50, 56, 50)
+tree_rect(58, 38, 58, 50)
+
+# ---------------------------------------------------------------------------
+# Finishing: trees, and path/grass edges
+# ---------------------------------------------------------------------------
+TREE = {"tl": 0x1C, "tr": 0x1D, "bl": 0x14, "br": 0x15}
+
+
+def finish_trees():
+    for (x, y) in trees:
+        def has(dx, dy):
+            return (x + dx, y + dy) in trees or not (0 <= x + dx < W and 0 <= y + dy < H)
+        left, right, below = has(-2, 0), has(2, 0), has(0, 2)
+        put(x, y, 0x1C if left else 0x1E)
+        put(x + 1, y, 0x1D if right else 0x1F)
+        if below:
+            bl, br = (0x14 if left else 0x16), (0x15 if right else 0x17)
+        else:
+            bl, br = (0x24 if left else 0x26), (0x25 if right else 0x27)
+        put(x, y + 1, bl)
+        put(x + 1, y + 1, br)
+        for dx in range(2):
+            for dy in range(2):
+                ground[y + dy][x + dx] = "X"
+        # treetops peeking over the block above
+        if not has(0, -2) and y > 0:
+            for dx, m in ((0, 0x00E), (1, 0x00F)):
+                if mt[y - 1][x + dx] is None and ground[y - 1][x + dx] == "G":
+                    walk(x + dx, y - 1, m, g="G")
+
+
+# corner pattern (TL, TR, BL, BR; True = path) -> metatile
+EDGES = {
+    (1, 1, 1, 1): 0x296,
+    (0, 1, 0, 1): 0x2AE, (1, 0, 1, 0): 0x297, (0, 0, 1, 1): 0x28E, (1, 1, 0, 0): 0x29E,
+    (1, 1, 1, 0): 0x2C7, (1, 1, 0, 1): 0x2C6, (1, 0, 1, 1): 0x2BF, (0, 1, 1, 1): 0x2BE,
+    (0, 0, 0, 1): 0x2A6, (0, 0, 1, 0): 0x28F, (0, 1, 0, 0): 0x2B6, (1, 0, 0, 0): 0x29F,
+}
+GRASS = [[0x008, 0x009], [0x010, 0x011]]
+
+
+def finish_ground():
+    def is_path(x, y):
+        if not (0 <= x < W and 0 <= y < H):
+            return False
+        return ground[y][x] == "P"
+
+    def vertex(vx, vy):  # path only if every touching cell is path
+        return all(is_path(vx - dx, vy - dy) for dx in (0, 1) for dy in (0, 1))
+
+    warnings = []
+    for y in range(H):
+        for x in range(W):
+            if mt[y][x] is not None:
+                continue
+            if ground[y][x] == "P":
+                key = (vertex(x, y), vertex(x + 1, y), vertex(x, y + 1), vertex(x + 1, y + 1))
+                key = tuple(int(k) for k in key)
+                if key == (0, 0, 0, 0):
+                    m = GRASS[y % 2][x % 2]
+                elif key in EDGES:
+                    m = EDGES[key]
+                else:
+                    warnings.append((x, y))
+                    m = 0x296
+                mt[y][x] = m
+            else:
+                mt[y][x] = GRASS[y % 2][x % 2]
+    for w in warnings:
+        print("path corner that has no matching tile at", w)
+
+
+finish_trees()
+finish_ground()
+
+
+# ---------------------------------------------------------------------------
+# Output
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Events (warps, people, signs, triggers) and Oak's walking routes
+# ---------------------------------------------------------------------------
+def front(door):
+    return (door[0], door[1] + 1)
+
+
+# Warp ids 0-2 are the ones the original interiors already point back to.
+WARPS = [
+    (PLAYER_DOOR, "MAP_PALLET_TOWN_PLAYERS_HOUSE_1F", 1),
+    (RIVAL_DOOR, "MAP_PALLET_TOWN_RIVALS_HOUSE", 0),
+    (LAB_DOOR, "MAP_PALLET_TOWN_PROFESSOR_OAKS_LAB", 0),
+    (NEIGHBOR_DOOR, "MAP_PALLET_TOWN_HOUSE1", 0),
+    (HOUSE2_DOOR, "MAP_PALLET_TOWN_HOUSE2", 0),
+    (PC_DOOR, "MAP_PALLET_TOWN_POKEMON_CENTER_1F", 0),
+    (MART_DOOR, "MAP_PALLET_TOWN_MART", 0),
+]
+
+OAK_START = (21, 13)          # where Oak appears before walking up to the player
+OAK_RATING_START = (13, 43)   # where Oak appears after the Elite Four (foot of the stairs)
+SIGN_LADY_HOME = (14, 25)
+SIGN_LADY_AT_SIGN = (TIPS_SIGN[0], TIPS_SIGN[1] + 1)
+SIGN_LADY_AT_EXIT = (NORTH_EXIT[0], 2)
+FAT_MAN_HOME = (46, 12)
+
+
+def obj(local_id, gfx, pos, move, rx, ry, script, flag="0"):
+    o = {"type": "object", "graphics_id": gfx, "x": pos[0], "y": pos[1], "elevation": elev[pos[1]][pos[0]] or 3,
+         "movement_type": move, "movement_range_x": rx, "movement_range_y": ry,
+         "trainer_type": "TRAINER_TYPE_NONE", "trainer_sight_or_berry_tree_id": "0", "script": script, "flag": flag}
+    return {"local_id": local_id, **o} if local_id else o
+
+
+def sign(pos, script):
+    return {"type": "sign", "x": pos[0], "y": pos[1], "elevation": 0,
+            "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY", "script": script}
+
+
+def write_map_json():
+    path = ROOT / "data/maps/PalletTown_Frlg/map.json"
+    m = json.loads(path.read_text())
+    m["connections"] = [
+        {"map": "MAP_ROUTE1", "offset": NORTH_EXIT[0] - 12, "direction": "up"},
+        {"map": "MAP_ROUTE21_NORTH", "offset": CHANNEL[0] - 7, "direction": "down"},
+    ]
+    m["object_events"] = [
+        obj("LOCALID_PALLET_SIGN_LADY", "OBJ_EVENT_GFX_WOMAN_1_FRLG", SIGN_LADY_HOME, "MOVEMENT_TYPE_WANDER_AROUND",
+            2, 2, "PalletTown_EventScript_SignLady"),
+        obj("LOCALID_PALLET_FAT_MAN", "OBJ_EVENT_GFX_FAT_MAN_FRLG", FAT_MAN_HOME, "MOVEMENT_TYPE_WANDER_AROUND",
+            3, 2, "PalletTown_EventScript_FatMan"),
+        obj("LOCALID_PALLET_PROF_OAK", "OBJ_EVENT_GFX_PROF_OAK", OAK_START, "MOVEMENT_TYPE_FACE_UP",
+            1, 1, "0x0", "FLAG_HIDE_OAK_IN_PALLET_TOWN"),
+    ]
+    m["warp_events"] = [{"x": d[0], "y": d[1], "elevation": 0, "dest_map": dest, "dest_warp_id": str(w)}
+                        for d, dest, w in WARPS]
+    m["coord_events"] = [
+        {"type": "trigger", "x": NORTH_EXIT[0], "y": 1, "elevation": 3, "var": "VAR_MAP_SCENE_PALLET_TOWN_OAK",
+         "var_value": "0", "script": "PalletTown_EventScript_OakTriggerLeft"},
+        {"type": "trigger", "x": NORTH_EXIT[1], "y": 1, "elevation": 3, "var": "VAR_MAP_SCENE_PALLET_TOWN_OAK",
+         "var_value": "0", "script": "PalletTown_EventScript_OakTriggerRight"},
+        {"type": "trigger", "x": NORTH_EXIT[1], "y": 2, "elevation": 3, "var": "VAR_TEMP_2",
+         "var_value": "1", "script": "PalletTown_EventScript_SignLadyTrigger"},
+    ]
+    m["bg_events"] = [
+        sign(LAB_SIGN, "PalletTown_EventScript_OaksLabSign"),
+        sign((PLAYER_DOOR[0] - 2, PLAYER_DOOR[1]), "PalletTown_EventScript_PlayersHouseSign"),
+        sign((RIVAL_DOOR[0] - 2, RIVAL_DOOR[1]), "PalletTown_EventScript_RivalsHouseSign"),
+        sign((NEIGHBOR_DOOR[0] - 2, NEIGHBOR_DOOR[1]), "PalletTown_EventScript_NeighborsHouseSign"),
+        sign((HOUSE2_DOOR[0] - 2, HOUSE2_DOOR[1]), "PalletTown_EventScript_House2Sign"),
+        sign(TOWN_SIGN, "PalletTown_EventScript_TownSign"),
+        sign(TIPS_SIGN, "PalletTown_EventScript_TrainerTips"),
+        sign(GYM_SIGN, "PalletTown_EventScript_GymSign"),
+        sign(GYM_DOOR, "PalletTown_EventScript_GymDoorLocked"),
+    ]
+    path.write_text(json.dumps(m, indent=2) + "\n")
+
+
+DIRS = {(0, -1): "walk_up", (0, 1): "walk_down", (-1, 0): "walk_left", (1, 0): "walk_right"}
+
+
+def route(start, goal, start_z=3):
+    """Shortest walk on the ground (no water, no ledges), respecting heights."""
+    blocked = {SIGN_LADY_HOME, SIGN_LADY_AT_SIGN, FAT_MAN_HOME}
+    q = deque([(start, start_z)])
+    prev = {(start, start_z): None}
+    while q:
+        (x, y), z = q.popleft()
+        if (x, y) == goal:
+            out, k = [], ((x, y), z)
+            while k:
+                out.append(k[0])
+                k = prev[k]
+            return out[::-1]
+        for dx, dy in DIRS:
+            nx, ny = x + dx, y + dy
+            if not (0 <= nx < W and 0 <= ny < H) or coll[ny][nx] or elev[ny][nx] == 1 or (nx, ny) in blocked:
+                continue
+            nz = elev[ny][nx]
+            if not (z == 0 or nz in (0, 15) or nz == z):
+                continue
+            keep = nz == 15 or z == 15
+            state = ((nx, ny), z if keep else nz)
+            if state not in prev:
+                prev[state] = ((x, y), z)
+                q.append(state)
+    raise SystemExit(f"no route from {start} to {goal}")
+
+
+def steps(cells):
+    return [DIRS[(b[0] - a[0], b[1] - a[1])] for a, b in zip(cells, cells[1:])]
+
+
+def movement(label, cmds):
+    return f"{label}::\n" + "".join(f"\t{c}\n" for c in cmds) + "\tstep_end\n\n"
+
+
+def write_movements():
+    lab_front = front(LAB_DOOR)
+    out = ["@ Generated by tools/gym_hack/build_pallet_town.py from the map layout. Don't edit by hand.\n\n",
+           f".equ PALLET_LAB_DOOR_X, {LAB_DOOR[0]}\n.equ PALLET_LAB_DOOR_Y, {LAB_DOOR[1]}\n",
+           f".equ PALLET_OAK_RATING_X, {OAK_RATING_START[0]}\n.equ PALLET_OAK_RATING_Y, {OAK_RATING_START[1]}\n",
+           f".equ PALLET_SIGN_LADY_SIGN_X, {SIGN_LADY_AT_SIGN[0]}\n.equ PALLET_SIGN_LADY_SIGN_Y, {SIGN_LADY_AT_SIGN[1]}\n",
+           f".equ PALLET_SIGN_LADY_EXIT_X, {SIGN_LADY_AT_EXIT[0]}\n.equ PALLET_SIGN_LADY_EXIT_Y, {SIGN_LADY_AT_EXIT[1]}\n\n"]
+
+    def lead(prefix, oak_from, player_from):
+        """Oak walks from oak_from to the lab door; the player follows one step behind."""
+        oak = route(oak_from, lab_front)
+        player = [player_from] + oak[:-1]
+        out.append(movement(f"{prefix}_OakWalkToLab", steps(oak) + ["walk_in_place_faster_up"]))
+        out.append(movement(f"{prefix}_PlayerWalkToLab", steps(player)))
+        out.append(movement(f"{prefix}_PlayerEnterLab", steps([oak[-2], lab_front]) + ["walk_up", "set_invisible"]))
+
+    # Start of the game: Oak stops the player at the north exit
+    for side, x in (("Left", NORTH_EXIT[0]), ("Right", NORTH_EXIT[1])):
+        meet = (x, 2)
+        out.append(movement(f"PalletTown_Movement_OakEnter{side}", steps(route(OAK_START, meet)) + ["walk_in_place_faster_up"]))
+        lead(f"PalletTown_Movement_{side}", meet, (x, 1))
+    # After the Elite Four: Oak meets the player outside their house
+    outside = front(PLAYER_DOOR)
+    below = (outside[0], outside[1] + 1)
+    walk_in = route(OAK_RATING_START, below)
+    out.append(movement("PalletTown_Movement_OakWalkToPlayersDoor", steps(walk_in) + ["walk_in_place_faster_up"]))
+    out.append(movement("PalletTown_Movement_OakExit", steps(walk_in[::-1])))
+    lead("PalletTown_Movement_FromHouse", below, outside)
+    (ROOT / "data/maps/PalletTown_Frlg/movements.inc").write_text("".join(out))
+
+
+def write():
+    blocks = []
+    for y in range(H):
+        for x in range(W):
+            blocks.append((mt[y][x] & 0x3FF) | (coll[y][x] << 10) | (elev[y][x] << 12))
+    LAYOUT_BIN.write_bytes(struct.pack(f"<{len(blocks)}H", *blocks))
+    (SEC / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *e) for e in SEC_MT))
+    (SEC / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in SEC_ATTR))
+    path = ROOT / "data/layouts/layouts.json"
+    text = path.read_text()
+    data = json.loads(text)
+    for l in data["layouts"]:
+        if l.get("id") == "LAYOUT_PALLET_TOWN":
+            l["width"], l["height"] = W, H
+    path.write_text(json.dumps(data, indent=2) + "\n")
+
+
+def preview(out, scale=2):
+    from PIL import Image, ImageDraw
+    prim = rm.Tileset(rm.tileset_dir("gTileset_General_Frlg"))
+    sec = rm.Tileset(rm.tileset_dir("gTileset_PalletTown"))
+    img = Image.new("RGB", (W * 16, H * 16))
+    for y in range(H):
+        for x in range(W):
+            rm.draw_metatile(img, x * 16, y * 16, mt[y][x], prim, sec)
+    img = img.resize((W * 16 * scale, H * 16 * scale), Image.NEAREST)
+    d = ImageDraw.Draw(img)
+    s = 16 * scale
+    for x in range(0, W, 5):
+        d.text((x * s + 2, 2), str(x), fill=(255, 255, 0))
+    for y in range(0, H, 5):
+        d.text((2, y * s + 2), str(y), fill=(255, 255, 0))
+    img.save(out)
+
+
+if __name__ == "__main__":
+    write()
+    write_map_json()
+    write_movements()
+    if len(sys.argv) > 1:
+        preview(sys.argv[1])
+    print("doors:", dict(player=PLAYER_DOOR, rival=RIVAL_DOOR, neighbor=NEIGHBOR_DOOR, house2=HOUSE2_DOOR,
+                         lab=LAB_DOOR, gym=GYM_DOOR, pc=PC_DOOR, mart=MART_DOOR))

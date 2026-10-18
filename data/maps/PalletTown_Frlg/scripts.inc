@@ -1,4 +1,5 @@
 .equ SIGN_LADY_READY, VAR_TEMP_2
+	.include "data/maps/PalletTown_Frlg/movements.inc"
 
 PalletTown_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, PalletTown_OnTransition
@@ -24,12 +25,12 @@ PalletTown_EventScript_SetSignLadyDone::
 
 PalletTown_EventScript_SetSignLadyPos::
 	goto_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_MoveSignLadyToRouteEntrance
-	setobjectxyperm LOCALID_PALLET_SIGN_LADY, 5, 15
+	setobjectxyperm LOCALID_PALLET_SIGN_LADY, PALLET_SIGN_LADY_SIGN_X, PALLET_SIGN_LADY_SIGN_Y
 	setobjectmovementtype LOCALID_PALLET_SIGN_LADY, MOVEMENT_TYPE_FACE_UP
 	return
 
 PalletTown_EventScript_MoveSignLadyToRouteEntrance::
-	setobjectxyperm LOCALID_PALLET_SIGN_LADY, 12, 2
+	setobjectxyperm LOCALID_PALLET_SIGN_LADY, PALLET_SIGN_LADY_EXIT_X, PALLET_SIGN_LADY_EXIT_Y
 	setobjectmovementtype LOCALID_PALLET_SIGN_LADY, MOVEMENT_TYPE_FACE_DOWN
 	setvar SIGN_LADY_READY, TRUE
 	return
@@ -42,7 +43,7 @@ PalletTown_OnFrame::
 PalletTown_EventScript_OakRatingScene::
 	lockall
 	textcolor NPC_TEXT_COLOR_MALE
-	setobjectxyperm LOCALID_PALLET_PROF_OAK, 14, 14
+	setobjectxyperm LOCALID_PALLET_PROF_OAK, PALLET_OAK_RATING_X, PALLET_OAK_RATING_Y
 	setobjectmovementtype LOCALID_PALLET_PROF_OAK, MOVEMENT_TYPE_FACE_LEFT
 	addobject LOCALID_PALLET_PROF_OAK
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakWalkToPlayersDoor
@@ -59,15 +60,15 @@ PalletTown_EventScript_OakRatingScene::
 	msgbox PalletTown_Text_CaughtXImpressiveFollowMe
 	closemessage
 	playbgm MUS_FOLLOW_ME, 0
-	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerWalkToLabFromHouse
-	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakWalkToLabFromHouse
+	applymovement LOCALID_PLAYER, PalletTown_Movement_FromHouse_PlayerWalkToLab
+	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_FromHouse_OakWalkToLab
 	waitmovement 0
-	opendoor 16, 13
+	opendoor PALLET_LAB_DOOR_X, PALLET_LAB_DOOR_Y
 	waitdooranim
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakEnterLab
-	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerEnterLab
+	applymovement LOCALID_PLAYER, PalletTown_Movement_FromHouse_PlayerEnterLab
 	waitmovement 0
-	closedoor 16, 13
+	closedoor PALLET_LAB_DOOR_X, PALLET_LAB_DOOR_Y
 	waitdooranim
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7
 	setvar VAR_MAP_SCENE_PALLET_TOWN_OAK, 3
@@ -96,75 +97,9 @@ PalletTown_EventScript_NotBeenToOneIslandYet::
 	goto PalletTown_EventScript_EndOakRatingScene
 	end
 
-PalletTown_Movement_OakWalkToPlayersDoor::
-	walk_left
-	walk_left
-	walk_left
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_left
-	walk_in_place_faster_up
-	step_end
 
-PalletTown_Movement_OakExit::
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	step_end
 
-PalletTown_Movement_OakWalkToLabFromHouse::
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_in_place_faster_up
-	step_end
 
-PalletTown_Movement_PlayerWalkToLabFromHouse::
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	step_end
 
 PalletTown_EventScript_OakTriggerLeft::
 	lockall
@@ -202,12 +137,13 @@ PalletTown_EventScript_OakTrigger::
 	delay 30
 	call_if_eq VAR_TEMP_1, 0, PalletTown_EventScript_OakLeadPlayerToLabLeft
 	call_if_eq VAR_TEMP_1, 1, PalletTown_EventScript_OakLeadPlayerToLabRight
-	opendoor 16, 13
+	opendoor PALLET_LAB_DOOR_X, PALLET_LAB_DOOR_Y
 	waitdooranim
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakEnterLab
-	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerEnterLab
+	call_if_eq VAR_TEMP_1, 0, PalletTown_EventScript_PlayerEnterLabLeft
+	call_if_eq VAR_TEMP_1, 1, PalletTown_EventScript_PlayerEnterLabRight
 	waitmovement 0
-	closedoor 16, 13
+	closedoor PALLET_LAB_DOOR_X, PALLET_LAB_DOOR_Y
 	waitdooranim
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1
 	clearflag FLAG_HIDE_OAK_IN_HIS_LAB
@@ -218,6 +154,14 @@ PalletTown_EventScript_OakTrigger::
 	waitstate
 	releaseall
 	end
+
+PalletTown_EventScript_PlayerEnterLabLeft::
+	applymovement LOCALID_PLAYER, PalletTown_Movement_Left_PlayerEnterLab
+	return
+
+PalletTown_EventScript_PlayerEnterLabRight::
+	applymovement LOCALID_PLAYER, PalletTown_Movement_Right_PlayerEnterLab
+	return
 
 PalletTown_EventScript_OakEnterLeft::
 	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakEnterLeft
@@ -230,97 +174,29 @@ PalletTown_EventScript_OakEnterRight::
 	return
 
 PalletTown_EventScript_OakLeadPlayerToLabLeft::
-	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakWalkToLabLeft
-	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerWalkToLabLeft
+	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_Left_OakWalkToLab
+	applymovement LOCALID_PLAYER, PalletTown_Movement_Left_PlayerWalkToLab
 	waitmovement 0
 	return
 
 PalletTown_EventScript_OakLeadPlayerToLabRight::
-	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_OakWalkToLabRight
-	applymovement LOCALID_PLAYER, PalletTown_Movement_PlayerWalkToLabRight
+	applymovement LOCALID_PALLET_PROF_OAK, PalletTown_Movement_Right_OakWalkToLab
+	applymovement LOCALID_PLAYER, PalletTown_Movement_Right_PlayerWalkToLab
 	waitmovement 0
 	return
 
-PalletTown_Movement_OakEnterLeft::
-	walk_up
-	walk_up
-	walk_right
-	walk_up
-	walk_up
-	walk_right
-	walk_up
-	walk_up
-	step_end
 
-PalletTown_Movement_OakEnterRight::
-	walk_right
-	walk_up
-	walk_up
-	walk_right
-	walk_up
-	walk_up
-	walk_right
-	walk_up
-	walk_up
-	step_end
 
-	.macro walk_to_lab
-	walk_left
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	.endm
 
-PalletTown_Movement_OakWalkToLabLeft::
-	walk_down
-	walk_to_lab
-	walk_right
-	walk_in_place_faster_up
-	step_end
 
-PalletTown_Movement_OakWalkToLabRight::
-	walk_down
-	walk_left
-	walk_to_lab
-	walk_right
-	walk_in_place_faster_up
-	step_end
 
 PalletTown_Movement_OakEnterLab::
 	walk_up
 	set_invisible
 	step_end
 
-PalletTown_Movement_PlayerWalkToLabLeft::
-	walk_down
-	walk_down
-	walk_to_lab
-	step_end
 
-PalletTown_Movement_PlayerWalkToLabRight::
-	walk_down
-	walk_down
-	walk_left
-	walk_to_lab
-	step_end
 
-PalletTown_Movement_PlayerEnterLab::
-	walk_right
-	walk_up
-	set_invisible
-	step_end
 
 PalletTown_EventScript_SignLady::
 	lock
@@ -405,6 +281,22 @@ PalletTown_EventScript_RivalsHouseSign::
 	msgbox PalletTown_Text_RivalsHouse, MSGBOX_SIGN
 	end
 
+PalletTown_EventScript_NeighborsHouseSign::
+	msgbox PalletTown_Text_NeighborsHouse, MSGBOX_SIGN
+	end
+
+PalletTown_EventScript_House2Sign::
+	msgbox PalletTown_Text_House2, MSGBOX_SIGN
+	end
+
+PalletTown_EventScript_GymSign::
+	msgbox PalletTown_Text_GymSign, MSGBOX_SIGN
+	end
+
+PalletTown_EventScript_GymDoorLocked::
+	msgbox PalletTown_Text_GymDoorLocked, MSGBOX_SIGN
+	end
+
 PalletTown_EventScript_TownSign::
 	msgbox PalletTown_Text_TownSign, MSGBOX_SIGN
 	end
@@ -478,6 +370,19 @@ PalletTown_Text_PlayersHouse::
 
 PalletTown_Text_RivalsHouse::
 	.string "{RIVAL}'s house$"
+
+PalletTown_Text_NeighborsHouse::
+	.string "The ASHFORD family's house$"
+
+PalletTown_Text_House2::
+	.string "The WILLOW family's house$"
+
+PalletTown_Text_GymSign::
+	.string "PALLET TOWN POKéMON GYM\n"
+	.string "LEADER: To be decided!$"
+
+PalletTown_Text_GymDoorLocked::
+	.string "The doors are locked tight.$"
 
 PalletTown_Text_TownSign::
 	.string "PALLET TOWN\n"

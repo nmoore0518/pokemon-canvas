@@ -924,7 +924,12 @@
     "PalletTown_PlayersHouse_1F_Frlg",
     "PalletTown_PlayersHouse_2F_Frlg",
     "PalletTown_RivalsHouse_Frlg",
-    "PalletTown_ProfessorOaksLab_Frlg"
+    "PalletTown_ProfessorOaksLab_Frlg",
+    "PalletTown_House1_Frlg",
+    "PalletTown_House2_Frlg",
+    "PalletTown_PokemonCenter_1F_Frlg",
+    "PalletTown_PokemonCenter_2F_Frlg",
+    "PalletTown_Mart_Frlg"
   ],
   "gMapGroup_IndoorViridian_Frlg": [
     "ViridianCity_House_Frlg",
