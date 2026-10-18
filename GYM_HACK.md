@@ -134,9 +134,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     touches it.
   - Capacity: up to 256 kinds of decoration (255 of each), and 700 placed pieces (more than the
     room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 19 pieces
-    so far use 118 blocks. The real limit is palettes: the gym tileset has 3 spare palette slots
-    and the water and trash can use 2, so pieces with new colors from other tilesets need palettes
-    merged or shared. Furniture and anything drawn in the existing gym/indoor colors costs no
+    so far use 118 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots,
+    and the water (1) and trash can (2) use all of them, so pieces with new colors from other
+    tilesets need palettes merged or shared (the importer would have to fold similar colors into
+    existing palettes). Furniture and anything drawn in the existing gym/indoor colors costs no
     palette.
 - **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
   reveals he wants it for himself and challenges the player to prove they're good enough.
