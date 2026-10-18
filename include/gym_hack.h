@@ -19,6 +19,11 @@ const u8 *GymHack_GetBlockedBattleScript(void);
 u32 GymHack_GetRivalTypeFor(u32 playerType);
 u32 GymHack_GetStarterSpeciesForType(u32 type);
 
+// Gym type finder
+struct WildPokemonHeader;
+bool32 GymHack_WildHeaderHasType(const struct WildPokemonHeader *header, u32 type);
+u32 GymHack_GetTypeFinderMapSecs(u16 *out, u32 max, u32 regionMapType);
+
 // HM key items
 extern bool8 gGymHackFlyFromItem;
 u32 GymHack_GetFieldMoveItem(u32 fieldMove);

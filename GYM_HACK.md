@@ -81,6 +81,12 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   evolution stone, are sold at the Celadon Dept. Store 4F. Evolutions into Pokémon after Gen 3 are
   turned off (`P_GEN_x_CROSS_EVOS`). `tools/gym_hack/check_obtainable.py` (run on every GitHub build)
   checks that all 386 can be caught or evolved.
+- **Gym type finder**: on the Town Map (the item or a wall map), SELECT shows a Poké Ball on every
+  area whose wild tables (grass, water, fishing, Rock Smash) include a Pokémon whose primary type is
+  the player's; SELECT again hides them. It never says which Pokémon. Only the map being shown
+  (Kanto, or the Sevii group the player is on) gets markers. Worked out live from the wild tables, so
+  edits to the planner show up automatically (`GymHack_GetTypeFinderMapSecs`, `src/field_region_map.c`,
+  marker art `graphics/gym_hack/type_finder_marker.png`).
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -93,6 +99,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `test/gym_hack.c` | Automated tests (`make check BUILD=firered TESTS="GymHack"`) |
 | `data/maps/PalletTown_ProfessorOaksLab_Frlg/` | Oak's lab: type menu, shelf, rival's pick |
 | `data/scripts/gym_hack.inc` | Team-rule messages, HM key item scripts and text |
+| `src/field_region_map.c` | Town Map screen: type finder markers |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
@@ -114,5 +121,5 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Rival specializes in a counter type
    - [x] Type + no-duplicates check for gym, rival and Elite Four battles
 3. [x] Evolution toggle per Pokémon (no held item); HMs as key items
-4. [ ] All 386 Pokémon in the wild; type finder (DexNav-based)
+4. [x] All 386 Pokémon obtainable; gym type finder on the Town Map
 5. [ ] Gym builder and challengers

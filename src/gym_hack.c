@@ -36,6 +36,8 @@
 #include "fieldmap.h"
 #include "overworld.h"
 #include "constants/gym_hack.h"
+#include "region_map.h"
+#include "wild_encounter.h"
 #include "constants/field_move.h"
 #include "constants/items.h"
 #include "item.h"
@@ -410,4 +412,64 @@ bool32 GymHack_HasFieldMoveItem(u32 fieldMove)
 void GymHack_SkipNextShowMon(void)
 {
     gSkipShowMonAnim = TRUE;
+}
+
+// ---------------------------------------------------------------------------
+// Gym type finder (Town Map, SELECT): which areas have a wild Pokemon whose
+// primary type is the player's type. Only says *that* one is there, not which.
+// ---------------------------------------------------------------------------
+
+static bool32 MonListHasType(const struct WildPokemonInfo *info, u32 count, u32 type)
+{
+    u32 i;
+    if (info == NULL || info->wildPokemon == NULL)
+        return FALSE;
+    for (i = 0; i < count; i++)
+    {
+        if (GetPrimaryType(info->wildPokemon[i].species) == type)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+bool32 GymHack_WildHeaderHasType(const struct WildPokemonHeader *header, u32 type)
+{
+    u32 t;
+    for (t = 0; t < TIMES_OF_DAY_COUNT; t++)
+    {
+        const struct WildEncounterTypes *e = &header->encounterTypes[t];
+        if (MonListHasType(e->landMonsInfo, NUM_LAND_MONS_ENCOUNTER_SLOTS, type)
+         || MonListHasType(e->waterMonsInfo, NUM_WATER_MONS_ENCOUNTER_SLOTS, type)
+         || MonListHasType(e->rockSmashMonsInfo, NUM_ROCK_SMASH_MONS_ENCOUNTER_SLOTS, type)
+         || MonListHasType(e->fishingMonsInfo, NUM_FISHING_MONS_ENCOUNTER_SLOTS, type))
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// Fills `out` with the map sections on the given region map (Kanto or a Sevii
+// map) that have at least one wild Pokemon of the player's type. Returns how many.
+u32 GymHack_GetTypeFinderMapSecs(u16 *out, u32 max, u32 regionMapType)
+{
+    u32 type = VarGet(VAR_PLAYER_TYPE);
+    u32 i, j, count = 0;
+
+    if (type == TYPE_NONE)
+        return 0;
+    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(MAP_UNDEFINED) && count < max; i++)
+    {
+        u32 mapSec = Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum)->regionMapSectionId;
+        if (mapSec >= MAPSEC_NONE || GetRegionMapType(mapSec) != regionMapType)
+            continue;
+        for (j = 0; j < count; j++)
+        {
+            if (out[j] == mapSec)
+                break;
+        }
+        if (j < count)
+            continue;
+        if (GymHack_WildHeaderHasType(&gWildMonHeaders[i], type))
+            out[count++] = mapSec;
+    }
+    return count;
 }

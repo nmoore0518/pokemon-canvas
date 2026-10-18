@@ -23,6 +23,9 @@
 #include "constants/rival_teams.h"
 #include "constants/species.h"
 #include "constants/vars.h"
+#include "overworld.h"
+#include "region_map.h"
+#include "wild_encounter.h"
 
 // Menu labels from Oak's lab script, in menu order.
 extern const u8 GymHack_Text_TypeFairy[], GymHack_Text_TypeBug[], GymHack_Text_TypeDark[],
@@ -442,4 +445,80 @@ TEST("GymHack: every evolution item at Celadon can be bought")
     for (i = 0; CeladonCity_DepartmentStore_4F_Items[i] != ITEM_NONE; i++)
         EXPECT_GT(GetItemPrice(CeladonCity_DepartmentStore_4F_Items[i]), 0);
     EXPECT_GE(i, 15);
+}
+
+static const u8 sFinderTypes[] = {
+    TYPE_NORMAL, TYPE_FIGHTING, TYPE_POISON, TYPE_GROUND, TYPE_ROCK, TYPE_BUG, TYPE_GHOST, TYPE_STEEL,
+    TYPE_FIRE, TYPE_WATER, TYPE_GRASS, TYPE_ELECTRIC, TYPE_PSYCHIC, TYPE_ICE, TYPE_DRAGON, TYPE_DARK, TYPE_FAIRY,
+};
+
+static u32 CountFinderAreas(u32 type, u16 *out)
+{
+    u32 r, total = 0;
+    VarSet(VAR_PLAYER_TYPE, type);
+    for (r = REGION_MAP_KANTO; r <= REGION_MAP_SEVII67; r++)
+        total += GymHack_GetTypeFinderMapSecs(out, 64, r);
+    return total;
+}
+
+TEST("GymHack: type finder shows nothing before a type is chosen")
+{
+    u16 out[64];
+    EXPECT_EQ(CountFinderAreas(TYPE_NONE, out), 0);
+}
+
+TEST("GymHack: type finder finds an area for every selectable type")
+{
+    u16 out[64];
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sFinderTypes); i++)
+        EXPECT_GT(CountFinderAreas(sFinderTypes[i], out), 0);
+}
+
+TEST("GymHack: type finder marks exactly the areas with that primary type")
+{
+    u16 out[64];
+    u32 i, j, k, r, count;
+    for (i = 0; i < ARRAY_COUNT(sFinderTypes); i++)
+    {
+        VarSet(VAR_PLAYER_TYPE, sFinderTypes[i]);
+        for (r = REGION_MAP_KANTO; r <= REGION_MAP_SEVII67; r++)
+        {
+            count = GymHack_GetTypeFinderMapSecs(out, ARRAY_COUNT(out), r);
+            EXPECT_LT(count, ARRAY_COUNT(out));
+            // Every marked area is on this map
+            for (k = 0; k < count; k++)
+                EXPECT_EQ(GetRegionMapType(out[k]), r);
+            // Every wild table on this map with the type is marked
+            for (j = 0; gWildMonHeaders[j].mapGroup != MAP_GROUP(MAP_UNDEFINED); j++)
+            {
+                u32 mapSec = Overworld_GetMapHeaderByGroupAndId(gWildMonHeaders[j].mapGroup, gWildMonHeaders[j].mapNum)->regionMapSectionId;
+                bool32 marked = FALSE;
+                if (mapSec >= MAPSEC_NONE || GetRegionMapType(mapSec) != r)
+                    continue;
+                for (k = 0; k < count; k++)
+                {
+                    if (out[k] == mapSec)
+                        marked = TRUE;
+                }
+                if (GymHack_WildHeaderHasType(&gWildMonHeaders[j], sFinderTypes[i]))
+                    EXPECT(marked);
+            }
+        }
+    }
+}
+
+TEST("GymHack: type finder only counts primary types")
+{
+    // Route 1's tables hold Normal and Psychic types only
+    u32 j;
+    for (j = 0; gWildMonHeaders[j].mapGroup != MAP_GROUP(MAP_UNDEFINED); j++)
+    {
+        if (gWildMonHeaders[j].mapGroup == MAP_GROUP(MAP_ROUTE1) && gWildMonHeaders[j].mapNum == MAP_NUM(MAP_ROUTE1))
+        {
+            EXPECT(GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_NORMAL));
+            EXPECT(!GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_FLYING));
+            EXPECT(!GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_FIRE));
+        }
+    }
 }

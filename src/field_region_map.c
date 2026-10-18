@@ -1,4 +1,7 @@
 #include "global.h"
+#include "gym_hack.h"
+#include "sprite.h"
+#include "constants/vars.h"
 #include "bg.h"
 #include "event_data.h"
 #include "field_effect.h"
@@ -31,18 +34,28 @@
 enum {
     WIN_MAPSEC_NAME,
     WIN_TITLE,
+    WIN_TYPE_FINDER, // Gym Trainer hack
 };
 
 enum {
     TAG_PLAYER_ICON,
     TAG_CURSOR,
+    TAG_TYPE_FINDER, // Gym Trainer hack
 };
+
+// Gym Trainer hack: type finder markers
+#define MAX_TYPE_FINDER_MARKERS 64
+#define MAPCURSOR_X_MIN 1 // same as region_map.c
+#define MAPCURSOR_Y_MIN 2
 
 static EWRAM_DATA struct {
     MainCallback callback;
     u32 unused;
     struct RegionMap regionMap;
     u16 state;
+    bool8 typeFinderOn;
+    u8 numTypeFinderMarkers;
+    u8 typeFinderSpriteIds[MAX_TYPE_FINDER_MARKERS];
 } *sFieldRegionMapHandler = NULL;
 
 static void MCB2_InitRegionMapRegisters(void);
@@ -51,6 +64,30 @@ static void MCB2_FieldUpdateRegionMap(void);
 static void FieldUpdateRegionMap(void);
 static void PrintRegionMapSecName();
 static void PrintTitleWindowText();
+static void PrintTypeFinderHint(void);
+static void ToggleTypeFinder(void);
+static void DestroyTypeFinderMarkers(void);
+
+static const u16 sTypeFinderMarker_Pal[] = INCGFX_U16("graphics/gym_hack/type_finder_marker.png", ".gbapal");
+static const u8 sTypeFinderMarker_Gfx[] = INCGFX_U8("graphics/gym_hack/type_finder_marker.png", ".4bpp");
+
+static const struct OamData sTypeFinderMarkerOam =
+{
+    .shape = SPRITE_SHAPE(8x8),
+    .size = SPRITE_SIZE(8x8),
+    .priority = 1,
+};
+
+static const struct SpriteTemplate sTypeFinderMarkerTemplate =
+{
+    .tileTag = TAG_TYPE_FINDER,
+    .paletteTag = TAG_TYPE_FINDER,
+    .oam = &sTypeFinderMarkerOam,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
 
 static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
     {
@@ -92,6 +129,15 @@ static const struct WindowTemplate sFieldRegionMapWindowTemplates[] =
         .paletteNum = 15,
         .baseBlock = 25
     },
+    [WIN_TYPE_FINDER] = {
+        .bg = 0,
+        .tilemapLeft = 1,
+        .tilemapTop = 17,
+        .width = 14,
+        .height = 2,
+        .paletteNum = 15,
+        .baseBlock = 39
+    },
     DUMMY_WIN_TEMPLATE
 };
 
@@ -101,6 +147,8 @@ void FieldInitRegionMap(MainCallback callback)
     sFieldRegionMapHandler = Alloc(sizeof(*sFieldRegionMapHandler));
     sFieldRegionMapHandler->state = 0;
     sFieldRegionMapHandler->callback = callback;
+    sFieldRegionMapHandler->typeFinderOn = FALSE;
+    sFieldRegionMapHandler->numTypeFinderMarkers = 0;
     SetMainCallback2(MCB2_InitRegionMapRegisters);
 }
 
@@ -160,6 +208,11 @@ static void FieldUpdateRegionMap(void)
         ScheduleBgCopyTilemapToVram(0);
         DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME, FALSE, 0x27, 0xd);
         PrintRegionMapSecName();
+        if (VarGet(VAR_PLAYER_TYPE) != TYPE_NONE)
+        {
+            DrawStdFrameWithCustomTileAndPalette(WIN_TYPE_FINDER, FALSE, 0x27, 0xd);
+            PrintTypeFinderHint();
+        }
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         sFieldRegionMapHandler->state++;
         break;
@@ -176,6 +229,13 @@ static void FieldUpdateRegionMap(void)
         }
         break;
     case 4:
+        // Gym Trainer hack: SELECT shows/hides the type finder markers
+        if (JOY_NEW(SELECT_BUTTON) && VarGet(VAR_PLAYER_TYPE) != TYPE_NONE)
+        {
+            PlaySE(SE_SELECT);
+            ToggleTypeFinder();
+            break;
+        }
         switch (DoRegionMapInputCallback())
         {
         case MAP_INPUT_MOVE_END:
@@ -204,6 +264,7 @@ static void FieldUpdateRegionMap(void)
     case 6:
         if (!gPaletteFade.active)
         {
+            DestroyTypeFinderMarkers();
             FreeRegionMapIconResources();
             SetMainCallback2(sFieldRegionMapHandler->callback);
             TRY_FREE_AND_SET_NULL(sFieldRegionMapHandler);
@@ -252,4 +313,66 @@ static void PrintTitleWindowText(void)
         AddTextPrinterParameterized(WIN_TITLE, FONT_NORMAL, region, hoennOffset, 1, 0, NULL);
         CopyWindowToVram(WIN_TITLE, COPYWIN_FULL);
     }
+}
+
+// ---------------------------------------------------------------------------
+// Gym Trainer hack: gym type finder. Marks every area on this map that has a
+// wild Pokemon whose primary type is the player's type, without saying which.
+// ---------------------------------------------------------------------------
+
+static void PrintTypeFinderHint(void)
+{
+    static const u8 sText_Show[] = _("{SELECT_BUTTON} GYM TYPE FINDER");
+    static const u8 sText_Hide[] = _("{SELECT_BUTTON} HIDE FINDER");
+
+    FillWindowPixelBuffer(WIN_TYPE_FINDER, PIXEL_FILL(1));
+    AddTextPrinterParameterized(WIN_TYPE_FINDER, FONT_NORMAL,
+                                sFieldRegionMapHandler->typeFinderOn ? sText_Hide : sText_Show, 0, 1, 0, NULL);
+    CopyWindowToVram(WIN_TYPE_FINDER, COPYWIN_FULL);
+}
+
+static void CreateTypeFinderMarkers(void)
+{
+    u16 mapSecs[MAX_TYPE_FINDER_MARKERS];
+    u32 i, n;
+    struct SpriteSheet sheet = {sTypeFinderMarker_Gfx, sizeof(sTypeFinderMarker_Gfx), TAG_TYPE_FINDER};
+    struct SpritePalette palette = {sTypeFinderMarker_Pal, TAG_TYPE_FINDER};
+
+    LoadSpriteSheet(&sheet);
+    LoadSpritePalette(&palette);
+    n = GymHack_GetTypeFinderMapSecs(mapSecs, MAX_TYPE_FINDER_MARKERS, GetRegionMapType(gMapHeader.regionMapSectionId));
+    sFieldRegionMapHandler->numTypeFinderMarkers = 0;
+    for (i = 0; i < n; i++)
+    {
+        const struct RegionMapLocation *loc = &gRegionMapEntries[mapSecs[i]];
+        // Middle cell of the area, in the same 8px grid the player icon uses
+        s16 x = (loc->x + loc->width / 2 + MAPCURSOR_X_MIN) * 8 + 4;
+        s16 y = (loc->y + loc->height / 2 + MAPCURSOR_Y_MIN) * 8 + 4;
+        u8 spriteId = CreateSprite(&sTypeFinderMarkerTemplate, x, y, 2);
+        if (spriteId != MAX_SPRITES)
+            sFieldRegionMapHandler->typeFinderSpriteIds[sFieldRegionMapHandler->numTypeFinderMarkers++] = spriteId;
+    }
+}
+
+static void DestroyTypeFinderMarkers(void)
+{
+    u32 i;
+    for (i = 0; i < sFieldRegionMapHandler->numTypeFinderMarkers; i++)
+        DestroySprite(&gSprites[sFieldRegionMapHandler->typeFinderSpriteIds[i]]);
+    if (sFieldRegionMapHandler->numTypeFinderMarkers)
+    {
+        FreeSpriteTilesByTag(TAG_TYPE_FINDER);
+        FreeSpritePaletteByTag(TAG_TYPE_FINDER);
+    }
+    sFieldRegionMapHandler->numTypeFinderMarkers = 0;
+}
+
+static void ToggleTypeFinder(void)
+{
+    sFieldRegionMapHandler->typeFinderOn = !sFieldRegionMapHandler->typeFinderOn;
+    if (sFieldRegionMapHandler->typeFinderOn)
+        CreateTypeFinderMarkers();
+    else
+        DestroyTypeFinderMarkers();
+    PrintTypeFinderHint();
 }
