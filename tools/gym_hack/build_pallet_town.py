@@ -117,7 +117,7 @@ PATH_BASE = entries(0x296)[:4]
 def over(base, mid, name=None):
     """Metatile `mid` with its ground (first layer) swapped for `base` tiles."""
     e = entries(mid)
-    return add_custom(name or f"{mid:x}@{id(base)}", base + e[4:], with_layer(attr(mid), LAYER_NORMAL))
+    return add_custom(name or f"{mid:x}@{id(base)}", base + e[4:], attr(mid))
 
 
 def planks_over_path(mid):
@@ -148,10 +148,13 @@ def on_path(mid):
     return add_custom(f"{mid:x}:path", PATH_BASE + entries(mid)[4:], attr(mid))
 
 
-def decor_metatile(ground_mid, tiles):
-    """Decoration tiles (top layer, palette 7) over an ordinary ground block."""
-    top = [(t if t else 0) | (DECOR_PAL << 12 if t else 0) for t in tiles]
-    return add_custom(f"decor:{ground_mid:x}:{tiles}", entries(ground_mid)[:4] + top, with_layer(0, LAYER_NORMAL))
+def decor_metatile(ground_mid, tiles, behind):
+    """Decoration tiles (palette 7) over an ordinary ground block. `behind`: drawn over people
+    (the parts you walk behind); otherwise drawn under them, so someone standing just below
+    isn't covered."""
+    art = [(t if t else 0) | (DECOR_PAL << 12 if t else 0) for t in tiles]
+    layer = LAYER_NORMAL if behind else LAYER_COVERED
+    return add_custom(f"decor:{ground_mid:x}:{tiles}:{behind}", entries(ground_mid)[:4] + art, with_layer(0, layer))
 
 
 def sprite_tiles(name):
@@ -599,9 +602,9 @@ def finish_rims():
 
 
 def finish_decor():
-    for x, y, name, _ in decor:
+    for x, y, name, walkable_rows in decor:
         for (bx, by), ts in sprite_tiles(name).items():
-            mt[y + by][x + bx] = decor_metatile(mt[y + by][x + bx], ts)
+            mt[y + by][x + bx] = decor_metatile(mt[y + by][x + bx], ts, by < walkable_rows)
 
 
 # corner pattern (TL, TR, BL, BR; True = path) -> metatile
