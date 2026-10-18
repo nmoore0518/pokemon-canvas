@@ -332,6 +332,8 @@
 #define VAR_PLAYER_TYPE                                  0x40F7
 // The rival's specialty type (TYPE_*), set at the same time as VAR_PLAYER_TYPE.
 #define VAR_RIVAL_TYPE                                   0x40F8
+// The Pallet Town Gym introduction: 0 = not yet, 1 = Oak is about to show the gym, 2 = done.
+#define VAR_MAP_SCENE_PALLET_TOWN_GYM                    0x40F9
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

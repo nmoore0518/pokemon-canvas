@@ -100,6 +100,18 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,
   benches and street lamps are pixel art in `tools/gym_hack/pallet_art.py` (`statue()`, `bench()`,
   `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
+- **Story**: in the starter scene, Oak explains that the POKéMON LEAGUE is adding a ninth gym in
+  Pallet Town (so many trainers reach the League that the Elite Four never get a day off), and he has
+  picked the player and the rival as candidates. League rules say a Gym Leader uses one primary type,
+  so the whole League challenge is run that way. When both finish the League, they battle once more
+  for the gym. After the first rival battle Oak takes them both to the empty gym
+  (`PalletTown_Gym_Frlg`, scene in its `scripts.inc`), invites them to decorate it whenever they're
+  in town (part of their "audition"), and jokes that he'll run it himself if neither is good enough.
+  The gym door is swapped for a locked one (`setmetatile` in Pallet's `OnLoad`) until
+  `FLAG_PALLET_GYM_OPEN` is set. Scene state: `VAR_MAP_SCENE_PALLET_TOWN_GYM` (0x40F9).
+  The gym inside is drawn by `tools/gym_hack/build_pallet_gym.py` (25x28, Viridian Gym tiles).
+- **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
+  reveals he wants it for himself and challenges the player to prove they're good enough.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -115,6 +127,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/field_region_map.c` | Town Map screen: type finder markers |
 | `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
 | `tools/gym_hack/pallet_art.py` | Chansey statue, bench and lamp art |
+| `tools/gym_hack/build_pallet_gym.py`, `data/maps/PalletTown_Gym_Frlg/` | The gym inside and Oak's gym scene |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
@@ -140,6 +153,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
 4. [x] All 386 Pokémon obtainable; gym type finder on the Town Map
 5. Gym builder and challengers
    - [x] Pallet Town redesign (gym plateau, Pokémon Center, Mart, player's house by the water)
-   - [ ] Gym interior and Oak showing the player their gym after the Pokédex
-   - [ ] Decorating the gym and house (secret-base style)
-   - [ ] Challengers and the ninth badge after becoming Champion
+   - [x] Gym interior (empty) and Oak's ninth-gym story at the starter scene
+   - [ ] Decorating the gym and house, from early in the game: secret-base style plus gym puzzle
+         pieces (water, Vermilion trash cans, Fuchsia invisible walls, teleport pads, Viridian
+         spinner tiles), furniture and walls
+   - [ ] Final rival battle for the gym after the League, then Oak's challenge (twist)
+   - [ ] Challengers and the ninth badge after becoming Leader

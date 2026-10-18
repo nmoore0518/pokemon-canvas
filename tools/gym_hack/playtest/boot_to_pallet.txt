@@ -1,0 +1,43 @@
+wait 300
+mash A 3 40
+mash A 8 30
+mash A 8 30
+mash A 8 30
+mash A 8 30
+mash A 8 30
+mash A 8 30
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+mash A 10 25
+wait 400
+mash A 5 30
+mash B 4 20
+hold RIGHT 80
+hold UP 40
+hold UP 16
+wait 10
+hold LEFT 16
+wait 150
+pos 0x030052d4 a
+hold UP 16
+wait 30
+hold LEFT 20
+wait 150
+pos 0x030052d4 b
+hold DOWN 80
+hold LEFT 80
+hold DOWN 40
+hold LEFT 16
+wait 10
+hold DOWN 16
+wait 200
+pos 0x030052d4 c

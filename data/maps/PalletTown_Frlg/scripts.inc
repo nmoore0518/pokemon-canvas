@@ -2,9 +2,19 @@
 	.include "data/maps/PalletTown_Frlg/movements.inc"
 
 PalletTown_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, PalletTown_OnLoad
 	map_script MAP_SCRIPT_ON_TRANSITION, PalletTown_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, PalletTown_OnFrame
 	.byte 0
+
+@ The gym stays shut until Oak has shown it to the player
+PalletTown_OnLoad::
+	call_if_unset FLAG_PALLET_GYM_OPEN, PalletTown_EventScript_LockGymDoor
+	end
+
+PalletTown_EventScript_LockGymDoor::
+	setmetatile PALLET_GYM_DOOR_X, PALLET_GYM_DOOR_Y, METATILE_PALLET_GYM_DOOR_LOCKED, TRUE
+	return
 
 PalletTown_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_PALLET_TOWN
@@ -294,7 +304,11 @@ PalletTown_EventScript_GymSign::
 	end
 
 PalletTown_EventScript_GymDoorLocked::
+	goto_if_set FLAG_PALLET_GYM_OPEN, PalletTown_EventScript_GymDoorOpen
 	msgbox PalletTown_Text_GymDoorLocked, MSGBOX_SIGN
+	end
+
+PalletTown_EventScript_GymDoorOpen::
 	end
 
 PalletTown_EventScript_ChanseyStatue::
@@ -386,7 +400,9 @@ PalletTown_Text_GymSign::
 	.string "LEADER: To be decided!$"
 
 PalletTown_Text_GymDoorLocked::
-	.string "The doors are locked tight.$"
+	.string "The doors are locked tight.\p"
+	.string "A note is taped to the glass:\n"
+	.string "“Opening soon! - PROF. OAK”$"
 
 PalletTown_Text_ChanseyStatue::
 	.string "A statue of CHANSEY.\p"

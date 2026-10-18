@@ -5373,6 +5373,19 @@
       "layout_version": "frlg"
     },
     {
+      "id": "LAYOUT_PALLET_TOWN_GYM",
+      "name": "PalletTown_Gym_Layout",
+      "width": 25,
+      "height": 28,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_ViridianGym",
+      "border_filepath": "data/layouts/PalletTown_Gym_Frlg/border.bin",
+      "blockdata_filepath": "data/layouts/PalletTown_Gym_Frlg/map.bin",
+      "layout_version": "frlg"
+    },
+    {
       "id": "LAYOUT_VIRIDIAN_CITY",
       "name": "ViridianCity_Layout",
       "width": 48,

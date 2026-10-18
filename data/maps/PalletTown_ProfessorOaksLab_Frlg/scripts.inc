@@ -468,15 +468,17 @@ PalletTown_ProfessorOaksLab_EventScript_EndRivalBattle::
 	special HealPlayerParty
 	msgbox PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon
 	closemessage
-	playbgm MUS_RG_RIVAL_EXIT, 0
-	call_if_eq VAR_TEMP_2, 1, PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleLeft
-	call_if_eq VAR_TEMP_2, 2, PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleMid
-	call_if_eq VAR_TEMP_2, 3, PalletTown_ProfessorOaksLab_EventScript_RivalExitAfterBattleRight
+	applymovement LOCALID_OAKS_LAB_PROF_OAK, Common_Movement_FaceDown
+	waitmovement 0
+	msgbox PalletTown_ProfessorOaksLab_Text_OakFollowMeToGym
+	closemessage
+	@ Gym Trainer hack: Oak takes both of them to the new gym (PalletTown_Gym_Frlg)
 	removeobject LOCALID_OAKS_LAB_RIVAL
-	playse SE_EXIT
-	fadedefaultbgm
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
 	setflag FLAG_BEAT_RIVAL_IN_OAKS_LAB
+	setvar VAR_MAP_SCENE_PALLET_TOWN_GYM, 1
+	warp MAP_PALLET_TOWN_GYM, 12, 25
+	waitstate
 	releaseall
 	end
 
@@ -1334,7 +1336,13 @@ PalletTown_ProfessorOaksLab_Text_RivalGoToughenMyMon::
 	.string "{RIVAL}: Okay! I'll make my\n"
 	.string "POKéMON battle to toughen it up!\p"
 	.string "{PLAYER}! Gramps!\n"
-	.string "Smell you later!$"
+	.string "Smell you la…$"
+
+PalletTown_ProfessorOaksLab_Text_OakFollowMeToGym::
+	.string "OAK: Hold it, {RIVAL}!\p"
+	.string "Before you two run off, there's\n"
+	.string "something you both need to see.\p"
+	.string "Follow me!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalGramps::
 	.string "{RIVAL}: Gramps!$"
@@ -1362,15 +1370,36 @@ PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
 	.string "Let me think…\p"
 	.string "Oh, that's right, I told you to\n"
 	.string "come! Just wait!\p"
-	.string "Here, {PLAYER}.\p"
-	.string "So, you want to become a\n"
-	.string "GYM LEADER!\p"
-	.string "Every GYM LEADER masters a single\n"
-	.string "type of POKéMON.\p"
+	.string "I have big news for you both.\p"
+	.string "So many TRAINERS reach the\n"
+	.string "POKéMON LEAGUE these days…\p"
+	.string "…that the ELITE FOUR never get\n"
+	.string "a single day off!\p"
+	.string "So the LEAGUE is adding a ninth\n"
+	.string "GYM to the LEAGUE CHALLENGE…\p"
+	.string "…right here in PALLET TOWN!\p"
+	.string "They asked me to find its\n"
+	.string "GYM LEADER.\p"
+	.string "And I've chosen you two as my\n"
+	.string "candidates!\p"
+	.string "Now, LEAGUE rules say a GYM\n"
+	.string "LEADER uses POKéMON of just one\l"
+	.string "primary type.\p"
+	.string "So you'll take on the LEAGUE that\n"
+	.string "way, too.\p"
+	.string "Every GYM LEADER, every battle\n"
+	.string "with your rival, and the ELITE\l"
+	.string "FOUR: one type only!\p"
+	.string "And no two of the same POKéMON\n"
+	.string "on your team, either.\p"
+	.string "If you both make it through, you\n"
+	.string "two will battle one last time.\p"
+	.string "The winner gets the GYM!\p"
 	.string "These POKé BALLS can give you a\n"
 	.string "POKéMON of any type.\p"
-	.string "Pick the type you'll build your\n"
-	.string "GYM around. Choose wisely!\p"
+	.string "{PLAYER}, you go first.\n"
+	.string "Pick the type you'll build your\l"
+	.string "GYM around.\p"
 	.string "Once you've chosen, there's no\n"
 	.string "going back!$"
 

@@ -2436,6 +2436,11 @@
 
 #endif
 
+// ---- Gym Trainer hack ----
+// FLAG_0x020-0x027 are unused by the FireRed scripts.
+#define FLAG_PALLET_GYM_OPEN                0x020 // Oak has shown the player the Pallet Town Gym
+#define FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL  0x021 // they only stand in the gym during that scene
+
 #if TESTING
 #define TESTING_FLAGS_START                     0x5000
 #define TESTING_FLAG_SLEEP_CLAUSE               (TESTING_FLAGS_START + 0x0)

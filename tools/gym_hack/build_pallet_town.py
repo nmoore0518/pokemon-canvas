@@ -301,6 +301,10 @@ def gym(x, y):
             walk(x + dx, y + 4, m2)
         else:
             put(x + dx, y + 4, m2)
+    global GYM_DOOR_OPEN, GYM_DOOR_LOCKED
+    GYM_DOOR_OPEN = custom["gym15b"]
+    # The same door that doesn't open (swapped in until Oak has shown the player the gym)
+    GYM_DOOR_LOCKED = add_custom("gym door locked", entries(GYM_DOOR_OPEN), attr(GYM_DOOR_OPEN) & ~0x1FF)
     return (x + 3, y + 4)
 
 
@@ -673,6 +677,7 @@ WARPS = [
     (HOUSE2_DOOR, "MAP_PALLET_TOWN_HOUSE2", 0),
     (PC_DOOR, "MAP_PALLET_TOWN_POKEMON_CENTER_1F", 0),
     (MART_DOOR, "MAP_PALLET_TOWN_MART", 0),
+    (GYM_DOOR, "MAP_PALLET_TOWN_GYM", 0),
 ]
 
 OAK_START = (21, 13)          # where Oak appears before walking up to the player
@@ -781,7 +786,9 @@ def write_movements():
            f".equ PALLET_LAB_DOOR_X, {LAB_DOOR[0]}\n.equ PALLET_LAB_DOOR_Y, {LAB_DOOR[1]}\n",
            f".equ PALLET_OAK_RATING_X, {OAK_RATING_START[0]}\n.equ PALLET_OAK_RATING_Y, {OAK_RATING_START[1]}\n",
            f".equ PALLET_SIGN_LADY_SIGN_X, {SIGN_LADY_AT_SIGN[0]}\n.equ PALLET_SIGN_LADY_SIGN_Y, {SIGN_LADY_AT_SIGN[1]}\n",
-           f".equ PALLET_SIGN_LADY_EXIT_X, {SIGN_LADY_AT_EXIT[0]}\n.equ PALLET_SIGN_LADY_EXIT_Y, {SIGN_LADY_AT_EXIT[1]}\n\n"]
+           f".equ PALLET_SIGN_LADY_EXIT_X, {SIGN_LADY_AT_EXIT[0]}\n.equ PALLET_SIGN_LADY_EXIT_Y, {SIGN_LADY_AT_EXIT[1]}\n",
+           f".equ PALLET_GYM_DOOR_X, {GYM_DOOR[0]}\n.equ PALLET_GYM_DOOR_Y, {GYM_DOOR[1]}\n",
+           f".equ METATILE_PALLET_GYM_DOOR_LOCKED, 0x{GYM_DOOR_LOCKED:X}\n\n"]
 
     def lead(prefix, oak_from, player_from):
         """Oak walks from oak_from to the lab door; the player follows one step behind."""

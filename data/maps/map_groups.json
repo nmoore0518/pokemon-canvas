@@ -929,7 +929,8 @@
     "PalletTown_House2_Frlg",
     "PalletTown_PokemonCenter_1F_Frlg",
     "PalletTown_PokemonCenter_2F_Frlg",
-    "PalletTown_Mart_Frlg"
+    "PalletTown_Mart_Frlg",
+    "PalletTown_Gym_Frlg"
   ],
   "gMapGroup_IndoorViridian_Frlg": [
     "ViridianCity_House_Frlg",
