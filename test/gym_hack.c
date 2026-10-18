@@ -11,6 +11,7 @@
 #include "battle_util.h"
 #include "field_player_avatar.h"
 #include "item.h"
+#include "item_use.h"
 #include "constants/field_move.h"
 #include "constants/items.h"
 #include "constants/moves.h"
@@ -385,4 +386,60 @@ TEST("GymHack: the Boogie Board lets the player surf")
     EXPECT(!GymHack_HasFieldMoveItem(FIELD_MOVE_SURF) || PartyHasMonWithSurf());
     RUN_OVERWORLD_SCRIPT(additem ITEM_BOOGIE_BOARD;);
     EXPECT(PartyHasMonWithSurf());
+}
+
+// ---- Evolutions without trading ----
+
+static u32 EvolveByLevel(u32 species, u32 level)
+{
+    struct Pokemon mon;
+    CreateMon(&mon, species, level, 0, OTID_STRUCT_PLAYER_ID);
+    return GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO);
+}
+
+static u32 EvolveWithItem(u32 species, u32 item)
+{
+    struct Pokemon mon;
+    CreateMon(&mon, species, 30, 0, OTID_STRUCT_PLAYER_ID);
+    return GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, item, NULL, NULL, CHECK_EVO);
+}
+
+TEST("GymHack: trade evolutions happen at level 36 instead")
+{
+    EXPECT_EQ(EvolveByLevel(SPECIES_KADABRA, 35), SPECIES_NONE);
+    EXPECT_EQ(EvolveByLevel(SPECIES_KADABRA, 36), SPECIES_ALAKAZAM);
+    EXPECT_EQ(EvolveByLevel(SPECIES_MACHOKE, 36), SPECIES_MACHAMP);
+    EXPECT_EQ(EvolveByLevel(SPECIES_GRAVELER, 36), SPECIES_GOLEM);
+    EXPECT_EQ(EvolveByLevel(SPECIES_HAUNTER, 36), SPECIES_GENGAR);
+}
+
+TEST("GymHack: trade items work like evolution stones")
+{
+    EXPECT_EQ(EvolveWithItem(SPECIES_POLIWHIRL, ITEM_KINGS_ROCK), SPECIES_POLITOED);
+    EXPECT_EQ(EvolveWithItem(SPECIES_SLOWPOKE, ITEM_KINGS_ROCK), SPECIES_SLOWKING);
+    EXPECT_EQ(EvolveWithItem(SPECIES_ONIX, ITEM_METAL_COAT), SPECIES_STEELIX);
+    EXPECT_EQ(EvolveWithItem(SPECIES_SCYTHER, ITEM_METAL_COAT), SPECIES_SCIZOR);
+    EXPECT_EQ(EvolveWithItem(SPECIES_SEADRA, ITEM_DRAGON_SCALE), SPECIES_KINGDRA);
+    EXPECT_EQ(EvolveWithItem(SPECIES_PORYGON, ITEM_UPGRADE), SPECIES_PORYGON2);
+    EXPECT_EQ(EvolveWithItem(SPECIES_CLAMPERL, ITEM_DEEP_SEA_TOOTH), SPECIES_HUNTAIL);
+    EXPECT_EQ(EvolveWithItem(SPECIES_CLAMPERL, ITEM_DEEP_SEA_SCALE), SPECIES_GOREBYSS);
+    EXPECT_EQ(EvolveWithItem(SPECIES_FEEBAS, ITEM_PRISM_SCALE), SPECIES_MILOTIC);
+    EXPECT(GetItemFieldFunc(ITEM_KINGS_ROCK) == ItemUseOutOfBattle_EvolutionStone);
+}
+
+TEST("GymHack: Sun Shard and Moon Shard evolve Eevee")
+{
+    EXPECT_EQ(EvolveWithItem(SPECIES_EEVEE, ITEM_SUN_SHARD), SPECIES_ESPEON);
+    EXPECT_EQ(EvolveWithItem(SPECIES_EEVEE, ITEM_MOON_SHARD), SPECIES_UMBREON);
+    EXPECT(GetItemFieldFunc(ITEM_SUN_SHARD) == ItemUseOutOfBattle_EvolutionStone);
+}
+
+extern const u16 CeladonCity_DepartmentStore_4F_Items[];
+
+TEST("GymHack: every evolution item at Celadon can be bought")
+{
+    u32 i;
+    for (i = 0; CeladonCity_DepartmentStore_4F_Items[i] != ITEM_NONE; i++)
+        EXPECT_GT(GetItemPrice(CeladonCity_DepartmentStore_4F_Items[i]), 0);
+    EXPECT_GE(i, 15);
 }

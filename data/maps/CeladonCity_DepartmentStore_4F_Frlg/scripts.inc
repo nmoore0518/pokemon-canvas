@@ -31,6 +31,18 @@ CeladonCity_DepartmentStore_4F_Items::
 	.2byte ITEM_THUNDER_STONE
 	.2byte ITEM_WATER_STONE
 	.2byte ITEM_LEAF_STONE
+	@ Gym Trainer hack: every item needed to evolve the 386, since there's no trading
+	.2byte ITEM_MOON_STONE
+	.2byte ITEM_SUN_STONE
+	.2byte ITEM_SUN_SHARD
+	.2byte ITEM_MOON_SHARD
+	.2byte ITEM_KINGS_ROCK
+	.2byte ITEM_METAL_COAT
+	.2byte ITEM_DRAGON_SCALE
+	.2byte ITEM_UPGRADE
+	.2byte ITEM_DEEP_SEA_TOOTH
+	.2byte ITEM_DEEP_SEA_SCALE
+	.2byte ITEM_PRISM_SCALE
 	.2byte ITEM_NONE
 	release
 	end

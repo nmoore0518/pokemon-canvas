@@ -8840,7 +8840,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sKadabraLevelUpLearnset,
         .teachableLearnset = sKadabraTeachableLearnset,
-        .evolutions = EVOLUTION({EVO_TRADE, 0, SPECIES_ALAKAZAM},
+        .evolutions = EVOLUTION({EVO_LEVEL, 36, SPECIES_ALAKAZAM}, // Gym Trainer hack: was trade
                                 {EVO_ITEM, ITEM_LINKING_CORD, SPECIES_ALAKAZAM}),
     },
 
@@ -9184,7 +9184,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sMachokeLevelUpLearnset,
         .teachableLearnset = sMachokeTeachableLearnset,
-        .evolutions = EVOLUTION({EVO_TRADE, 0, SPECIES_MACHAMP},
+        .evolutions = EVOLUTION({EVO_LEVEL, 36, SPECIES_MACHAMP}, // Gym Trainer hack: was trade
                                 {EVO_ITEM, ITEM_LINKING_CORD, SPECIES_MACHAMP}),
     },
 
@@ -9926,7 +9926,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sGravelerLevelUpLearnset,
         .teachableLearnset = sGravelerTeachableLearnset,
         .formSpeciesIdTable = sGravelerFormSpeciesIdTable,
-        .evolutions = EVOLUTION({EVO_TRADE, 0, SPECIES_GOLEM},
+        .evolutions = EVOLUTION({EVO_LEVEL, 36, SPECIES_GOLEM}, // Gym Trainer hack: was trade
                                 {EVO_ITEM, ITEM_LINKING_CORD, SPECIES_GOLEM}),
     },
 
@@ -12378,7 +12378,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         )
         .levelUpLearnset = sHaunterLevelUpLearnset,
         .teachableLearnset = sHaunterTeachableLearnset,
-        .evolutions = EVOLUTION({EVO_TRADE, 0, SPECIES_GENGAR},
+        .evolutions = EVOLUTION({EVO_LEVEL, 36, SPECIES_GENGAR}, // Gym Trainer hack: was trade
                                 {EVO_ITEM, ITEM_LINKING_CORD, SPECIES_GENGAR}),
     },
 
@@ -18331,8 +18331,9 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
                                 ,{EVO_LEVEL, 0, SPECIES_SYLVEON, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD}, {IF_KNOWS_MOVE_TYPE, TYPE_FAIRY})}
                             #endif
                             #if P_GEN_2_CROSS_EVOS
-                                ,{EVO_LEVEL, 0, SPECIES_ESPEON, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD}, {IF_NOT_TIME, TIME_NIGHT})},
-                                {EVO_LEVEL, 0, SPECIES_UMBREON, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD}, {IF_TIME, TIME_NIGHT})}
+                                // Gym Trainer hack: FireRed has no clock, so these use items instead of time of day
+                                ,{EVO_ITEM, ITEM_SUN_SHARD, SPECIES_ESPEON},
+                                {EVO_ITEM, ITEM_MOON_SHARD, SPECIES_UMBREON}
                             #endif
                             #if P_GEN_4_CROSS_EVOS
                                 ,{EVO_LEVEL, 0, SPECIES_LEAFEON, CONDITIONS({IF_IN_MAP, MAP_PETALBURG_WOODS})},

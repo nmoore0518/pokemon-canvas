@@ -55,5 +55,11 @@ jobs:
           path: pokefirered.gba
           retention-days: 30
 
+      - name: Check every Pokémon can be obtained
+        run: |
+          arm-none-eabi-gcc -E -P -w -iquote include -I include -I gflib -DMODERN=1 -DTESTING=0 -DFIRERED -std=gnu17 \
+            -include include/global.h -x c src/data/pokemon/species_info.h -o species_info.i
+          python3 tools/gym_hack/check_obtainable.py species_info.i
+
       - name: Run Gym Trainer tests
         run: make check BUILD=firered TESTS="GymHack" -j$(nproc)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Draw the 24x24 bag icons for the HM key items (Hedge Clippers, Flashlight, Boogie Board,
-Hot Air Balloon, Can of Spinach, Sledgehammer, Rocket Boots).
+Hot Air Balloon, Can of Spinach, Sledgehammer, Rocket Boots) and the Sun/Moon Shards.
 
 Writes graphics/items/icons/<name>.png and graphics/items/icon_palettes/<name>.pal.
 Each icon is drawn with palette indices, then given a dark 1px outline like the
@@ -152,8 +152,26 @@ def rocket_boots():
          (255, 148, 131), (238, 238, 246), (255, 164, 41), (255, 238, 115)])
 
 
+def shard(name, colors):
+    # 2 dark facet, 3 main, 4 light facet, 5 sparkle
+    img = new()
+    d = ImageDraw.Draw(img)
+    d.polygon([(12, 1), (19, 9), (15, 22), (8, 22), (5, 10)], fill=3)
+    d.polygon([(12, 1), (12, 22), (8, 22), (5, 10)], fill=2)
+    d.polygon([(12, 1), (15, 8), (12, 12)], fill=4)
+    save(name, finish(img), [TRANSPARENT_COLOR, (41, 41, 49)] + colors)
+
+
+def sun_shard():
+    shard("sun_shard", [(230, 131, 24), (255, 197, 57), (255, 246, 172), (255, 255, 255)])
+
+
+def moon_shard():
+    shard("moon_shard", [(82, 74, 164), (139, 131, 230), (213, 213, 255), (255, 255, 255)])
+
+
 if __name__ == "__main__":
     for f in (hedge_clippers, flashlight, boogie_board, hot_air_balloon, can_of_spinach,
-              sledgehammer, rocket_boots):
+              sledgehammer, rocket_boots, sun_shard, moon_shard):
         f()
     print("icons written")

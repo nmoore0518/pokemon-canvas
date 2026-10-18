@@ -2128,3 +2128,7 @@ const u32 gItemIcon_Sledgehammer[] = INCGFX_U32("graphics/items/icons/sledgehamm
 const u16 gItemIconPalette_Sledgehammer[] = INCGFX_U16("graphics/items/icon_palettes/sledgehammer.pal", ".gbapal");
 const u32 gItemIcon_RocketBoots[] = INCGFX_U32("graphics/items/icons/rocket_boots.png", ".4bpp.smol");
 const u16 gItemIconPalette_RocketBoots[] = INCGFX_U16("graphics/items/icon_palettes/rocket_boots.pal", ".gbapal");
+const u32 gItemIcon_SunShard[] = INCGFX_U32("graphics/items/icons/sun_shard.png", ".4bpp.smol");
+const u16 gItemIconPalette_SunShard[] = INCGFX_U16("graphics/items/icon_palettes/sun_shard.pal", ".gbapal");
+const u32 gItemIcon_MoonShard[] = INCGFX_U32("graphics/items/icons/moon_shard.png", ".4bpp.smol");
+const u16 gItemIconPalette_MoonShard[] = INCGFX_U16("graphics/items/icon_palettes/moon_shard.pal", ".gbapal");

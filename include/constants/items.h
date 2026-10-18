@@ -1060,6 +1060,8 @@ enum __attribute__((packed)) Item
     ITEM_CAN_OF_SPINACH = 878,
     ITEM_SLEDGEHAMMER = 879,
     ITEM_ROCKET_BOOTS = 880,
+    ITEM_SUN_SHARD = 881,   // evolves Eevee into Espeon
+    ITEM_MOON_SHARD = 882,  // evolves Eevee into Umbreon
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

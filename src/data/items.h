@@ -8415,7 +8415,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_DEEP_SEA_SCALE] =
     {
         .name = ITEM_NAME("Deep Sea Scale"),
-        .price = (I_PRICE >= GEN_7) ? 2000 : 200,
+        .price = 2000, // Gym Trainer hack: sold at Celadon (was 0 from Gen 7 on)
         .holdEffect = HOLD_EFFECT_DEEP_SEA_SCALE,
         .description = COMPOUND_STRING(
             "A held item that\n"
@@ -16211,6 +16211,37 @@ const struct ItemInfo gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_RocketBoots,
         .iconPic = gItemIcon_RocketBoots,
         .iconPalette = gItemIconPalette_RocketBoots,
+    },
+
+    // Gym Trainer hack: Eevee evolution items (FireRed has no clock for Espeon/Umbreon)
+    [ITEM_SUN_SHARD] =
+    {
+        .name = ITEM_NAME("Sun Shard"),
+        .price = 3000,
+        .description = COMPOUND_STRING(
+            "A warm, glowing\n"
+            "shard. It makes Eevee\n"
+            "evolve into Espeon."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .iconPic = gItemIcon_SunShard,
+        .iconPalette = gItemIconPalette_SunShard,
+    },
+
+    [ITEM_MOON_SHARD] =
+    {
+        .name = ITEM_NAME("Moon Shard"),
+        .price = 3000,
+        .description = COMPOUND_STRING(
+            "A cool, shimmering\n"
+            "shard. It makes Eevee\n"
+            "evolve into Umbreon."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
+        .iconPic = gItemIcon_MoonShard,
+        .iconPalette = gItemIconPalette_MoonShard,
     },
 };
 

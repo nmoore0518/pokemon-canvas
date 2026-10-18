@@ -74,6 +74,13 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   To change them: edit the yellow cells, then run
   `python3 tools/gym_hack/import_wild_sheet.py <species_info.i> planning/wild-pokemon-planner.xlsx`
   (see `export_wild_sheet.py` for making `species_info.i`), or ask Claude.
+- **No trading needed**: Kadabra, Machoke, Graveler and Haunter evolve at level 36. Items that normally
+  need a trade (King's Rock, Metal Coat, Dragon Scale, Up-Grade, Deep Sea Tooth/Scale, Prism Scale)
+  are used from the bag like evolution stones (`I_USE_EVO_HELD_ITEMS_FROM_BAG`). Eevee becomes Espeon
+  with a Sun Shard and Umbreon with a Moon Shard (FireRed has no clock). All of these, plus every
+  evolution stone, are sold at the Celadon Dept. Store 4F. Evolutions into Pokémon after Gen 3 are
+  turned off (`P_GEN_x_CROSS_EVOS`). `tools/gym_hack/check_obtainable.py` (run on every GitHub build)
+  checks that all 386 can be caught or evolved.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
