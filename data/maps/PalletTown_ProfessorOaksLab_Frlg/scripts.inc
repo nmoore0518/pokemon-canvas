@@ -1075,17 +1075,18 @@ PalletTown_ProfessorOaksLab_EventScript_BallShelf::
 	releaseall
 	end
 
-@ Gym Trainer hack: choose one of 18 types. The order of this list must
-@ match sStarters in src/gym_hack.c.
+@ Gym Trainer hack: choose one of 18 types, easiest first. The order of this
+@ list must match sStarters in src/gym_hack.c.
 PalletTown_ProfessorOaksLab_EventScript_ChooseType::
 	applymovement LOCALID_OAKS_LAB_PROF_OAK, Common_Movement_FaceRight
 	waitmovement 0
 	textcolor NPC_TEXT_COLOR_MALE
 	message PalletTown_ProfessorOaksLab_Text_WhichType
 	waitmessage
-	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypeFairy, GymHack_Text_TypeBug, GymHack_Text_TypeDark, GymHack_Text_TypeDragon, GymHack_Text_TypeElectric, GymHack_Text_TypeFighting, GymHack_Text_TypeFire, GymHack_Text_TypeFlying, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass, GymHack_Text_TypeGround, GymHack_Text_TypeIce, GymHack_Text_TypeNormal, GymHack_Text_TypePoison, GymHack_Text_TypePsychic, GymHack_Text_TypeRock, GymHack_Text_TypeSteel, GymHack_Text_TypeWater
+	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypePsychic, GymHack_Text_TypeDragon, GymHack_Text_TypeFire, GymHack_Text_TypeWater, GymHack_Text_TypeSteel, GymHack_Text_TypeNormal, GymHack_Text_TypeElectric, GymHack_Text_TypeRock, GymHack_Text_TypeGround, GymHack_Text_TypeGrass, GymHack_Text_TypeIce, GymHack_Text_TypePoison, GymHack_Text_TypeBug, GymHack_Text_TypeFlying, GymHack_Text_TypeFighting, GymHack_Text_TypeDark, GymHack_Text_TypeGhost, GymHack_Text_TypeFairy
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_CancelTypeMenu
 	special GymHack_PrepareStarterChoice
+	call_if_ge VAR_RESULT, GYM_HACK_HARD_STARTERS_FROM, PalletTown_ProfessorOaksLab_EventScript_HardType
 	showmonpic PLAYER_STARTER_SPECIES, 10, 3
 	msgbox PalletTown_ProfessorOaksLab_Text_OakConfirmType, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PalletTown_ProfessorOaksLab_EventScript_DeclinedStarter
@@ -1400,6 +1401,13 @@ PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne::
 	.string "{PLAYER}, you go first.\n"
 	.string "Pick the type you'll build your\l"
 	.string "GYM around.\p"
+	.string "I've ordered my list by how strong\n"
+	.string "a team each type can put together.\p"
+	.string "The types at the top have mighty\n"
+	.string "POKéMON to choose from.\p"
+	.string "The ones near the bottom… Well,\n"
+	.string "they're for trainers who want\l"
+	.string "a real challenge!\p"
 	.string "Once you've chosen, there's no\n"
 	.string "going back!$"
 
@@ -1433,6 +1441,17 @@ PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
 	.string "It's very easy to raise.\p"
 	.string "So, {PLAYER}, you want to go with\n"
 	.string "the GRASS POKéMON BULBASAUR?$"
+
+PalletTown_ProfessorOaksLab_EventScript_HardType::
+	msgbox PalletTown_ProfessorOaksLab_Text_HardType
+	return
+
+PalletTown_ProfessorOaksLab_Text_HardType::
+	.string "OAK: Ho! The {STR_VAR_2} type?\n"
+	.string "That's a bold choice!\p"
+	.string "There aren't many strong {STR_VAR_2}\n"
+	.string "POKéMON. Every battle will be\l"
+	.string "a real test of your skill.$"
 
 PalletTown_ProfessorOaksLab_Text_WhichType::
 	.string "OAK: Which type will you\n"

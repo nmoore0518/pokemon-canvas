@@ -1,7 +1,9 @@
 // Gym Trainer hack: custom game logic.
 //
 // Starter selection: in Oak's lab the player picks one of 18 types from a
-// menu. The menu order in data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+// menu, ordered from easiest to hardest: by the highest base stat total a
+// team of six different species of that primary type can have (Gen 1-3,
+// legendaries included). See GYM_HACK.md for the numbers. The menu order in data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
 // must match sStarters below.
 //
 // Team rules: in gym leader and rival battles (and to enter the Elite Four),
@@ -56,24 +58,24 @@ struct GymHackStarter
 
 static const struct GymHackStarter sStarters[] =
 {
-    { SPECIES_CLEFAIRY,   TYPE_STEEL    }, // Fairy
-    { SPECIES_CATERPIE,   TYPE_FIRE     }, // Bug
-    { SPECIES_POOCHYENA,  TYPE_FIGHTING }, // Dark
-    { SPECIES_DRATINI,    TYPE_ICE      }, // Dragon
-    { SPECIES_PIKACHU,    TYPE_GROUND   }, // Electric
-    { SPECIES_TYROGUE,    TYPE_PSYCHIC  }, // Fighting
-    { SPECIES_CHARMANDER, TYPE_WATER    }, // Fire
-    { SPECIES_SPEAROW,    TYPE_ELECTRIC }, // Flying (the birds are Flying first in this hack)
-    { SPECIES_GASTLY,     TYPE_DARK     }, // Ghost
-    { SPECIES_BULBASAUR,  TYPE_POISON   }, // Grass
-    { SPECIES_SANDSHREW,  TYPE_GRASS    }, // Ground
-    { SPECIES_SPHEAL,     TYPE_ROCK     }, // Ice
-    { SPECIES_PORYGON,    TYPE_FIGHTING }, // Normal
-    { SPECIES_EKANS,      TYPE_PSYCHIC  }, // Poison
     { SPECIES_RALTS,      TYPE_DARK     }, // Psychic
-    { SPECIES_LARVITAR,   TYPE_WATER    }, // Rock
-    { SPECIES_BELDUM,     TYPE_FIRE     }, // Steel
+    { SPECIES_DRATINI,    TYPE_ICE      }, // Dragon
+    { SPECIES_CHARMANDER, TYPE_WATER    }, // Fire
     { SPECIES_SQUIRTLE,   TYPE_ELECTRIC }, // Water
+    { SPECIES_BELDUM,     TYPE_FIRE     }, // Steel
+    { SPECIES_PORYGON,    TYPE_FIGHTING }, // Normal
+    { SPECIES_PIKACHU,    TYPE_GROUND   }, // Electric
+    { SPECIES_LARVITAR,   TYPE_WATER    }, // Rock
+    { SPECIES_SANDSHREW,  TYPE_GRASS    }, // Ground
+    { SPECIES_BULBASAUR,  TYPE_POISON   }, // Grass
+    { SPECIES_SPHEAL,     TYPE_ROCK     }, // Ice
+    { SPECIES_EKANS,      TYPE_PSYCHIC  }, // Poison
+    { SPECIES_CATERPIE,   TYPE_FIRE     }, // Bug
+    { SPECIES_SPEAROW,    TYPE_ELECTRIC }, // Flying (the birds are Flying first in this hack)
+    { SPECIES_TYROGUE,    TYPE_PSYCHIC  }, // Fighting
+    { SPECIES_POOCHYENA,  TYPE_FIGHTING }, // Dark
+    { SPECIES_GASTLY,     TYPE_DARK     }, // Ghost
+    { SPECIES_CLEFAIRY,   TYPE_STEEL    }, // Fairy
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sStarters) == GYM_HACK_STARTER_COUNT, GymHackStarterCount);

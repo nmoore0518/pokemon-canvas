@@ -15,4 +15,8 @@
 #define GYM_CHALLENGER_FAMOUS     1   // a gym leader, Elite Four member, the rival, Giovanni or Oak
 #define GYM_CHALLENGER_TOWNSFOLK  2   // someone who doesn't usually battle (Mom, Nurse Joy, Bill...)
 
+// Oak's type menu runs from easiest to hardest; from this entry on (Fighting, Dark, Ghost,
+// Fairy) Oak warns that the type is a tough road
+#define GYM_HACK_HARD_STARTERS_FROM 14
+
 #endif // GUARD_CONSTANTS_GYM_HACK_H

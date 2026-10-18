@@ -37,12 +37,7 @@ extern const u8 GymHack_Text_TypeFairy[], GymHack_Text_TypeBug[], GymHack_Text_T
 
 static const u8 *const sMenuLabels[GYM_HACK_STARTER_COUNT] =
 {
-    GymHack_Text_TypeFairy, GymHack_Text_TypeBug, GymHack_Text_TypeDark,
-    GymHack_Text_TypeDragon, GymHack_Text_TypeElectric, GymHack_Text_TypeFighting,
-    GymHack_Text_TypeFire, GymHack_Text_TypeFlying, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass,
-    GymHack_Text_TypeGround, GymHack_Text_TypeIce, GymHack_Text_TypeNormal,
-    GymHack_Text_TypePoison, GymHack_Text_TypePsychic, GymHack_Text_TypeRock,
-    GymHack_Text_TypeSteel, GymHack_Text_TypeWater,
+    GymHack_Text_TypePsychic, GymHack_Text_TypeDragon, GymHack_Text_TypeFire, GymHack_Text_TypeWater, GymHack_Text_TypeSteel, GymHack_Text_TypeNormal, GymHack_Text_TypeElectric, GymHack_Text_TypeRock, GymHack_Text_TypeGround, GymHack_Text_TypeGrass, GymHack_Text_TypeIce, GymHack_Text_TypePoison, GymHack_Text_TypeBug, GymHack_Text_TypeFlying, GymHack_Text_TypeFighting, GymHack_Text_TypeDark, GymHack_Text_TypeGhost, GymHack_Text_TypeFairy,
 };
 
 static u32 GymHackTest_ChooseStarter(u32 menuIndex)
@@ -98,11 +93,11 @@ TEST("GymHack: menu labels name the starter's primary type")
 TEST("GymHack: confirming locks in the starter's primary type")
 {
     VarSet(VAR_PLAYER_TYPE, TYPE_NONE);
-    GymHackTest_ChooseStarter(0); // Clefairy: Fairy in modern typing
+    GymHackTest_ChooseStarter(17); // Clefairy: Fairy in modern typing
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_FAIRY);
 
-    GymHackTest_ChooseStarter(14); // Ralts: Psychic/Fairy, primary Psychic
+    GymHackTest_ChooseStarter(0); // Ralts: Psychic/Fairy, primary Psychic
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_PSYCHIC);
 }
@@ -121,7 +116,7 @@ TEST("GymHack: rival's type is never the player's and always beats it")
 
 TEST("GymHack: confirming sets the rival's type and starter")
 {
-    GymHackTest_ChooseStarter(6); // Charmander (Fire)
+    GymHackTest_ChooseStarter(2); // Charmander (Fire)
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_RIVAL_TYPE), TYPE_WATER);
     EXPECT_EQ(VarGet(VAR_TEMP_3), SPECIES_SQUIRTLE);
@@ -1042,4 +1037,72 @@ TEST("GymHack: the birds are Flying first, and every type can field six species"
             DebugPrintf("type %d has only %d species", i, count[i]);
         EXPECT_GE(count[i], 6);
     }
+}
+
+static u32 BestTeamBst(u32 type)
+{
+    u32 best[6] = {0}, i, j, total = 0;
+    for (i = 1; i <= SPECIES_DEOXYS; i++)
+    {
+        u32 bst = GetSpeciesBaseStatTotal(i);
+        if (gSpeciesInfo[i].types[0] != type)
+            continue;
+        for (j = 0; j < 6; j++)
+        {
+            if (bst > best[j])
+            {
+                u32 m;
+                for (m = 5; m > j; m--)
+                    best[m] = best[m - 1];
+                best[j] = bst;
+                break;
+            }
+        }
+    }
+    for (j = 0; j < 6; j++)
+        total += best[j];
+    return total;
+}
+
+TEST("GymHack: Oak's type menu runs from the strongest best team to the weakest")
+{
+    u32 i;
+    for (i = 0; i + 1 < GYM_HACK_STARTER_COUNT; i++)
+    {
+        u32 a = BestTeamBst(gSpeciesInfo[GymHackTest_ChooseStarter(i)].types[0]);
+        u32 b = BestTeamBst(gSpeciesInfo[GymHackTest_ChooseStarter(i + 1)].types[0]);
+        EXPECT_GE(a, b);
+    }
+    EXPECT_EQ(gSpeciesInfo[GymHackTest_ChooseStarter(GYM_HACK_HARD_STARTERS_FROM)].types[0], TYPE_FIGHTING);
+}
+
+extern const u8 PalletTown_ProfessorOaksLab_Text_HardType[], PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne[];
+
+TEST("GymHack: Oak's type-choice lines fit the message box")
+{
+    static const u8 *const texts[] = {PalletTown_ProfessorOaksLab_Text_HardType, PalletTown_ProfessorOaksLab_Text_OakThreeMonsChooseOne};
+    u8 *buf = Alloc(1200);
+    u32 i;
+    StringCopy(gStringVar2, COMPOUND_STRING("Fighting"));
+    StringCopy(gSaveBlock1Ptr->rivalName, COMPOUND_STRING("MMMMMMM"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("oak line too wide: %S", line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
 }

@@ -47,7 +47,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 - **Modern typings** (Fairy included), with one change: the birds are Flying first. Pidgey,
   Spearow, Wingull, Doduo, Natu, Taillow and Hoothoot lines, Aerodactyl and Farfetch'd (and Mega
   Pidgeot/Aerodactyl) swap their two types, so Flying is a team type like any other (types are
-  in `src/data/pokemon/species_info/gen_*_families.h`). 18 selectable types; Flying's starter is
+  in `src/data/pokemon/species_info/gen_*_families.h`). 18 selectable types, listed easiest first (see below); Flying's starter is
   Spearow and its rival is Electric. The rival's Psychic and Rock teams use Chimecho and
   Anorith/Armaldo in place of Natu/Xatu and Aerodactyl.
 - **Primary type** means `gSpeciesInfo[species].types[0]`.
@@ -104,6 +104,31 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,
   benches and street lamps are pixel art in `tools/gym_hack/pallet_art.py` (`statue()`, `bench()`,
   `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
+- **Type menu order = difficulty.** Oak's list runs from the type with the strongest possible
+  team to the weakest: the highest total base stats of six different species with that primary
+  type (Gen 1-3, legendaries included). Oak says so before the menu, and picking one of the last
+  four (`GYM_HACK_HARD_STARTERS_FROM`) gets a "bold choice" warning. A test keeps the order right.
+
+  | # | Type | Best six (BST total) |
+  |---|---|---|
+  | 1 | Psychic | 3685 (Mewtwo, Lugia, Mew, Celebi, Deoxys, Espeon) |
+  | 2 | Dragon | 3570 (Rayquaza, Dragonite, Salamence, Latias, Latios, Altaria) |
+  | 3 | Fire | 3463 (Ho-Oh, Moltres, Entei, Arcanine, Charizard, Typhlosion) |
+  | 4 | Water | 3405 (Kyogre, Suicune, Gyarados, Kingdra, Milotic, Lapras) |
+  | 5 | Steel | 3285 (Metagross, Jirachi, Registeel, Aggron, Steelix, Skarmory) |
+  | 6 | Normal | 3255 (Slaking, Snorlax, Blissey, Porygon2, Ursaring, Kangaskhan) |
+  | 7 | Electric | 3175 (Zapdos, Raikou, Jolteon, Ampharos, Electrode, Electabuzz) |
+  | 8 | Rock | 3160 (Tyranitar, Regirock, Golem, Omastar, Kabutops, Cradily) |
+  | 9 | Ground | 3125 (Groudon, Flygon, Donphan, Claydol, Rhydon, Sandslash) |
+  | 10 | Grass | 3090 (Exeggutor, Sceptile, Venusaur, Meganium, Vileplume, Victreebel) |
+  | 11 | Ice | 3075 (Articuno, Regice, Walrein, Glalie, Jynx, Piloswine) |
+  | 12 | Poison | 3002 (Crobat, Nidoqueen, Nidoking, Muk, Weezing, Swalot) |
+  | 13 | Bug | 2970 (Shuckle, Scyther, Pinsir, Scizor, Heracross, Forretress) |
+  | 14 | Flying | 2841 (Aerodactyl, Pidgeot, Dodrio, Xatu, Swellow, Noctowl) |
+  | 15 | Fighting | 2799 (Machamp, Hariyama, Primeape, Hitmonlee, Hitmonchan, Hitmontop) |
+  | 16 | Dark | 2745 (Umbreon, Houndoom, Absol, Sneasel, Mightyena, Murkrow) |
+  | 17 | Ghost | 2560 (Gengar, Banette, Dusclops, Misdreavus, Haunter, Gastly) |
+  | 18 | Fairy | 2206 (Clefable, Granbull, Togetic, Clefairy, Snubbull, Togepi) |
 - **Story**: in the starter scene, Oak explains that the POKéMON LEAGUE is adding a ninth gym in
   Pallet Town (so many trainers reach the League that the Elite Four never get a day off), and he has
   picked the player and the rival as candidates. League rules say a Gym Leader uses one primary type,
