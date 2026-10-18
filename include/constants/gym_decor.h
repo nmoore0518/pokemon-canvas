@@ -25,7 +25,13 @@ enum GymDecorId
     GYM_DECOR_SPINNER_RIGHT,
     GYM_DECOR_SPINNER_STOP,
     GYM_DECOR_BATTLE_STAGE,
+    GYM_DECOR_BADGE_PEDESTAL,
     GYM_DECOR_COUNT
 };
+
+// The player's badge in the gym tileset: 16 tiles from this one (in the secondary tileset), in
+// this palette slot. src/gym_badge.c swaps in the player's own badge.
+#define GYM_BADGE_TILE_START 799
+#define GYM_BADGE_PALETTE    11
 
 #endif // GUARD_CONSTANTS_GYM_DECOR_H

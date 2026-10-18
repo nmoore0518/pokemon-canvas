@@ -97,6 +97,11 @@ DECORATIONS = [
     dict(key="BATTLE_STAGE", name="BATTLE STAGE", price=0, unlock=None,
          desc="Challengers battle you here.",
          cells=[[f"art:STAGE:{x}:{y}" for x in range(3)] for y in range(5)]),
+    # --- Once the gym is officially the player's --------------------------------
+    dict(key="BADGE_PEDESTAL", name="BADGE PEDESTAL", price=10000, unlock="FLAG_PALLET_GYM_AWARDED",
+         desc="Shows off your GYM's own BADGE.",
+         cells=[["badge:0:0~", "badge:1:0~"], ["badge:0:1", "badge:1:1"],
+                ["art:PEDESTAL:0:0", "art:PEDESTAL:1:0"]]),
 ]
 
 # Fixed pieces of the gym itself (not for sale)
@@ -140,7 +145,7 @@ class Tileset:
         self.cache = {}
         self.tiles_img = tiles_img          # [PIL image, number of tiles used]
         self.pals = [rm.load_pal(p) for p in sorted((DST / "palettes").glob("*.pal"))]
-        self.free_pals = [9, 10, 11]        # slots the Viridian Gym tileset leaves empty
+        self.free_pals = [9, 10]            # slots the Viridian Gym tileset leaves empty (11: the badge)
         self.pal_map = {}
         self.tile_map = {}
         self.sources = {}
@@ -196,6 +201,10 @@ class Tileset:
         if spec == "wall":
             marker = self.add(FLOOR_TILES + MARKER_TILES, with_layer(MB_NORMAL, LAYER_NORMAL))
             return FLOOR, True, marker
+        if spec.startswith("badge:"):
+            _, cx, cy = spec.split(":")
+            return self.add(FLOOR_TILES + badge_tiles(self.tiles_img, int(cx), int(cy)),
+                            with_layer(MB_NORMAL, LAYER_NORMAL)), not walkable, None
         if spec.startswith("art:"):
             _, name, cx, cy = spec.split(":")
             return self.add(art_tiles(self.tiles_img, name, int(cx), int(cy)) + GYM_MT[FLOOR - 0x280][4:],
@@ -207,9 +216,10 @@ class Tileset:
             src, attrs = self.source(name)
             ents = src.metatiles[mid - 0x280]
             floor = src.metatiles[0x281 - 0x280][:4]
-            imported = [self.import_entry(name, e) for e in ents]
             if list(ents[:4]) == list(floor):
-                imported = FLOOR_TILES + imported[4:]
+                imported = FLOOR_TILES + [self.import_entry(name, e) for e in ents[4:]]
+            else:
+                imported = [self.import_entry(name, e) for e in ents]
             attr = attrs[mid - 0x280] if keep else attrs[mid - 0x280] & ~0x1FF
             return self.add(imported, attr), not (walkable or water), "water" if water else None
         kind, num = spec.split(":")
@@ -263,7 +273,51 @@ def stage_art():
     return px
 
 
-ART = {"STAGE": stage_art}
+def pedestal_art():
+    """A stone plinth (32x16) for the badge to sit on."""
+    w, h = 32, 16
+    px = [[0] * w for _ in range(h)]
+    for y in range(h):
+        for x in range(w):
+            if 2 <= x <= 29 and 1 <= y <= 4:                  # the top slab
+                px[y][x] = 13 if y > 1 else 5
+            elif 4 <= x <= 27 and 5 <= y <= 13:               # the column
+                px[y][x] = 4 if x < 9 else (3 if x < 24 else 2)
+            elif 2 <= x <= 29 and y == 14:                    # the base
+                px[y][x] = 3
+            if px[y][x] and (y == 4 or y == 13) and 4 <= x <= 27:
+                px[y][x] = 14                                 # gold trim
+    # outline
+    out = [row[:] for row in px]
+    for y in range(h):
+        for x in range(w):
+            if px[y][x] == 0 and any(0 <= x + dx < w and 0 <= y + dy < h and px[y + dy][x + dx]
+                                     for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                out[y][x] = DARK
+    return out
+
+
+ART = {"STAGE": stage_art, "PEDESTAL": pedestal_art}
+
+# The player's badge (graphics/gym_badges, made by badge_art.py): 16 tiles in a row in the tileset,
+# drawn in palette BADGE_PAL. The game swaps in the player's own badge tiles and colors when the
+# gym loads (src/gym_badge.c); the tileset holds the Normal badge.
+BADGE_PAL = 11
+BADGE_TILES = {}
+
+
+def badge_tiles(tiles_img, cx, cy):
+    """The 4 tile entries for block (cx, cy) of the 32x32 badge; adds all 16 tiles the first time."""
+    from PIL import Image
+    if not BADGE_TILES:
+        img = Image.open(ROOT / "graphics/gym_badges/normal.png")
+        px = list(img.getdata())
+        for ty in range(4):
+            for tx in range(4):
+                tile = [px[(ty * 8 + y) * 32 + tx * 8 + x] for y in range(8) for x in range(8)]
+                BADGE_TILES[(tx, ty)] = append_tile(tiles_img, tile) | (BADGE_PAL << 12)
+        BADGE_TILES["start"] = BADGE_TILES[(0, 0)] & 0x3FF
+    return [BADGE_TILES[(cx * 2 + tx, cy * 2 + ty)] for ty in range(2) for tx in range(2)]
 _ART_CACHE = {}
 
 
@@ -342,6 +396,7 @@ def build():
     tiles_img = [tiles, count_used_tiles(tiles)]
     MARKER_TILES[:] = make_marker_tiles(tiles_img)
     _ART_CACHE.clear()
+    BADGE_TILES.clear()
 
     ts = Tileset(tiles_img)
     catalog = []
@@ -351,6 +406,9 @@ def build():
             rows.append([ts.cell(c, d.get("keep", False)) for c in row])
         catalog.append((d, rows))
     fixed = {k: ts.cell(v, False)[0] for k, v in FIXED.items()}
+    from PIL import Image
+    badge_pal = Image.open(ROOT / "graphics/gym_badges/normal.png").getpalette()[:48]
+    ts.pals[BADGE_PAL] = [tuple(badge_pal[i:i + 3]) for i in range(0, 48, 3)]
     tiles_img[0].save(DST / "tiles.png")
     ts.write_palettes()
     if tiles_img[1] > 384:
@@ -359,11 +417,11 @@ def build():
         raise SystemExit(f"the gym tileset has {len(ts.mt)} blocks; the limit is 384")
     (DST / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in ts.mt))
     (DST / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in ts.attr))
-    write_c(catalog)
+    write_c(catalog, BADGE_TILES["start"])
     return ts, catalog, fixed
 
 
-def write_c(catalog):
+def write_c(catalog, badge_tile_start):
     ids = "\n".join(f"    GYM_DECOR_{d['key']}," for d, _ in catalog)
     (ROOT / "include/constants/gym_decor.h").write_text(f"""// Generated by tools/gym_hack/build_gym_decor.py. Don't edit by hand.
 #ifndef GUARD_CONSTANTS_GYM_DECOR_H
@@ -375,6 +433,11 @@ enum GymDecorId
 {ids}
     GYM_DECOR_COUNT
 }};
+
+// The player's badge in the gym tileset: 16 tiles from this one (in the secondary tileset), in
+// this palette slot. src/gym_badge.c swaps in the player's own badge.
+#define GYM_BADGE_TILE_START {badge_tile_start}
+#define GYM_BADGE_PALETTE    {BADGE_PAL}
 
 #endif // GUARD_CONSTANTS_GYM_DECOR_H
 """)

@@ -944,20 +944,25 @@ TEST("GymHack: challenge: every challenger line fits its text box")
     Free(buf);
 }
 
-extern const u8 GymChallenge_Text_AideNotYet[], GymChallenge_Text_AideWelcome[], GymChallenge_Text_ReadyToBattle[], GymChallenge_Text_NotNow[], GymChallenge_Text_TeamBreaksRules[], GymChallenge_Text_TakeYourPlace[], GymChallenge_Text_AnnounceTrainer[], GymChallenge_Text_AnnounceFamous[], GymChallenge_Text_AnnounceTownsfolk[], GymChallenge_Text_Won[], GymChallenge_Text_NewRecord[], GymChallenge_Text_LeftAGift[], GymChallenge_Text_KeepGoing[], GymChallenge_Text_TakeABreak[], GymChallenge_Text_Lost[], GymChallenge_Text_StatueNoLeader[], GymChallenge_Text_StatueLeader[], GymChallenge_Text_StatueUnbeaten[], GymChallenge_Text_StatueVictors[];
+extern const u8 GymChallenge_Text_AideNotYet[], GymChallenge_Text_AideWelcome[], GymChallenge_Text_ReadyToBattle[], GymChallenge_Text_NotNow[], GymChallenge_Text_TeamBreaksRules[], GymChallenge_Text_NoStage[], GymChallenge_Text_StageBlocked[], GymChallenge_Text_CantReachSpot[], GymChallenge_Text_TakeYourPlace[], GymChallenge_Text_AnnounceTrainer[], GymChallenge_Text_AnnounceFamous[], GymChallenge_Text_AnnounceTownsfolk[], GymChallenge_Text_Won[], GymChallenge_Text_NewRecord[], GymChallenge_Text_LeftAGift[], GymChallenge_Text_KeepGoing[], GymChallenge_Text_TakeABreak[], GymChallenge_Text_AwardBadge[], GymChallenge_Text_Lost[], GymChallenge_Text_StatueNoLeader[], GymChallenge_Text_StatueLeader[], GymChallenge_Text_StatueUnbeaten[], GymChallenge_Text_StatueVictors[];
 
 TEST("GymHack: challenge: aide and statue messages fit the message box")
 {
-    static const u8 *const texts[] = {GymChallenge_Text_AideNotYet, GymChallenge_Text_AideWelcome, GymChallenge_Text_ReadyToBattle, GymChallenge_Text_NotNow, GymChallenge_Text_TeamBreaksRules, GymChallenge_Text_TakeYourPlace, GymChallenge_Text_AnnounceTrainer, GymChallenge_Text_AnnounceFamous, GymChallenge_Text_AnnounceTownsfolk, GymChallenge_Text_Won, GymChallenge_Text_NewRecord, GymChallenge_Text_LeftAGift, GymChallenge_Text_KeepGoing, GymChallenge_Text_TakeABreak, GymChallenge_Text_Lost, GymChallenge_Text_StatueNoLeader, GymChallenge_Text_StatueLeader, GymChallenge_Text_StatueUnbeaten, GymChallenge_Text_StatueVictors};
+    static const u8 *const texts[] = {GymChallenge_Text_AideNotYet, GymChallenge_Text_AideWelcome, GymChallenge_Text_ReadyToBattle, GymChallenge_Text_NotNow, GymChallenge_Text_TeamBreaksRules, GymChallenge_Text_NoStage, GymChallenge_Text_StageBlocked, GymChallenge_Text_CantReachSpot, GymChallenge_Text_TakeYourPlace, GymChallenge_Text_AnnounceTrainer, GymChallenge_Text_AnnounceFamous, GymChallenge_Text_AnnounceTownsfolk, GymChallenge_Text_Won, GymChallenge_Text_NewRecord, GymChallenge_Text_LeftAGift, GymChallenge_Text_KeepGoing, GymChallenge_Text_TakeABreak, GymChallenge_Text_AwardBadge, GymChallenge_Text_Lost, GymChallenge_Text_StatueNoLeader, GymChallenge_Text_StatueLeader, GymChallenge_Text_StatueUnbeaten, GymChallenge_Text_StatueVictors};
     u8 *buf = Alloc(600);
     u32 i;
     StringCopy(gStringVar1, COMPOUND_STRING("65535"));
     StringCopy(gStringVar2, COMPOUND_STRING("65535"));
     StringCopy(gStringVar3, COMPOUND_STRING("COOLTRAINER XAVIER"));
-    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    for (i = 0; i < ARRAY_COUNT(texts) * 2; i++)
     {
         u8 *line, *p;
-        StringExpandPlaceholders(buf, texts[i]);
+        // Second pass: the texts that show the badge name in STR_VAR_1
+        if (i >= ARRAY_COUNT(texts) && texts[i - ARRAY_COUNT(texts)] != GymChallenge_Text_AwardBadge
+                                    && texts[i - ARRAY_COUNT(texts)] != GymChallenge_Text_StatueVictors)
+            continue;
+        StringCopy(gStringVar1, i < ARRAY_COUNT(texts) ? COMPOUND_STRING("65535") : COMPOUND_STRING("INFESTATION BADGE"));
+        StringExpandPlaceholders(buf, texts[i % ARRAY_COUNT(texts)]);
         for (line = p = buf; ; p++)
         {
             u8 c = *p;
@@ -991,4 +996,27 @@ TEST("GymHack: decor: the battle stage is free, always in storage, and never sol
     EXPECT(GymDecor_FindPlaced(GYM_DECOR_BATTLE_STAGE, &x, &y));
     EXPECT_EQ(x, 3);
     EXPECT_EQ(y, 5);
+}
+
+#include "gym_badge.h"
+
+TEST("GymHack: badge: every choosable type (and Flying) has a badge and art")
+{
+    u32 type;
+    static const u8 types[] = {TYPE_NORMAL, TYPE_FIGHTING, TYPE_FLYING, TYPE_POISON, TYPE_GROUND, TYPE_ROCK,
+        TYPE_BUG, TYPE_GHOST, TYPE_STEEL, TYPE_FIRE, TYPE_WATER, TYPE_GRASS, TYPE_ELECTRIC, TYPE_PSYCHIC,
+        TYPE_ICE, TYPE_DRAGON, TYPE_DARK, TYPE_FAIRY};
+    for (type = 0; type < ARRAY_COUNT(types); type++)
+        EXPECT(GymBadge_HasArt(types[type]));
+    EXPECT_EQ(StringCompare(GymBadge_GetName(TYPE_PSYCHIC), COMPOUND_STRING("ESPN BADGE")), 0);
+    EXPECT_EQ(StringCompare(GymBadge_GetName(TYPE_DRAGON), COMPOUND_STRING("EGG BADGE")), 0);
+}
+
+TEST("GymHack: badge: the pedestal is sold once the gym is awarded")
+{
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    EXPECT(!GymDecor_IsUnlocked(GYM_DECOR_BADGE_PEDESTAL));
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    EXPECT(GymDecor_IsUnlocked(GYM_DECOR_BADGE_PEDESTAL));
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
 }

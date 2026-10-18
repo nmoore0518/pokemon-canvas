@@ -42,6 +42,7 @@ EWRAM_DATA static struct Trainer sChallenger;
 EWRAM_DATA static struct TrainerMon sChallengerMons[PARTY_SIZE];
 EWRAM_DATA static u8 sLastFamous;
 EWRAM_DATA static u8 sKind;
+EWRAM_DATA static u16 sLastStreak;
 EWRAM_DATA u8 gGymChallengeIntroText[320];
 EWRAM_DATA u8 gGymChallengeDefeatText[120];  // in battle, when the challenger loses
 EWRAM_DATA u8 gGymChallengeAfterText[160];   // after losing to the player
@@ -693,7 +694,15 @@ void GymChallenge_RecordLoss(void)
     ConvertIntToDecimalStringN(gStringVar1, save->streak, STR_CONV_MODE_LEFT_ALIGN, 5);
     ConvertIntToDecimalStringN(gStringVar2, save->bestStreak, STR_CONV_MODE_LEFT_ALIGN, 5);
     BufferChallengerName(gStringVar3, sChallenger.trainerClass, sChallenger.trainerName);
+    sLastStreak = save->streak;
     save->streak = 0;
+}
+
+// Special: the loss again (STR_VAR_1 = the streak that ended, STR_VAR_2 = best streak)
+void GymChallenge_BufferLastResult(void)
+{
+    ConvertIntToDecimalStringN(gStringVar1, sLastStreak, STR_CONV_MODE_LEFT_ALIGN, 5);
+    ConvertIntToDecimalStringN(gStringVar2, GymChallenge_GetSave()->bestStreak, STR_CONV_MODE_LEFT_ALIGN, 5);
 }
 
 // ---------------------------------------------------------------------------

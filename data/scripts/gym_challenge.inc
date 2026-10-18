@@ -140,8 +140,15 @@ GymChallenge_EventScript_NewRecord::
 GymChallenge_EventScript_Lost::
 	special HealPlayerParty
 	msgbox gGymChallengeWinText
-	call GymChallenge_EventScript_ChallengerLeaves
 	special GymChallenge_RecordLoss
+	special GymBadge_BufferName
+	special GymBadge_ShowIcon
+	playfanfare MUS_OBTAIN_BADGE
+	msgbox GymChallenge_Text_AwardBadge
+	waitfanfare
+	special GymBadge_HideIcon
+	call GymChallenge_EventScript_ChallengerLeaves
+	special GymChallenge_BufferLastResult
 	msgbox GymChallenge_Text_Lost
 	release
 	end
@@ -155,6 +162,7 @@ GymChallenge_EventScript_Statue::
 	msgbox GymChallenge_Text_StatueLeader
 	special GymChallenge_BufferVictorList
 	goto_if_eq VAR_RESULT, 0, GymChallenge_EventScript_StatueUnbeaten
+	special GymBadge_BufferName
 	msgbox GymChallenge_Text_StatueVictors
 	special GymChallenge_BufferVictorList   @ again: the message above used gStringVar4
 	msgbox gStringVar4
@@ -250,6 +258,11 @@ GymChallenge_Text_TakeABreak::
 	.string "I'll tell them to come back later.\n"
 	.string "Your streak of {STR_VAR_1} is safe!$"
 
+GymChallenge_Text_AwardBadge::
+	.string "{PLAYER} presented\n"
+	.string "{STR_VAR_3}…\p"
+	.string "…with the {STR_VAR_1}!$"
+
 GymChallenge_Text_Lost::
 	.string "Oh no… that ends your streak.\n"
 	.string "Wins in a row: {STR_VAR_1}. Best: {STR_VAR_2}.\p"
@@ -273,5 +286,5 @@ GymChallenge_Text_StatueUnbeaten::
 	.string "{PLAYER} yet!$"
 
 GymChallenge_Text_StatueVictors::
-	.string "Challengers who beat\n"
-	.string "LEADER {PLAYER}:$"
+	.string "Challengers who beat {PLAYER} and\n"
+	.string "earned the {STR_VAR_1}:$"

@@ -664,6 +664,10 @@ gSpecials::
 	def_special GymChallenge_NextChallenger
 	def_special GymChallenge_RecordWin
 	def_special GymChallenge_RecordLoss
+	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk
 	def_special GymChallenge_BufferVictorList
+	def_special GymBadge_BufferName
+	def_special GymBadge_ShowIcon
+	def_special GymBadge_HideIcon

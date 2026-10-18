@@ -20,6 +20,7 @@ static const u16 sGymDecorBlocks_SPINNER_LEFT[] = { 0x289 };
 static const u16 sGymDecorBlocks_SPINNER_RIGHT[] = { 0x28A };
 static const u16 sGymDecorBlocks_SPINNER_STOP[] = { 0x28D };
 static const u16 sGymDecorBlocks_BATTLE_STAGE[] = { 0x2F4, 0x2F5, 0x2F6, 0x2F7, 0x2F8, 0x2F9, 0x2FA, 0x2FB, 0x2FC, 0x2FD, 0x2FE, 0x2FF, 0x300, 0x301, 0x302 };
+static const u16 sGymDecorBlocks_BADGE_PEDESTAL[] = { 0x303, 0x304, 0x305 | GYM_DECOR_SOLID, 0x306 | GYM_DECOR_SOLID, 0x307, 0x308 };
 
 const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
 {
@@ -241,6 +242,17 @@ const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
         .width = 3,
         .height = 5,
         .blocks = sGymDecorBlocks_BATTLE_STAGE,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_BADGE_PEDESTAL] =
+    {
+        .name = COMPOUND_STRING("BADGE PEDESTAL"),
+        .description = COMPOUND_STRING("Shows off your GYM's own BADGE."),
+        .price = 10000,
+        .unlockFlag = FLAG_PALLET_GYM_AWARDED,
+        .width = 2,
+        .height = 3,
+        .blocks = sGymDecorBlocks_BADGE_PEDESTAL,
         .editBlocks = NULL,
     },
 };

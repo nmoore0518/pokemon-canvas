@@ -2,6 +2,7 @@
 #include "battle_pyramid.h"
 #include "bg.h"
 #include "fieldmap.h"
+#include "gym_badge.h"
 #include "fldeff.h"
 #include "fldeff_misc.h"
 #include "frontier_util.h"
@@ -1015,11 +1016,13 @@ void CopyPrimaryTilesetToVram(struct MapLayout const *mapLayout)
 void CopySecondaryTilesetToVram(struct MapLayout const *mapLayout)
 {
     CopyTilesetToVram(mapLayout->secondaryTileset, NUM_TILES_TOTAL - GetNumTilesInPrimary(mapLayout), GetNumTilesInPrimary(mapLayout));
+    GymBadge_PatchTilesetGfx(mapLayout);
 }
 
 void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
 {
     CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - GetNumTilesInPrimary(mapLayout), GetNumTilesInPrimary(mapLayout));
+    GymBadge_PatchTilesetGfx(mapLayout);
 }
 
 static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
@@ -1030,6 +1033,7 @@ static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
 void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout, bool8 skipFaded)
 {
     LoadTilesetPalette(mapLayout->secondaryTileset, GetNumPalsInPrimary(mapLayout) * 16, (NUM_PALS_TOTAL - GetNumPalsInPrimary(mapLayout)) * PLTT_SIZE_4BPP, skipFaded, GetNumPalsInPrimary(mapLayout));
+    GymBadge_PatchTilesetPalette(mapLayout, skipFaded);   // Gym Trainer hack: the player's badge
 }
 
 void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
@@ -1038,6 +1042,7 @@ void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
     {
         CopyTilesetToVramUsingHeap(mapLayout->primaryTileset, GetNumTilesInPrimary(mapLayout), 0);
         CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - GetNumTilesInPrimary(mapLayout), GetNumTilesInPrimary(mapLayout));
+        GymBadge_PatchTilesetGfx(mapLayout);   // Gym Trainer hack: the player's badge
     }
 }
 

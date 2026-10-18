@@ -135,8 +135,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     touches it.
   - Capacity: up to 256 kinds of decoration (255 of each), and 650 placed pieces (more than the
     room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 20 pieces
-    so far use 133 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots,
-    and the water (1) and trash can (2) use all of them, so pieces with new colors from other
+    so far use 133 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots:
+    the water uses one, the trash can one, and the player's badge the last, so pieces with new colors from other
     tilesets need palettes merged or shared (the importer would have to fold similar colors into
     existing palettes). Furniture and anything drawn in the existing gym/indoor colors costs no
     palette.
@@ -189,6 +189,18 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Saved (in the secret base space after the decorations): current streak (kept if you stop),
     best streak, wins and losses, and the last 20 challengers who beat the player, shown on the
     gym statue. The Pallet Town sign names the player as leader.
+- **The player's badge** (`src/gym_badge.c`, art from `tools/gym_hack/badge_art.py` into
+  `graphics/gym_badges/`): one per type, 32x32. Normal Vanilla, Fighting Knockout, Flying Rocket,
+  Poison Venom, Ground Shovel, Rock Obsidian, Bug Infestation, Ghost Death, Steel Wrench, Fire Lava,
+  Water Monsoon, Grass Weed, Electric Amp, Psychic ESPN, Ice Sub-Zero, Dragon Egg, Dark Evil, Fairy
+  Elder. A challenger who beats the player is presented with it (its picture shows on screen), and
+  the statue lists them as having earned it.
+  - BADGE PEDESTAL decoration: shows the badge on a stone plinth. Sold once
+    `FLAG_PALLET_GYM_AWARDED` is set (by the rival/Oak finale, still to come).
+  - The gym tileset holds one badge (16 tiles from `GYM_BADGE_TILE_START`, palette slot 11, kept
+    free for it); whenever the gym's tileset loads, `src/fieldmap.c` calls into gym_badge.c to copy
+    the player's own badge and colors over it. To change the art, edit badge_art.py and run it,
+    then `build_pallet_gym.py`.
 - **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
   reveals he wants it for himself and challenges the player to prove they're good enough.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
@@ -211,6 +223,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
+| `src/gym_badge.c`, `tools/gym_hack/badge_art.py` | The player's badge per type, its art, the pedestal swap |
 | `tools/gym_hack/playtest/` | Headless emulator harness used to playtest scenes |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
@@ -244,5 +257,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          switch puzzle, Cinnabar/Saffron/Celadon pieces, house decorating
    - [x] Stat training items: bottle caps, Ability Capsule, Cilantro, Multivitamin (shop + gifts)
    - [x] Post-game gym challenges: random/famous/townsfolk challengers, streaks, rewards, statue
+   - [x] The player's badge per type (art, award to challengers, pedestal decoration)
    - [ ] Final rival battle for the gym after the League, then Oak's challenge (twist)
    - [ ] Challengers and the ninth badge after becoming Leader
