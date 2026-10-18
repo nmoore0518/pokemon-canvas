@@ -116,7 +116,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   the gym (you can walk through things while decorating) and the selected piece is shown in front
   of you. A places it, SELECT puts away the one in front, L/R switch pieces, B finishes. Nothing can
   go on the walls, the doormat, the statues or the PC, and if you've boxed yourself in when you
-  finish, you're put back at the PC. Invisible walls are shown while decorating.
+  finish, you're put back at the PC. Invisible walls are shown while decorating. The help box
+  sits at the bottom of the screen.
   - Catalog: `DECORATIONS` in `tools/gym_hack/build_gym_decor.py` (name, price, unlock flag,
     description, and the blocks that draw it). Run `python3 tools/gym_hack/build_pallet_gym.py`
     after changing it. New entries go at the end (saves store decorations by position).
@@ -139,6 +140,24 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     tilesets need palettes merged or shared (the importer would have to fold similar colors into
     existing palettes). Furniture and anything drawn in the existing gym/indoor colors costs no
     palette.
+- **Stat training items** (`src/stat_items.c`, `data/scripts/stat_items.inc`), all used up when
+  used, all chosen from the bag and then a Pokémon:
+  - Silver Bottle Cap (5,000): pick one stat; its IV becomes 31.
+  - Gold Bottle Cap (25,000): every IV becomes 31.
+  - Ability Capsule (20,000): pick any of the species' Abilities, the hidden one included.
+  - Cilantro (15,000): pick a nature from all 25. It sets the stat nature (like a mint), and the
+    summary screen shows the new nature.
+  - Multivitamin (30,000): an editing screen for all six EVs. Left/Right move 4 at a time, L/R
+    set none or the most allowed, and it never lets a stat pass 252 or the total pass 510. It
+    shows what each stat would be. Cancelling, or changing nothing, doesn't use it up.
+  - Sold only at the Pallet Town Mart (`GymHack_PalletMart`): Silver Bottle Cap after Erika's
+    badge, Ability Capsule after Sabrina's, Cilantro after Blaine's, Gold Bottle Cap and
+    Multivitamin after the Elite Four (`FLAG_SYS_GAME_CLEAR`).
+  - One-time gifts, each with the leader's own lines: a Silver Bottle Cap from every gym leader
+    (after the TM), plus Cilantro from Erika and an Ability Capsule from Koga; a Gold Bottle Cap
+    from the rival at Pokémon Tower; a Multivitamin from Giovanni at Silph Co. Flags
+    `FLAG_GOT_SILVER_CAP_FROM_*` etc. in `include/constants/flags.h`. If the bag is full the
+    gift goes to the PC.
 - **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
   reveals he wants it for himself and challenges the player to prove they're good enough.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
@@ -159,6 +178,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/build_pallet_gym.py`, `data/maps/PalletTown_Gym_Frlg/` | The gym inside and Oak's gym scene |
 | `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data |
+| `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `tools/gym_hack/playtest/` | Headless emulator harness used to playtest scenes |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
@@ -190,5 +210,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          (furniture, walls, statue, water, trash can, fern, invisible walls, spinner and stop tiles)
    - [ ] More decorations: pool edges, teleport pads (need warp scripting), working trash-can
          switch puzzle, Cinnabar/Saffron/Celadon pieces, house decorating
+   - [x] Stat training items: bottle caps, Ability Capsule, Cilantro, Multivitamin (shop + gifts)
    - [ ] Final rival battle for the gym after the League, then Oak's challenge (twist)
    - [ ] Challengers and the ninth badge after becoming Leader

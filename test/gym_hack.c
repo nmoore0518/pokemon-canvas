@@ -614,3 +614,162 @@ TEST("GymHack: decor: every decoration has a name, a price and fits the gym")
         EXPECT_LE(GetStringWidth(FONT_NORMAL, gGymDecor[i].name, 0), 13 * 8); // the list sits at x 15
     }
 }
+
+// ---- Stat training items ----
+#include "stat_items.h"
+#include "malloc.h"
+#include "string_util.h"
+
+#include "script_pokemon_util.h"
+
+#define TEST_MON (&gParties[B_TRAINER_PLAYER][0])
+
+static void GiveTestMon(enum Species species)
+{
+    ZeroPlayerPartyMons();
+    ScriptGiveMon(species, 50, ITEM_NONE);
+}
+
+TEST("GymHack: items: Silver Bottle Cap maxes one IV, Gold maxes all")
+{
+    u32 iv = 0, i, hpBefore;
+    GiveTestMon(SPECIES_GROWLITHE);
+    for (i = 0; i < NUM_STATS; i++)
+        SetMonData(TEST_MON, MON_DATA_HP_IV + i, &iv);
+    CalculateMonStats(TEST_MON);
+    hpBefore = GetMonData(TEST_MON, MON_DATA_ATK);
+    EXPECT(StatItems_MaxIv(TEST_MON, STAT_ATK));
+    EXPECT_EQ(GetMonData(TEST_MON, MON_DATA_ATK_IV), 31);
+    EXPECT_EQ(GetMonData(TEST_MON, MON_DATA_DEF_IV), 0);
+    EXPECT_GT(GetMonData(TEST_MON, MON_DATA_ATK), hpBefore);   // stats are recalculated
+    EXPECT(!StatItems_MaxIv(TEST_MON, STAT_ATK));               // already maxed: not used up
+    EXPECT(StatItems_MaxAllIvs(TEST_MON));
+    for (i = 0; i < NUM_STATS; i++)
+        EXPECT_EQ(GetMonData(TEST_MON, MON_DATA_HP_IV + i), 31);
+    EXPECT(!StatItems_MaxAllIvs(TEST_MON));
+}
+
+TEST("GymHack: items: Ability Capsule offers every different ability")
+{
+    u8 slots[NUM_ABILITY_SLOTS];
+    u32 slot = 0;
+    GiveTestMon(SPECIES_GROWLITHE);   // Intimidate / Flash Fire / Justified (hidden)
+    SetMonData(TEST_MON, MON_DATA_ABILITY_NUM, &slot);
+    EXPECT_EQ(StatItems_GetAbilityChoices(TEST_MON, slots), 3);
+    EXPECT(!StatItems_SetAbilitySlot(TEST_MON, 0));              // the one it has
+    EXPECT(StatItems_SetAbilitySlot(TEST_MON, 2));
+    EXPECT_EQ(GetMonAbility(TEST_MON), ABILITY_JUSTIFIED);
+    GiveTestMon(SPECIES_GASTLY);      // only Levitate
+    EXPECT_EQ(StatItems_GetAbilityChoices(TEST_MON, slots), 1);
+}
+
+TEST("GymHack: items: Cilantro sets the nature used for stats and shown")
+{
+    GiveTestMon(SPECIES_GROWLITHE);
+    StatItems_SetNature(TEST_MON, NATURE_HARDY);
+    {
+        u32 neutralAtk = GetMonData(TEST_MON, MON_DATA_ATK);
+        EXPECT(StatItems_SetNature(TEST_MON, NATURE_ADAMANT));
+        EXPECT_EQ(GetMonData(TEST_MON, MON_DATA_HIDDEN_NATURE), NATURE_ADAMANT);
+        EXPECT_GT(GetMonData(TEST_MON, MON_DATA_ATK), neutralAtk);
+        EXPECT(!StatItems_SetNature(TEST_MON, NATURE_ADAMANT));
+    }
+}
+
+TEST("GymHack: items: Multivitamin EVs must stay within the limits")
+{
+    u16 good[NUM_STATS] = {252, 252, 4, 0, 0, 0};
+    u16 tooMuchTotal[NUM_STATS] = {252, 252, 8, 0, 0, 0};
+    u16 tooMuchOne[NUM_STATS] = {253, 0, 0, 0, 0, 0};
+    GiveTestMon(SPECIES_GROWLITHE);
+    EXPECT(StatItems_EvsAreValid(good));
+    EXPECT(!StatItems_EvsAreValid(tooMuchTotal));
+    EXPECT(!StatItems_EvsAreValid(tooMuchOne));
+    EXPECT(!StatItems_SetEvs(TEST_MON, tooMuchTotal));
+    EXPECT(StatItems_SetEvs(TEST_MON, good));
+    EXPECT_EQ(GetMonData(TEST_MON, MON_DATA_ATK_EV), 252);
+    EXPECT_EQ(GetMonData(TEST_MON, MON_DATA_DEF_EV), 4);
+}
+
+TEST("GymHack: items: Pallet Mart stocks stat items as they unlock")
+{
+    const u16 *items;
+    u32 i;
+    bool32 silver = FALSE, gold = FALSE, capsule = FALSE;
+    FlagClear(FLAG_BADGE04_GET);
+    FlagClear(FLAG_BADGE06_GET);
+    FlagClear(FLAG_BADGE07_GET);
+    FlagClear(FLAG_SYS_GAME_CLEAR);
+    items = StatItems_GetPalletMartItems();
+    for (i = 0; items[i] != ITEM_NONE; i++)
+        EXPECT(items[i] != ITEM_BOTTLE_CAP && items[i] != ITEM_MULTIVITAMIN);
+    FlagSet(FLAG_BADGE04_GET);
+    FlagSet(FLAG_BADGE06_GET);
+    items = StatItems_GetPalletMartItems();
+    for (i = 0; items[i] != ITEM_NONE; i++)
+    {
+        silver |= items[i] == ITEM_BOTTLE_CAP;
+        capsule |= items[i] == ITEM_ABILITY_CAPSULE;
+        gold |= items[i] == ITEM_GOLD_BOTTLE_CAP;
+    }
+    EXPECT(silver && capsule && !gold);
+    EXPECT_EQ(GetItemPrice(ITEM_BOTTLE_CAP), 5000);
+    EXPECT_EQ(GetItemPrice(ITEM_GOLD_BOTTLE_CAP), 25000);
+    EXPECT_EQ(GetItemPrice(ITEM_ABILITY_CAPSULE), 20000);
+    EXPECT_EQ(GetItemPrice(ITEM_CILANTRO), 15000);
+    EXPECT_EQ(GetItemPrice(ITEM_MULTIVITAMIN), 30000);
+    FlagClear(FLAG_BADGE04_GET);
+    FlagClear(FLAG_BADGE06_GET);
+}
+
+// Every line of the new dialogue fits in the message box (27 tiles), with long names filled in
+extern const u8 GymHack_Text_BrockSilverCap[], GymHack_Text_BrockSilverCapAfter[], GymHack_Text_MistySilverCap[],
+    GymHack_Text_MistySilverCapAfter[], GymHack_Text_SurgeSilverCap[], GymHack_Text_SurgeSilverCapAfter[],
+    GymHack_Text_ErikaSilverCap[], GymHack_Text_ErikaCilantro[], GymHack_Text_ErikaCilantroAfter[],
+    GymHack_Text_KogaSilverCap[], GymHack_Text_KogaAbilityCapsule[], GymHack_Text_KogaAbilityCapsuleAfter[],
+    GymHack_Text_SabrinaSilverCap[], GymHack_Text_SabrinaSilverCapAfter[], GymHack_Text_BlaineSilverCap[],
+    GymHack_Text_BlaineSilverCapAfter[], GymHack_Text_GiovanniSilverCap[], GymHack_Text_GiovanniSilverCapAfter[],
+    GymHack_Text_RivalGoldCap[], GymHack_Text_RivalGoldCapAfter[], GymHack_Text_SilphGiovanniMultivitamin[],
+    GymHack_Text_SilphGiovanniMultivitaminAfter[], GymHack_Text_StatItemEgg[], GymHack_Text_StatItemNoEffect[],
+    GymHack_Text_WhichStat[], GymHack_Text_UseGoldBottleCap[], GymHack_Text_WhichAbility[], GymHack_Text_WhichNature[],
+    GymHack_Text_MultivitaminUsed[], GymHack_Text_MultivitaminUnchanged[], GymHack_Text_GiftSentToPC[];
+
+TEST("GymHack: items: gift and item messages fit the message box")
+{
+    static const u8 *const texts[] = {
+        GymHack_Text_BrockSilverCap, GymHack_Text_BrockSilverCapAfter, GymHack_Text_MistySilverCap,
+        GymHack_Text_MistySilverCapAfter, GymHack_Text_SurgeSilverCap, GymHack_Text_SurgeSilverCapAfter,
+        GymHack_Text_ErikaSilverCap, GymHack_Text_ErikaCilantro, GymHack_Text_ErikaCilantroAfter,
+        GymHack_Text_KogaSilverCap, GymHack_Text_KogaAbilityCapsule, GymHack_Text_KogaAbilityCapsuleAfter,
+        GymHack_Text_SabrinaSilverCap, GymHack_Text_SabrinaSilverCapAfter, GymHack_Text_BlaineSilverCap,
+        GymHack_Text_BlaineSilverCapAfter, GymHack_Text_GiovanniSilverCap, GymHack_Text_GiovanniSilverCapAfter,
+        GymHack_Text_RivalGoldCap, GymHack_Text_RivalGoldCapAfter, GymHack_Text_SilphGiovanniMultivitamin,
+        GymHack_Text_SilphGiovanniMultivitaminAfter, GymHack_Text_StatItemEgg, GymHack_Text_StatItemNoEffect,
+        GymHack_Text_WhichStat, GymHack_Text_UseGoldBottleCap, GymHack_Text_WhichAbility, GymHack_Text_WhichNature,
+        GymHack_Text_MultivitaminUsed, GymHack_Text_MultivitaminUnchanged, GymHack_Text_GiftSentToPC,
+    };
+    u8 *buf = Alloc(1000);
+    u32 i;
+    StringCopy(gStringVar1, COMPOUND_STRING("CHARMANDER"));
+    StringCopy(gStringVar2, COMPOUND_STRING("Silver Bottle Cap"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("text %d: line too wide: %S", i, line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}

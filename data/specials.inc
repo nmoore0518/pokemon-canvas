@@ -652,3 +652,10 @@ gSpecials::
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing
+	def_special StatItems_CheckMon
+	def_special StatItems_PushIvList
+	def_special StatItems_PushAbilityList
+	def_special StatItems_PushNatureList
+	def_special StatItems_Apply
+	def_special StatItems_OpenEvEditor, waitstate=1
+	def_special GymHack_PalletMart, waitstate=1

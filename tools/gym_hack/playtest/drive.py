@@ -54,5 +54,20 @@ class GBA:
         self.cmd(f'poke32 {self.sb1() + self.MONEY:#x} {amount ^ key}')
     def set_decor_owned(self, decor_id, count):
         self.cmd(f'poke8 {self.sb1() + self.SECRET_BASES + decor_id:#x} {count}')
+    BAG_ITEMS, FLAGS = 1376, 4720    # SaveBlock1: bag.items (4-byte slots), flags (bits)
+    def peek16(self, addr):
+        return self.peek32(addr & ~3) >> (8 * (addr & 2)) & 0xFFFF
+    def give_item(self, item, qty):
+        """Put item into the first empty slot of the items pocket (quantity is XORed with the key)."""
+        key = self.peek32(self.sb2() + self.KEY) & 0xFFFF
+        base = self.sb1() + self.BAG_ITEMS
+        for i in range(30):
+            if self.peek16(base + i * 4) in (0, item):
+                self.cmd(f'poke32 {base + i * 4:#x} {item | ((qty ^ key) << 16)}')
+                return i
+    def set_flag(self, flag):
+        a = self.sb1() + self.FLAGS + flag // 8
+        v = self.peek32(a & ~3) >> (8 * (a & 3)) & 0xFF
+        self.cmd(f'poke8 {a:#x} {v | 1 << (flag % 8)}')
     def close(self):
         self.p.stdin.close(); self.p.wait()

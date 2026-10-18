@@ -71,8 +71,8 @@ GymDecor_EventScript_Decorate::
 	copyvar VAR_0x8004, VAR_RESULT
 	msgbox GymDecor_Text_HowToDecorate, MSGBOX_DEFAULT
 	closemessage
+	releaseall   @ before the HUD opens: releaseall clears the message box area, where the HUD goes
 	special GymDecor_StartEditing
-	releaseall
 	end
 
 GymDecor_EventScript_NothingOwned::

@@ -2115,6 +2115,7 @@ const u16 gItemIconPalette_TwiceSpicedRadish[] = INCGFX_U16("graphics/items/icon
 
 // Gym Trainer hack: HM key items
 const u32 gItemIcon_HedgeClippers[] = INCGFX_U32("graphics/items/icons/hedge_clippers.png", ".4bpp.smol");
+const u16 gItemIconPalette_Multivitamin[] = INCGFX_U16("graphics/items/icon_palettes/multivitamin.pal", ".gbapal");
 const u16 gItemIconPalette_HedgeClippers[] = INCGFX_U16("graphics/items/icon_palettes/hedge_clippers.pal", ".gbapal");
 const u32 gItemIcon_Flashlight[] = INCGFX_U32("graphics/items/icons/flashlight.png", ".4bpp.smol");
 const u16 gItemIconPalette_Flashlight[] = INCGFX_U16("graphics/items/icon_palettes/flashlight.pal", ".gbapal");

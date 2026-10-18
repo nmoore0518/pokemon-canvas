@@ -472,7 +472,7 @@ static void PrintHud(void)
 
 static void OpenHud(void)
 {
-    struct WindowTemplate template = CreateWindowTemplate(0, 1, 1, 28, 4, 15, 100);
+    struct WindowTemplate template = CreateWindowTemplate(0, 1, 15, 28, 4, 15, 100);
     sHudWindowId = AddWindow(&template);
     SetStandardWindowBorderStyle(sHudWindowId, FALSE);
     PutWindowTilemap(sHudWindowId);

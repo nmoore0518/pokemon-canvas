@@ -5,6 +5,7 @@ CeruleanCity_Gym_EventScript_Misty::
 	famechecker FAMECHECKER_MISTY, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_MISTY, CeruleanCity_Gym_Text_MistyIntro, CeruleanCity_Gym_Text_MistyDefeat, CeruleanCity_Gym_EventScript_MistyDefeated, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM03_FROM_MISTY, CeruleanCity_Gym_EventScript_GiveTM03
+	call GymHack_EventScript_MistyGifts
 	msgbox CeruleanCity_Gym_Text_ExplainTM03
 	release
 	end
@@ -25,6 +26,7 @@ CeruleanCity_Gym_EventScript_GiveTM03::
 	giveitem_msg CeruleanCity_Gym_Text_ReceivedTM03FromMisty, ITEM_TM03
 	setflag FLAG_GOT_TM03_FROM_MISTY
 	msgbox CeruleanCity_Gym_Text_ExplainTM03
+	call GymHack_EventScript_MistyGifts
 	release
 	end
 

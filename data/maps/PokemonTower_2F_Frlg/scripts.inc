@@ -32,6 +32,7 @@ PokemonTower_2F_EventScript_Rival::
 	call_if_eq VAR_STARTER_MON, 1, PokemonTower_2F_EventScript_RivalBulbasaur
 	call_if_eq VAR_STARTER_MON, 0, PokemonTower_2F_EventScript_RivalCharmander
 	msgbox PokemonTower_2F_Text_RivalPostBattle
+	call GymHack_EventScript_RivalTowerGift
 	closemessage
 	playbgm MUS_RG_RIVAL_EXIT, 0
 	call_if_eq VAR_TEMP_1, 0, PokemonTower_2F_EventScript_RivalExitRight
@@ -121,8 +122,7 @@ PokemonTower_2F_Text_RivalPostBattle::
 	.string "I bet there aren't any left!\p"
 	.string "Well, I better get going.\n"
 	.string "I've got a lot to accomplish,\l"
-	.string "unlike you.\p"
-	.string "Smell ya later!$"
+	.string "unlike you.$"
 
 PokemonTower_2F_Text_SilphScopeCouldUnmaskGhosts::
 	.string "Even we could not identify the\n"

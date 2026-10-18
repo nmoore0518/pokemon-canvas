@@ -1529,23 +1529,18 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_ABILITY_CAPSULE] =
     {
+        // Gym Trainer hack: pick any of the species' Abilities, hidden ones included
         .name = ITEM_NAME("Ability Capsule"),
-    #if I_PRICE >= GEN_9
-        .price = 100000,
-    #elif I_PRICE >= GEN_7
-        .price = 10000,
-    #else
-        .price = 1000,
-    #endif
+        .price = 20000,
         .holdEffectParam = 0,
         .description = COMPOUND_STRING(
-            "A capsule that\n"
-            "allows a Pokémon to\n"
-            "switch Abilities."),
+            "Lets a Pokémon\n"
+            "switch to any of\n"
+            "its Abilities."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_FIELD_USE,
-        .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_AbilityCapsule,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_StatItem,
         .iconPic = gItemIcon_AbilityCapsule,
         .iconPalette = gItemIconPalette_AbilityCapsule,
     },
@@ -2605,16 +2600,17 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_BOTTLE_CAP] =
     {
-        .name = ITEM_NAME("Bottle Cap"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 5000,
+        // Gym Trainer hack: maxes one IV of your choice
+        .name = ITEM_NAME("Silver Bottle Cap"),
+        .price = 5000,
         .description = COMPOUND_STRING(
-            "A beautiful bottle\n"
-            "cap that gives off\n"
-            "a silver gleam."),
+            "Brings one stat of\n"
+            "a Pokémon to its\n"
+            "full potential."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_SELLABLE,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .sortType = ITEM_TYPE_FIELD_USE,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_StatItem,
         .flingPower = 30,
         .iconPic = gItemIcon_BottleCap,
         .iconPalette = gItemIconPalette_BottleCap,
@@ -2622,16 +2618,17 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_GOLD_BOTTLE_CAP] =
     {
+        // Gym Trainer hack: maxes every IV
         .name = ITEM_NAME("Gold Bottle Cap"),
-        .price = (I_PRICE >= GEN_9) ? 60000 : 10000,
+        .price = 25000,
         .description = COMPOUND_STRING(
-            "A beautiful bottle\n"
-            "cap that gives off\n"
-            "a golden gleam."),
+            "Brings every stat\n"
+            "of a Pokémon to its\n"
+            "full potential."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_SELLABLE,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .sortType = ITEM_TYPE_FIELD_USE,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_StatItem,
         .flingPower = 30,
         .iconPic = gItemIcon_BottleCap,
         .iconPalette = gItemIconPalette_GoldBottleCap,
@@ -16242,6 +16239,40 @@ const struct ItemInfo gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
         .iconPic = gItemIcon_MoonShard,
         .iconPalette = gItemIconPalette_MoonShard,
+    },
+
+    [ITEM_CILANTRO] =
+    {
+        // Gym Trainer hack: pick a nature
+        .name = ITEM_NAME("Cilantro"),
+        .price = 15000,
+        .description = COMPOUND_STRING(
+            "A pungent herb.\n"
+            "Its scent changes a\n"
+            "Pokémon's nature."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_FIELD_USE,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_StatItem,
+        .iconPic = gItemIcon_Mint,
+        .iconPalette = gItemIconPalette_GreenMint,
+    },
+
+    [ITEM_MULTIVITAMIN] =
+    {
+        // Gym Trainer hack: set all six EVs once
+        .name = ITEM_NAME("Multivitamin"),
+        .price = 30000,
+        .description = COMPOUND_STRING(
+            "Lets you choose a\n"
+            "Pokémon's effort\n"
+            "values (EVs)."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_FIELD_USE,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_StatItem,
+        .iconPic = gItemIcon_HPUp,
+        .iconPalette = gItemIconPalette_Multivitamin,
     },
 };
 

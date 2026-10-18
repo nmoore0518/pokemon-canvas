@@ -1889,7 +1889,7 @@ static void ShowMonSkillsInfo(u8 taskId, s16 mode)
 
 void ExtractMonSkillStatsData(struct Pokemon *mon, struct PokeSummary *sum)
 {
-    sum->nature = GetNature(mon);
+    sum->nature = GetMonData(mon, MON_DATA_HIDDEN_NATURE); // Gym Trainer hack: show the nature Cilantro (or a mint) set
     sum->mintNature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
     sum->currentHP = GetMonData(mon, MON_DATA_HP);
     sum->maxHP = GetMonData(mon, MON_DATA_MAX_HP);

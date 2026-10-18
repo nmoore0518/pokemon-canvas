@@ -5,6 +5,7 @@ SaffronCity_Gym_EventScript_Sabrina::
 	famechecker FAMECHECKER_SABRINA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_SABRINA, SaffronCity_Gym_Text_SabrinaIntro, SaffronCity_Gym_Text_SabrinaDefeat, SaffronCity_Gym_EventScript_DefeatedSabrina, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM04_FROM_SABRINA, SaffronCity_Gym_EventScript_GiveTM04
+	call GymHack_EventScript_SabrinaGifts
 	msgbox SaffronCity_Gym_Text_ExplainTM04
 	release
 	end
@@ -26,6 +27,7 @@ SaffronCity_Gym_EventScript_GiveTM04::
 	giveitem_msg SaffronCity_Gym_Text_ReceivedTM04FromSabrina, ITEM_TM04
 	setflag FLAG_GOT_TM04_FROM_SABRINA
 	msgbox SaffronCity_Gym_Text_SabrinaPostBattle
+	call GymHack_EventScript_SabrinaGifts
 	release
 	end
 

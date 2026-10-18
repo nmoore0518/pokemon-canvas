@@ -9,28 +9,9 @@ PalletTown_Mart_EventScript_Boy::
 	msgbox PalletTown_Mart_Text_GoodThingsIfRaiseMonsDiligently, MSGBOX_NPC
 	end
 
+@ The stock depends on the badges (stat training items); see GymHack_PalletMart in src/stat_items.c
 PalletTown_Mart_EventScript_Clerk::
-	lock
-	faceplayer
-	message gText_HowMayIServeYou
-	waitmessage
-	pokemart PalletTown_Mart_Items
-	msgbox gText_PleaseComeAgain
-	release
-	end
-
-	.align 2
-PalletTown_Mart_Items::
-	.2byte ITEM_POKE_BALL
-	.2byte ITEM_POTION
-	.2byte ITEM_ANTIDOTE
-	.2byte ITEM_PARALYZE_HEAL
-	.2byte ITEM_AWAKENING
-	.2byte ITEM_BURN_HEAL
-	.2byte ITEM_ICE_HEAL
-	.2byte ITEM_REPEL
-	.2byte ITEM_NONE
-	release
+	goto GymHack_EventScript_PalletMartClerk
 	end
 
 PalletTown_Mart_Text_BoughtWeirdFishFromShadyGuy::

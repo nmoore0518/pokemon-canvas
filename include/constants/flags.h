@@ -2440,6 +2440,19 @@
 // FLAG_0x020-0x027 are unused by the FireRed scripts.
 #define FLAG_PALLET_GYM_OPEN                0x020 // Oak has shown the player the Pallet Town Gym
 #define FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL  0x021 // they only stand in the gym during that scene
+// One-time stat item gifts from boss battles (0x022-0x024 and FireRed's unused 0x4A7-0x4AF)
+#define FLAG_GOT_SILVER_CAP_FROM_BROCK      0x022
+#define FLAG_GOT_SILVER_CAP_FROM_MISTY      0x023
+#define FLAG_GOT_SILVER_CAP_FROM_SURGE      0x024
+#define FLAG_GOT_SILVER_CAP_FROM_ERIKA      0x4A7
+#define FLAG_GOT_SILVER_CAP_FROM_KOGA       0x4A8
+#define FLAG_GOT_SILVER_CAP_FROM_SABRINA    0x4A9
+#define FLAG_GOT_SILVER_CAP_FROM_BLAINE     0x4AA
+#define FLAG_GOT_SILVER_CAP_FROM_GIOVANNI   0x4AB
+#define FLAG_GOT_GOLD_CAP_FROM_RIVAL        0x4AC // Pokémon Tower
+#define FLAG_GOT_CILANTRO_FROM_ERIKA        0x4AD
+#define FLAG_GOT_ABILITY_CAPSULE_FROM_KOGA  0x4AE
+#define FLAG_GOT_MULTIVITAMIN_FROM_GIOVANNI 0x4AF // Silph Co.
 
 #if TESTING
 #define TESTING_FLAGS_START                     0x5000

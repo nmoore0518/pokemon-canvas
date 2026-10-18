@@ -49,6 +49,7 @@ void DisplayDadsAdviceCannotUseItemMessage(u8 taskId, bool8 isUsingRegisteredKey
 void ItemUseOutOfBattle_PokeFlute(u8 taskId);
 void ItemUseOutOfBattle_TownMap(u8 taskId);
 void ItemUseOutOfBattle_HedgeClippers(u8 taskId);
+void ItemUseOutOfBattle_StatItem(u8 taskId);
 void ItemUseOutOfBattle_Flashlight(u8 taskId);
 void ItemUseOutOfBattle_BoogieBoard(u8 taskId);
 void ItemUseOutOfBattle_HotAirBalloon(u8 taskId);

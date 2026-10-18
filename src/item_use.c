@@ -1712,3 +1712,11 @@ void ItemUseOutOfBattle_RocketBoots(u8 taskId)
 }
 
 #undef tUsingRegisteredKeyItem
+
+// Gym Trainer hack: stat training items (see src/stat_items.c). Pick a Pokémon from the field.
+extern const u8 GymHack_EventScript_UseStatItem[];
+
+void ItemUseOutOfBattle_StatItem(u8 taskId)
+{
+    GymHack_UseItemWithScript(taskId, GymHack_EventScript_UseStatItem);
+}

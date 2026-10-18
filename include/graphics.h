@@ -433,6 +433,7 @@ extern const u16 gItemIconPalette_FreshWater[];
 extern const u32 gItemIcon_SodaPop[];
 extern const u32 gItemIcon_HedgeClippers[];
 extern const u16 gItemIconPalette_HedgeClippers[];
+extern const u16 gItemIconPalette_Multivitamin[];
 extern const u32 gItemIcon_Flashlight[];
 extern const u16 gItemIconPalette_Flashlight[];
 extern const u32 gItemIcon_BoogieBoard[];

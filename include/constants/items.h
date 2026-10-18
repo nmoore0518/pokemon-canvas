@@ -1062,6 +1062,9 @@ enum __attribute__((packed)) Item
     ITEM_ROCKET_BOOTS = 880,
     ITEM_SUN_SHARD = 881,   // evolves Eevee into Espeon
     ITEM_MOON_SHARD = 882,  // evolves Eevee into Umbreon
+    // Gym Trainer hack: stat training items (with ITEM_BOTTLE_CAP, ITEM_GOLD_BOTTLE_CAP, ITEM_ABILITY_CAPSULE)
+    ITEM_CILANTRO = 883,
+    ITEM_MULTIVITAMIN = 884,
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

@@ -67,6 +67,7 @@ SilphCo_11F_EventScript_BattleGiovanni::
 	setvar VAR_LAST_TALKED, LOCALID_SILPH_CO_GIOVANNI
 	trainerbattle_no_intro TRAINER_BOSS_GIOVANNI_2, SilphCo_11F_Text_GiovanniDefeat
 	msgbox SilphCo_11F_Text_GiovanniPostBattle
+	call GymHack_EventScript_SilphGiovanniGift
 	closemessage
 	fadescreen FADE_TO_BLACK
 	removeobject LOCALID_SILPH_CO_GIOVANNI
@@ -193,8 +194,7 @@ SilphCo_11F_Text_GiovanniPostBattle::
 	.string "You ruined our plans for SILPH!\p"
 	.string "But, TEAM ROCKET will never fall!\p"
 	.string "{PLAYER}! Never forget that all\n"
-	.string "POKéMON exist for TEAM ROCKET!\p"
-	.string "I must go, but I shall return!$"
+	.string "POKéMON exist for TEAM ROCKET!$"
 
 SilphCo_11F_Text_Grunt2Intro::
 	.string "Stop right there!\n"
