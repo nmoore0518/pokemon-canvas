@@ -70,6 +70,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   badges as the HMs. Walking up to a tree, boulder or water offers the item when no party Pokémon
   knows the move (`checkfieldmove` returns `FIELD_MOVE_USER_ITEM`); they can also be used from the
   bag or registered to SELECT. Icons drawn by `tools/gym_hack/make_hm_item_icons.py`.
+- **Wild Pokémon** are planned in `planning/wild-pokemon-planner.xlsx` (one row per encounter slot).
+  To change them: edit the yellow cells, then run
+  `python3 tools/gym_hack/import_wild_sheet.py <species_info.i> planning/wild-pokemon-planner.xlsx`
+  (see `export_wild_sheet.py` for making `species_info.i`), or ask Claude.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
