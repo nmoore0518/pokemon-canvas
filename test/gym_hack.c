@@ -30,7 +30,7 @@
 // Menu labels from Oak's lab script, in menu order.
 extern const u8 GymHack_Text_TypeFairy[], GymHack_Text_TypeBug[], GymHack_Text_TypeDark[],
     GymHack_Text_TypeDragon[], GymHack_Text_TypeElectric[], GymHack_Text_TypeFighting[],
-    GymHack_Text_TypeFire[], GymHack_Text_TypeGhost[], GymHack_Text_TypeGrass[],
+    GymHack_Text_TypeFire[], GymHack_Text_TypeFlying[], GymHack_Text_TypeGhost[], GymHack_Text_TypeGrass[],
     GymHack_Text_TypeGround[], GymHack_Text_TypeIce[], GymHack_Text_TypeNormal[],
     GymHack_Text_TypePoison[], GymHack_Text_TypePsychic[], GymHack_Text_TypeRock[],
     GymHack_Text_TypeSteel[], GymHack_Text_TypeWater[];
@@ -39,7 +39,7 @@ static const u8 *const sMenuLabels[GYM_HACK_STARTER_COUNT] =
 {
     GymHack_Text_TypeFairy, GymHack_Text_TypeBug, GymHack_Text_TypeDark,
     GymHack_Text_TypeDragon, GymHack_Text_TypeElectric, GymHack_Text_TypeFighting,
-    GymHack_Text_TypeFire, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass,
+    GymHack_Text_TypeFire, GymHack_Text_TypeFlying, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass,
     GymHack_Text_TypeGround, GymHack_Text_TypeIce, GymHack_Text_TypeNormal,
     GymHack_Text_TypePoison, GymHack_Text_TypePsychic, GymHack_Text_TypeRock,
     GymHack_Text_TypeSteel, GymHack_Text_TypeWater,
@@ -58,7 +58,7 @@ static bool32 StringEndsWith(const u8 *str, const u8 *suffix)
     return n >= m && StringCompare(str + n - m, suffix) == 0;
 }
 
-TEST("GymHack: every non-Flying type has exactly one starter")
+TEST("GymHack: every type has exactly one starter")
 {
     u32 i, j;
     u32 seen[NUMBER_OF_MON_TYPES] = {0};
@@ -68,7 +68,7 @@ TEST("GymHack: every non-Flying type has exactly one starter")
 
     for (j = 0; j < NUMBER_OF_MON_TYPES; j++)
     {
-        if (j == TYPE_NONE || j == TYPE_FLYING || j == TYPE_MYSTERY || j == TYPE_STELLAR)
+        if (j == TYPE_NONE || j == TYPE_MYSTERY || j == TYPE_STELLAR)
             EXPECT_EQ(seen[j], 0);
         else
             EXPECT_EQ(seen[j], 1);
@@ -102,7 +102,7 @@ TEST("GymHack: confirming locks in the starter's primary type")
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_FAIRY);
 
-    GymHackTest_ChooseStarter(13); // Ralts: Psychic/Fairy, primary Psychic
+    GymHackTest_ChooseStarter(14); // Ralts: Psychic/Fairy, primary Psychic
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_PSYCHIC);
 }
@@ -510,14 +510,14 @@ TEST("GymHack: type finder marks exactly the areas with that primary type")
 
 TEST("GymHack: type finder only counts primary types")
 {
-    // Route 1's tables hold Normal and Psychic types only
+    // Route 1's tables hold Normal and Flying types (Pidgey and Spearow are Flying first here)
     u32 j;
     for (j = 0; gWildMonHeaders[j].mapGroup != MAP_GROUP(MAP_UNDEFINED); j++)
     {
         if (gWildMonHeaders[j].mapGroup == MAP_GROUP(MAP_ROUTE1) && gWildMonHeaders[j].mapNum == MAP_NUM(MAP_ROUTE1))
         {
             EXPECT(GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_NORMAL));
-            EXPECT(!GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_FLYING));
+            EXPECT(GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_FLYING));
             EXPECT(!GymHack_WildHeaderHasType(&gWildMonHeaders[j], TYPE_FIRE));
         }
     }
@@ -1019,4 +1019,27 @@ TEST("GymHack: badge: the pedestal is sold once the gym is awarded")
     FlagSet(FLAG_PALLET_GYM_AWARDED);
     EXPECT(GymDecor_IsUnlocked(GYM_DECOR_BADGE_PEDESTAL));
     FlagClear(FLAG_PALLET_GYM_AWARDED);
+}
+
+TEST("GymHack: the birds are Flying first, and every type can field six species")
+{
+    static const u16 birds[] = {SPECIES_PIDGEY, SPECIES_PIDGEOTTO, SPECIES_PIDGEOT, SPECIES_SPEAROW, SPECIES_FEAROW,
+        SPECIES_WINGULL, SPECIES_PELIPPER, SPECIES_DODUO, SPECIES_DODRIO, SPECIES_NATU, SPECIES_XATU,
+        SPECIES_TAILLOW, SPECIES_SWELLOW, SPECIES_HOOTHOOT, SPECIES_NOCTOWL, SPECIES_AERODACTYL, SPECIES_FARFETCHD};
+    u32 count[NUMBER_OF_MON_TYPES] = {0};
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(birds); i++)
+        EXPECT_EQ(gSpeciesInfo[birds[i]].types[0], TYPE_FLYING);
+    EXPECT_EQ(gSpeciesInfo[SPECIES_PIDGEY].types[1], TYPE_NORMAL);
+    EXPECT_EQ(gSpeciesInfo[SPECIES_AERODACTYL].types[1], TYPE_ROCK);
+    for (i = 1; i <= SPECIES_DEOXYS; i++)
+        count[gSpeciesInfo[i].types[0]]++;
+    for (i = 0; i < NUMBER_OF_MON_TYPES; i++)
+    {
+        if (i == TYPE_NONE || i == TYPE_MYSTERY || i == TYPE_STELLAR)
+            continue;
+        if (count[i] < 6)
+            DebugPrintf("type %d has only %d species", i, count[i]);
+        EXPECT_GE(count[i], 6);
+    }
 }

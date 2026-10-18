@@ -1075,7 +1075,7 @@ PalletTown_ProfessorOaksLab_EventScript_BallShelf::
 	releaseall
 	end
 
-@ Gym Trainer hack: choose one of 17 types. The order of this list must
+@ Gym Trainer hack: choose one of 18 types. The order of this list must
 @ match sStarters in src/gym_hack.c.
 PalletTown_ProfessorOaksLab_EventScript_ChooseType::
 	applymovement LOCALID_OAKS_LAB_PROF_OAK, Common_Movement_FaceRight
@@ -1083,7 +1083,7 @@ PalletTown_ProfessorOaksLab_EventScript_ChooseType::
 	textcolor NPC_TEXT_COLOR_MALE
 	message PalletTown_ProfessorOaksLab_Text_WhichType
 	waitmessage
-	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypeFairy, GymHack_Text_TypeBug, GymHack_Text_TypeDark, GymHack_Text_TypeDragon, GymHack_Text_TypeElectric, GymHack_Text_TypeFighting, GymHack_Text_TypeFire, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass, GymHack_Text_TypeGround, GymHack_Text_TypeIce, GymHack_Text_TypeNormal, GymHack_Text_TypePoison, GymHack_Text_TypePsychic, GymHack_Text_TypeRock, GymHack_Text_TypeSteel, GymHack_Text_TypeWater
+	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypeFairy, GymHack_Text_TypeBug, GymHack_Text_TypeDark, GymHack_Text_TypeDragon, GymHack_Text_TypeElectric, GymHack_Text_TypeFighting, GymHack_Text_TypeFire, GymHack_Text_TypeFlying, GymHack_Text_TypeGhost, GymHack_Text_TypeGrass, GymHack_Text_TypeGround, GymHack_Text_TypeIce, GymHack_Text_TypeNormal, GymHack_Text_TypePoison, GymHack_Text_TypePsychic, GymHack_Text_TypeRock, GymHack_Text_TypeSteel, GymHack_Text_TypeWater
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_CancelTypeMenu
 	special GymHack_PrepareStarterChoice
 	showmonpic PLAYER_STARTER_SPECIES, 10, 3
@@ -1466,6 +1466,9 @@ GymHack_Text_TypeFighting::
 
 GymHack_Text_TypeFire::
 	.string "Fire - Charmander$"
+
+GymHack_Text_TypeFlying::
+	.string "Flying - Spearow$"
 
 GymHack_Text_TypeGhost::
 	.string "Ghost - Gastly$"

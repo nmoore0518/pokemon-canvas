@@ -42,7 +42,7 @@ ROSTERS = {
         [(0, "Tyrogue"), (20, "Hitmontop")],
     ],
     "PSYCHIC": [
-        [(0, "Natu"), (25, "Xatu")],
+        [(0, "Chimecho")],   # Natu is Flying first in this hack
         [(0, "Drowzee"), (26, "Hypno")],
         [(0, "Spoink"), (32, "Grumpig")],
         [(0, "Abra"), (16, "Kadabra"), (36, "Alakazam")],
@@ -113,7 +113,7 @@ ROSTERS = {
         [(0, "Onix")],
         [(0, "Omanyte"), (40, "Omastar")],
         [(0, "Kabuto"), (40, "Kabutops")],
-        [(0, "Aerodactyl")],
+        [(0, "Anorith"), (40, "Armaldo")],   # Aerodactyl is Flying first in this hack
         [(0, "Larvitar"), (30, "Pupitar"), (55, "Tyranitar")],
     ],
 }

@@ -2,7 +2,7 @@
 #define GUARD_GYM_HACK_H
 
 // Number of choices on the starter type menu in Oak's lab.
-#define GYM_HACK_STARTER_COUNT 17
+#define GYM_HACK_STARTER_COUNT 18
 
 // Specials (called from event scripts)
 void GymHack_PrepareStarterChoice(void);

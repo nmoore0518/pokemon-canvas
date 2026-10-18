@@ -1,6 +1,6 @@
 // Gym Trainer hack: custom game logic.
 //
-// Starter selection: in Oak's lab the player picks one of 17 types from a
+// Starter selection: in Oak's lab the player picks one of 18 types from a
 // menu. The menu order in data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
 // must match sStarters below.
 //
@@ -63,6 +63,7 @@ static const struct GymHackStarter sStarters[] =
     { SPECIES_PIKACHU,    TYPE_GROUND   }, // Electric
     { SPECIES_TYROGUE,    TYPE_PSYCHIC  }, // Fighting
     { SPECIES_CHARMANDER, TYPE_WATER    }, // Fire
+    { SPECIES_SPEAROW,    TYPE_ELECTRIC }, // Flying (the birds are Flying first in this hack)
     { SPECIES_GASTLY,     TYPE_DARK     }, // Ghost
     { SPECIES_BULBASAUR,  TYPE_POISON   }, // Grass
     { SPECIES_SANDSHREW,  TYPE_GRASS    }, // Ground

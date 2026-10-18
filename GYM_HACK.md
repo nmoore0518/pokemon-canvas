@@ -44,8 +44,12 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 
 ## Design decisions
 
-- **Modern typings** (Fairy included). 17 selectable types; Flying is excluded because no Gen 1-3
-  Pokémon has Flying as its primary type.
+- **Modern typings** (Fairy included), with one change: the birds are Flying first. Pidgey,
+  Spearow, Wingull, Doduo, Natu, Taillow and Hoothoot lines, Aerodactyl and Farfetch'd (and Mega
+  Pidgeot/Aerodactyl) swap their two types, so Flying is a team type like any other (types are
+  in `src/data/pokemon/species_info/gen_*_families.h`). 18 selectable types; Flying's starter is
+  Spearow and its rival is Electric. The rival's Psychic and Rock teams use Chimecho and
+  Anorith/Armaldo in place of Natu/Xatu and Aerodactyl.
 - **Primary type** means `gSpeciesInfo[species].types[0]`.
 - The player's type is stored in `VAR_PLAYER_TYPE` (0x40F7) as a `TYPE_*` constant; 0 = not chosen yet.
 - **Rival** specializes in a type that is super effective against the player's (table in
