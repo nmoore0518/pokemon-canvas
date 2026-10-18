@@ -248,6 +248,14 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     gym challenges and the badge pedestal), the League makes the player's badge official, and Oak
     introduces his aide and explains the challenge system before leaving.
   - The National Pokédex scene outside the house waits until the gym is the player's.
+- **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's
+  entrance (beside the usual guide) gives tips for running a gym of your own, tied to that gym's
+  mechanic: Pewter (the gym is a path; challengers walk from the door to your BATTLE STAGE, so
+  walls shape it), Cerulean (water steers challengers, and suits a Water gym), Vermilion
+  (puzzles), Celadon (plants as walls, show your type), Fuchsia (invisible walls), Saffron (keep
+  challengers guessing), Cinnabar (reward type knowledge), Viridian (spin and stop tiles). After
+  the badge, the aide says what it unlocked: the decoration in the GYM PC (badges 2, 3, 4, 5, 8)
+  or the Pallet Mart item (badges 4, 6, 7).
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -268,6 +276,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
+| `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |
 | `src/gym_badge.c`, `tools/gym_hack/badge_art.py` | The player's badge per type, its art, the pedestal swap |
 | `tools/gym_hack/playtest/` | Headless emulator harness used to playtest scenes |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |

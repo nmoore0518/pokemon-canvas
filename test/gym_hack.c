@@ -1168,3 +1168,32 @@ TEST("GymHack: finale: every line fits the message box")
     }
     Free(buf);
 }
+
+extern const u8 GymAides_Text_PewterCity[], GymAides_Text_CeruleanCity[], GymAides_Text_VermilionCity[], GymAides_Text_CeladonCity[], GymAides_Text_FuchsiaCity[], GymAides_Text_SaffronCity[], GymAides_Text_CinnabarIsland[], GymAides_Text_ViridianCity[], GymAides_Text_PewterCityAfter[], GymAides_Text_CeruleanCityAfter[], GymAides_Text_VermilionCityAfter[], GymAides_Text_CeladonCityAfter[], GymAides_Text_FuchsiaCityAfter[], GymAides_Text_SaffronCityAfter[], GymAides_Text_CinnabarIslandAfter[], GymAides_Text_ViridianCityAfter[];
+
+TEST("GymHack: gym aides: lines fit the message box")
+{
+    static const u8 *const texts[] = {GymAides_Text_PewterCity, GymAides_Text_CeruleanCity, GymAides_Text_VermilionCity, GymAides_Text_CeladonCity, GymAides_Text_FuchsiaCity, GymAides_Text_SaffronCity, GymAides_Text_CinnabarIsland, GymAides_Text_ViridianCity, GymAides_Text_PewterCityAfter, GymAides_Text_CeruleanCityAfter, GymAides_Text_VermilionCityAfter, GymAides_Text_CeladonCityAfter, GymAides_Text_FuchsiaCityAfter, GymAides_Text_SaffronCityAfter, GymAides_Text_CinnabarIslandAfter, GymAides_Text_ViridianCityAfter};
+    u8 *buf = Alloc(1200);
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("aide line too wide: %S", line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}

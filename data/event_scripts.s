@@ -1065,6 +1065,7 @@ gStdScripts_End::
 	.include "data/scripts/stat_items.inc"
 	.include "data/scripts/gym_challenge.inc"
 	.include "data/scripts/gym_finale.inc"
+	.include "data/scripts/gym_aides.inc"
 	.include "data/scripts/new_game.inc"
 	.include "data/scripts/hall_of_fame.inc"
 	.include "data/scripts/hall_of_fame_frlg.inc"
