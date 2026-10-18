@@ -27,6 +27,7 @@ struct GymChallengeSave
 };
 
 extern u8 gGymChallengeDefeatText[];
+extern bool8 gGymPracticeBattle;
 
 const struct Trainer *GymChallenge_GetTrainer(u16 trainerId);
 struct GymChallengeSave *GymChallenge_GetSave(void);
@@ -49,5 +50,9 @@ void GymChallenge_PlanPlayerWalk(void);
 void GymChallenge_PlanChallengerWalk(void);
 bool32 GymChallenge_FindPath(s32 fromX, s32 fromY, s32 toX, s32 toY, s32 blockX, s32 blockY, bool32 allowMat, u8 face, u8 *out);
 void GymChallenge_BufferVictorList(void);
+u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level);
+void GymChallenge_BufferPracticeTrainer(void);
+void GymChallenge_GeneratePractice(void);
+void GymChallenge_EndPractice(void);
 
 #endif // GUARD_GYM_CHALLENGE_H

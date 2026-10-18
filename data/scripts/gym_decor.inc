@@ -22,14 +22,23 @@ GymDecor_EventScript_LogOff::
 
 @ ---- Buying -------------------------------------------------------------
 GymDecor_EventScript_Buy::
-	setvar VAR_0x8005, 0
+	setvar VAR_0x8007, 0
 	showmoneybox 0, 0
+GymDecor_EventScript_BuyCategory::
+	special GymDecor_PushShopCategories
+	message GymDecor_Text_WhichKind
+	waitmessage
+	dynmultistack 18, 0, FALSE, 6, FALSE, VAR_0x8007, DYN_MULTICHOICE_CB_NONE
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_BuyDone
+	copyvar VAR_0x8006, VAR_RESULT
+	copyvar VAR_0x8007, VAR_RESULT
+	setvar VAR_0x8005, 0
 GymDecor_EventScript_BuyLoop::
 	special GymDecor_PushShopList
 	message GymDecor_Text_WhichToBuy
 	waitmessage
 	dynmultistack 15, 0, FALSE, 5, FALSE, VAR_0x8005, DYN_MULTICHOICE_CB_GYM_DECOR_SHOP
-	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_BuyDone
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_BuyCategory
 	copyvar VAR_0x8004, VAR_RESULT
 	copyvar VAR_0x8005, VAR_RESULT
 	special GymDecor_BufferDecorInfo
@@ -38,6 +47,7 @@ GymDecor_EventScript_BuyLoop::
 	special GymDecor_TryBuy
 	goto_if_eq VAR_RESULT, 1, GymDecor_EventScript_NotEnoughMoney
 	goto_if_eq VAR_RESULT, 2, GymDecor_EventScript_StorageFull
+	goto_if_eq VAR_RESULT, 3, GymDecor_EventScript_AlreadyHaveTrainer
 	updatemoneybox
 	special GymDecor_BufferDecorInfo
 	playse SE_SHOP
@@ -55,6 +65,11 @@ GymDecor_EventScript_StorageFull::
 	goto GymDecor_EventScript_BuyLoop
 	end
 
+GymDecor_EventScript_AlreadyHaveTrainer::
+	msgbox GymDecor_Text_AlreadyHaveTrainer, MSGBOX_DEFAULT
+	goto GymDecor_EventScript_BuyLoop
+	end
+
 GymDecor_EventScript_BuyDone::
 	hidemoneybox
 	goto GymDecor_EventScript_PCMenu
@@ -62,12 +77,18 @@ GymDecor_EventScript_BuyDone::
 
 @ ---- Decorating ---------------------------------------------------------
 GymDecor_EventScript_Decorate::
-	special GymDecor_PushOwnedList
+	special GymDecor_PushOwnedCategories
 	goto_if_eq VAR_RESULT, 0, GymDecor_EventScript_NothingOwned
+	message GymDecor_Text_WhichKindToPlace
+	waitmessage
+	dynmultistack 18, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_PCMenu
+	copyvar VAR_0x8006, VAR_RESULT
+	special GymDecor_PushOwnedList
 	message GymDecor_Text_WhichToPlace
 	waitmessage
 	dynmultistack 15, 0, FALSE, 5, FALSE, 0, DYN_MULTICHOICE_CB_GYM_DECOR_OWNED
-	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_PCMenu
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_Decorate
 	copyvar VAR_0x8004, VAR_RESULT
 	msgbox GymDecor_Text_HowToDecorate, MSGBOX_DEFAULT
 	closemessage
@@ -111,6 +132,17 @@ GymDecor_Text_Decorate::
 
 GymDecor_Text_LogOff::
 	.string "LOG OFF$"
+
+GymDecor_Text_WhichKind::
+	.string "What kind of decoration?$"
+
+GymDecor_Text_WhichKindToPlace::
+	.string "What kind of decoration will\n"
+	.string "you start with?$"
+
+GymDecor_Text_AlreadyHaveTrainer::
+	.string "That TRAINER already works at\n"
+	.string "your GYM!$"
 
 GymDecor_Text_WhichToBuy::
 	.string "Which decoration would you\n"

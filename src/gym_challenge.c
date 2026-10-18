@@ -47,6 +47,7 @@ EWRAM_DATA u8 gGymChallengeIntroText[320];
 EWRAM_DATA u8 gGymChallengeDefeatText[120];  // in battle, when the challenger loses
 EWRAM_DATA u8 gGymChallengeAfterText[160];   // after losing to the player
 EWRAM_DATA u8 gGymChallengeWinText[160];     // after beating the player
+EWRAM_DATA bool8 gGymPracticeBattle;         // a practice battle: no prize money (data/battle_scripts_1.s)
 
 // ---------------------------------------------------------------------------
 // Save data
@@ -587,6 +588,191 @@ static const struct OakMon sOakFinaleTeam[] =
         {MOVE_DRAGON_DANCE, MOVE_OUTRAGE, MOVE_EXTREME_SPEED, MOVE_EARTHQUAKE}},
 };
 
+// ---------------------------------------------------------------------------
+// Practice trainers (bought at the gym PC, data/scripts/gym_practice.inc): random teams of the
+// player's type, no duplicates, 3-5 Pokémon, 5 levels below the player's average.
+//   Rookie (beginner): mostly first forms, some second forms, a simple AI.
+//   Skilled (intermediate): mostly second forms, some first forms, a decent AI.
+//   Expert (advanced): fully evolved Pokémon (earlier forms only when there aren't enough), a smart AI.
+// Legendaries are left out. Practice battles pay no money and can't be lost for real.
+// ---------------------------------------------------------------------------
+enum
+{
+    PRACTICE_ROOKIE,
+    PRACTICE_SKILLED,
+    PRACTICE_EXPERT,
+    PRACTICE_TIERS
+};
+
+struct PracticeTier
+{
+    const u8 *title;
+    u16 trainerClass;
+    u16 trainerPic;
+    bool8 female;
+    u8 iv;
+    u8 heldItemChance;
+    u64 aiFlags;
+    const u8 *defeat;
+};
+
+static const struct PracticeTier sPracticeTiers[PRACTICE_TIERS] =
+{
+    [PRACTICE_ROOKIE]  = {COMPOUND_STRING("ROOKIE"), TRAINER_CLASS_YOUNGSTER_FRLG, TRAINER_PIC_YOUNGSTER_FRLG, FALSE, 5, 0,
+                          AI_FLAG_CHECK_BAD_MOVE, COMPOUND_STRING("Wow, LEADER!\nYou're so strong!")},
+    [PRACTICE_SKILLED] = {COMPOUND_STRING("SKILLED"), TRAINER_CLASS_COOLTRAINER_FRLG, TRAINER_PIC_COOLTRAINER_F_FRLG, TRUE, 16, 20,
+                          AI_FLAG_BASIC_TRAINER, COMPOUND_STRING("Good battle, LEADER!\nI learned a lot.")},
+    [PRACTICE_EXPERT]  = {COMPOUND_STRING("EXPERT"), TRAINER_CLASS_COOLTRAINER_FRLG, TRAINER_PIC_COOLTRAINER_M_FRLG, FALSE, 31, 60,
+                          AI_FLAG_SMART_TRAINER, COMPOUND_STRING("That's why you're\nthe LEADER.")},
+};
+
+// How many times a species has evolved (pre: each species' pre-evolution, from BuildPreEvolutions)
+static u32 EvolutionStage(const u16 *pre, u32 species)
+{
+    u32 stage = 0;
+    while (stage < 3 && (species = pre[species]) != SPECIES_NONE)
+        stage++;
+    return stage;
+}
+
+// pre[species] = what it evolves from, for the first three generations (one pass over the
+// evolutions: GetSpeciesPreEvolution searches every species each time)
+static void BuildPreEvolutions(u16 *pre)
+{
+    u32 species, i;
+    memset(pre, 0, (SPECIES_DEOXYS + 1) * sizeof(u16));
+    for (species = 1; species <= SPECIES_DEOXYS; species++)
+    {
+        const struct Evolution *evos = GetSpeciesEvolutions(species);
+        if (evos == NULL)
+            continue;
+        for (i = 0; evos[i].method != EVOLUTIONS_END; i++)
+        {
+            if (evos[i].targetSpecies <= SPECIES_DEOXYS)
+                pre[evos[i].targetSpecies] = species;
+        }
+    }
+}
+
+static bool32 IsPracticeSpecies(u32 species, u32 type)
+{
+    const struct SpeciesInfo *info = &gSpeciesInfo[species];
+    return IsSpeciesEnabled(species) && info->types[0] == type
+        && !info->isRestrictedLegendary && !info->isSubLegendary && !info->isMythical;
+}
+
+// Which list a species goes in for a tier: 0 = what the tier is about, 1 = also fine, 2 = only if
+// there's nothing else
+static u32 PracticePreference(const u16 *pre, u32 species, u32 tier)
+{
+    u32 stage = EvolutionStage(pre, species);
+    switch (tier)
+    {
+    case PRACTICE_ROOKIE:
+        return stage == 0 ? 0 : (stage == 1 ? 1 : 2);
+    case PRACTICE_SKILLED:
+        return stage == 1 ? 0 : (stage == 0 ? 1 : 2);
+    default:
+        return !HasEvolution(species) ? 0 : (stage >= 1 ? 1 : 2);
+    }
+}
+
+// Fills sChallengerMons with a practice team; returns its size
+u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level)
+{
+    u16 *lists[3];
+    u16 *pre = Alloc((SPECIES_DEOXYS + 1) * sizeof(u16));
+    u32 counts[3] = {0}, species = SPECIES_NONE, i, k, n, total;
+    s8 spread[PARTY_SIZE];
+
+    BuildPreEvolutions(pre);
+    for (k = 0; k < 3; k++)
+        lists[k] = Alloc(SPECIES_DEOXYS * sizeof(u16));
+    for (species = 1; species <= SPECIES_DEOXYS; species++)
+    {
+        if (IsPracticeSpecies(species, type))
+        {
+            k = PracticePreference(pre, species, tier);
+            lists[k][counts[k]++] = species;
+        }
+    }
+    total = counts[0] + counts[1] + counts[2];
+    n = 3 + Random() % 3;
+    if (n > total)
+        n = total;
+    memcpy(spread, sLevelSpread[n], sizeof(spread));
+    ShuffleLevels(spread, n);
+    for (i = 0; i < n; i++)
+    {
+        // The rookie and skilled trainers mix in the other early form now and then
+        u32 order[3] = {0, 1, 2};
+        if (tier != PRACTICE_EXPERT && Random() % 3 == 0)
+        {
+            order[0] = 1;
+            order[1] = 0;
+        }
+        for (k = 0; k < 3; k++)
+        {
+            u32 *count = &counts[order[k]];
+            if (*count != 0)
+            {
+                // Take one at random (and drop it from the list: no duplicates)
+                u16 *list = lists[order[k]];
+                u32 j = Random() % *count;
+                species = list[j];
+                list[j] = list[--*count];
+                break;
+            }
+        }
+        InitMon(&sChallengerMons[i], species, ClampLevel((s32)level + spread[i]), sPracticeTiers[tier].iv);
+        if (Random() % 100 < sPracticeTiers[tier].heldItemChance)
+            sChallengerMons[i].heldItem = sHeldItems[Random() % ARRAY_COUNT(sHeldItems)];
+    }
+    for (k = 0; k < 3; k++)
+        Free(lists[k]);
+    Free(pre);
+    return n;
+}
+
+static const u8 *PracticeName(u32 tier)
+{
+    // Always the same name for each of the player's trainers
+    u32 id = gSaveBlock2Ptr->playerTrainerId[0] | (gSaveBlock2Ptr->playerTrainerId[1] << 8);
+    if (sPracticeTiers[tier].female)
+        return sFemaleNames[(id + tier * 7) % ARRAY_COUNT(sFemaleNames)];
+    return sMaleNames[(id + tier * 11) % ARRAY_COUNT(sMaleNames)];
+}
+
+// Special: VAR_0x8004 = tier -> STR_VAR_1 = the trainer's name, STR_VAR_2 = their rank
+void GymChallenge_BufferPracticeTrainer(void)
+{
+    u32 tier = min(gSpecialVar_0x8004, PRACTICE_TIERS - 1);
+    StringCopy(gStringVar1, PracticeName(tier));
+    StringCopy(gStringVar2, sPracticeTiers[tier].title);
+}
+
+// Special: VAR_0x8004 = tier. Builds the practice trainer into TRAINER_GYM_CHALLENGER.
+void GymChallenge_GeneratePractice(void)
+{
+    u32 tier = min(gSpecialVar_0x8004, PRACTICE_TIERS - 1);
+    const struct PracticeTier *t = &sPracticeTiers[tier];
+    s32 level = (s32)GymChallenge_PlayerAverageLevel() - 5;
+    u32 n;
+
+    SetupTrainer(t->trainerClass, t->trainerPic, t->female, PracticeName(tier), 1);
+    n = GymChallenge_BuildPracticeTeam(tier, VarGet(VAR_PLAYER_TYPE), max(level, 2));
+    sChallenger.partySize = max(n, 1u);
+    sChallenger.aiFlags = t->aiFlags;
+    StringExpandPlaceholders(gGymChallengeDefeatText, t->defeat);
+    gGymPracticeBattle = TRUE;
+}
+
+// Special: after a practice battle
+void GymChallenge_EndPractice(void)
+{
+    gGymPracticeBattle = FALSE;
+}
+
 u32 GymChallenge_OakFinaleLevel(void)
 {
     u32 level = GymChallenge_PlayerAverageLevel() + 5;
@@ -598,6 +784,7 @@ u32 GymChallenge_OakFinaleLevel(void)
 // Special
 void GymChallenge_GenerateOakFinale(void)
 {
+    gGymPracticeBattle = FALSE;
     u32 level = GymChallenge_OakFinaleLevel(), i;
     SetupTrainer(TRAINER_CLASS_PKMN_PROF_FRLG, TRAINER_PIC_PROFESSOR_OAK_FRLG, FALSE, COMPOUND_STRING("OAK"),
                  ARRAY_COUNT(sOakFinaleTeam));
@@ -618,6 +805,7 @@ void GymChallenge_GenerateOakFinale(void)
 
 void GymChallenge_Generate(u32 kind, u32 index)
 {
+    gGymPracticeBattle = FALSE;
     u32 level = GymChallenge_PlayerAverageLevel();
     sKind = kind;
     switch (kind)

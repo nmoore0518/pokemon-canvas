@@ -1197,3 +1197,180 @@ TEST("GymHack: gym aides: lines fit the message box")
     }
     Free(buf);
 }
+
+// ---- Practice trainers ----
+extern const u8 GymPractice_Text_Offer[], GymPractice_Text_Go[], GymPractice_Text_Won[], GymPractice_Text_Lost[], GymPractice_Text_NotNow[];
+
+TEST("GymHack: practice trainers bring 3-5 different Pokemon of the player's type, 5 levels below")
+{
+    static const u8 types[] = {TYPE_NORMAL, TYPE_FIGHTING, TYPE_FLYING, TYPE_POISON, TYPE_GROUND, TYPE_ROCK,
+        TYPE_BUG, TYPE_GHOST, TYPE_STEEL, TYPE_FIRE, TYPE_WATER, TYPE_GRASS, TYPE_ELECTRIC, TYPE_PSYCHIC,
+        TYPE_ICE, TYPE_DRAGON, TYPE_DARK, TYPE_FAIRY};
+    u32 t, tier, run, i, j;
+    GivePlayerTeamAt(50, 60);
+    for (t = 0; t < ARRAY_COUNT(types); t++)
+    {
+        VarSet(VAR_PLAYER_TYPE, types[t]);
+        for (tier = 0; tier < 3; tier++)
+        {
+            for (run = 0; run < 6; run++)
+            {
+                const struct Trainer *tr;
+                gSpecialVar_0x8004 = tier;
+                GymChallenge_GeneratePractice();
+                tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+                EXPECT(gGymPracticeBattle);
+                EXPECT_GE((u32)tr->partySize, 3);
+                EXPECT_LE((u32)tr->partySize, 5);
+                EXPECT_EQ(ChallengerAverageLevel(), 50);
+                for (i = 0; i < tr->partySize; i++)
+                {
+                    u32 s = tr->party[i].species;
+                    EXPECT_EQ(gSpeciesInfo[s].types[0], types[t]);
+                    EXPECT(!gSpeciesInfo[s].isRestrictedLegendary && !gSpeciesInfo[s].isSubLegendary && !gSpeciesInfo[s].isMythical);
+                    for (j = 0; j < i; j++)
+                        EXPECT_NE(GET_BASE_SPECIES_ID(s), GET_BASE_SPECIES_ID(tr->party[j].species));
+                }
+            }
+        }
+    }
+    GymChallenge_EndPractice();
+    EXPECT(!gGymPracticeBattle);
+}
+
+static u32 CountFullyEvolved(u32 type)
+{
+    u32 s, n = 0;
+    for (s = 1; s <= SPECIES_DEOXYS; s++)
+    {
+        const struct Evolution *evos = GetSpeciesEvolutions(s);
+        if (IsSpeciesEnabled(s) && gSpeciesInfo[s].types[0] == type && !gSpeciesInfo[s].isRestrictedLegendary
+         && !gSpeciesInfo[s].isSubLegendary && !gSpeciesInfo[s].isMythical && (evos == NULL || evos[0].method == EVOLUTIONS_END))
+            n++;
+    }
+    return n;
+}
+
+TEST("GymHack: practice: the expert uses fully evolved Pokemon, earlier forms only when short")
+{
+    u32 run, i, full;
+    GivePlayerTeamAt(40, 40);
+    VarSet(VAR_PLAYER_TYPE, TYPE_FIRE);
+    for (run = 0; run < 20; run++)
+    {
+        const struct Trainer *tr;
+        gSpecialVar_0x8004 = 2;
+        GymChallenge_GeneratePractice();
+        tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        for (i = 0; i < tr->partySize; i++)
+        {
+            const struct Evolution *evos = GetSpeciesEvolutions(tr->party[i].species);
+            EXPECT(evos == NULL || evos[0].method == EVOLUTIONS_END);
+        }
+    }
+    // Fairy has few fully evolved Pokémon in the first three generations: the team still fills up
+    VarSet(VAR_PLAYER_TYPE, TYPE_FAIRY);
+    full = CountFullyEvolved(TYPE_FAIRY);
+    for (run = 0; run < 20; run++)
+    {
+        const struct Trainer *tr;
+        u32 evolved = 0;
+        gSpecialVar_0x8004 = 2;
+        GymChallenge_GeneratePractice();
+        tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        EXPECT_GE((u32)tr->partySize, 3);
+        for (i = 0; i < tr->partySize; i++)
+        {
+            const struct Evolution *evos = GetSpeciesEvolutions(tr->party[i].species);
+            if (evos == NULL || evos[0].method == EVOLUTIONS_END)
+                evolved++;
+        }
+        EXPECT_EQ(evolved, min(full, (u32)tr->partySize));
+    }
+    GymChallenge_EndPractice();
+}
+
+TEST("GymHack: practice: the rookie never uses third forms when there are enough others")
+{
+    u32 run, i;
+    GivePlayerTeamAt(30, 30);
+    VarSet(VAR_PLAYER_TYPE, TYPE_WATER);
+    for (run = 0; run < 30; run++)
+    {
+        const struct Trainer *tr;
+        gSpecialVar_0x8004 = 0;
+        GymChallenge_GeneratePractice();
+        tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        for (i = 0; i < tr->partySize; i++)
+        {
+            u32 pre = GetSpeciesPreEvolution(tr->party[i].species);
+            EXPECT(pre == SPECIES_NONE || GetSpeciesPreEvolution(pre) == SPECIES_NONE);
+        }
+    }
+    GymChallenge_EndPractice();
+}
+
+TEST("GymHack: practice trainer lines fit the message box")
+{
+    static const u8 *const texts[] = {GymPractice_Text_Offer, GymPractice_Text_Go, GymPractice_Text_Won, GymPractice_Text_Lost, GymPractice_Text_NotNow};
+    u8 *buf = Alloc(400);
+    u32 i;
+    StringCopy(gStringVar1, COMPOUND_STRING("MMMMMMM"));
+    StringCopy(gStringVar2, COMPOUND_STRING("SKILLED"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("practice line too wide: %S", line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}
+
+TEST("GymHack: type decorations unlock with their battle, and all of them with the gym")
+{
+    u32 t;
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    FlagClear(FLAG_BADGE02_GET);
+    EXPECT(!GymDecor_IsTypeUnlocked(TYPE_WATER));
+    EXPECT(!GymDecor_IsUnlocked(GYM_DECOR_WATER_AQUARIUM));
+    FlagSet(FLAG_BADGE02_GET);
+    EXPECT(GymDecor_IsTypeUnlocked(TYPE_WATER));
+    EXPECT(GymDecor_IsUnlocked(GYM_DECOR_WATER_AQUARIUM));
+    EXPECT(!GymDecor_IsUnlocked(GYM_DECOR_DRAGON_GOLD_HOARD));
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (t != TYPE_MYSTERY && t != TYPE_STELLAR)
+            EXPECT(GymDecor_IsTypeUnlocked(t));
+    }
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    FlagClear(FLAG_BADGE02_GET);
+}
+
+TEST("GymHack: every type has at least five decorations")
+{
+    u32 counts[NUMBER_OF_MON_TYPES] = {0}, i, t;
+    for (i = 0; i < GYM_DECOR_COUNT; i++)
+    {
+        if (gGymDecor[i].category >= GYM_DECOR_CAT_TYPE(0))
+            counts[gGymDecor[i].category - GYM_DECOR_CAT_TYPE(0)]++;
+    }
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (t != TYPE_MYSTERY && t != TYPE_STELLAR)
+            EXPECT_GE(counts[t], 5);
+    }
+}

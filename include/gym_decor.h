@@ -2,13 +2,21 @@
 #define GUARD_GYM_DECOR_H
 
 #include "constants/gym_decor.h"
+#include "constants/pokemon.h"
 
 struct FieldInput;
+struct MapLayout;
 struct DynamicListMenuEventArgs;
 
 // A block in a decoration's footprint: a metatile id plus these flags
 #define GYM_DECOR_SOLID 0x400   // can't be walked through
 #define GYM_DECOR_WATER 0x800   // water at the surfing height
+
+// Shop and storage categories
+#define GYM_DECOR_CAT_GENERAL  0
+#define GYM_DECOR_CAT_TRAINERS 1
+#define GYM_DECOR_CAT_TYPE(type) (2 + (type))
+#define GYM_DECOR_CAT_COUNT    GYM_DECOR_CAT_TYPE(NUMBER_OF_MON_TYPES)
 
 struct GymDecor
 {
@@ -16,6 +24,7 @@ struct GymDecor
     const u8 *description;
     u32 price;
     u16 unlockFlag;             // a flag (usually a badge) needed before it's sold; 0 = always
+    u8 category;                // GYM_DECOR_CAT_*: type decorations unlock with key battles
     u8 width;
     u8 height;
     const u16 *blocks;          // width * height, top row first
@@ -29,6 +38,8 @@ extern const struct GymDecor gGymDecor[GYM_DECOR_COUNT];
 #define GYM_DECOR_MAX_PLACED 650   // the room has about 500 free squares; the rest of the space holds gym challenge records
 
 bool32 GymDecor_IsUnlocked(u32 id);
+bool32 GymDecor_IsTypeUnlocked(u32 type);
+void GymDecor_PatchTilesetGfx(struct MapLayout const *mapLayout);
 u32 GymDecor_CountOwned(u32 id);
 bool32 GymDecor_FindPlaced(u32 id, s32 *x, s32 *y);
 u32 GymDecor_CountPlaced(u32 id);
@@ -43,10 +54,13 @@ void *GymDecor_GetSpareSaveSpace(u32 *size);
 // Specials
 void GymDecor_DrawRoom(void);
 void GymDecor_PushShopList(void);
+void GymDecor_PushShopCategories(void);
+void GymDecor_PushOwnedCategories(void);
 void GymDecor_PushOwnedList(void);
 void GymDecor_BufferDecorInfo(void);
 void GymDecor_TryBuy(void);
 void GymDecor_StartEditing(void);
+void GymDecor_SetupTrainers(void);
 
 // Edit mode hooks
 bool32 GymDecor_IsEditing(void);

@@ -108,8 +108,9 @@ def write(grid):
     MAP_DIR.mkdir(exist_ok=True)
 
     def person(local_id, gfx, pos, facing, script="0x0", flag="FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL"):
+        movement = facing if facing.startswith("MOVEMENT_TYPE_") else f"MOVEMENT_TYPE_FACE_{facing}"
         return {"local_id": local_id, "type": "object", "graphics_id": gfx, "x": pos[0], "y": pos[1],
-                "elevation": 3, "movement_type": f"MOVEMENT_TYPE_FACE_{facing}", "movement_range_x": 1,
+                "elevation": 3, "movement_type": movement, "movement_range_x": 1,
                 "movement_range_y": 1, "trainer_type": "TRAINER_TYPE_NONE",
                 "trainer_sight_or_berry_tree_id": "0", "script": script,
                 "flag": flag}
@@ -138,6 +139,13 @@ def write(grid):
                    "GymChallenge_EventScript_Aide", "FLAG_HIDE_PALLET_GYM_AIDE"),
             person("LOCALID_PALLET_GYM_CHALLENGER", "OBJ_EVENT_GFX_VAR_0", CHALLENGER_SPOT, "UP",
                    "0x0", "FLAG_HIDE_PALLET_GYM_CHALLENGER"),
+        ] + [
+            # Practice trainers: put where their decoration is placed (src/gym_decor.c)
+            person(f"LOCALID_PALLET_GYM_TRAINER_{tier}", gfx, (1 + i, 3), "MOVEMENT_TYPE_LOOK_AROUND",
+                   f"GymPractice_EventScript_{tier.title()}", f"FLAG_HIDE_PALLET_GYM_TRAINER_{tier}")
+            for i, (tier, gfx) in enumerate((("BEGINNER", "OBJ_EVENT_GFX_YOUNGSTER_FRLG"),
+                                             ("INTERMEDIATE", "OBJ_EVENT_GFX_COOLTRAINER_F"),
+                                             ("ADVANCED", "OBJ_EVENT_GFX_COOLTRAINER_M")))
         ],
         "warp_events": [{"x": x, "y": H - 2, "elevation": 3, "dest_map": "MAP_PALLET_TOWN", "dest_warp_id": "7"}
                         for x in MAT],

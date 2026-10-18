@@ -75,6 +75,51 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
       "flag": "FLAG_HIDE_PALLET_GYM_CHALLENGER"
+    },
+    {
+      "local_id": "LOCALID_PALLET_GYM_TRAINER_BEGINNER",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER_FRLG",
+      "x": 1,
+      "y": 3,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "GymPractice_EventScript_Beginner",
+      "flag": "FLAG_HIDE_PALLET_GYM_TRAINER_BEGINNER"
+    },
+    {
+      "local_id": "LOCALID_PALLET_GYM_TRAINER_INTERMEDIATE",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_F",
+      "x": 2,
+      "y": 3,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "GymPractice_EventScript_Intermediate",
+      "flag": "FLAG_HIDE_PALLET_GYM_TRAINER_INTERMEDIATE"
+    },
+    {
+      "local_id": "LOCALID_PALLET_GYM_TRAINER_ADVANCED",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_M",
+      "x": 3,
+      "y": 3,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "GymPractice_EventScript_Advanced",
+      "flag": "FLAG_HIDE_PALLET_GYM_TRAINER_ADVANCED"
     }
   ],
   "warp_events": [

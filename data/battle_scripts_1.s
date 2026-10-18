@@ -2870,6 +2870,7 @@ BattleScript_LocalBattleWonLoseTexts::
 	waitstate
 	printstring STRINGID_TRAINER2LOSETEXT
 BattleScript_LocalBattleWonReward::
+	jumpifbyte CMP_EQUAL, gGymPracticeBattle, TRUE, BattleScript_PayDayMoneyAndPickUpItems  @ Gym Trainer hack: practice pays nothing
 	getmoneyreward
 	printstring STRINGID_PLAYERGOTMONEY
 	waitmessage B_WAIT_TIME_LONG

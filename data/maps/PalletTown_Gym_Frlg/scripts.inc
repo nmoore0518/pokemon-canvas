@@ -13,6 +13,7 @@ PalletTown_Gym_OnLoad::
 @ visit; the rival only in that visit; Oak in that visit and while he waits for the player's
 @ challenge after the League
 PalletTown_Gym_OnTransition::
+	special GymDecor_SetupTrainers
 	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
 	setflag FLAG_HIDE_PALLET_GYM_RIVAL
 	setflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL

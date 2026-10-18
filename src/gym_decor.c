@@ -27,7 +27,13 @@
 #include "strings.h"
 #include "text.h"
 #include "window.h"
+#include "battle_setup.h"
+#include "bg.h"
+#include "constants/flags.h"
 #include "constants/gym_room.h"
+#include "constants/map_event_ids.h"
+#include "overworld.h"
+#include "constants/opponents.h"
 #include "constants/maps.h"
 #include "constants/songs.h"
 
@@ -92,9 +98,80 @@ static bool32 InGym(void)
 // ---------------------------------------------------------------------------
 // Storage
 // ---------------------------------------------------------------------------
+// Each type's decorations go on sale after a key battle of the story (any one of the listed
+// trainers, or a badge), and all of them once the gym is officially the player's.
+struct GymDecorTypeUnlock
+{
+    u16 flag;               // a badge flag, or 0
+    u16 trainers[3];        // any of these beaten (the rival has one per starter), or 0
+};
+
+static const struct GymDecorTypeUnlock sTypeUnlocks[NUMBER_OF_MON_TYPES] =
+{
+    [TYPE_NORMAL]   = {0, {TRAINER_RIVAL_CERULEAN_SQUIRTLE, TRAINER_RIVAL_CERULEAN_BULBASAUR, TRAINER_RIVAL_CERULEAN_CHARMANDER}},
+    [TYPE_FIGHTING] = {0, {TRAINER_BLACK_BELT_KOICHI}},                 // the Fighting Dojo's master
+    [TYPE_FLYING]   = {0, {TRAINER_RIVAL_SILPH_SQUIRTLE, TRAINER_RIVAL_SILPH_BULBASAUR, TRAINER_RIVAL_SILPH_CHARMANDER}},
+    [TYPE_POISON]   = {FLAG_BADGE05_GET},                               // Koga
+    [TYPE_GROUND]   = {0, {TRAINER_SUPER_NERD_MIGUEL}},                 // the fossil nerd in Mt. Moon
+    [TYPE_ROCK]     = {FLAG_BADGE01_GET},                               // Brock
+    [TYPE_BUG]      = {0, {TRAINER_BUG_CATCHER_SAMMY}},                 // last trainer you must beat in Viridian Forest
+    [TYPE_GHOST]    = {0, {TRAINER_RIVAL_POKEMON_TOWER_SQUIRTLE, TRAINER_RIVAL_POKEMON_TOWER_BULBASAUR, TRAINER_RIVAL_POKEMON_TOWER_CHARMANDER}},
+    [TYPE_STEEL]    = {0, {TRAINER_BOSS_GIOVANNI}},                     // Giovanni in the Rocket Hideout
+    [TYPE_FIRE]     = {FLAG_BADGE07_GET},                               // Blaine
+    [TYPE_WATER]    = {FLAG_BADGE02_GET},                               // Misty
+    [TYPE_GRASS]    = {FLAG_BADGE04_GET},                               // Erika
+    [TYPE_ELECTRIC] = {FLAG_BADGE03_GET},                               // Lt. Surge
+    [TYPE_PSYCHIC]  = {FLAG_BADGE06_GET},                               // Sabrina
+    [TYPE_ICE]      = {FLAG_BADGE08_GET},                               // Giovanni in the Viridian Gym
+    [TYPE_DRAGON]   = {0, {TRAINER_ELITE_FOUR_LANCE}},                  // the Elite Four
+    [TYPE_DARK]     = {0, {TRAINER_PICNICKER_DANA}},                    // last trainer you must beat in Rock Tunnel
+    [TYPE_FAIRY]    = {0, {TRAINER_RIVAL_SS_ANNE_SQUIRTLE, TRAINER_RIVAL_SS_ANNE_BULBASAUR, TRAINER_RIVAL_SS_ANNE_CHARMANDER}},
+};
+
+bool32 GymDecor_IsTypeUnlocked(u32 type)
+{
+    const struct GymDecorTypeUnlock *unlock;
+    u32 i;
+    if (type >= NUMBER_OF_MON_TYPES)
+        return FALSE;
+    if (FlagGet(FLAG_PALLET_GYM_AWARDED))
+        return TRUE;
+    unlock = &sTypeUnlocks[type];
+    if (unlock->flag != 0 && FlagGet(unlock->flag))
+        return TRUE;
+    for (i = 0; i < ARRAY_COUNT(unlock->trainers); i++)
+    {
+        if (unlock->trainers[i] != 0 && HasTrainerBeenFought(unlock->trainers[i]))
+            return TRUE;
+    }
+    return FALSE;
+}
+
 bool32 GymDecor_IsUnlocked(u32 id)
 {
+    u32 category = gGymDecor[id].category;
+    if (category >= GYM_DECOR_CAT_TYPE(0) && !GymDecor_IsTypeUnlocked(category - GYM_DECOR_CAT_TYPE(0)))
+        return FALSE;
     return gGymDecor[id].unlockFlag == 0 || FlagGet(gGymDecor[id].unlockFlag);
+}
+
+// ---------------------------------------------------------------------------
+// The decorations drawn in code have no room in the gym's tileset: their tiles go in video memory
+// the gym doesn't use (see tools/gym_hack/build_gym_decor.py), copied there whenever the gym's
+// tileset is loaded (called by src/fieldmap.c)
+// ---------------------------------------------------------------------------
+extern const struct Tileset gTileset_PalletGym;
+
+void GymDecor_PatchTilesetGfx(struct MapLayout const *mapLayout)
+{
+    u32 i, offset = 0;
+    if (mapLayout == NULL || mapLayout->secondaryTileset != &gTileset_PalletGym)
+        return;
+    for (i = 0; i < ARRAY_COUNT(sGymDecorArtRuns); i++)
+    {
+        LoadBgTiles(2, &sGymDecorArtTiles[offset * (TILE_SIZE_4BPP / 4)], sGymDecorArtRuns[i][1] * TILE_SIZE_4BPP, sGymDecorArtRuns[i][0]);
+        offset += sGymDecorArtRuns[i][1];
+    }
 }
 
 u32 GymDecor_CountOwned(u32 id)
@@ -311,12 +388,83 @@ static void PushItem(u32 id)
     MultichoiceDynamic_PushElement(item);
 }
 
+static const u8 *const sCategoryNames[GYM_DECOR_CAT_COUNT] =
+{
+    [GYM_DECOR_CAT_GENERAL] = COMPOUND_STRING("GENERAL"),
+    [GYM_DECOR_CAT_TRAINERS] = COMPOUND_STRING("TRAINERS"),
+    [GYM_DECOR_CAT_TYPE(TYPE_NORMAL)] = COMPOUND_STRING("NORMAL"),
+    [GYM_DECOR_CAT_TYPE(TYPE_FIGHTING)] = COMPOUND_STRING("FIGHTING"),
+    [GYM_DECOR_CAT_TYPE(TYPE_FLYING)] = COMPOUND_STRING("FLYING"),
+    [GYM_DECOR_CAT_TYPE(TYPE_POISON)] = COMPOUND_STRING("POISON"),
+    [GYM_DECOR_CAT_TYPE(TYPE_GROUND)] = COMPOUND_STRING("GROUND"),
+    [GYM_DECOR_CAT_TYPE(TYPE_ROCK)] = COMPOUND_STRING("ROCK"),
+    [GYM_DECOR_CAT_TYPE(TYPE_BUG)] = COMPOUND_STRING("BUG"),
+    [GYM_DECOR_CAT_TYPE(TYPE_GHOST)] = COMPOUND_STRING("GHOST"),
+    [GYM_DECOR_CAT_TYPE(TYPE_STEEL)] = COMPOUND_STRING("STEEL"),
+    [GYM_DECOR_CAT_TYPE(TYPE_FIRE)] = COMPOUND_STRING("FIRE"),
+    [GYM_DECOR_CAT_TYPE(TYPE_WATER)] = COMPOUND_STRING("WATER"),
+    [GYM_DECOR_CAT_TYPE(TYPE_GRASS)] = COMPOUND_STRING("GRASS"),
+    [GYM_DECOR_CAT_TYPE(TYPE_ELECTRIC)] = COMPOUND_STRING("ELECTRIC"),
+    [GYM_DECOR_CAT_TYPE(TYPE_PSYCHIC)] = COMPOUND_STRING("PSYCHIC"),
+    [GYM_DECOR_CAT_TYPE(TYPE_ICE)] = COMPOUND_STRING("ICE"),
+    [GYM_DECOR_CAT_TYPE(TYPE_DRAGON)] = COMPOUND_STRING("DRAGON"),
+    [GYM_DECOR_CAT_TYPE(TYPE_DARK)] = COMPOUND_STRING("DARK"),
+    [GYM_DECOR_CAT_TYPE(TYPE_FAIRY)] = COMPOUND_STRING("FAIRY"),
+};
+
+static bool32 InShop(u32 id)
+{
+    return GymDecor_IsUnlocked(id) && gGymDecor[id].price != 0;   // free ones aren't sold
+}
+
+static bool32 InStorage(u32 id)
+{
+    return GymDecor_CountOwned(id) > 0;
+}
+
+// Pushes the categories that have something in them (VAR_RESULT = how many)
+static void PushCategories(bool32 (*has)(u32 id))
+{
+    u32 cat, i, n = 0;
+    for (cat = 0; cat < GYM_DECOR_CAT_COUNT; cat++)
+    {
+        if (sCategoryNames[cat] == NULL)
+            continue;
+        for (i = 0; i < GYM_DECOR_COUNT; i++)
+        {
+            if (gGymDecor[i].category == cat && has(i))
+            {
+                struct ListMenuItem item;
+                u8 *name = Alloc(16);
+                StringCopy(name, sCategoryNames[cat]);
+                item.name = name;
+                item.id = cat;
+                MultichoiceDynamic_PushElement(item);
+                n++;
+                break;
+            }
+        }
+    }
+    gSpecialVar_Result = n;
+}
+
+void GymDecor_PushShopCategories(void)
+{
+    PushCategories(InShop);
+}
+
+void GymDecor_PushOwnedCategories(void)
+{
+    PushCategories(InStorage);
+}
+
+// VAR_0x8006 = the category
 void GymDecor_PushShopList(void)
 {
     u32 i, n = 0;
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
-        if (GymDecor_IsUnlocked(i) && gGymDecor[i].price != 0)   // free ones aren't sold
+        if (gGymDecor[i].category == gSpecialVar_0x8006 && InShop(i))
         {
             PushItem(i);
             n++;
@@ -325,12 +473,13 @@ void GymDecor_PushShopList(void)
     gSpecialVar_Result = n;
 }
 
+// VAR_0x8006 = the category
 void GymDecor_PushOwnedList(void)
 {
     u32 i, n = 0;
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
-        if (GymDecor_CountOwned(i) > 0)
+        if (gGymDecor[i].category == gSpecialVar_0x8006 && InStorage(i))
         {
             PushItem(i);
             n++;
@@ -349,7 +498,7 @@ void GymDecor_BufferDecorInfo(void)
     ConvertIntToDecimalStringN(gStringVar2, gGymDecor[id].price, STR_CONV_MODE_LEFT_ALIGN, 6);
 }
 
-// VAR_0x8004 = decoration. VAR_RESULT: 0 bought, 1 not enough money, 2 storage full
+// VAR_0x8004 = decoration. VAR_RESULT: 0 bought, 1 not enough money, 2 storage full, 3 already has that trainer
 void GymDecor_TryBuy(void)
 {
     u32 id = gSpecialVar_0x8004;
@@ -357,6 +506,11 @@ void GymDecor_TryBuy(void)
     if (id >= GYM_DECOR_COUNT || save->owned[id] == 0xFF || gGymDecor[id].price == 0)
     {
         gSpecialVar_Result = 2;
+        return;
+    }
+    if (gGymDecor[id].category == GYM_DECOR_CAT_TRAINERS && save->owned[id] != 0)
+    {
+        gSpecialVar_Result = 3;     // one of each trainer
         return;
     }
     if (!IsEnoughMoney(&gSaveBlock1Ptr->money, gGymDecor[id].price))
@@ -461,6 +615,84 @@ void GymDecor_ListOnDestroy(struct DynamicListMenuEventArgs *eventArgs)
         ClearStdWindowAndFrameToTransparent(sListAuxWindowId, TRUE);
         RemoveWindow(sListAuxWindowId);
         sListAuxWindowId = WINDOW_NONE;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Practice trainers: a person stands where each trainer decoration is placed
+// (data/scripts/gym_practice.inc battles them)
+// ---------------------------------------------------------------------------
+static const struct
+{
+    u8 decor;
+    u8 localId;
+    u16 flag;
+} sPracticeTrainers[] =
+{
+    {GYM_DECOR_TRAINER_BEGINNER,     LOCALID_PALLET_GYM_TRAINER_BEGINNER,     FLAG_HIDE_PALLET_GYM_TRAINER_BEGINNER},
+    {GYM_DECOR_TRAINER_INTERMEDIATE, LOCALID_PALLET_GYM_TRAINER_INTERMEDIATE, FLAG_HIDE_PALLET_GYM_TRAINER_INTERMEDIATE},
+    {GYM_DECOR_TRAINER_ADVANCED,     LOCALID_PALLET_GYM_TRAINER_ADVANCED,     FLAG_HIDE_PALLET_GYM_TRAINER_ADVANCED},
+};
+
+// Map script (ON_TRANSITION): puts each placed trainer on their spot, hides the others
+void GymDecor_SetupTrainers(void)
+{
+    u32 i;
+    s32 x, y;
+    for (i = 0; i < ARRAY_COUNT(sPracticeTrainers); i++)
+    {
+        if (GymDecor_FindPlaced(sPracticeTrainers[i].decor, &x, &y))
+        {
+            SetObjEventTemplateCoords(sPracticeTrainers[i].localId, x, y);
+            FlagClear(sPracticeTrainers[i].flag);
+        }
+        else
+        {
+            FlagSet(sPracticeTrainers[i].flag);
+        }
+    }
+}
+
+// While decorating, the trainers step out of the way (their spots show an icon instead)
+static void HideTrainers(void)
+{
+    u32 i;
+    u8 objectEventId;
+    for (i = 0; i < ARRAY_COUNT(sPracticeTrainers); i++)
+    {
+        if (!TryGetObjectEventIdByLocalIdAndMap(sPracticeTrainers[i].localId, gSaveBlock1Ptr->location.mapNum,
+                                                gSaveBlock1Ptr->location.mapGroup, &objectEventId))
+            gObjectEvents[objectEventId].invisible = TRUE;
+    }
+}
+
+// After decorating: the trainers go to their (new) spots
+static void PlaceTrainers(void)
+{
+    u32 i;
+    u8 objectEventId;
+    u8 mapNum = gSaveBlock1Ptr->location.mapNum, mapGroup = gSaveBlock1Ptr->location.mapGroup;
+    GymDecor_SetupTrainers();
+    for (i = 0; i < ARRAY_COUNT(sPracticeTrainers); i++)
+    {
+        u8 localId = sPracticeTrainers[i].localId;
+        bool32 exists = !TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId);
+        if (FlagGet(sPracticeTrainers[i].flag))
+        {
+            if (exists)
+                RemoveObjectEventByLocalIdAndMap(localId, mapNum, mapGroup);
+        }
+        else if (exists)
+        {
+            s32 x = 0, y = 0;
+            GymDecor_FindPlaced(sPracticeTrainers[i].decor, &x, &y);
+            MoveObjectEventToMapCoords(&gObjectEvents[objectEventId], x + MAP_OFFSET, y + MAP_OFFSET);
+            gObjectEvents[objectEventId].invisible = FALSE;
+        }
+        else
+        {
+            TrySpawnObjectEvent(localId, mapNum, mapGroup);
+        }
     }
 }
 
@@ -609,6 +841,7 @@ void GymDecor_StartEditing(void)
         SelectNext(1);
     sPreviewId = DECOR_NONE;
     RefreshRect(0, 0, GYM_ROOM_WIDTH, GYM_ROOM_HEIGHT);   // shows invisible walls
+    HideTrainers();
     OpenHud();
     UpdatePreview(TRUE);
 }
@@ -664,6 +897,7 @@ static void StopEditing(void)
     CloseHud();
     sEditing = FALSE;
     RefreshRect(0, 0, GYM_ROOM_WIDTH, GYM_ROOM_HEIGHT);   // hides invisible walls again
+    PlaceTrainers();
     if (CanReachPC())
         ScriptContext_SetupScript(GymDecor_EventScript_EditDone);
     else

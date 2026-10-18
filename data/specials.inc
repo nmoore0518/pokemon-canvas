@@ -649,6 +649,12 @@ gSpecials::
 	def_special GymDecor_DrawRoom
 	def_special GymDecor_PushShopList
 	def_special GymDecor_PushOwnedList
+	def_special GymDecor_PushShopCategories
+	def_special GymDecor_PushOwnedCategories
+	def_special GymDecor_SetupTrainers
+	def_special GymChallenge_BufferPracticeTrainer
+	def_special GymChallenge_GeneratePractice
+	def_special GymChallenge_EndPractice
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing

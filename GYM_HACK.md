@@ -162,13 +162,46 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     (`gSaveBlock1Ptr->secretBases`, 3,200 bytes that FireRed never uses). `src/gym_decor.c` marks
     it with a magic number and clears it on a new game or an older save. Record mixing never
     touches it.
-  - Capacity: up to 256 kinds of decoration (255 of each), and 650 placed pieces (more than the
-    room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 20 pieces
-    so far use 133 blocks. The real limit is palettes: the gym tileset had 3 spare palette slots:
-    the water uses one, the trash can one, and the player's badge the last, so pieces with new colors from other
-    tilesets need palettes merged or shared (the importer would have to fold similar colors into
-    existing palettes). Furniture and anything drawn in the existing gym/indoor colors costs no
-    palette.
+  - Shop and storage are split into categories: GENERAL, TRAINERS and one per type (only the
+    categories with something in them are listed).
+  - **Type decorations** (`TYPE_DECORATIONS` in `build_gym_decor.py`, art drawn in code in
+    `tools/gym_hack/decor_art.py`): 5 per type, 90 in all, from 1x1 to 3x3, ¥800-¥12,000
+    (e.g. Electric: TESLA COIL, GENERATOR, GIANT BATTERY, NEON SIGN, PLASMA BALL; Fire:
+    FIREPLACE, BRAZIER, LAVA LAMP, CAMPFIRE, VOLCANO MODEL). Flat ones (rugs, mats, ponds) can be
+    walked on; the top row of tall ones can be walked behind. A type's decorations go on sale after
+    a key battle (`sTypeUnlocks` in `src/gym_decor.c`), and every type unlocks when the gym becomes
+    the player's (`FLAG_PALLET_GYM_AWARDED`):
+    Normal: rival in Cerulean · Fighting: Fighting Dojo master · Psychic: Sabrina · Poison: Koga ·
+    Dragon: Lance (Elite Four) · Ghost: rival in Pokémon Tower · Dark: Picnicker Dana (the last
+    trainer you must beat in Rock Tunnel, found by path analysis of both floors) · Ground: Super
+    Nerd Miguel (Mt. Moon fossils) · Fire: Blaine · Fairy: rival on the S.S. Anne · Water: Misty ·
+    Flying: rival in Silph Co. · Rock: Brock · Electric: Lt. Surge · Bug: Bug Catcher Sammy (the
+    only trainer you must beat in Viridian Forest) · Grass: Erika · Ice: Giovanni (Viridian Gym) ·
+    Steel: Giovanni (Rocket Hideout). Trainer battles count through their trainer flags, so older
+    saves past those battles already have them.
+  - How the art fits: the gym tileset has no room for ~800 more tiles, so code-drawn pieces live
+    in video memory the gym never uses (indoor-tileset tiles no gym block uses, plus spare gym
+    tiles). The builder finds those spots and the game copies the art there whenever the gym's
+    tileset loads (`GymDecor_PatchTilesetGfx`, hooked in `src/fieldmap.c` next to the badge). All
+    of it is always loaded, so any mix can be placed. Their blocks use the gym tileset's spare
+    blocks. Colors: three shared 15-color palettes (gym slots 8-10, `decor_art.PALETTES`); each 8x8
+    tile uses one, and the Cerulean water and Vermilion trash can were redrawn in them.
+  - Capacity: up to 256 kinds of decoration (255 of each, 114 so far), and 650 placed pieces.
+    Space left for more code-drawn art: 12 video memory tiles and 41 gym blocks (the builder
+    prints this). Adding much more art would need loading only the placed pieces.
+- **Practice trainers** (TRAINERS in the gym PC: ROOKIE ¥5,000, SKILLED ¥10,000, EXPERT ¥20,000,
+  one of each). Placed like decorations; a person stands on the spot (map objects
+  `LOCALID_PALLET_GYM_TRAINER_*`, positioned by `GymDecor_SetupTrainers` on entering the gym and
+  moved when you finish decorating; while decorating they step aside and an icon shows their spot).
+  They don't affect challengers (who just walk around them). Talk to one for a practice battle
+  (`data/scripts/gym_practice.inc`): a fresh random team each time, of the player's type with no
+  duplicates (the League rules), 3-5 Pokémon, levels averaging 5 below the player's (at least 2),
+  no legendaries. ROOKIE: mostly first forms, some second forms, simple AI, low IVs. SKILLED:
+  mostly second forms, some first forms, standard AI, medium IVs, some held items. EXPERT: fully
+  evolved only (earlier forms only if the type doesn't have enough, e.g. Fairy), smart AI, max IVs,
+  held items. Each trainer keeps the same name. No prize money (`gGymPracticeBattle` skips it in
+  `data/battle_scripts_1.s`), losing doesn't white out, and your team is healed after.
+  `GymChallenge_GeneratePractice` in `src/gym_challenge.c`.
 - **Stat training items** (`src/stat_items.c`, `data/scripts/stat_items.inc`), all used up when
   used, all chosen from the bag and then a Pokémon:
   - Silver Bottle Cap (5,000): pick one stat; its IV becomes 31.
@@ -273,7 +306,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/pallet_art.py` | Chansey statue, bench and lamp art |
 | `tools/gym_hack/build_pallet_gym.py`, `data/maps/PalletTown_Gym_Frlg/` | The gym inside and Oak's gym scene |
 | `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |
-| `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data |
+| `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data, type unlocks, practice trainer spots |
+| `tools/gym_hack/decor_art.py` | Pixel art for the type decorations and trainer icons (`python3 tools/gym_hack/decor_art.py sheet.png`) |
+| `data/scripts/gym_practice.inc` | Practice trainer battles |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |
