@@ -1216,8 +1216,7 @@ TEST("GymHack: practice trainers bring 3-5 different Pokemon of the player's typ
             for (run = 0; run < 6; run++)
             {
                 const struct Trainer *tr;
-                gSpecialVar_0x8004 = tier;
-                GymChallenge_GeneratePractice();
+                GymChallenge_GeneratePracticeTier(tier, run);
                 tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
                 EXPECT(gGymPracticeBattle);
                 EXPECT_GE((u32)tr->partySize, 3);
@@ -1259,8 +1258,7 @@ TEST("GymHack: practice: the expert uses fully evolved Pokemon, earlier forms on
     for (run = 0; run < 20; run++)
     {
         const struct Trainer *tr;
-        gSpecialVar_0x8004 = 2;
-        GymChallenge_GeneratePractice();
+        GymChallenge_GeneratePracticeTier(2, 0);
         tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
         for (i = 0; i < tr->partySize; i++)
         {
@@ -1275,8 +1273,7 @@ TEST("GymHack: practice: the expert uses fully evolved Pokemon, earlier forms on
     {
         const struct Trainer *tr;
         u32 evolved = 0;
-        gSpecialVar_0x8004 = 2;
-        GymChallenge_GeneratePractice();
+        GymChallenge_GeneratePracticeTier(2, 0);
         tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
         EXPECT_GE((u32)tr->partySize, 3);
         for (i = 0; i < tr->partySize; i++)
@@ -1298,8 +1295,7 @@ TEST("GymHack: practice: the rookie never uses third forms when there are enough
     for (run = 0; run < 30; run++)
     {
         const struct Trainer *tr;
-        gSpecialVar_0x8004 = 0;
-        GymChallenge_GeneratePractice();
+        GymChallenge_GeneratePracticeTier(0, 0);
         tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
         for (i = 0; i < tr->partySize; i++)
         {
@@ -1373,4 +1369,39 @@ TEST("GymHack: every type has at least five decorations")
         if (t != TYPE_MYSTERY && t != TYPE_STELLAR)
             EXPECT_GE(counts[t], 5);
     }
+}
+
+TEST("GymHack: practice trainers: any number can be bought, 11 placed at once")
+{
+    u32 i, x = 0, y = 4;
+    GymDecor_ClearAll();
+    SetMoney(&gSaveBlock1Ptr->money, 999999);
+    for (i = 0; i < 14; i++)
+    {
+        gSpecialVar_0x8004 = GYM_DECOR_TRAINER_BEGINNER + i % 3;
+        GymDecor_TryBuy();
+        EXPECT_EQ(gSpecialVar_Result, 0);
+    }
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TRAINER_BEGINNER), 5);
+    for (i = 0; i < 14; i++)
+    {
+        bool32 placed = GymDecor_Place(GYM_DECOR_TRAINER_BEGINNER + i % 3, x, y);
+        EXPECT_EQ(placed, i < GYM_PRACTICE_SLOTS);
+        x += 2;
+        if (x > 20)
+        {
+            x = 0;
+            y += 2;
+        }
+    }
+    EXPECT_EQ(GymDecor_CountPlacedTrainers(), GYM_PRACTICE_SLOTS);
+    {
+        u32 tier, instance;
+        s32 px, py;
+        EXPECT(GymDecor_GetTrainerSlot(3, &tier, &instance, &px, &py));
+        EXPECT_EQ(tier, 0);
+        EXPECT_EQ(instance, 1);
+        EXPECT(!GymDecor_GetTrainerSlot(GYM_PRACTICE_SLOTS, &tier, &instance, &px, &py));
+    }
+    GymDecor_ClearAll();
 }

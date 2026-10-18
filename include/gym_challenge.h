@@ -53,6 +53,7 @@ void GymChallenge_BufferVictorList(void);
 u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level);
 void GymChallenge_BufferPracticeTrainer(void);
 void GymChallenge_GeneratePractice(void);
+void GymChallenge_GeneratePracticeTier(u32 tier, u32 instance);
 void GymChallenge_EndPractice(void);
 
 #endif // GUARD_GYM_CHALLENGE_H

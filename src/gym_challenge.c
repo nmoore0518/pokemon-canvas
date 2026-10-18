@@ -734,37 +734,58 @@ u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level)
     return n;
 }
 
-static const u8 *PracticeName(u32 tier)
+// Each of the player's trainers keeps the same name (instance: how many of that rank came before)
+static const u8 *PracticeName(u32 tier, u32 instance)
 {
-    // Always the same name for each of the player's trainers
     u32 id = gSaveBlock2Ptr->playerTrainerId[0] | (gSaveBlock2Ptr->playerTrainerId[1] << 8);
     if (sPracticeTiers[tier].female)
-        return sFemaleNames[(id + tier * 7) % ARRAY_COUNT(sFemaleNames)];
-    return sMaleNames[(id + tier * 11) % ARRAY_COUNT(sMaleNames)];
+        return sFemaleNames[(id + tier * 7 + instance * 5) % ARRAY_COUNT(sFemaleNames)];
+    return sMaleNames[(id + tier * 11 + instance * 5) % ARRAY_COUNT(sMaleNames)];
 }
 
-// Special: VAR_0x8004 = tier -> STR_VAR_1 = the trainer's name, STR_VAR_2 = their rank
+// VAR_0x8004 = the trainer's slot in the gym -> their rank and which one of that rank
+static void GetPracticeSlot(u32 *tier, u32 *instance)
+{
+    s32 x, y;
+    if (!GymDecor_GetTrainerSlot(gSpecialVar_0x8004, tier, instance, &x, &y))
+    {
+        *tier = PRACTICE_ROOKIE;
+        *instance = 0;
+    }
+}
+
+// Special: VAR_0x8004 = slot -> STR_VAR_1 = the trainer's name, STR_VAR_2 = their rank
 void GymChallenge_BufferPracticeTrainer(void)
 {
-    u32 tier = min(gSpecialVar_0x8004, PRACTICE_TIERS - 1);
-    StringCopy(gStringVar1, PracticeName(tier));
+    u32 tier, instance;
+    GetPracticeSlot(&tier, &instance);
+    StringCopy(gStringVar1, PracticeName(tier, instance));
     StringCopy(gStringVar2, sPracticeTiers[tier].title);
 }
 
-// Special: VAR_0x8004 = tier. Builds the practice trainer into TRAINER_GYM_CHALLENGER.
-void GymChallenge_GeneratePractice(void)
+// Builds a practice trainer of a rank into TRAINER_GYM_CHALLENGER
+void GymChallenge_GeneratePracticeTier(u32 tier, u32 instance)
 {
-    u32 tier = min(gSpecialVar_0x8004, PRACTICE_TIERS - 1);
-    const struct PracticeTier *t = &sPracticeTiers[tier];
+    const struct PracticeTier *t;
     s32 level = (s32)GymChallenge_PlayerAverageLevel() - 5;
     u32 n;
 
-    SetupTrainer(t->trainerClass, t->trainerPic, t->female, PracticeName(tier), 1);
+    tier = min(tier, PRACTICE_TIERS - 1);
+    t = &sPracticeTiers[tier];
+    SetupTrainer(t->trainerClass, t->trainerPic, t->female, PracticeName(tier, instance), 1);
     n = GymChallenge_BuildPracticeTeam(tier, VarGet(VAR_PLAYER_TYPE), max(level, 2));
     sChallenger.partySize = max(n, 1u);
     sChallenger.aiFlags = t->aiFlags;
     StringExpandPlaceholders(gGymChallengeDefeatText, t->defeat);
     gGymPracticeBattle = TRUE;
+}
+
+// Special: VAR_0x8004 = slot
+void GymChallenge_GeneratePractice(void)
+{
+    u32 tier, instance;
+    GetPracticeSlot(&tier, &instance);
+    GymChallenge_GeneratePracticeTier(tier, instance);
 }
 
 // Special: after a practice battle

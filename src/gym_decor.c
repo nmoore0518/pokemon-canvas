@@ -31,6 +31,7 @@
 #include "bg.h"
 #include "constants/flags.h"
 #include "constants/gym_room.h"
+#include "constants/event_objects.h"
 #include "constants/map_event_ids.h"
 #include "overworld.h"
 #include "constants/opponents.h"
@@ -266,6 +267,8 @@ bool32 GymDecor_CanPlace(u32 id, s32 x, s32 y)
     s32 cx, cy;
     if (GymDecor_CountAvailable(id) == 0 || GetSave()->numPlaced >= GYM_DECOR_MAX_PLACED)
         return FALSE;
+    if (gGymDecor[id].category == GYM_DECOR_CAT_TRAINERS && GymDecor_CountPlacedTrainers() >= GYM_PRACTICE_SLOTS)
+        return FALSE;
     for (cy = y; cy < y + d->height; cy++)
     {
         for (cx = x; cx < x + d->width; cx++)
@@ -498,7 +501,7 @@ void GymDecor_BufferDecorInfo(void)
     ConvertIntToDecimalStringN(gStringVar2, gGymDecor[id].price, STR_CONV_MODE_LEFT_ALIGN, 6);
 }
 
-// VAR_0x8004 = decoration. VAR_RESULT: 0 bought, 1 not enough money, 2 storage full, 3 already has that trainer
+// VAR_0x8004 = decoration. VAR_RESULT: 0 bought, 1 not enough money, 2 storage full
 void GymDecor_TryBuy(void)
 {
     u32 id = gSpecialVar_0x8004;
@@ -506,11 +509,6 @@ void GymDecor_TryBuy(void)
     if (id >= GYM_DECOR_COUNT || save->owned[id] == 0xFF || gGymDecor[id].price == 0)
     {
         gSpecialVar_Result = 2;
-        return;
-    }
-    if (gGymDecor[id].category == GYM_DECOR_CAT_TRAINERS && save->owned[id] != 0)
-    {
-        gSpecialVar_Result = 3;     // one of each trainer
         return;
     }
     if (!IsEnoughMoney(&gSaveBlock1Ptr->money, gGymDecor[id].price))
@@ -619,36 +617,82 @@ void GymDecor_ListOnDestroy(struct DynamicListMenuEventArgs *eventArgs)
 }
 
 // ---------------------------------------------------------------------------
-// Practice trainers: a person stands where each trainer decoration is placed
-// (data/scripts/gym_practice.inc battles them)
+// Practice trainers: a person stands on each placed trainer decoration (data/scripts/gym_practice.inc
+// battles them). The gym map has GYM_PRACTICE_SLOTS people for this (the GBA shows at most 16
+// people at once, and the player, aide, challenger, Oak and the rival need 5 of them), so that's
+// how many can be placed at a time; any number can be bought. Slots go to placed trainers in the
+// order they were placed, and each slot's look comes from VAR_OBJ_GFX_ID_1 onward.
 // ---------------------------------------------------------------------------
-static const struct
-{
-    u8 decor;
-    u8 localId;
-    u16 flag;
-} sPracticeTrainers[] =
-{
-    {GYM_DECOR_TRAINER_BEGINNER,     LOCALID_PALLET_GYM_TRAINER_BEGINNER,     FLAG_HIDE_PALLET_GYM_TRAINER_BEGINNER},
-    {GYM_DECOR_TRAINER_INTERMEDIATE, LOCALID_PALLET_GYM_TRAINER_INTERMEDIATE, FLAG_HIDE_PALLET_GYM_TRAINER_INTERMEDIATE},
-    {GYM_DECOR_TRAINER_ADVANCED,     LOCALID_PALLET_GYM_TRAINER_ADVANCED,     FLAG_HIDE_PALLET_GYM_TRAINER_ADVANCED},
-};
+static const u16 sTrainerGfx[] = {OBJ_EVENT_GFX_YOUNGSTER_FRLG, OBJ_EVENT_GFX_COOLTRAINER_F, OBJ_EVENT_GFX_COOLTRAINER_M};
 
-// Map script (ON_TRANSITION): puts each placed trainer on their spot, hides the others
+static bool32 IsTrainer(u32 id)
+{
+    return id == GYM_DECOR_TRAINER_BEGINNER || id == GYM_DECOR_TRAINER_INTERMEDIATE || id == GYM_DECOR_TRAINER_ADVANCED;
+}
+
+static u32 TrainerTier(u32 id)
+{
+    return id - GYM_DECOR_TRAINER_BEGINNER;
+}
+
+u32 GymDecor_CountPlacedTrainers(void)
+{
+    struct GymDecorSave *save = GetSave();
+    u32 i, n = 0;
+    for (i = 0; i < save->numPlaced; i++)
+    {
+        if (IsTrainer(save->placed[i].id))
+            n++;
+    }
+    return n;
+}
+
+// The trainer in a slot: FALSE if the slot is empty. *instance counts trainers of the same rank
+// placed before it (so each one gets their own name).
+bool32 GymDecor_GetTrainerSlot(u32 slot, u32 *tier, u32 *instance, s32 *x, s32 *y)
+{
+    struct GymDecorSave *save = GetSave();
+    u32 i, n = 0, sameTier[3] = {0};
+    for (i = 0; i < save->numPlaced; i++)
+    {
+        const struct GymDecorPlacement *p = &save->placed[i];
+        if (!IsTrainer(p->id))
+            continue;
+        if (n == slot)
+        {
+            *tier = TrainerTier(p->id);
+            *instance = sameTier[*tier];
+            *x = p->x;
+            *y = p->y;
+            return TRUE;
+        }
+        sameTier[TrainerTier(p->id)]++;
+        n++;
+    }
+    return FALSE;
+}
+
+static u8 SlotLocalId(u32 slot)
+{
+    return LOCALID_PALLET_GYM_TRAINER_0 + slot;
+}
+
+// Map script (ON_TRANSITION): puts each placed trainer on their spot, hides the empty slots
 void GymDecor_SetupTrainers(void)
 {
-    u32 i;
+    u32 slot, tier, instance;
     s32 x, y;
-    for (i = 0; i < ARRAY_COUNT(sPracticeTrainers); i++)
+    for (slot = 0; slot < GYM_PRACTICE_SLOTS; slot++)
     {
-        if (GymDecor_FindPlaced(sPracticeTrainers[i].decor, &x, &y))
+        if (GymDecor_GetTrainerSlot(slot, &tier, &instance, &x, &y))
         {
-            SetObjEventTemplateCoords(sPracticeTrainers[i].localId, x, y);
-            FlagClear(sPracticeTrainers[i].flag);
+            VarSet(VAR_OBJ_GFX_ID_1 + slot, sTrainerGfx[tier]);
+            SetObjEventTemplateCoords(SlotLocalId(slot), x, y);
+            FlagClear(FLAG_HIDE_PALLET_GYM_TRAINER_0 + slot);
         }
         else
         {
-            FlagSet(sPracticeTrainers[i].flag);
+            FlagSet(FLAG_HIDE_PALLET_GYM_TRAINER_0 + slot);
         }
     }
 }
@@ -656,43 +700,28 @@ void GymDecor_SetupTrainers(void)
 // While decorating, the trainers step out of the way (their spots show an icon instead)
 static void HideTrainers(void)
 {
-    u32 i;
+    u32 slot;
     u8 objectEventId;
-    for (i = 0; i < ARRAY_COUNT(sPracticeTrainers); i++)
+    for (slot = 0; slot < GYM_PRACTICE_SLOTS; slot++)
     {
-        if (!TryGetObjectEventIdByLocalIdAndMap(sPracticeTrainers[i].localId, gSaveBlock1Ptr->location.mapNum,
+        if (!TryGetObjectEventIdByLocalIdAndMap(SlotLocalId(slot), gSaveBlock1Ptr->location.mapNum,
                                                 gSaveBlock1Ptr->location.mapGroup, &objectEventId))
             gObjectEvents[objectEventId].invisible = TRUE;
     }
 }
 
-// After decorating: the trainers go to their (new) spots
+// After decorating: everyone comes back on their (new) spots, dressed for their rank
 static void PlaceTrainers(void)
 {
-    u32 i;
-    u8 objectEventId;
+    u32 slot;
     u8 mapNum = gSaveBlock1Ptr->location.mapNum, mapGroup = gSaveBlock1Ptr->location.mapGroup;
+    for (slot = 0; slot < GYM_PRACTICE_SLOTS; slot++)
+        RemoveObjectEventByLocalIdAndMap(SlotLocalId(slot), mapNum, mapGroup);
     GymDecor_SetupTrainers();
-    for (i = 0; i < ARRAY_COUNT(sPracticeTrainers); i++)
+    for (slot = 0; slot < GYM_PRACTICE_SLOTS; slot++)
     {
-        u8 localId = sPracticeTrainers[i].localId;
-        bool32 exists = !TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId);
-        if (FlagGet(sPracticeTrainers[i].flag))
-        {
-            if (exists)
-                RemoveObjectEventByLocalIdAndMap(localId, mapNum, mapGroup);
-        }
-        else if (exists)
-        {
-            s32 x = 0, y = 0;
-            GymDecor_FindPlaced(sPracticeTrainers[i].decor, &x, &y);
-            MoveObjectEventToMapCoords(&gObjectEvents[objectEventId], x + MAP_OFFSET, y + MAP_OFFSET);
-            gObjectEvents[objectEventId].invisible = FALSE;
-        }
-        else
-        {
-            TrySpawnObjectEvent(localId, mapNum, mapGroup);
-        }
+        if (!FlagGet(FLAG_HIDE_PALLET_GYM_TRAINER_0 + slot))
+            TrySpawnObjectEvent(SlotLocalId(slot), mapNum, mapGroup);
     }
 }
 
@@ -715,8 +744,15 @@ static void PrintHud(void)
     if (sSelected != DECOR_NONE)
     {
         end = StringCopy(str, gGymDecor[sSelected].name);
-        end = StringCopy(end, COMPOUND_STRING("  LEFT: "));
-        ConvertIntToDecimalStringN(end, GymDecor_CountAvailable(sSelected), STR_CONV_MODE_LEFT_ALIGN, 3);
+        if (gGymDecor[sSelected].category == GYM_DECOR_CAT_TRAINERS && GymDecor_CountPlacedTrainers() >= GYM_PRACTICE_SLOTS)
+        {
+            StringCopy(end, COMPOUND_STRING("  (11 TRAINERS max)"));
+        }
+        else
+        {
+            end = StringCopy(end, COMPOUND_STRING("  LEFT: "));
+            ConvertIntToDecimalStringN(end, GymDecor_CountAvailable(sSelected), STR_CONV_MODE_LEFT_ALIGN, 3);
+        }
     }
     else
     {

@@ -2459,10 +2459,18 @@
 #define FLAG_HIDE_PALLET_GYM_AIDE           0x027 // until Oak's gym scene is over
 #define FLAG_HIDE_PALLET_GYM_RIVAL          0x078 // the rival in the gym (only in Oak's first gym scene)
 #define FLAG_PALLET_GYM_AWARDED             0x077 // the League has made the player the Gym Leader (after the rival and Oak)
-// The practice trainers in the gym (shown when their decoration is placed: src/gym_decor.c)
-#define FLAG_HIDE_PALLET_GYM_TRAINER_BEGINNER     0x0AF
-#define FLAG_HIDE_PALLET_GYM_TRAINER_INTERMEDIATE 0x0B0
-#define FLAG_HIDE_PALLET_GYM_TRAINER_ADVANCED     0x0B1
+// The practice trainers in the gym: up to 11 people, one per placed trainer (src/gym_decor.c)
+#define FLAG_HIDE_PALLET_GYM_TRAINER_0       0x0AF
+#define FLAG_HIDE_PALLET_GYM_TRAINER_1       0x0B0
+#define FLAG_HIDE_PALLET_GYM_TRAINER_2       0x0B1
+#define FLAG_HIDE_PALLET_GYM_TRAINER_3       0x0B2
+#define FLAG_HIDE_PALLET_GYM_TRAINER_4       0x0B3
+#define FLAG_HIDE_PALLET_GYM_TRAINER_5       0x0B4
+#define FLAG_HIDE_PALLET_GYM_TRAINER_6       0x0B5
+#define FLAG_HIDE_PALLET_GYM_TRAINER_7       0x0B6
+#define FLAG_HIDE_PALLET_GYM_TRAINER_8       0x0B7
+#define FLAG_HIDE_PALLET_GYM_TRAINER_9       0x0B8
+#define FLAG_HIDE_PALLET_GYM_TRAINER_10      0x0B9
 
 #if TESTING
 #define TESTING_FLAGS_START                     0x5000

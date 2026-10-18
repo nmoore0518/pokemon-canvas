@@ -47,7 +47,6 @@ GymDecor_EventScript_BuyLoop::
 	special GymDecor_TryBuy
 	goto_if_eq VAR_RESULT, 1, GymDecor_EventScript_NotEnoughMoney
 	goto_if_eq VAR_RESULT, 2, GymDecor_EventScript_StorageFull
-	goto_if_eq VAR_RESULT, 3, GymDecor_EventScript_AlreadyHaveTrainer
 	updatemoneybox
 	special GymDecor_BufferDecorInfo
 	playse SE_SHOP
@@ -62,11 +61,6 @@ GymDecor_EventScript_NotEnoughMoney::
 
 GymDecor_EventScript_StorageFull::
 	msgbox GymDecor_Text_StorageFull, MSGBOX_DEFAULT
-	goto GymDecor_EventScript_BuyLoop
-	end
-
-GymDecor_EventScript_AlreadyHaveTrainer::
-	msgbox GymDecor_Text_AlreadyHaveTrainer, MSGBOX_DEFAULT
 	goto GymDecor_EventScript_BuyLoop
 	end
 
@@ -139,10 +133,6 @@ GymDecor_Text_WhichKind::
 GymDecor_Text_WhichKindToPlace::
 	.string "What kind of decoration will\n"
 	.string "you start with?$"
-
-GymDecor_Text_AlreadyHaveTrainer::
-	.string "That TRAINER already works at\n"
-	.string "your GYM!$"
 
 GymDecor_Text_WhichToBuy::
 	.string "Which decoration would you\n"

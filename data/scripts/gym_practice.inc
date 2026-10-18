@@ -2,18 +2,59 @@
 @ built by GymChallenge_GeneratePractice in src/gym_challenge.c). No money changes hands, and
 @ losing just ends the practice.
 
-GymPractice_EventScript_Beginner::
+@ One script per trainer slot in the gym map (VAR_0x8004 = slot)
+GymPractice_EventScript_Trainer0::
 	setvar VAR_0x8004, 0
 	goto GymPractice_EventScript_Trainer
 	end
 
-GymPractice_EventScript_Intermediate::
+GymPractice_EventScript_Trainer1::
 	setvar VAR_0x8004, 1
 	goto GymPractice_EventScript_Trainer
 	end
 
-GymPractice_EventScript_Advanced::
+GymPractice_EventScript_Trainer2::
 	setvar VAR_0x8004, 2
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer3::
+	setvar VAR_0x8004, 3
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer4::
+	setvar VAR_0x8004, 4
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer5::
+	setvar VAR_0x8004, 5
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer6::
+	setvar VAR_0x8004, 6
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer7::
+	setvar VAR_0x8004, 7
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer8::
+	setvar VAR_0x8004, 8
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer9::
+	setvar VAR_0x8004, 9
+	goto GymPractice_EventScript_Trainer
+	end
+
+GymPractice_EventScript_Trainer10::
+	setvar VAR_0x8004, 10
 	goto GymPractice_EventScript_Trainer
 	end
 

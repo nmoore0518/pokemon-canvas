@@ -186,13 +186,18 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     of it is always loaded, so any mix can be placed. Their blocks use the gym tileset's spare
     blocks. Colors: three shared 15-color palettes (gym slots 8-10, `decor_art.PALETTES`); each 8x8
     tile uses one, and the Cerulean water and Vermilion trash can were redrawn in them.
-  - Capacity: up to 256 kinds of decoration (255 of each, 114 so far), and 650 placed pieces.
+  - Capacity: up to 256 kinds of decoration (255 of each in storage, 114 kinds so far), and 650
+    placed pieces (more than the room's ~500 free squares).
     Space left for more code-drawn art: 12 video memory tiles and 41 gym blocks (the builder
     prints this). Adding much more art would need loading only the placed pieces.
-- **Practice trainers** (TRAINERS in the gym PC: ROOKIE ¥5,000, SKILLED ¥10,000, EXPERT ¥20,000,
-  one of each). Placed like decorations; a person stands on the spot (map objects
-  `LOCALID_PALLET_GYM_TRAINER_*`, positioned by `GymDecor_SetupTrainers` on entering the gym and
-  moved when you finish decorating; while decorating they step aside and an icon shows their spot).
+- **Practice trainers** (TRAINERS in the gym PC: ROOKIE ¥5,000, SKILLED ¥10,000, EXPERT ¥20,000).
+  Buy as many as you like (storage holds 255 of each, like every decoration); up to 11 can be
+  placed at once, any mix of ranks. That's the GBA's limit: it shows at most 16 people at once and
+  the player, aide, challenger, Oak and the rival need 5. Placed like decorations; a person stands
+  on the spot (11 map objects `LOCALID_PALLET_GYM_TRAINER_0..10`, handed out in placement order and
+  dressed for their rank through `VAR_OBJ_GFX_ID_1..B` by `GymDecor_SetupTrainers` on entering the
+  gym and after decorating; while decorating they step aside and an icon shows their spot). Each
+  trainer has their own name.
   They don't affect challengers (who just walk around them). Talk to one for a practice battle
   (`data/scripts/gym_practice.inc`): a fresh random team each time, of the player's type with no
   duplicates (the League rules), 3-5 Pokémon, levels averaging 5 below the player's (at least 2),

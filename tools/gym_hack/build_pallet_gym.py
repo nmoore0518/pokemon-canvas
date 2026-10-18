@@ -140,12 +140,12 @@ def write(grid):
             person("LOCALID_PALLET_GYM_CHALLENGER", "OBJ_EVENT_GFX_VAR_0", CHALLENGER_SPOT, "UP",
                    "0x0", "FLAG_HIDE_PALLET_GYM_CHALLENGER"),
         ] + [
-            # Practice trainers: put where their decoration is placed (src/gym_decor.c)
-            person(f"LOCALID_PALLET_GYM_TRAINER_{tier}", gfx, (1 + i, 3), "MOVEMENT_TYPE_LOOK_AROUND",
-                   f"GymPractice_EventScript_{tier.title()}", f"FLAG_HIDE_PALLET_GYM_TRAINER_{tier}")
-            for i, (tier, gfx) in enumerate((("BEGINNER", "OBJ_EVENT_GFX_YOUNGSTER_FRLG"),
-                                             ("INTERMEDIATE", "OBJ_EVENT_GFX_COOLTRAINER_F"),
-                                             ("ADVANCED", "OBJ_EVENT_GFX_COOLTRAINER_M")))
+            # Practice trainers: one person per placed trainer decoration, put on its spot and
+            # dressed for its rank (VAR_OBJ_GFX_ID_1..B) by src/gym_decor.c
+            person(f"LOCALID_PALLET_GYM_TRAINER_{i}", f"OBJ_EVENT_GFX_VAR_{i + 1:X}", (1 + i, 3),
+                   "MOVEMENT_TYPE_LOOK_AROUND", f"GymPractice_EventScript_Trainer{i}",
+                   f"FLAG_HIDE_PALLET_GYM_TRAINER_{i}")
+            for i in range(11)
         ],
         "warp_events": [{"x": x, "y": H - 2, "elevation": 3, "dest_map": "MAP_PALLET_TOWN", "dest_warp_id": "7"}
                         for x in MAT],

@@ -62,6 +62,11 @@ void GymDecor_TryBuy(void);
 void GymDecor_StartEditing(void);
 void GymDecor_SetupTrainers(void);
 
+// Practice trainers (people in the gym map for them; see src/gym_decor.c)
+#define GYM_PRACTICE_SLOTS 11
+u32 GymDecor_CountPlacedTrainers(void);
+bool32 GymDecor_GetTrainerSlot(u32 slot, u32 *tier, u32 *instance, s32 *x, s32 *y);
+
 // Edit mode hooks
 bool32 GymDecor_IsEditing(void);
 bool32 GymDecor_HandleEditInput(struct FieldInput *input);
