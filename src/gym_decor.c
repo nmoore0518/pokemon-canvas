@@ -465,7 +465,7 @@ static void PrintHud(void)
     }
     AddTextPrinterParameterized(sHudWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
     AddTextPrinterParameterized(sHudWindowId, FONT_SMALL,
-        COMPOUND_STRING("A: place   SELECT: put away   L/R: switch   B: done"), 2, 16, TEXT_SKIP_DRAW, NULL);
+        COMPOUND_STRING("A:place  SELECT:put away  L/R:switch  B:done"), 2, 16, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sHudWindowId, COPYWIN_FULL);
     Free(str);
 }
