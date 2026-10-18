@@ -8,8 +8,6 @@
 //   shot FILE.png          screenshot
 //   save FILE / load FILE  save state
 //   peek ADDR SIZE         print memory (hex)
-//   pos PTR [LABEL]        print map and x/y; PTR = address of gSaveBlock1Ptr (see pokefirered.map)
-//   sync                   print "ok" (for drivers that wait on output)
 #include <mgba/core/core.h>
 #include <mgba/core/serialize.h>
 #include <mgba/core/config.h>
@@ -109,6 +107,14 @@ int main(int argc, char** argv) {
 			short x = core->busRead16(core, ptr), y = core->busRead16(core, ptr + 2);
 			signed char g = core->busRead8(core, ptr + 4), m = core->busRead8(core, ptr + 5);
 			printf("pos %s map %d.%d x %d y %d\n", n > 2 ? b : "", g, m, x, y);
+		} else if (!strcmp(cmd, "reset")) {
+			core->reset(core);
+		} else if (!strcmp(cmd, "poke8")) {
+			core->busWrite8(core, strtoul(a, NULL, 0), strtoul(b, NULL, 0));
+		} else if (!strcmp(cmd, "poke32")) {
+			core->busWrite32(core, strtoul(a, NULL, 0), strtoul(b, NULL, 0));
+		} else if (!strcmp(cmd, "peek32")) {
+			printf("%u\n", core->busRead32(core, strtoul(a, NULL, 0)));
 		} else if (!strcmp(cmd, "sync")) {
 			printf("ok\n");
 		} else fprintf(stderr, "unknown command %s\n", cmd);

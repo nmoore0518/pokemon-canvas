@@ -110,6 +110,34 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   The gym door is swapped for a locked one (`setmetatile` in Pallet's `OnLoad`) until
   `FLAG_PALLET_GYM_OPEN` is set. Scene state: `VAR_MAP_SCENE_PALLET_TOWN_GYM` (0x40F9).
   The gym inside is drawn by `tools/gym_hack/build_pallet_gym.py` (25x28, Viridian Gym tiles).
+- **Gym decorations**: the gym has a PC left of the entrance (`data/scripts/gym_decor.inc`). BUY
+  DECORATIONS lists everything unlocked so far with its price, how many you have and a short
+  description; bought pieces go to the gym's storage. DECORATE starts edit mode: walk anywhere in
+  the gym (you can walk through things while decorating) and the selected piece is shown in front
+  of you. A places it, SELECT puts away the one in front, L/R switch pieces, B finishes. Nothing can
+  go on the walls, the doormat, the statues or the PC, and if you've boxed yourself in when you
+  finish, you're put back at the PC. Invisible walls are shown while decorating.
+  - Catalog: `DECORATIONS` in `tools/gym_hack/build_gym_decor.py` (name, price, unlock flag,
+    description, and the blocks that draw it). Run `python3 tools/gym_hack/build_pallet_gym.py`
+    after changing it. New entries go at the end (saves store decorations by position).
+    `python3 tools/gym_hack/build_gym_decor.py catalog.png` draws every piece with its price.
+  - Unlocks: an entry's `unlock` is a flag, usually a badge (`FLAG_BADGE02_GET` = Misty's water).
+    It's just a flag, so any trainer's defeat flag works too.
+  - Pieces are blocks in the gym's own tileset (`data/tilesets/secondary/pallet_gym`, a copy of the
+    Viridian Gym tileset plus the decorations): furniture from the indoor tileset drawn over the gym
+    floor, Viridian gym pieces (spinners, stop tiles, walls, statues) as they are, and pieces imported
+    from other gyms (Cerulean water, the Vermilion trash can) with their tiles and palettes.
+    Spinners and water keep their behavior, so they work like the real gyms' versions.
+  - Save data: what you own and where it's placed live where Emerald keeps secret bases
+    (`gSaveBlock1Ptr->secretBases`, 3,200 bytes that FireRed never uses). `src/gym_decor.c` marks
+    it with a magic number and clears it on a new game or an older save. Record mixing never
+    touches it.
+  - Capacity: up to 256 kinds of decoration (255 of each), and 700 placed pieces (more than the
+    room's ~500 free floor squares). The gym tileset has 384 blocks and 384 tiles; the 19 pieces
+    so far use 118 blocks. The real limit is palettes: the gym tileset has 3 spare palette slots
+    and the water and trash can use 2, so pieces with new colors from other tilesets need palettes
+    merged or shared. Furniture and anything drawn in the existing gym/indoor colors costs no
+    palette.
 - **Planned ending twist**: after the player beats the rival and goes to take over the gym, Oak
   reveals he wants it for himself and challenges the player to prove they're good enough.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
@@ -128,6 +156,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
 | `tools/gym_hack/pallet_art.py` | Chansey statue, bench and lamp art |
 | `tools/gym_hack/build_pallet_gym.py`, `data/maps/PalletTown_Gym_Frlg/` | The gym inside and Oak's gym scene |
+| `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |
+| `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data |
+| `tools/gym_hack/playtest/` | Headless emulator harness used to playtest scenes |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
@@ -154,8 +185,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
 5. Gym builder and challengers
    - [x] Pallet Town redesign (gym plateau, Pokémon Center, Mart, player's house by the water)
    - [x] Gym interior (empty) and Oak's ninth-gym story at the starter scene
-   - [ ] Decorating the gym and house, from early in the game: secret-base style plus gym puzzle
-         pieces (water, Vermilion trash cans, Fuchsia invisible walls, teleport pads, Viridian
-         spinner tiles), furniture and walls
+   - [x] Gym decorating system: gym PC shop, unlocks by badge, edit mode, save data; 19 test pieces
+         (furniture, walls, statue, water, trash can, fern, invisible walls, spinner and stop tiles)
+   - [ ] More decorations: pool edges, teleport pads (need warp scripting), working trash-can
+         switch puzzle, Cinnabar/Saffron/Celadon pieces, house decorating
    - [ ] Final rival battle for the gym after the League, then Oak's challenge (twist)
    - [ ] Challengers and the ninth badge after becoming Leader

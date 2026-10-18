@@ -646,3 +646,9 @@ gSpecials::
 	def_special GymHack_CheckTeamSpecial
 	def_special GymHack_WarpInPlace
 	def_special GymHack_SkipNextShowMon
+	def_special GymDecor_DrawRoom
+	def_special GymDecor_PushShopList
+	def_special GymDecor_PushOwnedList
+	def_special GymDecor_BufferDecorInfo
+	def_special GymDecor_TryBuy
+	def_special GymDecor_StartEditing

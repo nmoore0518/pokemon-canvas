@@ -1,6 +1,12 @@
 PalletTown_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, PalletTown_Gym_OnLoad
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, PalletTown_Gym_OnFrame
 	.byte 0
+
+@ Draw the decorations the player has placed
+PalletTown_Gym_OnLoad::
+	special GymDecor_DrawRoom
+	end
 
 PalletTown_Gym_OnFrame::
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_GYM, 1, PalletTown_Gym_EventScript_OakShowsGym

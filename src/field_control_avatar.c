@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_decor.h"
 #include "battle_setup.h"
 #include "bike.h"
 #include "coord_event_weather.h"
@@ -171,6 +172,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     playerDirection = GetPlayerFacingDirection();
     GetPlayerPosition(&position);
     metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
+
+    // Gym Trainer hack: decorating the gym takes over the buttons
+    if (GymDecor_IsEditing())
+        return GymDecor_HandleEditInput(input);
 
     if (CheckForTrainersWantingBattle() == TRUE)
         return TRUE;

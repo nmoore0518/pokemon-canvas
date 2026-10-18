@@ -5380,7 +5380,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_BuildingFrlg",
-      "secondary_tileset": "gTileset_ViridianGym",
+      "secondary_tileset": "gTileset_PalletGym",
       "border_filepath": "data/layouts/PalletTown_Gym_Frlg/border.bin",
       "blockdata_filepath": "data/layouts/PalletTown_Gym_Frlg/map.bin",
       "layout_version": "frlg"

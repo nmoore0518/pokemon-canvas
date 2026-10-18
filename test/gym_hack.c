@@ -522,3 +522,95 @@ TEST("GymHack: type finder only counts primary types")
         }
     }
 }
+
+// ---- Gym decorations ----
+#include "gym_decor.h"
+#include "money.h"
+#include "text.h"
+#include "constants/gym_room.h"
+
+TEST("GymHack: decor: buying takes the money and adds to storage")
+{
+    GymDecor_ClearAll();
+    SetMoney(&gSaveBlock1Ptr->money, 1500);
+    gSpecialVar_0x8004 = GYM_DECOR_POTTED_PLANT;
+    GymDecor_TryBuy();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 1500 - gGymDecor[GYM_DECOR_POTTED_PLANT].price);
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_POTTED_PLANT), 1);
+    // Not enough left for a second one
+    GymDecor_TryBuy();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_POTTED_PLANT), 1);
+}
+
+TEST("GymHack: decor: leftover secret base bytes are cleared, not read as decorations")
+{
+    // A new game (or an old save) has secret base data in this space, e.g. 0xFF name bytes
+    memset(gSaveBlock1Ptr->secretBases, 0xFF, sizeof(gSaveBlock1Ptr->secretBases));
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_CHAIR_LEFT), 0);
+    EXPECT_EQ(GymDecor_NumPlaced(), 0);
+    // Real decoration data is kept
+    SetMoney(&gSaveBlock1Ptr->money, 999999);
+    gSpecialVar_0x8004 = GYM_DECOR_TV;
+    GymDecor_TryBuy();
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TV), 1);
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TV), 1);
+}
+
+TEST("GymHack: decor: gym decorations unlock with badges")
+{
+    FlagClear(FLAG_BADGE02_GET);
+    EXPECT(GymDecor_IsUnlocked(GYM_DECOR_POTTED_PLANT));
+    EXPECT(!GymDecor_IsUnlocked(GYM_DECOR_POOL_WATER));
+    FlagSet(FLAG_BADGE02_GET);
+    EXPECT(GymDecor_IsUnlocked(GYM_DECOR_POOL_WATER));
+    FlagClear(FLAG_BADGE02_GET);
+}
+
+TEST("GymHack: decor: placing uses up storage and blocks overlaps")
+{
+    GymDecor_ClearAll();
+    SetMoney(&gSaveBlock1Ptr->money, 999999);
+    gSpecialVar_0x8004 = GYM_DECOR_TABLE;
+    GymDecor_TryBuy();
+    GymDecor_TryBuy();
+    EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_TABLE), 2);
+    EXPECT(GymDecor_Place(GYM_DECOR_TABLE, 3, 5));
+    EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_TABLE), 1);
+    EXPECT_EQ(GymDecor_CountPlaced(GYM_DECOR_TABLE), 1);
+    // The table is 2x2: these overlap it
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TABLE, 4, 6));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TABLE, 2, 4));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_TABLE, 5, 5));
+    // Putting it away (from any of its blocks) returns it to storage
+    EXPECT(GymDecor_RemoveAt(4, 6));
+    EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_TABLE), 2);
+    EXPECT_EQ(GymDecor_NumPlaced(), 0);
+}
+
+TEST("GymHack: decor: nothing goes on the walls, the entrance or the PC")
+{
+    GymDecor_ClearAll();
+    SetMoney(&gSaveBlock1Ptr->money, 999999);
+    gSpecialVar_0x8004 = GYM_DECOR_POTTED_PLANT;
+    GymDecor_TryBuy();
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 5, 0));                         // back wall
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, GYM_PC_FRONT_X, GYM_PC_FRONT_Y - 1)); // entrance area
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, -1, 5));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, GYM_ROOM_WIDTH - 1, GYM_EDIT_Y1));  // 2 tall: sticks out
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, GYM_ROOM_WIDTH - 1, GYM_EDIT_Y1 - 1));
+}
+
+TEST("GymHack: decor: every decoration has a name, a price and fits the gym")
+{
+    u32 i;
+    for (i = 0; i < GYM_DECOR_COUNT; i++)
+    {
+        EXPECT(gGymDecor[i].name != NULL);
+        EXPECT_GT(gGymDecor[i].price, 0);
+        EXPECT_LE(gGymDecor[i].width, 4);
+        EXPECT_LE(gGymDecor[i].height, 4);
+        EXPECT_LE(GetStringWidth(FONT_NORMAL, gGymDecor[i].name, 0), 13 * 8); // the list sits at x 15
+    }
+}

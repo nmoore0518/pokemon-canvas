@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_decor.h"
 #include "malloc.h"
 #include "battle_anim.h"
 #include "battle_pyramid.h"
@@ -6425,6 +6426,10 @@ enum Collision GetCollisionAtCoords(struct ObjectEvent *objectEvent, s16 x, s16 
     if (FlagGet(OW_FLAG_NO_COLLISION))
         return COLLISION_NONE;
     #endif
+
+    // Gym Trainer hack: nothing blocks the player while they decorate the gym
+    if (objectEvent->isPlayer && GymDecor_IsEditing())
+        return COLLISION_NONE;
 
     objectEvent->directionOverwrite = DIR_NONE;
 

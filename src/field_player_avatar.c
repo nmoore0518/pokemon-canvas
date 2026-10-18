@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_decor.h"
 #include "gym_hack.h"
 #include "constants/field_move.h"
 #include "main.h"
@@ -488,6 +489,10 @@ bool8 TryDoMetatileBehaviorForcedMovement(void)
 static u8 GetForcedMovementByMetatileBehavior(void)
 {
     u8 i;
+
+    // Gym Trainer hack: spin tiles don't move the player while they decorate the gym
+    if (GymDecor_IsEditing())
+        return 0;
 
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_CONTROLLABLE))
     {

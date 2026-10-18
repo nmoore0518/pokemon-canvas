@@ -14,6 +14,13 @@
 
 extern const u8 *const gStdStrings[];
 
+struct DynamicListMenuEventArgs
+{
+    struct ListMenuTemplate *list;
+    u16 selectedItem;
+    u8 windowId;
+};
+
 struct DynamicMultichoiceStack
 {
     s32 top;

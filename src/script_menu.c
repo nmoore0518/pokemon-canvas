@@ -25,13 +25,7 @@
 #include "constants/songs.h"
 
 #include "data/script_menu.h"
-
-struct DynamicListMenuEventArgs
-{
-    struct ListMenuTemplate *list;
-    u16 selectedItem;
-    u8 windowId;
-};
+#include "gym_decor.h"
 
 typedef void (*DynamicListCallback)(struct DynamicListMenuEventArgs *eventArgs);
 
@@ -90,6 +84,19 @@ static const struct DynamicListMenuEventCollection sDynamicListMenuEventCollecti
         .OnInit = MultichoiceDynamicEventShowSprite_OnInit,
         .OnSelectionChanged = MultichoiceDynamicEventShowPkmn_OnSelectionChanged,
         .OnDestroy = MultichoiceDynamicEventShowSprite_OnDestroy
+    },
+    // Gym Trainer hack: the gym PC's decoration lists
+    [DYN_MULTICHOICE_CB_GYM_DECOR_SHOP] =
+    {
+        .OnInit = GymDecor_ListOnInit,
+        .OnSelectionChanged = GymDecor_ShopListOnSelectionChanged,
+        .OnDestroy = GymDecor_ListOnDestroy
+    },
+    [DYN_MULTICHOICE_CB_GYM_DECOR_OWNED] =
+    {
+        .OnInit = GymDecor_ListOnInit,
+        .OnSelectionChanged = GymDecor_OwnedListOnSelectionChanged,
+        .OnDestroy = GymDecor_ListOnDestroy
     }
 };
 

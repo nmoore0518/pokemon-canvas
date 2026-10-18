@@ -1089,6 +1089,19 @@ const struct Tileset gTileset_ViridianGym =
     .callback = NULL,
 };
 
+// Gym Trainer hack: the Pallet Town Gym (Viridian Gym tiles plus decorations), made by
+// tools/gym_hack/build_gym_decor.py
+const struct Tileset gTileset_PalletGym =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PalletGym,
+    .palettes = gTilesetPalettes_PalletGym,
+    .metatiles = gMetatiles_PalletGym,
+    .metatileAttributes = gMetatileAttributes_PalletGym,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_HoennBuilding =
 {
     .isCompressed = TRUE,

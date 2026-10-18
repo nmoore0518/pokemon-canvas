@@ -1732,6 +1732,10 @@ void ReceiveSecretBasesData(void *secretBases, size_t recordSize, u8 linkIdx)
     struct SecretBaseRecordMixer mixers[3];
     u16 i;
 
+    // Gym Trainer hack: this save space holds the gym's decorations, so never mix it
+    if (TRUE)
+        return;
+
     if (linkIdx > 3)
         return;
 

@@ -278,6 +278,9 @@ const u16 gMetatileAttributes_CinnabarGym[] = INCBIN_U16("data/tilesets/secondar
 const u16 gMetatiles_ViridianGym[] = INCBIN_U16("data/tilesets/secondary/viridian_gym_frlg/metatiles.bin");
 const u16 gMetatileAttributes_ViridianGym[] = INCBIN_U16("data/tilesets/secondary/viridian_gym_frlg/metatile_attributes.bin");
 
+const u16 gMetatiles_PalletGym[] = INCBIN_U16("data/tilesets/secondary/pallet_gym/metatiles.bin");
+const u16 gMetatileAttributes_PalletGym[] = INCBIN_U16("data/tilesets/secondary/pallet_gym/metatile_attributes.bin");
+
 const u16 gMetatiles_Building[] = INCBIN_U16("data/tilesets/primary/building/metatiles.bin");
 const u16 gMetatileAttributes_Building[] = INCBIN_U16("data/tilesets/primary/building/metatile_attributes.bin");
 

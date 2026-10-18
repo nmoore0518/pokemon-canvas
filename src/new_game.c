@@ -1,6 +1,7 @@
 #include "global.h"
 #include "clock.h"
 #include "new_game.h"
+#include "gym_decor.h"
 #include "random.h"
 #include "clock.h"
 #include "pokemon.h"
@@ -186,7 +187,7 @@ void NewGameInitData(void)
     InitEventData();
     ClearTVShowData();
     ResetGabbyAndTy();
-    ClearSecretBases();
+    GymDecor_ClearAll(); // the gym's decorations use the secret base save space
     ClearBerryTrees();
     SetMoney(&gSaveBlock1Ptr->money, 3000);
     SetCoins(0);
