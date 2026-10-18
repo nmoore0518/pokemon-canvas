@@ -16220,8 +16220,8 @@ const struct ItemInfo gItemsInfo[] =
         .price = 3000,
         .description = COMPOUND_STRING(
             "A warm, glowing\n"
-            "shard. It makes Eevee\n"
-            "evolve into Espeon."),
+            "shard that evolves\n"
+            "Eevee into Espeon."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
@@ -16235,8 +16235,8 @@ const struct ItemInfo gItemsInfo[] =
         .price = 3000,
         .description = COMPOUND_STRING(
             "A cool, shimmering\n"
-            "shard. It makes Eevee\n"
-            "evolve into Umbreon."),
+            "shard that evolves\n"
+            "Eevee into Umbreon."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
