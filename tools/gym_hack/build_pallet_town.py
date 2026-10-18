@@ -7,7 +7,9 @@ Writes:
   data/layouts/PalletTown_Frlg/map.bin (and the size in data/layouts/layouts.json)
   data/tilesets/secondary/pallet_town_frlg/metatiles.bin + metatile_attributes.bin
     (the original 89 metatiles, plus extra ones this script composes: roofs over grass,
-    the gym over rock, the bridge)
+    the gym over rock, the bridge, recolored roofs, rocky rims on the path, decorations)
+  data/tilesets/secondary/pallet_town_frlg/tiles.png and palettes/07.pal, 12.pal
+    (the original 80 tiles plus decoration art from pallet_art.py and recolored roof tiles)
 and, with an argument, a preview PNG with a coordinate grid.
 
 The map is described below in plain coordinates (x to the right, y down, in 16x16 blocks).
@@ -53,6 +55,37 @@ SEC_MT = read_metatiles(SEC / "metatiles.bin")[:ORIGINAL_SECONDARY_METATILES]
 SEC_ATTR = read_attrs(SEC / "metatile_attributes.bin")[:ORIGINAL_SECONDARY_METATILES]
 
 
+ORIGINAL_SECONDARY_TILES = 80
+DECOR_PAL = 7   # decorations + purple roof
+ROOF_PAL = 12   # blue roof (indices 10-14) + green roof (indices 1,2,3,8,9 on copied tiles)
+
+from PIL import Image  # noqa: E402
+import pallet_art  # noqa: E402
+
+_prim_tiles_img = Image.open(PRIM / "tiles.png")
+_sec_tiles_img = Image.open(SEC / "tiles.png")
+SEC_TILES = []  # list of 64-tuples of palette indices
+for _i in range(ORIGINAL_SECONDARY_TILES):
+    _x, _y = (_i % 16) * 8, (_i // 16) * 8
+    SEC_TILES.append(tuple(_sec_tiles_img.crop((_x, _y, _x + 8, _y + 8)).getdata()))
+_tile_ids = {}
+
+
+def add_tile(pixels):
+    """Add an 8x8 tile (64 palette indices) to the secondary tileset; returns its tile number."""
+    pixels = tuple(pixels)
+    if pixels not in _tile_ids:
+        SEC_TILES.append(pixels)
+        _tile_ids[pixels] = 0x280 + len(SEC_TILES) - 1
+    return _tile_ids[pixels]
+
+
+def tile_pixels(t):
+    img, local = (_prim_tiles_img, t) if t < 0x280 else (_sec_tiles_img, t - 0x280)
+    x, y = (local % 16) * 8, (local // 16) * 8
+    return tuple(img.crop((x, y, x + 8, y + 8)).getdata())
+
+
 def entries(mid):
     return list(PRIM_MT[mid] if mid < 0x280 else SEC_MT[mid - 0x280])
 
@@ -92,6 +125,51 @@ def planks_over_path(mid):
     return add_custom(f"bridge{mid:x}", PATH_BASE + entries(mid)[:4], with_layer(0, LAYER_NORMAL))
 
 
+GREEN_REMAP = {10: 1, 11: 2, 12: 3, 13: 8, 14: 9}
+
+
+def roof(mid, color):
+    """Metatile `mid` with its red roof (primary palette 2) repainted."""
+    if color == "red":
+        return mid
+    out = []
+    for e in entries(mid):
+        t, pal, flips = e & 0x3FF, e >> 12, e & 0xC00
+        if pal == 2:
+            if color == "green":
+                t = add_tile(GREEN_REMAP.get(c, c) for c in tile_pixels(t))
+            pal = DECOR_PAL if color == "purple" else ROOF_PAL
+        out.append(t | flips | (pal << 12))
+    return add_custom(f"{mid:x}:{color}", out, attr(mid))
+
+
+def on_path(mid):
+    """A rocky rim piece standing on the path instead of grass."""
+    return add_custom(f"{mid:x}:path", PATH_BASE + entries(mid)[4:], attr(mid))
+
+
+def decor_metatile(ground_mid, tiles):
+    """Decoration tiles (top layer, palette 7) over an ordinary ground block."""
+    top = [(t if t else 0) | (DECOR_PAL << 12 if t else 0) for t in tiles]
+    return add_custom(f"decor:{ground_mid:x}:{tiles}", entries(ground_mid)[:4] + top, with_layer(0, LAYER_NORMAL))
+
+
+def sprite_tiles(name):
+    """Cut a pallet_art sprite into blocks: {(bx, by): [4 tile numbers, 0 = empty]}."""
+    img = pallet_art.SPRITES[name]()
+    blocks = {}
+    for by in range(img.height // 16):
+        for bx in range(img.width // 16):
+            ts = []
+            for ty in range(2):
+                for tx in range(2):
+                    x, y = bx * 16 + tx * 8, by * 16 + ty * 8
+                    px = tuple(img.crop((x, y, x + 8, y + 8)).getdata())
+                    ts.append(add_tile(px) if any(px) else 0)
+            blocks[(bx, by)] = ts
+    return blocks
+
+
 # ---------------------------------------------------------------------------
 # Map grid
 # ---------------------------------------------------------------------------
@@ -102,8 +180,14 @@ ground = [["P"] * W for _ in range(H)]  # P path, G grass, X something else (cou
 trees = set()  # top-left corners of 2x2 trees
 
 
+rims = {}           # rocky rim cells -> their metatile (may move onto the path later)
+raised_cells = set()
+decor = []          # (x, y, sprite name, walkable rows)
+
+
 def put(x, y, m, c=1, z=0, g="X"):
     mt[y][x], coll[y][x], elev[y][x], ground[y][x] = m, c, z, g
+    rims.pop((x, y), None)
 
 
 def walk(x, y, m, z=3, g="X"):
@@ -140,14 +224,16 @@ def stamp(x, y, rows, collide_rows=None, z=0, walkable=()):
                 put(x + dx, y + dy, m)
 
 
-def house(x, y, base=GRASS_BASE):
-    """Two-story Pallet house. (x, y) = top-left of the roof edge row. Returns the door."""
-    top = [over(base, m, f"house_top{m:x}") for m in (0x281, 0x282, 0x282, 0x282, 0x283)]
+def house(x, y, color="red"):
+    """Two-story Pallet house. (x, y) = top-left of the roof edge row. Returns the door.
+    color: red, blue, green or purple roof."""
+    top = [roof(over(GRASS_BASE, m, f"house_top{m:x}"), color) for m in (0x281, 0x282, 0x282, 0x282, 0x283)]
     for dx, m in enumerate(top):
         walk(x + dx, y, m)
+    r = lambda m: roof(m, color)  # noqa: E731
     stamp(x, y + 1, [
-        [0x289, 0x28A, 0x28A, 0x28A, 0x28B],
-        [0x291, 0x293, 0x292, 0x292, 0x294],
+        [r(0x289), r(0x28A), r(0x28A), r(0x28A), r(0x28B)],
+        [r(0x291), r(0x293), r(0x292), r(0x292), r(0x294)],
         [0x298, 0x299, 0x29A, 0x29B, 0x29C],
         [0x2A0, 0x2A3, 0x2A2, 0x2A1, 0x2A4],
     ])
@@ -238,20 +324,27 @@ def raised(x0, y0, x1, y1, interior, z, stairs=(), top=True):
     """A raised block with a rocky rim. interior: 'grass' or 'rock'.
     The bottom row is the cliff face; `stairs` lists x positions of stairs in it."""
     zs = 0 if z != 3 else 3  # stairs between two different heights are transitions
+
+    def rim(x, y, m):
+        put(x, y, m)
+        rims[(x, y)] = m
+
     for y in range(y0, y1 + 1):
         for x in range(x0, x1 + 1):
+            raised_cells.add((x, y))
             left, right = x == x0, x == x1
             if y == y0 and top:
-                put(x, y, 0x68 if left else 0x6A if right else 0x69)
+                rim(x, y, 0x68 if left else 0x6A if right else 0x69)
             elif y == y1:
                 if x in stairs:
                     walk(x, y, 0x91 if x == min(stairs) else 0x89, z=zs)
+                    rims[(x, y)] = None  # stairs: let the path run up to them
                 else:
-                    put(x, y, 0x78 if left else 0x7A if right else 0x79)
+                    rim(x, y, 0x78 if left else 0x7A if right else 0x79)
             elif left:
-                put(x, y, 0x70)
+                rim(x, y, 0x70)
             elif right:
-                put(x, y, 0x72)
+                rim(x, y, 0x72)
             elif interior == "rock":
                 walk(x, y, 0x71, z=z)
             else:
@@ -282,6 +375,30 @@ def fence(x0, x1, y, m=0x284):
         put(x, y, m)
 
 
+def place(name, x, y, walkable_rows=1):
+    """Put a decoration from pallet_art at (x, y) (its top-left block). The top
+    `walkable_rows` rows can be walked behind; the rest block the way."""
+    decor.append((x, y, name, walkable_rows))
+    img = pallet_art.SPRITES[name]()
+    for by in range(img.height // 16):
+        for bx in range(img.width // 16):
+            if by >= walkable_rows:
+                coll[y + by][x + bx] = 1
+
+
+def statue(x, y):
+    place("chansey", x, y)
+    return (x, y + 2)
+
+
+def lamp(x, y):
+    place("lamp", x, y)
+
+
+def bench(x, y):
+    place("bench", x, y, walkable_rows=0)
+
+
 # ---------------------------------------------------------------------------
 # LAYOUT
 # ---------------------------------------------------------------------------
@@ -299,9 +416,9 @@ tree_rect(58, 2, 58, 36)
 YARD_Z = 4
 raised(4, 3, 17, 12, "grass", YARD_Z, stairs=(10, 11))
 raised(23, 3, 37, 12, "grass", YARD_Z, stairs=(31, 32))
-NEIGHBOR_DOOR = house(9, 4)
+NEIGHBOR_DOOR = house(9, 4, "green")
 mailbox(8, 7)
-RIVAL_DOOR = house(30, 4)
+RIVAL_DOOR = house(30, 4, "blue")
 mailbox(29, 7)
 flowers(6, 5, 7, 6)
 flowers(15, 5, 16, 6)
@@ -312,7 +429,7 @@ for y in (7, 8):
         if x in (17, 23):
             walk(x, y, 0x1BE if y == 7 else 0x1C6, z=YARD_Z)
         else:
-            walk(x, y, planks_over_path(0x1BE if y == 7 else 0x1C6), z=15)
+            walk(x, y, planks_over_path(0x1BE if y == 7 else 0x1C6), z=15, g="P")
 for y in range(4, 12):  # the yards stand at height 4
     for x in list(range(5, 17)) + list(range(24, 37)):
         if elev[y][x] == 3:
@@ -329,7 +446,7 @@ put(*TOWN_SIGN, 0x003)
 
 # Middle-left house (second neighbor)
 grass(3, 17, 12, 23)
-HOUSE2_DOOR = house(6, 17)
+HOUSE2_DOOR = house(6, 17, "purple")
 mailbox(5, 20)
 flowers(11, 19, 12, 21)
 
@@ -368,7 +485,7 @@ tree_rect(48, 22, 56, 30)
 
 # Lake, cliffs and the sea
 grass(2, 33, 57, 37)
-fence(14, 48, 33, 0x284)
+fence(14, 47, 33, 0x284)
 pond(16, 34, 47, 36, openings=(19, 20, 21))
 tree_rect(2, 34, 10, 34)
 tree_rect(48, 34, 56, 34)
@@ -380,7 +497,8 @@ mailbox(4, 47)
 flowers(11, 45, 13, 46)
 tree_rect(0, 38, 0, 50)
 # The sea below the waterfall, draining south through Route 21's channel
-for y in range(43, 50):
+SEA_BOTTOM = 47
+for y in range(43, SEA_BOTTOM + 1):
     for x in range(17, 58):
         m = 0x12B
         if y == 43:
@@ -392,14 +510,40 @@ for y in range(43, 50):
         put(x, y, m, 0, 1)
 for x in range(17, 58):
     if CHANNEL[0] <= x <= CHANNEL[1]:
-        for y in (50, 51):
+        for y in range(SEA_BOTTOM + 1, H):
             put(x, y, 0x12A if x == CHANNEL[0] else 0x12C if x == CHANNEL[1] else 0x12B, 0, 1)
     else:
-        walk(x, 50, 0x132 if x == 17 else 0x134 if x == CHANNEL[0] - 1 else 0x133, g="G")
-        walk(x, 51, 0x008, g="G")
+        rim_m = 0x132 if x in (17, CHANNEL[1] + 1) else 0x134 if x == CHANNEL[0] - 1 else 0x133
+        walk(x, SEA_BOTTOM + 1, rim_m, g="G")
+        grass(x, SEA_BOTTOM + 2, x, H - 1)
 tree_rect(18, 50, 28, 50)
 tree_rect(34, 50, 56, 50)
 tree_rect(58, 38, 58, 50)
+
+# Chansey statue plaza west of the Pokemon Center
+STATUE = statue(42, 4)
+flowers(40, 5, 41, 6)
+flowers(44, 5, 45, 6)
+lamp(39, 3)
+lamp(46, 3)
+bench(40, 9)
+bench(44, 9)
+
+# Benches and street lamps around town
+lamp(18, 10)
+lamp(22, 10)
+lamp(3, 24)
+bench(5, 26)
+flowers(8, 25, 9, 26)
+bench(10, 26)
+lamp(13, 24)
+lamp(23, 26)
+lamp(49, 9)
+lamp(49, 16)
+lamp(10, 47)
+bench(12, 49)
+lamp(46, 13)
+bench(2, 14)
 
 # ---------------------------------------------------------------------------
 # Finishing: trees, and path/grass edges
@@ -426,8 +570,38 @@ def finish_trees():
         # treetops peeking over the block above
         if not has(0, -2) and y > 0:
             for dx, m in ((0, 0x00E), (1, 0x00F)):
-                if mt[y - 1][x + dx] is None and ground[y - 1][x + dx] == "G":
+                if mt[y - 1][x + dx] is None and ground[y - 1][x + dx] in "PG" and not coll[y - 1][x + dx]:
                     walk(x + dx, y - 1, m, g="G")
+    # treetops of the trees just past the bottom edge (the map border, and Route 21)
+    route21 = json.loads((ROOT / "data/layouts/layouts.json").read_text())
+    r21 = next(l for l in route21["layouts"] if l.get("id") == "LAYOUT_ROUTE21_NORTH")
+    r21_top = struct.unpack(f"<{r21['width']}H", (ROOT / r21["blockdata_filepath"]).read_bytes()[:r21["width"] * 2])
+    for x in range(W):
+        rx = x - (CHANNEL[0] - 7)
+        if 0 <= rx < r21["width"]:
+            below = r21_top[rx] & 0x3FF
+            tip = {0x1C: 0x00E, 0x1E: 0x00E, 0x1D: 0x00F, 0x1F: 0x00F}.get(below)
+        else:
+            tip = 0x00E if x % 2 == 0 else 0x00F
+        if tip and mt[H - 1][x] is None and ground[H - 1][x] in "PG" and not coll[H - 1][x]:
+            walk(x, H - 1, tip, g="G")
+
+
+def finish_rims():
+    """Rocky rims next to the path stand on the path, so it runs right up to them."""
+    for (x, y), m in list(rims.items()):
+        outside = [(x + dx, y + dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
+                   if 0 <= x + dx < W and 0 <= y + dy < H and (x + dx, y + dy) not in raised_cells]
+        if outside and all(ground[ny][nx] == "P" for nx, ny in outside):
+            if m is not None:
+                mt[y][x] = on_path(m)
+            ground[y][x] = "P"
+
+
+def finish_decor():
+    for x, y, name, _ in decor:
+        for (bx, by), ts in sprite_tiles(name).items():
+            mt[y + by][x + bx] = decor_metatile(mt[y + by][x + bx], ts)
 
 
 # corner pattern (TL, TR, BL, BR; True = path) -> metatile
@@ -472,7 +646,9 @@ def finish_ground():
 
 
 finish_trees()
+finish_rims()
 finish_ground()
+finish_decor()
 
 
 # ---------------------------------------------------------------------------
@@ -551,6 +727,8 @@ def write_map_json():
         sign(TIPS_SIGN, "PalletTown_EventScript_TrainerTips"),
         sign(GYM_SIGN, "PalletTown_EventScript_GymSign"),
         sign(GYM_DOOR, "PalletTown_EventScript_GymDoorLocked"),
+        sign((STATUE[0], STATUE[1]), "PalletTown_EventScript_ChanseyStatue"),
+        sign((STATUE[0] + 1, STATUE[1]), "PalletTown_EventScript_ChanseyStatue"),
     ]
     path.write_text(json.dumps(m, indent=2) + "\n")
 
@@ -625,6 +803,24 @@ def write_movements():
     (ROOT / "data/maps/PalletTown_Frlg/movements.inc").write_text("".join(out))
 
 
+def write_palettes():
+    def jasc(colors):
+        return "JASC-PAL\r\n0100\r\n16\r\n" + "".join(f"{r} {g} {b}\r\n" for r, g, b in colors)
+    roof_red = rm.load_pal(PRIM / "palettes/02.pal")
+    decor = [pallet_art.DECOR_PALETTE.get(i, (0, 0, 0)) for i in range(16)]
+    for i in (4, 5, 6, 7):
+        decor[i] = tuple(roof_red[i][:3])
+    roofs = [tuple(c[:3]) for c in roof_red]
+    blue = [(205, 230, 255), (148, 197, 246), (106, 156, 230), (82, 123, 213), (41, 65, 156)]
+    green = [(213, 246, 172), (164, 222, 115), (123, 197, 90), (90, 164, 65), (41, 115, 49)]
+    for k, c in zip((10, 11, 12, 13, 14), blue):
+        roofs[k] = c
+    for k, c in zip((1, 2, 3, 8, 9), green):
+        roofs[k] = c
+    (SEC / f"palettes/{DECOR_PAL:02}.pal").write_text(jasc(decor), newline="")
+    (SEC / f"palettes/{ROOF_PAL:02}.pal").write_text(jasc(roofs), newline="")
+
+
 def write():
     blocks = []
     for y in range(H):
@@ -632,6 +828,15 @@ def write():
             blocks.append((mt[y][x] & 0x3FF) | (coll[y][x] << 10) | (elev[y][x] << 12))
     LAYOUT_BIN.write_bytes(struct.pack(f"<{len(blocks)}H", *blocks))
     (SEC / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *e) for e in SEC_MT))
+    rows = (len(SEC_TILES) + 15) // 16
+    img = Image.new("P", (128, rows * 8), 0)
+    img.putpalette(_sec_tiles_img.getpalette())
+    for i, px in enumerate(SEC_TILES):
+        t = Image.new("P", (8, 8))
+        t.putdata(px)
+        img.paste(t, ((i % 16) * 8, (i // 16) * 8))
+    img.save(SEC / "tiles.png")
+    write_palettes()
     (SEC / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in SEC_ATTR))
     path = ROOT / "data/layouts/layouts.json"
     text = path.read_text()

@@ -297,6 +297,10 @@ PalletTown_EventScript_GymDoorLocked::
 	msgbox PalletTown_Text_GymDoorLocked, MSGBOX_SIGN
 	end
 
+PalletTown_EventScript_ChanseyStatue::
+	msgbox PalletTown_Text_ChanseyStatue, MSGBOX_SIGN
+	end
+
 PalletTown_EventScript_TownSign::
 	msgbox PalletTown_Text_TownSign, MSGBOX_SIGN
 	end
@@ -383,6 +387,12 @@ PalletTown_Text_GymSign::
 
 PalletTown_Text_GymDoorLocked::
 	.string "The doors are locked tight.$"
+
+PalletTown_Text_ChanseyStatue::
+	.string "A statue of CHANSEY.\p"
+	.string "The plaque reads:\n"
+	.string "“May all who visit PALLET TOWN\l"
+	.string "leave a little happier.”$"
 
 PalletTown_Text_TownSign::
 	.string "PALLET TOWN\n"

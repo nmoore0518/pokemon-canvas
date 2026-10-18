@@ -278,10 +278,10 @@ PalletTown_Movement_OakWalkToPlayersDoor::
 	walk_down
 	walk_down
 	walk_down
-	walk_down
-	walk_down
 	walk_left
 	walk_left
+	walk_down
+	walk_down
 	walk_left
 	walk_left
 	walk_left
@@ -296,10 +296,10 @@ PalletTown_Movement_OakExit::
 	walk_right
 	walk_right
 	walk_right
-	walk_right
-	walk_right
 	walk_up
 	walk_up
+	walk_right
+	walk_right
 	walk_up
 	walk_up
 	walk_up
@@ -313,13 +313,13 @@ PalletTown_Movement_FromHouse_OakWalkToLab::
 	walk_right
 	walk_right
 	walk_right
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
 	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
 	walk_right
 	walk_up
 	walk_up
@@ -372,13 +372,13 @@ PalletTown_Movement_FromHouse_PlayerWalkToLab::
 	walk_right
 	walk_right
 	walk_right
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
 	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
 	walk_right
 	walk_up
 	walk_up

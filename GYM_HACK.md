@@ -97,6 +97,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   intro and post-League scenes follow the new streets. Don't hand-edit those two files or the
   layout in Porymap; changes would be overwritten the next time the script runs.
   The gym door is locked for now; the gym itself comes in the next step.
+  Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,
+  benches and street lamps are pixel art in `tools/gym_hack/pallet_art.py` (`statue()`, `bench()`,
+  `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
@@ -111,6 +114,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `data/scripts/gym_hack.inc` | Team-rule messages, HM key item scripts and text |
 | `src/field_region_map.c` | Town Map screen: type finder markers |
 | `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
+| `tools/gym_hack/pallet_art.py` | Chansey statue, bench and lamp art |
 | `data/maps/PalletTown_House1_Frlg/` etc. | New Pallet interiors: two neighbors, Pokémon Center, Mart |
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |

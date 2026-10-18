@@ -225,6 +225,22 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "PalletTown_EventScript_GymDoorLocked"
+    },
+    {
+      "type": "sign",
+      "x": 42,
+      "y": 6,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "PalletTown_EventScript_ChanseyStatue"
+    },
+    {
+      "type": "sign",
+      "x": 43,
+      "y": 6,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "PalletTown_EventScript_ChanseyStatue"
     }
   ]
 }
