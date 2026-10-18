@@ -16186,8 +16186,8 @@ const struct ItemInfo gItemsInfo[] =
         .name = ITEM_NAME("Sledgehammer"),
         .price = 0,
         .description = COMPOUND_STRING(
-            "A heavy hammer that\n"
-            "can smash cracked\n"
+            "A heavy hammer for\n"
+            "smashing cracked\n"
             "rocks to pieces."),
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
