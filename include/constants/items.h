@@ -1065,6 +1065,7 @@ enum __attribute__((packed)) Item
     // Gym Trainer hack: stat training items (with ITEM_BOTTLE_CAP, ITEM_GOLD_BOTTLE_CAP, ITEM_ABILITY_CAPSULE)
     ITEM_CILANTRO = 883,
     ITEM_MULTIVITAMIN = 884,
+    ITEM_MOVE_EXTRACTOR = 885,   // Gym Trainer hack: steal a foe's last move (src/move_extractor.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
@@ -1152,6 +1153,7 @@ enum EffectItem
     EFFECT_ITEM_RESTORE_PP,
     EFFECT_ITEM_INCREASE_ALL_STATS,
     EFFECT_ITEM_USE_POKE_FLUTE,
+    EFFECT_ITEM_MOVE_EXTRACTOR,  // Gym Trainer hack
 };
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

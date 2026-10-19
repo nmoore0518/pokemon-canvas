@@ -105,6 +105,7 @@ GymCandidate_EventScript_AfterBadge::
 GymCandidate_EventScript_TalkAgain::
 	special GymCandidate_IsApproved
 	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_Offer
+	goto_if_eq VAR_0x8009, 7, GymCandidate_EventScript_Return   @ GIOVANNI: his farewell, then he leaves (FireRed's story)
 	goto_if_set FLAG_PALLET_GYM_AWARDED, GymCandidate_EventScript_OwnGym
 	special GymCandidate_BufferRepeatOffer
 	msgbox gStringVar4, MSGBOX_YESNO

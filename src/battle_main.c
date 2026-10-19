@@ -5550,6 +5550,10 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
         gimmick = GIMMICK_NONE;
     }
 
+    // Gym Trainer hack: a move taken with the Move Extractor has the Pokémon's primary type
+    if (mon != NULL && IsStolenMove(mon, move))
+        return GetStolenMoveType(mon);
+
     switch (moveEffect)
     {
     case EFFECT_WEATHER_BALL:

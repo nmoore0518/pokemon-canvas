@@ -2548,9 +2548,11 @@ static void SwapMonMoves(struct Pokemon *mon, u8 moveIndex1, u8 moveIndex2)
     ppBonuses &= ~ppUpMask2;
     ppBonuses |= (ppBonusMove1 << (moveIndex2 * 2)) + (ppBonusMove2 << (moveIndex1 * 2));
 
-    // Swap the moves
+    // Swap the moves (and which are extracted: Gym Trainer hack)
+    u8 stolen = SwapStolenMoveBits(GetMonData(mon, MON_DATA_STOLEN_MOVES), moveIndex1, moveIndex2);
     SetMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
     SetMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
+    SetMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
     SetMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
     SetMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
     SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
@@ -2583,9 +2585,11 @@ static void SwapBoxMonMoves(struct BoxPokemon *mon, u8 moveIndex1, u8 moveIndex2
     ppBonuses &= ~ppUpMask2;
     ppBonuses |= (ppBonusMove1 << (moveIndex2 * 2)) + (ppBonusMove2 << (moveIndex1 * 2));
 
-    // Swap the moves
+    // Swap the moves (and which are extracted: Gym Trainer hack)
+    u8 stolen = SwapStolenMoveBits(GetBoxMonData(mon, MON_DATA_STOLEN_MOVES), moveIndex1, moveIndex2);
     SetBoxMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
     SetBoxMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
+    SetBoxMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
     SetBoxMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
     SetBoxMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
     SetBoxMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
@@ -4377,6 +4381,8 @@ static enum BattlerId GetCurrentBattlerFromSumIndex(u32 sumIndex)
 
 static enum Type SummaryScreen_GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum Type type)
 {
+    if (IsStolenMove(mon, move))   // Gym Trainer hack: Move Extractor
+        return GetStolenMoveType(mon);
     if (!P_SHOW_DYNAMIC_TYPES)
         return type;
 

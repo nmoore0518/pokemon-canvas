@@ -8266,8 +8266,10 @@ static void ShiftMoveSlot(struct BoxPokemon *mon, u8 slotTo, u8 slotFrom)
     ppBonuses &= ~ppBonusMask1;
     ppBonuses &= ~ppBonusMask2;
     ppBonuses |= (ppBonusMove1 << (slotFrom * 2)) + (ppBonusMove2 << (slotTo * 2));
+    u8 stolen = SwapStolenMoveBits(GetBoxMonData(mon, MON_DATA_STOLEN_MOVES), slotTo, slotFrom);   // Gym Trainer hack
     SetBoxMonData(mon, MON_DATA_MOVE1 + slotTo, &move0);
     SetBoxMonData(mon, MON_DATA_MOVE1 + slotFrom, &move1);
+    SetBoxMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
     SetBoxMonData(mon, MON_DATA_PP1 + slotTo, &pp0);
     SetBoxMonData(mon, MON_DATA_PP1 + slotFrom, &pp1);
     SetBoxMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);

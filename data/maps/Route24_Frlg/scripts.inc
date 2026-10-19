@@ -18,8 +18,7 @@ Route24_EventScript_NoRoomForNugget::
 	end
 
 Route24_EventScript_RocketPostBattle::
-	msgbox Route24_Text_YoudBecomeTopRocketLeader
-	release
+	goto MoveExtractor_EventScript_GruntAfterBridge   @ Gym Trainer hack: he'll still take a YES
 	end
 
 Route24_EventScript_RocketTriggerLeft::
@@ -49,13 +48,21 @@ Route24_EventScript_RocketTrigger::
 
 Route24_EventScript_BattleRocket::
 	giveitem_msg Route24_Text_ReceivedNuggetFromMysteryTrainer, ITEM_NUGGET
+	playbgm MUS_RG_ENCOUNTER_ROCKET, 0
+	@ Gym Trainer hack: a real choice. YES: he gives the player a Move Extractor instead of battling
+	call MoveExtractor_EventScript_AskToJoin
+	goto_if_eq VAR_RESULT, TRUE, Route24_EventScript_JoinedRocket
 	message Route24_Text_JoinTeamRocket
 	waitmessage
-	playbgm MUS_RG_ENCOUNTER_ROCKET, 0
 	waitbuttonpress
 	setvar VAR_LAST_TALKED, LOCALID_ROUTE24_ROCKET
 	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_6, Route24_Text_RocketDefeat
 	msgbox Route24_Text_YoudBecomeTopRocketLeader
+	setvar VAR_MAP_SCENE_ROUTE24, 1
+	return
+
+Route24_EventScript_JoinedRocket::
+	fadedefaultbgm
 	setvar VAR_MAP_SCENE_ROUTE24, 1
 	return
 
@@ -109,11 +116,6 @@ Route24_Text_YouDontHaveAnyRoom::
 	.string "You don't have any room!$"
 
 Route24_Text_JoinTeamRocket::
-	.string "By the way, how would you like to\n"
-	.string "join TEAM ROCKET?\p"
-	.string "We're a group of professional\n"
-	.string "criminals specializing in POKéMON!\p"
-	.string "Want to join?\p"
 	.string "Are you sure?\p"
 	.string "Come on, join us!\p"
 	.string "I'm telling you to join!\p"

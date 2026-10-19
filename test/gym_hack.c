@@ -1594,3 +1594,63 @@ TEST("GymHack: candidate: after approval, a shift is one challenger near the pla
     gSpecialVar_0x8007 = 0;
     GymChallenge_EndPractice();
 }
+
+// ---- Move Extractor (src/move_extractor.c) ----
+#include "move_extractor.h"
+extern const u8 MoveExtractor_Text_WantToJoin[], MoveExtractor_Text_ChangedYourMind[], MoveExtractor_Text_Hmph[], MoveExtractor_Text_Surprised[], MoveExtractor_Text_HowItWorks[], MoveExtractor_Text_KeepStealing[], MoveExtractor_Text_SecondVisit[], MoveExtractor_Text_SecondVisitAfter[], MoveExtractor_Text_ThirdVisit[], MoveExtractor_Text_ThirdVisitAfter[], Route24_Text_JoinTeamRocket[];
+
+TEST("GymHack: Move Extractor: an extracted move keeps its mark through swaps and shifts")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    u32 stolen;
+    enum Move moves[] = {MOVE_TACKLE, MOVE_GROWL, MOVE_WATER_GUN, MOVE_EMBER};
+    u32 i;
+    CreateMon(mon, SPECIES_BULBASAUR, 20, 0, OTID_STRUCT_PLAYER_ID);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
+    EXPECT(MoveExtractor_MarkLearned(mon, MOVE_WATER_GUN));
+    EXPECT(IsStolenMove(mon, MOVE_WATER_GUN));
+    EXPECT(!IsStolenMove(mon, MOVE_EMBER));
+    EXPECT_EQ(CheckDynamicMoveType(mon, MOVE_WATER_GUN, 0, MON_OUTSIDE_BATTLE), TYPE_GRASS);
+    EXPECT_EQ(CheckDynamicMoveType(mon, MOVE_EMBER, 0, MON_OUTSIDE_BATTLE), TYPE_FIRE);
+    // Swapping slots carries the mark
+    stolen = SwapStolenMoveBits(GetMonData(mon, MON_DATA_STOLEN_MOVES), 2, 0);
+    EXPECT_EQ(stolen, 1u);
+    // Forgetting the first move shifts the rest up, mark included
+    DeleteFirstMoveAndGiveMoveToMon(mon, MOVE_SCRATCH);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_MOVE2), MOVE_WATER_GUN);
+    EXPECT(IsStolenMove(mon, MOVE_WATER_GUN));
+    // Replacing it with another move clears the mark
+    SetMonMoveSlot(mon, MOVE_BUBBLE, 1);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_STOLEN_MOVES), 0);
+    EXPECT_EQ(CheckDynamicMoveType(mon, MOVE_BUBBLE, 0, MON_OUTSIDE_BATTLE), TYPE_WATER);
+}
+
+TEST("GymHack: Move Extractor: the grunt's lines fit the message box")
+{
+    static const u8 *const texts[] = {MoveExtractor_Text_WantToJoin, MoveExtractor_Text_ChangedYourMind, MoveExtractor_Text_Hmph, MoveExtractor_Text_Surprised, MoveExtractor_Text_HowItWorks, MoveExtractor_Text_KeepStealing, MoveExtractor_Text_SecondVisit, MoveExtractor_Text_SecondVisitAfter, MoveExtractor_Text_ThirdVisit, MoveExtractor_Text_ThirdVisitAfter, Route24_Text_JoinTeamRocket};
+    u32 i;
+    SetLongPlaceholders();
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+}
+
+TEST("GymHack: Move Extractor: the grunt shows up in Saffron after Silph Co., Viridian after Giovanni's approval")
+{
+    VarSet(VAR_MOVE_EXTRACTOR_STAGE, 1);
+    FlagClear(FLAG_GYM_APPROVAL_GIOVANNI);
+    gSpecialVar_0x8004 = 3;
+    MoveExtractor_VisitDue();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    VarSet(VAR_MOVE_EXTRACTOR_STAGE, 2);
+    MoveExtractor_VisitDue();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    FlagSet(FLAG_GYM_APPROVAL_GIOVANNI);
+    MoveExtractor_VisitDue();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    VarSet(VAR_MOVE_EXTRACTOR_STAGE, 3);
+    MoveExtractor_VisitDue();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    FlagClear(FLAG_GYM_APPROVAL_GIOVANNI);
+    VarSet(VAR_MOVE_EXTRACTOR_STAGE, 0);
+}

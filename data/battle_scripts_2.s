@@ -28,6 +28,7 @@ gBattlescriptsForUsingItem::
 	.4byte BattleScript_ItemRestorePP                @ EFFECT_ITEM_RESTORE_PP
 	.4byte BattleScript_ItemIncreaseStat             @ EFFECT_ITEM_INCREASE_ALL_STATS
 	.4byte BattleScript_UsePokeFlute                 @ EFFECT_ITEM_USE_POKE_FLUTE
+	.4byte BattleScript_ItemMoveExtractor            @ EFFECT_ITEM_MOVE_EXTRACTOR
 
 	.align 2
 gBattlescriptsForSafariActions::
@@ -158,6 +159,58 @@ BattleScript_ItemSetFocusEnergy::
 	waitanimation
 	copybyte sBATTLER, gBattlerAttacker
 	printstring STRINGID_PKMNUSEDXTOGETPUMPED
+	waitmessage B_WAIT_TIME_LONG
+	end
+
+@ Gym Trainer hack: the Move Extractor (src/move_extractor.c). Takes the foe's last move and
+@ teaches it to the user (as a move of its primary type); the item is used up only if it learns it.
+BattleScript_ItemMoveExtractor::
+	call BattleScript_UseItemMessage
+	callnative BS_MoveExtractorStart
+	.4byte BattleScript_MoveExtractorNothing
+	.4byte BattleScript_MoveExtractorConfirmed
+	printstring STRINGID_MOVEEXTRACTORASK
+	setbyte gBattleCommunication, 0
+	yesnobox
+	jumpifbyte CMP_EQUAL, gBattleCommunication + 1, 1, BattleScript_MoveExtractorKept
+BattleScript_MoveExtractorConfirmed::
+	callnative BS_MoveExtractorTryGive
+	.4byte BattleScript_MoveExtractorLearned
+BattleScript_MoveExtractorAskToLearn::
+	buffermovetolearn
+	printstring STRINGID_TRYTOLEARNMOVE1
+	printstring STRINGID_TRYTOLEARNMOVE2
+	printstring STRINGID_TRYTOLEARNMOVE3
+	waitstate
+	setbyte sLEARNMOVE_STATE, 0
+	yesnoboxlearnmove BattleScript_MoveExtractorForgot
+	printstring STRINGID_STOPLEARNINGMOVE
+	waitstate
+	setbyte sLEARNMOVE_STATE, 0
+	yesnoboxstoplearningmove BattleScript_MoveExtractorAskToLearn
+	printstring STRINGID_DIDNOTLEARNMOVE
+	waitmessage B_WAIT_TIME_LONG
+BattleScript_MoveExtractorKept::
+	printstring STRINGID_MOVEEXTRACTORKEPT
+	waitmessage B_WAIT_TIME_LONG
+	end
+BattleScript_MoveExtractorForgot::
+	printstring STRINGID_123POOF
+	printstring STRINGID_PKMNFORGOTMOVE
+	printstring STRINGID_ANDELLIPSIS
+BattleScript_MoveExtractorLearned::
+	callnative BS_MoveExtractorFinish
+	buffermovetolearn
+	fanfare MUS_LEVEL_UP
+	printstring STRINGID_PKMNLEARNEDMOVE
+	waitmessage B_WAIT_TIME_LONG
+	printstring STRINGID_MOVEEXTRACTORNEWTYPE
+	waitmessage B_WAIT_TIME_LONG
+	printstring STRINGID_MOVEEXTRACTORFOELOST
+	waitmessage B_WAIT_TIME_LONG
+	end
+BattleScript_MoveExtractorNothing::
+	printstring STRINGID_MOVEEXTRACTORNOTHING
 	waitmessage B_WAIT_TIME_LONG
 	end
 

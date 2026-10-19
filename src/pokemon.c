@@ -1736,11 +1736,13 @@ void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, enum Move move)
     moves[MAX_MON_MOVES - 1] = move;
     pp[MAX_MON_MOVES - 1] = GetMovePP(move);
 
+    u8 stolen = GetMonData(mon, MON_DATA_STOLEN_MOVES) >> 1;   // Gym Trainer hack: extracted moves move up too
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
         SetMonData(mon, MON_DATA_PP1 + i, &pp[i]);
     }
+    SetMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
 
     SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
@@ -2396,6 +2398,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_EVOLUTION_LOCKED:
             retVal = GetSubstruct3(boxMon)->evolutionLocked;
             break;
+        case MON_DATA_STOLEN_MOVES:
+            retVal = GetSubstruct0(boxMon)->stolenMoves;
+            break;
         case MON_DATA_DYNAMAX_LEVEL:
             retVal = GetSubstruct3(boxMon)->dynamaxLevel;
             break;
@@ -2647,17 +2652,37 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             SET8(GetSubstruct0(boxMon)->friendship);
             break;
         case MON_DATA_MOVE1:
+        {
+            enum Move oldMove = GetSubstruct1(boxMon)->move1;
             SET16(GetSubstruct1(boxMon)->move1);
+            if (GetSubstruct1(boxMon)->move1 != oldMove)
+                GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 0);   // Gym Trainer hack: a new move isn't extracted
             break;
+        }
         case MON_DATA_MOVE2:
+        {
+            enum Move oldMove = GetSubstruct1(boxMon)->move2;
             SET16(GetSubstruct1(boxMon)->move2);
+            if (GetSubstruct1(boxMon)->move2 != oldMove)
+                GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 1);   // Gym Trainer hack: a new move isn't extracted
             break;
+        }
         case MON_DATA_MOVE3:
+        {
+            enum Move oldMove = GetSubstruct1(boxMon)->move3;
             SET16(GetSubstruct1(boxMon)->move3);
+            if (GetSubstruct1(boxMon)->move3 != oldMove)
+                GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 2);   // Gym Trainer hack: a new move isn't extracted
             break;
+        }
         case MON_DATA_MOVE4:
+        {
+            enum Move oldMove = GetSubstruct1(boxMon)->move4;
             SET16(GetSubstruct1(boxMon)->move4);
+            if (GetSubstruct1(boxMon)->move4 != oldMove)
+                GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 3);   // Gym Trainer hack: a new move isn't extracted
             break;
+        }
         case MON_DATA_PP1:
             SET8(GetSubstruct1(boxMon)->pp1);
             break;
@@ -2845,6 +2870,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             break;
         case MON_DATA_EVOLUTION_LOCKED:
             SET8(GetSubstruct3(boxMon)->evolutionLocked);
+            break;
+        case MON_DATA_STOLEN_MOVES:
+            SET8(GetSubstruct0(boxMon)->stolenMoves);
             break;
         case MON_DATA_DYNAMAX_LEVEL:
             SET8(GetSubstruct3(boxMon)->dynamaxLevel);
@@ -6563,6 +6591,36 @@ void UpdateDaysPassedSinceFormChange(u16 days)
         if (daysSinceFormChange == 0)
             TryFormChange(mon, FORM_CHANGE_DAYS_PASSED, B_TRAINER_PLAYER);
     }
+}
+
+// Gym Trainer hack: the Move Extractor. A slot's bit set: that move takes the Pokémon's primary type.
+bool32 IsStolenMove(struct Pokemon *mon, enum Move move)
+{
+    u32 i, stolen;
+    if (mon == NULL || move == MOVE_NONE)
+        return FALSE;
+    stolen = GetMonData(mon, MON_DATA_STOLEN_MOVES);
+    if (stolen == 0)
+        return FALSE;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if ((stolen & (1 << i)) && GetMonData(mon, MON_DATA_MOVE1 + i) == move)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+enum Type GetStolenMoveType(struct Pokemon *mon)
+{
+    return GetSpeciesType(GetMonData(mon, MON_DATA_SPECIES), 0);
+}
+
+// Swaps two slots' extracted bits (when moves trade places)
+u32 SwapStolenMoveBits(u32 stolen, u32 a, u32 b)
+{
+    u32 bitA = (stolen >> a) & 1, bitB = (stolen >> b) & 1;
+    stolen &= ~((1 << a) | (1 << b));
+    return stolen | (bitA << b) | (bitB << a);
 }
 
 enum Type CheckDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum MonState state)

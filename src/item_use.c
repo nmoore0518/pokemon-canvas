@@ -3,6 +3,7 @@
 #include "field_move.h"
 #include "region_map.h"
 #include "item_use.h"
+#include "move_extractor.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_stat_change.h"
@@ -1317,6 +1318,10 @@ bool32 CannotUseItemsInBattle(enum Item itemId, struct Pokemon *mon)
         break;
     case EFFECT_ITEM_USE_POKE_FLUTE:
         // ISSUE #10182
+        break;
+    case EFFECT_ITEM_MOVE_EXTRACTOR:   // Gym Trainer hack
+        failStr = MoveExtractor_CantUseReason(gBattlerInMenuId);
+        cannotUse = (failStr != NULL);
         break;
     }
 

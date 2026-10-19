@@ -2532,7 +2532,7 @@ const struct ItemInfo gItemsInfo[] =
             "any battle with\n"
             "a wild Pokémon."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_BATTLE_ITEM,
+        .sortType = ITEM_TYPE_X_ITEM,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .battleUsage = EFFECT_ITEM_ESCAPE,
@@ -2550,7 +2550,7 @@ const struct ItemInfo gItemsInfo[] =
             "any battle with\n"
             "a wild Pokémon."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_BATTLE_ITEM,
+        .sortType = ITEM_TYPE_X_ITEM,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .battleUsage = EFFECT_ITEM_ESCAPE,
@@ -2568,7 +2568,7 @@ const struct ItemInfo gItemsInfo[] =
             "any battle with\n"
             "a wild Pokémon."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_BATTLE_ITEM,
+        .sortType = ITEM_TYPE_X_ITEM,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .battleUsage = EFFECT_ITEM_ESCAPE,
@@ -2587,7 +2587,7 @@ const struct ItemInfo gItemsInfo[] =
             "raise all stats\n"
             "during one battle."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_BATTLE_ITEM,
+        .sortType = ITEM_TYPE_X_ITEM,
         .type = B_X_ITEMS_CROSSUSE ? ITEM_USE_BATTLER : ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .battleUsage = EFFECT_ITEM_INCREASE_ALL_STATS,
@@ -16273,6 +16273,26 @@ const struct ItemInfo gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_StatItem,
         .iconPic = gItemIcon_HPUp,
         .iconPalette = gItemIconPalette_Multivitamin,
+    },
+
+    [ITEM_MOVE_EXTRACTOR] =
+    {
+        // Gym Trainer hack: in battle, takes the foe's last move for the player's Pokémon, as a
+        // move of its own primary type (src/move_extractor.c). Used up only once a move is learned.
+        .name = ITEM_NAME("Move Extractor"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "Steals a foe's last\n"
+            "move, turning it\n"
+            "into your type."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_X_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .battleUsage = EFFECT_ITEM_MOVE_EXTRACTOR,
+        .iconPic = gItemIcon_DNASplicers,
+        .iconPalette = gItemIconPalette_DNASplicers,
     },
 };
 

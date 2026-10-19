@@ -2459,6 +2459,8 @@
 #define FLAG_HIDE_PALLET_GYM_AIDE           0x027 // until Oak's gym scene is over
 #define FLAG_HIDE_PALLET_GYM_RIVAL          0x078 // the rival in the gym (only in Oak's first gym scene)
 #define FLAG_PALLET_GYM_AWARDED             0x077 // the League has made the player the Gym Leader (after the rival and Oak)
+// The Rocket grunt who hands out Move Extractors, when he shows up in a city
+#define FLAG_HIDE_MOVE_EXTRACTOR_GRUNT      0x07F
 // The practice trainers in the gym: up to 11 people, one per placed trainer (src/gym_decor.c)
 #define FLAG_HIDE_PALLET_GYM_TRAINER_0       0x0AF
 #define FLAG_HIDE_PALLET_GYM_TRAINER_1       0x0B0

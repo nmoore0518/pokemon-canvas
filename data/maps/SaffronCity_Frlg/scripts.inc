@@ -1,8 +1,18 @@
 SaffronCity_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, SaffronCity_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, SaffronCity_OnFrameMoveExtractor
 	.byte 0
 
+@ Gym Trainer hack: the Rocket grunt with a Move Extractor (data/scripts/move_extractor.inc)
+SaffronCity_OnFrameMoveExtractor::
+	map_script_2 VAR_TEMP_9, 1, MoveExtractor_EventScript_SaffronVisit
+	.2byte 0
+
 SaffronCity_OnTransition::
+	setflag FLAG_HIDE_MOVE_EXTRACTOR_GRUNT
+	setvar VAR_0x8004, 2
+	special MoveExtractor_VisitDue
+	copyvar VAR_TEMP_9, VAR_RESULT
 	setworldmapflag FLAG_WORLD_MAP_SAFFRON_CITY
 	call_if_unset FLAG_RESCUED_MR_FUJI, SaffronCity_EventScript_MoveDoorGuardGrunt
 	end

@@ -1727,6 +1727,10 @@ static void MoveSelectionDisplayMoveType(enum BattlerId battler)
         || (IsGimmickSelected(battler, GIMMICK_TERA) && speciesId == SPECIES_TERAPAGOS_TERASTAL))
             type = TYPE_STELLAR;
     }
+    else if (IsStolenMove(GetBattlerMon(battler), move)) // Gym Trainer hack: Move Extractor
+    {
+        type = GetStolenMoveType(GetBattlerMon(battler));
+    }
     else if (P_SHOW_DYNAMIC_TYPES) // Non-vanilla changes to battle UI showing dynamic types
     {
         struct Pokemon *mon = GetBattlerMon(battler);

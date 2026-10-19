@@ -337,6 +337,8 @@
 #define VAR_MAP_SCENE_PALLET_TOWN_GYM                    0x40F9
 // After the League: GYM_FINALE_* (include/constants/gym_hack.h)
 #define VAR_GYM_FINALE                                   0x40FA
+// The Move Extractor: how many the Rocket grunt has handed over (0-3; data/scripts/move_extractor.inc)
+#define VAR_MOVE_EXTRACTOR_STAGE                         0x40FB
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

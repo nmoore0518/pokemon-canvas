@@ -659,6 +659,7 @@ gSpecials::
 	def_special GymCandidate_IsApproved
 	def_special GymCandidate_BufferOffer
 	def_special GymCandidate_MoreGuests
+	def_special MoveExtractor_VisitDue
 	def_special GymCandidate_BufferRepeatOffer
 	def_special GymCandidate_BufferRepeatThanks
 	def_special GymCandidate_BufferOwnGym

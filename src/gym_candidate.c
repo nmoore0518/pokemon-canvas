@@ -17,6 +17,7 @@
 #include "event_object_movement.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
+#include "metatile_behavior.h"
 #include "gym_challenge.h"
 #include "gym_decor.h"
 #include "string_util.h"
@@ -325,8 +326,11 @@ static EWRAM_DATA u8 sGuestDir;   // where the challenger is, seen from the play
 static bool32 IsFreeSpot(s16 x, s16 y, u8 elevation)
 {
     u8 e = MapGridGetElevationAt(x, y);
+    u32 behavior = MapGridGetMetatileBehaviorAt(x, y);
     if (MapGridGetCollisionAt(x, y))
         return FALSE;
+    if (MetatileBehavior_IsDoor(behavior) || MetatileBehavior_IsWarpDoor(behavior) || MetatileBehavior_IsNonAnimDoor(behavior))
+        return FALSE;   // not in a doorway
     if (GetObjectEventIdByXY(x, y) != OBJECT_EVENTS_COUNT)
         return FALSE;
     return e == elevation || e == 0 || e == 15 || elevation == 0 || elevation == 15;

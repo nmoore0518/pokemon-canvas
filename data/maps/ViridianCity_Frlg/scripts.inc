@@ -1,8 +1,18 @@
 ViridianCity_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ViridianCity_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, ViridianCity_OnFrameMoveExtractor
 	.byte 0
 
+@ Gym Trainer hack: the Rocket grunt with a Move Extractor (data/scripts/move_extractor.inc)
+ViridianCity_OnFrameMoveExtractor::
+	map_script_2 VAR_TEMP_9, 1, MoveExtractor_EventScript_ViridianVisit
+	.2byte 0
+
 ViridianCity_OnTransition::
+	setflag FLAG_HIDE_MOVE_EXTRACTOR_GRUNT
+	setvar VAR_0x8004, 3
+	special MoveExtractor_VisitDue
+	copyvar VAR_TEMP_9, VAR_RESULT
 	setworldmapflag FLAG_WORLD_MAP_VIRIDIAN_CITY
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 0, ViridianCity_EventScript_SetOldManBlockingRoad
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1, ViridianCity_EventScript_SetOldManStandingByRoad

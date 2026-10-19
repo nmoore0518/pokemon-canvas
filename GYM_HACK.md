@@ -331,6 +331,33 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     Pokémon Mansion), Julia (Fairy, Route 8). Kanto has no real Ice, Dark or Steel specialists,
     so those three are themed (Nora swims near Seafoam with Shellder and Cloyster, Lewis is a
     burglar going straight, Bernie's Magnemite).
+- **The Move Extractor** (`src/move_extractor.c`, `data/scripts/move_extractor.inc`): a battle
+  item (ITEMS pocket, `ITEM_MOVE_EXTRACTOR`). Used from the bag after a foe has used a move, it
+  asks "Extract <move> from <foe>?", then the user learns that move (the usual "forget a move?"
+  screen if it knows four). The learned move takes the learner's primary type (a new STAB move);
+  nothing else about it changes. The foe can't use that move again in the battle (its PP drops to
+  0). It's used up only when the move is learned; declining keeps it (the turn is still spent,
+  like any item). Can't be used before a foe has moved, on a move the Pokémon already knows, or
+  while transformed.
+  - Storage: 4 bits per Pokémon (`MON_DATA_STOLEN_MOVES`, spare bits in substruct 0), one per move
+    slot. They follow the move when moves are reordered (summary screen, Move Deleter) or shift
+    (level-up forgetting the first move), and clear when the slot gets a different move.
+    `GetDynamicMoveType` returns the primary type for those moves; the battle move menu and the
+    summary screen show it.
+  - Only three in the game, from the Team Rocket grunt on Nugget Bridge (`VAR_MOVE_EXTRACTOR_STAGE`):
+    1. Say YES when he asks you to join (or later, if you said no and beat him, when you talk to him
+       again). Surprised, he admits a grunt can't let anyone in, and gives you a Move Extractor to
+       prove your worth by stealing moves.
+    2. After you beat Giovanni at Silph Co., he finds you in Saffron City, panicking that he
+       recommended the kid who beat the boss, but the boss said "That child has talent."
+    3. After Giovanni gives his Gym Leader approval (so the Viridian gym's Guest Leader battles come
+       first), he finds you in Viridian City: the boss has disbanded Team Rocket, so there's no one
+       to recommend you to. He gives you the last one, says to make your gym the toughest in Kanto,
+       and thinks he might go straight too.
+    He appears next to the player on entering the city (`FLAG_HIDE_MOVE_EXTRACTOR_GRUNT`,
+    `LOCALID_SAFFRON/VIRIDIAN_EXTRACTOR_GRUNT`, disguised as on the bridge).
+  - Giovanni now says his farewell and leaves once he's approved (as in FireRed); he doesn't offer
+    stand-in shifts.
 - **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's
   entrance (beside the usual guide) gives tips for running a gym of your own, tied to that gym's
   mechanic: Pewter (the gym is a path; challengers walk from the door to your BATTLE STAGE, so

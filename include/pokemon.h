@@ -126,6 +126,7 @@ enum MonData {
     MON_DATA_TERA_TYPE,
     MON_DATA_EVOLUTION_TRACKER,
     MON_DATA_EVOLUTION_LOCKED, // Gym Trainer hack
+    MON_DATA_STOLEN_MOVES, // Gym Trainer hack: Move Extractor slots (bit per move slot)
 };
 
 #define BLOCK_AI_DYNAMAX 15 // Used as dynamax level value by the AI to indicate this mon shouldn't dynamax
@@ -135,7 +136,8 @@ struct PokemonSubstruct0
     enum Species species:11; // 2047 species.
     enum Type teraType:5; // 30 types.
     enum Item heldItem:10; // 1023 items.
-    u16 unused_02:6;
+    u16 stolenMoves:4; // Gym Trainer hack: move slots learned with the Move Extractor (they take the Pokémon's primary type)
+    u16 unused_02:2;
     u32 experience:21;
     u32 nickname11:8; // 11th character of nickname.
     u32 unused_04:3;
@@ -971,6 +973,9 @@ void HealPokemon(struct Pokemon *mon);
 void HealBoxPokemon(struct BoxPokemon *boxMon);
 void UpdateDaysPassedSinceFormChange(u16 days);
 void TrySetDayLimitToFormChange(struct Pokemon *mon);
+bool32 IsStolenMove(struct Pokemon *mon, enum Move move);
+enum Type GetStolenMoveType(struct Pokemon *mon);
+u32 SwapStolenMoveBits(u32 stolen, u32 a, u32 b);
 enum Type CheckDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum MonState state);
 uq4_12_t GetDynamaxLevelHPMultiplier(u32 dynamaxLevel, bool32 inverseMultiplier);
 enum Species GetRegionalFormByRegion(enum Species species, enum Region region);
