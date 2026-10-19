@@ -38,6 +38,7 @@ IndigoPlateau_PokemonCenter_1F_EventScript_SeviiIslandComplete::
 @ checked here, at the door, so the player can't get stuck inside the League.
 IndigoPlateau_PokemonCenter_1F_EventScript_LeagueTeamCheck::
 	lockall
+	call GymCandidate_EventScript_LeagueApprovalCheck
 	special GymHack_CheckTeamSpecial
 	goto_if_eq VAR_RESULT, GYM_HACK_TEAM_OK, IndigoPlateau_PokemonCenter_1F_EventScript_LeagueTeamOk
 	textcolor NPC_TEXT_COLOR_NEUTRAL

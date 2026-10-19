@@ -1,11 +1,18 @@
 CeruleanCity_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CeruleanCity_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+CeruleanCity_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 CeruleanCity_Gym_EventScript_Misty::
 	famechecker FAMECHECKER_MISTY, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_MISTY, CeruleanCity_Gym_Text_MistyIntro, CeruleanCity_Gym_Text_MistyDefeat, CeruleanCity_Gym_EventScript_MistyDefeated, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM03_FROM_MISTY, CeruleanCity_Gym_EventScript_GiveTM03
 	call GymHack_EventScript_MistyGifts
+	call GymCandidate_EventScript_CeruleanCityTalk
 	msgbox CeruleanCity_Gym_Text_ExplainTM03
 	release
 	end
@@ -27,6 +34,7 @@ CeruleanCity_Gym_EventScript_GiveTM03::
 	setflag FLAG_GOT_TM03_FROM_MISTY
 	msgbox CeruleanCity_Gym_Text_ExplainTM03
 	call GymHack_EventScript_MistyGifts
+	goto GymCandidate_EventScript_CeruleanCityAfterBadge
 	release
 	end
 

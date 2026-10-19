@@ -31,7 +31,9 @@ PokemonTower_6F_Movement_ForcePlayerUp::
 	step_end
 
 PokemonTower_6F_EventScript_Angelica::
-	trainerbattle_single TRAINER_CHANNELER_ANGELICA, PokemonTower_6F_Text_AngelicaIntro, PokemonTower_6F_Text_AngelicaDefeat
+	trainerbattle_single TRAINER_CHANNELER_ANGELICA, PokemonTower_6F_Text_AngelicaIntro, PokemonTower_6F_Text_AngelicaDefeat, GymCandidate_EventScript_RecruitGhost
+	setvar VAR_0x8004, 8   @ TYPE_GHOST
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox PokemonTower_6F_Text_AngelicaPostBattle, MSGBOX_AUTOCLOSE
 	end
 

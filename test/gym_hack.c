@@ -520,6 +520,7 @@ TEST("GymHack: type finder only counts primary types")
 
 // ---- Gym decorations ----
 #include "gym_decor.h"
+#include "gym_candidate.h"
 #include "money.h"
 #include "text.h"
 #include "constants/gym_room.h"
@@ -603,7 +604,7 @@ TEST("GymHack: decor: every decoration has a name, a price and fits the gym")
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
         EXPECT(gGymDecor[i].name != NULL);
-        if (i != GYM_DECOR_BATTLE_STAGE)
+        if (i != GYM_DECOR_BATTLE_STAGE && GymCandidate_GetRecruitByDecor(i) == NULL)   // recruits join, they aren't sold
             EXPECT_GT(gGymDecor[i].price, 0);
         EXPECT_LE(gGymDecor[i].width, 4);
         EXPECT_LE(gGymDecor[i].height, 5);
@@ -1399,9 +1400,158 @@ TEST("GymHack: practice trainers: any number can be bought, 11 placed at once")
         u32 tier, instance;
         s32 px, py;
         EXPECT(GymDecor_GetTrainerSlot(3, &tier, &instance, &px, &py));
-        EXPECT_EQ(tier, 0);
+        EXPECT_EQ(tier, GYM_DECOR_TRAINER_BEGINNER);
         EXPECT_EQ(instance, 1);
         EXPECT(!GymDecor_GetTrainerSlot(GYM_PRACTICE_SLOTS, &tier, &instance, &px, &py));
     }
+    GymDecor_ClearAll();
+}
+
+// ---- Gym candidate (src/gym_candidate.c, data/scripts/gym_candidate.inc) ----
+#include "gym_candidate.h"
+
+extern const u8 GymCandidate_Text_LaterThatDay[], GymCandidate_Text_AnotherOne[], GymCandidate_Text_ApprovalCount[], GymCandidate_Text_TryAgain[], GymCandidate_Text_NotYet[], GymCandidate_Text_TeamBreaksRules[], GymCandidate_Text_NeedApprovals[], GymCandidate_Text_OakAside1[], GymCandidate_Text_OakAside2[], GymCandidate_Text_OakAside3[], GymCandidate_Text_OakAside4[], GymCandidate_Text_DaisyAside[], GymCandidate_Text_RecruitJoined[], GymCandidate_Text_RecruitHowToPlace[], GymCandidate_Text_RecruitDeclined[], CeruleanCity_Text_RivalPostBattle[], SSAnne_2F_Corridor_Text_RivalIntro[], PokemonTower_2F_Text_RivalPostBattle[], SilphCo_7F_Text_RivalPostBattle[], Route22_Text_EarlyRivalPostBattle[], Route22_Text_LateRivalIntro[], Route22_Text_LateRivalPostBattle[], PalletTown_Gym_Text_OakWaitingForYou[], GymChallenge_Text_AideNotYet[];
+
+static void SetLongPlaceholders(void)
+{
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("MMMMMMM"));
+    StringCopy(gSaveBlock1Ptr->rivalName, COMPOUND_STRING("MMMMMMM"));
+    StringCopy(gStringVar1, COMPOUND_STRING("BIRD KEEPER PERRY"));
+    StringCopy(gStringVar2, COMPOUND_STRING("ELECTRIC"));
+    StringCopy(gStringVar3, COMPOUND_STRING("LT. SURGE"));
+}
+
+// Every line of an (expanded) text fits: max width in pixels
+static void ExpectLinesFit(const u8 *text, u32 maxWidth, bool32 expand)
+{
+    u8 *buf = Alloc(1000);
+    u8 *line, *p;
+    if (expand)
+        StringExpandPlaceholders(buf, text);
+    else
+        StringCopy(buf, text);
+    for (line = p = buf; ; p++)
+    {
+        u8 c = *p;
+        if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+        {
+            *p = EOS;
+            if (GetStringWidth(FONT_NORMAL, line, 0) > maxWidth)
+                DebugPrintf("line too wide: %S", line);
+            EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), maxWidth);
+            if (c == EOS)
+                break;
+            line = p + 1;
+        }
+    }
+    Free(buf);
+}
+
+TEST("GymHack: candidate: all the new story lines fit the message box")
+{
+    static const u8 *const texts[] = {GymCandidate_Text_LaterThatDay, GymCandidate_Text_AnotherOne, GymCandidate_Text_ApprovalCount, GymCandidate_Text_TryAgain, GymCandidate_Text_NotYet, GymCandidate_Text_TeamBreaksRules, GymCandidate_Text_NeedApprovals, GymCandidate_Text_OakAside1, GymCandidate_Text_OakAside2, GymCandidate_Text_OakAside3, GymCandidate_Text_OakAside4, GymCandidate_Text_DaisyAside, GymCandidate_Text_RecruitJoined, GymCandidate_Text_RecruitHowToPlace, GymCandidate_Text_RecruitDeclined, CeruleanCity_Text_RivalPostBattle, SSAnne_2F_Corridor_Text_RivalIntro, PokemonTower_2F_Text_RivalPostBattle, SilphCo_7F_Text_RivalPostBattle, Route22_Text_EarlyRivalPostBattle, Route22_Text_LateRivalIntro, Route22_Text_LateRivalPostBattle, PalletTown_Gym_Text_OakWaitingForYou, GymChallenge_Text_AideNotYet};
+    u32 i, t;
+    SetLongPlaceholders();
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+    for (i = 0; i < GYM_CANDIDATE_LEADERS; i++)
+    {
+        ExpectLinesFit(gGymCandidateLeaders[i].offer, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(gGymCandidateLeaders[i].approve, 27 * 8 - 4, TRUE);
+    }
+    for (i = 0; i < GYM_CANDIDATE_ELITE_FOUR; i++)
+        ExpectLinesFit(GymCandidate_GetEliteFourApproval(i), 27 * 8 - 4, TRUE);
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        const struct GymCandidateMentor *mentor = GymCandidate_GetMentorForType(t);
+        const struct GymRecruit *recruit = GymCandidate_GetRecruit(t);
+        if (mentor != NULL)
+        {
+            ExpectLinesFit(mentor->first, 27 * 8 - 4, TRUE);
+            ExpectLinesFit(mentor->approve, 27 * 8 - 4, TRUE);
+        }
+        if (recruit != NULL)
+            ExpectLinesFit(recruit->pitch, 27 * 8 - 4, TRUE);
+    }
+}
+
+TEST("GymHack: candidate: every type has a mentor and a trainer who can join")
+{
+    u32 t;
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (t == TYPE_MYSTERY || t == TYPE_STELLAR)
+            continue;
+        EXPECT(GymCandidate_GetMentorForType(t) != NULL);
+        EXPECT(GymCandidate_GetRecruit(t) != NULL);
+        EXPECT_EQ(gGymDecor[GymCandidate_GetRecruit(t)->decor].category, GYM_DECOR_CAT_TRAINERS);
+        EXPECT_EQ(gGymDecor[GymCandidate_GetRecruit(t)->decor].price, 0);
+    }
+}
+
+TEST("GymHack: candidate: guest challengers grow with the story, and their lines fit")
+{
+    u32 leader, run, i;
+    GivePlayerTeamAt(10, 10);
+    for (leader = 0; leader < GYM_CANDIDATE_LEADERS; leader++)
+    {
+        for (run = 0; run < 8; run++)
+        {
+            const struct Trainer *tr;
+            gSpecialVar_0x8009 = leader;
+            GymCandidate_GenerateGuest();
+            tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+            EXPECT_EQ((u32)tr->partySize, (u32)gGymCandidateLeaders[leader].partySize);
+            for (i = 0; i < tr->partySize; i++)
+                EXPECT_GE((u32)tr->party[i].lvl, (u32)gGymCandidateLeaders[leader].level - 2);
+            ExpectLinesFit(gGymChallengeIntroText, 27 * 8 - 4, FALSE);
+            ExpectLinesFit(gGymChallengeAfterText, 27 * 8 - 4, FALSE);
+            ExpectLinesFit(gGymChallengeWinText, 27 * 8 - 4, FALSE);
+            ExpectLinesFit(gGymChallengeDefeatText, 26 * 8 - 16, FALSE);
+        }
+    }
+    EXPECT_EQ(gGymCandidateLeaders[0].guests, 1);
+    EXPECT_GE(gGymCandidateLeaders[6].guests, 2);
+    GymChallenge_EndPractice();
+}
+
+TEST("GymHack: candidate: approvals count up, and a leader asks until they approve")
+{
+    u32 i;
+    for (i = 0; i < GYM_CANDIDATE_LEADERS; i++)
+        FlagClear(gGymCandidateLeaders[i].approvalFlag);
+    EXPECT_EQ(GymCandidate_CountApprovals(), 0);
+    gSpecialVar_0x8009 = 2;
+    GymCandidate_IsApproved();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    GymCandidate_Approve();
+    GymCandidate_IsApproved();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    EXPECT_EQ(GymCandidate_CountApprovals(), 1);
+    gSpecialVar_0x8009 = 0;
+    gSpecialVar_0x800B = 0;
+    GymCandidate_MoreGuests();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    gSpecialVar_0x800B = 1;
+    GymCandidate_MoreGuests();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    gSpecialVar_0x8009 = 6;
+    GymCandidate_MoreGuests();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    for (i = 0; i < GYM_CANDIDATE_LEADERS; i++)
+        FlagClear(gGymCandidateLeaders[i].approvalFlag);
+}
+
+TEST("GymHack: candidate: a recruit joins once and can be placed as a trainer")
+{
+    GymDecor_ClearAll();
+    gSpecialVar_0x8004 = TYPE_FAIRY;
+    GymCandidate_BufferRecruit();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    GymCandidate_Recruit();
+    GymCandidate_BufferRecruit();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    EXPECT(GymDecor_Place(GymCandidate_GetRecruit(TYPE_FAIRY)->decor, 3, 5));
+    EXPECT_EQ(GymDecor_CountPlacedTrainers(), 1);
     GymDecor_ClearAll();
 }

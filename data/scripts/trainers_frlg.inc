@@ -419,9 +419,11 @@ Route11_EventScript_BraxtonRematch::
 	end
 
 Route11_EventScript_Bernie::
-	trainerbattle_single TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat
+	trainerbattle_single TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat, GymCandidate_EventScript_RecruitSteel
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_BernieRematch
+	setvar VAR_0x8004, 9   @ TYPE_STEEL
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route11_Text_BerniePostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -515,9 +517,11 @@ Route9_EventScript_ChrisRematch::
 	end
 
 Route9_EventScript_Drew::
-	trainerbattle_single TRAINER_CAMPER_DREW, Route9_Text_DrewIntro, Route9_Text_DrewDefeat
+	trainerbattle_single TRAINER_CAMPER_DREW, Route9_Text_DrewIntro, Route9_Text_DrewDefeat, GymCandidate_EventScript_RecruitGround
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route9_EventScript_DrewRematch
+	setvar VAR_0x8004, 5   @ TYPE_GROUND
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route9_Text_DrewPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -527,9 +531,11 @@ Route9_EventScript_DrewRematch::
 	end
 
 Route9_EventScript_Alicia::
-	trainerbattle_single TRAINER_PICNICKER_ALICIA, Route9_Text_AliciaIntro, Route9_Text_AliciaDefeat
+	trainerbattle_single TRAINER_PICNICKER_ALICIA, Route9_Text_AliciaIntro, Route9_Text_AliciaDefeat, GymCandidate_EventScript_RecruitGrass
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route9_EventScript_AliciaRematch
+	setvar VAR_0x8004, 13   @ TYPE_GRASS
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route9_Text_AliciaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -671,9 +677,11 @@ Route8_EventScript_PaigeRematch::
 	end
 
 Route8_EventScript_Andrea::
-	trainerbattle_single TRAINER_LASS_ANDREA, Route8_Text_AndreaIntro, Route8_Text_AndreaDefeat
+	trainerbattle_single TRAINER_LASS_ANDREA, Route8_Text_AndreaIntro, Route8_Text_AndreaDefeat, GymCandidate_EventScript_RecruitNormal
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route8_EventScript_AndreaRematch
+	setvar VAR_0x8004, 1   @ TYPE_NORMAL
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route8_Text_AndreaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -695,9 +703,11 @@ Route8_EventScript_MeganRematch::
 	end
 
 Route8_EventScript_Julia::
-	trainerbattle_single TRAINER_LASS_JULIA, Route8_Text_JuliaIntro, Route8_Text_JuliaDefeat
+	trainerbattle_single TRAINER_LASS_JULIA, Route8_Text_JuliaIntro, Route8_Text_JuliaDefeat, GymCandidate_EventScript_RecruitFairy
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route8_EventScript_JuliaRematch
+	setvar VAR_0x8004, 19   @ TYPE_FAIRY
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route8_Text_JuliaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -815,9 +825,11 @@ Route8_EventScript_JarenRematch::
 	end
 
 Route12_EventScript_Ned::
-	trainerbattle_single TRAINER_FISHERMAN_NED, Route12_Text_NedIntro, Route12_Text_NedDefeat
+	trainerbattle_single TRAINER_FISHERMAN_NED, Route12_Text_NedIntro, Route12_Text_NedDefeat, GymCandidate_EventScript_RecruitWater
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_NedRematch
+	setvar VAR_0x8004, 12   @ TYPE_WATER
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route12_Text_NedPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -875,9 +887,11 @@ Route12_EventScript_AndrewRematch::
 	end
 
 Route12_EventScript_Luca::
-	trainerbattle_single TRAINER_ROCKER_LUCA, Route12_Text_LucaIntro, Route12_Text_LucaDefeat
+	trainerbattle_single TRAINER_ROCKER_LUCA, Route12_Text_LucaIntro, Route12_Text_LucaDefeat, GymCandidate_EventScript_RecruitElectric
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_LucaRematch
+	setvar VAR_0x8004, 14   @ TYPE_ELECTRIC
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route12_Text_LucaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -923,9 +937,11 @@ Route12_EventScript_GiaRematch::
 	end
 
 Route13_EventScript_Jared::
-	trainerbattle_single TRAINER_BIKER_JARED, Route13_Text_JaredIntro, Route13_Text_JaredDefeat
+	trainerbattle_single TRAINER_BIKER_JARED, Route13_Text_JaredIntro, Route13_Text_JaredDefeat, GymCandidate_EventScript_RecruitPoison
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route13_EventScript_JaredRematch
+	setvar VAR_0x8004, 4   @ TYPE_POISON
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route13_Text_JaredPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -971,9 +987,11 @@ Route13_EventScript_SebastianRematch::
 	end
 
 Route13_EventScript_Perry::
-	trainerbattle_single TRAINER_BIRD_KEEPER_PERRY, Route13_Text_PerryIntro, Route13_Text_PerryDefeat
+	trainerbattle_single TRAINER_BIRD_KEEPER_PERRY, Route13_Text_PerryIntro, Route13_Text_PerryDefeat, GymCandidate_EventScript_RecruitFlying
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route13_EventScript_PerryRematch
+	setvar VAR_0x8004, 3   @ TYPE_FLYING
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route13_Text_PerryPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1775,9 +1793,11 @@ Route20_EventScript_TiffanyRematch::
 	end
 
 Route20_EventScript_Nora::
-	trainerbattle_single TRAINER_SWIMMER_FEMALE_NORA, Route20_Text_NoraIntro, Route20_Text_NoraDefeat
+	trainerbattle_single TRAINER_SWIMMER_FEMALE_NORA, Route20_Text_NoraIntro, Route20_Text_NoraDefeat, GymCandidate_EventScript_RecruitIce
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_NoraRematch
+	setvar VAR_0x8004, 16   @ TYPE_ICE
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route20_Text_NoraPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1799,9 +1819,11 @@ Route20_EventScript_MelissaRematch::
 	end
 
 Route20_EventScript_Shirley::
-	trainerbattle_single TRAINER_SWIMMER_FEMALE_SHIRLEY, Route20_Text_ShirleyIntro, Route20_Text_ShirleyDefeat
+	trainerbattle_single TRAINER_SWIMMER_FEMALE_SHIRLEY, Route20_Text_ShirleyIntro, Route20_Text_ShirleyDefeat, GymCandidate_EventScript_RecruitDragon
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_ShirleyRematch
+	setvar VAR_0x8004, 17   @ TYPE_DRAGON
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox Route20_Text_ShirleyPostBattle, MSGBOX_AUTOCLOSE
 	end
 

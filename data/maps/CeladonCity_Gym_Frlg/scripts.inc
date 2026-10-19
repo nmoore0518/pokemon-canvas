@@ -1,11 +1,18 @@
 CeladonCity_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CeladonCity_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+CeladonCity_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 CeladonCity_Gym_EventScript_Erika::
 	famechecker FAMECHECKER_ERIKA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_ERIKA, CeladonCity_Gym_Text_ErikaIntro, CeladonCity_Gym_Text_ErikaDefeat, CeladonCity_Gym_EventScript_DefeatedErika, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM19_FROM_ERIKA, CeladonCity_Gym_EventScript_GiveTM19
 	call GymHack_EventScript_ErikaGifts
+	call GymCandidate_EventScript_CeladonCityTalk
 	famechecker FAMECHECKER_ERIKA, 4
 	msgbox CeladonCity_Gym_Text_ErikaPostBattle
 	release
@@ -28,6 +35,7 @@ CeladonCity_Gym_EventScript_GiveTM19::
 	setflag FLAG_GOT_TM19_FROM_ERIKA
 	msgbox CeladonCity_Gym_Text_ExplainTM19
 	call GymHack_EventScript_ErikaGifts
+	goto GymCandidate_EventScript_CeladonCityAfterBadge
 	release
 	end
 

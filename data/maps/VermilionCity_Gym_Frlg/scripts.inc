@@ -40,6 +40,7 @@ VermilionCity_Gym_EventScript_SetBeamsOff::
 	return
 
 VermilionCity_Gym_OnTransition::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER   @ Gym Trainer hack: the spare person for Guest Leader challengers
 	call VermilionCity_Gym_EventScript_InitTrashCans
 	end
 
@@ -206,6 +207,7 @@ VermilionCity_Gym_EventScript_LtSurge::
 	trainerbattle_single TRAINER_LEADER_LT_SURGE, VermilionCity_Gym_Text_LtSurgeIntro, VermilionCity_Gym_Text_LtSurgeDefeat, VermilionCity_Gym_EventScript_DefeatedLtSurge, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM34_FROM_SURGE, VermilionCity_Gym_EventScript_GiveTM34
 	call GymHack_EventScript_SurgeGifts
+	call GymCandidate_EventScript_VermilionCityTalk
 	msgbox VermilionCity_Gym_Text_LtSurgePostBattle
 	release
 	end
@@ -232,6 +234,7 @@ VermilionCity_Gym_EventScript_GiveTM34::
 	setflag FLAG_GOT_TM34_FROM_SURGE
 	msgbox VermilionCity_Gym_Text_ExplainTM34
 	call GymHack_EventScript_SurgeGifts
+	goto GymCandidate_EventScript_VermilionCityAfterBadge
 	release
 	end
 

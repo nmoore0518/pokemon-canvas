@@ -66,6 +66,8 @@ PokemonLeague_LoreleisRoom_EventScript_Lorelei::
 
 PokemonLeague_LoreleisRoom_EventScript_Intro::
 	msgbox PokemonLeague_LoreleisRoom_Text_Intro
+	setvar VAR_0x8009, 8
+	call GymCandidate_EventScript_EliteFourMentor
 	return
 
 PokemonLeague_LoreleisRoom_EventScript_RematchIntro::
@@ -89,6 +91,8 @@ PokemonLeague_LoreleisRoom_EventScript_DefeatedLorelei::
 	setflag FLAG_DEFEATED_LORELEI
 	call PokemonLeague_EventScript_OpenDoor
 	msgbox PokemonLeague_LoreleisRoom_Text_PostBattle
+	setvar VAR_0x8009, 8
+	call GymCandidate_EventScript_EliteFourApprove
 	release
 	end
 

@@ -62,7 +62,9 @@ VictoryRoad_2F_EventScript_Daisuke::
 	end
 
 VictoryRoad_2F_EventScript_Nelson::
-	trainerbattle_single TRAINER_JUGGLER_NELSON, VictoryRoad_2F_Text_NelsonIntro, VictoryRoad_2F_Text_NelsonDefeat
+	trainerbattle_single TRAINER_JUGGLER_NELSON, VictoryRoad_2F_Text_NelsonIntro, VictoryRoad_2F_Text_NelsonDefeat, GymCandidate_EventScript_RecruitPsychic
+	setvar VAR_0x8004, 15   @ TYPE_PSYCHIC
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox VictoryRoad_2F_Text_NelsonPostBattle, MSGBOX_AUTOCLOSE
 	end
 

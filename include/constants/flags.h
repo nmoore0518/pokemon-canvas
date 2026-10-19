@@ -2471,6 +2471,16 @@
 #define FLAG_HIDE_PALLET_GYM_TRAINER_8       0x0B7
 #define FLAG_HIDE_PALLET_GYM_TRAINER_9       0x0B8
 #define FLAG_HIDE_PALLET_GYM_TRAINER_10      0x0B9
+// Gym candidate: each Gym Leader's approval for the player's gym (data/scripts/gym_candidate.inc)
+#define FLAG_GYM_APPROVAL_BROCK       0x0BA
+#define FLAG_GYM_APPROVAL_MISTY       0x0BB
+#define FLAG_GYM_APPROVAL_SURGE       0x0BC
+#define FLAG_GYM_APPROVAL_ERIKA       0x0BD
+#define FLAG_GYM_APPROVAL_KOGA        0x0BE
+#define FLAG_GYM_APPROVAL_SABRINA     0x0BF
+#define FLAG_GYM_APPROVAL_BLAINE      0x0C0
+#define FLAG_GYM_APPROVAL_GIOVANNI    0x0C1
+
 
 #if TESTING
 #define TESTING_FLAGS_START                     0x5000

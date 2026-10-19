@@ -114,7 +114,9 @@ SaffronCity_Dojo_EventScript_RightScroll::
 	end
 
 SaffronCity_Dojo_EventScript_Hitoshi::
-	trainerbattle_single TRAINER_BLACK_BELT_HITOSHI, SaffronCity_Dojo_Text_HitoshiIntro, SaffronCity_Dojo_Text_HitoshiDefeat
+	trainerbattle_single TRAINER_BLACK_BELT_HITOSHI, SaffronCity_Dojo_Text_HitoshiIntro, SaffronCity_Dojo_Text_HitoshiDefeat, GymCandidate_EventScript_RecruitFighting
+	setvar VAR_0x8004, 2   @ TYPE_FIGHTING
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox SaffronCity_Dojo_Text_HitoshiPostBattle, MSGBOX_AUTOCLOSE
 	end
 

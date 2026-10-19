@@ -11,7 +11,9 @@ MtMoon_1F_EventScript_ZubatSign::
 	end
 
 MtMoon_1F_EventScript_Marcos::
-	trainerbattle_single TRAINER_HIKER_MARCOS, MtMoon_1F_Text_MarcosIntro, MtMoon_1F_Text_MarcosDefeat
+	trainerbattle_single TRAINER_HIKER_MARCOS, MtMoon_1F_Text_MarcosIntro, MtMoon_1F_Text_MarcosDefeat, GymCandidate_EventScript_RecruitRock
+	setvar VAR_0x8004, 6   @ TYPE_ROCK
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox MtMoon_1F_Text_MarcosPostBattle, MSGBOX_AUTOCLOSE
 	end
 

@@ -1273,6 +1273,16 @@ def trainer_advanced():
     return _trainer_icon("R", "SA", 3)
 
 
+def trainer_recruit():
+    """A trainer who joined the gym from the road: a gold card."""
+    c = C(1, 1)
+    c.fill_box(1, 1, 14, 14, "GO", "Y", "DGO")
+    c.ellipse(8, 6, 2.5, 2.5, "W")
+    c.rect(5, 9, 10, 13, "W")
+    c.set(3, 3, "PY"); c.set(12, 3, "PY")
+    return c
+
+
 PIECES = {name: fn for name, fn in globals().items() if callable(fn) and not name.startswith("_")
           and name not in ("C", "Canvas")}
 

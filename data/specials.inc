@@ -655,6 +655,18 @@ gSpecials::
 	def_special GymChallenge_BufferPracticeTrainer
 	def_special GymChallenge_GeneratePractice
 	def_special GymChallenge_EndPractice
+	def_special GymCandidate_BufferApprovals
+	def_special GymCandidate_IsApproved
+	def_special GymCandidate_BufferOffer
+	def_special GymCandidate_MoreGuests
+	def_special GymCandidate_GenerateGuest
+	def_special GymCandidate_BufferMentorFirst
+	def_special GymCandidate_Approve
+	def_special GymCandidate_BufferEliteFourApproval
+	def_special GymCandidate_PlaceGuest
+	def_special GymCandidate_FaceGuest
+	def_special GymCandidate_BufferRecruit
+	def_special GymCandidate_Recruit
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing

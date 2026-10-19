@@ -54,6 +54,8 @@ u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level);
 void GymChallenge_BufferPracticeTrainer(void);
 void GymChallenge_GeneratePractice(void);
 void GymChallenge_GeneratePracticeTier(u32 tier, u32 instance);
+void GymChallenge_GenerateRecruit(u32 type);
+void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier);
 void GymChallenge_EndPractice(void);
 
 #endif // GUARD_GYM_CHALLENGE_H

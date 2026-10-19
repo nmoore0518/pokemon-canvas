@@ -61,6 +61,8 @@ PokemonLeague_BrunosRoom_EventScript_Bruno::
 
 PokemonLeague_BrunosRoom_EventScript_Intro::
 	msgbox PokemonLeague_BrunosRoom_Text_Intro
+	setvar VAR_0x8009, 9
+	call GymCandidate_EventScript_EliteFourMentor
 	return
 
 PokemonLeague_BrunosRoom_EventScript_RematchIntro::
@@ -89,6 +91,8 @@ PokemonLeague_BrunosRoom_EventScript_DefeatedBruno::
 	setflag FLAG_DEFEATED_BRUNO
 	call PokemonLeague_EventScript_OpenDoor
 	msgbox PokemonLeague_BrunosRoom_Text_PostBattle
+	setvar VAR_0x8009, 9
+	call GymCandidate_EventScript_EliteFourApprove
 	closemessage
 	call_if_eq VAR_FACING, DIR_NORTH, PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayRight
 	call_if_eq VAR_FACING, DIR_SOUTH, PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayLeft

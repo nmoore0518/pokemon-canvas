@@ -39,7 +39,9 @@ ViridianForest_EventScript_ExitSign::
 	end
 
 ViridianForest_EventScript_Rick::
-	trainerbattle_single TRAINER_BUG_CATCHER_RICK, ViridianForest_Text_RickIntro, ViridianForest_Text_RickDefeat
+	trainerbattle_single TRAINER_BUG_CATCHER_RICK, ViridianForest_Text_RickIntro, ViridianForest_Text_RickDefeat, GymCandidate_EventScript_RecruitBug
+	setvar VAR_0x8004, 7   @ TYPE_BUG
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox ViridianForest_Text_RickPostBattle, MSGBOX_AUTOCLOSE
 	end
 

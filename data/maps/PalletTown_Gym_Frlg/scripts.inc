@@ -160,10 +160,18 @@ PalletTown_Gym_Text_RivalSeeYouAtTheTop::
 	.string "Smell you later!$"
 
 PalletTown_Gym_Text_OakWaitingForYou::
-	.string "OAK: {PLAYER}, this GYM will be\n"
-	.string "waiting for you.\p"
-	.string "Now go! Get strong, and come\n"
-	.string "back to claim it!$"
+	.string "OAK: {PLAYER}, one more thing.\p"
+	.string "The LEAGUE has rules for new\n"
+	.string "LEADERS. A candidate needs the\l"
+	.string "approval of all eight GYM LEADERS.\p"
+	.string "Win a BADGE, and the LEADER will\n"
+	.string "test you. Hold their GYM against\l"
+	.string "a challenger, and they'll vouch\l"
+	.string "for you.\p"
+	.string "Then the ELITE FOUR. Then the\n"
+	.string "CHAMPION.\p"
+	.string "This GYM will be waiting for you.\n"
+	.string "Now go! Get strong!$"
 
 PalletTown_Gym_Text_GymStatue::
 	.string "PALLET TOWN POKéMON GYM\n"

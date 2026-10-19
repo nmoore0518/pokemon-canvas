@@ -62,6 +62,8 @@ PokemonLeague_AgathasRoom_EventScript_Agatha::
 
 PokemonLeague_AgathasRoom_EventScript_Intro::
 	msgbox PokemonLeague_AgathasRoom_Text_Intro
+	setvar VAR_0x8009, 10
+	call GymCandidate_EventScript_EliteFourMentor
 	return
 
 PokemonLeague_AgathasRoom_EventScript_RematchIntro::
@@ -85,6 +87,8 @@ PokemonLeague_AgathasRoom_EventScript_DefeatedAgatha::
 	setflag FLAG_DEFEATED_AGATHA
 	call PokemonLeague_EventScript_OpenDoor
 	msgbox PokemonLeague_AgathasRoom_Text_PostBattle
+	setvar VAR_0x8009, 10
+	call GymCandidate_EventScript_EliteFourApprove
 	release
 	end
 

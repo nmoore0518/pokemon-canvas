@@ -214,6 +214,21 @@ for _type, _items in TYPE_DECORATIONS.items():
                                 desc=_it[3], art=_it[0], flat=len(_it) > 4 and _it[4],
                                 category=f"GYM_DECOR_CAT_TYPE(TYPE_{_type})"))
 
+# --- Trainers who join from the road (src/gym_candidate.c: gGymRecruits). Not sold: the trainer
+# offers to join after the player beats them, and one goes to the gym's storage.
+for _type, _name, _cls in (("NORMAL", "ANDREA", "LASS"), ("FIGHTING", "HITOSHI", "BLACK BELT"),
+                           ("FLYING", "PERRY", "BIRD KEEPER"), ("POISON", "JARED", "BIKER"),
+                           ("GROUND", "DREW", "CAMPER"), ("ROCK", "MARCOS", "HIKER"),
+                           ("BUG", "RICK", "BUG CATCHER"), ("GHOST", "ANGELICA", "CHANNELER"),
+                           ("STEEL", "BERNIE", "ENGINEER"), ("FIRE", "THOMAS", "GENTLEMAN"),
+                           ("WATER", "NED", "FISHERMAN"), ("GRASS", "ALICIA", "PICNICKER"),
+                           ("ELECTRIC", "LUCA", "ROCKER"), ("PSYCHIC", "NELSON", "JUGGLER"),
+                           ("ICE", "NORA", "SWIMMER"), ("DRAGON", "SHIRLEY", "SWIMMER"),
+                           ("DARK", "LEWIS", "BURGLAR"), ("FAIRY", "JULIA", "LASS")):
+    DECORATIONS.append(dict(key=f"RECRUIT_{_type}", name=_name, price=0, unlock=None,
+                            desc=f"{_cls}. Joined your GYM. Trains {_type} types.", art="trainer_recruit",
+                            trainer=True, category="GYM_DECOR_CAT_TRAINERS"))
+
 # Fixed pieces of the gym itself (not for sale)
 FIXED = {
     "PC_TOP": "f:63",

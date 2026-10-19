@@ -38,6 +38,7 @@ GymChallenge_EventScript_CantReachSpot::
 	end
 
 GymChallenge_EventScript_AideNotYet::
+	special GymCandidate_BufferApprovals
 	msgbox GymChallenge_Text_AideNotYet
 	release
 	end
@@ -188,7 +189,9 @@ GymChallenge_Text_AideNotYet::
 	.string "LEADER, I'll be running the\l"
 	.string "challengers.\p"
 	.string "For now, the PC over there is for\n"
-	.string "decorating!$"
+	.string "decorating!\p"
+	.string "GYM LEADERS who approve of you\n"
+	.string "so far: {STR_VAR_1} of 8.$"
 
 GymChallenge_Text_AideWelcome::
 	.string "Welcome back, LEADER {PLAYER}!\n"

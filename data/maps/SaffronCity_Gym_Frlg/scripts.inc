@@ -1,11 +1,18 @@
 SaffronCity_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, SaffronCity_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+SaffronCity_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 SaffronCity_Gym_EventScript_Sabrina::
 	famechecker FAMECHECKER_SABRINA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_SABRINA, SaffronCity_Gym_Text_SabrinaIntro, SaffronCity_Gym_Text_SabrinaDefeat, SaffronCity_Gym_EventScript_DefeatedSabrina, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM04_FROM_SABRINA, SaffronCity_Gym_EventScript_GiveTM04
 	call GymHack_EventScript_SabrinaGifts
+	call GymCandidate_EventScript_SaffronCityTalk
 	msgbox SaffronCity_Gym_Text_ExplainTM04
 	release
 	end
@@ -28,6 +35,7 @@ SaffronCity_Gym_EventScript_GiveTM04::
 	setflag FLAG_GOT_TM04_FROM_SABRINA
 	msgbox SaffronCity_Gym_Text_SabrinaPostBattle
 	call GymHack_EventScript_SabrinaGifts
+	goto GymCandidate_EventScript_SaffronCityAfterBadge
 	release
 	end
 

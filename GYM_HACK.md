@@ -286,6 +286,42 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     gym challenges and the badge pedestal), the League makes the player's badge official, and Oak
     introduces his aide and explains the challenge system before leaving.
   - The National Pokédex scene outside the house waits until the gym is the player's.
+- **The candidacy** (`src/gym_candidate.c`, `data/scripts/gym_candidate.inc`): in Oak's first gym
+  scene he explains the League's rule: a new Gym Leader needs the approval of all eight Gym
+  Leaders and the Elite Four. The League's front door (Indigo Plateau) turns the player back
+  until all eight Gym Leaders approve. The Pallet gym's aide shows the count.
+  - **Guest Leader battles**: after the badge (and again whenever you talk to them until they
+    approve), each leader asks you to hold their gym. A challenger walks in (fade, then they're
+    beside you), and you battle in the leader's place: one challenger for Brock, Misty, Surge and
+    Erika, two for Koga, Sabrina, Blaine and Giovanni. Challengers are any type, no legendaries,
+    with party sizes 2-5 and levels 12-47 by gym (higher if the player is ahead), more evolved
+    later in the story (`gGymCandidateLeaders`). Your team must follow the one-type rule; losing
+    just means trying again (no money lost, team healed). Approval flags
+    `FLAG_GYM_APPROVAL_*` (0x0BA-0x0C1). Each gym map has a spare person
+    (`LOCALID_<GYM>_GYM_GUEST`, hidden by `FLAG_HIDE_PALLET_GYM_CHALLENGER`).
+  - The Elite Four each give their approval after losing.
+  - **Mentors**: the leader or Elite Four member of the player's type reacts when they learn it
+    (after the badge, or after the Elite Four intro) and comes around at approval. Friendly:
+    Brock, Erika, Blaine, Lorelei, Bruno, Sabrina (cool but accepting). Prickly: Misty, Surge,
+    Koga, Giovanni, Agatha, Lance. Types with no Kanto leader go to the closest fit:
+    Normal→Brock, Steel→Surge, Bug→Koga, Fairy→Sabrina, Dark→Giovanni, Flying→Lance.
+  - **The rival** is the other candidate: his Route 22, Cerulean, S.S. Anne, Pokémon Tower and
+    Silph Co. lines are about the race for approvals and the Pallet gym.
+  - **Oak's doubts** grow quietly: lines in his lab as approvals come in (picked the gym's floor
+    tiles himself; "I was quite the TRAINER in my day"; checking the gym's lights at night), Daisy
+    noticing him visiting the gym at night in his old cap (4+ approvals), and the rival
+    mentioning that Gramps keeps asking about the gym.
+  - **Trainers who join**: one trainer per type on the road asks to join your gym after you beat
+    them (and when you talk to them again, until they do). They go to the gym PC's TRAINERS
+    storage and are placed like the bought trainers; in practice battles they use a team of their
+    own favorite type. Andrea (Normal, Route 8), Hitoshi (Fighting, Dojo), Perry (Flying, Route
+    13), Jared (Poison, Route 13), Drew (Ground, Route 9), Marcos (Rock, Mt. Moon), Rick (Bug,
+    Viridian Forest), Angelica (Ghost, Pokémon Tower), Bernie (Steel, Route 11), Thomas (Fire,
+    S.S. Anne), Ned (Water, Route 12), Alicia (Grass, Route 9), Luca (Electric, Route 12), Nelson
+    (Psychic, Victory Road), Nora (Ice, Route 20), Shirley (Dragon, Route 20), Lewis (Dark,
+    Pokémon Mansion), Julia (Fairy, Route 8). Kanto has no real Ice, Dark or Steel specialists,
+    so those three are themed (Nora swims near Seafoam with Shellder and Cloyster, Lewis is a
+    burglar going straight, Bernie's Magnemite).
 - **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's
   entrance (beside the usual guide) gives tips for running a gym of your own, tied to that gym's
   mechanic: Pewter (the gym is a path; challengers walk from the door to your BATTLE STAGE, so
@@ -314,6 +350,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data, type unlocks, practice trainer spots |
 | `tools/gym_hack/decor_art.py` | Pixel art for the type decorations and trainer icons (`python3 tools/gym_hack/decor_art.py sheet.png`) |
 | `data/scripts/gym_practice.inc` | Practice trainer battles |
+| `src/gym_candidate.c`, `data/scripts/gym_candidate.inc` | Candidacy: approvals, Guest Leader battles, mentors, Oak's asides, trainers who join |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |

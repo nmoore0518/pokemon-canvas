@@ -254,7 +254,9 @@ Route22_Text_EarlyRivalPostBattle::
 	.string "I have to figure out how to get\n"
 	.string "past them.\p"
 	.string "You should quit dawdling and get a\n"
-	.string "move on!$"
+	.string "move on!\p"
+	.string "And forget about the PALLET GYM.\n"
+	.string "That one's MINE!$"
 
 @ Translated in RB as "{RIVAL}: What? Why do I have 2 POKéMON? You should catch some more too!"
 Route22_Text_RivalShouldCatchSomeMons::
@@ -270,7 +272,9 @@ Route22_Text_LateRivalIntro::
 	.string "So you're going to the POKéMON\n"
 	.string "LEAGUE?\p"
 	.string "You collected all the BADGES, too?\n"
-	.string "That's cool!\p"
+	.string "And all the approvals? That's cool!\p"
+	.string "But only one of us gets the PALLET\n"
+	.string "GYM.\p"
 	.string "Then I'll whip you, {PLAYER}, as a\n"
 	.string "warm-up for the POKéMON LEAGUE!\p"
 	.string "Come on!$"
@@ -283,7 +287,8 @@ Route22_Text_LateRivalPostBattle::
 	.string "That loosened me up.\n"
 	.string "I'm ready for the POKéMON LEAGUE!\p"
 	.string "{PLAYER}, you need more practice.\p"
-	.string "But hey, you know that!\n"
+	.string "Only one of us is coming home as\n"
+	.string "a LEADER. And it's gonna be me!\p"
 	.string "I'm out of here. Smell ya!$"
 
 @ Translated in RB as "{RIVAL}: Hahaha! {PLAYER}! That's your best? You're nowhere near as good as me, pal! Go train some more! You loser!"

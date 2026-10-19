@@ -19,6 +19,7 @@
 #include "malloc.h"
 #include "metatile_behavior.h"
 #include "gym_decor.h"
+#include "gym_candidate.h"
 #include "money.h"
 #include "pokemon.h"
 #include "random.h"
@@ -654,10 +655,11 @@ static void BuildPreEvolutions(u16 *pre)
     }
 }
 
+// type NUMBER_OF_MON_TYPES: any type
 static bool32 IsPracticeSpecies(u32 species, u32 type)
 {
     const struct SpeciesInfo *info = &gSpeciesInfo[species];
-    return IsSpeciesEnabled(species) && info->types[0] == type
+    return IsSpeciesEnabled(species) && (type >= NUMBER_OF_MON_TYPES || info->types[0] == type)
         && !info->isRestrictedLegendary && !info->isSubLegendary && !info->isMythical;
 }
 
@@ -678,7 +680,15 @@ static u32 PracticePreference(const u16 *pre, u32 species, u32 tier)
 }
 
 // Fills sChallengerMons with a practice team; returns its size
+static u32 BuildTeam(u32 tier, u32 type, u32 level, u32 count);
+
 u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level)
+{
+    return BuildTeam(tier, type, level, 0);
+}
+
+// count 0: 3-5 Pokémon
+static u32 BuildTeam(u32 tier, u32 type, u32 level, u32 count)
 {
     u16 *lists[3];
     u16 *pre = Alloc((SPECIES_DEOXYS + 1) * sizeof(u16));
@@ -697,7 +707,7 @@ u32 GymChallenge_BuildPracticeTeam(u32 tier, u32 type, u32 level)
         }
     }
     total = counts[0] + counts[1] + counts[2];
-    n = 3 + Random() % 3;
+    n = count != 0 ? min(count, (u32)PARTY_SIZE) : 3 + Random() % 3;
     if (n > total)
         n = total;
     memcpy(spread, sLevelSpread[n], sizeof(spread));
@@ -743,24 +753,40 @@ static const u8 *PracticeName(u32 tier, u32 instance)
     return sMaleNames[(id + tier * 11 + instance * 5) % ARRAY_COUNT(sMaleNames)];
 }
 
-// VAR_0x8004 = the trainer's slot in the gym -> their rank and which one of that rank
-static void GetPracticeSlot(u32 *tier, u32 *instance)
+// VAR_0x8004 = the trainer's slot in the gym -> their decoration and which one of it
+static void GetPracticeSlot(u32 *decor, u32 *instance)
 {
     s32 x, y;
-    if (!GymDecor_GetTrainerSlot(gSpecialVar_0x8004, tier, instance, &x, &y))
+    if (!GymDecor_GetTrainerSlot(gSpecialVar_0x8004, decor, instance, &x, &y))
     {
-        *tier = PRACTICE_ROOKIE;
+        *decor = GYM_DECOR_TRAINER_BEGINNER;
         *instance = 0;
     }
 }
 
-// Special: VAR_0x8004 = slot -> STR_VAR_1 = the trainer's name, STR_VAR_2 = their rank
+static u32 DecorTier(u32 decor)
+{
+    if (decor >= GYM_DECOR_TRAINER_BEGINNER && decor <= GYM_DECOR_TRAINER_ADVANCED)
+        return decor - GYM_DECOR_TRAINER_BEGINNER;
+    return PRACTICE_SKILLED;
+}
+
+// Special: VAR_0x8004 = slot -> STR_VAR_1 = the trainer's name, STR_VAR_2 = their title
 void GymChallenge_BufferPracticeTrainer(void)
 {
-    u32 tier, instance;
-    GetPracticeSlot(&tier, &instance);
-    StringCopy(gStringVar1, PracticeName(tier, instance));
-    StringCopy(gStringVar2, sPracticeTiers[tier].title);
+    u32 decor, instance;
+    const struct GymRecruit *recruit;
+    GetPracticeSlot(&decor, &instance);
+    recruit = GymCandidate_GetRecruitByDecor(decor);
+    if (recruit != NULL)
+    {
+        StringCopy(gStringVar1, GetTrainerNameFromId(recruit->trainerId));
+        StringCopy(gStringVar2, gTrainerClasses[GetTrainerClassFromId(recruit->trainerId)].name);
+        return;
+    }
+    StringCopy(gStringVar1, PracticeName(DecorTier(decor), instance));
+    StringCopy(gStringVar2, sPracticeTiers[DecorTier(decor)].title);
+    StringAppend(gStringVar2, COMPOUND_STRING(" TRAINER"));
 }
 
 // Builds a practice trainer of a rank into TRAINER_GYM_CHALLENGER
@@ -780,12 +806,86 @@ void GymChallenge_GeneratePracticeTier(u32 tier, u32 instance)
     gGymPracticeBattle = TRUE;
 }
 
+// A trainer who joined from the road: their own name and look, a team of their favorite type
+void GymChallenge_GenerateRecruit(u32 type)
+{
+    const struct GymRecruit *recruit = GymCandidate_GetRecruit(type);
+    s32 level = (s32)GymChallenge_PlayerAverageLevel() - 5;
+    u32 n;
+    if (recruit == NULL)
+        return;
+    SetupTrainer(GetTrainerClassFromId(recruit->trainerId), GetTrainerPicFromId(recruit->trainerId),
+                 recruit->female, GetTrainerNameFromId(recruit->trainerId), 1);
+    n = GymChallenge_BuildPracticeTeam(PRACTICE_SKILLED, type, max(level, 2));
+    sChallenger.partySize = max(n, 1u);
+    sChallenger.aiFlags = AI_FLAG_BASIC_TRAINER;
+    StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ha! Good practice, LEADER!"));
+    gGymPracticeBattle = TRUE;
+}
+
 // Special: VAR_0x8004 = slot
 void GymChallenge_GeneratePractice(void)
 {
-    u32 tier, instance;
-    GetPracticeSlot(&tier, &instance);
-    GymChallenge_GeneratePracticeTier(tier, instance);
+    u32 decor, instance, t;
+    GetPracticeSlot(&decor, &instance);
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (gGymRecruits[t].decor != 0 && gGymRecruits[t].decor == decor)
+        {
+            GymChallenge_GenerateRecruit(t);
+            return;
+        }
+    }
+    GymChallenge_GeneratePracticeTier(DecorTier(decor), instance);
+}
+
+// ---------------------------------------------------------------------------
+// Guest Leader battles (src/gym_candidate.c): a challenger at another gym while the player
+// stands in for its leader (STR_VAR_3 = the leader's name). Any type, no legendaries.
+// ---------------------------------------------------------------------------
+static const u8 *const sGuestIntros[] =
+{
+    COMPOUND_STRING("Huh? Where's {STR_VAR_3}?\pYou're filling in? Then you're the\none I have to beat!"),
+    COMPOUND_STRING("I came all this way to battle\n{STR_VAR_3}…\pFine! A stand-in will do!"),
+    COMPOUND_STRING("A substitute LEADER?\nThis BADGE is as good as mine!"),
+    COMPOUND_STRING("{STR_VAR_3} sent YOU? Is this\nsome kind of test?\pWhatever. Let's battle!"),
+};
+static const u8 *const sGuestDefeats[] =
+{
+    COMPOUND_STRING("You're tougher than\nyou look!"),
+    COMPOUND_STRING("So that's a LEADER's\nstrength…"),
+    COMPOUND_STRING("Some substitute!"),
+};
+static const u8 *const sGuestAfters[] =
+{
+    COMPOUND_STRING("Tell {STR_VAR_3} I'll be back…\nfor both of you!"),
+    COMPOUND_STRING("You'd make a great LEADER.\nNo, really!"),
+    COMPOUND_STRING("Man… I'll train harder and\ncome back!"),
+};
+static const u8 *const sGuestWins[] =
+{
+    COMPOUND_STRING("Ha! Some stand-in!\nGo get {STR_VAR_3}!"),
+    COMPOUND_STRING("Better luck next time,\nsub!"),
+};
+
+void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier)
+{
+    const struct ChallengerClass *cls = &sClasses[Random() % ARRAY_COUNT(sClasses)];
+    const u8 *name = cls->female ? sFemaleNames[Random() % ARRAY_COUNT(sFemaleNames)]
+                                 : sMaleNames[Random() % ARRAY_COUNT(sMaleNames)];
+    s32 level = max((s32)baseLevel, (s32)GymChallenge_PlayerAverageLevel() - 3);
+    u32 n;
+
+    SetupTrainer(cls->trainerClass, cls->trainerPic, cls->female, name, 1);
+    n = BuildTeam(min(tier, PRACTICE_TIERS - 1), NUMBER_OF_MON_TYPES, level, partySize);
+    sChallenger.partySize = max(n, 1u);
+    sChallenger.aiFlags = sPracticeTiers[min(tier, PRACTICE_TIERS - 1)].aiFlags;
+    VarSet(VAR_OBJ_GFX_ID_0, cls->gfx);
+    SetTexts(sGuestIntros[Random() % ARRAY_COUNT(sGuestIntros)],
+             sGuestDefeats[Random() % ARRAY_COUNT(sGuestDefeats)],
+             sGuestAfters[Random() % ARRAY_COUNT(sGuestAfters)],
+             sGuestWins[Random() % ARRAY_COUNT(sGuestWins)]);
+    gGymPracticeBattle = TRUE;     // no prize money: the leader's challengers don't pay the stand-in
 }
 
 // Special: after a practice battle

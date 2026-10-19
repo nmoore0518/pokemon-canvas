@@ -1,6 +1,12 @@
 CinnabarIsland_Gym_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, CinnabarIsland_Gym_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, CinnabarIsland_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+CinnabarIsland_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 CinnabarIsland_Gym_OnLoad::
 	goto_if_set FLAG_DEFEATED_BLAINE, CinnabarIsland_Gym_OnLoadOpenAllDoors
@@ -50,6 +56,7 @@ CinnabarIsland_Gym_EventScript_Blaine::
 	trainerbattle_single TRAINER_LEADER_BLAINE, CinnabarIsland_Gym_Text_BlaineIntro, CinnabarIsland_Gym_Text_BlaineDefeat, CinnabarIsland_Gym_EventScript_DefeatedBlaine, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM38_FROM_BLAINE, CinnabarIsland_Gym_EventScript_GiveTM38
 	call GymHack_EventScript_BlaineGifts
+	call GymCandidate_EventScript_CinnabarIslandTalk
 	msgbox CinnabarIsland_Gym_Text_BlainePostBattle
 	release
 	end
@@ -73,6 +80,7 @@ CinnabarIsland_Gym_EventScript_GiveTM38::
 	setflag FLAG_GOT_TM38_FROM_BLAINE
 	msgbox CinnabarIsland_Gym_Text_FireBlastIsUltimateFireMove
 	call GymHack_EventScript_BlaineGifts
+	goto GymCandidate_EventScript_CinnabarIslandAfterBadge
 	release
 	end
 

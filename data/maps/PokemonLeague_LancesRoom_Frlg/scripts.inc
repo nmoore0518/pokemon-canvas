@@ -115,6 +115,8 @@ PokemonLeague_LancesRoom_EventScript_Lance::
 
 PokemonLeague_LancesRoom_EventScript_Intro::
 	msgbox PokemonLeague_LancesRoom_Text_Intro
+	setvar VAR_0x8009, 11
+	call GymCandidate_EventScript_EliteFourMentor
 	return
 
 PokemonLeague_LancesRoom_EventScript_RematchIntro::
@@ -140,6 +142,8 @@ PokemonLeague_LancesRoom_EventScript_DefeatedLance::
 	setflag FLAG_DEFEATED_LANCE
 	call PokemonLeague_EventScript_OpenDoorLance
 	msgbox PokemonLeague_LancesRoom_Text_PostBattle
+	setvar VAR_0x8009, 11
+	call GymCandidate_EventScript_EliteFourApprove
 	closemessage
 	release
 	end

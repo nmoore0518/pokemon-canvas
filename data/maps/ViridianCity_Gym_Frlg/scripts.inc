@@ -1,11 +1,18 @@
 ViridianCity_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, ViridianCity_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+ViridianCity_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM26
 	call GymHack_EventScript_GiovanniGifts
+	call GymCandidate_EventScript_ViridianCityTalk
 	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
 	closemessage
 	fadescreen FADE_TO_BLACK
@@ -32,6 +39,7 @@ ViridianCity_Gym_EventScript_GiveTM26::
 	setflag FLAG_GOT_TM26_FROM_GIOVANNI
 	msgbox ViridianCity_Gym_Text_ExplainTM26
 	call GymHack_EventScript_GiovanniGifts
+	goto GymCandidate_EventScript_ViridianCityAfterBadge
 	release
 	end
 

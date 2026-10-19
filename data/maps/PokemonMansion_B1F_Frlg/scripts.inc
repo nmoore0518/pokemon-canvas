@@ -21,7 +21,9 @@ PokemonMansion_B1F_EventScript_DiarySep1st::
 	end
 
 PokemonMansion_B1F_EventScript_Lewis::
-	trainerbattle_single TRAINER_BURGLAR_LEWIS, PokemonMansion_B1F_Text_LewisIntro, PokemonMansion_B1F_Text_LewisDefeat
+	trainerbattle_single TRAINER_BURGLAR_LEWIS, PokemonMansion_B1F_Text_LewisIntro, PokemonMansion_B1F_Text_LewisDefeat, GymCandidate_EventScript_RecruitDark
+	setvar VAR_0x8004, 18   @ TYPE_DARK
+	call GymCandidate_EventScript_RecruitOffer
 	msgbox PokemonMansion_B1F_Text_LewisPostBattle, MSGBOX_AUTOCLOSE
 	end
 

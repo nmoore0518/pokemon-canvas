@@ -120,7 +120,12 @@ PokemonTower_2F_Text_RivalPostBattle::
 	.string "I can't find the bigger MAROWAK.\n"
 	.string "Where could they be?\p"
 	.string "I bet there aren't any left!\p"
-	.string "Well, I better get going.\n"
+	.string "Hey… has Gramps been weird to you\n"
+	.string "lately?\p"
+	.string "He keeps asking me how many\n"
+	.string "approvals I have. And about the\l"
+	.string "GYM. Never about my POKéDEX.\p"
+	.string "…Whatever. I better get going.\n"
 	.string "I've got a lot to accomplish,\l"
 	.string "unlike you.$"
 

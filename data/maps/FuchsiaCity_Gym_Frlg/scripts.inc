@@ -1,11 +1,18 @@
 FuchsiaCity_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, FuchsiaCity_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+FuchsiaCity_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 FuchsiaCity_Gym_EventScript_Koga::
 	famechecker FAMECHECKER_KOGA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_KOGA, FuchsiaCity_Gym_Text_KogaIntro, FuchsiaCity_Gym_Text_KogaDefeat, FuchsiaCity_Gym_EventScript_DefeatedKoga, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM06_FROM_KOGA, FuchsiaCity_Gym_EventScript_GiveTM06
 	call GymHack_EventScript_KogaGifts
+	call GymCandidate_EventScript_FuchsiaCityTalk
 	msgbox FuchsiaCity_Gym_Text_KogaPostBattle
 	release
 	end
@@ -27,6 +34,7 @@ FuchsiaCity_Gym_EventScript_GiveTM06::
 	setflag FLAG_GOT_TM06_FROM_KOGA
 	msgbox FuchsiaCity_Gym_Text_KogaExplainTM06
 	call GymHack_EventScript_KogaGifts
+	goto GymCandidate_EventScript_FuchsiaCityAfterBadge
 	release
 	end
 

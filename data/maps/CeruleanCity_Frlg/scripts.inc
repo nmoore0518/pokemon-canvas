@@ -373,6 +373,11 @@ CeruleanCity_Text_RivalDefeat::
 
 CeruleanCity_Text_RivalPostBattle::
 	.string "{RIVAL}: Hey, guess what?\p"
+	.string "BROCK let me run his GYM for a day.\n"
+	.string "I crushed every challenger!\p"
+	.string "That's one approval for me.\n"
+	.string "The PALLET GYM is as good as mine!\p"
+	.string "Oh, and another thing.\p"
 	.string "I went to BILL's and got him to\n"
 	.string "show me his rare POKéMON.\p"
 	.string "That added a lot of pages to my\n"

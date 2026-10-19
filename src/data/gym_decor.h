@@ -117,6 +117,42 @@ static const u16 sGymDecorBlocks_FAIRY_TIERED_CAKE[] = { 0x3CD | GYM_DECOR_SOLID
 static const u16 sGymDecorBlocks_FAIRY_ROSE_ARCH[] = { 0x3CE, 0x3CF, 0x3D0, 0x3D1 | GYM_DECOR_SOLID, 0x3D2 | GYM_DECOR_SOLID, 0x3D3 | GYM_DECOR_SOLID };
 static const u16 sGymDecorBlocks_FAIRY_TEDDY_BEAR[] = { 0x3D4 | GYM_DECOR_SOLID };
 static const u16 sGymDecorBlocks_FAIRY_STAR_LAMP[] = { 0x3D5, 0x3D6 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_RECRUIT_NORMAL[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_NORMAL[] = { 0x3D7 };
+static const u16 sGymDecorBlocks_RECRUIT_FIGHTING[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_FIGHTING[] = { 0x3D8 };
+static const u16 sGymDecorBlocks_RECRUIT_FLYING[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_FLYING[] = { 0x3D9 };
+static const u16 sGymDecorBlocks_RECRUIT_POISON[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_POISON[] = { 0x3DA };
+static const u16 sGymDecorBlocks_RECRUIT_GROUND[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_GROUND[] = { 0x3DB };
+static const u16 sGymDecorBlocks_RECRUIT_ROCK[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_ROCK[] = { 0x3DC };
+static const u16 sGymDecorBlocks_RECRUIT_BUG[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_BUG[] = { 0x3DD };
+static const u16 sGymDecorBlocks_RECRUIT_GHOST[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_GHOST[] = { 0x3DE };
+static const u16 sGymDecorBlocks_RECRUIT_STEEL[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_STEEL[] = { 0x3DF };
+static const u16 sGymDecorBlocks_RECRUIT_FIRE[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_FIRE[] = { 0x3E0 };
+static const u16 sGymDecorBlocks_RECRUIT_WATER[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_WATER[] = { 0x3E1 };
+static const u16 sGymDecorBlocks_RECRUIT_GRASS[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_GRASS[] = { 0x3E2 };
+static const u16 sGymDecorBlocks_RECRUIT_ELECTRIC[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_ELECTRIC[] = { 0x3E3 };
+static const u16 sGymDecorBlocks_RECRUIT_PSYCHIC[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_PSYCHIC[] = { 0x3E4 };
+static const u16 sGymDecorBlocks_RECRUIT_ICE[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_ICE[] = { 0x3E5 };
+static const u16 sGymDecorBlocks_RECRUIT_DRAGON[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_DRAGON[] = { 0x3E6 };
+static const u16 sGymDecorBlocks_RECRUIT_DARK[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_DARK[] = { 0x3E7 };
+static const u16 sGymDecorBlocks_RECRUIT_FAIRY[] = { 0x281 | GYM_DECOR_SOLID };
+static const u16 sGymDecorEditBlocks_RECRUIT_FAIRY[] = { 0x3E8 };
 
 const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
 {
@@ -1488,6 +1524,222 @@ const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
         .blocks = sGymDecorBlocks_FAIRY_STAR_LAMP,
         .editBlocks = NULL,
     },
+    [GYM_DECOR_RECRUIT_NORMAL] =
+    {
+        .name = COMPOUND_STRING("ANDREA"),
+        .description = COMPOUND_STRING("LASS. Joined your GYM. Trains NORMAL types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_NORMAL,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_NORMAL,
+    },
+    [GYM_DECOR_RECRUIT_FIGHTING] =
+    {
+        .name = COMPOUND_STRING("HITOSHI"),
+        .description = COMPOUND_STRING("BLACK BELT. Joined your GYM. Trains FIGHTING types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_FIGHTING,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_FIGHTING,
+    },
+    [GYM_DECOR_RECRUIT_FLYING] =
+    {
+        .name = COMPOUND_STRING("PERRY"),
+        .description = COMPOUND_STRING("BIRD KEEPER. Joined your GYM. Trains FLYING types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_FLYING,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_FLYING,
+    },
+    [GYM_DECOR_RECRUIT_POISON] =
+    {
+        .name = COMPOUND_STRING("JARED"),
+        .description = COMPOUND_STRING("BIKER. Joined your GYM. Trains POISON types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_POISON,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_POISON,
+    },
+    [GYM_DECOR_RECRUIT_GROUND] =
+    {
+        .name = COMPOUND_STRING("DREW"),
+        .description = COMPOUND_STRING("CAMPER. Joined your GYM. Trains GROUND types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_GROUND,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_GROUND,
+    },
+    [GYM_DECOR_RECRUIT_ROCK] =
+    {
+        .name = COMPOUND_STRING("MARCOS"),
+        .description = COMPOUND_STRING("HIKER. Joined your GYM. Trains ROCK types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_ROCK,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_ROCK,
+    },
+    [GYM_DECOR_RECRUIT_BUG] =
+    {
+        .name = COMPOUND_STRING("RICK"),
+        .description = COMPOUND_STRING("BUG CATCHER. Joined your GYM. Trains BUG types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_BUG,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_BUG,
+    },
+    [GYM_DECOR_RECRUIT_GHOST] =
+    {
+        .name = COMPOUND_STRING("ANGELICA"),
+        .description = COMPOUND_STRING("CHANNELER. Joined your GYM. Trains GHOST types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_GHOST,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_GHOST,
+    },
+    [GYM_DECOR_RECRUIT_STEEL] =
+    {
+        .name = COMPOUND_STRING("BERNIE"),
+        .description = COMPOUND_STRING("ENGINEER. Joined your GYM. Trains STEEL types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_STEEL,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_STEEL,
+    },
+    [GYM_DECOR_RECRUIT_FIRE] =
+    {
+        .name = COMPOUND_STRING("THOMAS"),
+        .description = COMPOUND_STRING("GENTLEMAN. Joined your GYM. Trains FIRE types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_FIRE,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_FIRE,
+    },
+    [GYM_DECOR_RECRUIT_WATER] =
+    {
+        .name = COMPOUND_STRING("NED"),
+        .description = COMPOUND_STRING("FISHERMAN. Joined your GYM. Trains WATER types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_WATER,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_WATER,
+    },
+    [GYM_DECOR_RECRUIT_GRASS] =
+    {
+        .name = COMPOUND_STRING("ALICIA"),
+        .description = COMPOUND_STRING("PICNICKER. Joined your GYM. Trains GRASS types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_GRASS,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_GRASS,
+    },
+    [GYM_DECOR_RECRUIT_ELECTRIC] =
+    {
+        .name = COMPOUND_STRING("LUCA"),
+        .description = COMPOUND_STRING("ROCKER. Joined your GYM. Trains ELECTRIC types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_ELECTRIC,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_ELECTRIC,
+    },
+    [GYM_DECOR_RECRUIT_PSYCHIC] =
+    {
+        .name = COMPOUND_STRING("NELSON"),
+        .description = COMPOUND_STRING("JUGGLER. Joined your GYM. Trains PSYCHIC types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_PSYCHIC,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_PSYCHIC,
+    },
+    [GYM_DECOR_RECRUIT_ICE] =
+    {
+        .name = COMPOUND_STRING("NORA"),
+        .description = COMPOUND_STRING("SWIMMER. Joined your GYM. Trains ICE types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_ICE,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_ICE,
+    },
+    [GYM_DECOR_RECRUIT_DRAGON] =
+    {
+        .name = COMPOUND_STRING("SHIRLEY"),
+        .description = COMPOUND_STRING("SWIMMER. Joined your GYM. Trains DRAGON types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_DRAGON,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_DRAGON,
+    },
+    [GYM_DECOR_RECRUIT_DARK] =
+    {
+        .name = COMPOUND_STRING("LEWIS"),
+        .description = COMPOUND_STRING("BURGLAR. Joined your GYM. Trains DARK types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_DARK,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_DARK,
+    },
+    [GYM_DECOR_RECRUIT_FAIRY] =
+    {
+        .name = COMPOUND_STRING("JULIA"),
+        .description = COMPOUND_STRING("LASS. Joined your GYM. Trains FAIRY types."),
+        .price = 0,
+        .unlockFlag = 0,
+        .category = GYM_DECOR_CAT_TRAINERS,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_RECRUIT_FAIRY,
+        .editBlocks = sGymDecorEditBlocks_RECRUIT_FAIRY,
+    },
 };
 
 // Tiles of the decorations drawn in code (tools/gym_hack/decor_art.py). They're copied to
@@ -2300,6 +2552,10 @@ static const u32 sGymDecorArtTiles[] =
     0xAAC11000, 0xACC10000, 0xCCC10000, 0x1CCC1000, 0x01CC1000, 0x00110000, 0x10000000, 0x91000000,
     0x91000000, 0x91000000, 0x91000000, 0x91000000, 0x91000000, 0x91000000, 0x91000000, 0x91000000,
     0x91000000, 0x91000000, 0x91000000, 0x91110000, 0x88881000, 0x88881000, 0x88881000, 0x11110000,
+    0x00000000, 0x11111110, 0xCCCCCC10, 0xCCCCAC10, 0x22CCCC10, 0x22CCCC10, 0x22CCCC10, 0x22CCCC10,
+    0x00000000, 0x01111111, 0x01BCCCCC, 0x01BACCCC, 0x01BCCC22, 0x01BCCC22, 0x01BCCC22, 0x01BCCC22,
+    0xCCCCCC10, 0x222CCC10, 0x222CCC10, 0x222CCC10, 0x222CCC10, 0x222BBB10, 0x11111110, 0x00000000,
+    0x01BCCCCC, 0x01BCC222, 0x01BCC222, 0x01BCC222, 0x01BCC222, 0x01BBB222, 0x01111111, 0x00000000,
 };
 static const u16 sGymDecorArtRuns[][2] =
 {
@@ -2334,5 +2590,5 @@ static const u16 sGymDecorArtRuns[][2] =
     {681, 13},
     {696, 16},
     {714, 14},
-    {823, 189},
+    {823, 193},
 };

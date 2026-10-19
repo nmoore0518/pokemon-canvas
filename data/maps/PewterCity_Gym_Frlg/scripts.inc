@@ -1,11 +1,18 @@
 PewterCity_Gym_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, PewterCity_Gym_OnTransitionGuest
 	.byte 0
+
+@ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
+PewterCity_Gym_OnTransitionGuest::
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	end
 
 PewterCity_Gym_EventScript_Brock::
 	famechecker FAMECHECKER_BROCK, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_BROCK, PewterCity_Gym_Text_BrockIntro, PewterCity_Gym_Text_BrockDefeat, PewterCity_Gym_EventScript_DefeatedBrock, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM39_FROM_BROCK, PewterCity_Gym_EventScript_GiveTM39
 	call GymHack_EventScript_BrockGifts
+	call GymCandidate_EventScript_PewterCityTalk
 	msgbox PewterCity_Gym_Text_BrockPostBattle
 	release
 	end
@@ -29,6 +36,7 @@ PewterCity_Gym_EventScript_GiveTM39::
 	setflag FLAG_GOT_TM39_FROM_BROCK
 	msgbox PewterCity_Gym_Text_ExplainTM39
 	call GymHack_EventScript_BrockGifts
+	goto GymCandidate_EventScript_PewterCityAfterBadge
 	release
 	end
 

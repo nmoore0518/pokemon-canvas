@@ -179,11 +179,10 @@ SSAnne_2F_Corridor_Text_RivalIntro::
 	.string "{PLAYER}!\p"
 	.string "Imagine seeing you here!\n"
 	.string "{PLAYER}, were you really invited?\p"
-	.string "So how's your POKéDEX coming?\p"
-	.string "I already caught 40 kinds, pal.\n"
-	.string "Different kinds are everywhere.\p"
-	.string "Crawl around in grassy areas, and\n"
-	.string "look hard for them.$"
+	.string "So how many LEADERS approve of\n"
+	.string "you? I've got two, pal.\p"
+	.string "I already picked the paint for MY\n"
+	.string "GYM. You'd hate it!$"
 
 SSAnne_2F_Corridor_Text_RivalDefeat::
 	.string "Humph!\p"

@@ -10,6 +10,7 @@
 
 #include "global.h"
 #include "gym_decor.h"
+#include "gym_candidate.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "field_camera.h"
@@ -627,12 +628,16 @@ static const u16 sTrainerGfx[] = {OBJ_EVENT_GFX_YOUNGSTER_FRLG, OBJ_EVENT_GFX_CO
 
 static bool32 IsTrainer(u32 id)
 {
-    return id == GYM_DECOR_TRAINER_BEGINNER || id == GYM_DECOR_TRAINER_INTERMEDIATE || id == GYM_DECOR_TRAINER_ADVANCED;
+    return id < GYM_DECOR_COUNT && gGymDecor[id].category == GYM_DECOR_CAT_TRAINERS;
 }
 
-static u32 TrainerTier(u32 id)
+// How a trainer in the gym looks: the bought ones by rank, the recruits as they did on the road
+static u16 TrainerGfx(u32 decor)
 {
-    return id - GYM_DECOR_TRAINER_BEGINNER;
+    const struct GymRecruit *recruit = GymCandidate_GetRecruitByDecor(decor);
+    if (recruit != NULL)
+        return recruit->gfx;
+    return sTrainerGfx[min(decor - GYM_DECOR_TRAINER_BEGINNER, ARRAY_COUNT(sTrainerGfx) - 1)];
 }
 
 u32 GymDecor_CountPlacedTrainers(void)
@@ -647,12 +652,12 @@ u32 GymDecor_CountPlacedTrainers(void)
     return n;
 }
 
-// The trainer in a slot: FALSE if the slot is empty. *instance counts trainers of the same rank
-// placed before it (so each one gets their own name).
-bool32 GymDecor_GetTrainerSlot(u32 slot, u32 *tier, u32 *instance, s32 *x, s32 *y)
+// The trainer in a slot (their decoration): FALSE if the slot is empty. *instance counts
+// trainers of the same decoration placed before it (so each one gets their own name).
+bool32 GymDecor_GetTrainerSlot(u32 slot, u32 *decor, u32 *instance, s32 *x, s32 *y)
 {
     struct GymDecorSave *save = GetSave();
-    u32 i, n = 0, sameTier[3] = {0};
+    u32 i, j, n = 0;
     for (i = 0; i < save->numPlaced; i++)
     {
         const struct GymDecorPlacement *p = &save->placed[i];
@@ -660,16 +665,26 @@ bool32 GymDecor_GetTrainerSlot(u32 slot, u32 *tier, u32 *instance, s32 *x, s32 *
             continue;
         if (n == slot)
         {
-            *tier = TrainerTier(p->id);
-            *instance = sameTier[*tier];
+            *decor = p->id;
+            *instance = 0;
+            for (j = 0; j < i; j++)
+            {
+                if (save->placed[j].id == p->id)
+                    (*instance)++;
+            }
             *x = p->x;
             *y = p->y;
             return TRUE;
         }
-        sameTier[TrainerTier(p->id)]++;
         n++;
     }
     return FALSE;
+}
+
+void GymDecor_SetOwned(u32 id, u32 count)
+{
+    if (id < GYM_DECOR_COUNT)
+        GetSave()->owned[id] = min(count, 255u);
 }
 
 static u8 SlotLocalId(u32 slot)
@@ -680,13 +695,13 @@ static u8 SlotLocalId(u32 slot)
 // Map script (ON_TRANSITION): puts each placed trainer on their spot, hides the empty slots
 void GymDecor_SetupTrainers(void)
 {
-    u32 slot, tier, instance;
+    u32 slot, decor, instance;
     s32 x, y;
     for (slot = 0; slot < GYM_PRACTICE_SLOTS; slot++)
     {
-        if (GymDecor_GetTrainerSlot(slot, &tier, &instance, &x, &y))
+        if (GymDecor_GetTrainerSlot(slot, &decor, &instance, &x, &y))
         {
-            VarSet(VAR_OBJ_GFX_ID_1 + slot, sTrainerGfx[tier]);
+            VarSet(VAR_OBJ_GFX_ID_1 + slot, TrainerGfx(decor));
             SetObjEventTemplateCoords(SlotLocalId(slot), x, y);
             FlagClear(FLAG_HIDE_PALLET_GYM_TRAINER_0 + slot);
         }
