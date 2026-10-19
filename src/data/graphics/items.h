@@ -2133,3 +2133,112 @@ const u32 gItemIcon_SunShard[] = INCGFX_U32("graphics/items/icons/sun_shard.png"
 const u16 gItemIconPalette_SunShard[] = INCGFX_U16("graphics/items/icon_palettes/sun_shard.pal", ".gbapal");
 const u32 gItemIcon_MoonShard[] = INCGFX_U32("graphics/items/icons/moon_shard.png", ".4bpp.smol");
 const u16 gItemIconPalette_MoonShard[] = INCGFX_U16("graphics/items/icon_palettes/moon_shard.pal", ".gbapal");
+
+// Gym Trainer hack: the mentors' type items (tools/gym_hack/type_item_art.py)
+const u32 gItemIcon_FluffySweater[] = INCGFX_U32("graphics/items/icons/gym/fluffy_sweater.png", ".4bpp.smol");
+const u16 gItemIconPalette_FluffySweater[] = INCGFX_U16("graphics/items/icon_palettes/gym/fluffy_sweater.pal", ".gbapal");
+
+const u32 gItemIcon_ThirdEye[] = INCGFX_U32("graphics/items/icons/gym/third_eye.png", ".4bpp.smol");
+const u16 gItemIconPalette_ThirdEye[] = INCGFX_U16("graphics/items/icon_palettes/gym/third_eye.pal", ".gbapal");
+
+const u32 gItemIcon_MouthGuard[] = INCGFX_U32("graphics/items/icons/gym/mouth_guard.png", ".4bpp.smol");
+const u16 gItemIconPalette_MouthGuard[] = INCGFX_U16("graphics/items/icon_palettes/gym/mouth_guard.pal", ".gbapal");
+
+const u32 gItemIcon_Steroids[] = INCGFX_U32("graphics/items/icons/gym/steroids.png", ".4bpp.smol");
+const u16 gItemIconPalette_Steroids[] = INCGFX_U16("graphics/items/icon_palettes/gym/steroids.pal", ".gbapal");
+
+const u32 gItemIcon_AviatorGoggles[] = INCGFX_U32("graphics/items/icons/gym/aviator_goggles.png", ".4bpp.smol");
+const u16 gItemIconPalette_AviatorGoggles[] = INCGFX_U16("graphics/items/icon_palettes/gym/aviator_goggles.pal", ".gbapal");
+
+const u32 gItemIcon_JetEngine[] = INCGFX_U32("graphics/items/icons/gym/jet_engine.png", ".4bpp.smol");
+const u16 gItemIconPalette_JetEngine[] = INCGFX_U16("graphics/items/icon_palettes/gym/jet_engine.pal", ".gbapal");
+
+const u32 gItemIcon_TitaniumCoil[] = INCGFX_U32("graphics/items/icons/gym/titanium_coil.png", ".4bpp.smol");
+const u16 gItemIconPalette_TitaniumCoil[] = INCGFX_U16("graphics/items/icon_palettes/gym/titanium_coil.pal", ".gbapal");
+
+const u32 gItemIcon_CorrosiveVenom[] = INCGFX_U32("graphics/items/icons/gym/corrosive_venom.png", ".4bpp.smol");
+const u16 gItemIconPalette_CorrosiveVenom[] = INCGFX_U16("graphics/items/icon_palettes/gym/corrosive_venom.pal", ".gbapal");
+
+const u32 gItemIcon_GraniteSarcophagus[] = INCGFX_U32("graphics/items/icons/gym/granite_sarcophagus.png", ".4bpp.smol");
+const u16 gItemIconPalette_GraniteSarcophagus[] = INCGFX_U16("graphics/items/icon_palettes/gym/granite_sarcophagus.pal", ".gbapal");
+
+const u32 gItemIcon_DiamondDrillBit[] = INCGFX_U32("graphics/items/icons/gym/diamond_drill_bit.png", ".4bpp.smol");
+const u16 gItemIconPalette_DiamondDrillBit[] = INCGFX_U16("graphics/items/icon_palettes/gym/diamond_drill_bit.pal", ".gbapal");
+
+const u32 gItemIcon_DiamondPlating[] = INCGFX_U32("graphics/items/icons/gym/diamond_plating.png", ".4bpp.smol");
+const u16 gItemIconPalette_DiamondPlating[] = INCGFX_U16("graphics/items/icon_palettes/gym/diamond_plating.pal", ".gbapal");
+
+const u32 gItemIcon_PrecisionChisel[] = INCGFX_U32("graphics/items/icons/gym/precision_chisel.png", ".4bpp.smol");
+const u16 gItemIconPalette_PrecisionChisel[] = INCGFX_U16("graphics/items/icon_palettes/gym/precision_chisel.pal", ".gbapal");
+
+const u32 gItemIcon_Cacoon[] = INCGFX_U32("graphics/items/icons/gym/cacoon.png", ".4bpp.smol");
+const u16 gItemIconPalette_Cacoon[] = INCGFX_U16("graphics/items/icon_palettes/gym/cacoon.pal", ".gbapal");
+
+const u32 gItemIcon_ExtraStinger[] = INCGFX_U32("graphics/items/icons/gym/extra_stinger.png", ".4bpp.smol");
+const u16 gItemIconPalette_ExtraStinger[] = INCGFX_U16("graphics/items/icon_palettes/gym/extra_stinger.pal", ".gbapal");
+
+const u32 gItemIcon_LightSwitch[] = INCGFX_U32("graphics/items/icons/gym/light_switch.png", ".4bpp.smol");
+const u16 gItemIconPalette_LightSwitch[] = INCGFX_U16("graphics/items/icon_palettes/gym/light_switch.pal", ".gbapal");
+
+const u32 gItemIcon_OuijaBoard[] = INCGFX_U32("graphics/items/icons/gym/ouija_board.png", ".4bpp.smol");
+const u16 gItemIconPalette_OuijaBoard[] = INCGFX_U16("graphics/items/icon_palettes/gym/ouija_board.pal", ".gbapal");
+
+const u32 gItemIcon_StainlessAlloy[] = INCGFX_U32("graphics/items/icons/gym/stainless_alloy.png", ".4bpp.smol");
+const u16 gItemIconPalette_StainlessAlloy[] = INCGFX_U16("graphics/items/icon_palettes/gym/stainless_alloy.pal", ".gbapal");
+
+const u32 gItemIcon_KnifeSharpener[] = INCGFX_U32("graphics/items/icons/gym/knife_sharpener.png", ".4bpp.smol");
+const u16 gItemIconPalette_KnifeSharpener[] = INCGFX_U16("graphics/items/icon_palettes/gym/knife_sharpener.pal", ".gbapal");
+
+const u32 gItemIcon_HeatShield[] = INCGFX_U32("graphics/items/icons/gym/heat_shield.png", ".4bpp.smol");
+const u16 gItemIconPalette_HeatShield[] = INCGFX_U16("graphics/items/icon_palettes/gym/heat_shield.pal", ".gbapal");
+
+const u32 gItemIcon_Oxidizer[] = INCGFX_U32("graphics/items/icons/gym/oxidizer.png", ".4bpp.smol");
+const u16 gItemIconPalette_Oxidizer[] = INCGFX_U16("graphics/items/icon_palettes/gym/oxidizer.pal", ".gbapal");
+
+const u32 gItemIcon_Cistern[] = INCGFX_U32("graphics/items/icons/gym/cistern.png", ".4bpp.smol");
+const u16 gItemIconPalette_Cistern[] = INCGFX_U16("graphics/items/icon_palettes/gym/cistern.pal", ".gbapal");
+
+const u32 gItemIcon_Nozzle[] = INCGFX_U32("graphics/items/icons/gym/nozzle.png", ".4bpp.smol");
+const u16 gItemIconPalette_Nozzle[] = INCGFX_U16("graphics/items/icon_palettes/gym/nozzle.pal", ".gbapal");
+
+const u32 gItemIcon_ChickenWire[] = INCGFX_U32("graphics/items/icons/gym/chicken_wire.png", ".4bpp.smol");
+const u16 gItemIconPalette_ChickenWire[] = INCGFX_U16("graphics/items/icon_palettes/gym/chicken_wire.pal", ".gbapal");
+
+const u32 gItemIcon_MiracleGro[] = INCGFX_U32("graphics/items/icons/gym/miracle_gro.png", ".4bpp.smol");
+const u16 gItemIconPalette_MiracleGro[] = INCGFX_U16("graphics/items/icon_palettes/gym/miracle_gro.pal", ".gbapal");
+
+const u32 gItemIcon_Capacitor[] = INCGFX_U32("graphics/items/icons/gym/capacitor.png", ".4bpp.smol");
+const u16 gItemIconPalette_Capacitor[] = INCGFX_U16("graphics/items/icon_palettes/gym/capacitor.pal", ".gbapal");
+
+const u32 gItemIcon_Transformer[] = INCGFX_U32("graphics/items/icons/gym/transformer.png", ".4bpp.smol");
+const u16 gItemIconPalette_Transformer[] = INCGFX_U16("graphics/items/icon_palettes/gym/transformer.pal", ".gbapal");
+
+const u32 gItemIcon_EnergyShield[] = INCGFX_U32("graphics/items/icons/gym/energy_shield.png", ".4bpp.smol");
+const u16 gItemIconPalette_EnergyShield[] = INCGFX_U16("graphics/items/icon_palettes/gym/energy_shield.pal", ".gbapal");
+
+const u32 gItemIcon_PsionicBlade[] = INCGFX_U32("graphics/items/icons/gym/psionic_blade.png", ".4bpp.smol");
+const u16 gItemIconPalette_PsionicBlade[] = INCGFX_U16("graphics/items/icon_palettes/gym/psionic_blade.pal", ".gbapal");
+
+const u32 gItemIcon_Cooler[] = INCGFX_U32("graphics/items/icons/gym/cooler.png", ".4bpp.smol");
+const u16 gItemIconPalette_Cooler[] = INCGFX_U16("graphics/items/icon_palettes/gym/cooler.pal", ".gbapal");
+
+const u32 gItemIcon_RockSalt[] = INCGFX_U32("graphics/items/icons/gym/rock_salt.png", ".4bpp.smol");
+const u16 gItemIconPalette_RockSalt[] = INCGFX_U16("graphics/items/icon_palettes/gym/rock_salt.pal", ".gbapal");
+
+const u32 gItemIcon_FireShroud[] = INCGFX_U32("graphics/items/icons/gym/fire_shroud.png", ".4bpp.smol");
+const u16 gItemIconPalette_FireShroud[] = INCGFX_U16("graphics/items/icon_palettes/gym/fire_shroud.pal", ".gbapal");
+
+const u32 gItemIcon_BionicJaw[] = INCGFX_U32("graphics/items/icons/gym/bionic_jaw.png", ".4bpp.smol");
+const u16 gItemIconPalette_BionicJaw[] = INCGFX_U16("graphics/items/icon_palettes/gym/bionic_jaw.pal", ".gbapal");
+
+const u32 gItemIcon_BlackVeil[] = INCGFX_U32("graphics/items/icons/gym/black_veil.png", ".4bpp.smol");
+const u16 gItemIconPalette_BlackVeil[] = INCGFX_U16("graphics/items/icon_palettes/gym/black_veil.pal", ".gbapal");
+
+const u32 gItemIcon_Manifesto[] = INCGFX_U32("graphics/items/icons/gym/manifesto.png", ".4bpp.smol");
+const u16 gItemIconPalette_Manifesto[] = INCGFX_U16("graphics/items/icon_palettes/gym/manifesto.pal", ".gbapal");
+
+const u32 gItemIcon_TwinklingLights[] = INCGFX_U32("graphics/items/icons/gym/twinkling_lights.png", ".4bpp.smol");
+const u16 gItemIconPalette_TwinklingLights[] = INCGFX_U16("graphics/items/icon_palettes/gym/twinkling_lights.pal", ".gbapal");
+
+const u32 gItemIcon_MagicWand[] = INCGFX_U32("graphics/items/icons/gym/magic_wand.png", ".4bpp.smol");
+const u16 gItemIconPalette_MagicWand[] = INCGFX_U16("graphics/items/icon_palettes/gym/magic_wand.pal", ".gbapal");

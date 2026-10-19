@@ -23,6 +23,7 @@
 #include "string_util.h"
 #include "constants/event_objects.h"
 #include "constants/flags.h"
+#include "constants/items.h"
 #include "constants/opponents.h"
 #include "constants/vars.h"
 
@@ -134,59 +135,147 @@ static const struct
 static const struct GymCandidateMentor sMentors[NUMBER_OF_MON_TYPES] =
 {
     [TYPE_ROCK] = {0,
-        COMPOUND_STRING("BROCK: Wait… you train ROCK types\ntoo?\pHa! That's great! There's always\nroom for one more rock-solid GYM.\pIf you ever want tips, you know\nwhere to find me!"),
+        COMPOUND_STRING("BROCK: Hi there! I'm BROCK, the\nPEWTER CITY GYM LEADER.\pPROF. OAK wrote to me about you.\nA ROCK trainer with a GYM plan!\pThat's great! I'll be keeping an\neye out for you on the road."),
+        COMPOUND_STRING("BROCK: {PLAYER}! You made it!\pYour ROCK types have gotten solid\nsince OAK's lab.\pTwo ROCK GYMS in KANTO?\nI can't wait!"),
         COMPOUND_STRING("BROCK: Two ROCK GYMS in KANTO!\nI couldn't be prouder, {PLAYER}.\pThe LEAGUE will hear that you have\nmy approval. Rock on!")},
     [TYPE_NORMAL] = {0,
-        COMPOUND_STRING("BROCK: NORMAL types, huh?\pPeople underestimate them.\nNo fancy tricks, just basics.\pThat's how I train too. Stick\nwith it, {PLAYER}!"),
+        COMPOUND_STRING("BROCK: Hey! I'm BROCK, LEADER of\nthe PEWTER CITY GYM.\pOAK says you raise NORMAL types.\nNo tricks, just basics, huh?\pThat's how I train too. I'll be\nkeeping tabs on you!"),
+        COMPOUND_STRING("BROCK: Good to see you again,\n{PLAYER}!\pYour NORMAL types fought well.\nBasics win battles. Stick with it!"),
         COMPOUND_STRING("BROCK: Basics win battles. You\nproved it today!\pThe LEAGUE will hear that you have\nmy approval!")},
     [TYPE_WATER] = {1,
-        COMPOUND_STRING("MISTY: Hold on. You train WATER\nPOKéMON?\pAnd you want a GYM of your own?\nRight next door?!\pThere's only room for ONE WATER\nGYM in KANTO, and it's mine!"),
+        COMPOUND_STRING("MISTY: So YOU're the kid from\nOAK's letter? I'm MISTY.\pI run the CERULEAN GYM. The WATER\nGYM. The ONLY one in KANTO!\pA WATER GYM in PALLET TOWN?\nI'm keeping my eye on you!"),
+        COMPOUND_STRING("MISTY: Hmph. So the kid from\nOAK's lab made it all the way here.\pYour WATER POKéMON are good.\nAnnoyingly good.\pThere's still only room for ONE\nWATER GYM in KANTO!"),
         COMPOUND_STRING("MISTY: …Fine. FINE!\nYou're really good with them.\pMaybe KANTO can handle two WATER\nGYMS. Maybe.\pYou've got my approval. Now get\nout before I change my mind!")},
     [TYPE_ELECTRIC] = {2,
-        COMPOUND_STRING("LT. SURGE: Hey! ELECTRIC types?\nThat's MY turf, kid!\pIn the war, ELECTRIC POKéMON saved\nmy life. You think you can just…\pTake over? Not on my watch!"),
+        COMPOUND_STRING("LT. SURGE: Ten-hut! LT. SURGE,\nVERMILION CITY GYM!\pOAK says you train ELECTRIC types\nand want a GYM. That's MY turf!\pI'll be watching you, kid.\nDon't short out!"),
+        COMPOUND_STRING("LT. SURGE: Well, well! The ELECTRIC\nkid from OAK's lab!\pYou've got a spark, I'll give you\nthat. But this is still MY turf!"),
         COMPOUND_STRING("LT. SURGE: Ha! I'll admit it, kid.\nYou've got a real spark.\pYou've got my approval! And if\nyou need parts, call me!")},
     [TYPE_STEEL] = {2,
-        COMPOUND_STRING("LT. SURGE: STEEL types, huh? Like\nmy MAGNEMITE!\pTough as tanks. But a STEEL GYM?\nIn PALLET? I don't buy it, kid."),
+        COMPOUND_STRING("LT. SURGE: Ten-hut! LT. SURGE,\nVERMILION CITY GYM!\pOAK says you raise STEEL types.\nTough as tanks. I like that.\pBut a STEEL GYM in PALLET?\nI don't buy it. Prove me wrong!"),
+        COMPOUND_STRING("LT. SURGE: The STEEL kid from\nOAK's lab! Your team held up under\lfire.\pStill don't buy a STEEL GYM in\nPALLET, though!"),
         COMPOUND_STRING("LT. SURGE: Your GYM's built like\na fortress! I take it back!\pYou've got my approval, soldier!")},
     [TYPE_GRASS] = {3,
-        COMPOUND_STRING("ERIKA: Oh! You love GRASS POKéMON\ntoo? How delightful!\pA GYM full of flowers in PALLET\nTOWN… I would love to see it.\pPlease, come visit my garden any\ntime you like."),
+        COMPOUND_STRING("ERIKA: Oh, hello… I'm ERIKA,\nfrom the CELADON CITY GYM.\pPROF. OAK told me you love GRASS\nPOKéMON. How delightful!\pI would love to help your GYM\ngrow. I'll come to see you."),
+        COMPOUND_STRING("ERIKA: Oh, {PLAYER}! It's so nice\nto see you again.\pYour GRASS POKéMON have grown so\nmuch since we met at OAK's lab."),
         COMPOUND_STRING("ERIKA: Your POKéMON were in full\nbloom today.\pYou have my approval, and my\nfriendship. Please, take care.")},
     [TYPE_POISON] = {4,
-        COMPOUND_STRING("KOGA: …POISON? Hmph.\pA ninja guards his secrets\njealously, child.\pI will not teach a rival who\nwould open a GYM of my type!"),
+        COMPOUND_STRING("KOGA: …You did not hear me come\nin. Good.\pI am KOGA, of the FUCHSIA CITY\nGYM. OAK says you train POISON.\pHmph. A ninja does not share his\nsecrets lightly. Earn them."),
+        COMPOUND_STRING("KOGA: …So. The child from OAK's\nlab grows stronger.\pI have watched you. I still will\nnot make it easy for a rival."),
         COMPOUND_STRING("KOGA: …Fwahaha. I was wrong to\ndoubt you.\pA true POISON master. You have\nmy approval… and my respect.")},
     [TYPE_BUG] = {4,
-        COMPOUND_STRING("KOGA: BUG types? My VENOMOTH would\nbe flattered.\pBut a BUG GYM? Most think them\nweak. Prove them wrong, if you can."),
+        COMPOUND_STRING("KOGA: Fwahaha! You did not see me\nenter. I am KOGA, of FUCHSIA's GYM.\pOAK says you train BUG types.\nMost call them weak.\pProve them wrong, child. I will\nbe watching from the shadows."),
+        COMPOUND_STRING("KOGA: Fwahaha! You've come far\nsince OAK's lab.\pYour BUG POKéMON surprised even\nme. A little."),
         COMPOUND_STRING("KOGA: Fwahaha! Your BUG POKéMON\nstrike like ninja.\pYou have my approval!")},
     [TYPE_PSYCHIC] = {5,
-        COMPOUND_STRING("SABRINA: …PSYCHIC POKéMON.\pI foresaw a second PSYCHIC GYM\nin KANTO. I did not like it.\pI still do not. But visions do\nnot ask for permission."),
+        COMPOUND_STRING("SABRINA: …I am SABRINA, of the\nSAFFRON CITY GYM.\pI knew you would be here. A\nsecond PSYCHIC GYM in KANTO.\pI foresaw it. I do not like it.\nBut I will watch over you."),
+        COMPOUND_STRING("SABRINA: …As I foresaw at OAK's\nlab, you came.\pI still do not like a second\nPSYCHIC GYM. But visions do not\lask for permission."),
         COMPOUND_STRING("SABRINA: I saw a PSYCHIC GYM in\nPALLET TOWN. I resented it.\pNow I see why it was there.\nYou have my approval.")},
     [TYPE_FAIRY] = {5,
-        COMPOUND_STRING("SABRINA: FAIRY POKéMON. Like my\nMR. MIME.\pThey have a mind of their own.\nAs do you, it seems."),
+        COMPOUND_STRING("SABRINA: I am SABRINA, of the\nSAFFRON CITY GYM.\pI saw you in a dream. A child with\nFAIRY POKéMON and a GYM.\pThey have minds of their own.\nAs do you. We will meet again."),
+        COMPOUND_STRING("SABRINA: We meet again, as I said\nwe would.\pYour FAIRY POKéMON trust you\ncompletely. That is rare."),
         COMPOUND_STRING("SABRINA: Your FAIRY POKéMON\ntrust you completely.\pYou have my approval.")},
     [TYPE_FIRE] = {6,
-        COMPOUND_STRING("BLAINE: Hah! A FIRE trainer!\nThat makes my blood boil!\pIn a good way! Quiz: who's going\nto help you? Answer: ME!"),
+        COMPOUND_STRING("BLAINE: Hah! Quiz time! Who's the\nhotheaded FIRE expert of KANTO?\pAnswer: BLAINE of CINNABAR GYM!\nThat's me!\pOAK says you're a FIRE trainer!\nI'll be cheering you on, kid!"),
+        COMPOUND_STRING("BLAINE: Hah! My favorite FIRE\ntrainer! Quiz! Who knew you'd make\lit this far?\pAnswer: ME! Wahahahah!"),
         COMPOUND_STRING("BLAINE: That's the spirit! Two\nFIRE GYMS in KANTO!\pMy approval is yours, kid!\nWahahahah!")},
     [TYPE_GROUND] = {7,
-        COMPOUND_STRING("GIOVANNI: You train GROUND types.\pVIRIDIAN's GYM is the GROUND GYM\nof KANTO. It always will be.\pDo not imagine you will take\nanything of mine."),
+        COMPOUND_STRING("GIOVANNI: So you are OAK's\ncandidate. I am GIOVANNI.\pThe VIRIDIAN GYM is mine. KANTO's\nGROUND GYM. It always will be.\pStill… I will be watching you\nwith interest."),
+        COMPOUND_STRING("GIOVANNI: We meet again, OAK's\ncandidate.\pYour GROUND POKéMON are strong.\nStill, VIRIDIAN's GYM is mine."),
         COMPOUND_STRING("GIOVANNI: …You have a feel for the\nearth. I can't deny it.\pThe LEAGUE will have my approval.\nGuard your GYM well.")},
     [TYPE_DARK] = {7,
-        COMPOUND_STRING("GIOVANNI: DARK POKéMON…\nInteresting.\pYou have the makings of a\nfearsome LEADER. Or something\lmore.\pBut a child is still a child."),
+        COMPOUND_STRING("GIOVANNI: I am GIOVANNI. The\nVIRIDIAN GYM is mine.\pDARK POKéMON… OAK has chosen an\ninteresting candidate.\pYou may prove useful.\nWe will meet again."),
+        COMPOUND_STRING("GIOVANNI: So. We meet again.\pYour DARK POKéMON have grown…\nfearsome. But a child is still a\lchild."),
         COMPOUND_STRING("GIOVANNI: I underestimated you.\nI don't do that often.\pThe LEAGUE will have my approval.")},
     [TYPE_ICE] = {LORELEI,
-        COMPOUND_STRING("LORELEI: …You train ICE POKéMON?\pHow refreshing. Few have the\npatience for them.\pShow me how cold you can be!"),
+        COMPOUND_STRING("LORELEI: Hello. I'm LORELEI, of\nthe ELITE FOUR.\pPROF. OAK wrote to me about a\nyoung ICE trainer. Refreshing.\pFew have the patience for them.\nI'll check on you now and then."),
+        COMPOUND_STRING("LORELEI: {PLAYER}. I've waited for\nthis since OAK's lab.\pShow me how cold you've become!"),
         COMPOUND_STRING("LORELEI: A fellow ICE trainer…\nand a fine one.\pYou have my approval. KANTO could\nuse an ICE GYM. Stay cool.")},
     [TYPE_FIGHTING] = {BRUNO,
-        COMPOUND_STRING("BRUNO: You train FIGHTING types?\pHoo hah! Then let our POKéMON\ntalk with their fists!"),
+        COMPOUND_STRING("BRUNO: Hoo hah! I'm BRUNO, of the\nELITE FOUR!\pOAK says you train FIGHTING types!\nI'll help you grow stronger!\pTrain hard. I'll come find you\non the road!"),
+        COMPOUND_STRING("BRUNO: Hoo hah! {PLAYER}! You've\ngrown strong since OAK's lab!\pNow let our POKéMON talk with\ntheir fists!"),
         COMPOUND_STRING("BRUNO: Such power! You trained\nthem well!\pYou have my approval. Come train\nwith me any time!")},
     [TYPE_GHOST] = {AGATHA,
-        COMPOUND_STRING("AGATHA: GHOST POKéMON?\nYou, a whippersnapper?\pAnd I hear you want a GYM in\nOak's backyard. Hah!\pI've trained GHOSTS since before\nyou were born. Let's see!"),
+        COMPOUND_STRING("AGATHA: So you're Oak's little\nGHOST trainer. I'm AGATHA.\pELITE FOUR, since before you were\nborn. And Oak wants a GYM, eh?\pHah! I'll be keeping an eye on\nyou, whippersnapper."),
+        COMPOUND_STRING("AGATHA: Well, if it isn't Oak's\nGHOST whippersnapper.\pYou got this far? Hah! Let's see\nwhat my gifts did for you!"),
         COMPOUND_STRING("AGATHA: …Hmph. You've got the\ngift, child. I'll grant you that.\pYou have my approval. Don't make\nme regret it!")},
     [TYPE_DRAGON] = {LANCE,
-        COMPOUND_STRING("LANCE: You raise DRAGONS?\pThey are the pride of the\nELITE FOUR. My pride.\pA child with a DRAGON GYM?\nThen prove you're worthy!"),
+        COMPOUND_STRING("LANCE: I am LANCE, of the ELITE\nFOUR. OAK says you raise DRAGONS.\pThey are the pride of the ELITE\nFOUR. My pride.\pA child with a DRAGON GYM?\nThen prove you're worthy."),
+        COMPOUND_STRING("LANCE: {PLAYER}. I've watched your\nDRAGONS grow since OAK's lab.\pNow prove you're worthy of them!"),
         COMPOUND_STRING("LANCE: Your DRAGONS fly true.\nI was wrong about you.\pYou have my approval, DRAGON\nmaster.")},
     [TYPE_FLYING] = {LANCE,
-        COMPOUND_STRING("LANCE: FLYING POKéMON. My\nDRAGONITE rules the skies.\pLet's see if yours can keep up!"),
+        COMPOUND_STRING("LANCE: I am LANCE, of the ELITE\nFOUR. OAK says you train FLYING\ltypes.\pMy DRAGONITE rules the skies.\nLet's see if yours can keep up."),
+        COMPOUND_STRING("LANCE: {PLAYER}. Your FLYING POKéMON\nhave come far since OAK's lab.\pLet's see if they can keep up with\nmy DRAGONITE!"),
         COMPOUND_STRING("LANCE: Your POKéMON own the sky.\pYou have my approval.")},
+};
+
+// The mentors themselves (Gym Leaders 0-7, Elite Four 8-11): how they look, and what they say
+// with their two gifts
+static const struct
+{
+    u16 gfx;
+    const u8 *guardGift;    // after Mt. Moon
+    const u8 *edgeGift;     // at Cinnabar
+} sMentorPeople[GYM_CANDIDATE_LEADERS + GYM_CANDIDATE_ELITE_FOUR] =
+{
+    {OBJ_EVENT_GFX_BROCK,
+        COMPOUND_STRING("BROCK: {PLAYER}! I heard you made it\nthrough MT. MOON. Knew you would!\pHere, I made this for you.\nLet one of your POKéMON hold it."),
+        COMPOUND_STRING("BROCK: {PLAYER}! I took the ferry\nall the way out here!\pYou've learned to take a hit.\nNow learn to land one. Here!")},
+    {OBJ_EVENT_GFX_MISTY,
+        COMPOUND_STRING("MISTY: …And before you go. OAK\nmade me promise to give you this.\pDon't get the wrong idea! I don't\nwant my rival losing to a fluke!"),
+        COMPOUND_STRING("MISTY: Ugh, it's so hot here!\n…Fine. Here.\pI said I'd find you when you were\nready. Don't make me regret it!")},
+    {OBJ_EVENT_GFX_LT_SURGE,
+        COMPOUND_STRING("LT. SURGE: Ten-hut! Heard you're\nstill in the fight, kid!\pEvery soldier needs armor.\nTake this and keep your head down!"),
+        COMPOUND_STRING("LT. SURGE: Kid! You've survived the\nfront lines. Time for artillery!\pWith this, nothing can stop your\nattacks cold!")},
+    {OBJ_EVENT_GFX_ERIKA,
+        COMPOUND_STRING("ERIKA: Oh, there you are… I came\nall the way from CELADON.\pMT. MOON must have been so dark.\nThis will keep your POKéMON safe."),
+        COMPOUND_STRING("ERIKA: My, what a long boat ride…\nI dozed off twice.\pPlease take this. May nothing\nstand in your POKéMON's way.")},
+    {OBJ_EVENT_GFX_KOGA,
+        COMPOUND_STRING("KOGA: Fwahaha! Did you notice me\nfollowing you through MT. MOON?\pNo? Good. A ninja's armor.\nTake it… and tell no one."),
+        COMPOUND_STRING("KOGA: Fwahaha! Surprised? A ninja\ngoes where his student goes.\pYou are ready for my secret\ntechnique. Take it!")},
+    {OBJ_EVENT_GFX_SABRINA,
+        COMPOUND_STRING("SABRINA: I saw you leave MT. MOON.\nI saw you take this from me.\pSo… take it."),
+        COMPOUND_STRING("SABRINA: Seven BADGES. I saw this\nday, too.\pTake it. No wall will hold your\nPOKéMON back now.")},
+    {OBJ_EVENT_GFX_BLAINE,
+        COMPOUND_STRING("BLAINE: Hah! Quiz time! What keeps\na POKéMON safe from its weakness?\pAnswer: this! Take it, kid!"),
+        COMPOUND_STRING("BLAINE: Hah! One more quiz! What\nlets an attack hit when it\lshouldn't?\pAnswer: this! I've been saving it\nfor you!")},
+    {OBJ_EVENT_GFX_GIOVANNI,
+        COMPOUND_STRING("GIOVANNI: You survived MT. MOON.\nSome of my… associates did not\lfare as well.\pTake this. A LEADER protects what\nis theirs."),
+        COMPOUND_STRING("GIOVANNI: …You've come far.\nFarther than I expected.\pTake this. True power is not\nstopped by something as small as\la type.")},
+    {OBJ_EVENT_GFX_LORELEI,
+        COMPOUND_STRING("LORELEI: Hello again, {PLAYER}.\nI was in CERULEAN… shopping.\pThis is for you. No weakness will\ncrack your POKéMON with this."),
+        COMPOUND_STRING("LORELEI: CINNABAR is far too warm\nfor me. I won't stay long.\pThis is for you. No foe will shrug\noff your attacks with it.")},
+    {OBJ_EVENT_GFX_BRUNO,
+        COMPOUND_STRING("BRUNO: Hoo! You made it through\nMT. MOON!\pA true fighter guards his body.\nTake this!"),
+        COMPOUND_STRING("BRUNO: Hoo hah! Seven BADGES!\nYou've built a fine guard.\pNow, a fine strike! Take this!")},
+    {OBJ_EVENT_GFX_AGATHA,
+        COMPOUND_STRING("AGATHA: Hmph. Oak pestered me\nuntil I brought you this.\pTake it before I change my mind,\nwhippersnapper!"),
+        COMPOUND_STRING("AGATHA: Seven BADGES, eh? I suppose\nI can't call you whippersnapper.\p…Well, I can. But take this\nanyway.")},
+    {OBJ_EVENT_GFX_LANCE,
+        COMPOUND_STRING("LANCE: You made it past MT. MOON.\nNot bad.\pA POKéMON is only as strong as its\nweakest point. Cover yours."),
+        COMPOUND_STRING("LANCE: Seven BADGES. You've proven\nyourself.\pTake this. No POKéMON will ignore\nyour attacks again.")},
+};
+
+// Each type's two items: {defensive, offensive}
+static const u16 sTypeItems[NUMBER_OF_MON_TYPES][2] =
+{
+    [TYPE_NORMAL] = {ITEM_FLUFFY_SWEATER, ITEM_THIRD_EYE},
+    [TYPE_FIGHTING] = {ITEM_MOUTH_GUARD, ITEM_STEROIDS},
+    [TYPE_FLYING] = {ITEM_AVIATOR_GOGGLES, ITEM_JET_ENGINE},
+    [TYPE_POISON] = {ITEM_TITANIUM_COIL, ITEM_CORROSIVE_VENOM},
+    [TYPE_GROUND] = {ITEM_GRANITE_SARCOPHAGUS, ITEM_DIAMOND_DRILL_BIT},
+    [TYPE_ROCK] = {ITEM_DIAMOND_PLATING, ITEM_PRECISION_CHISEL},
+    [TYPE_BUG] = {ITEM_CACOON, ITEM_EXTRA_STINGER},
+    [TYPE_GHOST] = {ITEM_LIGHT_SWITCH, ITEM_OUIJA_BOARD},
+    [TYPE_STEEL] = {ITEM_STAINLESS_ALLOY, ITEM_KNIFE_SHARPENER},
+    [TYPE_FIRE] = {ITEM_HEAT_SHIELD, ITEM_OXIDIZER},
+    [TYPE_WATER] = {ITEM_CISTERN, ITEM_NOZZLE},
+    [TYPE_GRASS] = {ITEM_CHICKEN_WIRE, ITEM_MIRACLE_GRO},
+    [TYPE_ELECTRIC] = {ITEM_CAPACITOR, ITEM_TRANSFORMER},
+    [TYPE_PSYCHIC] = {ITEM_ENERGY_SHIELD, ITEM_PSIONIC_BLADE},
+    [TYPE_ICE] = {ITEM_COOLER, ITEM_ROCK_SALT},
+    [TYPE_DRAGON] = {ITEM_FIRE_SHROUD, ITEM_BIONIC_JAW},
+    [TYPE_DARK] = {ITEM_BLACK_VEIL, ITEM_MANIFESTO},
+    [TYPE_FAIRY] = {ITEM_TWINKLING_LIGHTS, ITEM_MAGIC_WAND},
 };
 
 // ---------------------------------------------------------------------------
@@ -314,6 +403,103 @@ const u8 *GymCandidate_GetEliteFourApproval(u32 i)
 }
 
 // ---------------------------------------------------------------------------
+// The mentor's story: they meet the player in Oak's lab right after the Pokédex (Oak wrote to
+// them about the player's gym), drop by the Cerulean Gym after Mt. Moon with a defensive item
+// for the player's type, and the Cinnabar Gym with an offensive one (or hand them over
+// themselves, if it's their gym).
+// ---------------------------------------------------------------------------
+u16 GymCandidate_GetTypeItem(u32 type, bool32 offensive)
+{
+    if (type >= NUMBER_OF_MON_TYPES)
+        return ITEM_NONE;
+    return sTypeItems[type][offensive ? 1 : 0];
+}
+
+const u8 *GymCandidate_GetMentorName(u32 who)
+{
+    if (who < GYM_CANDIDATE_LEADERS)
+        return gGymCandidateLeaders[who].name;
+    return sEliteFour[min(who, (u32)LANCE) - LORELEI].name;
+}
+
+const u8 *GymCandidate_GetMentorGiftText(u32 who, bool32 offensive)
+{
+    who = min(who, (u32)LANCE);
+    return offensive ? sMentorPeople[who].edgeGift : sMentorPeople[who].guardGift;
+}
+
+static const struct GymCandidateMentor *PlayerMentor(void)
+{
+    return GymCandidate_GetMentorForType(VarGet(VAR_PLAYER_TYPE));
+}
+
+// Special: STR_VAR_1 = the player's mentor's name. VAR_RESULT = whether there is one.
+void GymCandidate_BufferMentorName(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    gSpecialVar_Result = (mentor != NULL);
+    if (mentor != NULL)
+        StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
+}
+
+// Special: the meeting in Oak's lab. VAR_RESULT = whether it happens now; then
+// VAR_OBJ_GFX_ID_0 = the mentor's look, STR_VAR_1 = their name.
+void GymCandidate_PrepareMentorIntro(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    gSpecialVar_Result = FALSE;
+    if (mentor == NULL || (VarGet(VAR_MENTOR_STAGE) & MENTOR_MET))
+        return;
+    VarSet(VAR_MENTOR_STAGE, VarGet(VAR_MENTOR_STAGE) | MENTOR_MET);
+    VarSet(VAR_OBJ_GFX_ID_0, sMentorPeople[mentor->who].gfx);
+    StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
+    gSpecialVar_Result = TRUE;
+}
+
+// Special: gStringVar4 = the mentor's introduction (after GymCandidate_PrepareMentorIntro)
+void GymCandidate_BufferMentorIntro(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    if (mentor != NULL)
+        StringExpandPlaceholders(gStringVar4, mentor->intro);
+}
+
+// Special: VAR_0x8009 = the gym whose badge was just won. At the Cerulean Gym (1) the mentor
+// gives the defensive item, at the Cinnabar Gym (6) the offensive one.
+// VAR_RESULT = MENTOR_GIFT_*; then VAR_0x8004 = the item, gStringVar4 = what they say,
+// VAR_OBJ_GFX_ID_0 = the mentor's look (for a visit).
+void GymCandidate_PrepareMentorGift(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    u32 leader = gSpecialVar_0x8009, bit;
+    bool32 offensive;
+
+    gSpecialVar_Result = MENTOR_GIFT_NONE;
+    if (mentor == NULL)
+        return;
+    if (leader == 1)
+        offensive = FALSE, bit = MENTOR_GAVE_GUARD;
+    else if (leader == 6)
+        offensive = TRUE, bit = MENTOR_GAVE_EDGE;
+    else
+        return;
+    if (VarGet(VAR_MENTOR_STAGE) & bit)
+        return;
+    VarSet(VAR_MENTOR_STAGE, VarGet(VAR_MENTOR_STAGE) | bit);
+    gSpecialVar_0x8004 = GymCandidate_GetTypeItem(VarGet(VAR_PLAYER_TYPE), offensive);
+    VarSet(VAR_OBJ_GFX_ID_0, sMentorPeople[mentor->who].gfx);
+    gSpecialVar_Result = (mentor->who == leader) ? MENTOR_GIFT_LEADER : MENTOR_GIFT_VISIT;
+}
+
+// Special: VAR_0x8009 = the gym (1 or 6) -> gStringVar4 = what the mentor says with the gift
+void GymCandidate_BufferMentorGift(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    if (mentor != NULL)
+        StringExpandPlaceholders(gStringVar4, GymCandidate_GetMentorGiftText(mentor->who, gSpecialVar_0x8009 == 6));
+}
+
+// ---------------------------------------------------------------------------
 // Where the challenger stands: next to the player, preferably behind them (the leader is in
 // front, watching). VAR_0x8005/6 = the spot, VAR_RESULT = whether there is one.
 // ---------------------------------------------------------------------------
@@ -346,6 +532,7 @@ void GymCandidate_PlaceGuest(void)
 
     PlayerGetDestCoords(&px, &py);
     elevation = MapGridGetElevationAt(px, py);
+    sGuestDir = sOpposite[facing];  // (if there's no room: GymCandidate_FaceBack keeps the facing)
     order[0] = sOpposite[facing];
     order[1] = (facing == DIR_NORTH || facing == DIR_SOUTH) ? DIR_WEST : DIR_NORTH;
     order[2] = sOpposite[order[1]];
@@ -373,6 +560,12 @@ void GymCandidate_FaceGuest(void)
                                             gSaveBlock1Ptr->location.mapGroup, &objectEventId))
         ObjectEventTurn(&gObjectEvents[objectEventId], sOpposite[sGuestDir]);
     ObjectEventTurn(&gObjectEvents[gPlayerAvatar.objectEventId], sGuestDir);
+}
+
+// Special: the challenger has gone; the player turns back the way they faced before
+void GymCandidate_FaceBack(void)
+{
+    ObjectEventTurn(&gObjectEvents[gPlayerAvatar.objectEventId], sOpposite[sGuestDir]);
 }
 
 // ---------------------------------------------------------------------------

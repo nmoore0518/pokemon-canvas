@@ -8363,6 +8363,41 @@ static inline bool32 MoveIgnoresType(struct DamageContext *ctx)
     }
 }
 
+// Gym Trainer hack: the mentors' type items. Neither is ever used up.
+//  - HOLD_EFFECT_TYPE_EDGE (attacker): a damaging move that type matchups would resist or block
+//    hits for normal damage instead. Blocks by abilities or items (Levitate, Wonder Guard, Air
+//    Balloon) still stand.
+//  - HOLD_EFFECT_TYPE_GUARD (defender): a super effective hit does normal damage instead.
+static bool32 GymTypeEdgeBlocked(struct DamageContext *ctx)
+{
+    enum Ability ability = ctx->abilities[ctx->battlerDef];
+    if (ctx->abilityBlocked || ctx->airBalloonBlocked)
+        return TRUE;
+    if (ability == ABILITY_WONDER_GUARD
+     || (ability == ABILITY_TELEPATHY && ctx->battlerDef == GetPartnerBattler(ctx->battlerAtk)))
+        return TRUE;
+    if (ctx->moveType == TYPE_GROUND
+     && (ability == ABILITY_LEVITATE || ability == ABILITY_EELEVATE
+      || ctx->holdEffects[ctx->battlerDef] == HOLD_EFFECT_AIR_BALLOON
+      || gBattleMons[ctx->battlerDef].volatiles.magnetRiseTimer
+      || gBattleMons[ctx->battlerDef].volatiles.telekinesis))
+        return TRUE;
+    return FALSE;
+}
+
+static uq4_12_t ApplyGymTypeItems(struct DamageContext *ctx, uq4_12_t modifier)
+{
+    if (MoveIgnoresType(ctx) || IsBattleMoveStatus(ctx->move))
+        return modifier;
+    if (ctx->holdEffects[ctx->battlerAtk] == HOLD_EFFECT_TYPE_EDGE
+     && modifier < UQ_4_12(1.0)
+     && !GymTypeEdgeBlocked(ctx))
+        modifier = UQ_4_12(1.0);
+    if (ctx->holdEffects[ctx->battlerDef] == HOLD_EFFECT_TYPE_GUARD && modifier > UQ_4_12(1.0))
+        modifier = UQ_4_12(1.0);
+    return modifier;
+}
+
 uq4_12_t CalcTypeEffectivenessMultiplier(struct DamageContext *ctx)
 {
     uq4_12_t modifier = UQ_4_12(1.0);
@@ -8379,6 +8414,8 @@ uq4_12_t CalcTypeEffectivenessMultiplier(struct DamageContext *ctx)
             ctx->moveType = primaryType;
         }
     }
+
+    modifier = ApplyGymTypeItems(ctx, modifier);
 
     if (ctx->updateFlags)
         UpdateMoveResultFlags(modifier, &gBattleStruct->moveResultFlags[ctx->battlerDef]);
@@ -8849,6 +8886,8 @@ bool32 CanBattlerGetOrLoseItem(enum BattlerId fromBattler, enum BattlerId battle
     else if (DoesSpeciesUseHoldItemToChangeForm(fromSpecies, itemId) || (DoesSpeciesUseHoldItemToChangeForm(otherSpecies, itemId) && GetConfig(B_KNOCK_OFF_REMOVAL) < GEN_CHAMPIONS))
         return FALSE;
     else if (holdEffect == HOLD_EFFECT_Z_CRYSTAL)
+        return FALSE;
+    else if (holdEffect == HOLD_EFFECT_TYPE_GUARD || holdEffect == HOLD_EFFECT_TYPE_EDGE) // Gym Trainer hack: one of a kind
         return FALSE;
     else if (holdEffect == HOLD_EFFECT_BOOSTER_ENERGY
          && (gSpeciesInfo[fromSpecies].isParadox || gSpeciesInfo[otherSpecies].isParadox))

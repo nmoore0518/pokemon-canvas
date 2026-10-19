@@ -309,8 +309,17 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     `FLAG_GYM_APPROVAL_*` (0x0BA-0x0C1). Each gym map has a spare person
     (`LOCALID_<GYM>_GYM_GUEST`, hidden by `FLAG_HIDE_PALLET_GYM_CHALLENGER`).
   - The Elite Four each give their approval after losing.
-  - **Mentors**: the leader or Elite Four member of the player's type reacts when they learn it
-    (after the badge, or after the Elite Four intro) and comes around at approval. Friendly:
+  - **Mentors**: the leader or Elite Four member of the player's type. Oak writes to them about
+    the player: Oak's Parcel now carries their reply (the Viridian Mart clerk mentions a letter;
+    Oak reads it out: they're coming to Pallet Town today), and right after the Pokédex scene
+    they walk into the lab and introduce themselves in character. They meet the player again
+    later as someone they know (after their badge, or after the Elite Four intro) and come
+    around at approval. They bring two held items for the player's type (below): the defensive
+    one after Mt. Moon (they drop by the Cerulean Gym after the badge) and the offensive one at
+    the Cinnabar Gym after the badge. If the mentor runs that gym (Misty for Water, Blaine for
+    Fire) they hand it over themselves. Talking to Misty or Blaine again gives a missed one.
+    `VAR_MENTOR_STAGE` (0x40FC) holds `MENTOR_MET`, `MENTOR_GAVE_GUARD`, `MENTOR_GAVE_EDGE`.
+    Friendly:
     Brock, Erika, Blaine, Lorelei, Bruno, Sabrina (cool but accepting). Prickly: Misty, Surge,
     Koga, Giovanni, Agatha, Lance. Types with no Kanto leader go to the closest fit:
     Normal→Brock, Steel→Surge, Bug→Koga, Fairy→Sabrina, Dark→Giovanni, Flying→Lance.
@@ -358,6 +367,39 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     `LOCALID_SAFFRON/VIRIDIAN_EXTRACTOR_GRUNT`, disguised as on the bridge).
   - Giovanni now says his farewell and leaves once he's approved (as in FireRed); he doesn't offer
     stand-in shifts.
+- **Type items** (`HOLD_EFFECT_TYPE_GUARD` / `HOLD_EFFECT_TYPE_EDGE` in `src/battle_util.c`): two
+  one-of-a-kind held items per type, from the mentor. Neither is ever used up.
+  - Defensive: no move is super effective on the holder; those hits do normal damage (like a
+    resist berry, but for every type and forever).
+  - Offensive: the holder's damaging moves hit for at least normal damage; resisted or
+    type-immune hits become normal ones. Super effective hits don't change. Immunity from
+    abilities or items (Levitate, Wonder Guard, Air Balloon, Magnet Rise) still blocks.
+  - They can't be stolen, knocked off, tricked away or flung, and the bag hides TOSS for them
+    (and for other important items like the Move Extractor). Icons are drawn in code
+    (`tools/gym_hack/type_item_art.py`, `graphics/items/icons/gym/`).
+
+    | Type | Defensive | Offensive |
+    |---|---|---|
+    | Normal | Fluffy Sweater | Third Eye |
+    | Fighting | Mouth Guard | Steroids |
+    | Flying | Aviator Goggles | Jet Engine |
+    | Poison | Titanium Coil | Corrosive Venom |
+    | Ground | Granite Sarcophagus | Diamond Drill Bit |
+    | Rock | Diamond Plating | Precision Chisel |
+    | Bug | Cacoon | Extra Stinger |
+    | Ghost | Light Switch | Ouija Board |
+    | Steel | Stainless Alloy | Knife Sharpener |
+    | Fire | Heat Shield | Oxidizer |
+    | Water | Cistern | Nozzle |
+    | Grass | Chicken Wire | Miracle Gro |
+    | Electric | Capacitor | Transformer |
+    | Psychic | Energy Shield | Psionic Blade |
+    | Ice | Cooler | Rock Salt |
+    | Dragon | Fire Shroud | Bionic Jaw |
+    | Dark | Black Veil | Manifesto |
+    | Fairy | Twinkling Lights | Magic Wand |
+- **Trainer card fix**: a new game's Seedot size record shares a var with FireRed's trainer card
+  icons, which crashed the game when flipping the card; the card now ignores invalid species.
 - **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's
   entrance (beside the usual guide) gives tips for running a gym of your own, tied to that gym's
   mechanic: Pewter (the gym is a path; challengers walk from the door to your BATTLE STAGE, so
@@ -386,7 +428,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data, type unlocks, practice trainer spots |
 | `tools/gym_hack/decor_art.py` | Pixel art for the type decorations and trainer icons (`python3 tools/gym_hack/decor_art.py sheet.png`) |
 | `data/scripts/gym_practice.inc` | Practice trainer battles |
-| `src/gym_candidate.c`, `data/scripts/gym_candidate.inc` | Candidacy: approvals, Guest Leader battles, mentors, Oak's asides, trainers who join |
+| `src/gym_candidate.c`, `data/scripts/gym_candidate.inc` | Candidacy: approvals, Guest Leader battles, mentors and their gifts, Oak's asides, trainers who join |
+| `tools/gym_hack/type_item_art.py`, `test/battle/gym_hack/type_items.c` | The mentors' type items: icons and battle tests |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |

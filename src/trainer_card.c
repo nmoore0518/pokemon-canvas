@@ -762,6 +762,12 @@ static void SetPlayerCardData(struct TrainerCard *trainerCard, u8 cardType)
         trainerCard->monSpecies[3] = VarGet(VAR_TRAINER_CARD_MON_ICON_4);
         trainerCard->monSpecies[4] = VarGet(VAR_TRAINER_CARD_MON_ICON_5);
         trainerCard->monSpecies[5] = VarGet(VAR_TRAINER_CARD_MON_ICON_6);
+        // Gym Trainer hack: a new game's Seedot size record (0x8000) shares a var with these
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            if (trainerCard->monSpecies[i] >= NUM_SPECIES)
+                trainerCard->monSpecies[i] = SPECIES_NONE;
+        }
         break;
     }
 }

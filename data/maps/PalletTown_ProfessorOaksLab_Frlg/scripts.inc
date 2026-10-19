@@ -13,6 +13,7 @@ PalletTown_ProfessorOaksLab_Frlg_MapScripts::
 
 PalletTown_ProfessorOaksLab_OnTransition::
 	setflag FLAG_VISITED_OAKS_LAB
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER   @ Gym Trainer hack: the mentor's visit
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForStarterScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForNationalDexScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_SetNationalDexSceneFinished
@@ -607,6 +608,7 @@ PalletTown_ProfessorOaksLab_EventScript_ReceiveDexScene::
 	waitfanfare
 	call EventScript_RestorePrevTextColor
 	removeitem ITEM_OAKS_PARCEL
+	special GymCandidate_BufferMentorName   @ Gym Trainer hack: the parcel has the mentor's reply in it
 	msgbox PalletTown_ProfessorOaksLab_Text_OakCustomBallIOrdered
 	playbgm MUS_RG_ENCOUNTER_RIVAL, 0
 	msgbox PalletTown_ProfessorOaksLab_Text_RivalGramps
@@ -683,6 +685,8 @@ PalletTown_ProfessorOaksLab_EventScript_ReceiveDexScene::
 	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1
 	setvar VAR_MAP_SCENE_PALLET_TOWN_RIVALS_HOUSE, 1
 	setvar VAR_MAP_SCENE_ROUTE22, 1
+	setvar VAR_0x800A, LOCALID_OAKS_LAB_MENTOR
+	call GymCandidate_EventScript_MentorIntro   @ Gym Trainer hack: the mentor Oak wrote to
 	release
 	end
 
@@ -1557,7 +1561,13 @@ PalletTown_ProfessorOaksLab_Text_OakCustomBallIOrdered::
 	.string "Ah! \n"
 	.string "It's the custom POKé BALL!\p"
 	.string "I had it on order.\n"
-	.string "Thank you!$"
+	.string "Thank you!\p"
+	.string "…Hm? A letter came with it.\n"
+	.string "Why, it's from {STR_VAR_1}!\p"
+	.string "I wrote about you and your GYM\n"
+	.string "plans. A reply already! It says…\p"
+	.string "“Coming to PALLET TOWN to meet\n"
+	.string "your candidate.” Today?!$"
 
 PalletTown_ProfessorOaksLab_Text_OakHaveRequestForYouTwo::
 	.string "OAK: Oh, right!\n"

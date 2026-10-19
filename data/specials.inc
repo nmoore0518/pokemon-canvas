@@ -669,8 +669,14 @@ gSpecials::
 	def_special GymCandidate_BufferEliteFourApproval
 	def_special GymCandidate_PlaceGuest
 	def_special GymCandidate_FaceGuest
+	def_special GymCandidate_FaceBack
 	def_special GymCandidate_BufferRecruit
 	def_special GymCandidate_Recruit
+	def_special GymCandidate_BufferMentorName
+	def_special GymCandidate_PrepareMentorIntro
+	def_special GymCandidate_PrepareMentorGift
+	def_special GymCandidate_BufferMentorIntro
+	def_special GymCandidate_BufferMentorGift
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing

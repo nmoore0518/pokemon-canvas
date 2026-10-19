@@ -1470,6 +1470,7 @@ TEST("GymHack: candidate: all the new story lines fit the message box")
         const struct GymRecruit *recruit = GymCandidate_GetRecruit(t);
         if (mentor != NULL)
         {
+            ExpectLinesFit(mentor->intro, 27 * 8 - 4, TRUE);
             ExpectLinesFit(mentor->first, 27 * 8 - 4, TRUE);
             ExpectLinesFit(mentor->approve, 27 * 8 - 4, TRUE);
         }
@@ -1653,4 +1654,85 @@ TEST("GymHack: Move Extractor: the grunt shows up in Saffron after Silph Co., Vi
     EXPECT_EQ(gSpecialVar_Result, FALSE);
     FlagClear(FLAG_GYM_APPROVAL_GIOVANNI);
     VarSet(VAR_MOVE_EXTRACTOR_STAGE, 0);
+}
+
+// ---- The mentors' type items (HOLD_EFFECT_TYPE_GUARD/EDGE, src/gym_candidate.c) ----
+#include "constants/event_objects.h"
+extern const u8 GymCandidate_Text_MentorAtDoor[], GymCandidate_Text_OakAfterMentor[], GymCandidate_Text_SomeoneToSeeYou[], GymCandidate_Text_GuardItemExplain[], GymCandidate_Text_EdgeItemExplain[], PalletTown_ProfessorOaksLab_Text_OakCustomBallIOrdered[], ViridianCity_Mart_Text_TakeThisToProfOak[];
+
+TEST("GymHack: type items: every type has a defensive and an offensive item of its own")
+{
+    const void *icons[NUMBER_OF_MON_TYPES * 2];
+    u32 t, i, j, n = 0;
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        u16 guard = GymCandidate_GetTypeItem(t, FALSE), edge = GymCandidate_GetTypeItem(t, TRUE);
+        if (t == TYPE_MYSTERY || t == TYPE_STELLAR)
+            continue;
+        EXPECT_EQ(GetItemHoldEffect(guard), HOLD_EFFECT_TYPE_GUARD);
+        EXPECT_EQ(GetItemHoldEffect(edge), HOLD_EFFECT_TYPE_EDGE);
+        EXPECT_EQ(GetItemHoldEffectParam(guard), t);
+        EXPECT_EQ(GetItemHoldEffectParam(edge), t);
+        EXPECT_EQ(GetItemPrice(guard), 0);
+        EXPECT(GetItemImportance(edge));
+        icons[n++] = gItemsInfo[guard].iconPic;
+        icons[n++] = gItemsInfo[edge].iconPic;
+    }
+    EXPECT_EQ(n, 36);
+    for (i = 0; i < n; i++)
+        for (j = 0; j < i; j++)
+            EXPECT(icons[i] != icons[j]);
+}
+
+TEST("GymHack: mentor: the new lines fit the message box")
+{
+    u32 who;
+    static const u8 *const texts[] = {GymCandidate_Text_MentorAtDoor, GymCandidate_Text_OakAfterMentor, GymCandidate_Text_SomeoneToSeeYou, PalletTown_ProfessorOaksLab_Text_OakCustomBallIOrdered, ViridianCity_Mart_Text_TakeThisToProfOak};
+    SetLongPlaceholders();
+    for (who = 0; who < ARRAY_COUNT(texts); who++)
+        ExpectLinesFit(texts[who], 27 * 8 - 4, TRUE);
+    for (who = 0; who < GYM_CANDIDATE_LEADERS + GYM_CANDIDATE_ELITE_FOUR; who++)
+    {
+        ExpectLinesFit(GymCandidate_GetMentorGiftText(who, FALSE), 27 * 8 - 4, TRUE);
+        ExpectLinesFit(GymCandidate_GetMentorGiftText(who, TRUE), 27 * 8 - 4, TRUE);
+    }
+    CopyItemName(ITEM_GRANITE_SARCOPHAGUS, gStringVar1);
+    ExpectLinesFit(GymCandidate_Text_GuardItemExplain, 27 * 8 - 4, TRUE);
+    CopyItemName(ITEM_DIAMOND_DRILL_BIT, gStringVar1);
+    ExpectLinesFit(GymCandidate_Text_EdgeItemExplain, 27 * 8 - 4, TRUE);
+    CopyItemName(ITEM_CORROSIVE_VENOM, gStringVar1);
+    ExpectLinesFit(GymCandidate_Text_EdgeItemExplain, 27 * 8 - 4, TRUE);
+}
+
+TEST("GymHack: mentor: meets the player once, then gives each item once")
+{
+    VarSet(VAR_PLAYER_TYPE, TYPE_ICE);
+    VarSet(VAR_MENTOR_STAGE, 0);
+    GymCandidate_PrepareMentorIntro();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    EXPECT_EQ(VarGet(VAR_OBJ_GFX_ID_0), OBJ_EVENT_GFX_LORELEI);
+    GymCandidate_PrepareMentorIntro();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+
+    gSpecialVar_0x8009 = 0;     // Brock: nothing
+    GymCandidate_PrepareMentorGift();
+    EXPECT_EQ(gSpecialVar_Result, MENTOR_GIFT_NONE);
+    gSpecialVar_0x8009 = 1;     // Misty: Lorelei visits with the defensive item
+    GymCandidate_PrepareMentorGift();
+    EXPECT_EQ(gSpecialVar_Result, MENTOR_GIFT_VISIT);
+    EXPECT_EQ(gSpecialVar_0x8004, ITEM_COOLER);
+    GymCandidate_PrepareMentorGift();
+    EXPECT_EQ(gSpecialVar_Result, MENTOR_GIFT_NONE);
+    gSpecialVar_0x8009 = 6;     // Blaine: the offensive one
+    GymCandidate_PrepareMentorGift();
+    EXPECT_EQ(gSpecialVar_Result, MENTOR_GIFT_VISIT);
+    EXPECT_EQ(gSpecialVar_0x8004, ITEM_ROCK_SALT);
+
+    VarSet(VAR_PLAYER_TYPE, TYPE_FIRE);     // Blaine hands his over himself
+    VarSet(VAR_MENTOR_STAGE, 0);
+    GymCandidate_PrepareMentorGift();
+    EXPECT_EQ(gSpecialVar_Result, MENTOR_GIFT_LEADER);
+    EXPECT_EQ(gSpecialVar_0x8004, ITEM_OXIDIZER);
+    GymCandidate_BufferMentorGift();
+    EXPECT(StringCompareN(gStringVar4, COMPOUND_STRING("BLAINE: Hah! One more quiz!"), 27) == 0);
 }

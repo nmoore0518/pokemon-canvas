@@ -1066,6 +1066,43 @@ enum __attribute__((packed)) Item
     ITEM_CILANTRO = 883,
     ITEM_MULTIVITAMIN = 884,
     ITEM_MOVE_EXTRACTOR = 885,   // Gym Trainer hack: steal a foe's last move (src/move_extractor.c)
+    // Gym Trainer hack: the mentors' type items (src/gym_candidate.c), a defensive and an offensive one per type
+    ITEM_FLUFFY_SWEATER = 886,   // Normal defense
+    ITEM_THIRD_EYE = 887,   // Normal offense
+    ITEM_MOUTH_GUARD = 888,   // Fighting defense
+    ITEM_STEROIDS = 889,   // Fighting offense
+    ITEM_AVIATOR_GOGGLES = 890,   // Flying defense
+    ITEM_JET_ENGINE = 891,   // Flying offense
+    ITEM_TITANIUM_COIL = 892,   // Poison defense
+    ITEM_CORROSIVE_VENOM = 893,   // Poison offense
+    ITEM_GRANITE_SARCOPHAGUS = 894,   // Ground defense
+    ITEM_DIAMOND_DRILL_BIT = 895,   // Ground offense
+    ITEM_DIAMOND_PLATING = 896,   // Rock defense
+    ITEM_PRECISION_CHISEL = 897,   // Rock offense
+    ITEM_CACOON = 898,   // Bug defense
+    ITEM_EXTRA_STINGER = 899,   // Bug offense
+    ITEM_LIGHT_SWITCH = 900,   // Ghost defense
+    ITEM_OUIJA_BOARD = 901,   // Ghost offense
+    ITEM_STAINLESS_ALLOY = 902,   // Steel defense
+    ITEM_KNIFE_SHARPENER = 903,   // Steel offense
+    ITEM_HEAT_SHIELD = 904,   // Fire defense
+    ITEM_OXIDIZER = 905,   // Fire offense
+    ITEM_CISTERN = 906,   // Water defense
+    ITEM_NOZZLE = 907,   // Water offense
+    ITEM_CHICKEN_WIRE = 908,   // Grass defense
+    ITEM_MIRACLE_GRO = 909,   // Grass offense
+    ITEM_CAPACITOR = 910,   // Electric defense
+    ITEM_TRANSFORMER = 911,   // Electric offense
+    ITEM_ENERGY_SHIELD = 912,   // Psychic defense
+    ITEM_PSIONIC_BLADE = 913,   // Psychic offense
+    ITEM_COOLER = 914,   // Ice defense
+    ITEM_ROCK_SALT = 915,   // Ice offense
+    ITEM_FIRE_SHROUD = 916,   // Dragon defense
+    ITEM_BIONIC_JAW = 917,   // Dragon offense
+    ITEM_BLACK_VEIL = 918,   // Dark defense
+    ITEM_MANIFESTO = 919,   // Dark offense
+    ITEM_TWINKLING_LIGHTS = 920,   // Fairy defense
+    ITEM_MAGIC_WAND = 921,   // Fairy offense
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

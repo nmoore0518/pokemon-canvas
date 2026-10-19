@@ -96,6 +96,7 @@ GymCandidate_EventScript_ViridianCityTalk::
 GymCandidate_EventScript_AfterBadge::
 	special GymCandidate_BufferMentorFirst
 	call_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_ShowText4
+	call GymCandidate_EventScript_MentorGift
 	goto GymCandidate_EventScript_Offer
 	end
 
@@ -103,6 +104,7 @@ GymCandidate_EventScript_AfterBadge::
 @ stand-in shifts (one challenger at the player's level, for money), until the player has their
 @ own gym. Ends the script.
 GymCandidate_EventScript_TalkAgain::
+	call GymCandidate_EventScript_MentorGift   @ (in case it was missed)
 	special GymCandidate_IsApproved
 	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_Offer
 	goto_if_eq VAR_0x8009, 7, GymCandidate_EventScript_Return   @ GIOVANNI: his farewell, then he leaves (FireRed's story)
@@ -191,6 +193,7 @@ GymCandidate_EventScript_GuestLeaves::
 	fadescreen FADE_TO_BLACK
 	removeobject VAR_0x800A
 	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	special GymCandidate_FaceBack
 	fadescreen FADE_FROM_BLACK
 	return
 
@@ -212,6 +215,68 @@ GymCandidate_EventScript_TeamBreaksRules::
 	msgbox GymCandidate_Text_TeamBreaksRules
 	release
 	end
+
+@ ---- The mentor (src/gym_candidate.c) ----
+@ In Oak's lab, right after the Pokédex: the mentor Oak wrote to comes to meet the player.
+@ VAR_0x800A = the lab's object for them.
+GymCandidate_EventScript_MentorIntro::
+	special GymCandidate_PrepareMentorIntro
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_Return
+	delay 30
+	playse SE_DOOR
+	msgbox GymCandidate_Text_MentorAtDoor
+	closemessage
+	call GymCandidate_EventScript_MentorAppears
+	special GymCandidate_BufferMentorIntro
+	msgbox gStringVar4
+	call GymCandidate_EventScript_GuestLeaves
+	special GymCandidate_BufferMentorName
+	msgbox GymCandidate_Text_OakAfterMentor
+	return
+
+@ Puts the mentor (VAR_0x800A, looking like VAR_OBJ_GFX_ID_0) next to the player
+GymCandidate_EventScript_MentorAppears::
+	fadescreen FADE_TO_BLACK
+	special GymCandidate_PlaceGuest
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_MentorNoRoom
+	setobjectxyperm VAR_0x800A, VAR_0x8005, VAR_0x8006
+	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	addobject VAR_0x800A
+	special GymCandidate_FaceGuest
+GymCandidate_EventScript_MentorNoRoom::
+	fadescreen FADE_FROM_BLACK
+	return
+
+@ After the Cerulean (defensive item) and Cinnabar (offensive item) badges: the mentor's gift.
+@ VAR_0x8009 = the leader, VAR_0x800A = the gym's spare person.
+GymCandidate_EventScript_MentorGift::
+	special GymCandidate_PrepareMentorGift
+	goto_if_eq VAR_RESULT, MENTOR_GIFT_NONE, GymCandidate_EventScript_Return
+	goto_if_eq VAR_RESULT, MENTOR_GIFT_LEADER, GymCandidate_EventScript_MentorGiveItem
+	msgbox GymCandidate_Text_SomeoneToSeeYou
+	closemessage
+	call GymCandidate_EventScript_MentorAppears
+	call GymCandidate_EventScript_MentorGiveItem
+	call GymCandidate_EventScript_GuestLeaves
+	return
+
+GymCandidate_EventScript_MentorGiveItem::
+	special GymCandidate_BufferMentorGift
+	msgbox gStringVar4
+	giveitem VAR_0x8004
+	goto_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_MentorItemExplain
+	addpcitem VAR_0x8004, 1
+	bufferitemname STR_VAR_2, VAR_0x8004
+	msgbox GymHack_Text_GiftSentToPC
+GymCandidate_EventScript_MentorItemExplain::
+	bufferitemname STR_VAR_1, VAR_0x8004
+	goto_if_eq VAR_0x8009, 6, GymCandidate_EventScript_EdgeItemExplain
+	msgbox GymCandidate_Text_GuardItemExplain
+	return
+
+GymCandidate_EventScript_EdgeItemExplain::
+	msgbox GymCandidate_Text_EdgeItemExplain
+	return
 
 @ ---- Elite Four: VAR_0x8009 = 8 (Lorelei) to 11 (Lance) ----
 GymCandidate_EventScript_EliteFourMentor::
@@ -455,6 +520,32 @@ GymCandidate_Text_DaisyAside::
 	.string "to the GYM late at night lately.\p"
 	.string "He says he's “inspecting.”\n"
 	.string "In his old TRAINER's cap.$"
+
+GymCandidate_Text_MentorAtDoor::
+	.string "{STR_VAR_1}: Hello? PROF. OAK?\n"
+	.string "Is your candidate here?$"
+
+GymCandidate_Text_OakAfterMentor::
+	.string "OAK: My, my! One letter, and\n"
+	.string "{STR_VAR_1} comes all this way!\p"
+	.string "A fine mentor for you, {PLAYER}.\n"
+	.string "Yes… I'm sure of it. Mostly.$"
+
+GymCandidate_Text_SomeoneToSeeYou::
+	.string "Hm? Someone came into the GYM\n"
+	.string "looking for {PLAYER}…$"
+
+GymCandidate_Text_GuardItemExplain::
+	.string "When a POKéMON holds the\n"
+	.string "{STR_VAR_1}, no move is\l"
+	.string "super effective against it.\p"
+	.string "It never wears out.$"
+
+GymCandidate_Text_EdgeItemExplain::
+	.string "When a POKéMON holds the\n"
+	.string "{STR_VAR_1}, its moves always\l"
+	.string "hit for at least normal damage.\p"
+	.string "It never wears out.$"
 
 GymCandidate_Text_RecruitJoined::
 	.string "{STR_VAR_1} joined your GYM!$"

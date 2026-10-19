@@ -25,4 +25,13 @@
 #define GYM_FINALE_OAK_IN_GYM      2   // the player put off Oak's challenge; he waits in the gym
 #define GYM_FINALE_DONE            3   // the player beat Oak: the gym is theirs
 
+// VAR_MENTOR_STAGE bits
+#define MENTOR_MET          (1 << 0)
+#define MENTOR_GAVE_GUARD   (1 << 1)    // the defensive item, after Mt. Moon (at the Cerulean Gym)
+#define MENTOR_GAVE_EDGE    (1 << 2)    // the offensive item, at the Cinnabar Gym
+
+#define MENTOR_GIFT_NONE    0
+#define MENTOR_GIFT_LEADER  1   // the mentor is this gym's leader: they hand it over themselves
+#define MENTOR_GIFT_VISIT   2   // the mentor drops by
+
 #endif // GUARD_CONSTANTS_GYM_HACK_H

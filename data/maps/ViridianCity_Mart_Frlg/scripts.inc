@@ -89,8 +89,10 @@ ViridianCity_Mart_Text_YouCameFromPallet::
 
 ViridianCity_Mart_Text_TakeThisToProfOak::
 	.string "You know PROF. OAK, right?\p"
-	.string "His order came in.\n"
-	.string "Can I get you to take it to him?$"
+	.string "His order came in. And somebody\n"
+	.string "important left a letter for him.\p"
+	.string "Can I get you to take them\n"
+	.string "to him?$"
 
 ViridianCity_Mart_Text_ReceivedOaksParcelFromClerk::
 	.string "{PLAYER} received OAK'S PARCEL\n"

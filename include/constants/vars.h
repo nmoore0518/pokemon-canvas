@@ -339,6 +339,8 @@
 #define VAR_GYM_FINALE                                   0x40FA
 // The Move Extractor: how many the Rocket grunt has handed over (0-3; data/scripts/move_extractor.inc)
 #define VAR_MOVE_EXTRACTOR_STAGE                         0x40FB
+// The mentor (src/gym_candidate.c): MENTOR_MET | MENTOR_GAVE_GUARD | MENTOR_GAVE_EDGE
+#define VAR_MENTOR_STAGE                                 0x40FC
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

@@ -16294,6 +16294,691 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_DNASplicers,
         .iconPalette = gItemIconPalette_DNASplicers,
     },
+
+    // Gym Trainer hack: the mentors' type items (see HOLD_EFFECT_TYPE_GUARD/EDGE in src/battle_util.c)
+    [ITEM_FLUFFY_SWEATER] =
+    {
+        .name = ITEM_NAME("Fluffy Sweater"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_NORMAL,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_FluffySweater,
+        .iconPalette = gItemIconPalette_FluffySweater,
+    },
+
+    [ITEM_THIRD_EYE] =
+    {
+        .name = ITEM_NAME("Third Eye"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_NORMAL,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_ThirdEye,
+        .iconPalette = gItemIconPalette_ThirdEye,
+    },
+
+    [ITEM_MOUTH_GUARD] =
+    {
+        .name = ITEM_NAME("Mouth Guard"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_FIGHTING,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_MouthGuard,
+        .iconPalette = gItemIconPalette_MouthGuard,
+    },
+
+    [ITEM_STEROIDS] =
+    {
+        .name = ITEM_NAME("Steroids"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_FIGHTING,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Steroids,
+        .iconPalette = gItemIconPalette_Steroids,
+    },
+
+    [ITEM_AVIATOR_GOGGLES] =
+    {
+        .name = ITEM_NAME("Aviator Goggles"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_FLYING,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_AviatorGoggles,
+        .iconPalette = gItemIconPalette_AviatorGoggles,
+    },
+
+    [ITEM_JET_ENGINE] =
+    {
+        .name = ITEM_NAME("Jet Engine"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_FLYING,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_JetEngine,
+        .iconPalette = gItemIconPalette_JetEngine,
+    },
+
+    [ITEM_TITANIUM_COIL] =
+    {
+        .name = ITEM_NAME("Titanium Coil"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_POISON,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_TitaniumCoil,
+        .iconPalette = gItemIconPalette_TitaniumCoil,
+    },
+
+    [ITEM_CORROSIVE_VENOM] =
+    {
+        .name = ITEM_NAME("Corrosive Venom"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_POISON,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_CorrosiveVenom,
+        .iconPalette = gItemIconPalette_CorrosiveVenom,
+    },
+
+    [ITEM_GRANITE_SARCOPHAGUS] =
+    {
+        .name = ITEM_NAME("Granite Sarcophagus"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_GROUND,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_GraniteSarcophagus,
+        .iconPalette = gItemIconPalette_GraniteSarcophagus,
+    },
+
+    [ITEM_DIAMOND_DRILL_BIT] =
+    {
+        .name = ITEM_NAME("Diamond Drill Bit"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_GROUND,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_DiamondDrillBit,
+        .iconPalette = gItemIconPalette_DiamondDrillBit,
+    },
+
+    [ITEM_DIAMOND_PLATING] =
+    {
+        .name = ITEM_NAME("Diamond Plating"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_ROCK,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_DiamondPlating,
+        .iconPalette = gItemIconPalette_DiamondPlating,
+    },
+
+    [ITEM_PRECISION_CHISEL] =
+    {
+        .name = ITEM_NAME("Precision Chisel"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_ROCK,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_PrecisionChisel,
+        .iconPalette = gItemIconPalette_PrecisionChisel,
+    },
+
+    [ITEM_CACOON] =
+    {
+        .name = ITEM_NAME("Cacoon"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_BUG,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Cacoon,
+        .iconPalette = gItemIconPalette_Cacoon,
+    },
+
+    [ITEM_EXTRA_STINGER] =
+    {
+        .name = ITEM_NAME("Extra Stinger"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_BUG,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_ExtraStinger,
+        .iconPalette = gItemIconPalette_ExtraStinger,
+    },
+
+    [ITEM_LIGHT_SWITCH] =
+    {
+        .name = ITEM_NAME("Light Switch"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_GHOST,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_LightSwitch,
+        .iconPalette = gItemIconPalette_LightSwitch,
+    },
+
+    [ITEM_OUIJA_BOARD] =
+    {
+        .name = ITEM_NAME("Ouija Board"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_GHOST,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_OuijaBoard,
+        .iconPalette = gItemIconPalette_OuijaBoard,
+    },
+
+    [ITEM_STAINLESS_ALLOY] =
+    {
+        .name = ITEM_NAME("Stainless Alloy"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_STEEL,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_StainlessAlloy,
+        .iconPalette = gItemIconPalette_StainlessAlloy,
+    },
+
+    [ITEM_KNIFE_SHARPENER] =
+    {
+        .name = ITEM_NAME("Knife Sharpener"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_STEEL,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_KnifeSharpener,
+        .iconPalette = gItemIconPalette_KnifeSharpener,
+    },
+
+    [ITEM_HEAT_SHIELD] =
+    {
+        .name = ITEM_NAME("Heat Shield"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_FIRE,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_HeatShield,
+        .iconPalette = gItemIconPalette_HeatShield,
+    },
+
+    [ITEM_OXIDIZER] =
+    {
+        .name = ITEM_NAME("Oxidizer"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_FIRE,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Oxidizer,
+        .iconPalette = gItemIconPalette_Oxidizer,
+    },
+
+    [ITEM_CISTERN] =
+    {
+        .name = ITEM_NAME("Cistern"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_WATER,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Cistern,
+        .iconPalette = gItemIconPalette_Cistern,
+    },
+
+    [ITEM_NOZZLE] =
+    {
+        .name = ITEM_NAME("Nozzle"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_WATER,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Nozzle,
+        .iconPalette = gItemIconPalette_Nozzle,
+    },
+
+    [ITEM_CHICKEN_WIRE] =
+    {
+        .name = ITEM_NAME("Chicken Wire"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_GRASS,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_ChickenWire,
+        .iconPalette = gItemIconPalette_ChickenWire,
+    },
+
+    [ITEM_MIRACLE_GRO] =
+    {
+        .name = ITEM_NAME("Miracle Gro"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_GRASS,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_MiracleGro,
+        .iconPalette = gItemIconPalette_MiracleGro,
+    },
+
+    [ITEM_CAPACITOR] =
+    {
+        .name = ITEM_NAME("Capacitor"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_ELECTRIC,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Capacitor,
+        .iconPalette = gItemIconPalette_Capacitor,
+    },
+
+    [ITEM_TRANSFORMER] =
+    {
+        .name = ITEM_NAME("Transformer"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_ELECTRIC,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Transformer,
+        .iconPalette = gItemIconPalette_Transformer,
+    },
+
+    [ITEM_ENERGY_SHIELD] =
+    {
+        .name = ITEM_NAME("Energy Shield"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_PSYCHIC,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_EnergyShield,
+        .iconPalette = gItemIconPalette_EnergyShield,
+    },
+
+    [ITEM_PSIONIC_BLADE] =
+    {
+        .name = ITEM_NAME("Psionic Blade"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_PSYCHIC,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_PsionicBlade,
+        .iconPalette = gItemIconPalette_PsionicBlade,
+    },
+
+    [ITEM_COOLER] =
+    {
+        .name = ITEM_NAME("Cooler"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_ICE,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Cooler,
+        .iconPalette = gItemIconPalette_Cooler,
+    },
+
+    [ITEM_ROCK_SALT] =
+    {
+        .name = ITEM_NAME("Rock Salt"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_ICE,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_RockSalt,
+        .iconPalette = gItemIconPalette_RockSalt,
+    },
+
+    [ITEM_FIRE_SHROUD] =
+    {
+        .name = ITEM_NAME("Fire Shroud"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_DRAGON,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_FireShroud,
+        .iconPalette = gItemIconPalette_FireShroud,
+    },
+
+    [ITEM_BIONIC_JAW] =
+    {
+        .name = ITEM_NAME("Bionic Jaw"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_DRAGON,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_BionicJaw,
+        .iconPalette = gItemIconPalette_BionicJaw,
+    },
+
+    [ITEM_BLACK_VEIL] =
+    {
+        .name = ITEM_NAME("Black Veil"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_DARK,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_BlackVeil,
+        .iconPalette = gItemIconPalette_BlackVeil,
+    },
+
+    [ITEM_MANIFESTO] =
+    {
+        .name = ITEM_NAME("Manifesto"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_DARK,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Manifesto,
+        .iconPalette = gItemIconPalette_Manifesto,
+    },
+
+    [ITEM_TWINKLING_LIGHTS] =
+    {
+        .name = ITEM_NAME("Twinkling Lights"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_GUARD,
+        .holdEffectParam = TYPE_FAIRY,
+        .description = COMPOUND_STRING(
+            "Super effective\n"
+            "hits on the holder\n"
+            "do normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_TwinklingLights,
+        .iconPalette = gItemIconPalette_TwinklingLights,
+    },
+
+    [ITEM_MAGIC_WAND] =
+    {
+        .name = ITEM_NAME("Magic Wand"),
+        .price = 0,
+        .importance = 1,
+        .holdEffect = HOLD_EFFECT_TYPE_EDGE,
+        .holdEffectParam = TYPE_FAIRY,
+        .description = COMPOUND_STRING(
+            "Moves always hit\n"
+            "for at least\n"
+            "normal damage."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_MagicWand,
+        .iconPalette = gItemIconPalette_MagicWand,
+    },
 };
 
 #undef ITEM_NAME

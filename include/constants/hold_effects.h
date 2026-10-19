@@ -136,6 +136,9 @@ enum HoldEffect
     HOLD_EFFECT_OGERPON_MASK,
     // Gen2 hold effect
     HOLD_EFFECT_BERSERK_GENE,
+    // Gym Trainer hack: the mentors' type items (param = type, for show)
+    HOLD_EFFECT_TYPE_GUARD,     // nothing is super effective on the holder
+    HOLD_EFFECT_TYPE_EDGE,      // the holder's moves are never resisted or blocked by type
     HOLD_EFFECT_COUNT
 };
 
