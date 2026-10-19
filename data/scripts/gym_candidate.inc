@@ -99,12 +99,25 @@ GymCandidate_EventScript_AfterBadge::
 	goto GymCandidate_EventScript_Offer
 	end
 
-@ Talking to the leader again: asks again until they approve, otherwise returns (the gym's
-@ usual words follow)
+@ Talking to the leader again: asks again until they approve. After that they offer optional
+@ stand-in shifts (one challenger at the player's level, for money), until the player has their
+@ own gym. Ends the script.
 GymCandidate_EventScript_TalkAgain::
 	special GymCandidate_IsApproved
 	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_Offer
-	return
+	goto_if_set FLAG_PALLET_GYM_AWARDED, GymCandidate_EventScript_OwnGym
+	special GymCandidate_BufferRepeatOffer
+	msgbox gStringVar4, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, GymCandidate_EventScript_NotYet
+	setvar VAR_0x8007, 1
+	goto GymCandidate_EventScript_Start
+	end
+
+GymCandidate_EventScript_OwnGym::
+	special GymCandidate_BufferOwnGym
+	msgbox gStringVar4
+	release
+	end
 
 GymCandidate_EventScript_ShowText4::
 	msgbox gStringVar4
@@ -114,6 +127,8 @@ GymCandidate_EventScript_Offer::
 	special GymCandidate_BufferOffer
 	msgbox gStringVar4, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, GymCandidate_EventScript_NotYet
+	setvar VAR_0x8007, 0
+GymCandidate_EventScript_Start::
 	special GymHack_CheckTeamSpecial
 	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, GymCandidate_EventScript_TeamBreaksRules
 	setvar VAR_0x800B, 0
@@ -147,11 +162,18 @@ GymCandidate_EventScript_GuestNoRoom::
 	addvar VAR_0x800B, 1
 	special GymCandidate_MoreGuests
 	goto_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_NextGuest
+	goto_if_eq VAR_0x8007, 1, GymCandidate_EventScript_ShiftDone
 	special GymCandidate_Approve
 	playfanfare MUS_LEVEL_UP
 	msgbox gStringVar4
 	waitfanfare
 	msgbox GymCandidate_Text_ApprovalCount
+	release
+	end
+
+GymCandidate_EventScript_ShiftDone::
+	special GymCandidate_BufferRepeatThanks
+	msgbox gStringVar4
 	release
 	end
 

@@ -49,7 +49,7 @@ EWRAM_DATA u8 gGymChallengeDefeatText[120];  // in battle, when the challenger l
 EWRAM_DATA u8 gGymChallengeAfterText[160];   // after losing to the player
 EWRAM_DATA u8 gGymChallengeWinText[160];     // after beating the player
 EWRAM_DATA bool8 gGymPracticeBattle;         // a practice battle: no prize money (data/battle_scripts_1.s)
-EWRAM_DATA bool8 gGymGuestBattle;            // a Guest Leader battle: a big prize (src/battle_script_commands.c)
+EWRAM_DATA u8 gGymGuestBattle;            // a Guest Leader battle: a big prize (src/battle_script_commands.c)
 
 // ---------------------------------------------------------------------------
 // Save data
@@ -871,13 +871,25 @@ static const u8 *const sGuestWins[] =
     COMPOUND_STRING("Better luck next time,\nsub!"),
 };
 
-void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier)
+// repeat: a later, optional stand-in shift after the leader's approval: one challenger at the
+// player's own level (2 below to 3 above), more evolved as the player grows, paying a normal Gym
+// Leader's prize. Otherwise the approval run: the leader's level (or 3 below the player, if
+// higher), paying double.
+void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier, bool32 repeat)
 {
     const struct ChallengerClass *cls = &sClasses[Random() % ARRAY_COUNT(sClasses)];
     const u8 *name = cls->female ? sFemaleNames[Random() % ARRAY_COUNT(sFemaleNames)]
                                  : sMaleNames[Random() % ARRAY_COUNT(sMaleNames)];
-    s32 level = max((s32)baseLevel, (s32)GymChallenge_PlayerAverageLevel() - 3);
+    s32 avg = GymChallenge_PlayerAverageLevel();
+    s32 level = max((s32)baseLevel, avg - 3);
     u32 n;
+
+    if (repeat)
+    {
+        level = max(avg - 2 + (s32)(Random() % 6), 5);
+        level = min(level, MAX_LEVEL);
+        tier = max(tier, (u32)(avg >= 40 ? PRACTICE_EXPERT : (avg >= 25 ? PRACTICE_SKILLED : PRACTICE_ROOKIE)));
+    }
 
     SetupTrainer(cls->trainerClass, cls->trainerPic, cls->female, name, 1);
     n = BuildTeam(min(tier, PRACTICE_TIERS - 1), NUMBER_OF_MON_TYPES, level, partySize);
@@ -889,7 +901,7 @@ void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier)
              sGuestAfters[Random() % ARRAY_COUNT(sGuestAfters)],
              sGuestWins[Random() % ARRAY_COUNT(sGuestWins)]);
     gGymPracticeBattle = FALSE;
-    gGymGuestBattle = TRUE;        // the challenger pays the stand-in LEADER a Gym Leader's prize
+    gGymGuestBattle = repeat ? 1 : 2;   // the challenger pays the stand-in a Gym Leader's prize (doubled the first time)
 }
 
 // Special: after a practice battle

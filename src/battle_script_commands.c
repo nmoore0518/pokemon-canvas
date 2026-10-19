@@ -4034,10 +4034,10 @@ static u32 GetTrainerMoneyToGive(u16 trainerId)
             moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * 2 * trainerMoney;
         else
             moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * trainerMoney;
-        // Gym Trainer hack: Guest Leader challengers pay the stand-in a Gym Leader's prize, doubled
-        // (src/gym_candidate.c), so there's money for gym decorations as well as supplies
+        // Gym Trainer hack: Guest Leader challengers pay the stand-in a Gym Leader's prize (doubled
+        // for the approval; src/gym_candidate.c), so there's money for gym decorations and supplies
         if (trainerId == TRAINER_GYM_CHALLENGER && gGymGuestBattle)
-            moneyReward = 8 * lastMonLevel * gBattleStruct->moneyMultiplier * GYM_GUEST_PRIZE_RATE;
+            moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * GYM_GUEST_PRIZE_RATE * gGymGuestBattle;
     }
 
     return moneyReward;

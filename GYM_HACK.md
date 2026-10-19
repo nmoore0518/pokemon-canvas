@@ -298,7 +298,14 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     later in the story (`gGymCandidateLeaders`). Each challenger pays the stand-in a Gym Leader's
     prize, doubled (8 x their last Pokémon's level x 25: about ¥2,400 at Brock, ¥9,400 each at
     Giovanni, ~¥85,000 over the story; `GYM_GUEST_PRIZE_RATE`), to fund decorations. Your team
-    must follow the one-type rule; losing just means trying again (no money lost, team healed). Approval flags
+    must follow the one-type rule; losing just means trying again (no money lost, team healed).
+  - **Stand-in shifts** (optional, repeatable): once a leader approves, talking to them again gets
+    an offer in their own voice (Brock's stew, Misty's swim, Surge's R&R, Erika's nap, Koga
+    vanishing, Sabrina foreseeing it, Blaine's hot springs, Giovanni's "business"). One
+    challenger (even at Koga and later), levels 2 below to 3 above the player's average and more
+    evolved as the player grows, paying a normal Gym Leader's prize (100 x their last Pokémon's
+    level) plus EXP. Losing costs nothing. Once the Pallet gym is the player's, leaders turn the
+    offer down in character ("you've got your own GYM to run now"); the gym challenges take over. Approval flags
     `FLAG_GYM_APPROVAL_*` (0x0BA-0x0C1). Each gym map has a spare person
     (`LOCALID_<GYM>_GYM_GUEST`, hidden by `FLAG_HIDE_PALLET_GYM_CHALLENGER`).
   - The Elite Four each give their approval after losing.

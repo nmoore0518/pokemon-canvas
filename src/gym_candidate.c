@@ -35,48 +35,72 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .guests = 1, .level = 12, .partySize = 2, .tier = 0,
         .offer = COMPOUND_STRING("BROCK: So you want to be a GYM\nLEADER yourself? Good for you.\pBut a LEADER's job doesn't end\nwith one battle.\pChallengers come every day, and\nthey all expect the LEADER.\pHow about you watch my GYM for an\nafternoon? Prove you can hold it!"),
         .approve = COMPOUND_STRING("BROCK: Solid work! You held my\nGYM like a real LEADER.\pThe LEAGUE will hear that you have\nmy approval. Rock on, {PLAYER}!"),
+        .repeatOffer = COMPOUND_STRING("BROCK: Back again, {PLAYER}?\nPerfect timing!\pI've got a stew on the stove.\nMind watching the GYM for a bit?"),
+        .repeatThanks = COMPOUND_STRING("BROCK: Thanks for covering,\n{PLAYER}! Come back any time."),
+        .ownGym = COMPOUND_STRING("BROCK: Hey, LEADER! You've got\nyour own GYM to run now.\pYour challengers are waiting in\nPALLET TOWN!"),
     },
     [1] = {
         .name = COMPOUND_STRING("MISTY"), .approvalFlag = FLAG_GYM_APPROVAL_MISTY,
         .guests = 1, .level = 20, .partySize = 3, .tier = 0,
         .offer = COMPOUND_STRING("MISTY: A GYM of your own, huh?\nFine. Here's the deal.\pI need a break. You watch my GYM,\nand if a challenger shows up…\pyou beat them. Easy, right?\nUnless you're scared!"),
         .approve = COMPOUND_STRING("MISTY: Hmph. Not bad.\nNot bad at all.\pOK, OK! You've got my approval.\nDon't let it go to your head!"),
+        .repeatOffer = COMPOUND_STRING("MISTY: Oh, it's you. Great timing!\pI'm going for a swim. You watch\nthe GYM… if you're up to it."),
+        .repeatThanks = COMPOUND_STRING("MISTY: Hmph. Not bad. You can\ncover again sometime. Maybe."),
+        .ownGym = COMPOUND_STRING("MISTY: Don't you have your own GYM\nnow? Go run it!\pI'm not sharing my challengers!"),
     },
     [2] = {
         .name = COMPOUND_STRING("LT. SURGE"), .approvalFlag = FLAG_GYM_APPROVAL_SURGE,
         .guests = 1, .level = 24, .partySize = 3, .tier = 1,
         .offer = COMPOUND_STRING("LT. SURGE: Hey, kid! Word is\nyou're after a GYM of your own!\pIn the army, we'd call this a\nfield test!\pYou hold my GYM against the next\nchallenger. Roger that?"),
         .approve = COMPOUND_STRING("LT. SURGE: Outstanding, soldier!\pYou've got my approval, kid!\nI'll radio it to the LEAGUE!"),
+        .repeatOffer = COMPOUND_STRING("LT. SURGE: Hey, soldier! Reporting\nfor duty?\pI need some R&R. Hold the fort\nfor me!"),
+        .repeatThanks = COMPOUND_STRING("LT. SURGE: Mission accomplished!\nDismissed, soldier!"),
+        .ownGym = COMPOUND_STRING("LT. SURGE: Ha! You've got your own\nbase to defend now, LEADER!\pGet back to PALLET!"),
     },
     [3] = {
         .name = COMPOUND_STRING("ERIKA"), .approvalFlag = FLAG_GYM_APPROVAL_ERIKA,
         .guests = 1, .level = 29, .partySize = 4, .tier = 1,
         .offer = COMPOUND_STRING("ERIKA: Oh my… A GYM in PALLET\nTOWN? How lovely.\pWould you mind watching my GYM\nwhile I tend to the flowers?\pIf a challenger comes, please\ngreet them for me."),
         .approve = COMPOUND_STRING("ERIKA: How wonderful. You welcomed\nthem as a LEADER should.\pYou have my approval, of course.\nI shall tell the LEAGUE today."),
+        .repeatOffer = COMPOUND_STRING("ERIKA: Oh, hello again…\nI was just about to take a nap.\pWould you mind looking after the\nGYM for a little while?"),
+        .repeatThanks = COMPOUND_STRING("ERIKA: Thank you ever so much…\nI feel so refreshed."),
+        .ownGym = COMPOUND_STRING("ERIKA: Oh my, you have a GYM of\nyour own now.\pYour challengers will miss you.\nPlease, go to them."),
     },
     [4] = {
         .name = COMPOUND_STRING("KOGA"), .approvalFlag = FLAG_GYM_APPROVAL_KOGA,
         .guests = 2, .level = 37, .partySize = 4, .tier = 1,
         .offer = COMPOUND_STRING("KOGA: Fwahahaha! So the child\nwould be a LEADER?\pA ninja tests his student in\nsecret. Hold my GYM while I…\pwatch from the shadows. Two\nchallengers approach. Ready?"),
         .approve = COMPOUND_STRING("KOGA: …Hmm! You did not falter.\pVery well. KOGA, master of\nPOISON, grants his approval!"),
+        .repeatOffer = COMPOUND_STRING("KOGA: Fwahaha! You return.\pA ninja must train in secret now\nand then. Guard my GYM while I\lvanish!"),
+        .repeatThanks = COMPOUND_STRING("KOGA: …Well guarded. I saw\neverything, of course."),
+        .ownGym = COMPOUND_STRING("KOGA: A LEADER guards their own\nGYM, not another's.\pReturn to PALLET TOWN!"),
     },
     [5] = {
         .name = COMPOUND_STRING("SABRINA"), .approvalFlag = FLAG_GYM_APPROVAL_SABRINA,
         .guests = 2, .level = 40, .partySize = 4, .tier = 2,
         .offer = COMPOUND_STRING("SABRINA: I knew you would ask.\nI saw this moment a week ago.\pTwo challengers will come\nthrough my GYM today.\pYou will face them. I already\nknow how it ends… Do you?"),
         .approve = COMPOUND_STRING("SABRINA: …Just as I foresaw.\pYou have my approval. The\nLEAGUE knows it already."),
+        .repeatOffer = COMPOUND_STRING("SABRINA: I knew you would come\nback today.\pA challenger is on the way.\nYou will take my place."),
+        .repeatThanks = COMPOUND_STRING("SABRINA: As I foresaw.\nThank you."),
+        .ownGym = COMPOUND_STRING("SABRINA: I see a GYM in PALLET\nTOWN… and challengers waiting\lfor you. Go."),
     },
     [6] = {
         .name = COMPOUND_STRING("BLAINE"), .approvalFlag = FLAG_GYM_APPROVAL_BLAINE,
         .guests = 2, .level = 44, .partySize = 5, .tier = 2,
         .offer = COMPOUND_STRING("BLAINE: Hah! A future LEADER!\nHere's a quiz for you!\pQuestion: who holds a GYM when\nits LEADER is out?\pAnswer: YOU do! Two challengers\nare on their way. Fire it up!"),
         .approve = COMPOUND_STRING("BLAINE: Correct answer! You've\ngot fire in you, kid!\pMy approval is yours!\nWahahahah!"),
+        .repeatOffer = COMPOUND_STRING("BLAINE: Hah! Quiz time! Who's\ncovering my GYM while I soak in\lthe hot springs?\pAnswer: YOU!"),
+        .repeatThanks = COMPOUND_STRING("BLAINE: Correct! Fire it up again\nany time!"),
+        .ownGym = COMPOUND_STRING("BLAINE: Quiz! Who has their own\nGYM now?\pAnswer: YOU! So go run it!\nWahahahah!"),
     },
     [7] = {
         .name = COMPOUND_STRING("GIOVANNI"), .approvalFlag = FLAG_GYM_APPROVAL_GIOVANNI,
         .guests = 2, .level = 47, .partySize = 5, .tier = 2,
         .offer = COMPOUND_STRING("GIOVANNI: So. You want the\nLEAGUE's blessing as well.\pThen hold my GYM. Two\nchallengers are waiting.\pLet us see if you can protect\nwhat is yours."),
         .approve = COMPOUND_STRING("GIOVANNI: …You protect what is\nyours. I respect that.\pThe LEAGUE will have my approval.\nNow leave me."),
+        .repeatOffer = COMPOUND_STRING("GIOVANNI: You again.\nI have… business elsewhere.\pWatch my GYM. Don't disappoint\nme."),
+        .repeatThanks = COMPOUND_STRING("GIOVANNI: Adequate.\nYou may go."),
+        .ownGym = COMPOUND_STRING("GIOVANNI: You have a GYM of your\nown now. Guard it.\pMine needs no help from you."),
     },
 };
 
@@ -206,15 +230,36 @@ void GymCandidate_BufferOffer(void)
 // another one is coming
 void GymCandidate_MoreGuests(void)
 {
-    gSpecialVar_Result = gSpecialVar_0x800B < gGymCandidateLeaders[Leader()].guests;
+    // VAR_0x8007 = 1: a stand-in shift after the approval, one challenger
+    u32 guests = gSpecialVar_0x8007 ? 1 : gGymCandidateLeaders[Leader()].guests;
+    gSpecialVar_Result = gSpecialVar_0x800B < guests;
 }
 
-// Special: VAR_0x8009 = leader, VAR_0x800B = challengers beaten so far. Builds the next one.
+// Special: VAR_0x8009 = leader -> gStringVar4 = asking the player to cover again (after approval)
+void GymCandidate_BufferRepeatOffer(void)
+{
+    StringExpandPlaceholders(gStringVar4, gGymCandidateLeaders[Leader()].repeatOffer);
+}
+
+// Special: VAR_0x8009 = leader -> gStringVar4 = thanks after a shift
+void GymCandidate_BufferRepeatThanks(void)
+{
+    StringExpandPlaceholders(gStringVar4, gGymCandidateLeaders[Leader()].repeatThanks);
+}
+
+// Special: VAR_0x8009 = leader -> gStringVar4 = no more shifts: the player has a gym now
+void GymCandidate_BufferOwnGym(void)
+{
+    StringExpandPlaceholders(gStringVar4, gGymCandidateLeaders[Leader()].ownGym);
+}
+
+// Special: VAR_0x8009 = leader, VAR_0x800B = challengers beaten so far, VAR_0x8007 = a shift
+// after approval. Builds the next one.
 void GymCandidate_GenerateGuest(void)
 {
     const struct GymCandidateLeader *leader = &gGymCandidateLeaders[Leader()];
     StringCopy(gStringVar3, leader->name);
-    GymChallenge_GenerateGuest(leader->level, leader->partySize, leader->tier);
+    GymChallenge_GenerateGuest(leader->level, leader->partySize, leader->tier, gSpecialVar_0x8007 != 0);
 }
 
 // The mentor for the player's type, if it's this leader (0-11)

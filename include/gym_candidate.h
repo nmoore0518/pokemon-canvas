@@ -19,6 +19,9 @@ struct GymCandidateLeader
     u8 tier;            // how evolved their Pokémon are (practice tiers: 0 rookie, 1 skilled, 2 expert)
     const u8 *offer;
     const u8 *approve;
+    const u8 *repeatOffer;    // after approval: covering again, for money and experience
+    const u8 *repeatThanks;
+    const u8 *ownGym;         // once the player has their own gym, no more shifts
 };
 
 struct GymCandidateMentor
@@ -51,6 +54,9 @@ void GymCandidate_BufferApprovals(void);
 void GymCandidate_IsApproved(void);
 void GymCandidate_BufferOffer(void);
 void GymCandidate_MoreGuests(void);
+void GymCandidate_BufferRepeatOffer(void);
+void GymCandidate_BufferRepeatThanks(void);
+void GymCandidate_BufferOwnGym(void);
 void GymCandidate_GenerateGuest(void);
 void GymCandidate_BufferMentorFirst(void);
 void GymCandidate_Approve(void);

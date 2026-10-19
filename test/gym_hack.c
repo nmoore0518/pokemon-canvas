@@ -1458,6 +1458,9 @@ TEST("GymHack: candidate: all the new story lines fit the message box")
     {
         ExpectLinesFit(gGymCandidateLeaders[i].offer, 27 * 8 - 4, TRUE);
         ExpectLinesFit(gGymCandidateLeaders[i].approve, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(gGymCandidateLeaders[i].repeatOffer, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(gGymCandidateLeaders[i].repeatThanks, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(gGymCandidateLeaders[i].ownGym, 27 * 8 - 4, TRUE);
     }
     for (i = 0; i < GYM_CANDIDATE_ELITE_FOUR; i++)
         ExpectLinesFit(GymCandidate_GetEliteFourApproval(i), 27 * 8 - 4, TRUE);
@@ -1499,8 +1502,9 @@ TEST("GymHack: candidate: guest challengers grow with the story, and their lines
         {
             const struct Trainer *tr;
             gSpecialVar_0x8009 = leader;
+            gSpecialVar_0x8007 = 0;
             GymCandidate_GenerateGuest();
-            EXPECT(gGymGuestBattle);           // they pay the stand-in (a doubled Gym Leader prize)
+            EXPECT_EQ(gGymGuestBattle, 2);           // they pay the stand-in (a doubled Gym Leader prize)
             EXPECT(!gGymPracticeBattle);
             tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
             EXPECT_EQ((u32)tr->partySize, (u32)gGymCandidateLeaders[leader].partySize);
@@ -1556,4 +1560,37 @@ TEST("GymHack: candidate: a recruit joins once and can be placed as a trainer")
     EXPECT(GymDecor_Place(GymCandidate_GetRecruit(TYPE_FAIRY)->decor, 3, 5));
     EXPECT_EQ(GymDecor_CountPlacedTrainers(), 1);
     GymDecor_ClearAll();
+}
+
+TEST("GymHack: candidate: after approval, a shift is one challenger near the player's level")
+{
+    u32 leader, run, i, total, avg;
+    GivePlayerTeamAt(40, 40);
+    avg = GymChallenge_PlayerAverageLevel();
+    for (leader = 0; leader < GYM_CANDIDATE_LEADERS; leader++)
+    {
+        gSpecialVar_0x8009 = leader;
+        gSpecialVar_0x8007 = 1;
+        gSpecialVar_0x800B = 1;
+        GymCandidate_MoreGuests();
+        EXPECT_EQ(gSpecialVar_Result, FALSE);   // just one, even for Koga and on
+        for (run = 0; run < 8; run++)
+        {
+            const struct Trainer *tr;
+            GymCandidate_GenerateGuest();
+            EXPECT_EQ(gGymGuestBattle, 1);
+            tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+            total = 0;
+            for (i = 0; i < tr->partySize; i++)
+            {
+                EXPECT_GE((u32)tr->party[i].lvl + 2, avg - 2);
+                EXPECT_LE((u32)tr->party[i].lvl, avg + 5);
+                total += tr->party[i].lvl;
+            }
+            EXPECT_GE(total / tr->partySize, avg - 2);
+            EXPECT_LE(total / tr->partySize, avg + 3);
+        }
+    }
+    gSpecialVar_0x8007 = 0;
+    GymChallenge_EndPractice();
 }

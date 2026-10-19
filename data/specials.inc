@@ -659,6 +659,9 @@ gSpecials::
 	def_special GymCandidate_IsApproved
 	def_special GymCandidate_BufferOffer
 	def_special GymCandidate_MoreGuests
+	def_special GymCandidate_BufferRepeatOffer
+	def_special GymCandidate_BufferRepeatThanks
+	def_special GymCandidate_BufferOwnGym
 	def_special GymCandidate_GenerateGuest
 	def_special GymCandidate_BufferMentorFirst
 	def_special GymCandidate_Approve
