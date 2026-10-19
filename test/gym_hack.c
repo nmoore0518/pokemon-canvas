@@ -1500,6 +1500,8 @@ TEST("GymHack: candidate: guest challengers grow with the story, and their lines
             const struct Trainer *tr;
             gSpecialVar_0x8009 = leader;
             GymCandidate_GenerateGuest();
+            EXPECT(gGymGuestBattle);           // they pay the stand-in (a doubled Gym Leader prize)
+            EXPECT(!gGymPracticeBattle);
             tr = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
             EXPECT_EQ((u32)tr->partySize, (u32)gGymCandidateLeaders[leader].partySize);
             for (i = 0; i < tr->partySize; i++)

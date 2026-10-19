@@ -28,6 +28,10 @@ struct GymChallengeSave
 
 extern u8 gGymChallengeDefeatText[];
 extern bool8 gGymPracticeBattle;
+extern bool8 gGymGuestBattle;
+
+// Guest Leader challengers pay 8 x level x this (a Gym Leader's rate is 25, at 4 x level)
+#define GYM_GUEST_PRIZE_RATE 25
 
 const struct Trainer *GymChallenge_GetTrainer(u16 trainerId);
 struct GymChallengeSave *GymChallenge_GetSave(void);

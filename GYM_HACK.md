@@ -295,8 +295,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     beside you), and you battle in the leader's place: one challenger for Brock, Misty, Surge and
     Erika, two for Koga, Sabrina, Blaine and Giovanni. Challengers are any type, no legendaries,
     with party sizes 2-5 and levels 12-47 by gym (higher if the player is ahead), more evolved
-    later in the story (`gGymCandidateLeaders`). Your team must follow the one-type rule; losing
-    just means trying again (no money lost, team healed). Approval flags
+    later in the story (`gGymCandidateLeaders`). Each challenger pays the stand-in a Gym Leader's
+    prize, doubled (8 x their last Pokémon's level x 25: about ¥2,400 at Brock, ¥9,400 each at
+    Giovanni, ~¥85,000 over the story; `GYM_GUEST_PRIZE_RATE`), to fund decorations. Your team
+    must follow the one-type rule; losing just means trying again (no money lost, team healed). Approval flags
     `FLAG_GYM_APPROVAL_*` (0x0BA-0x0C1). Each gym map has a spare person
     (`LOCALID_<GYM>_GYM_GUEST`, hidden by `FLAG_HIDE_PALLET_GYM_CHALLENGER`).
   - The Elite Four each give their approval after losing.

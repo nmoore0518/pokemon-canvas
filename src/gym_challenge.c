@@ -49,6 +49,7 @@ EWRAM_DATA u8 gGymChallengeDefeatText[120];  // in battle, when the challenger l
 EWRAM_DATA u8 gGymChallengeAfterText[160];   // after losing to the player
 EWRAM_DATA u8 gGymChallengeWinText[160];     // after beating the player
 EWRAM_DATA bool8 gGymPracticeBattle;         // a practice battle: no prize money (data/battle_scripts_1.s)
+EWRAM_DATA bool8 gGymGuestBattle;            // a Guest Leader battle: a big prize (src/battle_script_commands.c)
 
 // ---------------------------------------------------------------------------
 // Save data
@@ -804,6 +805,7 @@ void GymChallenge_GeneratePracticeTier(u32 tier, u32 instance)
     sChallenger.aiFlags = t->aiFlags;
     StringExpandPlaceholders(gGymChallengeDefeatText, t->defeat);
     gGymPracticeBattle = TRUE;
+    gGymGuestBattle = FALSE;
 }
 
 // A trainer who joined from the road: their own name and look, a team of their favorite type
@@ -821,6 +823,7 @@ void GymChallenge_GenerateRecruit(u32 type)
     sChallenger.aiFlags = AI_FLAG_BASIC_TRAINER;
     StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ha! Good practice, LEADER!"));
     gGymPracticeBattle = TRUE;
+    gGymGuestBattle = FALSE;
 }
 
 // Special: VAR_0x8004 = slot
@@ -885,13 +888,15 @@ void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier)
              sGuestDefeats[Random() % ARRAY_COUNT(sGuestDefeats)],
              sGuestAfters[Random() % ARRAY_COUNT(sGuestAfters)],
              sGuestWins[Random() % ARRAY_COUNT(sGuestWins)]);
-    gGymPracticeBattle = TRUE;     // no prize money: the leader's challengers don't pay the stand-in
+    gGymPracticeBattle = FALSE;
+    gGymGuestBattle = TRUE;        // the challenger pays the stand-in LEADER a Gym Leader's prize
 }
 
 // Special: after a practice battle
 void GymChallenge_EndPractice(void)
 {
     gGymPracticeBattle = FALSE;
+    gGymGuestBattle = FALSE;
 }
 
 u32 GymChallenge_OakFinaleLevel(void)
@@ -906,6 +911,7 @@ u32 GymChallenge_OakFinaleLevel(void)
 void GymChallenge_GenerateOakFinale(void)
 {
     gGymPracticeBattle = FALSE;
+    gGymGuestBattle = FALSE;
     u32 level = GymChallenge_OakFinaleLevel(), i;
     SetupTrainer(TRAINER_CLASS_PKMN_PROF_FRLG, TRAINER_PIC_PROFESSOR_OAK_FRLG, FALSE, COMPOUND_STRING("OAK"),
                  ARRAY_COUNT(sOakFinaleTeam));
@@ -927,6 +933,7 @@ void GymChallenge_GenerateOakFinale(void)
 void GymChallenge_Generate(u32 kind, u32 index)
 {
     gGymPracticeBattle = FALSE;
+    gGymGuestBattle = FALSE;
     u32 level = GymChallenge_PlayerAverageLevel();
     sKind = kind;
     switch (kind)
