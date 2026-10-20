@@ -21,6 +21,10 @@
 #include "constants/gym_room.h"
 #include "constants/species.h"
 #include "constants/vars.h"
+#include "constants/gym_hack.h"
+#include "constants/battle.h"
+#include "random.h"
+#include "wild_encounter.h"
 #include "constants/map_event_ids.h"
 #include "overworld.h"
 #include "field_player_avatar.h"
@@ -149,7 +153,8 @@ void GymLegend_OnLoad(void)
     s32 x, y;
     u16 species = PlayerLegend();
     FlagSet(FLAG_HIDE_PALLET_GYM_LEGEND);
-    if (species == SPECIES_NONE || !FlagGet(FLAG_GYM_LEGEND_APPEARED) || FlagGet(FLAG_GYM_LEGEND_CAUGHT))
+    if (species == SPECIES_NONE || !FlagGet(FLAG_GYM_LEGEND_APPEARED) || FlagGet(FLAG_GYM_LEGEND_CAUGHT)
+     || VarGet(VAR_GYM_LEGEND_STATE) != GYM_LEGEND_ON_STAGE)
         return;
     VarSet(VAR_OBJ_GFX_ID_C, species + OBJ_EVENT_MON);
     FindSpot(&x, &y, FALSE);
@@ -191,4 +196,46 @@ void GymLegend_PlanCamera(void)
     }
     gGymLegendCameraIn[n] = MOVEMENT_ACTION_STEP_END;
     gGymLegendCameraOut[n] = MOVEMENT_ACTION_STEP_END;
+}
+
+// ---------------------------------------------------------------------------
+// If it gets away from the stage, the rival says it's probably in "that cave by Cerulean": from
+// then on, it's a 1% encounter anywhere in Cerulean Cave (src/wild_encounter.c) until it's caught.
+// ---------------------------------------------------------------------------
+static EWRAM_DATA bool8 sWildLegend;
+
+static bool32 InCeruleanCave(void)
+{
+    u16 map = (gSaveBlock1Ptr->location.mapGroup << 8) | gSaveBlock1Ptr->location.mapNum;
+    return map == MAP_CERULEAN_CAVE_1F || map == MAP_CERULEAN_CAVE_2F || map == MAP_CERULEAN_CAVE_B1F;
+}
+
+bool32 GymLegend_IsCaveEncounterActive(void)
+{
+    return InCeruleanCave() && PlayerLegend() != SPECIES_NONE && !FlagGet(FLAG_GYM_LEGEND_CAUGHT)
+        && VarGet(VAR_GYM_LEGEND_STATE) == GYM_LEGEND_IN_CAVE;
+}
+
+// A wild encounter in Cerulean Cave: 1 in 100 is the legendary. Creates it and returns TRUE.
+bool32 GymLegend_TryCaveEncounter(void)
+{
+    sWildLegend = FALSE;
+    if (!GymLegend_IsCaveEncounterActive() || Random() % 100 != 0)
+        return FALSE;
+    CreateWildMon(PlayerLegend(), GYM_LEGEND_LEVEL);
+    sWildLegend = TRUE;
+    return TRUE;
+}
+
+// After a wild battle: caught it? Then the rival has something to say (in the gym)
+void GymLegend_AfterWildBattle(u32 outcome)
+{
+    if (!sWildLegend)
+        return;
+    sWildLegend = FALSE;
+    if (outcome == B_OUTCOME_CAUGHT)
+    {
+        FlagSet(FLAG_GYM_LEGEND_CAUGHT);
+        VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_CAUGHT_NEWS);
+    }
 }

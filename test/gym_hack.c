@@ -1828,7 +1828,7 @@ TEST("GymHack: Fly needs no badge")
 
 // ---- The legendary Pokémon of the player's type (src/gym_legend.c) ----
 #include "gym_legend.h"
-extern const u8 GymLegend_Text_OakWhatOnEarth[], GymLegend_Text_OakCatchIt[], GymLegend_Text_Challenge[], GymLegend_Text_Vanished[], GymLegend_Text_LightsOut[];
+extern const u8 GymLegend_Text_OakWhatOnEarth[], GymLegend_Text_OakCatchIt[], GymLegend_Text_Challenge[], GymLegend_Text_Fled[], GymLegend_Text_LightsOut[], GymLegend_Text_RivalEscaped[], GymLegend_Text_RivalCaught[];
 
 TEST("GymHack: every type's legendary has that primary type")
 {
@@ -1845,7 +1845,7 @@ TEST("GymHack: every type's legendary has that primary type")
 
 TEST("GymHack: the legendary scene's lines fit the message box")
 {
-    static const u8 *const texts[] = {GymLegend_Text_OakWhatOnEarth, GymLegend_Text_OakCatchIt, GymLegend_Text_Challenge, GymLegend_Text_Vanished, GymLegend_Text_LightsOut};
+    static const u8 *const texts[] = {GymLegend_Text_OakWhatOnEarth, GymLegend_Text_OakCatchIt, GymLegend_Text_Challenge, GymLegend_Text_Fled, GymLegend_Text_LightsOut, GymLegend_Text_RivalEscaped, GymLegend_Text_RivalCaught};
     u32 i, t;
     SetLongPlaceholders();
     for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
@@ -1857,4 +1857,23 @@ TEST("GymHack: the legendary scene's lines fit the message box")
         for (i = 0; i < ARRAY_COUNT(texts); i++)
             ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
     }
+}
+
+TEST("GymHack: the legendary is a 1% encounter in Cerulean Cave only after the rival's hint")
+{
+    VarSet(VAR_PLAYER_TYPE, TYPE_DARK);
+    FlagClear(FLAG_GYM_LEGEND_CAUGHT);
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_CERULEAN_CAVE_1F);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_CERULEAN_CAVE_1F);
+    VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_ESCAPED);
+    EXPECT(!GymLegend_IsCaveEncounterActive());
+    VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_IN_CAVE);
+    EXPECT(GymLegend_IsCaveEncounterActive());
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_ROUTE4);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_ROUTE4);
+    EXPECT(!GymLegend_IsCaveEncounterActive());
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_CERULEAN_CAVE_B1F);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_CERULEAN_CAVE_B1F);
+    FlagSet(FLAG_GYM_LEGEND_CAUGHT);
+    EXPECT(!GymLegend_IsCaveEncounterActive());
 }

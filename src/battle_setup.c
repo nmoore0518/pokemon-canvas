@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_legend.h"
 #include "data.h"
 #include "main.h"
 #include "battle.h"
@@ -693,6 +694,7 @@ static void CB2_EndWildBattle(void)
 {
     CpuFill16(0, (void *)(BG_PLTT), BG_PLTT_SIZE);
     ResetOamRange(0, 128);
+    GymLegend_AfterWildBattle(gBattleOutcome);   // Gym Trainer hack
 
     if (IsNPCFollowerWildBattle())
     {

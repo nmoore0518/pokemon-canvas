@@ -437,9 +437,14 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   the player's type appears on the battle stage (or near the middle of the room without one); the
   camera pans to it. Oak says it must have sensed a new gym of its type, that most leaders don't
   use legendaries but no rule forbids it, and that with challengers getting stronger the player
-  might want to catch it. Talking to it starts a level 70 legendary battle. If it's knocked out
-  or the player runs, it vanishes and is back on the stage the next time they come in, until
-  it's caught (`FLAG_GYM_LEGEND_APPEARED`/`CAUGHT`, 0x0C3/0x0C4). Its overworld sprite is the
+  might want to catch it. Talking to it starts a level 70 legendary battle, once. If it's
+  knocked out, the player runs, or the player loses, it flees the gym; the rival walks in to
+  gloat (still sore about the gym) and hints that something that strong would hide in "that cave
+  by CERULEAN nobody was allowed into". From then on it's a 1% encounter anywhere in Cerulean Cave
+  (`GymLegend_TryCaveEncounter`, in `TryGenerateWildMon`) until it's caught. Once it's caught (on
+  the stage or in the cave), the rival comes to the gym to scoff that the player needs a
+  legendary to win. `VAR_GYM_LEGEND_STATE` (0x40FE, `GYM_LEGEND_*`), `FLAG_GYM_LEGEND_APPEARED`/
+  `CAUGHT` (0x0C3/0x0C4). Its overworld sprite is the
   expansion's Pokémon object (`VAR_OBJ_GFX_ID_C`).
   Normal: Meloetta, Fighting: Koraidon, Flying: Tornadus, Poison: Eternatus, Ground: Groudon,
   Rock: Diancie, Bug: Genesect, Ghost: Giratina, Steel: Dialga, Fire: Ho-Oh, Water: Palkia,

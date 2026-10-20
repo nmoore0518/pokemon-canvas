@@ -343,6 +343,8 @@
 #define VAR_MENTOR_STAGE                                 0x40FC
 // How many gym decorations were unlocked last time it was checked (for "New GYM decorations!")
 #define VAR_GYM_DECOR_SEEN                               0x40FD
+// The legendary of the player's type after its battle on the stage: GYM_LEGEND_* (include/constants/gym_hack.h)
+#define VAR_GYM_LEGEND_STATE                             0x40FE
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

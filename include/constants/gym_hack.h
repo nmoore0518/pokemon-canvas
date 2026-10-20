@@ -34,4 +34,11 @@
 #define MENTOR_GIFT_LEADER  1   // the mentor is this gym's leader: they hand it over themselves
 #define MENTOR_GIFT_VISIT   2   // the mentor drops by
 
+// VAR_GYM_LEGEND_STATE: the legendary in the player's gym (src/gym_legend.c)
+#define GYM_LEGEND_ON_STAGE      0   // waiting on the stage (once it has appeared)
+#define GYM_LEGEND_ESCAPED       1   // it got away (or the player lost); the rival comes to gloat
+#define GYM_LEGEND_IN_CAVE       2   // the rival hinted at Cerulean Cave: a 1% encounter there
+#define GYM_LEGEND_CAUGHT_NEWS   3   // caught; the rival comes to scoff
+#define GYM_LEGEND_DONE          4
+
 #endif // GUARD_CONSTANTS_GYM_HACK_H

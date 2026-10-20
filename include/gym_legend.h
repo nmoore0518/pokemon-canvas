@@ -10,6 +10,9 @@ void GymLegend_FindSpot(void);
 void GymLegend_OnLoad(void);
 void GymLegend_CreateMon(void);
 void GymLegend_PlanCamera(void);
+bool32 GymLegend_IsCaveEncounterActive(void);
+bool32 GymLegend_TryCaveEncounter(void);
+void GymLegend_AfterWildBattle(u32 outcome);
 extern u8 gGymLegendCameraIn[];
 extern u8 gGymLegendCameraOut[];
 
