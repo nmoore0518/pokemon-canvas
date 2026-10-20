@@ -380,8 +380,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Offensive: the holder's damaging moves hit for at least normal damage; resisted or
     type-immune hits become normal ones. Super effective hits don't change. Immunity from
     abilities or items (Levitate, Wonder Guard, Air Balloon, Magnet Rise) still blocks.
-  - They can't be stolen, knocked off, tricked away or flung, and the bag hides TOSS for them
-    (and for other important items like the Move Extractor). Icons are drawn in code
+  - They're ordinary held items (GIVE from the bag or the party menu), but they can't be stolen,
+    knocked off, tricked away or flung, can't be sold, and the bag hides TOSS for them (and for
+    important items like the Move Extractor). Icons are drawn in code
     (`tools/gym_hack/type_item_art.py`, `graphics/items/icons/gym/`).
 
     | Type | Defensive | Offensive |
@@ -426,6 +427,13 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     too, and the box at the bottom says "Next: <move> at Lv. N." A browses: up/down scroll the
     list and show each move's power, accuracy, category and description; A or B goes back.
     Contest moves are hidden (`C_HIDE_CONTEST_DATA`), so the page has the contest page's place.
+- **Holding a gym** (Guest Leader battles and stand-in shifts): after the request, the leader says
+  where they'll be (`observe`, in character) and, in a fade, steps aside to watch (or leaves, on a
+  stand-in shift) while the player takes their spot facing the door. Each challenger walks in
+  from the door to the player and back out after the battle; afterwards the leader returns
+  (`GymCandidate_PlanHold`, `GymCandidate_PlanChallengerWalk`).
+- **Walking leaders**: FireRed's Gym Leader and Elite Four sprites only had standing frames;
+  `tools/gym_hack/make_walk_frames.py` added walking frames, so visiting mentors take steps.
 - **New decorations message**: when key battles or badges unlock new gym decorations, the next
   step the player takes shows "New GYM decorations available! Check the GYM PC."
   (`GymDecor_CheckNewUnlocks`, `VAR_GYM_DECOR_SEEN` 0x40FD; nothing before the gym opens).

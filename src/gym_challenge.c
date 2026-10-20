@@ -848,7 +848,7 @@ void GymChallenge_GeneratePractice(void)
 // ---------------------------------------------------------------------------
 static const u8 *const sGuestIntros[] =
 {
-    COMPOUND_STRING("Huh? Where's {STR_VAR_3}?\pYou're filling in? Then you're the\none I have to beat!"),
+    COMPOUND_STRING("{STR_VAR_3} isn't battling today?\pYou're filling in? Then you're the\none I have to beat!"),
     COMPOUND_STRING("I came all this way to battle\n{STR_VAR_3}…\pFine! A stand-in will do!"),
     COMPOUND_STRING("A substitute LEADER?\nThis BADGE is as good as mine!"),
     COMPOUND_STRING("{STR_VAR_3} sent YOU? Is this\nsome kind of test?\pWhatever. Let's battle!"),

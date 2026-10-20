@@ -135,21 +135,14 @@ GymCandidate_EventScript_Start::
 	special GymHack_CheckTeamSpecial
 	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, GymCandidate_EventScript_TeamBreaksRules
 	setvar VAR_0x800B, 0
+	call GymCandidate_EventScript_TakeLeadersPlace
 GymCandidate_EventScript_NextGuest::
 	special HealPlayerParty
 	special GymCandidate_GenerateGuest
 	call_if_eq VAR_0x800B, 0, GymCandidate_EventScript_LaterThatDay
 	call_if_ne VAR_0x800B, 0, GymCandidate_EventScript_AnotherOne
 	closemessage
-	fadescreen FADE_TO_BLACK
-	special GymCandidate_PlaceGuest
-	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_GuestNoRoom
-	setobjectxyperm VAR_0x800A, VAR_0x8005, VAR_0x8006
-	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
-	addobject VAR_0x800A
-	special GymCandidate_FaceGuest
-GymCandidate_EventScript_GuestNoRoom::
-	fadescreen FADE_FROM_BLACK
+	call GymCandidate_EventScript_ChallengerWalksIn
 	msgbox gGymChallengeIntroText
 	closemessage
 	cleartrainerflag TRAINER_GYM_CHALLENGER
@@ -161,10 +154,11 @@ GymCandidate_EventScript_GuestNoRoom::
 	goto_if_ne VAR_RESULT, B_OUTCOME_WON, GymCandidate_EventScript_GuestWon
 	special HealPlayerParty
 	msgbox gGymChallengeAfterText
-	call GymCandidate_EventScript_GuestLeaves
+	call GymCandidate_EventScript_VisitorWalksOut
 	addvar VAR_0x800B, 1
 	special GymCandidate_MoreGuests
 	goto_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_NextGuest
+	call GymCandidate_EventScript_ReturnLeadersPlace
 	goto_if_eq VAR_0x8007, 1, GymCandidate_EventScript_ShiftDone
 	special GymCandidate_Approve
 	playfanfare MUS_LEVEL_UP
@@ -179,6 +173,59 @@ GymCandidate_EventScript_ShiftDone::
 	msgbox gStringVar4
 	release
 	end
+
+@ The player takes the leader's spot: the leader says where they'll be, then (in the dark) steps
+@ aside to watch (or leaves, for a stand-in shift) while the player steps up
+GymCandidate_EventScript_TakeLeadersPlace::
+	special GymCandidate_PlanHold
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_Return
+	special GymCandidate_BufferHoldText
+	msgbox gStringVar4
+	closemessage
+	fadescreen FADE_TO_BLACK
+	special GymCandidate_HoldLeaderAside
+	applymovement LOCALID_PLAYER, gHoldPlayerIn
+	waitmovement 0
+	delay 30
+	fadescreen FADE_FROM_BLACK
+	return
+
+@ ...and gives it back afterwards
+GymCandidate_EventScript_ReturnLeadersPlace::
+	special GymCandidate_IsHolding
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_Return
+	closemessage
+	fadescreen FADE_TO_BLACK
+	applymovement LOCALID_PLAYER, gHoldPlayerOut
+	waitmovement 0
+	special GymCandidate_HoldLeaderBack
+	fadescreen FADE_FROM_BLACK
+	return
+
+@ A challenger (VAR_0x800A) walks in from the door to the player, or appears beside them
+GymCandidate_EventScript_ChallengerWalksIn::
+	special GymCandidate_PlanChallengerWalk
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_ChallengerAppears
+	setobjectxyperm VAR_0x800A, VAR_0x8005, VAR_0x8006
+	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	addobject VAR_0x800A
+	playse SE_EXIT
+	applymovement VAR_0x800A, gMentorWalkIn
+	waitmovement 0
+	special GymCandidate_FaceGuest
+	return
+
+GymCandidate_EventScript_ChallengerAppears::
+	fadescreen FADE_TO_BLACK
+	special GymCandidate_PlaceGuest
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_GuestNoRoom
+	setobjectxyperm VAR_0x800A, VAR_0x8005, VAR_0x8006
+	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	addobject VAR_0x800A
+	special GymCandidate_FaceGuest
+GymCandidate_EventScript_GuestNoRoom::
+	fadescreen FADE_FROM_BLACK
+	return
 
 GymCandidate_EventScript_LaterThatDay::
 	msgbox GymCandidate_Text_LaterThatDay
@@ -201,7 +248,8 @@ GymCandidate_EventScript_GuestLeaves::
 GymCandidate_EventScript_GuestWon::
 	special HealPlayerParty
 	msgbox gGymChallengeWinText
-	call GymCandidate_EventScript_GuestLeaves
+	call GymCandidate_EventScript_VisitorWalksOut
+	call GymCandidate_EventScript_ReturnLeadersPlace
 	msgbox GymCandidate_Text_TryAgain
 	release
 	end

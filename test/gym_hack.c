@@ -1461,6 +1461,7 @@ TEST("GymHack: candidate: all the new story lines fit the message box")
         ExpectLinesFit(gGymCandidateLeaders[i].repeatOffer, 27 * 8 - 4, TRUE);
         ExpectLinesFit(gGymCandidateLeaders[i].repeatThanks, 27 * 8 - 4, TRUE);
         ExpectLinesFit(gGymCandidateLeaders[i].ownGym, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(gGymCandidateLeaders[i].observe, 27 * 8 - 4, TRUE);
     }
     for (i = 0; i < GYM_CANDIDATE_ELITE_FOUR; i++)
         ExpectLinesFit(GymCandidate_GetEliteFourApproval(i), 27 * 8 - 4, TRUE);
@@ -1674,7 +1675,8 @@ TEST("GymHack: type items: every type has a defensive and an offensive item of i
         EXPECT_EQ(GetItemHoldEffectParam(guard), t);
         EXPECT_EQ(GetItemHoldEffectParam(edge), t);
         EXPECT_EQ(GetItemPrice(guard), 0);
-        EXPECT(GetItemImportance(edge));
+        EXPECT(!GetItemImportance(edge));   // they can be held
+        EXPECT(!GetItemImportance(guard));
         icons[n++] = gItemsInfo[guard].iconPic;
         icons[n++] = gItemsInfo[edge].iconPic;
     }

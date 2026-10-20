@@ -16300,7 +16300,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Fluffy Sweater"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_NORMAL,
         .description = COMPOUND_STRING(
@@ -16319,7 +16318,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Third Eye"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_NORMAL,
         .description = COMPOUND_STRING(
@@ -16338,7 +16336,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Mouth Guard"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_FIGHTING,
         .description = COMPOUND_STRING(
@@ -16357,7 +16354,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Steroids"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_FIGHTING,
         .description = COMPOUND_STRING(
@@ -16376,7 +16372,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Aviator Goggles"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_FLYING,
         .description = COMPOUND_STRING(
@@ -16395,7 +16390,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Jet Engine"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_FLYING,
         .description = COMPOUND_STRING(
@@ -16414,7 +16408,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Titanium Coil"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_POISON,
         .description = COMPOUND_STRING(
@@ -16433,7 +16426,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Corrosive Venom"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_POISON,
         .description = COMPOUND_STRING(
@@ -16452,7 +16444,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Granite Sarcophagus"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_GROUND,
         .description = COMPOUND_STRING(
@@ -16471,7 +16462,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Diamond Drill Bit"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_GROUND,
         .description = COMPOUND_STRING(
@@ -16490,7 +16480,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Diamond Plating"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_ROCK,
         .description = COMPOUND_STRING(
@@ -16509,7 +16498,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Precision Chisel"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_ROCK,
         .description = COMPOUND_STRING(
@@ -16528,7 +16516,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Cacoon"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_BUG,
         .description = COMPOUND_STRING(
@@ -16547,7 +16534,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Extra Stinger"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_BUG,
         .description = COMPOUND_STRING(
@@ -16566,7 +16552,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Light Switch"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_GHOST,
         .description = COMPOUND_STRING(
@@ -16585,7 +16570,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Ouija Board"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_GHOST,
         .description = COMPOUND_STRING(
@@ -16604,7 +16588,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Stainless Alloy"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_STEEL,
         .description = COMPOUND_STRING(
@@ -16623,7 +16606,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Knife Sharpener"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_STEEL,
         .description = COMPOUND_STRING(
@@ -16642,7 +16624,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Heat Shield"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_FIRE,
         .description = COMPOUND_STRING(
@@ -16661,7 +16642,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Oxidizer"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_FIRE,
         .description = COMPOUND_STRING(
@@ -16680,7 +16660,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Cistern"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_WATER,
         .description = COMPOUND_STRING(
@@ -16699,7 +16678,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Nozzle"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_WATER,
         .description = COMPOUND_STRING(
@@ -16718,7 +16696,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Chicken Wire"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_GRASS,
         .description = COMPOUND_STRING(
@@ -16737,7 +16714,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Miracle Gro"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_GRASS,
         .description = COMPOUND_STRING(
@@ -16756,7 +16732,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Capacitor"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_ELECTRIC,
         .description = COMPOUND_STRING(
@@ -16775,7 +16750,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Transformer"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_ELECTRIC,
         .description = COMPOUND_STRING(
@@ -16794,7 +16768,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Energy Shield"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_PSYCHIC,
         .description = COMPOUND_STRING(
@@ -16813,7 +16786,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Psionic Blade"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_PSYCHIC,
         .description = COMPOUND_STRING(
@@ -16832,7 +16804,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Cooler"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_ICE,
         .description = COMPOUND_STRING(
@@ -16851,7 +16822,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Rock Salt"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_ICE,
         .description = COMPOUND_STRING(
@@ -16870,7 +16840,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Fire Shroud"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_DRAGON,
         .description = COMPOUND_STRING(
@@ -16889,7 +16858,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Bionic Jaw"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_DRAGON,
         .description = COMPOUND_STRING(
@@ -16908,7 +16876,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Black Veil"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_DARK,
         .description = COMPOUND_STRING(
@@ -16927,7 +16894,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Manifesto"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_DARK,
         .description = COMPOUND_STRING(
@@ -16946,7 +16912,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Twinkling Lights"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_GUARD,
         .holdEffectParam = TYPE_FAIRY,
         .description = COMPOUND_STRING(
@@ -16965,7 +16930,6 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Magic Wand"),
         .price = 0,
-        .importance = 1,
         .holdEffect = HOLD_EFFECT_TYPE_EDGE,
         .holdEffectParam = TYPE_FAIRY,
         .description = COMPOUND_STRING(

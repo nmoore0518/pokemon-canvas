@@ -42,6 +42,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("BROCK: Back again, {PLAYER}?\nPerfect timing!\pI've got a stew on the stove.\nMind watching the GYM for a bit?"),
         .repeatThanks = COMPOUND_STRING("BROCK: Thanks for covering,\n{PLAYER}! Come back any time."),
         .ownGym = COMPOUND_STRING("BROCK: Hey, LEADER! You've got\nyour own GYM to run now.\pYour challengers are waiting in\nPALLET TOWN!"),
+        .observe = COMPOUND_STRING("BROCK: Great! I'll stand over here\nand watch. Pretend I'm not here!\pTake my spot, {PLAYER}!"),
     },
     [1] = {
         .name = COMPOUND_STRING("MISTY"), .approvalFlag = FLAG_GYM_APPROVAL_MISTY,
@@ -51,6 +52,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("MISTY: Oh, it's you. Great timing!\pI'm going for a swim. You watch\nthe GYM… if you're up to it."),
         .repeatThanks = COMPOUND_STRING("MISTY: Hmph. Not bad. You can\ncover again sometime. Maybe."),
         .ownGym = COMPOUND_STRING("MISTY: Don't you have your own GYM\nnow? Go run it!\pI'm not sharing my challengers!"),
+        .observe = COMPOUND_STRING("MISTY: I'll be right over there,\nwatching EVERYTHING.\pDon't you dare mess up my GYM!"),
     },
     [2] = {
         .name = COMPOUND_STRING("LT. SURGE"), .approvalFlag = FLAG_GYM_APPROVAL_SURGE,
@@ -60,6 +62,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("LT. SURGE: Hey, soldier! Reporting\nfor duty?\pI need some R&R. Hold the fort\nfor me!"),
         .repeatThanks = COMPOUND_STRING("LT. SURGE: Mission accomplished!\nDismissed, soldier!"),
         .ownGym = COMPOUND_STRING("LT. SURGE: Ha! You've got your own\nbase to defend now, LEADER!\pGet back to PALLET!"),
+        .observe = COMPOUND_STRING("LT. SURGE: I'll observe from the\nflank, soldier!\pYou take the command post!"),
     },
     [3] = {
         .name = COMPOUND_STRING("ERIKA"), .approvalFlag = FLAG_GYM_APPROVAL_ERIKA,
@@ -69,6 +72,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("ERIKA: Oh, hello again…\nI was just about to take a nap.\pWould you mind looking after the\nGYM for a little while?"),
         .repeatThanks = COMPOUND_STRING("ERIKA: Thank you ever so much…\nI feel so refreshed."),
         .ownGym = COMPOUND_STRING("ERIKA: Oh my, you have a GYM of\nyour own now.\pYour challengers will miss you.\nPlease, go to them."),
+        .observe = COMPOUND_STRING("ERIKA: I'll sit with my flowers over\nthere… and watch quietly.\pPlease, take my place."),
     },
     [4] = {
         .name = COMPOUND_STRING("KOGA"), .approvalFlag = FLAG_GYM_APPROVAL_KOGA,
@@ -78,6 +82,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("KOGA: Fwahaha! You return.\pA ninja must train in secret now\nand then. Guard my GYM while I\lvanish!"),
         .repeatThanks = COMPOUND_STRING("KOGA: …Well guarded. I saw\neverything, of course."),
         .ownGym = COMPOUND_STRING("KOGA: A LEADER guards their own\nGYM, not another's.\pReturn to PALLET TOWN!"),
+        .observe = COMPOUND_STRING("KOGA: I shall vanish into the\nshadows… and watch.\pTake my place, child."),
     },
     [5] = {
         .name = COMPOUND_STRING("SABRINA"), .approvalFlag = FLAG_GYM_APPROVAL_SABRINA,
@@ -87,6 +92,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("SABRINA: I knew you would come\nback today.\pA challenger is on the way.\nYou will take my place."),
         .repeatThanks = COMPOUND_STRING("SABRINA: As I foresaw.\nThank you."),
         .ownGym = COMPOUND_STRING("SABRINA: I see a GYM in PALLET\nTOWN… and challengers waiting\lfor you. Go."),
+        .observe = COMPOUND_STRING("SABRINA: I will watch from over\nthere.\pThough I already know how it ends."),
     },
     [6] = {
         .name = COMPOUND_STRING("BLAINE"), .approvalFlag = FLAG_GYM_APPROVAL_BLAINE,
@@ -96,6 +102,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("BLAINE: Hah! Quiz time! Who's\ncovering my GYM while I soak in\lthe hot springs?\pAnswer: YOU!"),
         .repeatThanks = COMPOUND_STRING("BLAINE: Correct! Fire it up again\nany time!"),
         .ownGym = COMPOUND_STRING("BLAINE: Quiz! Who has their own\nGYM now?\pAnswer: YOU! So go run it!\nWahahahah!"),
+        .observe = COMPOUND_STRING("BLAINE: I'll watch from the sidelines!\pPop quiz: who's LEADER today?\nAnswer: YOU!"),
     },
     [7] = {
         .name = COMPOUND_STRING("GIOVANNI"), .approvalFlag = FLAG_GYM_APPROVAL_GIOVANNI,
@@ -105,6 +112,7 @@ const struct GymCandidateLeader gGymCandidateLeaders[GYM_CANDIDATE_LEADERS] =
         .repeatOffer = COMPOUND_STRING("GIOVANNI: You again.\nI have… business elsewhere.\pWatch my GYM. Don't disappoint\nme."),
         .repeatThanks = COMPOUND_STRING("GIOVANNI: Adequate.\nYou may go."),
         .ownGym = COMPOUND_STRING("GIOVANNI: You have a GYM of your\nown now. Guard it.\pMine needs no help from you."),
+        .observe = COMPOUND_STRING("GIOVANNI: I will be watching.\pTake my place… for now."),
     },
 };
 
@@ -644,6 +652,7 @@ static const u8 sOpposite[] = {[DIR_SOUTH] = DIR_NORTH, [DIR_NORTH] = DIR_SOUTH,
 static EWRAM_DATA u8 sGuestDir;   // where the challenger is, seen from the player
 static EWRAM_DATA u8 sFacingBefore;   // which way the player faced before they came
 static EWRAM_DATA bool8 sVisitorWalked;
+static EWRAM_DATA bool8 sFrontOnly;   // the visitor must end up right in front of the player
 
 #define VISITOR_PATH_MAX 60
 EWRAM_DATA u8 gMentorWalkIn[VISITOR_PATH_MAX + 2];
@@ -774,7 +783,8 @@ void GymCandidate_PlanVisitorWalk(void)
         s32 cur = queue[head++], x = cur % w, y = cur / w;
         for (i = 0; i < 4; i++)
         {
-            if (x + dx[i] == px && y + dy[i] == py)
+            if (x + dx[i] == px && y + dy[i] == py
+             && (!sFrontOnly || (x == px + sDirDx[sFacingBefore] && y == py + sDirDy[sFacingBefore])))
             {
                 goal = cur;
                 dir[start] = i;     // (the way to face, kept in an unused slot)
@@ -818,6 +828,136 @@ void GymCandidate_PlanVisitorWalk(void)
     Free(from);
     Free(queue);
     Free(dir);
+}
+
+// Special: a challenger walking in while the player holds the gym: like
+// GymCandidate_PlanVisitorWalk, but to the square in front of the player if possible
+void GymCandidate_PlanChallengerWalk(void)
+{
+    sFrontOnly = TRUE;
+    GymCandidate_PlanVisitorWalk();
+    sFrontOnly = FALSE;
+    if (!gSpecialVar_Result)
+        GymCandidate_PlanVisitorWalk();
+}
+
+// ---------------------------------------------------------------------------
+// Holding the gym: the player takes the leader's spot. The leader steps aside to watch (or, for
+// a stand-in shift after approval, leaves: they go out of sight), and comes back afterwards.
+// ---------------------------------------------------------------------------
+static EWRAM_DATA u8 sHoldLeaderObj;
+static EWRAM_DATA bool8 sHolding;   // the player is on the leader's spot
+static EWRAM_DATA s16 sHoldLeaderX, sHoldLeaderY, sHoldAsideX, sHoldAsideY;  // map coords (with the offset)
+static EWRAM_DATA u8 sHoldDir;  // the way the player faced the leader
+EWRAM_DATA u8 gHoldPlayerIn[3];
+EWRAM_DATA u8 gHoldPlayerOut[3];
+
+static const u8 sWalkFast[] = {
+    [DIR_SOUTH] = MOVEMENT_ACTION_WALK_FAST_DOWN, [DIR_NORTH] = MOVEMENT_ACTION_WALK_FAST_UP,
+    [DIR_WEST] = MOVEMENT_ACTION_WALK_FAST_LEFT, [DIR_EAST] = MOVEMENT_ACTION_WALK_FAST_RIGHT,
+};
+static const u8 sFace[] = {
+    [DIR_SOUTH] = MOVEMENT_ACTION_FACE_DOWN, [DIR_NORTH] = MOVEMENT_ACTION_FACE_UP,
+    [DIR_WEST] = MOVEMENT_ACTION_FACE_LEFT, [DIR_EAST] = MOVEMENT_ACTION_FACE_RIGHT,
+};
+
+static u8 DirToward(s16 fromX, s16 fromY, s16 toX, s16 toY)
+{
+    s16 dx = toX - fromX, dy = toY - fromY;
+    if (abs(dx) > abs(dy))
+        return dx < 0 ? DIR_WEST : DIR_EAST;
+    return dy < 0 ? DIR_NORTH : DIR_SOUTH;
+}
+
+// Special: VAR_RESULT = whether the player can take the leader's spot (the leader is the last
+// person talked to, and the player stands facing them). Plans the moves.
+void GymCandidate_PlanHold(void)
+{
+    static const s8 aside[][2] = {{-2, 0}, {2, 0}, {-2, -1}, {2, -1}, {-3, 0}, {3, 0}, {-2, 1}, {2, 1},
+                                  {-1, -1}, {1, -1}, {-1, 1}, {1, 1}, {-3, -1}, {3, -1}};
+    u8 objId;
+    s16 px, py;
+    u32 i;
+    struct ObjectEvent *leader;
+
+    gSpecialVar_Result = FALSE;
+    sHolding = FALSE;
+    if (TryGetObjectEventIdByLocalIdAndMap(gSpecialVar_LastTalked, gSaveBlock1Ptr->location.mapNum,
+                                           gSaveBlock1Ptr->location.mapGroup, &objId))
+        return;
+    leader = &gObjectEvents[objId];
+    PlayerGetDestCoords(&px, &py);
+    sHoldDir = GetPlayerFacingDirection();
+    if (px + sDirDx[sHoldDir] != leader->currentCoords.x || py + sDirDy[sHoldDir] != leader->currentCoords.y)
+        return;
+    sHoldLeaderX = leader->currentCoords.x;
+    sHoldLeaderY = leader->currentCoords.y;
+    for (i = 0; i < ARRAY_COUNT(aside); i++)
+    {
+        s16 x = sHoldLeaderX + aside[i][0], y = sHoldLeaderY + aside[i][1];
+        if (VisitorCanWalk(x - MAP_OFFSET, y - MAP_OFFSET, MapGridGetElevationAt(sHoldLeaderX, sHoldLeaderY))
+         && !(x == px && y == py))
+        {
+            sHoldAsideX = x;
+            sHoldAsideY = y;
+            sHoldLeaderObj = objId;
+            sHolding = TRUE;
+            gHoldPlayerIn[0] = sWalkFast[sHoldDir];
+            gHoldPlayerIn[1] = sFace[sOpposite[sHoldDir]];
+            gHoldPlayerIn[2] = MOVEMENT_ACTION_STEP_END;
+            gHoldPlayerOut[0] = sWalkFast[sOpposite[sHoldDir]];
+            gHoldPlayerOut[1] = sFace[sHoldDir];
+            gHoldPlayerOut[2] = MOVEMENT_ACTION_STEP_END;
+            gSpecialVar_Result = TRUE;
+            return;
+        }
+    }
+}
+
+// Special: VAR_0x8007 = a stand-in shift (the leader leaves) -> gStringVar4 = what happens now
+void GymCandidate_BufferHoldText(void)
+{
+    const struct GymCandidateLeader *leader = &gGymCandidateLeaders[Leader()];
+    if (gSpecialVar_0x8007)
+    {
+        StringCopy(gStringVar3, leader->name);
+        StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("{STR_VAR_3} left you in charge of\nthe GYM."));
+    }
+    else
+    {
+        StringExpandPlaceholders(gStringVar4, leader->observe);
+    }
+}
+
+// Special: (in the dark) the leader steps aside to watch, facing their spot, or goes out of sight
+void GymCandidate_HoldLeaderAside(void)
+{
+    struct ObjectEvent *leader;
+    if (!sHolding)
+        return;
+    leader = &gObjectEvents[sHoldLeaderObj];
+    MoveObjectEventToMapCoords(leader, sHoldAsideX, sHoldAsideY);
+    ObjectEventTurn(leader, DirToward(sHoldAsideX, sHoldAsideY, sHoldLeaderX, sHoldLeaderY));
+    leader->invisible = (gSpecialVar_0x8007 != 0);
+}
+
+// Special: VAR_RESULT = whether the player holds the leader's spot now
+void GymCandidate_IsHolding(void)
+{
+    gSpecialVar_Result = sHolding;
+}
+
+// Special: (in the dark, after the player stepped back) the leader returns to their spot
+void GymCandidate_HoldLeaderBack(void)
+{
+    struct ObjectEvent *leader;
+    if (!sHolding)
+        return;
+    leader = &gObjectEvents[sHoldLeaderObj];
+    MoveObjectEventToMapCoords(leader, sHoldLeaderX, sHoldLeaderY);
+    ObjectEventTurn(leader, sOpposite[sHoldDir]);
+    leader->invisible = FALSE;
+    sHolding = FALSE;
 }
 
 // Special: VAR_RESULT = whether the visitor walked in (so walks back out)

@@ -23,6 +23,7 @@ struct GymCandidateLeader
     const u8 *repeatOffer;    // after approval: covering again, for money and experience
     const u8 *repeatThanks;
     const u8 *ownGym;         // once the player has their own gym, no more shifts
+    const u8 *observe;        // stepping aside to watch the player hold the gym
 };
 
 struct GymCandidateMentor
@@ -83,6 +84,14 @@ void GymCandidate_BufferMentorAnswer(void);
 void GymCandidate_BufferMentorFarewell(void);
 void GymCandidate_GiveMentorDecor(void);
 void GymCandidate_PlanVisitorWalk(void);
+void GymCandidate_PlanChallengerWalk(void);
+void GymCandidate_PlanHold(void);
+void GymCandidate_BufferHoldText(void);
+void GymCandidate_HoldLeaderAside(void);
+void GymCandidate_IsHolding(void);
+void GymCandidate_HoldLeaderBack(void);
+extern u8 gHoldPlayerIn[];
+extern u8 gHoldPlayerOut[];
 void GymCandidate_VisitorWalked(void);
 const u8 *GymCandidate_GetMentorPersonText(u32 who, u32 field);
 extern u8 gMentorWalkIn[];

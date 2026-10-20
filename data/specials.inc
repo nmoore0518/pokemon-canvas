@@ -684,6 +684,12 @@ gSpecials::
 	def_special GymCandidate_BufferMentorFarewell
 	def_special GymCandidate_GiveMentorDecor
 	def_special GymCandidate_PlanVisitorWalk
+	def_special GymCandidate_PlanChallengerWalk
+	def_special GymCandidate_PlanHold
+	def_special GymCandidate_BufferHoldText
+	def_special GymCandidate_HoldLeaderAside
+	def_special GymCandidate_IsHolding
+	def_special GymCandidate_HoldLeaderBack
 	def_special GymCandidate_VisitorWalked
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
