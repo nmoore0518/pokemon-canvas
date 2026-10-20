@@ -751,7 +751,7 @@ void process_groups(string groups_filepath, vector<string> &map_filepaths, strin
         string map_name = json_to_string(map_data, "name");
 
         if ((version == "emerald" && region != "REGION_HOENN")
-         || (version == "firered" && region != "REGION_KANTO")) {
+         || (version == "firered" && region != "REGION_KANTO" && region != "REGION_JOHTO")) {
             invalid_maps.push_back(map_name);
         }
     }

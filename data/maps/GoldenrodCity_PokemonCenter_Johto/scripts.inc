@@ -1,0 +1,7 @@
+GoldenrodCity_PokemonCenter_Johto_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, GoldenrodCity_PokemonCenter_Johto_OnTransition
+	.byte 0
+
+GoldenrodCity_PokemonCenter_Johto_OnTransition::
+	setrespawn HEAL_LOCATION_GOLDENROD_CITY
+	end

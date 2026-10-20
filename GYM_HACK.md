@@ -474,6 +474,18 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 - **Oak's lab**: the three-ball table is replaced by two shelves of Poké Balls (new art in the lab
   tileset, palette 09). Checking the shelf opens the type menu.
 
+- **Johto (in progress)**: replaces the Sevii Islands as the post-game area. Olivine, Routes 34-40,
+  Ecruteak (Burned Tower, Bell Tower), National Park, Goldenrod, Ilex Forest and Azalea, with all
+  their interiors (89 maps), come from **Pokémon HnS** (pokehns-expansion), imported by
+  `tools/gym_hack/import_johto.py`: their layouts and tilesets (attributes converted to FireRed's
+  4-byte format), tileset animations, and daytime wild Pokémon; not their scripts (NPCs come
+  later). Maps are named `*_Johto` (`MAP_GOLDENROD_CITY`...), in `gMapGroup_Johto`. Johto's map
+  sections count as KANTO for map screens and battle music, placed at VERMILION (the ferry), so
+  the Hot Air Balloon flies home from Johto (`include/regions.h`). `tools/mapjson` accepts
+  `REGION_JOHTO` maps in FireRed builds. FireRed music stands in for HGSS's for now.
+  Not reachable yet: next come the Vermilion-Olivine ferry, the Gym Leader Convention in the
+  Radio Tower, and the Sevii trip's removal.
+
 ## Code map
 
 | File | What |
@@ -504,6 +516,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
+| `tools/gym_hack/import_johto.py`, `src/johto.c`, `data/scripts/johto.inc` | Johto: imported maps, its scripts |
 | `.github/workflows/build-rom.yml` | Automatic ROM builds |
 
 ## Building locally
@@ -535,3 +548,10 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] The player's badge per type (art, award to challengers, pedestal decoration)
    - [x] Finale: Oak in the Champion's room, then Oak's challenge for the gym after the credits
    - [ ] Challengers and the ninth badge after becoming Leader
+6. Johto and the Gym Leader Convention (replaces the Sevii Islands)
+   - [x] Johto maps imported (Olivine to Goldenrod, Ilex, Azalea, Route 40)
+   - [ ] Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
+   - [ ] Convention Center (Radio Tower): 18 type halls + Champions' Hall, ~126 leaders (Emerald
+         Rogue sprites), trophies
+   - [ ] HGSS music, Johto NPCs, wild levels for the post-game
+   - [ ] Title screen and credits (artists, HnS, AI disclosure)

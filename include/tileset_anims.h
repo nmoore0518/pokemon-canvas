@@ -40,4 +40,10 @@ void InitTilesetAnim_CeladonGym(void);
 void InitTilesetAnim_SilphCo(void);
 void InitTilesetAnim_MtEmber(void);
 
+// BEGIN Johto (tools/gym_hack/import_johto.py)
+void InitTilesetAnim_AzaleaTownGym(void);
+void InitTilesetAnim_EcruteakTheater(void);
+void InitTilesetAnim_JohtoGeneral(void);
+void InitTilesetAnim_NationalPark(void);
+// END Johto
 #endif // GUARD_TILESET_ANIMS_H

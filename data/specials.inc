@@ -674,6 +674,8 @@ gSpecials::
 	def_special GymCandidate_Recruit
 	def_special GymDecor_MarkUnlocksSeen
 	def_special GymLegend_Setup
+	def_special Johto_DebugWarp
+	def_special Johto_DebugFlyMap
 	def_special GymLegend_FindSpot
 	def_special GymLegend_OnLoad
 	def_special GymLegend_CreateMon

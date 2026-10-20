@@ -349,6 +349,38 @@
       "y": 12,
       "respawn_map": "MAP_SIX_ISLAND_POKEMON_CENTER_1F",
       "respawn_npc": "LOCALID_SIX_ISLAND_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_AZALEA_TOWN",
+      "map": "MAP_AZALEA_TOWN",
+      "x": 31,
+      "y": 16,
+      "respawn_map": "MAP_AZALEA_TOWN_POKEMON_CENTER",
+      "respawn_npc": "LOCALID_AZALEA_TOWN_POKEMON_CENTER_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_ECRUTEAK_CITY",
+      "map": "MAP_ECRUTEAK_CITY",
+      "x": 39,
+      "y": 48,
+      "respawn_map": "MAP_ECRUTEAK_CITY_POKEMON_CENTER",
+      "respawn_npc": "LOCALID_ECRUTEAK_CITY_POKEMON_CENTER_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_GOLDENROD_CITY",
+      "map": "MAP_GOLDENROD_CITY",
+      "x": 28,
+      "y": 37,
+      "respawn_map": "MAP_GOLDENROD_CITY_POKEMON_CENTER",
+      "respawn_npc": "LOCALID_GOLDENROD_CITY_POKEMON_CENTER_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_OLIVINE_CITY",
+      "map": "MAP_OLIVINE_CITY",
+      "x": 15,
+      "y": 44,
+      "respawn_map": "MAP_OLIVINE_CITY_POKEMON_CENTER",
+      "respawn_npc": "LOCALID_OLIVINE_CITY_POKEMON_CENTER_NURSE"
     }
   ]
 }
