@@ -1825,3 +1825,36 @@ TEST("GymHack: Fly needs no badge")
     FlagClear(FLAG_BADGE03_GET);
     EXPECT(IsFieldMoveUnlocked(FIELD_MOVE_FLY));
 }
+
+// ---- The legendary Pokémon of the player's type (src/gym_legend.c) ----
+#include "gym_legend.h"
+extern const u8 GymLegend_Text_OakWhatOnEarth[], GymLegend_Text_OakCatchIt[], GymLegend_Text_Challenge[], GymLegend_Text_Vanished[], GymLegend_Text_LightsOut[];
+
+TEST("GymHack: every type's legendary has that primary type")
+{
+    u32 t;
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        u16 species = GymLegend_GetSpecies(t);
+        if (t == TYPE_MYSTERY || t == TYPE_STELLAR)
+            continue;
+        EXPECT_NE(species, SPECIES_NONE);
+        EXPECT_EQ(GetSpeciesType(species, 0), t);
+    }
+}
+
+TEST("GymHack: the legendary scene's lines fit the message box")
+{
+    static const u8 *const texts[] = {GymLegend_Text_OakWhatOnEarth, GymLegend_Text_OakCatchIt, GymLegend_Text_Challenge, GymLegend_Text_Vanished, GymLegend_Text_LightsOut};
+    u32 i, t;
+    SetLongPlaceholders();
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (t == TYPE_MYSTERY || t == TYPE_STELLAR)
+            continue;
+        VarSet(VAR_PLAYER_TYPE, t);
+        GymLegend_Setup();
+        for (i = 0; i < ARRAY_COUNT(texts); i++)
+            ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+    }
+}

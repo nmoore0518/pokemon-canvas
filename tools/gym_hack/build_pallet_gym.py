@@ -146,6 +146,11 @@ def write(grid):
                    "MOVEMENT_TYPE_LOOK_AROUND", f"GymPractice_EventScript_Trainer{i}",
                    f"FLAG_HIDE_PALLET_GYM_TRAINER_{i}")
             for i in range(11)
+        ] + [
+            # The legendary Pokémon of the player's type (src/gym_legend.c), after the gym is theirs;
+            # its look is VAR_OBJ_GFX_ID_C and its spot the battle stage
+            person("LOCALID_PALLET_GYM_LEGEND", "OBJ_EVENT_GFX_VAR_C", (CENTER, 12), "DOWN",
+                   "GymLegend_EventScript_Legend", "FLAG_HIDE_PALLET_GYM_LEGEND"),
         ],
         "warp_events": [{"x": x, "y": H - 2, "elevation": 3, "dest_map": "MAP_PALLET_TOWN", "dest_warp_id": "7"}
                         for x in MAT],

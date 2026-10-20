@@ -3,9 +3,9 @@ NavelRock_Summit_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, NavelRock_Summit_OnResume
 	.byte 0
 
+@ Gym Trainer hack: Ho-Oh is the Fire legendary in the player's gym instead (src/gym_legend.c)
 NavelRock_Summit_OnTransition::
-	call_if_set FLAG_FOUGHT_HO_OH, NavelRock_Summit_EventScript_HideHoOh
-	call_if_unset FLAG_FOUGHT_HO_OH, NavelRock_Summit_EventScript_TryShowHoOh
+	call NavelRock_Summit_EventScript_HideHoOh
 	end
 
 NavelRock_Summit_EventScript_HideHoOh::

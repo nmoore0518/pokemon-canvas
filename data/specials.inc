@@ -673,6 +673,11 @@ gSpecials::
 	def_special GymCandidate_BufferRecruit
 	def_special GymCandidate_Recruit
 	def_special GymDecor_MarkUnlocksSeen
+	def_special GymLegend_Setup
+	def_special GymLegend_FindSpot
+	def_special GymLegend_OnLoad
+	def_special GymLegend_CreateMon
+	def_special GymLegend_PlanCamera
 	def_special GymCandidate_BufferMentorName
 	def_special GymCandidate_PrepareMentorIntro
 	def_special GymCandidate_PrepareMentorGift

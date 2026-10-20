@@ -432,6 +432,19 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   stand-in shift) while the player takes their spot facing the door. Each challenger walks in
   from the door to the player and back out after the battle; afterwards the leader returns
   (`GymCandidate_PlanHold`, `GymCandidate_PlanChallengerWalk`).
+- **The legendary of your type** (`src/gym_legend.c`, `data/scripts/gym_legend.inc`): right after
+  Oak hands the gym over, the camera shakes, the lights go out, and the most powerful Pokémon of
+  the player's type appears on the battle stage (or near the middle of the room without one); the
+  camera pans to it. Oak says it must have sensed a new gym of its type, that most leaders don't
+  use legendaries but no rule forbids it, and that with challengers getting stronger the player
+  might want to catch it. Talking to it starts a level 70 legendary battle. If it's knocked out
+  or the player runs, it vanishes and is back on the stage the next time they come in, until
+  it's caught (`FLAG_GYM_LEGEND_APPEARED`/`CAUGHT`, 0x0C3/0x0C4). Its overworld sprite is the
+  expansion's Pokémon object (`VAR_OBJ_GFX_ID_C`).
+  Normal: Meloetta, Fighting: Koraidon, Flying: Tornadus, Poison: Eternatus, Ground: Groudon,
+  Rock: Diancie, Bug: Genesect, Ghost: Giratina, Steel: Dialga, Fire: Ho-Oh, Water: Palkia,
+  Grass: Shaymin, Electric: Miraidon, Psychic: Cresselia, Ice: Glastrier, Dragon: Rayquaza,
+  Dark: Darkrai, Fairy: Xerneas. Navel Rock's Ho-Oh (an event map) never appears now.
 - **Walking leaders**: FireRed's Gym Leader and Elite Four sprites only had standing frames;
   `tools/gym_hack/make_walk_frames.py` added walking frames, so visiting mentors take steps.
 - **New decorations message**: when key battles or badges unlock new gym decorations, the next
@@ -476,6 +489,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/gym_candidate.c`, `data/scripts/gym_candidate.inc` | Candidacy: approvals, Guest Leader battles, mentors and their gifts, Oak's asides, trainers who join |
 | `tools/gym_hack/type_item_art.py`, `test/battle/gym_hack/type_items.c` | The mentors' type items (and the Palm Pilot icon): icons and battle tests |
 | `data/scripts/palm_pilot.inc`, `tools/gym_hack/build_heal_pad.py` | The Palm Pilot and the Pokémon Center heal pads |
+| `src/gym_legend.c`, `data/scripts/gym_legend.inc` | The legendary of the player's type in their gym |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |

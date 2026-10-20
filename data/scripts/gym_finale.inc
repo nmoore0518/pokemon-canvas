@@ -129,6 +129,8 @@ GymFinale_EventScript_BeatOak::
 	waitmovement 0
 	msgbox GymFinale_Text_OakHowItWorks
 	closemessage
+	call GymLegend_EventScript_Arrives   @ the legendary Pokémon of the player's type
+	closemessage
 	applymovement LOCALID_PALLET_GYM_OAK, PalletTown_Gym_Movement_OakLeave
 	waitmovement 0
 	removeobject LOCALID_PALLET_GYM_OAK

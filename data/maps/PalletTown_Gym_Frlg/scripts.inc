@@ -7,6 +7,7 @@ PalletTown_Gym_Frlg_MapScripts::
 @ Draw the decorations the player has placed
 PalletTown_Gym_OnLoad::
 	special GymDecor_DrawRoom
+	special GymLegend_OnLoad
 	end
 
 @ Who's in the gym: no challenger until the aide sends one in; the aide except during Oak's first

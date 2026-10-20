@@ -2482,6 +2482,10 @@
 #define FLAG_GYM_APPROVAL_SABRINA     0x0BF
 #define FLAG_GYM_APPROVAL_BLAINE      0x0C0
 #define FLAG_GYM_APPROVAL_GIOVANNI    0x0C1
+// The legendary Pokémon of the player's type in their gym after the League (src/gym_legend.c)
+#define FLAG_HIDE_PALLET_GYM_LEGEND   0x0C2
+#define FLAG_GYM_LEGEND_APPEARED      0x0C3
+#define FLAG_GYM_LEGEND_CAUGHT        0x0C4
 
 
 #if TESTING
