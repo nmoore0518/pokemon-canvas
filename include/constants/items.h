@@ -1103,6 +1103,7 @@ enum __attribute__((packed)) Item
     ITEM_MANIFESTO = 919,   // Dark offense
     ITEM_TWINKLING_LIGHTS = 920,   // Fairy defense
     ITEM_MAGIC_WAND = 921,   // Fairy offense
+    ITEM_PALM_PILOT = 922,   // Gym Trainer hack: Bill's portable PC (data/scripts/palm_pilot.inc)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

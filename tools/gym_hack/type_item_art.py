@@ -492,10 +492,34 @@ def slug(name):
     return name.lower().replace(" ", "_")
 
 
+def palm_pilot():
+    """Bill's portable PC (not a type item, drawn here with the rest)"""
+    c = Icon()
+    c.rect(5, 1, 18, 22, "D")
+    c.rect(6, 2, 17, 21, "TN")
+    c.rect(7, 3, 16, 12, "LG")          # screen
+    c.rect(8, 4, 15, 4, "GR")
+    c.rect(8, 6, 13, 6, "DG")
+    c.rect(8, 8, 14, 8, "DG")
+    c.rect(8, 10, 11, 10, "DG")
+    c.ellipse(9, 16, 1.6, 1.6, "R")     # buttons
+    c.ellipse(14, 16, 1.6, 1.6, "BL")
+    c.rect(10, 19, 13, 19, "L")
+    c.line(19, 3, 21, 1, "ST")          # stylus
+    c.line(19, 4, 19, 20, "ST")
+    c.outline()
+    return c
+
+
+EXTRA = [("Palm Pilot", palm_pilot)]
+
+
 def all_icons():
     for t, dname, dfn, oname, ofn in ITEMS:
         yield dname, dfn()
         yield oname, ofn()
+    for name, fn in EXTRA:
+        yield name, fn()
 
 
 def write_icon(name, canvas):

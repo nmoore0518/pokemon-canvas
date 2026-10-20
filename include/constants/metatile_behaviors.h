@@ -242,6 +242,7 @@ enum {
     MB_DOWN_RIGHT_STAIR_WARP,
     MB_DOWN_LEFT_STAIR_WARP,
     MB_ROCK_CLIMB,
+    MB_HEAL_PAD,        // Gym Trainer hack: the Pokémon Center quick heal pad
     NUM_METATILE_BEHAVIORS
 };
 

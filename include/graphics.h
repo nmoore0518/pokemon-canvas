@@ -434,7 +434,9 @@ extern const u32 gItemIcon_SodaPop[];
 extern const u32 gItemIcon_HedgeClippers[];
 extern const u16 gItemIconPalette_HedgeClippers[];
 extern const u16 gItemIconPalette_Multivitamin[];
-// Gym Trainer hack: the mentors' type items
+// Gym Trainer hack: the mentors' type items, the Palm Pilot
+extern const u32 gItemIcon_PalmPilot[];
+extern const u16 gItemIconPalette_PalmPilot[];
 extern const u32 gItemIcon_FluffySweater[];
 extern const u16 gItemIconPalette_FluffySweater[];
 extern const u32 gItemIcon_ThirdEye[];

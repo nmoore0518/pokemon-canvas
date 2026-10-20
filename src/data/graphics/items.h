@@ -2242,3 +2242,6 @@ const u16 gItemIconPalette_TwinklingLights[] = INCGFX_U16("graphics/items/icon_p
 
 const u32 gItemIcon_MagicWand[] = INCGFX_U32("graphics/items/icons/gym/magic_wand.png", ".4bpp.smol");
 const u16 gItemIconPalette_MagicWand[] = INCGFX_U16("graphics/items/icon_palettes/gym/magic_wand.pal", ".gbapal");
+
+const u32 gItemIcon_PalmPilot[] = INCGFX_U32("graphics/items/icons/gym/palm_pilot.png", ".4bpp.smol");
+const u16 gItemIconPalette_PalmPilot[] = INCGFX_U16("graphics/items/icon_palettes/gym/palm_pilot.pal", ".gbapal");

@@ -88,6 +88,7 @@ Route25_SeaCottage_EventScript_BillWalkToTeleporter::
 
 Route25_SeaCottage_EventScript_BillGoToSSAnne::
 	msgbox Route25_SeaCottage_Text_SSAnnePartyYouGoInstead
+	call EventScript_BillGivesPalmPilot   @ Gym Trainer hack
 	release
 	end
 
@@ -121,6 +122,7 @@ Route25_SeaCottage_EventScript_NoRoomForSSTicket::
 
 Route25_SeaCottage_EventScript_BillGoLookAtPC::
 	msgbox Route25_SeaCottage_Text_CheckOutRareMonsOnPC
+	call EventScript_BillGivesPalmPilot   @ Gym Trainer hack
 	release
 	end
 

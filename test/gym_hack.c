@@ -1736,3 +1736,39 @@ TEST("GymHack: mentor: meets the player once, then gives each item once")
     GymCandidate_BufferMentorGift();
     EXPECT(StringCompareN(gStringVar4, COMPOUND_STRING("BLAINE: Hah! One more quiz!"), 27) == 0);
 }
+
+// ---- Quality of life: the Palm Pilot and the quick heal pad ----
+#include "item_use.h"
+#include "metatile_behavior.h"
+#include "constants/metatile_behaviors.h"
+#include "constants/maps.h"
+#include "tilesets.h"
+extern const u8 Text_BillPalmPilot[], Text_BillPalmPilotHowTo[], Text_HealPadInnovator[], Text_PalmPilotBoot[], Text_PalmPilotNoSignal[];
+
+TEST("GymHack: the Pokémon Center tileset has the heal pad")
+{
+    u32 attr = ((const u32 *)gTileset_PokemonCenterFrlg.metatileAttributes)[255];
+    EXPECT_EQ(attr & 0x1FF, MB_HEAL_PAD);
+    EXPECT(MetatileBehavior_IsHealPad(attr & 0x1FF));
+}
+
+TEST("GymHack: the Palm Pilot is a key item that works outside the League")
+{
+    EXPECT_EQ(GetItemPocket(ITEM_PALM_PILOT), POCKET_KEY_ITEMS);
+    EXPECT(GetItemImportance(ITEM_PALM_PILOT));
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_VIRIDIAN_CITY);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_VIRIDIAN_CITY);
+    EXPECT(PalmPilot_HasSignal());
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_POKEMON_LEAGUE_LANCES_ROOM);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_POKEMON_LEAGUE_LANCES_ROOM);
+    EXPECT(!PalmPilot_HasSignal());
+}
+
+TEST("GymHack: Palm Pilot and heal pad lines fit the message box")
+{
+    static const u8 *const texts[] = {Text_BillPalmPilot, Text_BillPalmPilotHowTo, Text_HealPadInnovator, Text_PalmPilotBoot, Text_PalmPilotNoSignal};
+    u32 i;
+    SetLongPlaceholders();
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+}

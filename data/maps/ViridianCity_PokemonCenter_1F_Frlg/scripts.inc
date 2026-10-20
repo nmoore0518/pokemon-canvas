@@ -14,6 +14,11 @@ ViridianCity_PokemonCenter_1F_EventScript_Nurse::
 	release
 	end
 
+@ Gym Trainer hack: about the quick heal pad
+ViridianCity_PokemonCenter_1F_EventScript_HealPadScientist::
+	msgbox Text_HealPadInnovator, MSGBOX_NPC
+	end
+
 ViridianCity_PokemonCenter_1F_EventScript_Boy::
 	msgbox ViridianCity_PokemonCenter_1F_Text_PokeCenterInEveryTown, MSGBOX_NPC
 	end

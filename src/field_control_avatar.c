@@ -730,6 +730,11 @@ static bool8 TryStartMiscWalkingScripts(u16 metatileBehavior)
         ScriptContext_SetupScript(EventScript_FallDownHole);
         return TRUE;
     }
+    else if (MetatileBehavior_IsHealPad(metatileBehavior))   // Gym Trainer hack
+    {
+        ScriptContext_SetupScript(EventScript_QuickHealPad);
+        return TRUE;
+    }
     else if (MetatileBehavior_IsBattlePyramidWarp(metatileBehavior))
     {
         ScriptContext_SetupScript(BattlePyramid_WarpToNextFloor);

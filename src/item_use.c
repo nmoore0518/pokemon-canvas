@@ -750,6 +750,44 @@ static void Task_AccessPokemonBoxLink(u8 taskId)
     DestroyTask(taskId);
 }
 
+// Gym Trainer hack: the Palm Pilot, Bill's portable PC. Works anywhere on the field except
+// inside the Pokémon League (from Lorelei's room to the Hall of Fame).
+bool32 PalmPilot_HasSignal(void)
+{
+    static const u16 sNoSignal[] = {
+        MAP_POKEMON_LEAGUE_LORELEIS_ROOM, MAP_POKEMON_LEAGUE_BRUNOS_ROOM, MAP_POKEMON_LEAGUE_AGATHAS_ROOM,
+        MAP_POKEMON_LEAGUE_LANCES_ROOM, MAP_POKEMON_LEAGUE_CHAMPIONS_ROOM, MAP_POKEMON_LEAGUE_HALL_OF_FAME,
+    };
+    u16 map = (gSaveBlock1Ptr->location.mapGroup << 8) | gSaveBlock1Ptr->location.mapNum;
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sNoSignal); i++)
+    {
+        if (map == sNoSignal[i])
+            return FALSE;
+    }
+    return TRUE;
+}
+
+static void Task_AccessPalmPilot(u8 taskId)
+{
+    ScriptContext_SetupScript(EventScript_PalmPilot);
+    DestroyTask(taskId);
+}
+
+void ItemUseOutOfBattle_PalmPilot(u8 taskId)
+{
+    if (!PalmPilot_HasSignal())
+    {
+        if (!gTasks[taskId].tUsingRegisteredKeyItem)
+            DisplayItemMessage(taskId, FONT_NORMAL, Text_PalmPilotNoSignal, CloseItemMessage);
+        else
+            DisplayItemMessageOnField(taskId, Text_PalmPilotNoSignal, Task_CloseCantUseKeyItemMessage);
+        return;
+    }
+    sItemUseOnFieldCB = Task_AccessPalmPilot;
+    SetUpItemUseOnFieldCallback(taskId);
+}
+
 void ItemUseOutOfBattle_CoinCase(u8 taskId)
 {
     ConvertIntToDecimalStringN(gStringVar1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);

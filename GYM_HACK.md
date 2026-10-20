@@ -398,6 +398,18 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     | Dragon | Fire Shroud | Bionic Jaw |
     | Dark | Black Veil | Manifesto |
     | Fairy | Twinkling Lights | Magic Wand |
+- **The Palm Pilot** (`data/scripts/palm_pilot.inc`, `ItemUseOutOfBattle_PalmPilot` in
+  `src/item_use.c`): Bill's portable PC, a key item. He gives it right after the S.S. Ticket ("I
+  made a PC that fits in your pocket!"), or when you talk to him again if you got the ticket
+  before this version. Used from the bag or SELECT, it opens the usual PC menu (Bill's/Someone's
+  PC, your PC for items, Hall of Fame) anywhere on the field, except inside the Pokémon League
+  (Lorelei's room through the Hall of Fame: "can't get a signal"), so the Elite Four run still
+  means no box swaps between battles. It doesn't heal.
+- **Quick heal pads** (`MB_HEAL_PAD`, `tools/gym_hack/build_heal_pad.py`): a glowing pad in the
+  bottom-left corner of every Pokémon Center (Indigo Plateau and One Island included). Stepping
+  on it fully heals the party with the healing jingle, no nurse needed. A scientist next to the
+  pad in the Viridian City Pokémon Center explains the new Silph tech, and that it'll never
+  replace the nurses.
 - **Trainer card fix**: a new game's Seedot size record shares a var with FireRed's trainer card
   icons, which crashed the game when flipping the card; the card now ignores invalid species.
 - **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's
@@ -429,7 +441,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/decor_art.py` | Pixel art for the type decorations and trainer icons (`python3 tools/gym_hack/decor_art.py sheet.png`) |
 | `data/scripts/gym_practice.inc` | Practice trainer battles |
 | `src/gym_candidate.c`, `data/scripts/gym_candidate.inc` | Candidacy: approvals, Guest Leader battles, mentors and their gifts, Oak's asides, trainers who join |
-| `tools/gym_hack/type_item_art.py`, `test/battle/gym_hack/type_items.c` | The mentors' type items: icons and battle tests |
+| `tools/gym_hack/type_item_art.py`, `test/battle/gym_hack/type_items.c` | The mentors' type items (and the Palm Pilot icon): icons and battle tests |
+| `data/scripts/palm_pilot.inc`, `tools/gym_hack/build_heal_pad.py` | The Palm Pilot and the Pokémon Center heal pads |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |

@@ -1,0 +1,101 @@
+@ Gym Trainer hack: quality of life (src/item_use.c ItemUseOutOfBattle_PalmPilot).
+@ The PALM PILOT: Bill's portable PC, from the bag (or SELECT) almost anywhere.
+@ The quick heal pad in every Pokémon Center (MB_HEAL_PAD, src/field_control_avatar.c).
+
+EventScript_PalmPilot::
+	lockall
+	playse SE_PC_ON
+	msgbox Text_PalmPilotBoot
+EventScript_PalmPilotMenu::
+	message gText_WhichPCShouldBeAccessed
+	waitmessage
+	special ScriptMenu_CreatePCMultichoice
+	switch VAR_RESULT
+	case 0, EventScript_PalmPilotStorage
+	case 1, EventScript_PalmPilotPlayersPC
+	case 2, EventScript_PalmPilotHallOfFame
+	goto EventScript_PalmPilotOff
+	end
+
+EventScript_PalmPilotStorage::
+	playse SE_PC_LOGIN
+	call_if_unset FLAG_SYS_PC_LANETTE, EventScript_AccessSomeonesPC
+	call_if_set FLAG_SYS_PC_LANETTE, EventScript_AccessLanettesPC
+	msgbox gText_StorageSystemOpened, MSGBOX_DEFAULT
+	special ShowPokemonStorageSystemPC
+	goto EventScript_PalmPilotMenu
+	end
+
+EventScript_PalmPilotPlayersPC::
+	playse SE_PC_LOGIN
+	msgbox gText_AccessedPlayersPC, MSGBOX_DEFAULT
+	special PlayerPC
+	goto EventScript_PalmPilotMenu
+	end
+
+EventScript_PalmPilotHallOfFame::
+	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_PalmPilotOff
+	playse SE_PC_LOGIN
+	special AccessHallOfFamePC
+	goto EventScript_PalmPilotMenu
+	end
+
+EventScript_PalmPilotOff::
+	playse SE_PC_OFF
+	releaseall
+	end
+
+@ Bill gives it with the S.S. Ticket (Route25_SeaCottage), or later if it was missed
+EventScript_BillGivesPalmPilot::
+	checkitem ITEM_PALM_PILOT
+	goto_if_eq VAR_RESULT, TRUE, EventScript_PalmPilotReturn
+	msgbox Text_BillPalmPilot
+	giveitem ITEM_PALM_PILOT
+	goto_if_eq VAR_RESULT, FALSE, EventScript_PalmPilotReturn
+	msgbox Text_BillPalmPilotHowTo
+EventScript_PalmPilotReturn::
+	return
+
+@ Stepping onto the heal pad
+EventScript_QuickHealPad::
+	lockall
+	special HealPlayerParty
+	callnative UpdateFollowingPokemon
+	playfanfare MUS_HEAL
+	waitfanfare
+	releaseall
+	end
+
+Text_PalmPilotBoot::
+	.string "{PLAYER} booted up the PALM PILOT.$"
+
+Text_PalmPilotNoSignal::
+	.string "The PALM PILOT can't get a signal\n"
+	.string "in here!$"
+
+Text_BillPalmPilot::
+	.string "BILL: Oh, and one more thing!\p"
+	.string "You know my POKéMON Storage\n"
+	.string "System? I've been tinkering…\p"
+	.string "and I made a PC that fits in your\n"
+	.string "pocket! I call it the PALM PILOT.\p"
+	.string "It links to the Storage System\n"
+	.string "from almost anywhere.\p"
+	.string "Not inside the POKéMON LEAGUE,\n"
+	.string "though. They jam the signal.\p"
+	.string "Here, take this one. Tell me how\n"
+	.string "it works out!$"
+
+Text_BillPalmPilotHowTo::
+	.string "BILL: Use it from your BAG, or\n"
+	.string "register it to the SELECT Button.$"
+
+Text_HealPadInnovator::
+	.string "See that glowing pad on the floor?\n"
+	.string "It's brand-new tech from SILPH!\p"
+	.string "Step on it, and your POKéMON are\n"
+	.string "healed in a flash. No waiting!\p"
+	.string "…But a machine can't smile at you\n"
+	.string "or ask how your journey's going.\p"
+	.string "That's why there will always be\n"
+	.string "a NURSE behind the counter.$"

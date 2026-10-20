@@ -16979,6 +16979,23 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_MagicWand,
         .iconPalette = gItemIconPalette_MagicWand,
     },
+
+    [ITEM_PALM_PILOT] =
+    {
+        // Gym Trainer hack: Bill's portable PC, from the bag or SELECT (not inside the League)
+        .name = ITEM_NAME("Palm Pilot"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Bill's pocket PC.\n"
+            "Accesses the PC\n"
+            "almost anywhere."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_PalmPilot,
+        .iconPic = gItemIcon_PalmPilot,
+        .iconPalette = gItemIconPalette_PalmPilot,
+    },
 };
 
 #undef ITEM_NAME

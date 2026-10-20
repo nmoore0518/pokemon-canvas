@@ -1762,3 +1762,8 @@ bool8 MetatileBehavior_IsTrainerTowerMonitor(u8 metatileBehavior)
         return FALSE;
 }
 
+// Gym Trainer hack: the quick heal pad in Pokémon Centers
+bool8 MetatileBehavior_IsHealPad(u8 metatileBehavior)
+{
+    return metatileBehavior == MB_HEAL_PAD;
+}

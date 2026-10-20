@@ -8,6 +8,8 @@ void ItemUseOutOfBattle_Itemfinder(u8 taskId);
 void ItemUseOutOfBattle_PokeblockCase(u8 taskId);
 void ItemUseOutOfBattle_CoinCase(u8 taskId);
 void ItemUseOutOfBattle_PokemonBoxLink(u8 taskId);
+void ItemUseOutOfBattle_PalmPilot(u8 taskId);
+bool32 PalmPilot_HasSignal(void);
 void ItemUseOutOfBattle_PowderJar(u8 taskId);
 void ItemUseOutOfBattle_WailmerPail(u8 taskId);
 void ItemUseOutOfBattle_Medicine(u8 taskId);
