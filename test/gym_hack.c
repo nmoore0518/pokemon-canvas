@@ -1772,3 +1772,54 @@ TEST("GymHack: Palm Pilot and heal pad lines fit the message box")
     for (i = 0; i < ARRAY_COUNT(texts); i++)
         ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
 }
+
+#include "field_move.h"
+// ---- v32: mentor meeting, gym-first Pokédex lines, balloon, decoration news ----
+extern const u8 GymCandidate_Text_OakWelcomesMentor[], GymCandidate_Text_MentorDecorGift[], GymCandidate_Text_ReceivedMentorDecor[], Text_NewGymDecor[], Text_OakMissedBalloon[],
+    PalletTown_Gym_Text_OakTakeBalloon[], PalletTown_Gym_Text_OakBalloonHowTo[], PalletTown_Gym_Text_RivalTossYourJunk[],
+    PalletTown_ProfessorOaksLab_Text_OakHaveRequestForYouTwo[], PalletTown_ProfessorOaksLab_Text_OakPokedexOnDesk[], PalletTown_ProfessorOaksLab_Text_OakCatchMonsForDataTakeThese[],
+    PalletTown_ProfessorOaksLab_Text_OakCompleteMonGuideWasMyDream[], PalletTown_ProfessorOaksLab_Text_RivalLeaveItToMeGramps[], PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap[],
+    PokedexRating_Text_HowIsPokedexComingAlong[], PokedexRating_Text_LessThan10[], PokedexRating_Text_LessThan20[], PokedexRating_Text_LessThan30[], PokedexRating_Text_LessThan40[],
+    PokedexRating_Text_LessThan50[], PokedexRating_Text_LessThan60[], PokedexRating_Text_LessThan70[], PokedexRating_Text_LessThan80[], PokedexRating_Text_LessThan90[],
+    PokedexRating_Text_LessThan100[], PokedexRating_Text_LessThan110[], PokedexRating_Text_LessThan120[], PokedexRating_Text_LessThan130[], PokedexRating_Text_LessThan140[],
+    PokedexRating_Text_LoveSeeingYourPokedex[];
+
+TEST("GymHack: v32 story lines fit the message box")
+{
+    static const u8 *const texts[] = {GymCandidate_Text_OakWelcomesMentor, GymCandidate_Text_MentorDecorGift, GymCandidate_Text_ReceivedMentorDecor, Text_NewGymDecor, Text_OakMissedBalloon,
+        PalletTown_Gym_Text_OakTakeBalloon, PalletTown_Gym_Text_OakBalloonHowTo, PalletTown_Gym_Text_RivalTossYourJunk,
+        PalletTown_ProfessorOaksLab_Text_OakHaveRequestForYouTwo, PalletTown_ProfessorOaksLab_Text_OakPokedexOnDesk, PalletTown_ProfessorOaksLab_Text_OakCatchMonsForDataTakeThese,
+        PalletTown_ProfessorOaksLab_Text_OakCompleteMonGuideWasMyDream, PalletTown_ProfessorOaksLab_Text_RivalLeaveItToMeGramps, PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap,
+        PokedexRating_Text_HowIsPokedexComingAlong, PokedexRating_Text_LessThan10, PokedexRating_Text_LessThan20, PokedexRating_Text_LessThan30, PokedexRating_Text_LessThan40,
+        PokedexRating_Text_LessThan50, PokedexRating_Text_LessThan60, PokedexRating_Text_LessThan70, PokedexRating_Text_LessThan80, PokedexRating_Text_LessThan90,
+        PokedexRating_Text_LessThan100, PokedexRating_Text_LessThan110, PokedexRating_Text_LessThan120, PokedexRating_Text_LessThan130, PokedexRating_Text_LessThan140,
+        PokedexRating_Text_LoveSeeingYourPokedex};
+    u32 i, who, f;
+    SetLongPlaceholders();
+    StringCopy(gStringVar1, COMPOUND_STRING("LT. SURGE"));   // a mentor's name
+    StringCopy(gStringVar2, COMPOUND_STRING("ELECTRIC TESLA COIL"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+    for (who = 0; who < GYM_CANDIDATE_LEADERS + GYM_CANDIDATE_ELITE_FOUR; who++)
+        for (f = 0; f < 5; f++)
+            ExpectLinesFit(GymCandidate_GetMentorPersonText(who, f), 27 * 8 - 4, TRUE);
+}
+
+TEST("GymHack: the mentor's housewarming gift is a decoration of the player's type")
+{
+    u32 t;
+    for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (t == TYPE_MYSTERY || t == TYPE_STELLAR)
+            continue;
+        VarSet(VAR_PLAYER_TYPE, t);
+        GymCandidate_GiveMentorDecor();
+        EXPECT_EQ(gSpecialVar_Result, TRUE);
+    }
+}
+
+TEST("GymHack: Fly needs no badge")
+{
+    FlagClear(FLAG_BADGE03_GET);
+    EXPECT(IsFieldMoveUnlocked(FIELD_MOVE_FLY));
+}

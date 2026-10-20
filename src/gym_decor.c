@@ -149,6 +149,38 @@ bool32 GymDecor_IsTypeUnlocked(u32 type)
     return FALSE;
 }
 
+// Gym Trainer hack: "New GYM decorations available!" Counts the unlocked decorations (not the
+// trainers) and returns TRUE once each time the count goes up (checked as the player walks,
+// src/field_control_avatar.c). Nothing before the gym opens.
+static u32 CountUnlockedDecor(void)
+{
+    u32 i, n = 0;
+    for (i = 1; i < GYM_DECOR_COUNT; i++)
+    {
+        if (gGymDecor[i].category != GYM_DECOR_CAT_TRAINERS && GymDecor_IsUnlocked(i))
+            n++;
+    }
+    return n;
+}
+
+bool32 GymDecor_CheckNewUnlocks(void)
+{
+    u32 n;
+    if (!FlagGet(FLAG_PALLET_GYM_OPEN))
+        return FALSE;
+    n = CountUnlockedDecor();
+    if (n <= VarGet(VAR_GYM_DECOR_SEEN))
+        return FALSE;
+    VarSet(VAR_GYM_DECOR_SEEN, n);
+    return TRUE;
+}
+
+// Special: the gym has just opened; what's unlocked now isn't news
+void GymDecor_MarkUnlocksSeen(void)
+{
+    VarSet(VAR_GYM_DECOR_SEEN, CountUnlockedDecor());
+}
+
 bool32 GymDecor_IsUnlocked(u32 id)
 {
     u32 category = gGymDecor[id].category;

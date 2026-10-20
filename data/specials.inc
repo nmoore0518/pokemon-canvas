@@ -672,11 +672,19 @@ gSpecials::
 	def_special GymCandidate_FaceBack
 	def_special GymCandidate_BufferRecruit
 	def_special GymCandidate_Recruit
+	def_special GymDecor_MarkUnlocksSeen
 	def_special GymCandidate_BufferMentorName
 	def_special GymCandidate_PrepareMentorIntro
 	def_special GymCandidate_PrepareMentorGift
 	def_special GymCandidate_BufferMentorIntro
 	def_special GymCandidate_BufferMentorGift
+	def_special GymCandidate_BufferMentorStory
+	def_special GymCandidate_BufferMentorQuestion
+	def_special GymCandidate_BufferMentorAnswer
+	def_special GymCandidate_BufferMentorFarewell
+	def_special GymCandidate_GiveMentorDecor
+	def_special GymCandidate_PlanVisitorWalk
+	def_special GymCandidate_VisitorWalked
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing

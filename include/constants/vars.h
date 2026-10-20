@@ -341,6 +341,8 @@
 #define VAR_MOVE_EXTRACTOR_STAGE                         0x40FB
 // The mentor (src/gym_candidate.c): MENTOR_MET | MENTOR_GAVE_GUARD | MENTOR_GAVE_EDGE
 #define VAR_MENTOR_STAGE                                 0x40FC
+// How many gym decorations were unlocked last time it was checked (for "New GYM decorations!")
+#define VAR_GYM_DECOR_SEEN                               0x40FD
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

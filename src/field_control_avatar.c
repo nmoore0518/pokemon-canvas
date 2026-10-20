@@ -751,6 +751,13 @@ static bool8 TryStartMiscWalkingScripts(u16 metatileBehavior)
         PlaySecretBaseMusicNoteMatSound(MapGridGetMetatileIdAt(x, y));
         return FALSE;
     }
+    else if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_FORCED_MOVE)
+          && !MetatileBehavior_IsForcedMovementTile(metatileBehavior)
+          && GymDecor_CheckNewUnlocks())   // Gym Trainer hack
+    {
+        ScriptContext_SetupScript(EventScript_NewGymDecor);
+        return TRUE;
+    }
     return FALSE;
 }
 

@@ -117,9 +117,10 @@ gBirchDexRatingText_OnANationwideBasis::
 @ FRLG
 
 PokedexRating_Text_HowIsPokedexComingAlong::
-	.string "OAK: Good to see you!\n"
-	.string "How is your POKéDEX coming along?\p"
-	.string "Here, let me take a look.$"
+	.string "OAK: Good to see you! How's our\n"
+	.string "future GYM LEADER?\p"
+	.string "Let me see your POKéDEX. A LEADER\n"
+	.string "should know what's out there.$"
 
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
@@ -129,72 +130,70 @@ PokedexRating_Text_SeenXOwnedY::
 	.string "{FONT_NORMAL}PROF. OAK's rating:$"
 
 PokedexRating_Text_LessThan10::
-	.string "You still have lots to do.\p"
-	.string "Go into every patch of grass you\n"
-	.string "see and look for POKéMON!$"
+	.string "Hardly any yet!\p"
+	.string "A challenger could walk in with\n"
+	.string "anything. Go see what's out there!$"
 
 PokedexRating_Text_LessThan20::
-	.string "It looks as if you're getting on\n"
-	.string "the right track!\p"
+	.string "You're on the right track!\p"
 	.string "I've given one of my AIDES a FLASH\n"
 	.string "HM. Make sure you go get it!$"
 
 PokedexRating_Text_LessThan30::
-	.string "Your POKéDEX could use a bit more\n"
-	.string "volume still!\p"
-	.string "Try to catch other species of\n"
-	.string "POKéMON!$"
+	.string "Still a few gaps. Try catching\n"
+	.string "POKéMON that aren't your type, too.\p"
+	.string "You'll learn how your challengers\n"
+	.string "think!$"
 
 PokedexRating_Text_LessThan40::
-	.string "Good, it's apparent that you're\n"
-	.string "trying hard!\p"
+	.string "Good! You know what you're up\n"
+	.string "against now.\p"
 	.string "I've given one of my AIDES an\n"
 	.string "ITEMFINDER. Be sure to collect it!$"
 
 PokedexRating_Text_LessThan50::
-	.string "Your POKéDEX is coming along quite\n"
-	.string "well!\p"
+	.string "Coming along nicely! Fewer\n"
+	.string "challengers will surprise you now.\p"
 	.string "I've given one of my AIDES an\n"
 	.string "AMULET COIN. Be sure to get it!$"
 
 PokedexRating_Text_LessThan60::
-	.string "Ah, you've finally topped 50\n"
-	.string "species!\p"
+	.string "Over 50 species! The other LEADERS\n"
+	.string "would be impressed.\p"
 	.string "I've given one of my AIDES an EXP.\n"
 	.string "SHARE. Be sure to go get it!$"
 
 PokedexRating_Text_LessThan70::
-	.string "Hoho! This is turning into quite the\n"
-	.string "respectable POKéDEX!$"
+	.string "Hoho! That's a LEADER's POKéDEX,\n"
+	.string "all right!$"
 
 PokedexRating_Text_LessThan80::
-	.string "Very good!\p"
-	.string "I think you'll collect even more\n"
-	.string "POKéMON by going fishing!$"
+	.string "Very good! Some challengers fish for\n"
+	.string "their teams. Try a FISHING ROD!$"
 
 PokedexRating_Text_LessThan90::
-	.string "Wonderful! Let me guess… You\n"
-	.string "like to collect things, don't you?$"
+	.string "Wonderful! No challenger will catch\n"
+	.string "you off guard now.$"
 
 PokedexRating_Text_LessThan100::
-	.string "I'm impressed!\n"
-	.string "It must have been difficult to do!$"
+	.string "I'm impressed! You know more POKéMON\n"
+	.string "than most GYM LEADERS!$"
 
 PokedexRating_Text_LessThan110::
-	.string "You've finally hit 100 species!\n"
-	.string "I can't believe how good you are!$"
+	.string "100 species! Even the ELITE FOUR\n"
+	.string "would take notice!$"
 
 PokedexRating_Text_LessThan120::
-	.string "You even have the evolved forms\n"
-	.string "of POKéMON! Super!$"
+	.string "Evolved forms too! You'll know a\n"
+	.string "challenger's team before they do!$"
 
 PokedexRating_Text_LessThan130::
 	.string "Excellent! Trade with friends to\n"
-	.string "get some more!$"
+	.string "fill in the rest!$"
 
 PokedexRating_Text_LessThan140::
-	.string "Outstanding!\n"
-	.string "You've become a real pro at this!$"
+	.string "Outstanding! You'd make a fine\n"
+	.string "PROFESSOR, too… Ahem! LEADER first!$"
 
 PokedexRating_Text_LessThan150::
 	.string "I have nothing left to say!\n"
@@ -229,10 +228,7 @@ PokedexRating_Text_ThankYouMadeDreamReality::
 	.string "You've made my dream a reality!$"
 
 PokedexRating_Text_LoveSeeingYourPokedex::
-	.string "OAK: Ah, welcome!\p"
-	.string "Tell me, how is your POKéDEX\n"
-	.string "coming along?\p"
-	.string "Wahaha!\p"
-	.string "Actually, I know how it is, but I\n"
-	.string "love seeing it anyway!\p"
+	.string "OAK: Ah, welcome, LEADER!\p"
+	.string "How is your POKéDEX coming along?\n"
+	.string "A LEADER never stops studying!\p"
 	.string "Let's see…$"

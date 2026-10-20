@@ -10,12 +10,20 @@ Route16_House_EventScript_Woman::
 	goto_if_eq VAR_RESULT, FALSE, Route16_House_EventScript_NoRoomForHM02
 	giveitem_msg Route16_House_Text_ReceivedHM02FromGirl, ITEM_HM02
 	@ Gym Trainer hack: key item that works like the HM outside of battle
-	msgbox Text_GymHack_AndTakeThisToo
-	giveitem ITEM_HOT_AIR_BALLOON
+	call Route16_House_EventScript_GiveBalloonIfMissing
 	msgbox Route16_House_Text_ExplainHM02
 	setflag FLAG_GOT_HM02
 	release
 	end
+
+@ Gym Trainer hack: Oak gives the Hot Air Balloon at the start now; only give it if it's missing
+Route16_House_EventScript_GiveBalloonIfMissing::
+	checkitem ITEM_HOT_AIR_BALLOON
+	goto_if_eq VAR_RESULT, TRUE, Route16_House_EventScript_HaveBalloon
+	msgbox Text_GymHack_AndTakeThisToo
+	giveitem ITEM_HOT_AIR_BALLOON
+Route16_House_EventScript_HaveBalloon::
+	return
 
 Route16_House_EventScript_NoRoomForHM02::
 	msgbox Route16_House_Text_DontHaveAnyRoomForThis

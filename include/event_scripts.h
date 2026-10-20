@@ -570,6 +570,7 @@ extern const u8 EventScript_PC[];
 extern const u8 EventScript_AccessPokemonBoxLink[];
 extern const u8 EventScript_PalmPilot[];
 extern const u8 EventScript_QuickHealPad[];
+extern const u8 EventScript_NewGymDecor[];
 extern const u8 Text_PalmPilotNoSignal[];
 extern const u8 EventScript_TestSignpostMsg[];
 extern const u8 EventScript_HiddenItemScript[];

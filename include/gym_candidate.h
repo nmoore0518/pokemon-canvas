@@ -77,5 +77,15 @@ void GymCandidate_PrepareMentorIntro(void);
 void GymCandidate_PrepareMentorGift(void);
 void GymCandidate_BufferMentorIntro(void);
 void GymCandidate_BufferMentorGift(void);
+void GymCandidate_BufferMentorStory(void);
+void GymCandidate_BufferMentorQuestion(void);
+void GymCandidate_BufferMentorAnswer(void);
+void GymCandidate_BufferMentorFarewell(void);
+void GymCandidate_GiveMentorDecor(void);
+void GymCandidate_PlanVisitorWalk(void);
+void GymCandidate_VisitorWalked(void);
+const u8 *GymCandidate_GetMentorPersonText(u32 who, u32 field);
+extern u8 gMentorWalkIn[];
+extern u8 gMentorWalkOut[];
 
 #endif // GUARD_GYM_CANDIDATE_H

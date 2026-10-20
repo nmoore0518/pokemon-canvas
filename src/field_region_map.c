@@ -131,8 +131,8 @@ static const struct WindowTemplate sFieldRegionMapWindowTemplates[] =
     },
     [WIN_TYPE_FINDER] = {
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 17,
+        .tilemapLeft = 1,   // top left: at the bottom it covered Cinnabar Island
+        .tilemapTop = 1,
         .width = 14,
         .height = 2,
         .paletteNum = 15,

@@ -71,7 +71,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   level-up, trade and friendship evolution like an Everstone, but evolution stones still work.
 - **HM key items**: Hedge Clippers (Cut), Flashlight (Flash), Boogie Board (Surf), Hot Air Balloon
   (Fly), Can of Spinach (Strength), Sledgehammer (Rock Smash), Rocket Boots (Waterfall). Given by the same NPCs right after each HM. They need the same
-  badges as the HMs. Walking up to a tree, boulder or water offers the item when no party Pokémon
+  badges as the HMs, except Fly, which needs no badge at all (move or balloon). Oak gives the
+  Hot Air Balloon in the gym scene, right when he says the player can decorate (or in his lab, on
+  an older save); the Route 16 girl still gives HM02, and the balloon only if the player has none. Walking up to a tree, boulder or water offers the item when no party Pokémon
   knows the move (`checkfieldmove` returns `FIELD_MOVE_USER_ITEM`); they can also be used from the
   bag or registered to SELECT. Icons drawn by `tools/gym_hack/make_hm_item_icons.py`.
 - **Wild Pokémon** are planned in `planning/wild-pokemon-planner.xlsx` (one row per encounter slot).
@@ -87,7 +89,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   checks that all 386 can be caught or evolved.
 - **Gym type finder**: on the Town Map (the item or a wall map), SELECT shows a Poké Ball on every
   area whose wild tables (grass, water, fishing, Rock Smash) include a Pokémon whose primary type is
-  the player's; SELECT again hides them. It never says which Pokémon. Only the map being shown
+  the player's; SELECT again hides them (the hint sits top left, clear of Cinnabar). It never says which Pokémon. Only the map being shown
   (Kanto, or the Sevii group the player is on) gets markers. Worked out live from the wild tables, so
   edits to the planner show up automatically (`GymHack_GetTypeFinderMapSecs`, `src/field_region_map.c`,
   marker art `graphics/gym_hack/type_finder_marker.png`).
@@ -312,7 +314,11 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - **Mentors**: the leader or Elite Four member of the player's type. Oak writes to them about
     the player: Oak's Parcel now carries their reply (the Viridian Mart clerk mentions a letter;
     Oak reads it out: they're coming to Pallet Town today), and right after the Pokédex scene
-    they walk into the lab and introduce themselves in character. They meet the player again
+    they walk in through the lab door (a path found on the map, `GymCandidate_PlanVisitorWalk`),
+    Oak greets them, and they introduce themselves in character: who they are, their story and
+    advice about running a gym, a yes/no question with an answer for each, a housewarming gift
+    (the cheapest decoration of the player's type, into the gym PC), and a farewell before they
+    walk back out. The gift visits at Cerulean and Cinnabar also walk in from the gym's door. They meet the player again
     later as someone they know (after their badge, or after the Elite Four intro) and come
     around at approval. They bring two held items for the player's type (below): the defensive
     one after Mt. Moon (they drop by the Cerulean Gym after the badge) and the offensive one at
@@ -420,6 +426,15 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     too, and the box at the bottom says "Next: <move> at Lv. N." A browses: up/down scroll the
     list and show each move's power, accuracy, category and description; A or B goes back.
     Contest moves are hidden (`C_HIDE_CONTEST_DATA`), so the page has the contest page's place.
+- **New decorations message**: when key battles or badges unlock new gym decorations, the next
+  step the player takes shows "New GYM decorations available! Check the GYM PC."
+  (`GymDecor_CheckNewUnlocks`, `VAR_GYM_DECOR_SEEN` 0x40FD; nothing before the gym opens).
+- **The Pallet gym door** opens and closes like other gym doors (`METATILE_PALLET_GYM_DOOR` in
+  `include/constants/pallet_town_gym.h`, written by `build_pallet_town.py`; the door table in
+  `src/field_door.c`). In Oak's gym scene, the rival and Oak leave over the door mat.
+- **The Pokédex is secondary**: Oak hands it over as a GYM LEADER's scouting tool ("a LEADER who
+  doesn't know their opponents won't last a week"), says the gym comes first, and his Pokédex
+  ratings talk about challengers.
 - **Trainer card fix**: a new game's Seedot size record shares a var with FireRed's trainer card
   icons, which crashed the game when flipping the card; the card now ignores invalid species.
 - **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's

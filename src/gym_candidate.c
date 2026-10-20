@@ -12,6 +12,7 @@
 // Trainers met on the road (one per type) offer to join the player's gym after losing to them;
 // they become practice trainers (src/gym_decor.c, src/gym_challenge.c).
 #include "global.h"
+#include "malloc.h"
 #include "gym_candidate.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -22,6 +23,7 @@
 #include "gym_decor.h"
 #include "string_util.h"
 #include "constants/event_objects.h"
+#include "constants/event_object_movement.h"
 #include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/opponents.h"
@@ -208,51 +210,116 @@ static const struct GymCandidateMentor sMentors[NUMBER_OF_MON_TYPES] =
         COMPOUND_STRING("LANCE: Your POKéMON own the sky.\pYou have my approval.")},
 };
 
-// The mentors themselves (Gym Leaders 0-7, Elite Four 8-11): how they look, and what they say
-// with their two gifts
+// The mentors themselves (Gym Leaders 0-7, Elite Four 8-11): how they look, what they say when
+// they meet the player in Oak's lab (their story and a question), and with their two gifts
 static const struct
 {
     u16 gfx;
     const u8 *guardGift;    // after Mt. Moon
     const u8 *edgeGift;     // at Cinnabar
+    const u8 *story;        // in Oak's lab, after their introduction
+    const u8 *question;     // a yes/no question
+    const u8 *yes;
+    const u8 *no;
+    const u8 *farewell;     // leaving the lab
 } sMentorPeople[GYM_CANDIDATE_LEADERS + GYM_CANDIDATE_ELITE_FOUR] =
 {
     {OBJ_EVENT_GFX_BROCK,
         COMPOUND_STRING("BROCK: {PLAYER}! I heard you made it\nthrough MT. MOON. Knew you would!\pHere, I made this for you.\nLet one of your POKéMON hold it."),
-        COMPOUND_STRING("BROCK: {PLAYER}! I took the ferry\nall the way out here!\pYou've learned to take a hit.\nNow learn to land one. Here!")},
+        COMPOUND_STRING("BROCK: {PLAYER}! I took the ferry\nall the way out here!\pYou've learned to take a hit.\nNow learn to land one. Here!"),
+        COMPOUND_STRING("BROCK: My dad ran the PEWTER GYM\nbefore me. When he left, I had to\lraise my brothers and hold the GYM.\pHere's what I learned: a GYM isn't\nwalls and statues.\pIt's a promise that its LEADER is\nthere, every day, for every\lchallenger. Rock solid!"),
+        COMPOUND_STRING("BROCK: So, {PLAYER}… Can challengers\ncount on you, every single day?"),
+        COMPOUND_STRING("BROCK: Ha! That's what I like to\nhear!"),
+        COMPOUND_STRING("BROCK: Honest! That's a start.\nConfidence comes with practice."),
+        COMPOUND_STRING("BROCK: I'll come find you once you're\nthrough MT. MOON. Good luck!")},
     {OBJ_EVENT_GFX_MISTY,
         COMPOUND_STRING("MISTY: …And before you go. OAK\nmade me promise to give you this.\pDon't get the wrong idea! I don't\nwant my rival losing to a fluke!"),
-        COMPOUND_STRING("MISTY: Ugh, it's so hot here!\n…Fine. Here.\pI said I'd find you when you were\nready. Don't make me regret it!")},
+        COMPOUND_STRING("MISTY: Ugh, it's so hot here!\n…Fine. Here.\pI said I'd find you when you were\nready. Don't make me regret it!"),
+        COMPOUND_STRING("MISTY: Listen up. I became a LEADER\nbecause my sisters wouldn't stop\lshowing off.\pSo I trained harder than all of\nthem. Every challenger who walks\lin tests that.\pA GYM is only as tough as its\nLEADER on their worst day!"),
+        COMPOUND_STRING("MISTY: Well? You really think you\ncan beat me at my own game?"),
+        COMPOUND_STRING("MISTY: Hmph! Big talk.\nWe'll see about that!"),
+        COMPOUND_STRING("MISTY: Then why even try?\n…Ugh, fine. Prove yourself wrong."),
+        COMPOUND_STRING("MISTY: Don't think this means I like\nyou! See you around, kid.")},
     {OBJ_EVENT_GFX_LT_SURGE,
         COMPOUND_STRING("LT. SURGE: Ten-hut! Heard you're\nstill in the fight, kid!\pEvery soldier needs armor.\nTake this and keep your head down!"),
-        COMPOUND_STRING("LT. SURGE: Kid! You've survived the\nfront lines. Time for artillery!\pWith this, nothing can stop your\nattacks cold!")},
+        COMPOUND_STRING("LT. SURGE: Kid! You've survived the\nfront lines. Time for artillery!\pWith this, nothing can stop your\nattacks cold!"),
+        COMPOUND_STRING("LT. SURGE: In the war, I learned one\nthing: you hold your position, no\lmatter what!\pA GYM is a base. Challengers storm\nit. Your job is to make them earn\levery inch!\pDiscipline, kid! Drill your team\nlike soldiers!"),
+        COMPOUND_STRING("LT. SURGE: Are you ready to follow\norders, private?"),
+        COMPOUND_STRING("LT. SURGE: Ha! That's the spirit!"),
+        COMPOUND_STRING("LT. SURGE: What?! …Ha! You've got\nguts, I'll give you that."),
+        COMPOUND_STRING("LT. SURGE: Move out, soldier!\nI'll be checking on you!")},
     {OBJ_EVENT_GFX_ERIKA,
         COMPOUND_STRING("ERIKA: Oh, there you are… I came\nall the way from CELADON.\pMT. MOON must have been so dark.\nThis will keep your POKéMON safe."),
-        COMPOUND_STRING("ERIKA: My, what a long boat ride…\nI dozed off twice.\pPlease take this. May nothing\nstand in your POKéMON's way.")},
+        COMPOUND_STRING("ERIKA: My, what a long boat ride…\nI dozed off twice.\pPlease take this. May nothing\nstand in your POKéMON's way."),
+        COMPOUND_STRING("ERIKA: I tend a garden in my GYM.\nEach flower needs its own care…\pJust like each challenger. Some need\na gentle lesson. Others need a\lthorny one.\pA good LEADER helps them grow…\neven when they lose."),
+        COMPOUND_STRING("ERIKA: Tell me… do you love your\nPOKéMON?"),
+        COMPOUND_STRING("ERIKA: I could tell. They seem to\nglow around you."),
+        COMPOUND_STRING("ERIKA: Oh my… Shy, perhaps? They\nseem to love you, at least."),
+        COMPOUND_STRING("ERIKA: I'll come see how you've\ngrown. Please take care…")},
     {OBJ_EVENT_GFX_KOGA,
         COMPOUND_STRING("KOGA: Fwahaha! Did you notice me\nfollowing you through MT. MOON?\pNo? Good. A ninja's armor.\nTake it… and tell no one."),
-        COMPOUND_STRING("KOGA: Fwahaha! Surprised? A ninja\ngoes where his student goes.\pYou are ready for my secret\ntechnique. Take it!")},
+        COMPOUND_STRING("KOGA: Fwahaha! Surprised? A ninja\ngoes where his student goes.\pYou are ready for my secret\ntechnique. Take it!"),
+        COMPOUND_STRING("KOGA: A ninja's GYM hides its secrets\nin plain sight. Invisible walls.\lHidden traps.\pA challenger who reaches me has\nbeen tested a dozen times.\pBuild your GYM like a ninja, child.\nMake every step a lesson."),
+        COMPOUND_STRING("KOGA: Will you train in secret, as a\nninja does?"),
+        COMPOUND_STRING("KOGA: Fwahaha! Then we shall see."),
+        COMPOUND_STRING("KOGA: Hmph. Then they will see you\ncoming, child."),
+        COMPOUND_STRING("KOGA: I will be watching.\nAlways.")},
     {OBJ_EVENT_GFX_SABRINA,
         COMPOUND_STRING("SABRINA: I saw you leave MT. MOON.\nI saw you take this from me.\pSo… take it."),
-        COMPOUND_STRING("SABRINA: Seven BADGES. I saw this\nday, too.\pTake it. No wall will hold your\nPOKéMON back now.")},
+        COMPOUND_STRING("SABRINA: Seven BADGES. I saw this\nday, too.\pTake it. No wall will hold your\nPOKéMON back now."),
+        COMPOUND_STRING("SABRINA: Most LEADERS react to their\nchallengers. I see them coming.\pYou cannot read minds. But you can\nread people. How they walk in.\lWhat they fear.\pA LEADER who understands their\nchallenger has already won."),
+        COMPOUND_STRING("SABRINA: Do you believe in fate?"),
+        COMPOUND_STRING("SABRINA: Then you already know we\nwill meet again."),
+        COMPOUND_STRING("SABRINA: …Neither did I.\nOnce."),
+        COMPOUND_STRING("SABRINA: We will meet again soon.\nI have seen it.")},
     {OBJ_EVENT_GFX_BLAINE,
         COMPOUND_STRING("BLAINE: Hah! Quiz time! What keeps\na POKéMON safe from its weakness?\pAnswer: this! Take it, kid!"),
-        COMPOUND_STRING("BLAINE: Hah! One more quiz! What\nlets an attack hit when it\lshouldn't?\pAnswer: this! I've been saving it\nfor you!")},
+        COMPOUND_STRING("BLAINE: Hah! One more quiz! What\nlets an attack hit when it\lshouldn't?\pAnswer: this! I've been saving it\nfor you!"),
+        COMPOUND_STRING("BLAINE: My GYM is a quiz! Answer\nright, and the path opens. Answer\lwrong, and you battle!\pA GYM should teach! Knowledge\nburns brighter than any FIRE\lBLAST!\pWahahah! Well… almost any."),
+        COMPOUND_STRING("BLAINE: Quiz! Is FIRE the best type?"),
+        COMPOUND_STRING("BLAINE: Correct!! Wahahahah!"),
+        COMPOUND_STRING("BLAINE: Wrong!! …But I admire your\nnerve, kid!"),
+        COMPOUND_STRING("BLAINE: I'll be cheering for you!\nFire it up! Wahahah!")},
     {OBJ_EVENT_GFX_GIOVANNI,
         COMPOUND_STRING("GIOVANNI: You survived MT. MOON.\nSome of my… associates did not\lfare as well.\pTake this. A LEADER protects what\nis theirs."),
-        COMPOUND_STRING("GIOVANNI: …You've come far.\nFarther than I expected.\pTake this. True power is not\nstopped by something as small as\la type.")},
+        COMPOUND_STRING("GIOVANNI: …You've come far.\nFarther than I expected.\pTake this. True power is not\nstopped by something as small as\la type."),
+        COMPOUND_STRING("GIOVANNI: A GYM is power. Whoever\nholds it decides who passes, and\lwho does not.\pMost LEADERS forget that. They\nbecome… gentle.\pNever forget what a GYM truly is,\nchild."),
+        COMPOUND_STRING("GIOVANNI: Tell me. Will you do\nwhatever it takes to win?"),
+        COMPOUND_STRING("GIOVANNI: …Good. I may have a use\nfor someone like you."),
+        COMPOUND_STRING("GIOVANNI: Principles. We'll see how\nlong they last."),
+        COMPOUND_STRING("GIOVANNI: Until we meet again…\nOAK's candidate.")},
     {OBJ_EVENT_GFX_LORELEI,
         COMPOUND_STRING("LORELEI: Hello again, {PLAYER}.\nI was in CERULEAN… shopping.\pThis is for you. No weakness will\ncrack your POKéMON with this."),
-        COMPOUND_STRING("LORELEI: CINNABAR is far too warm\nfor me. I won't stay long.\pThis is for you. No foe will shrug\noff your attacks with it.")},
+        COMPOUND_STRING("LORELEI: CINNABAR is far too warm\nfor me. I won't stay long.\pThis is for you. No foe will shrug\noff your attacks with it."),
+        COMPOUND_STRING("LORELEI: Before the ELITE FOUR, I\ntrained on FOUR ISLAND, far to the\lsouth.\pThe hardest part wasn't battling.\nIt was staying calm when a\lchallenger was better than I\lexpected.\pKeep a cool head. Always."),
+        COMPOUND_STRING("LORELEI: Can you stay calm when\nthings go wrong?"),
+        COMPOUND_STRING("LORELEI: Good. Ice doesn't melt\nunder pressure."),
+        COMPOUND_STRING("LORELEI: Honest. Then that's what\nwe'll work on."),
+        COMPOUND_STRING("LORELEI: Stay cool, {PLAYER}.\nI'll be in touch.")},
     {OBJ_EVENT_GFX_BRUNO,
         COMPOUND_STRING("BRUNO: Hoo! You made it through\nMT. MOON!\pA true fighter guards his body.\nTake this!"),
-        COMPOUND_STRING("BRUNO: Hoo hah! Seven BADGES!\nYou've built a fine guard.\pNow, a fine strike! Take this!")},
+        COMPOUND_STRING("BRUNO: Hoo hah! Seven BADGES!\nYou've built a fine guard.\pNow, a fine strike! Take this!"),
+        COMPOUND_STRING("BRUNO: I train in caves and on\nmountains. Alone, with my POKéMON.\pA GYM is no different! Your POKéMON\nmust trust you. Your challengers\lmust respect you.\pBoth come from hard work!\nHoo hah!"),
+        COMPOUND_STRING("BRUNO: Are you ready to train until\nyou drop?"),
+        COMPOUND_STRING("BRUNO: Hoo hah! That's what I like\nto hear!"),
+        COMPOUND_STRING("BRUNO: Ha! You'll change your mind\nonce you feel the power!"),
+        COMPOUND_STRING("BRUNO: Train hard! I'll see you on\nthe road!")},
     {OBJ_EVENT_GFX_AGATHA,
         COMPOUND_STRING("AGATHA: Hmph. Oak pestered me\nuntil I brought you this.\pTake it before I change my mind,\nwhippersnapper!"),
-        COMPOUND_STRING("AGATHA: Seven BADGES, eh? I suppose\nI can't call you whippersnapper.\p…Well, I can. But take this\nanyway.")},
+        COMPOUND_STRING("AGATHA: Seven BADGES, eh? I suppose\nI can't call you whippersnapper.\p…Well, I can. But take this\nanyway."),
+        COMPOUND_STRING("AGATHA: I battled beside Oak when we\nwere young. Did he tell you that?\pHah! Of course not.\pHe wants this GYM more than he\nlets on. Don't you forget it.\pAnd don't you dare go soft on\nyour challengers!"),
+        COMPOUND_STRING("AGATHA: Think you're tougher than\nOak's other brat?"),
+        COMPOUND_STRING("AGATHA: Hah! Cocky.\nI like that."),
+        COMPOUND_STRING("AGATHA: Hmph. At least you're no\nliar."),
+        COMPOUND_STRING("AGATHA: Don't make me regret coming\nall this way, whippersnapper!")},
     {OBJ_EVENT_GFX_LANCE,
         COMPOUND_STRING("LANCE: You made it past MT. MOON.\nNot bad.\pA POKéMON is only as strong as its\nweakest point. Cover yours."),
-        COMPOUND_STRING("LANCE: Seven BADGES. You've proven\nyourself.\pTake this. No POKéMON will ignore\nyour attacks again.")},
+        COMPOUND_STRING("LANCE: Seven BADGES. You've proven\nyourself.\pTake this. No POKéMON will ignore\nyour attacks again."),
+        COMPOUND_STRING("LANCE: The ELITE FOUR faces every\nchallenger who gets past the GYMS.\pToo many arrive soft. Their LEADERS\nwent easy on them.\pA LEADER's duty is to the LEAGUE.\nMake your challengers worthy."),
+        COMPOUND_STRING("LANCE: Will you make your challengers\nworthy of the LEAGUE?"),
+        COMPOUND_STRING("LANCE: Then we understand each other."),
+        COMPOUND_STRING("LANCE: …Then perhaps you're not\nready. Prove me wrong."),
+        COMPOUND_STRING("LANCE: I'll be watching your progress\nclosely, {PLAYER}.")},
 };
 
 // Each type's two items: {defensive, offensive}
@@ -456,6 +523,73 @@ void GymCandidate_PrepareMentorIntro(void)
     gSpecialVar_Result = TRUE;
 }
 
+// Specials for the rest of the meeting in Oak's lab: gStringVar4 = the mentor's story, question,
+// answer (VAR_RESULT = what the player said), farewell
+void GymCandidate_BufferMentorStory(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    if (mentor != NULL)
+        StringExpandPlaceholders(gStringVar4, sMentorPeople[mentor->who].story);
+}
+
+void GymCandidate_BufferMentorQuestion(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    if (mentor != NULL)
+        StringExpandPlaceholders(gStringVar4, sMentorPeople[mentor->who].question);
+}
+
+void GymCandidate_BufferMentorAnswer(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    if (mentor != NULL)
+        StringExpandPlaceholders(gStringVar4, gSpecialVar_Result ? sMentorPeople[mentor->who].yes : sMentorPeople[mentor->who].no);
+}
+
+void GymCandidate_BufferMentorFarewell(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    if (mentor != NULL)
+        StringExpandPlaceholders(gStringVar4, sMentorPeople[mentor->who].farewell);
+}
+
+const u8 *GymCandidate_GetMentorPersonText(u32 who, u32 field)
+{
+    who = min(who, (u32)LANCE);
+    switch (field)
+    {
+    case 0: return sMentorPeople[who].story;
+    case 1: return sMentorPeople[who].question;
+    case 2: return sMentorPeople[who].yes;
+    case 3: return sMentorPeople[who].no;
+    default: return sMentorPeople[who].farewell;
+    }
+}
+
+// Special: the mentor's housewarming gift, the cheapest decoration of the player's type (into the
+// gym PC). STR_VAR_1 = the mentor, STR_VAR_2 = the decoration. VAR_RESULT = whether there was one.
+void GymCandidate_GiveMentorDecor(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    u32 i, best = GYM_DECOR_COUNT, category = GYM_DECOR_CAT_TYPE(VarGet(VAR_PLAYER_TYPE));
+
+    gSpecialVar_Result = FALSE;
+    if (mentor == NULL)
+        return;
+    StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
+    for (i = 0; i < GYM_DECOR_COUNT; i++)
+    {
+        if (gGymDecor[i].category == category && gGymDecor[i].price != 0
+         && (best == GYM_DECOR_COUNT || gGymDecor[i].price < gGymDecor[best].price))
+            best = i;
+    }
+    if (best == GYM_DECOR_COUNT)
+        return;
+    GymDecor_SetOwned(best, GymDecor_CountOwned(best) + 1);
+    StringCopy(gStringVar2, gGymDecor[best].name);
+    gSpecialVar_Result = TRUE;
+}
+
 // Special: gStringVar4 = the mentor's introduction (after GymCandidate_PrepareMentorIntro)
 void GymCandidate_BufferMentorIntro(void)
 {
@@ -508,6 +642,12 @@ static const s8 sDirDy[] = {[DIR_SOUTH] = 1, [DIR_NORTH] = -1, [DIR_WEST] = 0, [
 static const u8 sOpposite[] = {[DIR_SOUTH] = DIR_NORTH, [DIR_NORTH] = DIR_SOUTH, [DIR_WEST] = DIR_EAST, [DIR_EAST] = DIR_WEST};
 
 static EWRAM_DATA u8 sGuestDir;   // where the challenger is, seen from the player
+static EWRAM_DATA u8 sFacingBefore;   // which way the player faced before they came
+static EWRAM_DATA bool8 sVisitorWalked;
+
+#define VISITOR_PATH_MAX 60
+EWRAM_DATA u8 gMentorWalkIn[VISITOR_PATH_MAX + 2];
+EWRAM_DATA u8 gMentorWalkOut[VISITOR_PATH_MAX + 2];
 
 static bool32 IsFreeSpot(s16 x, s16 y, u8 elevation)
 {
@@ -532,7 +672,9 @@ void GymCandidate_PlaceGuest(void)
 
     PlayerGetDestCoords(&px, &py);
     elevation = MapGridGetElevationAt(px, py);
-    sGuestDir = sOpposite[facing];  // (if there's no room: GymCandidate_FaceBack keeps the facing)
+    sGuestDir = sOpposite[facing];
+    sFacingBefore = facing;
+    sVisitorWalked = FALSE;
     order[0] = sOpposite[facing];
     order[1] = (facing == DIR_NORTH || facing == DIR_SOUTH) ? DIR_WEST : DIR_NORTH;
     order[2] = sOpposite[order[1]];
@@ -565,7 +707,123 @@ void GymCandidate_FaceGuest(void)
 // Special: the challenger has gone; the player turns back the way they faced before
 void GymCandidate_FaceBack(void)
 {
-    ObjectEventTurn(&gObjectEvents[gPlayerAvatar.objectEventId], sOpposite[sGuestDir]);
+    ObjectEventTurn(&gObjectEvents[gPlayerAvatar.objectEventId], sFacingBefore);
+}
+
+// ---------------------------------------------------------------------------
+// A visitor (the mentor) walking in through the map's entrance (its lowest warp) to the player,
+// and back out. Found with a search over the map; if there's no way, they just appear beside the
+// player instead (GymCandidate_PlaceGuest).
+// ---------------------------------------------------------------------------
+static bool32 VisitorCanWalk(s32 x, s32 y, u8 elevation)
+{
+    s32 mx = x + MAP_OFFSET, my = y + MAP_OFFSET;
+    u8 e = MapGridGetElevationAt(mx, my);
+    if (MapGridGetCollisionAt(mx, my) || GetObjectEventIdByXY(mx, my) != OBJECT_EVENTS_COUNT)
+        return FALSE;
+    if (MetatileBehavior_IsForcedMovementTile(MapGridGetMetatileBehaviorAt(mx, my)))
+        return FALSE;
+    return e == elevation || e == 0 || e == 15 || elevation == 0 || elevation == 15;
+}
+
+// Special: VAR_RESULT = whether the visitor can walk in; VAR_0x8005/6 = where they start (the
+// door). The walk in goes to gMentorWalkIn (ending facing the player), the walk out to
+// gMentorWalkOut.
+void GymCandidate_PlanVisitorWalk(void)
+{
+    static const s8 dx[] = {0, 0, -1, 1}, dy[] = {1, -1, 0, 0};
+    static const u8 walk[] = {MOVEMENT_ACTION_WALK_NORMAL_DOWN, MOVEMENT_ACTION_WALK_NORMAL_UP,
+                              MOVEMENT_ACTION_WALK_NORMAL_LEFT, MOVEMENT_ACTION_WALK_NORMAL_RIGHT};
+    static const u8 face[] = {MOVEMENT_ACTION_FACE_DOWN, MOVEMENT_ACTION_FACE_UP,
+                              MOVEMENT_ACTION_FACE_LEFT, MOVEMENT_ACTION_FACE_RIGHT};
+    static const u8 dirOf[] = {DIR_SOUTH, DIR_NORTH, DIR_WEST, DIR_EAST};
+    s32 w = gMapHeader.mapLayout->width, h = gMapHeader.mapLayout->height;
+    s32 cells = w * h, i, head = 0, tail = 0, start, goal = -1, sx = -1, sy = -1;
+    s16 px, py, *from, *queue;
+    u8 *dir, elevation;
+    const struct MapEvents *events = gMapHeader.events;
+
+    gSpecialVar_Result = FALSE;
+    sVisitorWalked = FALSE;
+    sFacingBefore = GetPlayerFacingDirection();
+    for (i = 0; i < events->warpCount; i++)
+    {
+        if (events->warps[i].y > sy)
+        {
+            sx = events->warps[i].x;
+            sy = events->warps[i].y;
+        }
+    }
+    if (sx < 0 || cells > 64 * 64)
+        return;
+    PlayerGetDestCoords(&px, &py);
+    px -= MAP_OFFSET;
+    py -= MAP_OFFSET;
+    elevation = MapGridGetElevationAt(px + MAP_OFFSET, py + MAP_OFFSET);
+
+    from = Alloc(cells * sizeof(s16));
+    queue = Alloc(cells * sizeof(s16));
+    dir = Alloc(cells);
+    for (i = 0; i < cells; i++)
+        from[i] = -1;
+    start = sx + sy * w;
+    from[start] = start;
+    queue[tail++] = start;
+    while (head < tail && goal < 0)
+    {
+        s32 cur = queue[head++], x = cur % w, y = cur / w;
+        for (i = 0; i < 4; i++)
+        {
+            if (x + dx[i] == px && y + dy[i] == py)
+            {
+                goal = cur;
+                dir[start] = i;     // (the way to face, kept in an unused slot)
+                break;
+            }
+        }
+        for (i = 0; i < 4 && goal < 0; i++)
+        {
+            s32 nx = x + dx[i], ny = y + dy[i], next = nx + ny * w;
+            if (nx < 0 || ny < 0 || nx >= w || ny >= h || from[next] >= 0 || !VisitorCanWalk(nx, ny, elevation))
+                continue;
+            from[next] = cur;
+            dir[next] = i;
+            queue[tail++] = next;
+        }
+    }
+    if (goal >= 0 && goal != start)
+    {
+        s32 steps = 0, c, faceDir = dir[start];
+        for (c = goal; c != start; c = from[c])
+            steps++;
+        if (steps <= VISITOR_PATH_MAX)
+        {
+            s32 n = steps;
+            for (c = goal; c != start; c = from[c])
+            {
+                n--;
+                gMentorWalkIn[n] = walk[dir[c]];
+                gMentorWalkOut[steps - 1 - n] = walk[dir[c] ^ 1];   // the opposite way, in reverse
+            }
+            gMentorWalkIn[steps] = face[faceDir];
+            gMentorWalkIn[steps + 1] = MOVEMENT_ACTION_STEP_END;
+            gMentorWalkOut[steps] = MOVEMENT_ACTION_STEP_END;
+            sGuestDir = sOpposite[dirOf[faceDir]];  // the visitor, seen from the player
+            gSpecialVar_0x8005 = sx;
+            gSpecialVar_0x8006 = sy;
+            gSpecialVar_Result = TRUE;
+            sVisitorWalked = TRUE;
+        }
+    }
+    Free(from);
+    Free(queue);
+    Free(dir);
+}
+
+// Special: VAR_RESULT = whether the visitor walked in (so walks back out)
+void GymCandidate_VisitorWalked(void)
+{
+    gSpecialVar_Result = sVisitorWalked;
 }
 
 // ---------------------------------------------------------------------------

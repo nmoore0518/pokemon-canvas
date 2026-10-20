@@ -54,6 +54,10 @@ PalletTown_Gym_EventScript_OakShowsGym::
 	waitmovement 0
 	msgbox PalletTown_Gym_Text_RivalAsGoodAsMine
 	msgbox PalletTown_Gym_Text_OakDecorateIt
+	@ Gym Trainer hack: the Hot Air Balloon (Fly) now, so the player can come back to decorate
+	msgbox PalletTown_Gym_Text_OakTakeBalloon
+	call EventScript_GiveHotAirBalloon
+	msgbox PalletTown_Gym_Text_OakBalloonHowTo
 	applymovement LOCALID_PALLET_GYM_RIVAL, Common_Movement_WalkInPlaceFasterLeft
 	waitmovement 0
 	msgbox PalletTown_Gym_Text_RivalTossYourJunk
@@ -83,6 +87,7 @@ PalletTown_Gym_EventScript_OakShowsGym::
 	setflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL
 	setflag FLAG_HIDE_PALLET_GYM_RIVAL
 	setflag FLAG_PALLET_GYM_OPEN
+	special GymDecor_MarkUnlocksSeen
 	setvar VAR_MAP_SCENE_PALLET_TOWN_GYM, 2
 	fadedefaultbgm
 	releaseall
@@ -94,9 +99,12 @@ PalletTown_Gym_Movement_WatchRivalLeave::
 	walk_in_place_faster_down
 	step_end
 
+@ Out through the door mat at (12, 26), not the tile beside it
 PalletTown_Gym_Movement_RivalLeave::
 	walk_down
+	walk_left
 	walk_down
+	set_invisible
 	step_end
 
 PalletTown_Gym_Movement_OakLeave::
@@ -104,6 +112,9 @@ PalletTown_Gym_Movement_OakLeave::
 	walk_down
 	walk_down
 	walk_down
+	walk_left
+	walk_down
+	set_invisible
 	step_end
 
 PalletTown_Gym_EventScript_GymStatue::
@@ -138,8 +149,24 @@ PalletTown_Gym_Text_OakDecorateIt::
 	.string "Whatever's in here when the\n"
 	.string "LEADER is decided stays!$"
 
+PalletTown_Gym_Text_OakTakeBalloon::
+	.string "OAK: Oh, and {PLAYER}…\p"
+	.string "Your journey will take you far\n"
+	.string "from PALLET TOWN.\p"
+	.string "So take this! It's a HOT AIR\n"
+	.string "BALLOON of my own design.$"
+
+PalletTown_Gym_Text_OakBalloonHowTo::
+	.string "OAK: Use it outdoors, and it will\n"
+	.string "float you to any town you've\l"
+	.string "already visited.\p"
+	.string "Come home and decorate whenever\n"
+	.string "inspiration strikes!$"
+
 PalletTown_Gym_Text_RivalTossYourJunk::
-	.string "{RIVAL}: Don't get attached,\n"
+	.string "{RIVAL}: Gramps! Where's MY\n"
+	.string "balloon!?\p"
+	.string "…Fine. Don't get attached,\n"
 	.string "{PLAYER}.\p"
 	.string "I'm tossing out all your junk\n"
 	.string "the day I win!$"

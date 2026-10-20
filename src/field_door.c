@@ -1,4 +1,5 @@
 #include "global.h"
+#include "constants/pallet_town_gym.h"
 #include "event_data.h"
 #include "field_door.h"
 #include "field_camera.h"
@@ -811,6 +812,15 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
     {
         .metatileNum = METATILE_GeneralFrlg_SlidingDoubleDoor,
         .tileset = &gTileset_General_Frlg,
+        .sound = DOOR_SOUND_SLIDING,
+        .size = DOOR_SIZE_1x1,
+        .tiles = sDoorAnimTiles_SlidingDouble,
+        .palettes = sDoorAnimPalettes_SlidingDouble
+    },
+    {
+        // Gym Trainer hack: the player's gym in Pallet Town (a sliding gym door over rock)
+        .metatileNum = METATILE_PALLET_GYM_DOOR,
+        .tileset = &gTileset_PalletTown,
         .sound = DOOR_SOUND_SLIDING,
         .size = DOOR_SIZE_1x1,
         .tiles = sDoorAnimTiles_SlidingDouble,

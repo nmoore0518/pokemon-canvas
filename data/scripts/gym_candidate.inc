@@ -226,12 +226,60 @@ GymCandidate_EventScript_MentorIntro::
 	playse SE_DOOR
 	msgbox GymCandidate_Text_MentorAtDoor
 	closemessage
-	call GymCandidate_EventScript_MentorAppears
+	call GymCandidate_EventScript_VisitorWalksIn
+	playse SE_PIN
+	applymovement LOCALID_OAKS_LAB_PROF_OAK, Common_Movement_ExclamationMark
+	waitmovement 0
+	special GymCandidate_BufferMentorName
+	msgbox GymCandidate_Text_OakWelcomesMentor
 	special GymCandidate_BufferMentorIntro
 	msgbox gStringVar4
-	call GymCandidate_EventScript_GuestLeaves
+	special GymCandidate_BufferMentorStory
+	msgbox gStringVar4
+	special GymCandidate_BufferMentorQuestion
+	msgbox gStringVar4, MSGBOX_YESNO
+	special GymCandidate_BufferMentorAnswer
+	msgbox gStringVar4
+	special GymCandidate_GiveMentorDecor
+	call_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_MentorDecorGift
+	special GymCandidate_BufferMentorFarewell
+	msgbox gStringVar4
+	call GymCandidate_EventScript_VisitorWalksOut
 	special GymCandidate_BufferMentorName
 	msgbox GymCandidate_Text_OakAfterMentor
+	return
+
+GymCandidate_EventScript_MentorDecorGift::
+	msgbox GymCandidate_Text_MentorDecorGift
+	playfanfare MUS_OBTAIN_ITEM
+	msgbox GymCandidate_Text_ReceivedMentorDecor
+	waitfanfare
+	return
+
+@ VAR_0x800A = the visitor (looking like VAR_OBJ_GFX_ID_0): walks in through the door to the
+@ player if there's a way, or appears beside them
+GymCandidate_EventScript_VisitorWalksIn::
+	special GymCandidate_PlanVisitorWalk
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_MentorAppears
+	setobjectxyperm VAR_0x800A, VAR_0x8005, VAR_0x8006
+	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	addobject VAR_0x800A
+	applymovement VAR_0x800A, gMentorWalkIn
+	waitmovement 0
+	special GymCandidate_FaceGuest
+	return
+
+@ ...and leaves the way they came
+GymCandidate_EventScript_VisitorWalksOut::
+	special GymCandidate_VisitorWalked
+	goto_if_eq VAR_RESULT, FALSE, GymCandidate_EventScript_GuestLeaves
+	closemessage
+	applymovement VAR_0x800A, gMentorWalkOut
+	waitmovement 0
+	removeobject VAR_0x800A
+	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	playse SE_EXIT
+	special GymCandidate_FaceBack
 	return
 
 @ Puts the mentor (VAR_0x800A, looking like VAR_OBJ_GFX_ID_0) next to the player
@@ -253,11 +301,12 @@ GymCandidate_EventScript_MentorGift::
 	special GymCandidate_PrepareMentorGift
 	goto_if_eq VAR_RESULT, MENTOR_GIFT_NONE, GymCandidate_EventScript_Return
 	goto_if_eq VAR_RESULT, MENTOR_GIFT_LEADER, GymCandidate_EventScript_MentorGiveItem
+	playse SE_DOOR
 	msgbox GymCandidate_Text_SomeoneToSeeYou
 	closemessage
-	call GymCandidate_EventScript_MentorAppears
+	call GymCandidate_EventScript_VisitorWalksIn
 	call GymCandidate_EventScript_MentorGiveItem
-	call GymCandidate_EventScript_GuestLeaves
+	call GymCandidate_EventScript_VisitorWalksOut
 	return
 
 GymCandidate_EventScript_MentorGiveItem::
@@ -524,6 +573,21 @@ GymCandidate_Text_DaisyAside::
 GymCandidate_Text_MentorAtDoor::
 	.string "{STR_VAR_1}: Hello? PROF. OAK?\n"
 	.string "Is your candidate here?$"
+
+GymCandidate_Text_OakWelcomesMentor::
+	.string "OAK: {STR_VAR_1}! You came all\n"
+	.string "this way!\p"
+	.string "{PLAYER}, this is the one I wrote\n"
+	.string "to about you. Go on, say hello!$"
+
+GymCandidate_Text_MentorDecorGift::
+	.string "{STR_VAR_1}: Oh, and one more thing.\n"
+	.string "A gift for your new GYM!$"
+
+GymCandidate_Text_ReceivedMentorDecor::
+	.string "{PLAYER} received the\n"
+	.string "{STR_VAR_2}!\p"
+	.string "It's waiting in the GYM PC.$"
 
 GymCandidate_Text_OakAfterMentor::
 	.string "OAK: My, my! One letter, and\n"

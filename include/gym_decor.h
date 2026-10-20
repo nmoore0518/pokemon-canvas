@@ -78,4 +78,7 @@ void GymDecor_ShopListOnSelectionChanged(struct DynamicListMenuEventArgs *eventA
 void GymDecor_OwnedListOnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
 void GymDecor_ListOnDestroy(struct DynamicListMenuEventArgs *eventArgs);
 
+bool32 GymDecor_CheckNewUnlocks(void);
+void GymDecor_MarkUnlocksSeen(void);
+
 #endif // GUARD_GYM_DECOR_H

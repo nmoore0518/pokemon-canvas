@@ -56,6 +56,30 @@ EventScript_BillGivesPalmPilot::
 EventScript_PalmPilotReturn::
 	return
 
+@ The Hot Air Balloon (Fly): Oak gives it in the gym scene; if it was missed (an older save),
+@ he gives it in his lab. Route 16's HM02 girl gives it too, if the player has none.
+EventScript_GiveHotAirBalloon::
+	checkitem ITEM_HOT_AIR_BALLOON
+	goto_if_eq VAR_RESULT, TRUE, EventScript_PalmPilotReturn
+	giveitem ITEM_HOT_AIR_BALLOON
+	return
+
+EventScript_OakGivesMissedBalloon::
+	goto_if_unset FLAG_PALLET_GYM_OPEN, EventScript_PalmPilotReturn
+	checkitem ITEM_HOT_AIR_BALLOON
+	goto_if_eq VAR_RESULT, TRUE, EventScript_PalmPilotReturn
+	msgbox Text_OakMissedBalloon
+	giveitem ITEM_HOT_AIR_BALLOON
+	return
+
+@ New gym decorations were unlocked (GymDecor_CheckNewUnlocks, checked as the player walks)
+EventScript_NewGymDecor::
+	lockall
+	playse SE_PC_LOGIN
+	msgbox Text_NewGymDecor, MSGBOX_SIGN
+	releaseall
+	end
+
 @ Stepping onto the heal pad
 EventScript_QuickHealPad::
 	lockall
@@ -99,3 +123,13 @@ Text_HealPadInnovator::
 	.string "or ask how your journey's going.\p"
 	.string "That's why there will always be\n"
 	.string "a NURSE behind the counter.$"
+
+Text_OakMissedBalloon::
+	.string "OAK: Ah, {PLAYER}! I nearly forgot.\p"
+	.string "Take this HOT AIR BALLOON. It will\n"
+	.string "float you to any town you've\l"
+	.string "visited, even back to your GYM!$"
+
+Text_NewGymDecor::
+	.string "New GYM decorations available!\n"
+	.string "Check the GYM PC.$"

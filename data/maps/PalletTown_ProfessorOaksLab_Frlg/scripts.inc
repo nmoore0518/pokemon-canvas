@@ -574,6 +574,7 @@ PalletTown_ProfessorOaksLab_EventScript_ProfOak::
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 9, PalletTown_ProfessorOaksLab_EventScript_RatePokedex
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_MonsAroundWorldWait
 	goto_if_set FLAG_SYS_GAME_CLEAR, PalletTown_ProfessorOaksLab_EventScript_TryStartNationalDexScene
+	call EventScript_OakGivesMissedBalloon   @ Gym Trainer hack (older saves)
 	call GymCandidate_EventScript_OakAside   @ Gym Trainer hack: how Oak feels about the gym, as approvals come in
 	goto_if_eq VAR_MAP_SCENE_CERULEAN_CITY_RIVAL, 1, PalletTown_ProfessorOaksLab_EventScript_RatePokedex
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 6, PalletTown_ProfessorOaksLab_EventScript_RatePokedexOrTryGiveBalls
@@ -1358,12 +1359,13 @@ PalletTown_ProfessorOaksLab_Text_RivalWhatDidYouCallMeFor::
 	.string "What did you call me for?$"
 
 PalletTown_ProfessorOaksLab_Text_RivalLeaveItToMeGramps::
-	.string "{RIVAL}: All right, Gramps!\n"
-	.string "Leave it all to me!$"
+	.string "{RIVAL}: Leave it to me, Gramps!\n"
+	.string "I'll win the GYM AND fill the\l"
+	.string "POKéDEX!$"
 
 PalletTown_ProfessorOaksLab_Text_RivalTellSisNotToGiveYouMap::
-	.string "{PLAYER}, I hate to say it, but you\n"
-	.string "won't be necessary for this.\p"
+	.string "{PLAYER}, you might as well give\n"
+	.string "up now. That GYM is mine.\p"
 	.string "I know! I'll borrow a TOWN MAP\n"
 	.string "from my sis!\p"
 	.string "I'll tell her not to lend you one,\n"
@@ -1570,15 +1572,19 @@ PalletTown_ProfessorOaksLab_Text_OakCustomBallIOrdered::
 	.string "your candidate.” Today?!$"
 
 PalletTown_ProfessorOaksLab_Text_OakHaveRequestForYouTwo::
-	.string "OAK: Oh, right!\n"
-	.string "I have a request for you two.$"
+	.string "OAK: Oh, right! Now that you're\n"
+	.string "both here… about that GYM.$"
 
 PalletTown_ProfessorOaksLab_Text_OakPokedexOnDesk::
-	.string "On the desk there is my invention,\n"
+	.string "A GYM LEADER faces challengers with\n"
+	.string "all kinds of POKéMON.\p"
+	.string "A LEADER who doesn't know their\n"
+	.string "opponents won't last a week!\p"
+	.string "So on the desk is my invention,\n"
 	.string "the POKéDEX!\p"
-	.string "It automatically records data on\n"
-	.string "POKéMON you've seen or caught.\p"
-	.string "It's a high-tech encyclopedia!$"
+	.string "It records data on every POKéMON\n"
+	.string "you see or catch. A LEADER's best\l"
+	.string "scouting tool!$"
 
 PalletTown_ProfessorOaksLab_Text_OakTakeTheseWithYou::
 	.string "OAK: {PLAYER} and {RIVAL}.\n"
@@ -1589,10 +1595,11 @@ PalletTown_ProfessorOaksLab_Text_ReceivedPokedexFromOak::
 	.string "from PROF. OAK.$"
 
 PalletTown_ProfessorOaksLab_Text_OakCatchMonsForDataTakeThese::
-	.string "OAK: You can't get detailed data\n"
-	.string "on POKéMON by just seeing them.\p"
-	.string "You must catch them to obtain\n"
-	.string "complete data.\p"
+	.string "OAK: Seeing a POKéMON tells you\n"
+	.string "a little. Catching one tells you\l"
+	.string "everything.\p"
+	.string "And a LEADER needs a full team of\n"
+	.string "their type, too!\p"
 	.string "So, here are some tools for\n"
 	.string "catching wild POKéMON.$"
 
@@ -1609,16 +1616,16 @@ PalletTown_ProfessorOaksLab_Text_OakExplainCatching::
 	.string "You have to be lucky!$"
 
 PalletTown_ProfessorOaksLab_Text_OakCompleteMonGuideWasMyDream::
-	.string "To make a complete guide on all\n"
-	.string "the POKéMON in the world…\p"
-	.string "That was my dream!\p"
-	.string "But, I'm too old.\n"
-	.string "I can't get the job done.\p"
-	.string "So, I want you two to fulfill my\n"
-	.string "dream for me.\p"
-	.string "Get moving, you two.\p"
-	.string "This is a great undertaking in\n"
-	.string "POKéMON history!$"
+	.string "Filling the POKéDEX was my dream,\n"
+	.string "once. A complete guide to every\l"
+	.string "POKéMON…\p"
+	.string "But these days, I'd settle for a\n"
+	.string "fine GYM LEADER in PALLET TOWN.\p"
+	.string "So the GYM comes first! Fill your\n"
+	.string "POKéDEX along the way, and you'll\l"
+	.string "know any challenger's team.\p"
+	.string "Now get moving, you two!\n"
+	.string "The LEAGUE is waiting!$"
 
 PalletTown_ProfessorOaksLab_Text_OakMonsAroundWorldWait::
 	.string "POKéMON around the world wait for\n"
