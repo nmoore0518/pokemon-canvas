@@ -410,6 +410,16 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   on it fully heals the party with the healing jingle, no nurse needed. A scientist next to the
   pad in the Viridian City Pokémon Center explains the new Silph tech, and that it'll never
   replace the nurses.
+- **Summary screen**:
+  - **IVs and EVs**: on the SKILLS page, A cycles the stat column through stats, IVs (exact
+    0-31 values) and EVs; the label and the prompt in the corner change with it
+    (`P_SUMMARY_SCREEN_IV_EV_*` in `include/config/summary_screen.h`). Always available.
+  - **LEVEL-UP MOVES** page (`PSS_PAGE_LEVEL_MOVES`, after BATTLE MOVES): every move the species
+    learns by level with its type and level ("Evo." for moves learned on evolving), five rows at
+    a time, starting near the next one. Moves it knows now are in red, the next level in red
+    too, and the box at the bottom says "Next: <move> at Lv. N." A browses: up/down scroll the
+    list and show each move's power, accuracy, category and description; A or B goes back.
+    Contest moves are hidden (`C_HIDE_CONTEST_DATA`), so the page has the contest page's place.
 - **Trainer card fix**: a new game's Seedot size record shares a var with FireRed's trainer card
   icons, which crashed the game when flipping the card; the card now ignores invalid species.
 - **Oak's aides in every gym** (`data/scripts/gym_aides.inc`): a scientist near each gym's

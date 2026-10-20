@@ -39,7 +39,8 @@ enum PokemonSummaryScreenPage
     PSS_PAGE_INFO,
     PSS_PAGE_SKILLS,
     PSS_PAGE_BATTLE_MOVES,
-    PSS_PAGE_CONTEST_MOVES,
+    PSS_PAGE_LEVEL_MOVES,   // Gym Trainer hack: the moves it learns by level
+    PSS_PAGE_CONTEST_MOVES, // (hidden: C_HIDE_CONTEST_DATA)
     PSS_PAGE_COUNT,
 };
 

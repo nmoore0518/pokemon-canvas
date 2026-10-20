@@ -105,6 +105,8 @@
 
 #define MOVE_SELECTOR_SPRITES_COUNT 10
 #define TYPE_ICON_SPRITE_COUNT (MAX_MON_MOVES + 1)
+#define LEVEL_MOVES_MAX  48     // Gym Trainer hack: the level-up moves page
+#define LEVEL_MOVES_ROWS 5
 // for the spriteIds field in PokemonSummaryScreenData
 enum
 {
@@ -188,6 +190,13 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     s16 switchCounter; // Used for various switch statement cases that decompress/load graphics or Pokémon data
     u8 unk_filler4[6];
     u8 categoryIconSpriteId;
+    // Gym Trainer hack: the level-up moves page
+    u16 lvlMoves[LEVEL_MOVES_MAX];
+    u8 lvlLevels[LEVEL_MOVES_MAX];
+    u8 lvlCount;    // moves in the list
+    u8 lvlScroll;   // first one shown
+    u8 lvlCursor;   // row (0-4) while browsing
+    u8 lvlNext;     // the next one it'll learn (lvlCount if none)
 } *sMonSummaryScreen = NULL;
 
 EWRAM_DATA u8 gLastViewedMonIndex = 0;
@@ -196,6 +205,10 @@ ALIGNED(4) static EWRAM_DATA u8 sAnimDelayTaskId = 0;
 EWRAM_DATA MainCallback gInitialSummaryScreenCallback = NULL; // stores callback from the first time the screen is opened from the party or PC menu
 
 // forward declarations
+static void PrintLevelMoves(void);
+static void Task_PrintLevelMoves(u8 taskId);
+static void SetLevelMoveTypeIcons(void);
+static void SwitchToLevelMoveBrowse(u8 taskId);
 static bool8 LoadGraphics(void);
 static void CB2_InitSummaryScreen(void);
 static void InitBGs(void);
@@ -427,6 +440,7 @@ static const struct SlidingWindow sAppealJamSlidingWindow =
     .left = 0,
     .top = 45
 };
+static void CopyNColumnsToTilemap(const struct SlidingWindow *slidingWindow, u16 *tilemapDest, u8 visibleColumns, bool8 isOpeningToTheLeft);
 static const s8 sMultiBattleOrder[] = {0, 2, 3, 1, 4, 5};
 static const struct WindowTemplate sSummaryTemplate[] =
 {
@@ -756,6 +770,7 @@ static void (*const sTextPrinterFunctions[])(void) =
     [PSS_PAGE_INFO] = PrintInfoPageText,
     [PSS_PAGE_SKILLS] = PrintSkillsPageText,
     [PSS_PAGE_BATTLE_MOVES] = PrintBattleMoves,
+    [PSS_PAGE_LEVEL_MOVES] = PrintLevelMoves,
     [PSS_PAGE_CONTEST_MOVES] = PrintContestMoves
 };
 
@@ -764,6 +779,7 @@ static const TaskFunc sTextPrinterTasks[] =
     [PSS_PAGE_INFO] = Task_PrintInfoPage,
     [PSS_PAGE_SKILLS] = Task_PrintSkillsPage,
     [PSS_PAGE_BATTLE_MOVES] = Task_PrintBattleMoves,
+    [PSS_PAGE_LEVEL_MOVES] = Task_PrintLevelMoves,
     [PSS_PAGE_CONTEST_MOVES] = Task_PrintContestMoves
 };
 
@@ -1232,7 +1248,7 @@ void ShowPokemonSummaryScreen(u8 mode, void *mons, u8 monIndex, u8 maxMonIndex, 
         break;
     case SUMMARY_MODE_SELECT_MOVE:
         sMonSummaryScreen->minPageIndex = PSS_PAGE_BATTLE_MOVES;
-        sMonSummaryScreen->maxPageIndex = maxPageIndex;
+        sMonSummaryScreen->maxPageIndex = C_HIDE_CONTEST_DATA ? PSS_PAGE_BATTLE_MOVES : maxPageIndex;
         sMonSummaryScreen->lockMonFlag = TRUE;
         break;
     }
@@ -1460,6 +1476,10 @@ static bool8 DecompressGraphics(void)
         break;
     case 5:
         DecompressDataWithHeaderWram(gSummaryPage_ContestMoves_Tilemap, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_CONTEST_MOVES][1]);
+        // Gym Trainer hack: the level-up moves page is drawn on the battle moves background
+        DecompressDataWithHeaderWram(gSummaryPage_BattleMoves_Tilemap, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_LEVEL_MOVES][1]);
+        CopyNColumnsToTilemap(&sPowerAccSlidingWindow, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_LEVEL_MOVES][0], sPowerAccSlidingWindow.width, TRUE);
+        TilemapFiveMovesDisplay(sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_LEVEL_MOVES][0], 3, FALSE);   // a fifth row
         sMonSummaryScreen->switchCounter++;
         break;
     case 6:
@@ -1785,6 +1805,11 @@ static void Task_HandleInput(u8 taskId)
                 {
                     PlaySE(SE_SELECT);
                     SwitchToMoveSelection(taskId);
+                }
+                else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_LEVEL_MOVES && sMonSummaryScreen->lvlCount != 0)
+                {
+                    PlaySE(SE_SELECT);
+                    SwitchToLevelMoveBrowse(taskId);
                 }
             }
             if (sMonSummaryScreen->currPageIndex == PSS_PAGE_SKILLS)
@@ -2759,12 +2784,15 @@ u8 GetMoveSlotToReplace(void)
     return sMoveSlotToReplace;
 }
 
+// Gym Trainer hack: no dot for the hidden contest page
+#define PSS_PAGE_DOTS (C_HIDE_CONTEST_DATA ? PSS_PAGE_COUNT - 1 : PSS_PAGE_COUNT)
+
 static void DrawPagination(void) // Updates the pagination dots at the top of the summary screen
 {
     u16 *tilemap = Alloc(8 * PSS_PAGE_COUNT);
     u8 i;
 
-    for (i = 0; i < PSS_PAGE_COUNT; i++)
+    for (i = 0; i < PSS_PAGE_DOTS; i++)
     {
         u8 j = i * 2;
 
@@ -2772,22 +2800,22 @@ static void DrawPagination(void) // Updates the pagination dots at the top of th
         {
             tilemap[j + 0] = 0x40;
             tilemap[j + 1] = 0x40;
-            tilemap[j + 2 * PSS_PAGE_COUNT] = 0x50;
-            tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x50;
+            tilemap[j + 2 * PSS_PAGE_DOTS] = 0x50;
+            tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x50;
         }
         else if (i > sMonSummaryScreen->maxPageIndex)
         {
             tilemap[j + 0] = 0x4A;
             tilemap[j + 1] = 0x4A;
-            tilemap[j + 2 * PSS_PAGE_COUNT] = 0x5A;
-            tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x5A;
+            tilemap[j + 2 * PSS_PAGE_DOTS] = 0x5A;
+            tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x5A;
         }
         else if (i < sMonSummaryScreen->currPageIndex)
         {
             tilemap[j + 0] = 0x46;
             tilemap[j + 1] = 0x47;
-            tilemap[j + 2 * PSS_PAGE_COUNT] = 0x56;
-            tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x57;
+            tilemap[j + 2 * PSS_PAGE_DOTS] = 0x56;
+            tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x57;
         }
         else if (i == sMonSummaryScreen->currPageIndex)
         {
@@ -2795,33 +2823,33 @@ static void DrawPagination(void) // Updates the pagination dots at the top of th
             {
                 tilemap[j + 0] = 0x41;
                 tilemap[j + 1] = 0x42;
-                tilemap[j + 2 * PSS_PAGE_COUNT] = 0x51;
-                tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x52;
+                tilemap[j + 2 * PSS_PAGE_DOTS] = 0x51;
+                tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x52;
             }
             else
             {
                 tilemap[j + 0] = 0x4B;
                 tilemap[j + 1] = 0x4C;
-                tilemap[j + 2 * PSS_PAGE_COUNT] = 0x5B;
-                tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x5C;
+                tilemap[j + 2 * PSS_PAGE_DOTS] = 0x5B;
+                tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x5C;
             }
         }
         else if (i != sMonSummaryScreen->maxPageIndex)
         {
             tilemap[j + 0] = 0x43;
             tilemap[j + 1] = 0x44;
-            tilemap[j + 2 * PSS_PAGE_COUNT] = 0x53;
-            tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x54;
+            tilemap[j + 2 * PSS_PAGE_DOTS] = 0x53;
+            tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x54;
         }
         else
         {
             tilemap[j + 0] = 0x48;
             tilemap[j + 1] = 0x49;
-            tilemap[j + 2 * PSS_PAGE_COUNT] = 0x58;
-            tilemap[j + 2 * PSS_PAGE_COUNT + 1] = 0x59;
+            tilemap[j + 2 * PSS_PAGE_DOTS] = 0x58;
+            tilemap[j + 2 * PSS_PAGE_DOTS + 1] = 0x59;
         }
     }
-    CopyToBgTilemapBufferRect_ChangePalette(3, tilemap, 11, 0, PSS_PAGE_COUNT * 2, 2, 16);
+    CopyToBgTilemapBufferRect_ChangePalette(3, tilemap, 11, 0, PSS_PAGE_DOTS * 2, 2, 16);
     ScheduleBgCopyTilemapToVram(3);
     Free(tilemap);
 }
@@ -3275,7 +3303,8 @@ static void PrintPageNamesAndStats(void)
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TITLE, gText_PkmnInfo, 2, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE, gText_PkmnSkills, 2, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_BATTLE_MOVES_TITLE, gText_BattleMoves, 2, 1, 0, 1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE, gText_ContestMoves, 2, 1, 0, 1);
+    // Gym Trainer hack: with contests hidden, their title window is the level-up moves page's
+    PrintTextOnWindow(PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE, C_HIDE_CONTEST_DATA ? COMPOUND_STRING("LEVEL-UP MOVES") : gText_ContestMoves, 2, 1, 0, 1);
 
     ShowUtilityPrompt(SUMMARY_MODE_NORMAL);
 
@@ -3341,6 +3370,10 @@ static void PutPageWindowTilemaps(u8 page)
             if (ShouldShowMoveRelearner())
                 PutWindowTilemap(PSS_LABEL_WINDOW_PROMPT_RELEARN);
         }
+        break;
+    case PSS_PAGE_LEVEL_MOVES:
+        PutWindowTilemap(PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE);
+        PutWindowTilemap(PSS_LABEL_WINDOW_PROMPT_UTILITY);
         break;
     case PSS_PAGE_CONTEST_MOVES:
         PutWindowTilemap(PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE);
@@ -4305,6 +4338,9 @@ static void SetTypeIcons(void)
         SetMoveTypeIcons();
         SetNewMoveTypeIcon();
         break;
+    case PSS_PAGE_LEVEL_MOVES:
+        SetLevelMoveTypeIcons();
+        break;
     case PSS_PAGE_CONTEST_MOVES:
         SetContestMoveTypeIcons();
         SetNewMoveTypeIcon();
@@ -4817,6 +4853,11 @@ static inline void ShowUtilityPrompt(s16 mode)
             }
         }
     }
+    else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_LEVEL_MOVES)
+    {
+        if (sMonSummaryScreen->lvlCount != 0)
+            promptText = COMPOUND_STRING("BROWSE");
+    }
     else if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES
              || sMonSummaryScreen->currPageIndex == PSS_PAGE_CONTEST_MOVES)
     {
@@ -4867,4 +4908,243 @@ static void CB2_ReturnToSummaryScreenFromNamingScreen(void)
 static void CB2_PssChangePokemonNickname(void)
 {
     ChangePokemonNicknameWithCallback(CB2_ReturnToSummaryScreenFromNamingScreen);
+}
+
+// ---------------------------------------------------------------------------
+// Gym Trainer hack: the level-up moves page. Every move the species learns by level (with
+// "Evo." for moves learned on evolving), five rows at a time on the battle moves background.
+// The moves it knows now are highlighted, and the description box says what it learns next.
+// A browses the list (up/down scroll, the box shows power, accuracy and the description).
+// ---------------------------------------------------------------------------
+static bool32 KnowsMoveNow(enum Move move)
+{
+    u32 i;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (sMonSummaryScreen->summary.moves[i] == move)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static void BuildLevelMoves(void)
+{
+    struct Pokemon *mon = &sMonSummaryScreen->currentMon;
+    const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(GetMonData(mon, MON_DATA_SPECIES));
+    u32 level = GetMonData(mon, MON_DATA_LEVEL);
+    u32 i, n = 0;
+
+    sMonSummaryScreen->lvlNext = 0xFF;
+    for (i = 0; learnset != NULL && learnset[i].move != LEVEL_UP_MOVE_END && n < LEVEL_MOVES_MAX; i++)
+    {
+        sMonSummaryScreen->lvlMoves[n] = learnset[i].move;
+        sMonSummaryScreen->lvlLevels[n] = min(learnset[i].level, 255);
+        if (sMonSummaryScreen->lvlNext == 0xFF && learnset[i].level > level)
+            sMonSummaryScreen->lvlNext = n;
+        n++;
+    }
+    sMonSummaryScreen->lvlCount = n;
+    if (sMonSummaryScreen->lvlNext == 0xFF)
+        sMonSummaryScreen->lvlNext = n;
+
+    // Start with the next move in view (one row of the past above it)
+    if (n <= LEVEL_MOVES_ROWS || sMonSummaryScreen->lvlNext == 0)
+        sMonSummaryScreen->lvlScroll = 0;
+    else
+        sMonSummaryScreen->lvlScroll = min(sMonSummaryScreen->lvlNext - 1, n - LEVEL_MOVES_ROWS);
+    sMonSummaryScreen->lvlCursor = 0;
+}
+
+static void PrintLevelMoveRow(u32 row)
+{
+    u8 nameWindow = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_NAMES);
+    u8 levelWindow = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_PP);
+    u32 i = sMonSummaryScreen->lvlScroll + row;
+    const u8 *text;
+
+    FillWindowPixelRect(nameWindow, PIXEL_FILL(0), 0, row * 16, WindowWidthPx(nameWindow), 16);
+    FillWindowPixelRect(levelWindow, PIXEL_FILL(0), 0, row * 16, WindowWidthPx(levelWindow), 16);
+    if (i >= sMonSummaryScreen->lvlCount)
+        return;
+
+    enum Move move = sMonSummaryScreen->lvlMoves[i];
+    PrintTextOnWindowToFit(nameWindow, GetMoveName(move), 0, row * 16 + 1, 0, KnowsMoveNow(move) ? 6 : 1);
+    if (sMonSummaryScreen->lvlLevels[i] == 0)
+    {
+        text = COMPOUND_STRING("Evo.");
+    }
+    else
+    {
+        StringCopy(gStringVar4, gText_LevelSymbol);
+        ConvertIntToDecimalStringN(gStringVar1, sMonSummaryScreen->lvlLevels[i], STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringAppend(gStringVar4, gStringVar1);
+        text = gStringVar4;
+    }
+    PrintTextOnWindow(levelWindow, text, GetStringRightAlignXOffset(FONT_NORMAL, text, 44), row * 16 + 1, 0,
+                      i == sMonSummaryScreen->lvlNext ? 11 : 12);
+}
+
+static void PrintLevelMoveRows(void)
+{
+    u32 row;
+    for (row = 0; row < LEVEL_MOVES_ROWS; row++)
+        PrintLevelMoveRow(row);
+    PutWindowTilemap(sMonSummaryScreen->windowIds[PSS_DATA_WINDOW_MOVE_NAMES]);
+    PutWindowTilemap(sMonSummaryScreen->windowIds[PSS_DATA_WINDOW_MOVE_PP]);
+    CopyWindowToVram(sMonSummaryScreen->windowIds[PSS_DATA_WINDOW_MOVE_NAMES], COPYWIN_GFX);
+    CopyWindowToVram(sMonSummaryScreen->windowIds[PSS_DATA_WINDOW_MOVE_PP], COPYWIN_GFX);
+}
+
+static void SetLevelMoveTypeIcons(void)
+{
+    u32 row;
+    for (row = 0; row < LEVEL_MOVES_ROWS; row++)
+    {
+        u32 i = sMonSummaryScreen->lvlScroll + row;
+        if (i < sMonSummaryScreen->lvlCount)
+            SetTypeSpritePosAndPal(GetMoveType(sMonSummaryScreen->lvlMoves[i]), 85, 32 + (row * 16), row + SPRITE_ARR_ID_TYPE);
+        else
+            SetSpriteInvisibility(row + SPRITE_ARR_ID_TYPE, TRUE);
+    }
+}
+
+// The description box when not browsing: what it learns next
+static void PrintLevelMovesSummary(void)
+{
+    u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
+    u32 next = sMonSummaryScreen->lvlNext;
+
+    FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
+    if (sMonSummaryScreen->lvlCount == 0)
+    {
+        StringCopy(gStringVar4, COMPOUND_STRING("It learns no moves by level."));
+    }
+    else if (next >= sMonSummaryScreen->lvlCount)
+    {
+        StringCopy(gStringVar4, COMPOUND_STRING("It has learned every move it\ncan learn by level."));
+    }
+    else
+    {
+        StringCopy(gStringVar1, GetMoveName(sMonSummaryScreen->lvlMoves[next]));
+        ConvertIntToDecimalStringN(gStringVar2, sMonSummaryScreen->lvlLevels[next], STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("Next: {STR_VAR_1}\nat Lv. {STR_VAR_2}."));
+    }
+    PrintTextOnWindowToFit(windowId, gStringVar4, 6, 1, 0, 0);
+    PutWindowTilemap(windowId);
+    CopyWindowToVram(windowId, COPYWIN_GFX);
+}
+
+static void PrintLevelMoves(void)
+{
+    BuildLevelMoves();
+    PrintLevelMoveRows();
+    PrintLevelMovesSummary();
+    ShowUtilityPrompt(SUMMARY_MODE_NORMAL);
+}
+
+static void Task_PrintLevelMoves(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    if (data[0]++ == 1)
+    {
+        PrintLevelMoves();
+        DestroyTask(taskId);
+    }
+}
+
+static void ShowLevelMoveDetails(void)
+{
+    enum Move move = sMonSummaryScreen->lvlMoves[sMonSummaryScreen->lvlScroll + sMonSummaryScreen->lvlCursor];
+    u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
+
+    sMonSummaryScreen->firstMoveIndex = sMonSummaryScreen->lvlCursor;   // the selector's row
+    FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
+    PrintTextOnWindowToFit(windowId, GetMoveDescription(move), 6, 1, 0, 0);
+    PutWindowTilemap(windowId);
+    CopyWindowToVram(windowId, COPYWIN_GFX);
+    if (B_SHOW_CATEGORY_ICON == TRUE)
+        ShowCategoryIcon(GetBattleMoveCategory(move));
+    PrintMovePowerAndAccuracy(move);
+    CopyWindowToVram(PSS_LABEL_WINDOW_MOVES_POWER_ACC, COPYWIN_GFX);
+}
+
+static void ShowLevelMovesPowerAccBox(bool32 show)
+{
+    CopyNColumnsToTilemap(&sPowerAccSlidingWindow, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_LEVEL_MOVES][0],
+                          show ? 0 : sPowerAccSlidingWindow.width, TRUE);
+    ScheduleBgCopyTilemapToVram(1);
+    ScheduleBgCopyTilemapToVram(2);
+}
+
+static void Task_HandleInput_LevelMoves(u8 taskId)
+{
+    u32 count = sMonSummaryScreen->lvlCount;
+    bool32 scrolled = FALSE;
+
+    if (MenuHelpers_ShouldWaitForLinkRecv() == TRUE)
+        return;
+
+    if (JOY_REPEAT(DPAD_UP))
+    {
+        if (sMonSummaryScreen->lvlCursor > 0)
+            sMonSummaryScreen->lvlCursor--;
+        else if (sMonSummaryScreen->lvlScroll > 0)
+            sMonSummaryScreen->lvlScroll--, scrolled = TRUE;
+        else
+            return;
+    }
+    else if (JOY_REPEAT(DPAD_DOWN))
+    {
+        if (sMonSummaryScreen->lvlScroll + sMonSummaryScreen->lvlCursor + 1 >= count)
+            return;
+        if (sMonSummaryScreen->lvlCursor < LEVEL_MOVES_ROWS - 1)
+            sMonSummaryScreen->lvlCursor++;
+        else
+            sMonSummaryScreen->lvlScroll++, scrolled = TRUE;
+    }
+    else if (JOY_NEW(A_BUTTON | B_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        DestroyMoveSelectorSprites(SPRITE_ARR_ID_MOVE_SELECTOR1);
+        ClearWindowTilemap(PSS_LABEL_WINDOW_MOVES_POWER_ACC);
+        DestroyCategoryIcon();
+        ShowLevelMovesPowerAccBox(FALSE);
+        PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
+        if (sMonSummaryScreen->summary.ailment != AILMENT_NONE)
+            PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS);
+        PrintLevelMovesSummary();
+        ScheduleBgCopyTilemapToVram(0);
+        gTasks[taskId].func = Task_HandleInput;
+        return;
+    }
+    else
+    {
+        return;
+    }
+
+    PlaySE(SE_SELECT);
+    if (scrolled)
+    {
+        PrintLevelMoveRows();
+        SetLevelMoveTypeIcons();
+    }
+    ShowLevelMoveDetails();
+    ScheduleBgCopyTilemapToVram(0);
+}
+
+static void SwitchToLevelMoveBrowse(u8 taskId)
+{
+    u32 next = min(sMonSummaryScreen->lvlNext, sMonSummaryScreen->lvlCount - 1);
+
+    // Start on the next move to learn
+    sMonSummaryScreen->lvlCursor = (next >= sMonSummaryScreen->lvlScroll && next < sMonSummaryScreen->lvlScroll + LEVEL_MOVES_ROWS)
+                                 ? next - sMonSummaryScreen->lvlScroll : 0;
+    ClearWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
+    ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS);
+    ShowLevelMovesPowerAccBox(TRUE);
+    PutWindowTilemap(PSS_LABEL_WINDOW_MOVES_POWER_ACC);
+    ShowLevelMoveDetails();
+    CreateMoveSelectorSprites(SPRITE_ARR_ID_MOVE_SELECTOR1);
+    ScheduleBgCopyTilemapToVram(0);
+    gTasks[taskId].func = Task_HandleInput_LevelMoves;
 }
