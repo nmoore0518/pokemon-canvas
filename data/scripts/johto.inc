@@ -215,6 +215,11 @@ Johto_EventScript_Invitation::
 	call Johto_EventScript_ReceiveInvitation
 	special GymCandidate_BufferMentorName
 	msgbox Johto_Text_MentorInviteFerry
+	special GymCandidate_BufferMentorName
+	msgbox Johto_Text_MentorGymCharm
+	call Johto_EventScript_ReceiveGymCharm
+	special GymCandidate_BufferMentorName
+	msgbox Johto_Text_MentorGymCharmHow
 	call GymCandidate_EventScript_VisitorWalksOut
 	setvar VAR_JOHTO_STATE, JOHTO_INVITED
 	releaseall
@@ -224,9 +229,17 @@ Johto_EventScript_InvitationByMail::
 	msgbox Johto_Text_InvitationByMail
 	call Johto_EventScript_ReceiveInvitation
 	msgbox Johto_Text_InvitationFerry
+	msgbox Johto_Text_GymCharmByMail
+	call Johto_EventScript_ReceiveGymCharm
+	msgbox Johto_Text_GymCharmHowByMail
 	setvar VAR_JOHTO_STATE, JOHTO_INVITED
 	releaseall
 	end
+
+@ Pokémon Canvas: the Gym Charm (Shiny Pokémon of the gym's type are more likely, src/pokemon.c)
+Johto_EventScript_ReceiveGymCharm::
+	giveitem ITEM_GYM_CHARM
+	return
 
 Johto_EventScript_ReceiveInvitation::
 	playfanfare MUS_RG_OBTAIN_KEY_ITEM
@@ -261,6 +274,29 @@ Johto_Text_MentorInviteFerry::
 	.string "from VERMILION's harbor. Show the\l"
 	.string "sailor your invitation.\p"
 	.string "I'll see you in GOLDENROD!$"
+
+Johto_Text_MentorGymCharm::
+	.string "{STR_VAR_1}: Oh, and one more thing.\n"
+	.string "Every new GYM LEADER gets one of\l"
+	.string "these. It's a GYM CHARM.$"
+
+Johto_Text_MentorGymCharmHow::
+	.string "{STR_VAR_1}: SHINY POKéMON of your\n"
+	.string "GYM's type will turn up far more\l"
+	.string "often around you.\p"
+	.string "And if your GYM ever changes type,\n"
+	.string "the charm changes with it!$"
+
+Johto_Text_GymCharmByMail::
+	.string "There's something else in the\n"
+	.string "envelope…$"
+
+Johto_Text_GymCharmHowByMail::
+	.string "“A GYM CHARM, for every new GYM\n"
+	.string "LEADER. SHINY POKéMON of your GYM's\l"
+	.string "type will turn up far more often.\p"
+	.string "If your GYM changes type, the charm\n"
+	.string "changes with it!”$"
 
 Johto_Text_InvitationByMail::
 	.string "There's a letter on the floor…\p"

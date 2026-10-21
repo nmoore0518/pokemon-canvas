@@ -437,6 +437,10 @@ extern const u16 gItemIconPalette_Multivitamin[];
 // Gym Trainer hack: the mentors' type items, the Palm Pilot
 extern const u32 gItemIcon_PalmPilot[];
 extern const u16 gItemIconPalette_PalmPilot[];
+extern const u32 gItemIcon_ExoticPass[];
+extern const u16 gItemIconPalette_ExoticPass[];
+extern const u32 gItemIcon_GymCharm[];
+extern const u16 gItemIconPalette_GymCharm[];
 extern const u32 gItemIcon_FluffySweater[];
 extern const u16 gItemIconPalette_FluffySweater[];
 extern const u32 gItemIcon_ThirdEye[];

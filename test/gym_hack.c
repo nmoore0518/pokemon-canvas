@@ -37,7 +37,7 @@ extern const u8 GymHack_Text_TypeFairy[], GymHack_Text_TypeBug[], GymHack_Text_T
 
 static const u8 *const sMenuLabels[GYM_HACK_STARTER_COUNT] =
 {
-    GymHack_Text_TypePsychic, GymHack_Text_TypeDragon, GymHack_Text_TypeFire, GymHack_Text_TypeWater, GymHack_Text_TypeSteel, GymHack_Text_TypeNormal, GymHack_Text_TypeElectric, GymHack_Text_TypeRock, GymHack_Text_TypeGround, GymHack_Text_TypeGrass, GymHack_Text_TypeIce, GymHack_Text_TypePoison, GymHack_Text_TypeBug, GymHack_Text_TypeFlying, GymHack_Text_TypeFighting, GymHack_Text_TypeDark, GymHack_Text_TypeGhost, GymHack_Text_TypeFairy,
+    GymHack_Text_TypePsychic, GymHack_Text_TypeFire, GymHack_Text_TypeNormal, GymHack_Text_TypeWater, GymHack_Text_TypeGrass, GymHack_Text_TypeElectric, GymHack_Text_TypeRock, GymHack_Text_TypePoison, GymHack_Text_TypeBug, GymHack_Text_TypeSteel, GymHack_Text_TypeIce, GymHack_Text_TypeGround, GymHack_Text_TypeFlying, GymHack_Text_TypeDragon, GymHack_Text_TypeFighting, GymHack_Text_TypeDark, GymHack_Text_TypeGhost, GymHack_Text_TypeFairy,
 };
 
 static u32 GymHackTest_ChooseStarter(u32 menuIndex)
@@ -116,7 +116,7 @@ TEST("GymHack: rival's type is never the player's and always beats it")
 
 TEST("GymHack: confirming sets the rival's type and starter")
 {
-    GymHackTest_ChooseStarter(2); // Charmander (Fire)
+    GymHackTest_ChooseStarter(1); // Charmander (Fire)
     GymHack_LockInPlayerType();
     EXPECT_EQ(VarGet(VAR_RIVAL_TYPE), TYPE_WATER);
     EXPECT_EQ(VarGet(VAR_TEMP_3), SPECIES_SQUIRTLE);
@@ -1100,6 +1100,10 @@ static u32 BestTeamBst(u32 type)
     {
         u32 bst = GetSpeciesBaseStatTotal(i);
         if (gSpeciesInfo[i].types[0] != type)
+            continue;
+        // Johto's and Hoenn's legendaries are only in the Exotic Safari (post-game)
+        if ((i >= SPECIES_RAIKOU && i <= SPECIES_SUICUNE) || (i >= SPECIES_LUGIA && i <= SPECIES_CELEBI)
+         || (i >= SPECIES_REGIROCK && i <= SPECIES_DEOXYS))
             continue;
         for (j = 0; j < 6; j++)
         {
@@ -2102,4 +2106,46 @@ TEST("GymHack: switch: all the new lines fit the message box")
         StringCopy(gStringVar1, GymCandidate_GetMentorName(GymCandidate_GetMentorForType(type)->who));
         ExpectLinesFit(GymSwitch_Text_AnnounceMentor, 27 * 8 - 4, TRUE);
     }
+}
+
+// ---- The Exotic Pokémon Safari (data/maps/ExoticSafari_Hall) and the Gym Charm ----
+extern const u8 ExoticSafari_Hall_Text_Shut[], ExoticSafari_Hall_Text_NotOpenYet[], ExoticSafari_Hall_Text_Pitch[],
+    ExoticSafari_Hall_Text_Offer[], ExoticSafari_Hall_Text_Thanks[], ExoticSafari_Hall_Text_TakeALook[],
+    ExoticSafari_Hall_Text_GoOnThrough[], ExoticSafari_Hall_Text_NoThanks[], ExoticSafari_Hall_Text_NoMoney[],
+    ExoticSafari_Hall_Text_Enjoy[], ExoticSafari_Hall_Text_Kiosk[], Johto_Text_MentorGymCharm[],
+    Johto_Text_MentorGymCharmHow[], Johto_Text_GymCharmByMail[], Johto_Text_GymCharmHowByMail[],
+    GymSwitch_Text_LabGymCharm[], GymSwitch_Text_LabGymCharmHow[];
+
+TEST("GymHack: Exotic Safari and Gym Charm lines fit the message box")
+{
+    static const u8 *const texts[] = {ExoticSafari_Hall_Text_Shut, ExoticSafari_Hall_Text_NotOpenYet, ExoticSafari_Hall_Text_Pitch,
+        ExoticSafari_Hall_Text_Offer, ExoticSafari_Hall_Text_Thanks, ExoticSafari_Hall_Text_TakeALook,
+        ExoticSafari_Hall_Text_GoOnThrough, ExoticSafari_Hall_Text_NoThanks, ExoticSafari_Hall_Text_NoMoney,
+        ExoticSafari_Hall_Text_Enjoy, ExoticSafari_Hall_Text_Kiosk, Johto_Text_MentorGymCharm,
+        Johto_Text_MentorGymCharmHow, Johto_Text_GymCharmByMail, Johto_Text_GymCharmHowByMail,
+        GymSwitch_Text_LabGymCharm, GymSwitch_Text_LabGymCharmHow};
+    u32 i;
+    SetLongPlaceholders();
+    StringCopy(gStringVar1, COMPOUND_STRING("LT. SURGE"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+}
+
+TEST("GymHack: the Gym Charm makes Shiny Pokémon of the gym's type common, and only them")
+{
+    u32 i, typeShiny = 0, otherShiny = 0;
+    struct Pokemon mon;
+    VarSet(VAR_PLAYER_TYPE, TYPE_PSYCHIC);
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    AddBagItem(ITEM_GYM_CHARM, 1);
+    for (i = 0; i < 2500; i++)
+    {
+        CreateMon(&mon, SPECIES_ABRA, 10, Random32(), OTID_STRUCT_PLAYER_ID);
+        typeShiny += GetMonData(&mon, MON_DATA_IS_SHINY);
+        CreateMon(&mon, SPECIES_RATTATA, 10, Random32(), OTID_STRUCT_PLAYER_ID);
+        otherShiny += GetMonData(&mon, MON_DATA_IS_SHINY);
+    }
+    EXPECT_GE(typeShiny, 2);    // (about 10 expected)
+    EXPECT_LE(otherShiny, 5);   // (under 1 expected)
+    RemoveBagItem(ITEM_GYM_CHARM, 1);
 }

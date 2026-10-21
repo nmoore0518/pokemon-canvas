@@ -16960,6 +16960,40 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_PalmPilot,
         .iconPalette = gItemIconPalette_PalmPilot,
     },
+
+    [ITEM_EXOTIC_PASS] =
+    {
+        // Pokémon Canvas: bought in the Exotic Pokémon Safari's hall (Fuchsia City)
+        .name = ITEM_NAME("Exotic Pass"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Unlimited entry to\n"
+            "the Exotic Pokémon\n"
+            "Safari's zones."),
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_ExoticPass,
+        .iconPalette = gItemIconPalette_ExoticPass,
+    },
+
+    [ITEM_GYM_CHARM] =
+    {
+        // Pokémon Canvas: from the mentor, with the convention invitation (src/pokemon.c)
+        .name = ITEM_NAME("Gym Charm"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "Shiny Pokémon of\n"
+            "your Gym's type\n"
+            "appear more often."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_GymCharm,
+        .iconPalette = gItemIconPalette_GymCharm,
+    },
 };
 
 #undef ITEM_NAME

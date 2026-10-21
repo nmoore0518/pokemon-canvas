@@ -1090,7 +1090,7 @@ PalletTown_ProfessorOaksLab_EventScript_ChooseType::
 	textcolor NPC_TEXT_COLOR_MALE
 	message PalletTown_ProfessorOaksLab_Text_WhichType
 	waitmessage
-	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypePsychic, GymHack_Text_TypeDragon, GymHack_Text_TypeFire, GymHack_Text_TypeWater, GymHack_Text_TypeSteel, GymHack_Text_TypeNormal, GymHack_Text_TypeElectric, GymHack_Text_TypeRock, GymHack_Text_TypeGround, GymHack_Text_TypeGrass, GymHack_Text_TypeIce, GymHack_Text_TypePoison, GymHack_Text_TypeBug, GymHack_Text_TypeFlying, GymHack_Text_TypeFighting, GymHack_Text_TypeDark, GymHack_Text_TypeGhost, GymHack_Text_TypeFairy
+	dynmultichoice 0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE, GymHack_Text_TypePsychic, GymHack_Text_TypeFire, GymHack_Text_TypeNormal, GymHack_Text_TypeWater, GymHack_Text_TypeGrass, GymHack_Text_TypeElectric, GymHack_Text_TypeRock, GymHack_Text_TypePoison, GymHack_Text_TypeBug, GymHack_Text_TypeSteel, GymHack_Text_TypeIce, GymHack_Text_TypeGround, GymHack_Text_TypeFlying, GymHack_Text_TypeDragon, GymHack_Text_TypeFighting, GymHack_Text_TypeDark, GymHack_Text_TypeGhost, GymHack_Text_TypeFairy
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, PalletTown_ProfessorOaksLab_EventScript_CancelTypeMenu
 	special GymHack_PrepareStarterChoice
 	call_if_ge VAR_RESULT, GYM_HACK_HARD_STARTERS_FROM, PalletTown_ProfessorOaksLab_EventScript_HardType

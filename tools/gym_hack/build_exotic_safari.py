@@ -43,9 +43,23 @@ ZONES = {
                  ("SQUAWKABILLY", 48, 52), ("SHROODLE", 48, 52), ("TOEDSCOOL", 50, 54), ("WATTREL", 50, 54)],
     },
 }
+# Each door in its region's games' two colors (left half, right half)
+DOOR_COLORS = {
+    "JOHTO": ((232, 184, 48), (176, 184, 200)),     # Gold, Silver
+    "HOENN": ((200, 32, 48), (40, 88, 208)),        # Ruby, Sapphire
+    "SINNOH": ((88, 152, 232), (232, 160, 200)),    # Diamond, Pearl
+    "UNOVA": ((56, 56, 64), (240, 240, 232)),       # Black, White
+    "KALOS": ((40, 104, 208), (216, 48, 64)),       # X, Y
+    "ALOLA": ((240, 144, 32), (96, 72, 200)),       # Sun, Moon
+    "GALAR": ((48, 168, 232), (200, 40, 120)),      # Sword, Shield
+    "PALDEA": ((216, 48, 40), (136, 64, 200)),      # Scarlet, Violet
+}
+DOOR_PALETTES = [7, 10, 11, 12]        # two doors per palette (free in this copy of the tileset)
 DOOR_SPACING, FIRST_DOOR = 4, 3
-HALL_W, HALL_H = FIRST_DOOR * 2 + DOOR_SPACING * (len(REGIONS) - 1) + 1, 9
-MAT_X = HALL_W // 2                    # the entrance mat's middle
+HALL_W, HALL_H = FIRST_DOOR * 2 + DOOR_SPACING * (len(REGIONS) - 1) + 1, 12
+MAT_X = HALL_W // 2                    # the entrance mat's middle, and the gap in the counter
+DOOR_Y, COUNTER_Y = 3, 7
+KIOSK_X = MAT_X + 6
 FUCHSIA_DOOR = (26, 5)                 # the new door on the Safari Zone building (a window before)
 FUCHSIA_SIGN = (27, 6)
 
@@ -108,14 +122,14 @@ class Tileset:
                     out[(k // 2) * 8 + y][(k % 2) * 8 + x] = t[y][x]
         return out
 
-    def add(self, pixels, attr=0):
+    def add(self, pixels, attr=0, pal=PAL):
         """A new metatile (bottom layer only) from 16x16 pixels; returns its id"""
         entries = []
         for k in range(4):
             t = tuple(pixels[(k // 2) * 8 + y][(k % 2) * 8 + x] for y in range(8) for x in range(8))
             if t not in self.tiles:
                 self.tiles.append(t)
-            entries.append((self.tiles.index(t) + 640) | (PAL << 12))
+            entries.append((self.tiles.index(t) + 640) | (pal << 12))
         self.metatiles.append(entries + [0, 0, 0, 0])
         self.attrs.append(attr)
         return SEC + len(self.metatiles) - 1
@@ -135,7 +149,22 @@ class Tileset:
         img.save(TS / "tiles.png")
         (TS / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in self.metatiles))
         (TS / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in self.attrs))
+        # The door palettes: the wall palette's colors, with two doors' colors in the free slots
+        base = [tuple(map(int, l.split())) for l in (SRC_TS / "palettes/08.pal").read_text().split("\n")[3:] if l.strip()]
+        for i, pal in enumerate(DOOR_PALETTES):
+            cols = list(base)
+            for slot, name in enumerate(REGIONS[i * 2:i * 2 + 2]):
+                for half, c in enumerate(DOOR_COLORS[name]):
+                    base_i, shade_i = DOOR_INDICES[slot][half]
+                    cols[base_i] = c
+                    cols[shade_i] = tuple(int(v * 0.68) for v in c) if sum(c) > 150 else tuple(min(255, v + 40) for v in c)
+            (TS / f"palettes/{pal:02d}.pal").write_text("JASC-PAL\r\n0100\r\n16\r\n" + "".join(f"{r} {g} {b}\r\n" for r, g, b in cols))
         assert len(self.tiles) <= 384 and len(self.metatiles) <= 384, (len(self.tiles), len(self.metatiles))
+
+
+# Palette indices of a door's colors: slot (first or second door in the palette) -> (left, right)
+# -> (base, shade). The rest (1 dark, 2 grey, 3 wall, 5 frame) are the wall palette's.
+DOOR_INDICES = [((4, 6), (7, 8)), ((9, 10), (11, 12))]
 
 
 def fill(c):
@@ -158,15 +187,31 @@ def build_tileset():
         for y in range(8):
             p[y] = [3] * 16
         m[k] = ts.add(p)
-    # Shut doors: the doorway is a wooden door (brown, a dark seam down the middle)
-    shut = {1: 7}
-    for k, src in (("top_l", None), ("top_m", None), ("top_r", None), ("door_l", 0x28B), ("door_m", 0x28C), ("door_r", 0x28D)):
-        p = recolor(ts.pixels(src if src else m[k]), shut)
-        if k.endswith("_m"):
+    # Closed doors, in the region's colors: the doorway's dark (index 1) becomes the door, left
+    # half one color and right half the other, with darker edges, a seam and handles.
+    # The door runs 3 pixels into the left and right metatiles: door x -3..18 (0-15 the middle one).
+    pieces = (("top_l", m["top_l"], -16), ("top_m", m["top_m"], 0), ("top_r", m["top_r"], 16),
+              ("door_l", 0x28B, -16), ("door_m", 0x28C, 0), ("door_r", 0x28D, 16))
+    for i, name in enumerate(REGIONS):
+        pal, slot = DOOR_PALETTES[i // 2], i % 2
+        for k, src, off in pieces:
+            p = ts.pixels(src)
+            top = k.startswith("top")
             for y in range(16):
-                if p[y][7] == 7:
-                    p[y][7] = 6
-        m["shut_" + k] = ts.add(p)
+                for x in range(16):
+                    if p[y][x] != 1:
+                        continue
+                    gx = x + off
+                    if not -3 <= gx <= 18:
+                        continue                                           # (the baseboard)
+                    half = 0 if gx < 8 else 1
+                    base_i, shade_i = DOOR_INDICES[slot][half]
+                    shade = gx in (-3, 7, 8, 18) or (not top and y in (4, 5, 6) and gx in (5, 10))
+                    p[y][x] = shade_i if shade else base_i
+            m[f"closed_{name}_{k}"] = ts.add(p, pal=pal)
+    # The counter between the lobby and the doors (a counter: people talk across it)
+    counter = [[9] * 16] + [[0xA] * 16 for _ in range(8)] + [[9] * 16] + [[7] * 16 for _ in range(5)] + [[6] * 16]
+    m["counter"] = ts.add(counter, attr=0x80)
     # The plaques: the region's name in white on dark slate, in a light frame, over the wall
     for name in REGIONS:
         img = fill(3) + []
@@ -237,12 +282,15 @@ def build_hall(m):
         x = door_x(i)
         for part in range(3):
             g[1][x - 1 + part] = blk(m[f"plaque_{name}_{part}"], 1)
-        if name in ZONES:
-            g[2][x - 1:x + 2] = [blk(m["top_l"], 1), blk(m["top_m"], 1), blk(m["top_r"], 1)]
-            g[3][x - 1:x + 2] = [blk(0x28B, 1), blk(0x28C, 0), blk(0x28D, 1)]
-        else:
-            g[2][x - 1:x + 2] = [blk(m["shut_top_l"], 1), blk(m["shut_top_m"], 1), blk(m["shut_top_r"], 1)]
-            g[3][x - 1:x + 2] = [blk(m["shut_door_l"], 1), blk(m["shut_door_m"], 1), blk(m["shut_door_r"], 1)]
+        # Every door starts closed; an open zone's door slides open when the player stands in front
+        # of it (src/exotic_safari.c)
+        g[2][x - 1:x + 2] = [blk(m[f"closed_{name}_top_{s}"], 1) for s in "lmr"]
+        g[3][x - 1:x + 2] = [blk(m[f"closed_{name}_door_{s}"], 1) for s in "lmr"]
+    # The counter between the lobby and the doors, with a gap in the middle (the attendant stands in
+    # it until the player buys a pass)
+    for x in range(W):
+        if x != MAT_X:
+            g[COUNTER_Y][x] = blk(m["counter"], 1)
     # The entrance mat (warps out to Fuchsia) and the doorway shadow under it
     g[H - 2][MAT_X - 1:MAT_X + 2] = [blk(0x2BC, 0), blk(0x2BD, 0), blk(0x2BE, 0)]
     g[H - 1][MAT_X - 1:MAT_X + 2] = [blk(0x01A, 1, 0), blk(0x01B, 1, 0), blk(0x01C, 1, 0)]
@@ -388,13 +436,16 @@ def main():
         x = door_x(i)
         if name in ZONES:
             zone_warp[name] = len(warps)
-            warps.append({"x": x, "y": 3, "elevation": 3, "dest_map": ZONES[name]["id"], "dest_warp_id": "0"})
+            warps.append({"x": x, "y": DOOR_Y, "elevation": 3, "dest_map": ZONES[name]["id"], "dest_warp_id": "0"})
         bgs.append({"type": "sign", "x": x, "y": 3, "elevation": 0, "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
                     "script": f"ExoticSafari_Hall_EventScript_Door{name.title()}"})
     write_map("ExoticSafari_Hall", "MAP_EXOTIC_SAFARI_HALL", "LAYOUT_EXOTIC_SAFARI_HALL", "MUS_RG_FUCHSIA",
               "MAPSEC_FUCHSIA_CITY", "MAP_TYPE_INDOOR",
-              [obj("OBJ_EVENT_GFX_WORKER_M", MAT_X + 2, HALL_H - 3, "ExoticSafari_Hall_EventScript_Attendant",
-                   "MOVEMENT_TYPE_FACE_LEFT")],
+              [obj("OBJ_EVENT_GFX_WORKER_M", MAT_X, COUNTER_Y, "ExoticSafari_Hall_EventScript_Attendant",
+                   flag="FLAG_EXOTIC_SAFARI_PASS"),
+               obj("OBJ_EVENT_GFX_WORKER_M", MAT_X - 1, COUNTER_Y - 1, "ExoticSafari_Hall_EventScript_AttendantDesk",
+                   flag="FLAG_HIDE_EXOTIC_SAFARI_DESK"),
+               obj("OBJ_EVENT_GFX_CLERK", KIOSK_X, COUNTER_Y - 1, "ExoticSafari_Hall_EventScript_Kiosk")],
               warps, bgs, False)
 
     # The zones
@@ -406,16 +457,26 @@ def main():
                   [{"x": x, "y": MEADOW_EXIT, "elevation": 3, "dest_map": "MAP_EXOTIC_SAFARI_HALL",
                     "dest_warp_id": str(zone_warp[name])} for x in (9, 10, 11)], [], True)
 
-    # Constants for the hall's scripts: the shut door pieces, and where each door is
+    # Constants for the hall's scripts, and the doors for src/exotic_safari.c
     consts = ["// The Exotic Pokémon Safari (made by tools/gym_hack/build_exotic_safari.py)",
-              "#ifndef GUARD_CONSTANTS_EXOTIC_SAFARI_H", "#define GUARD_CONSTANTS_EXOTIC_SAFARI_H"]
-    for k in ("top_l", "top_m", "top_r", "door_l", "door_m", "door_r"):
-        consts.append(f"#define METATILE_EXOTIC_SAFARI_SHUT_{k.upper():7} 0x{m['shut_' + k]:03X}")
-    for i, name in enumerate(REGIONS):
-        consts.append(f"#define EXOTIC_SAFARI_DOOR_X_{name:7} {door_x(i)}")
-    consts.append("#define EXOTIC_SAFARI_DOOR_Y          3")
-    consts.append("#endif")
+              "#ifndef GUARD_CONSTANTS_EXOTIC_SAFARI_H", "#define GUARD_CONSTANTS_EXOTIC_SAFARI_H",
+              f"#define EXOTIC_SAFARI_PASS_PRICE      10000",
+              f"#define LOCALID_EXOTIC_SAFARI_ATTENDANT 1",
+              f"#define LOCALID_EXOTIC_SAFARI_DESK      2",
+              "#endif"]
     (ROOT / "include/constants/exotic_safari.h").write_text("\n".join(consts) + "\n")
+    c = ["// The Exotic Pokémon Safari's doors (made by tools/gym_hack/build_exotic_safari.py)",
+         f"#define EXOTIC_SAFARI_DOOR_COUNT {len(REGIONS)}",
+         f"#define EXOTIC_SAFARI_DOOR_Y {DOOR_Y}",
+         "static const u8 sDoorX[EXOTIC_SAFARI_DOOR_COUNT] = {" + ", ".join(str(door_x(i)) for i in range(len(REGIONS))) + "};",
+         "static const bool8 sDoorHasZone[EXOTIC_SAFARI_DOOR_COUNT] = {" + ", ".join("TRUE" if n in ZONES else "FALSE" for n in REGIONS) + "};",
+         "// top left, top middle, top right, door left, door middle, door right",
+         "static const u16 sDoorOpen[6] = {" + ", ".join(f"0x{v:03X}" for v in (m["top_l"], m["top_m"], m["top_r"], 0x28B, 0x28C, 0x28D)) + "};",
+         "static const u16 sDoorClosed[EXOTIC_SAFARI_DOOR_COUNT][6] =", "{"]
+    for name in REGIONS:
+        c.append("    {" + ", ".join(f"0x{m[f'closed_{name}_{k}']:03X}" for k in ("top_l", "top_m", "top_r", "door_l", "door_m", "door_r")) + f"}},  // {name}")
+    c.append("};")
+    (ROOT / "src/data/exotic_safari_doors.h").write_text("\n".join(c) + "\n")
 
     # Map group, script includes
     gp = ROOT / "data/maps/map_groups.json"

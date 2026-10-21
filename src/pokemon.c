@@ -16,6 +16,7 @@
 #include "daycare.h"
 #include "dexnav.h"
 #include "event_data.h"
+#include "constants/gym_hack.h"
 #include "event_object_movement.h"
 #include "evolution_scene.h"
 #include "field_player_avatar.h"
@@ -989,6 +990,12 @@ void CreateBoxMon(struct BoxPokemon *boxMon, enum Species species, u8 level, u32
     {
         value = READ_OTID_FROM_SAVE;
         isShiny = ComputePlayerShinyOdds(personality, value);
+        // Pokémon Canvas: with the Gym Charm, 1 in GYM_CHARM_SHINY_ODDS Pokémon of the gym's
+        // type (primary type, as in the team rule) are Shiny
+        if (!isShiny && gSpeciesInfo[species].types[0] == VarGet(VAR_PLAYER_TYPE)
+         && FlagGet(FLAG_PALLET_GYM_AWARDED) && CheckBagHasItem(ITEM_GYM_CHARM, 1)
+         && Random() % GYM_CHARM_SHINY_ODDS == 0)
+            isShiny = TRUE;
     }
 
     SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);

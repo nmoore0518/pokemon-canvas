@@ -21,6 +21,9 @@
 #define GYM_SWITCH_FIRST_STREAK   20
 #define GYM_SWITCH_NEXT_STREAK    10
 
+// The Gym Charm (from the mentor, after the League): Shiny odds for Pokémon of the gym's type
+#define GYM_CHARM_SHINY_ODDS      250
+
 // Oak's type menu runs from easiest to hardest; from this entry on (Fighting, Dark, Ghost,
 // Fairy) Oak warns that the type is a tough road
 #define GYM_HACK_HARD_STARTERS_FROM 14

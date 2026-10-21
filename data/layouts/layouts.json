@@ -10745,7 +10745,7 @@
       "id": "LAYOUT_EXOTIC_SAFARI_HALL",
       "name": "ExoticSafari_Hall_Layout",
       "width": 35,
-      "height": 9,
+      "height": 12,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_BuildingFrlg",

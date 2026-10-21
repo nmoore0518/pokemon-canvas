@@ -1,3 +1,4 @@
+#include "exotic_safari.h"
 #include "global.h"
 #include "gym_decor.h"
 #include "battle_setup.h"
@@ -691,6 +692,7 @@ static bool32 TrySetupDiveEmergeScript(void)
 
 bool8 TryStartStepBasedScript(struct MapPosition *position, u16 metatileBehavior, enum Direction direction)
 {
+    ExoticSafari_OnStep();   // Pokémon Canvas: the Exotic Safari's doors open for the player
     if (TryStartCoordEventScript(position) == TRUE)
         return TRUE;
     if (TryStartWarpEventScript(position, metatileBehavior) == TRUE)

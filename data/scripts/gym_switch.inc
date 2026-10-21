@@ -114,6 +114,7 @@ GymSwitch_EventScript_OakGone::
 @ ---- Oak in his lab (called first thing when the player talks to him) ----
 GymSwitch_EventScript_LabOak::
 	goto_if_unset FLAG_PALLET_GYM_AWARDED, GymSwitch_EventScript_Return
+	call GymSwitch_EventScript_LabGymCharm
 	special GymSwitch_BufferStatus
 	goto_if_eq VAR_RESULT, FALSE, GymSwitch_EventScript_LabGoal
 	special GymSwitch_StreakInProgress
@@ -150,6 +151,16 @@ GymSwitch_EventScript_LabMidStreak::
 	msgbox GymSwitch_Text_LabMidStreak
 	goto_if_unset FLAG_GYM_RUN_MASTERED, GymSwitch_EventScript_Return
 	msgbox GymSwitch_Text_LabMidStreakMastered
+	return
+
+@ Pokémon Canvas: the Gym Charm, for saves that got the convention invitation before it existed
+GymSwitch_EventScript_LabGymCharm::
+	goto_if_lt VAR_JOHTO_STATE, JOHTO_INVITED, GymSwitch_EventScript_Return
+	checkitem ITEM_GYM_CHARM
+	goto_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_Return
+	msgbox GymSwitch_Text_LabGymCharm
+	giveitem ITEM_GYM_CHARM
+	msgbox GymSwitch_Text_LabGymCharmHow
 	return
 
 @ Nothing earned yet: what it takes (then his usual lines)
@@ -297,6 +308,16 @@ GymSwitch_Text_LabMidStreak::
 GymSwitch_Text_LabMidStreakMastered::
 	.string "Win or lose, I'll come by your\n"
 	.string "GYM when it ends!$"
+
+GymSwitch_Text_LabGymCharm::
+	.string "OAK: {PLAYER}! Your mentor left this\n"
+	.string "for you. A GYM CHARM!$"
+
+GymSwitch_Text_LabGymCharmHow::
+	.string "OAK: SHINY POKéMON of your GYM's\n"
+	.string "type will turn up far more often.\p"
+	.string "If your GYM changes type, the charm\n"
+	.string "changes with it!$"
 
 GymSwitch_Text_LabNo::
 	.string "OAK: Whenever you're ready!$"

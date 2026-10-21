@@ -2518,6 +2518,10 @@
 // it ends); the types the gym has had (+ type); legendaries of the other types, caught or loose in
 // Cerulean Cave (+ type: the current type's legendary uses FLAG_GYM_LEGEND_* above)
 #define FLAG_GYM_RUN_MASTERED         0x0DE
+// The Exotic Pokémon Safari (data/maps/ExoticSafari_Hall): the pass is bought (the attendant leaves
+// the gap in the counter), and the attendant behind the counter (hidden until then)
+#define FLAG_EXOTIC_SAFARI_PASS       0x0DF
+#define FLAG_HIDE_EXOTIC_SAFARI_DESK  0x0E0
 #define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B

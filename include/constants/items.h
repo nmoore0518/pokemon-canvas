@@ -1104,6 +1104,8 @@ enum __attribute__((packed)) Item
     ITEM_TWINKLING_LIGHTS = 920,   // Fairy defense
     ITEM_MAGIC_WAND = 921,   // Fairy offense
     ITEM_PALM_PILOT = 922,   // Gym Trainer hack: Bill's portable PC (data/scripts/palm_pilot.inc)
+    ITEM_EXOTIC_PASS = 923,  // Pokémon Canvas: entry to the Exotic Pokémon Safari's zones
+    ITEM_GYM_CHARM = 924,    // Pokémon Canvas: Shiny Pokémon of the gym's type are more likely (src/pokemon.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

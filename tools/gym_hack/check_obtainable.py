@@ -81,11 +81,18 @@ def main(si_path):
                     changed = True
                 else:
                     blocked.setdefault(target, []).append(f"from {info[src]['name']}: {why}")
-    missing = [s for s in national if s not in obtainable]
+    # Johto's and Hoenn's legendaries are post-game: in the Exotic Safari (and Ho-Oh, Groudon and
+    # Rayquaza only come to a gym of their type), not in Kanto's wild
+    safari = {f"SPECIES_{n}" for n in ("RAIKOU", "ENTEI", "SUICUNE", "LUGIA", "HO_OH", "CELEBI", "REGIROCK",
+              "REGICE", "REGISTEEL", "LATIAS", "LATIOS", "KYOGRE", "GROUDON", "RAYQUAZA", "JIRACHI", "DEOXYS_NORMAL")}
+    wild_legends = sorted(s for s in safari & wild)
+    if wild_legends:
+        print("In Kanto's wild but meant for the Exotic Safari: " + ", ".join(info[s]["name"] for s in wild_legends))
+    missing = [s for s in national if s not in obtainable and s not in safari]
     for s in missing:
         print(f"{info[s]['name']}: can't be obtained. " + "; ".join(blocked.get(s, ["not wild, no pre-evolution"])))
-    print(f"{len(national) - len(missing)} of 386 obtainable ({len(wild & set(national))} wild)")
-    sys.exit(1 if missing else 0)
+    print(f"{len(national) - len(missing) - len(safari)} of {386 - len(safari)} obtainable before the post-game ({len(wild & set(national))} wild)")
+    sys.exit(1 if missing or wild_legends else 0)
 
 
 if __name__ == "__main__":

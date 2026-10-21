@@ -141,14 +141,14 @@ def main(si_path, out):
             extra = sp.split(next(s for s in FORM_SUFFIX if s in sp))[1].strip("_").title()
             name = f"{v['name']} ({form}{' ' + extra if extra else ''})"
             g, region = FORM_GEN[form]
-        elif base >= 387 and base not in seen:
+        elif base not in seen:
             seen.add(base)        # (the first entry for a dex number is the default form)
             name = v["name"]
             g, region = gen_of(base)
         else:
             continue
         rows.append((base, name, v["types"][0], v["types"][1] if len(v["types"]) > 1 and v["types"][1] != v["types"][0] else "",
-                     g, region, kind(v["flags"]), "Gym-only" if v["name"] in GYM_LEGENDS and not form else ""))
+                     g, region, kind(v["flags"]), "Gym-only" if v["name"] in GYM_LEGENDS and not form else ("Already in Kanto" if base <= 386 and kind(v["flags"]) == "" else "")))
     # Defined through macros the parser can't read
     for num, name, t1, t2 in ((666, "Vivillon", "Bug", "Flying"), (671, "Florges", "Fairy", "")):
         if num not in seen:
@@ -247,7 +247,8 @@ def main(si_path, out):
     lg = wb.create_sheet("Legendaries", 2)
     style_header(lg, 1, ["Region", "Area", "Pokémon", "Level", "How the player finds it", "Check", "Notes"],
                  [10, 18, 24, 7, 44, 22, 30])
-    statics = [r_ for r_ in rows if r_[6] in ("Legendary", "Mythical") and r_[7] != "Gym-only" and r_[0] >= 387
+    # Johto's and Hoenn's legendaries are post-game too now (only Kanto's stay in Kanto)
+    statics = [r_ for r_ in rows if r_[6] in ("Legendary", "Mythical") and r_[7] != "Gym-only" and r_[0] >= 152
                and "(" not in r_[1]]
     r = 2
     for row in statics:
@@ -289,13 +290,13 @@ def main(si_path, out):
          "or replace them.", None),
         ("", None),
         ("Legendaries", Font(name=FONT, bold=True, size=12)),
-        ("Every legendary and mythical Pokémon past the first 386, except the 18 gym ones, is listed with "
-         "its home region. Give each an area, a level and how the player finds it (a puzzle, a hidden "
+        ("Every legendary and mythical Pokémon from Johto on, except the 18 gym ones, is listed with "
+         "its home region (Johto's and Hoenn's aren't in Kanto any more). Give each an area, a level and how the player finds it (a puzzle, a hidden "
          "room...). Delete the ones you don't want.", None),
         ("", None),
         ("Pokémon List", Font(name=FONT, bold=True, size=12)),
-        (f"All {n_species} Pokémon the safaris can use: Gen 4 to 9 plus the regional forms (Alolan, "
-         "Galarian, Hisuian, Paldean). Johto and Hoenn Pokémon are already in the game, but you can put "
+        (f"All {n_species} Pokémon, Gen 1 to 9, plus the regional forms (Alolan, Galarian, Hisuian, "
+         "Paldean). The ones marked \"Already in Kanto\" can be caught in the main game, but you can put "
          "them in a zone too. Filter by Region or type to browse.", None),
     ]
     for i, (text, font) in enumerate(lines, 1):

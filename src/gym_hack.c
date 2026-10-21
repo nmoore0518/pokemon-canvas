@@ -2,8 +2,8 @@
 //
 // Starter selection: in Oak's lab the player picks one of 18 types from a
 // menu, ordered from easiest to hardest: by the highest base stat total a
-// team of six different species of that primary type can have (Gen 1-3,
-// legendaries included). See GYM_HACK.md for the numbers. The menu order in data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
+// team of six different species of that primary type can have (Gen 1-3;
+// of the legendaries, only Kanto's: Johto's and Hoenn's are in the Exotic Safari). See GYM_HACK.md for the numbers. The menu order in data/maps/PalletTown_ProfessorOaksLab_Frlg/scripts.inc
 // must match sStarters below.
 //
 // Team rules: in gym leader and rival battles (and to enter the Elite Four),
@@ -59,19 +59,19 @@ struct GymHackStarter
 static const struct GymHackStarter sStarters[] =
 {
     { SPECIES_RALTS,      TYPE_DARK     }, // Psychic
-    { SPECIES_DRATINI,    TYPE_ICE      }, // Dragon
     { SPECIES_CHARMANDER, TYPE_WATER    }, // Fire
-    { SPECIES_SQUIRTLE,   TYPE_ELECTRIC }, // Water
-    { SPECIES_BELDUM,     TYPE_FIRE     }, // Steel
     { SPECIES_PORYGON,    TYPE_FIGHTING }, // Normal
+    { SPECIES_SQUIRTLE,   TYPE_ELECTRIC }, // Water
+    { SPECIES_BULBASAUR,  TYPE_POISON   }, // Grass
     { SPECIES_PIKACHU,    TYPE_GROUND   }, // Electric
     { SPECIES_LARVITAR,   TYPE_WATER    }, // Rock
-    { SPECIES_SANDSHREW,  TYPE_GRASS    }, // Ground
-    { SPECIES_BULBASAUR,  TYPE_POISON   }, // Grass
-    { SPECIES_SPHEAL,     TYPE_ROCK     }, // Ice
     { SPECIES_EKANS,      TYPE_PSYCHIC  }, // Poison
     { SPECIES_CATERPIE,   TYPE_FIRE     }, // Bug
+    { SPECIES_BELDUM,     TYPE_FIRE     }, // Steel
+    { SPECIES_SPHEAL,     TYPE_ROCK     }, // Ice
+    { SPECIES_SANDSHREW,  TYPE_GRASS    }, // Ground
     { SPECIES_SPEAROW,    TYPE_ELECTRIC }, // Flying (the birds are Flying first in this hack)
+    { SPECIES_DRATINI,    TYPE_ICE      }, // Dragon
     { SPECIES_TYROGUE,    TYPE_PSYCHIC  }, // Fighting
     { SPECIES_POOCHYENA,  TYPE_FIGHTING }, // Dark
     { SPECIES_GASTLY,     TYPE_DARK     }, // Ghost

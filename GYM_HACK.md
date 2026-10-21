@@ -108,29 +108,35 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
 - **Type menu order = difficulty.** Oak's list runs from the type with the strongest possible
   team to the weakest: the highest total base stats of six different species with that primary
-  type (Gen 1-3, legendaries included). Oak says so before the menu, and picking one of the last
-  four (`GYM_HACK_HARD_STARTERS_FROM`) gets a "bold choice" warning. A test keeps the order right.
+  type (Gen 1-3; of the legendaries only Kanto's count: Johto's and Hoenn's are post-game, in the
+  Exotic Safari). Oak says so before the menu, and picking one of the last four
+  (`GYM_HACK_HARD_STARTERS_FROM`) gets a "bold choice" warning. A test keeps the order right.
 
   | # | Type | Best six (BST total) |
   |---|---|---|
-  | 1 | Psychic | 3685 (Mewtwo, Lugia, Mew, Celebi, Deoxys, Espeon) |
-  | 2 | Dragon | 3570 (Rayquaza, Dragonite, Salamence, Latias, Latios, Altaria) |
-  | 3 | Fire | 3463 (Ho-Oh, Moltres, Entei, Arcanine, Charizard, Typhlosion) |
-  | 4 | Water | 3405 (Kyogre, Suicune, Gyarados, Kingdra, Milotic, Lapras) |
-  | 5 | Steel | 3285 (Metagross, Jirachi, Registeel, Aggron, Steelix, Skarmory) |
-  | 6 | Normal | 3255 (Slaking, Snorlax, Blissey, Porygon2, Ursaring, Kangaskhan) |
-  | 7 | Electric | 3175 (Zapdos, Raikou, Jolteon, Ampharos, Electrode, Electabuzz) |
-  | 8 | Rock | 3160 (Tyranitar, Regirock, Golem, Omastar, Kabutops, Cradily) |
-  | 9 | Ground | 3125 (Groudon, Flygon, Donphan, Claydol, Rhydon, Sandslash) |
-  | 10 | Grass | 3090 (Exeggutor, Sceptile, Venusaur, Meganium, Vileplume, Victreebel) |
-  | 11 | Ice | 3075 (Articuno, Regice, Walrein, Glalie, Jynx, Piloswine) |
-  | 12 | Poison | 3002 (Crobat, Nidoqueen, Nidoking, Muk, Weezing, Swalot) |
-  | 13 | Bug | 2970 (Shuckle, Scyther, Pinsir, Scizor, Heracross, Forretress) |
-  | 14 | Flying | 2841 (Aerodactyl, Pidgeot, Dodrio, Xatu, Swellow, Noctowl) |
-  | 15 | Fighting | 2799 (Machamp, Hariyama, Primeape, Hitmonlee, Hitmonchan, Hitmontop) |
+  | 1 | Psychic | 3306 (Mewtwo, Mew, Espeon, Gardevoir, Alakazam, Hypno) |
+  | 2 | Fire | 3258 (Moltres, Arcanine, Typhlosion, Charizard, Blaziken, Flareon) |
+  | 3 | Normal | 3255 (Slaking, Snorlax, Blissey, Porygon2, Ursaring, Tauros) |
+  | 4 | Water | 3220 (Milotic, Kingdra, Gyarados, Swampert, Lapras, Feraligatr) |
+  | 5 | Grass | 3090 (Sceptile, Exeggutor, Venusaur, Meganium, Vileplume, Victreebel) |
+  | 6 | Electric | 3080 (Zapdos, Jolteon, Ampharos, Electrode, Electabuzz, Raichu) |
+  | 7 | Rock | 3075 (Tyranitar, Omastar, Kabutops, Golem, Cradily, Armaldo) |
+  | 8 | Poison | 3002 (Crobat, Nidoqueen, Nidoking, Muk, Weezing, Swalot) |
+  | 9 | Bug | 2970 (Shuckle, Scyther, Scizor, Pinsir, Heracross, Forretress) |
+  | 10 | Steel | 2955 (Metagross, Aggron, Steelix, Skarmory, Lairon, Metang) |
+  | 11 | Ice | 2905 (Articuno, Walrein, Glalie, Jynx, Piloswine, Sealeo) |
+  | 12 | Ground | 2885 (Flygon, Donphan, Claydol, Rhydon, Sandslash, Gligar) |
+  | 13 | Flying | 2841 (Aerodactyl, Pidgeot, Xatu, Dodrio, Swellow, Noctowl) |
+  | 14 | Dragon | 2830 (Salamence, Dragonite, Altaria, Shelgon, Dragonair, Dratini) |
+  | 15 | Fighting | 2799 (Machamp, Hariyama, Primeape, Hitmontop, Hitmonlee, Hitmonchan) |
   | 16 | Dark | 2745 (Umbreon, Houndoom, Absol, Sneasel, Mightyena, Murkrow) |
-  | 17 | Ghost | 2560 (Gengar, Banette, Dusclops, Misdreavus, Haunter, Gastly) |
+  | 17 | Ghost | 2560 (Gengar, Dusclops, Banette, Misdreavus, Haunter, Gastly) |
   | 18 | Fairy | 2206 (Clefable, Granbull, Togetic, Clefairy, Snubbull, Togepi) |
+- **Johto's and Hoenn's legendaries** (Raikou, Entei, Suicune, Lugia, Ho-Oh, Celebi, the Regis,
+  Latias, Latios, Kyogre, Groudon, Rayquaza, Jirachi, Deoxys) are no longer in Kanto's wild
+  tables (their slots went to the table's neighbouring Pokémon); they go in the Exotic Safari
+  (Ho-Oh, Groudon and Rayquaza stay gym-only). Kanto's legendaries stay where they are.
+  `check_obtainable.py` checks the other 370 can be caught before the post-game.
 - **Story**: in the starter scene, Oak explains that the POKéMON LEAGUE is adding a ninth gym in
   Pallet Town (so many trainers reach the League that the Elite Four never get a day off), and he has
   picked the player and the rival as candidates. League rules say a Gym Leader uses one primary type,
@@ -656,6 +662,17 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          say "COMING SOON". Normal wild battles, the player's own balls (no Safari Balls or step
          limit). `tools/gym_hack/build_exotic_safari.py` builds it all (ZONES lists the open zones).
    - [x] Paldea test meadow (placeholder Pokémon, Lv 48-54)
+   - [x] The hall: doors in each region's games' two colors (Gold/Silver, Ruby/Sapphire,
+         Diamond/Pearl, Black/White, X/Y, Sun/Moon, Sword/Shield, Scarlet/Violet) that slide open
+         when a pass holder stands in front of an open zone's door (`src/exotic_safari.c`); a
+         counter splits the hall, with the attendant in its gap. After the League the attendant
+         sells the EXOTIC PASS (one-time Gym Leader special, ¥10,000: trainers will want exotic
+         Pokémon once they see a leader's), the camera shows the doors, and they step aside.
+         Before that, "not open yet, come back later". The SAFARI KIOSK on the counter sells
+         balls, Max Repels and healing items.
+   - [x] The Gym Charm (key item, from the mentor with the convention invitation; Oak hands it
+         over for older saves): 1 in 250 Pokémon of the gym's current type (primary type) are
+         Shiny (`GYM_CHARM_SHINY_ODDS`, `src/pokemon.c`). It follows the gym when it changes type.
    - [ ] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
          Pokémon past the first 386 can be caught, with puzzles opening sub-areas with legendaries.
          All species through Gen 9 are already in the ROM (the convention and challengers use them)
