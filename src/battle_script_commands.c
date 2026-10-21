@@ -1,4 +1,5 @@
 #include "global.h"
+#include "regions.h"
 #include "gym_challenge.h"
 #include "battle.h"
 #include "battle_hold_effects.h"
@@ -2277,7 +2278,7 @@ static void Cmd_getexp(void)
                     && !gBattleStruct->wildVictorySong)
                 {
                     BattleStopLowHpSound();
-                    PlayBGM(MUS_VICTORY_WILD);
+                    PlayBGM(GetCurrentRegion() == REGION_JOHTO ? MUS_HG_VICTORY_WILD : MUS_VICTORY_WILD);   // (Gym Trainer hack)
                     gBattleStruct->wildVictorySong++;
                 }
 

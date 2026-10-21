@@ -2,7 +2,7 @@
   "id": "MAP_GATE_AZALEA_TOWN_ILEX_FOREST",
   "name": "Gate_AzaleaTown_IlexForest_Johto",
   "layout": "LAYOUT_GATE_AZALEA_TOWN_ILEX_FOREST",
-  "music": "MUS_RG_ROUTE24",
+  "music": "MUS_HG_ROUTE34",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_AZALEA_TOWN",
   "requires_flash": false,

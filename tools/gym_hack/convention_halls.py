@@ -44,7 +44,8 @@ SOLVED = {
     "DRAGON": ["BlackthornGym_MapScript_BuildBridge"],
     "ELECTRIC": ["VermilionCity_Gym_EventScript_SetBeamsOff"],
 }
-MUSIC = {"CHAMPIONS": "MUS_RG_VICTORY_ROAD", "BUG": "MUS_RG_VIRIDIAN_FOREST"}   # (FireRed music for now)
+MUSIC = {"CHAMPIONS": "MUS_HG_POKEMON_LEAGUE", "BUG": "MUS_HG_NATIONAL_PARK", "GHOST": "MUS_HG_BURNED_TOWER",
+         "FAIRY": "MUS_HG_DANCE_THEATER"}   # (the rest: the Gym theme)
 LOBBY = "GoldenrodCity_RadioTower_1F_hns"
 LOBBY_MAP = "MAP_GOLDENROD_CITY_RADIO_TOWER_1F"
 LOBBY_LANDING = (16, 8)            # where the player arrives back in the lobby (at the counter)
@@ -311,7 +312,7 @@ def build(src, hns_layouts, hns_maps, behavior_names, layout_id_for, layout_bin_
             w.pop("internal", None)
         out[hall] = ({
             "id": hall_id(hall), "name": hall_name(hall), "layout": layout_id_for(hall, m),
-            "music": MUSIC.get(hall, "MUS_RG_GYM"), "region": "REGION_JOHTO",
+            "music": MUSIC.get(hall, "MUS_HG_GYM"), "region": "REGION_JOHTO",
             "region_map_section": "MAPSEC_GOLDENROD_CITY", "requires_flash": False, "weather": "WEATHER_NONE",
             "map_type": m["map_type"] if m["map_type"] != "MAP_TYPE_NONE" else "MAP_TYPE_INDOOR", "allow_cycling": False, "allow_escaping": False, "allow_running": True,
             "show_map_name": False, "floor_number": 0,

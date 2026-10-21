@@ -481,7 +481,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   4-byte format), tileset animations, and daytime wild Pokémon at post-game levels (about 50-66);
   not their scripts (NPCs come later). Maps are named `*_Johto` (`MAP_GOLDENROD_CITY`...), in
   `gMapGroup_Johto`; warps out of the area are dropped. `tools/mapjson` accepts `REGION_JOHTO` maps
-  in FireRed builds. FireRed music stands in for HGSS's for now.
+  in FireRed builds.
   - **Guards** stand where Johto goes on (Azalea to Route 33, Route 36 to Violet and the Ruins,
     Route 40 to Route 41 and the Trainer Hill, the Route 42 and Ruins gates): stepping toward them
     sets them off ("Hey! You're not from around here... Oh! A GYM LEADER CONVENTION badge!") and
@@ -499,6 +499,14 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     there's no mentor) -> `JOHTO_INVITED`.
   - **The ferry**: with the invitation, Vermilion's harbor sailor sails the player to Olivine's
     dock (the Seagallop scene, `SEAGALLOP_OLIVINE_CITY`); the sailor on Olivine's dock sails back.
+  - **HGSS music**: 28 HeartGold/SoulSilver songs from HnS (`tools/gym_hack/import_hgss_music.py`):
+    the towns, routes and buildings, the convention (the Radio Tower plays the Pokéathlon lobby
+    theme, the halls the Gym theme, the Champions' Hall the Pokémon League theme), and Johto's
+    battles (`GetBattleBGM` in `src/pokemon.c`: wild, trainers, Gym Leaders, Elite Four with the
+    Kanto Gym Leader theme, Champions; victory themes in `src/battle_main.c`). They play on HnS's HGSS
+    instrument set (`sound/voicegroups/hgss/`, voicegroups renamed `voicegroup_hg229`...), with its
+    key split tables and samples. `MUS_HG_*` come right after the FireRed songs (`END_MUS`); the
+    phonemes moved up.
   - **No Sevii Islands**: Bill no longer waits on Cinnabar after the Volcano Badge (saves that had
     the trip waiting drop it); **Moltres** is on Victory Road 2F (as in Red and Blue), Lv 50.
 - **The Gym Leader Convention** fills Goldenrod's Radio Tower: every Gym Leader (Kahunas and Trial
@@ -608,5 +616,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] The invitation (mentor), Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
    - [x] Convention Center (Radio Tower): 18 type halls + Champions' Hall, 127 leaders (Emerald
          Rogue sprites), trophies
-   - [ ] HGSS music, Johto NPCs
+   - [x] HGSS music
+   - [ ] Johto NPCs
    - [ ] Title screen and credits (artists, HnS, AI disclosure)

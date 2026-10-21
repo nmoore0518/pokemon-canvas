@@ -2,7 +2,7 @@
   "id": "MAP_ECRUTEAK_CITY",
   "name": "EcruteakCity_Johto",
   "layout": "LAYOUT_ECRUTEAK_CITY",
-  "music": "MUS_RG_LAVENDER",
+  "music": "MUS_HG_ECRUTEAK",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_ECRUTEAK_CITY",
   "requires_flash": false,

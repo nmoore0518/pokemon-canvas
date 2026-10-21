@@ -5174,9 +5174,16 @@ u16 GetBattleBGM(void)
             return MUS_VS_ELITE_FOUR;
         case TRAINER_CLASS_CHAMPION_FRLG:
         case TRAINER_CLASS_PKMN_PROF_FRLG:   // Gym Trainer hack: Oak battles for the gym
+            if (GetCurrentRegion() == REGION_JOHTO)   // (Gym Trainer hack: HGSS music in Johto)
+                return MUS_HG_VS_CHAMPION;
             return MUS_RG_VS_CHAMPION;
         case TRAINER_CLASS_LEADER_FRLG:
+            if (GetCurrentRegion() == REGION_JOHTO)
+                return MUS_HG_VS_GYM_LEADER;
+            return MUS_RG_VS_GYM_LEADER;
         case TRAINER_CLASS_ELITE_FOUR_FRLG:
+            if (GetCurrentRegion() == REGION_JOHTO)
+                return MUS_HG_VS_GYM_LEADER_KANTO;
             return MUS_RG_VS_GYM_LEADER;
         case TRAINER_CLASS_SALON_MAIDEN:
         case TRAINER_CLASS_DOME_ACE:
@@ -5187,7 +5194,9 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_PYRAMID_KING:
             return MUS_VS_FRONTIER_BRAIN;
         default:
-            if (GetCurrentRegion() != REGION_HOENN) // (Gym Trainer hack: Johto too)
+            if (GetCurrentRegion() == REGION_JOHTO) // (Gym Trainer hack: HGSS music in Johto)
+                return MUS_HG_VS_TRAINER;
+            if (GetCurrentRegion() != REGION_HOENN)
                 return MUS_RG_VS_TRAINER;
             else
                 return MUS_VS_TRAINER;
@@ -5195,7 +5204,9 @@ u16 GetBattleBGM(void)
     }
     else
     {
-        if (GetCurrentRegion() != REGION_HOENN) // (Gym Trainer hack: Johto too)
+        if (GetCurrentRegion() == REGION_JOHTO) // (Gym Trainer hack: HGSS music in Johto)
+            return MUS_HG_VS_WILD;
+        if (GetCurrentRegion() != REGION_HOENN)
             return MUS_RG_VS_WILD;
         else
             return MUS_VS_WILD;

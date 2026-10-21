@@ -1,4 +1,5 @@
 #include "global.h"
+#include "regions.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_ai_main.h"
@@ -5087,7 +5088,21 @@ static void HandleEndTurn_BattleWon(void)
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_LocalTrainerBattleWon;
 
-        switch (GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA))
+        if (GetCurrentRegion() == REGION_JOHTO)   // Gym Trainer hack: HGSS music in Johto
+        {
+            switch (GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA))
+            {
+            case TRAINER_CLASS_LEADER_FRLG:
+            case TRAINER_CLASS_ELITE_FOUR_FRLG:
+            case TRAINER_CLASS_CHAMPION_FRLG:
+                PlayBGM(MUS_HG_VICTORY_GYM_LEADER);
+                break;
+            default:
+                PlayBGM(MUS_HG_VICTORY_TRAINER);
+                break;
+            }
+        }
+        else switch (GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA))
         {
         case TRAINER_CLASS_ELITE_FOUR:
         case TRAINER_CLASS_CHAMPION:

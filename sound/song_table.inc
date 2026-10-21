@@ -565,6 +565,34 @@ gSongTable::
 	song mus_rg_trainer_tower, MUSIC_PLAYER_BGM, 0
 	song mus_rg_slow_pallet, MUSIC_PLAYER_BGM, 0
 	song mus_rg_teachy_tv_menu, MUSIC_PLAYER_BGM, 0
+	song mus_hg_goldenrod, MUSIC_PLAYER_BGM, 0
+	song mus_hg_ecruteak, MUSIC_PLAYER_BGM, 0
+	song mus_hg_azalea, MUSIC_PLAYER_BGM, 0
+	song mus_hg_violet, MUSIC_PLAYER_BGM, 0
+	song mus_hg_route34, MUSIC_PLAYER_BGM, 0
+	song mus_hg_route38, MUSIC_PLAYER_BGM, 0
+	song mus_hg_route42, MUSIC_PLAYER_BGM, 0
+	song mus_hg_poke_center, MUSIC_PLAYER_BGM, 0
+	song mus_hg_poke_mart, MUSIC_PLAYER_BGM, 0
+	song mus_hg_gym, MUSIC_PLAYER_BGM, 0
+	song mus_hg_bell_tower, MUSIC_PLAYER_BGM, 0
+	song mus_hg_burned_tower, MUSIC_PLAYER_BGM, 0
+	song mus_hg_dance_theater, MUSIC_PLAYER_BGM, 0
+	song mus_hg_national_park, MUSIC_PLAYER_BGM, 0
+	song mus_hg_game_corner, MUSIC_PLAYER_BGM, 0
+	song mus_hg_lighthouse, MUSIC_PLAYER_BGM, 0
+	song mus_hg_union_cave, MUSIC_PLAYER_BGM, 0
+	song mus_hg_ss_aqua, MUSIC_PLAYER_BGM, 0
+	song mus_hg_pokeathlon_lobby, MUSIC_PLAYER_BGM, 0
+	song mus_hg_pokemon_league, MUSIC_PLAYER_BGM, 0
+	song mus_hg_vs_wild, MUSIC_PLAYER_BGM, 0
+	song mus_hg_vs_trainer, MUSIC_PLAYER_BGM, 0
+	song mus_hg_vs_gym_leader, MUSIC_PLAYER_BGM, 0
+	song mus_hg_vs_gym_leader_kanto, MUSIC_PLAYER_BGM, 0
+	song mus_hg_vs_champion, MUSIC_PLAYER_BGM, 0
+	song mus_hg_victory_trainer, MUSIC_PLAYER_BGM, 0
+	song mus_hg_victory_wild, MUSIC_PLAYER_BGM, 0
+	song mus_hg_victory_gym_leader, MUSIC_PLAYER_BGM, 0
 	song ph_trap_blend, MUSIC_PLAYER_SE2, 2
 	song ph_trap_held, MUSIC_PLAYER_SE2, 2
 	song ph_trap_solo, MUSIC_PLAYER_SE2, 2

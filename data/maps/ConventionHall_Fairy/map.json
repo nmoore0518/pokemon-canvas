@@ -2,7 +2,7 @@
   "id": "MAP_CONVENTION_HALL_FAIRY",
   "name": "ConventionHall_Fairy",
   "layout": "LAYOUT_CONVENTION_HALL_FAIRY",
-  "music": "MUS_RG_GYM",
+  "music": "MUS_HG_DANCE_THEATER",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_GOLDENROD_CITY",
   "requires_flash": false,

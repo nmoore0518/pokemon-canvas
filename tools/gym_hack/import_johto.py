@@ -37,19 +37,9 @@ MAP_PREFIXES = ("Olivine", "Ecruteak", "Goldenrod", "Route34", "Route35", "Route
                 "Route39", "Route40", "IlexForest", "Azalea", "NationalPark", "BurnedTower", "TinTower",
                 "BellchimeTrail", "Gate_")
 
-# FireRed/Emerald music in place of HGSS's (for now)
-MUSIC = {
-    "MUS_HG_AZALEA": "MUS_RG_PEWTER", "MUS_HG_BELL_TOWER": "MUS_RG_POKE_TOWER",
-    "MUS_HG_BUG_CATCHING_CONTEST": "MUS_RG_ROUTE24", "MUS_HG_BURNED_TOWER": "MUS_RG_POKE_TOWER",
-    "MUS_HG_DANCE_THEATER": "MUS_RG_CELADON", "MUS_HG_ECRUTEAK": "MUS_RG_LAVENDER",
-    "MUS_HG_GAME_CORNER": "MUS_RG_GAME_CORNER", "MUS_HG_GOLDENROD": "MUS_RG_CELADON",
-    "MUS_HG_GYM": "MUS_RG_GYM", "MUS_HG_LIGHTHOUSE": "MUS_RG_SILPH",
-    "MUS_HG_NATIONAL_PARK": "MUS_RG_ROUTE24", "MUS_HG_POKE_CENTER": "MUS_RG_POKE_CENTER",
-    "MUS_HG_POKE_MART": "MUS_RG_POKE_CENTER", "MUS_HG_ROCKET_TAKEOVER": "MUS_RG_ROCKET_HIDEOUT",
-    "MUS_HG_ROUTE34": "MUS_RG_ROUTE24", "MUS_HG_ROUTE38": "MUS_RG_ROUTE11",
-    "MUS_HG_ROUTE42": "MUS_RG_ROUTE3", "MUS_HG_UNION_CAVE": "MUS_RG_MT_MOON",
-    "MUS_HG_VERMILION": "MUS_RG_VERMILLION", "MUS_HG_VIOLET": "MUS_RG_PEWTER",
-}
+# HGSS music (tools/gym_hack/import_hgss_music.py brings in the songs Johto uses); these stand in for
+# the few it doesn't (the Radio Tower is the convention's now: the Pokéathlon lobby's music)
+MUSIC = {"MUS_HG_ROCKET_TAKEOVER": "MUS_HG_POKEATHLON_LOBBY", "MUS_HG_BUG_CATCHING_CONTEST": "MUS_HG_NATIONAL_PARK"}
 
 MAPSECS = {   # id -> name
     "MAPSEC_OLIVINE_CITY": "OLIVINE CITY", "MAPSEC_OLIVINE_LIGHTHOUSE": "LIGHTHOUSE",
@@ -383,7 +373,8 @@ def main():
                                 "trainer_sight_or_berry_tree_id": "0", "script": "Johto_EventScript_GuardTalk", "flag": "0"})
         out = {
             "id": mid, "name": name, "layout": new_id(m["layout"]),
-            "music": MUSIC.get(m["music"], m["music"]), "region": "REGION_JOHTO",
+            "music": "MUS_HG_POKEATHLON_LOBBY" if hname.startswith("GoldenrodCity_RadioTower") else   # (the convention)
+                     MUSIC.get(m["music"], m["music"]), "region": "REGION_JOHTO",
             "region_map_section": MAPSEC_SUBST.get(m["region_map_section"], m["region_map_section"]),
             "requires_flash": m["requires_flash"], "weather": WEATHER.get(m["weather"], m["weather"]), "map_type": m["map_type"],
             "allow_cycling": m["allow_cycling"], "allow_escaping": m["allow_escaping"],

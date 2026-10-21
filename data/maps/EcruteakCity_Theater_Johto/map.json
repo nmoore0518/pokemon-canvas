@@ -2,7 +2,7 @@
   "id": "MAP_ECRUTEAK_CITY_THEATER",
   "name": "EcruteakCity_Theater_Johto",
   "layout": "LAYOUT_ECRUTEAK_CITY_THEATER",
-  "music": "MUS_RG_CELADON",
+  "music": "MUS_HG_DANCE_THEATER",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_ECRUTEAK_CITY",
   "requires_flash": false,

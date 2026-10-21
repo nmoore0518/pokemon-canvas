@@ -2,7 +2,7 @@
   "id": "MAP_CONVENTION_HALL_CHAMPIONS",
   "name": "ConventionHall_Champions",
   "layout": "LAYOUT_CONVENTION_HALL_CHAMPIONS",
-  "music": "MUS_RG_VICTORY_ROAD",
+  "music": "MUS_HG_POKEMON_LEAGUE",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_GOLDENROD_CITY",
   "requires_flash": false,

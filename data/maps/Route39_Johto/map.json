@@ -2,7 +2,7 @@
   "id": "MAP_ROUTE39",
   "name": "Route39_Johto",
   "layout": "LAYOUT_ROUTE39",
-  "music": "MUS_RG_ROUTE11",
+  "music": "MUS_HG_ROUTE38",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_ROUTE_39",
   "requires_flash": false,

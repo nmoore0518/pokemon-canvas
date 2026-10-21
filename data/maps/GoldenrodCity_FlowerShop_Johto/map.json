@@ -2,7 +2,7 @@
   "id": "MAP_GOLDENROD_CITY_FLOWER_SHOP",
   "name": "GoldenrodCity_FlowerShop_Johto",
   "layout": "LAYOUT_GOLDENROD_CITY_FLOWER_SHOP",
-  "music": "MUS_RG_CELADON",
+  "music": "MUS_HG_GOLDENROD",
   "region": "REGION_JOHTO",
   "region_map_section": "MAPSEC_GOLDENROD_CITY",
   "requires_flash": false,
