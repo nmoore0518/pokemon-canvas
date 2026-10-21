@@ -134,6 +134,15 @@ void GymSwitch_BufferStatus(void)
     gSpecialVar_Result = CanTakeNewType() || CountTypes(TRUE) > 1;
 }
 
+// Special (Oak's lab): VAR_RESULT = whether a streak is going (no changing type until it ends:
+// a loss, or calling it a day after mastering); STR_VAR_1 = it
+void GymSwitch_StreakInProgress(void)
+{
+    u32 streak = GymChallenge_GetSave()->streak;
+    gSpecialVar_Result = streak != 0;
+    ConvertIntToDecimalStringN(gStringVar1, streak, STR_CONV_MODE_LEFT_ALIGN, 5);
+}
+
 // Special: VAR_RESULT = whether the gym has ever changed type
 void GymSwitch_HasSwitched(void)
 {

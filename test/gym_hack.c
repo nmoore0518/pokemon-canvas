@@ -1934,7 +1934,7 @@ TEST("GymHack: the legendary is a 1% encounter in Cerulean Cave only after the r
 // ---- Changing the gym's type (src/gym_switch.c, data/scripts/gym_switch.inc) ----
 #include "gym_switch.h"
 
-extern const u8 GymSwitch_Text_AideGoal[], GymSwitch_Text_AnnounceMentor[], GymSwitch_Text_Mastered[], GymSwitch_Text_OakWillCome[], GymSwitch_Text_WhatNext[], GymSwitch_Text_CalledItADay[], GymSwitch_Text_OakMastered[], GymSwitch_Text_OakTryAnother[], GymSwitch_Text_OakKeepItUp[], GymSwitch_Text_OakOfferStands[], GymSwitch_Text_LabGoal[], GymSwitch_Text_LabOffer[], GymSwitch_Text_LabSwitchBack[], GymSwitch_Text_LabNo[], GymSwitch_Text_LabLegendHint[], GymSwitch_Text_WhichType[], GymSwitch_Text_WhichTypeStars[], GymSwitch_Text_ConfirmNew[], GymSwitch_Text_ConfirmOld[], GymSwitch_Text_NowType[], GymSwitch_Text_OldLegendLeaves[], GymSwitch_Text_NewTypeTips[], GymSwitch_Text_BackToType[], GymLegend_Text_OakCatchAnother[], GymLegend_Text_AideWhatOnEarth[];
+extern const u8 GymSwitch_Text_AideGoal[], GymSwitch_Text_AnnounceMentor[], GymSwitch_Text_Mastered[], GymSwitch_Text_OakWillCome[], GymSwitch_Text_WhatNext[], GymSwitch_Text_CalledItADay[], GymSwitch_Text_OakMastered[], GymSwitch_Text_OakTryAnother[], GymSwitch_Text_OakKeepItUp[], GymSwitch_Text_OakOfferStands[], GymSwitch_Text_LabGoal[], GymSwitch_Text_LabOffer[], GymSwitch_Text_LabSwitchBack[], GymSwitch_Text_LabNo[], GymSwitch_Text_LabLegendHint[], GymSwitch_Text_WhichType[], GymSwitch_Text_WhichTypeStars[], GymSwitch_Text_ConfirmNew[], GymSwitch_Text_ConfirmOld[], GymSwitch_Text_NowType[], GymSwitch_Text_OldLegendLeaves[], GymSwitch_Text_NewTypeTips[], GymSwitch_Text_BackToType[], GymSwitch_Text_LabMidStreak[], GymSwitch_Text_LabMidStreakMastered[], GymLegend_Text_OakCatchAnother[], GymLegend_Text_AideWhatOnEarth[];
 
 static void ResetGymTypes(u32 type)
 {
@@ -2057,9 +2057,9 @@ TEST("GymHack: switch: a new type uses the mastery up; old ones are free; each l
 
 TEST("GymHack: switch: all the new lines fit the message box")
 {
-    static const u8 *const texts[] = {GymSwitch_Text_AideGoal, GymSwitch_Text_AnnounceMentor, GymSwitch_Text_Mastered, GymSwitch_Text_OakWillCome, GymSwitch_Text_WhatNext, GymSwitch_Text_CalledItADay, GymSwitch_Text_OakMastered, GymSwitch_Text_OakTryAnother, GymSwitch_Text_OakKeepItUp, GymSwitch_Text_OakOfferStands, GymSwitch_Text_LabGoal, GymSwitch_Text_LabOffer, GymSwitch_Text_LabSwitchBack, GymSwitch_Text_LabNo, GymSwitch_Text_LabLegendHint, GymSwitch_Text_WhichType, GymSwitch_Text_WhichTypeStars, GymSwitch_Text_ConfirmNew, GymSwitch_Text_ConfirmOld, GymSwitch_Text_NowType, GymSwitch_Text_OldLegendLeaves, GymSwitch_Text_NewTypeTips, GymSwitch_Text_BackToType, GymLegend_Text_OakCatchAnother, GymLegend_Text_AideWhatOnEarth};
+    static const u8 *const texts[] = {GymSwitch_Text_AideGoal, GymSwitch_Text_AnnounceMentor, GymSwitch_Text_Mastered, GymSwitch_Text_OakWillCome, GymSwitch_Text_WhatNext, GymSwitch_Text_CalledItADay, GymSwitch_Text_OakMastered, GymSwitch_Text_OakTryAnother, GymSwitch_Text_OakKeepItUp, GymSwitch_Text_OakOfferStands, GymSwitch_Text_LabGoal, GymSwitch_Text_LabOffer, GymSwitch_Text_LabSwitchBack, GymSwitch_Text_LabNo, GymSwitch_Text_LabLegendHint, GymSwitch_Text_WhichType, GymSwitch_Text_WhichTypeStars, GymSwitch_Text_ConfirmNew, GymSwitch_Text_ConfirmOld, GymSwitch_Text_NowType, GymSwitch_Text_OldLegendLeaves, GymSwitch_Text_NewTypeTips, GymSwitch_Text_BackToType, GymSwitch_Text_LabMidStreakMastered, GymLegend_Text_OakCatchAnother, GymLegend_Text_AideWhatOnEarth};
     u32 i, type;
-    static const u8 *const numbered[] = {GymSwitch_Text_AideGoal, GymSwitch_Text_CalledItADay, GymSwitch_Text_LabGoal};
+    static const u8 *const numbered[] = {GymSwitch_Text_LabMidStreak, GymSwitch_Text_AideGoal, GymSwitch_Text_CalledItADay, GymSwitch_Text_LabGoal};
     SetLongPlaceholders();
     StringCopy(gStringVar1, COMPOUND_STRING("ELECTRIC"));
     StringCopy(gStringVar3, COMPOUND_STRING("ELECTRIC"));

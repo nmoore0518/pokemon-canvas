@@ -467,8 +467,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   kept: caught ones stay caught, and one that had appeared but wasn't caught goes to Cerulean Cave
   when the gym changes type (`FLAG_GYM_LEGEND_CAUGHT_TYPE` 0x114 + type,
   `FLAG_GYM_LEGEND_LOOSE_TYPE` 0x128 + type); the cave's 1% encounter picks one of the loose ones.
-  The rival's type never changes. The streak isn't reset by a switch, but the team rule means the
-  player needs a team of the new type to continue.
+  The rival's type never changes. The gym's type can't change while a streak is going (taking a
+  break keeps it going): Oak in the lab says to come back once it's over, so a switch always
+  follows a finished streak (a loss, or calling it a day after mastering).
 - **Walking leaders**: FireRed's Gym Leader and Elite Four sprites only had standing frames;
   `tools/gym_hack/make_walk_frames.py` added walking frames, so visiting mentors take steps.
 - **New decorations message**: when key battles or badges unlock new gym decorations, the next

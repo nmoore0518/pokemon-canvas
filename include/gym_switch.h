@@ -14,6 +14,7 @@ void GymSwitch_BufferGoal(void);
 void GymSwitch_BufferStatus(void);
 void GymSwitch_CanTakeNewType(void);
 void GymSwitch_HasSwitched(void);
+void GymSwitch_StreakInProgress(void);
 void GymSwitch_OnlyNewTypes(void);
 void GymSwitch_PushTypes(void);
 void GymSwitch_BufferChoice(void);

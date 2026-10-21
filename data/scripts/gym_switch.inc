@@ -116,6 +116,8 @@ GymSwitch_EventScript_LabOak::
 	goto_if_unset FLAG_PALLET_GYM_AWARDED, GymSwitch_EventScript_Return
 	special GymSwitch_BufferStatus
 	goto_if_eq VAR_RESULT, FALSE, GymSwitch_EventScript_LabGoal
+	special GymSwitch_StreakInProgress
+	goto_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_LabMidStreak
 	special GymSwitch_CanTakeNewType
 	goto_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_LabOffer
 	msgbox GymSwitch_Text_LabSwitchBack, MSGBOX_YESNO
@@ -142,6 +144,13 @@ GymSwitch_EventScript_LabNo::
 	msgbox GymSwitch_Text_LabNo
 	release
 	end
+
+@ A streak is going: the gym's type can't change until it ends (then his usual lines)
+GymSwitch_EventScript_LabMidStreak::
+	msgbox GymSwitch_Text_LabMidStreak
+	goto_if_unset FLAG_GYM_RUN_MASTERED, GymSwitch_EventScript_Return
+	msgbox GymSwitch_Text_LabMidStreakMastered
+	return
 
 @ Nothing earned yet: what it takes (then his usual lines)
 GymSwitch_EventScript_LabGoal::
@@ -278,6 +287,16 @@ GymSwitch_Text_LabSwitchBack::
 	.string "OAK: Ah, {PLAYER}! Would you like\n"
 	.string "your GYM to go back to a type\l"
 	.string "it's had before? It's free!$"
+
+GymSwitch_Text_LabMidStreak::
+	.string "OAK: Ah, {PLAYER}! {STR_VAR_1} wins in a\n"
+	.string "row and counting, I hear!\p"
+	.string "Let's talk about your GYM's type\n"
+	.string "once your streak is over.$"
+
+GymSwitch_Text_LabMidStreakMastered::
+	.string "Win or lose, I'll come by your\n"
+	.string "GYM when it ends!$"
 
 GymSwitch_Text_LabNo::
 	.string "OAK: Whenever you're ready!$"

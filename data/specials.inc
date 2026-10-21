@@ -726,6 +726,7 @@ gSpecials::
 	def_special GymSwitch_BufferStatus
 	def_special GymSwitch_CanTakeNewType
 	def_special GymSwitch_HasSwitched
+	def_special GymSwitch_StreakInProgress
 	def_special GymSwitch_OnlyNewTypes
 	def_special GymSwitch_PushTypes
 	def_special GymSwitch_BufferChoice
