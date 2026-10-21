@@ -9,10 +9,12 @@ ExoticSafari_PaldeaForest_OnTransition::
 
 ExoticSafari_PaldeaForest_EventScript_ToMeadow::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_MEADOW, 3
+	waitstate
 	end
 
 ExoticSafari_PaldeaForest_EventScript_ToDesert::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_DESERT, 0
+	waitstate
 	end
 
 ExoticSafari_PaldeaForest_EventScript_LegendWoChien::

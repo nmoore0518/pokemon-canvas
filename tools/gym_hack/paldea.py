@@ -286,9 +286,19 @@ def academy():
     return [row[:] for row in g], lay["width"], lay["height"]
 
 
+def snow_cliffs(g, w, h):
+    """The cliffs either side of the path up to the summit can't be walked on"""
+    for y in range(0, 21):
+        for x in range(w):
+            if not (9 <= x <= 11 and y >= 5):
+                g[y][x] |= 1 << 10
+
+
 # ---------------------------------------------------------------------------------------------
 # The areas: maps, links, Pokémon
 # ---------------------------------------------------------------------------------------------
+REGION = "PALDEA"
+HUB = "MEADOW"            # (the hall's door leads here)
 LV = (48, 52)
 
 
@@ -389,6 +399,7 @@ AREAS = {
     "SNOW": {
         "map": "ExoticSafari_PaldeaSnowyMountain", "build": snowy_mountain, "tilesets": ("gTileset_Johto_General_Hns", "gTileset_MtSilverSnow_Hns"),
         "music": "MUS_RG_ROUTE24", "weather": "WEATHER_SNOW", "type": "MAP_TYPE_ROUTE", "border": 0x281,
+        "post": snow_cliffs, "patch_snow": True,
         "links": {
             "LAKE": ("edge", [(9, 34), (10, 34), (11, 34)], (10, 33), ("LAKE", "SNOW")),
         },
@@ -422,6 +433,7 @@ CONDITIONS = {
 }
 # The stakes: 4 per Treasure of Ruin, in the other areas (two stakes in each area)
 STAKE_COLORS = ["PURPLE", "YELLOW", "GREEN", "BLUE"]     # Wo-Chien, Chien-Pao, Ting-Lu, Chi-Yu
+STAKE_FLAG_BASE = 0x0EF                                  # (FLAG_EXOTIC_STAKE_FIRST)
 STAKES = {
     "PURPLE": [("MEADOW", (26, 4)), ("DESERT", (26, 42)), ("LAKE", (41, 4)), ("ACADEMY", (1, 30))],
     "YELLOW": [("FOREST", (26, 24)), ("CRATER", (38, 13)), ("DEPTHS", (38, 1)), ("MEADOW", (4, 17))],

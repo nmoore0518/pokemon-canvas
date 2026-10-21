@@ -118,6 +118,14 @@ static const struct ExoticSafariArea *GetArea(void)
     return NULL;
 }
 
+static u32 CountRegionAreas(u32 region)
+{
+    u32 i, n = 0;
+    for (i = 0; i < ARRAY_COUNT(sExoticSafariAreas); i++)
+        n += (sExoticSafariAreas[i].region == region);
+    return n ? n : 1;
+}
+
 static bool32 PlaceRoamer(const struct ExoticSafariArea *area, u32 roamer)
 {
     u32 tries, k, i;
@@ -139,7 +147,7 @@ static bool32 PlaceRoamer(const struct ExoticSafariArea *area, u32 roamer)
         for (i = 0; i < OBJECT_EVENT_TEMPLATES_COUNT; i++)
         {
             struct ObjectEventTemplate *t = &gSaveBlock1Ptr->objectEventTemplates[i];
-            if (t->localId == EXOTIC_SAFARI_ROAMER_LOCALID(roamer))
+            if (t->localId == EXOTIC_SAFARI_ROAMER_LOCALID(sExoticSafariRoamers[roamer].hideFlag))
             {
                 t->x = spot[0];
                 t->y = spot[1];
@@ -170,7 +178,7 @@ static u32 StakesLeft(u32 color)
 {
     u32 k, left = 0;
     for (k = 0; k < EXOTIC_SAFARI_STAKES_PER_COLOR; k++)
-        left += !FlagGet(FLAG_EXOTIC_STAKE_FIRST + color * EXOTIC_SAFARI_STAKES_PER_COLOR + k);
+        left += !FlagGet(EXOTIC_SAFARI_STAKE_FLAGS + color * EXOTIC_SAFARI_STAKES_PER_COLOR + k);
     return left;
 }
 
@@ -235,12 +243,17 @@ void ExoticSafari_AreaOnTransition(void)
         if (FlagGet(s->caughtFlag) || SealLeft(s) != 0)
             FlagSet(s->hideFlag);
     }
+    if (area == NULL)
+        return;
     for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)
     {
-        FlagSet(sExoticSafariRoamers[i].hideFlag);
-        if (area == NULL || area->spotCount == 0 || FlagGet(sExoticSafariRoamers[i].caughtFlag))
+        // (only the area's region's roamers have objects here: one in that many areas)
+        if (sExoticSafariRoamers[i].region != area->region)
             continue;
-        if (Random() % ARRAY_COUNT(sExoticSafariAreas) != 0)
+        FlagSet(sExoticSafariRoamers[i].hideFlag);
+        if (area->spotCount == 0 || FlagGet(sExoticSafariRoamers[i].caughtFlag))
+            continue;
+        if (Random() % CountRegionAreas(area->region) != 0)
             continue;
         if (PlaceRoamer(area, i))
             FlagClear(sExoticSafariRoamers[i].hideFlag);

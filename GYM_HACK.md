@@ -691,6 +691,27 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          one is there with a 1 in 8 chance, wandering a random reachable grass/sand/cave spot away
          from the player (`ExoticSafari_AreaOnTransition`, the spots from the builder); battled and
          not caught, it runs off.
+   - [x] The Galar zone (round 1, for Nick's review; `tools/gym_hack/galar.py`): the MEADOW (Postwick's
+         countryside: HnS's Johto farmland pieces - wheat, canal, farmhouses, fenced pond; the hub)
+         -> east the LAKE (the Wild Area's Lake District: Hoenn's Safari Zone south-east, river,
+         waterfall and lake) -> north-west the FOREST (Glimwood Tangle: Ilex Forest with copies of
+         its tilesets recolored to a night glow, glowing mushrooms drawn here - big ones on the floor,
+         giant ones in place of trees, small ones dotted about - their palette pulsing,
+         `InitTilesetAnim_Glimwood`) / north the CITY (Circhester: Olivine's terraced stone houses
+         and cobbles, snowed over: tileset copies with greens turned to snow) -> north the STADIUM
+         (Wyndon: the Battle Dome's lobby and battle room, its banner saying WYNDON) / east the MINE
+         (Galar Mine: Granite Cave 1F and B1F). Legendaries: Regieleki (meadow), Zarude and
+         Enamorus (forest), Zacian and Zamazenta (city), Regidrago (mine B1F), Kubfu (pitch); Spectrier
+         and Calyrex roam. Plain encounters for now (puzzles: round 2).
+   - [x] Galar's evolution items, found then sold at the kiosk: Tart and Sweet Apples (meadow),
+         Chipped Pot, Galarica Wreath, Strawberry Sweet (forest; then all seven Sweets: each evolves
+         Milcery like a stone, into its vanilla-cream Alcremie), Galarica Cuff (lake), Razor Claw
+         (city), Black Augurite and Peat Block (mine), Cracked Pot (stadium); Kubfu's two scrolls
+         (pitch) are one of a kind. Level-ups in place of other conditions: Sirfetch'd 40,
+         Runerigus 34, Grapploct 35, Overqwil 40, Basculegion 40, Wyrdeer 40; no time of day for
+         Obstagoon, Frosmoth, Sneasler, Ursaluna.
+   - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
+     folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,
          Brambleghast/Rabsca/Houndstone 30, Gholdengo 45, Hydrapple 50); the items (Auspicious and
          Malicious Armor, Ice Stone, Unremarkable and Masterpiece Teacups) are item balls in the desert,

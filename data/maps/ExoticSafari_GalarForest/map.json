@@ -1,0 +1,148 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_GALAR_FOREST",
+  "name": "ExoticSafari_GalarForest",
+  "layout": "LAYOUT_EXOTIC_SAFARI_GALAR_FOREST",
+  "music": "MUS_RG_VIRIDIAN_FOREST",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(SPECTRIER)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerSpectrier",
+      "flag": "FLAG_TEMP_1D"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(CALYREX)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerCalyrex",
+      "flag": "FLAG_TEMP_1E"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ZARUDE)",
+      "x": 32,
+      "y": 3,
+      "elevation": 4,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_LegendZarude",
+      "flag": "FLAG_TEMP_11"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ENAMORUS)",
+      "x": 10,
+      "y": 32,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_LegendEnamorus",
+      "flag": "FLAG_TEMP_12"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 35,
+      "y": 2,
+      "elevation": 4,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_ItemChippedPot",
+      "flag": "FLAG_EXOTIC_ITEM_CHIPPED_POT"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 3,
+      "y": 7,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_ItemStrawberrySweet",
+      "flag": "FLAG_EXOTIC_ITEM_STRAWBERRY_SWEET"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 8,
+      "y": 28,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_ItemGalaricaWreath",
+      "flag": "FLAG_EXOTIC_ITEM_GALARICA_WREATH"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 15,
+      "y": 38,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_GALAR_LAKE",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 15,
+      "y": 39,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 39,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_ToLake"
+    }
+  ],
+  "bg_events": []
+}

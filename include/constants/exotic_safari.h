@@ -10,4 +10,5 @@
 #define SEAL_MASKS    1
 #define SEAL_ROAMERS  2
 #define SEAL_MASTERY  3
+#define SEAL_NONE     4
 #endif

@@ -39631,6 +39631,643 @@
               }
             ]
           }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_MEADOW",
+          "base_label": "gExoticSafari_GalarMeadow_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_WOOLOO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKWOVET"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ROOKIDEE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BLIPBUG"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_NICKIT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GOSSIFLEUR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_YAMPER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_APPLIN"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_WYRDEER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CORVISQUIRE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_GROOKEY"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_DUBWOOL"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_LAKE",
+          "base_label": "gExoticSafari_GalarLake_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CHEWTLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_WOOLOO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CRAMORANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TOXEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ELDEGOSS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_STUNFISK_GALAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PINCURCHIN"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_URSALUNA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DREEPY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CORVIKNIGHT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_SOBBLE"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_DREDNAW"
+              }
+            ]
+          },
+          "water_mons": {
+            "encounter_rate": 2,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ARROKUDA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CHEWTLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BASCULIN_WHITE_STRIPED"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_BARRASKEWDA"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_DREDNAW"
+              }
+            ]
+          },
+          "fishing_mons": {
+            "encounter_rate": 20,
+            "mons": [
+              {
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_ARROKUDA"
+              },
+              {
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_CHEWTLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ARROKUDA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BASCULIN_WHITE_STRIPED"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_QWILFISH_HISUI"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_BARRASKEWDA"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_QWILFISH_HISUI"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_BASCULIN_WHITE_STRIPED"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_DRACOVISH"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_SOBBLE"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_MINE",
+          "base_label": "gExoticSafari_GalarMine_FireRed",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ROLYCOLY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SILICOBRA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CARKOL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_STONJOURNER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DURALUDON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_YAMASK_GALAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SIZZLIPEDE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CUFANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DRACOZOLT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_KLEAVOR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_SCORBUNNY"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_COALOSSAL"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_MINE_DEPTHS",
+          "base_label": "gExoticSafari_GalarMineDepths_FireRed",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CUFANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_YAMASK_GALAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DURALUDON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CARKOL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SANDACONDA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_STONJOURNER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CENTISKORCH"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_RUNERIGUS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DREEPY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_COPPERAJAH"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_DRAKLOAK"
+              },
+              {
+                "min_level": 55,
+                "max_level": 58,
+                "species": "SPECIES_DRAGAPULT"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_STADIUM",
+          "base_label": "gExoticSafari_GalarStadium_FireRed",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_INDEEDEE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MORPEKO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SINISTEA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MILCERY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MR_RIME"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TOXEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PERRSERKER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CUFANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_POLTEAGEIST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ALCREMIE"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_INDEEDEE_F"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_TOXTRICITY_AMPED"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH",
+          "base_label": "gExoticSafari_GalarStadiumPitch_FireRed",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FALINKS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CLOBBOPUS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TOXEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SIRFETCHD"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PERRSERKER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_OBSTAGOON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SNEASLER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_OVERQWIL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GRAPPLOCT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MR_RIME"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_TOXTRICITY_LOW_KEY"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_COPPERAJAH"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_CITY",
+          "base_label": "gExoticSafari_GalarCity_FireRed",
+          "land_mons": {
+            "encounter_rate": 15,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SNOM"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DARUMAKA_GALAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_EISCUE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FROSMOTH"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SNEASEL_HISUI"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MR_RIME"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MORPEKO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ARCTOZOLT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ARCTOVISH"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CUFANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DARMANITAN_GALAR"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_AVALUGG_HISUI"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_GALAR_FOREST",
+          "base_label": "gExoticSafari_GalarForest_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_IMPIDIMP"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HATENNA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PONYTA_GALAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MILCERY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SINISTEA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DOTTLER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MORGREM"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HATTREM"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_INDEEDEE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SINISTEA_ANTIQUE"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_GRIMMSNARL"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_HATTERENE"
+              }
+            ]
+          }
         }
       ]
     },

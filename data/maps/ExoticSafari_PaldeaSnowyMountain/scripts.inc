@@ -9,6 +9,7 @@ ExoticSafari_PaldeaSnowyMountain_OnTransition::
 
 ExoticSafari_PaldeaSnowyMountain_EventScript_ToLake::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_LAKE, 1
+	waitstate
 	end
 
 ExoticSafari_PaldeaSnowyMountain_EventScript_LegendChienPao::

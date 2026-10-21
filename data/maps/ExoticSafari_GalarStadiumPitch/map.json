@@ -1,0 +1,120 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH",
+  "name": "ExoticSafari_GalarStadiumPitch",
+  "layout": "LAYOUT_EXOTIC_SAFARI_GALAR_STADIUM_PITCH",
+  "music": "MUS_RG_POKE_TOWER",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_INDOOR",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(SPECTRIER)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerSpectrier",
+      "flag": "FLAG_TEMP_1D"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(CALYREX)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerCalyrex",
+      "flag": "FLAG_TEMP_1E"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(KUBFU)",
+      "x": 9,
+      "y": 6,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarStadiumPitch_EventScript_LegendKubfu",
+      "flag": "FLAG_TEMP_11"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 1,
+      "y": 12,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarStadiumPitch_EventScript_ItemScrollOfDarkness",
+      "flag": "FLAG_EXOTIC_ITEM_SCROLL_OF_DARKNESS"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 18,
+      "y": 12,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarStadiumPitch_EventScript_ItemScrollOfWaters",
+      "flag": "FLAG_EXOTIC_ITEM_SCROLL_OF_WATERS"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 9,
+      "y": 12,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_GALAR_STADIUM",
+      "dest_warp_id": "2"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 9,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarStadiumPitch_EventScript_ToLobby"
+    },
+    {
+      "type": "trigger",
+      "x": 10,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarStadiumPitch_EventScript_ToLobby"
+    }
+  ],
+  "bg_events": []
+}

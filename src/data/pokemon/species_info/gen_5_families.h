@@ -4696,8 +4696,8 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .teachableLearnset = sBasculinWhiteStripedTeachableLearnset,
         .eggMoveLearnset = sBasculinWhiteStripedEggMoveLearnset,
         .formSpeciesIdTable = sBasculinFormSpeciesIdTable,
-        .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_BASCULEGION_M, CONDITIONS({IF_RECOIL_DAMAGE_GE, 294}, {IF_GENDER, MON_MALE})},
-                                {EVO_LEVEL, 0, SPECIES_BASCULEGION_F, CONDITIONS({IF_RECOIL_DAMAGE_GE, 294}, {IF_GENDER, MON_FEMALE})}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 40, SPECIES_BASCULEGION_M, CONDITIONS({IF_GENDER, MON_MALE})},
+                                {EVO_LEVEL, 40, SPECIES_BASCULEGION_F, CONDITIONS({IF_GENDER, MON_FEMALE})}),
     },
 
     [SPECIES_BASCULEGION_M] =
@@ -6176,7 +6176,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .teachableLearnset = sYamaskGalarTeachableLearnset,
         .eggMoveLearnset = sYamaskGalarEggMoveLearnset,
         .formSpeciesIdTable = sYamaskFormSpeciesIdTable,
-        .evolutions = EVOLUTION({EVO_SCRIPT_TRIGGER, EVO_TRIGGER_TABLET_CURSE, SPECIES_RUNERIGUS, CONDITIONS({IF_CURRENT_DAMAGE_GE, 49})}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 34, SPECIES_RUNERIGUS}),
     },
 
     [SPECIES_RUNERIGUS] =

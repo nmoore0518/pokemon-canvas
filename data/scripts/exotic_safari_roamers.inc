@@ -26,6 +26,24 @@ ExoticSafari_EventScript_RoamerFezandipiti::
 	setflag FLAG_EXOTIC_LEGEND_FEZANDIPITI
 	goto ExoticSafari_EventScript_RoamerGone
 
+ExoticSafari_EventScript_RoamerSpectrier::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_SPECTRIER
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_SPECTRIER
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerCalyrex::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_CALYREX
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_CALYREX
+	goto ExoticSafari_EventScript_RoamerGone
+
 ExoticSafari_EventScript_StakePurple::
 	setvar VAR_0x8004, 0
 	goto ExoticSafari_EventScript_Stake

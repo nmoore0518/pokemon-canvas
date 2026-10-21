@@ -1735,3 +1735,38 @@ static void QueueAnimTiles_BlackthornGym_Lava(u16 timer)
     AppendTilesetAnimToBuffer(gTilesetAnims_Lavaridge_Cave_Lava[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY_FRLG + 321)), 4 * TILE_SIZE_4BPP);
 }
 // END Johto
+
+// Pokémon Canvas: Glimwood Tangle (the Exotic Safari's Galar zone) - its mushrooms glow, brighter and
+// dimmer (palette 12, made by tools/gym_hack/galar.py: its cap and gill colors pulse)
+extern const u16 gTilesetPalettes_Glimwood[][16];
+
+static void TilesetAnim_Glimwood(u16 timer)
+{
+    u32 i, step, f;
+    u16 *dst = &gPlttBufferUnfaded[BG_PLTT_ID(12)];
+    const u16 *base = gTilesetPalettes_Glimwood[12];
+    if (timer % 4)
+        return;
+    if ((u8)FindTaskIdByFunc(Task_BattleTransition_Intro) != TASK_NONE)
+        return;
+    step = (timer / 4) % 32;
+    f = 26 + (step < 16 ? step : 31 - step);           // 26..41 (of 32: a little dim to bright)
+    for (i = 0; i < 16; i++)
+    {
+        u32 c = base[i];
+        if (i >= 4 && i <= 12)
+        {
+            u32 r = (c & 0x1F) * f / 32, g = ((c >> 5) & 0x1F) * f / 32, b = ((c >> 10) & 0x1F) * f / 32;
+            c = min(r, 31) | (min(g, 31) << 5) | (min(b, 31) << 10);
+        }
+        dst[i] = c;
+    }
+    BlendPalette(BG_PLTT_ID(12), 16, gPaletteFade.y, gPaletteFade.blendColor & 0x7FFF);
+}
+
+void InitTilesetAnim_Glimwood(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = 256;
+    sSecondaryTilesetAnimCallback = TilesetAnim_Glimwood;
+}

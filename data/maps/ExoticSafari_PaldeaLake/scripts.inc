@@ -9,10 +9,12 @@ ExoticSafari_PaldeaLake_OnTransition::
 
 ExoticSafari_PaldeaLake_EventScript_ToMeadow::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_MEADOW, 4
+	waitstate
 	end
 
 ExoticSafari_PaldeaLake_EventScript_ToSnow::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN, 0
+	waitstate
 	end
 
 ExoticSafari_PaldeaLake_EventScript_LegendChiYu::

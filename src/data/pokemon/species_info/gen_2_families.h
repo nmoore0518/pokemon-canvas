@@ -5266,7 +5266,7 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .teachableLearnset = sQwilfishHisuiTeachableLearnset,
         .eggMoveLearnset = sQwilfishHisuiEggMoveLearnset,
         .formSpeciesIdTable = sQwilfishFormSpeciesIdTable,
-        .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_OVERQWIL, CONDITIONS({IF_KNOWS_MOVE, MOVE_BARB_BARRAGE})}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 40, SPECIES_OVERQWIL}),
     },
 
     [SPECIES_OVERQWIL] =
@@ -5829,8 +5829,8 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .teachableLearnset = sSneaselHisuiTeachableLearnset,
         .eggMoveLearnset = sSneaselHisuiEggMoveLearnset,
         .formSpeciesIdTable = sSneaselFormSpeciesIdTable,
-        .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_SNEASLER, CONDITIONS({IF_NOT_TIME, TIME_NIGHT}, {IF_HOLD_ITEM, ITEM_RAZOR_CLAW})},
-                                {EVO_ITEM, ITEM_RAZOR_CLAW, SPECIES_SNEASLER, CONDITIONS({IF_NOT_TIME, TIME_NIGHT})}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_SNEASLER, CONDITIONS({IF_HOLD_ITEM, ITEM_RAZOR_CLAW})},
+                                {EVO_ITEM, ITEM_RAZOR_CLAW, SPECIES_SNEASLER}),
     },
 
     [SPECIES_SNEASLER] =
@@ -6056,7 +6056,7 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .levelUpLearnset = sUrsaringLevelUpLearnset,
         .teachableLearnset = sUrsaringTeachableLearnset,
     #if P_GEN_8_CROSS_EVOS
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PEAT_BLOCK, SPECIES_URSALUNA, CONDITIONS({IF_REGION, REGION_HISUI}, {IF_TIME, TIME_NIGHT})},
+        .evolutions = EVOLUTION({EVO_ITEM, ITEM_PEAT_BLOCK, SPECIES_URSALUNA},
                                 {EVO_NONE, 0, SPECIES_URSALUNA_BLOODMOON}),
     #endif
     },
@@ -7775,7 +7775,7 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .teachableLearnset = sStantlerTeachableLearnset,
         .eggMoveLearnset = sStantlerEggMoveLearnset,
     #if P_GEN_8_CROSS_EVOS
-        .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_WYRDEER, CONDITIONS({IF_USED_MOVE_X_TIMES, MOVE_PSYSHIELD_BASH, 20})}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 40, SPECIES_WYRDEER}),
     #endif
     },
 

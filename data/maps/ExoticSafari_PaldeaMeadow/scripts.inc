@@ -9,14 +9,17 @@ ExoticSafari_PaldeaMeadow_OnTransition::
 
 ExoticSafari_PaldeaMeadow_EventScript_ToForest::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_FOREST, 0
+	waitstate
 	end
 
 ExoticSafari_PaldeaMeadow_EventScript_ToLake::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_LAKE, 0
+	waitstate
 	end
 
 ExoticSafari_PaldeaMeadow_EventScript_ToAcademy::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_ACADEMY, 1
+	waitstate
 	end
 
 ExoticSafari_PaldeaMeadow_EventScript_LegendOgerpon::

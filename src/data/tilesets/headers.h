@@ -1377,6 +1377,61 @@ const struct Tileset gTileset_ExoticDesert =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_GalarLake =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarLake,
+    .palettes = gTilesetPalettes_GalarLake,
+    .metatiles = gMetatiles_GalarLake,
+    .metatileAttributes = gMetatileAttributes_GalarLake,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_GalarMine =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarMine,
+    .palettes = gTilesetPalettes_GalarMine,
+    .metatiles = gMetatiles_GalarMine,
+    .metatileAttributes = gMetatileAttributes_GalarMine,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_GalarMineDepths =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarMineDepths,
+    .palettes = gTilesetPalettes_GalarMineDepths,
+    .metatiles = gMetatiles_GalarMineDepths,
+    .metatileAttributes = gMetatileAttributes_GalarMineDepths,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_GalarStadium =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarStadium,
+    .palettes = gTilesetPalettes_GalarStadium,
+    .metatiles = gMetatiles_GalarStadium,
+    .metatileAttributes = gMetatileAttributes_GalarStadium,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_GalarPitch =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarPitch,
+    .palettes = gTilesetPalettes_GalarPitch,
+    .metatiles = gMetatiles_GalarPitch,
+    .metatileAttributes = gMetatileAttributes_GalarPitch,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,
@@ -2107,3 +2162,55 @@ const struct Tileset gTileset_WhirlIslands_Hns =
 };
 
 // END Johto
+// <clone GalarSnowGeneral>
+const struct Tileset gTileset_GalarSnowGeneral =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_GalarSnowGeneral,
+    .palettes = gTilesetPalettes_GalarSnowGeneral,
+    .metatiles = gMetatiles_GalarSnowGeneral,
+    .metatileAttributes = gMetatileAttributes_GalarSnowGeneral,
+    .callback = InitTilesetAnim_JohtoGeneral,
+};
+
+// </clone GalarSnowGeneral>
+// <clone GalarSnowCity>
+const struct Tileset gTileset_GalarSnowCity =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarSnowCity,
+    .palettes = gTilesetPalettes_GalarSnowCity,
+    .metatiles = gMetatiles_GalarSnowCity,
+    .metatileAttributes = gMetatileAttributes_GalarSnowCity,
+    .callback = NULL,
+};
+
+// </clone GalarSnowCity>
+// <clone GlimwoodGeneral>
+const struct Tileset gTileset_GlimwoodGeneral =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_GlimwoodGeneral,
+    .palettes = gTilesetPalettes_GlimwoodGeneral,
+    .metatiles = gMetatiles_GlimwoodGeneral,
+    .metatileAttributes = gMetatileAttributes_GlimwoodGeneral,
+    .callback = InitTilesetAnim_JohtoGeneral,
+};
+
+// </clone GlimwoodGeneral>
+// <clone Glimwood>
+const struct Tileset gTileset_Glimwood =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Glimwood,
+    .palettes = gTilesetPalettes_Glimwood,
+    .metatiles = gMetatiles_Glimwood,
+    .metatileAttributes = gMetatileAttributes_Glimwood,
+    .callback = InitTilesetAnim_Glimwood,
+};
+
+// </clone Glimwood>

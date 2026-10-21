@@ -354,6 +354,16 @@ const u16 gMetatiles_ExoticSafari[] = INCBIN_U16("data/tilesets/secondary/exotic
 const u16 gMetatileAttributes_ExoticSafari[] = INCBIN_U16("data/tilesets/secondary/exotic_safari_frlg/metatile_attributes.bin");
 const u16 gMetatiles_ExoticDesert[] = INCBIN_U16("data/tilesets/secondary/exotic_desert_frlg/metatiles.bin");
 const u16 gMetatileAttributes_ExoticDesert[] = INCBIN_U16("data/tilesets/secondary/exotic_desert_frlg/metatile_attributes.bin");
+const u16 gMetatiles_GalarLake[] = INCBIN_U16("data/tilesets/secondary/galar_lake_frlg/metatiles.bin");
+const u16 gMetatileAttributes_GalarLake[] = INCBIN_U16("data/tilesets/secondary/galar_lake_frlg/metatile_attributes.bin");
+const u16 gMetatiles_GalarMine[] = INCBIN_U16("data/tilesets/secondary/galar_mine_frlg/metatiles.bin");
+const u16 gMetatileAttributes_GalarMine[] = INCBIN_U16("data/tilesets/secondary/galar_mine_frlg/metatile_attributes.bin");
+const u16 gMetatiles_GalarMineDepths[] = INCBIN_U16("data/tilesets/secondary/galar_mine_depths_frlg/metatiles.bin");
+const u16 gMetatileAttributes_GalarMineDepths[] = INCBIN_U16("data/tilesets/secondary/galar_mine_depths_frlg/metatile_attributes.bin");
+const u16 gMetatiles_GalarStadium[] = INCBIN_U16("data/tilesets/secondary/galar_stadium_frlg/metatiles.bin");
+const u16 gMetatileAttributes_GalarStadium[] = INCBIN_U16("data/tilesets/secondary/galar_stadium_frlg/metatile_attributes.bin");
+const u16 gMetatiles_GalarPitch[] = INCBIN_U16("data/tilesets/secondary/galar_pitch_frlg/metatiles.bin");
+const u16 gMetatileAttributes_GalarPitch[] = INCBIN_U16("data/tilesets/secondary/galar_pitch_frlg/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 
@@ -562,3 +572,19 @@ const u16 gMetatiles_WhirlIslands_Hns[] = INCBIN_U16("data/tilesets/secondary/wh
 const u16 gMetatileAttributes_WhirlIslands_Hns[] = INCBIN_U16("data/tilesets/secondary/whirl_islands_hns/metatile_attributes.bin");
 
 // END Johto
+// <clone GalarSnowGeneral>
+const u16 gMetatiles_GalarSnowGeneral[] = INCBIN_U16("data/tilesets/primary/galar_snow_general/metatiles.bin");
+const u16 gMetatileAttributes_GalarSnowGeneral[] = INCBIN_U16("data/tilesets/primary/galar_snow_general/metatile_attributes.bin");
+// </clone GalarSnowGeneral>
+// <clone GalarSnowCity>
+const u16 gMetatiles_GalarSnowCity[] = INCBIN_U16("data/tilesets/secondary/galar_snow_city/metatiles.bin");
+const u16 gMetatileAttributes_GalarSnowCity[] = INCBIN_U16("data/tilesets/secondary/galar_snow_city/metatile_attributes.bin");
+// </clone GalarSnowCity>
+// <clone GlimwoodGeneral>
+const u16 gMetatiles_GlimwoodGeneral[] = INCBIN_U16("data/tilesets/primary/glimwood_general/metatiles.bin");
+const u16 gMetatileAttributes_GlimwoodGeneral[] = INCBIN_U16("data/tilesets/primary/glimwood_general/metatile_attributes.bin");
+// </clone GlimwoodGeneral>
+// <clone Glimwood>
+const u16 gMetatiles_Glimwood[] = INCBIN_U16("data/tilesets/secondary/glimwood/metatiles.bin");
+const u16 gMetatileAttributes_Glimwood[] = INCBIN_U16("data/tilesets/secondary/glimwood/metatile_attributes.bin");
+// </clone Glimwood>

@@ -1288,6 +1288,14 @@
     "ExoticSafari_PaldeaCraterDepths",
     "ExoticSafari_PaldeaLake",
     "ExoticSafari_PaldeaSnowyMountain",
-    "ExoticSafari_PaldeaAcademy"
+    "ExoticSafari_PaldeaAcademy",
+    "ExoticSafari_GalarMeadow",
+    "ExoticSafari_GalarLake",
+    "ExoticSafari_GalarMine",
+    "ExoticSafari_GalarMineDepths",
+    "ExoticSafari_GalarStadium",
+    "ExoticSafari_GalarStadiumPitch",
+    "ExoticSafari_GalarCity",
+    "ExoticSafari_GalarForest"
   ]
 }

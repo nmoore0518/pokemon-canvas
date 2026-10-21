@@ -9,6 +9,7 @@ ExoticSafari_PaldeaDesert_OnTransition::
 
 ExoticSafari_PaldeaDesert_EventScript_ToForest::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_FOREST, 1
+	waitstate
 	end
 
 ExoticSafari_PaldeaDesert_EventScript_LegendTingLu::
