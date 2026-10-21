@@ -659,7 +659,7 @@ static void SetTitleScreenScene_Run(s16 *data)
             CreateQuickstartHud();
         CreateTask(Task_TitleScreen_BlinkPressStart, 0);
 #if defined(FIRERED)
-        CreateTask(Task_FlameSpawner, 5);
+        (void)Task_FlameSpawner;    // Gym Trainer hack (Pokémon Canvas): no flames, a cleaner title
 #elif defined(LEAFGREEN)
         CreateTask(Task_LeafSpawner, 5);
 #endif

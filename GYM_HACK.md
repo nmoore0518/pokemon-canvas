@@ -624,7 +624,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Convention fans around Johto
    - [ ] The rest of Johto's people (random, faithful to HGSS, or quests: to decide)
    - [x] Title screen and credits: "Pokémon Canvas" (`tools/gym_hack/build_title.py`: CANVAS on a
-         brush stroke of type colors under the POKéMON logo); the credits open with the hack's own
+         brush stroke of type colors under the POKéMON logo; Smeargle in Charizard's place; no flames); the credits open with the hack's own
          (creator, AI disclosure, pret/RHH, HnS, Emerald Rogue, not-affiliated note) before FireRed's staff
 7. Regional safari zones and the full Pokédex (post-game, an idea for later)
    - [ ] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
