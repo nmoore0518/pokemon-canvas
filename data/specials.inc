@@ -720,6 +720,16 @@ gSpecials::
 	def_special GymChallenge_GenerateOakFinale
 	def_special GymChallenge_RecordWin
 	def_special GymChallenge_RecordLoss
+	def_special GymChallenge_RetireStreak
+	def_special GymSwitch_AfterWin
+	def_special GymSwitch_BufferGoal
+	def_special GymSwitch_BufferStatus
+	def_special GymSwitch_CanTakeNewType
+	def_special GymSwitch_HasSwitched
+	def_special GymSwitch_OnlyNewTypes
+	def_special GymSwitch_PushTypes
+	def_special GymSwitch_BufferChoice
+	def_special GymSwitch_SetType
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk

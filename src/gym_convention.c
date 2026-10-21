@@ -147,6 +147,24 @@ static const u8 *TrainerName(u32 index)
     return sConventionTrainers[index].name ? sConventionTrainers[index].name : gSaveBlock1Ptr->rivalName;
 }
 
+// The first convention trainer named `name`, set up as the gym challenger with their full team
+// (the player's mentor, for a streak's mastery battle: src/gym_challenge.c). Their index, or -1.
+s32 Convention_SetupByName(const u8 *name)
+{
+    u32 index, n;
+    for (index = 0; index < CONVENTION_TRAINER_COUNT; index++)
+    {
+        const struct ConventionTrainer *t = &sConventionTrainers[index];
+        if (t->name == NULL || StringCompare(t->name, name) != 0)
+            continue;
+        for (n = 0; n < PARTY_SIZE && t->party[n].species != SPECIES_NONE; n++)
+            ;
+        GymChallenge_SetupFixed(t->trainerClass, sConventionPics[index], t->female, t->name, t->party, n);
+        return index;
+    }
+    return -1;
+}
+
 // Special: VAR_0x8004 = trainer. Sets up their battle and lines; STR_VAR_1 = their name.
 // VAR_RESULT: 0 not beaten yet, 1 beaten (no rematches until their whole hall is cleared: the
 // player can see who's left), 2 beaten and the hall cleared (a rematch).

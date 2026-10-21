@@ -1072,6 +1072,7 @@ gStdScripts_End::
 	.include "data/scripts/move_extractor.inc"
 	.include "data/scripts/palm_pilot.inc"
 	.include "data/scripts/gym_legend.inc"
+	.include "data/scripts/gym_switch.inc"
 	.include "data/scripts/johto.inc"
 	.include "data/scripts/gym_convention.inc"
 	.include "data/maps/johto.inc"

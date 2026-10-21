@@ -14,6 +14,12 @@
 #define GYM_CHALLENGER_TRAINER    0   // a random trainer with a random team
 #define GYM_CHALLENGER_FAMOUS     1   // a gym leader, Elite Four member, the rival, Giovanni or Oak
 #define GYM_CHALLENGER_TOWNSFOLK  2   // someone who doesn't usually battle (Mom, Nurse Joy, Bill...)
+#define GYM_CHALLENGER_BOSS       3   // the player's mentor, at full strength: the streak's mastery battle
+
+// Changing the gym's type after the League (src/gym_switch.c): a streak this long (its last battle
+// against the mentor) masters the type and earns a new one; the first takes longer
+#define GYM_SWITCH_FIRST_STREAK   20
+#define GYM_SWITCH_NEXT_STREAK    10
 
 // Oak's type menu runs from easiest to hardest; from this entry on (Fighting, Dark, Ghost,
 // Fairy) Oak warns that the type is a tough road
@@ -40,6 +46,7 @@
 #define GYM_LEGEND_IN_CAVE       2   // the rival hinted at Cerulean Cave: a 1% encounter there
 #define GYM_LEGEND_CAUGHT_NEWS   3   // caught; the rival comes to scoff
 #define GYM_LEGEND_DONE          4
+#define GYM_LEGEND_PENDING       5   // the gym's new type was chosen away from it: it arrives next visit
 
 // VAR_JOHTO_STATE (src/johto.c)
 #define JOHTO_NOT_INVITED       0

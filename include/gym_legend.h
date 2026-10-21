@@ -13,6 +13,7 @@ void GymLegend_PlanCamera(void);
 bool32 GymLegend_IsCaveEncounterActive(void);
 bool32 GymLegend_TryCaveEncounter(void);
 void GymLegend_AfterWildBattle(u32 outcome);
+bool32 GymLegend_ChangeType(u32 from, u32 to);
 extern u8 gGymLegendCameraIn[];
 extern u8 gGymLegendCameraOut[];
 

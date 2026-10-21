@@ -8,6 +8,8 @@ GymChallenge_EventScript_Aide::
 	goto_if_eq VAR_RESULT, FALSE, GymChallenge_EventScript_AideNotYet
 	special GymChallenge_BufferRecord
 	msgbox GymChallenge_Text_AideWelcome
+	special GymSwitch_BufferGoal
+	call_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_AideGoal
 	msgbox GymChallenge_Text_ReadyToBattle, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, GymChallenge_EventScript_NotNow
 	special GymHack_CheckTeamSpecial
@@ -58,6 +60,7 @@ GymChallenge_EventScript_NextChallenger::
 	call_if_eq VAR_RESULT, GYM_CHALLENGER_FAMOUS, GymChallenge_EventScript_AnnounceFamous
 	call_if_eq VAR_RESULT, GYM_CHALLENGER_TOWNSFOLK, GymChallenge_EventScript_AnnounceTownsfolk
 	call_if_eq VAR_RESULT, GYM_CHALLENGER_TRAINER, GymChallenge_EventScript_AnnounceTrainer
+	call_if_eq VAR_RESULT, GYM_CHALLENGER_BOSS, GymSwitch_EventScript_AnnounceMentor
 	closemessage
 	clearflag FLAG_HIDE_PALLET_GYM_CHALLENGER
 	addobject LOCALID_PALLET_GYM_CHALLENGER
@@ -117,7 +120,10 @@ GymChallenge_EventScript_Won::
 	call_if_eq VAR_0x8008, TRUE, GymChallenge_EventScript_NewRecord
 	msgbox GymChallenge_Text_LeftAGift
 	call GymHack_EventScript_GiveStatItem
+	special GymSwitch_AfterWin
+	call_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_Mastered
 	special HealPlayerParty
+	goto_if_set FLAG_GYM_RUN_MASTERED, GymSwitch_EventScript_KeepGoingOrRetire
 	msgbox GymChallenge_Text_KeepGoing, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, GymChallenge_EventScript_KeepGoing
 	special GymChallenge_BufferRecord
@@ -151,6 +157,7 @@ GymChallenge_EventScript_Lost::
 	call GymChallenge_EventScript_ChallengerLeaves
 	special GymChallenge_BufferLastResult
 	msgbox GymChallenge_Text_Lost
+	goto_if_set FLAG_GYM_RUN_MASTERED, GymSwitch_EventScript_OakComes
 	release
 	end
 

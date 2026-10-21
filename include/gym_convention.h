@@ -5,6 +5,7 @@
 
 bool32 Convention_IsBeaten(u32 index);
 u32 Convention_GetGraphicsId(u32 index);
+s32 Convention_SetupByName(const u8 *name);
 
 // Specials
 void Convention_SetupTrainer(void);

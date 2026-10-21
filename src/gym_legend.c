@@ -201,8 +201,11 @@ void GymLegend_PlanCamera(void)
 // ---------------------------------------------------------------------------
 // If it gets away from the stage, the rival says it's probably in "that cave by Cerulean": from
 // then on, it's a 1% encounter anywhere in Cerulean Cave (src/wild_encounter.c) until it's caught.
+// When the gym changes type (src/gym_switch.c), the old type's legendary goes there too if it had
+// appeared and isn't caught; the cave then has one of them at random.
 // ---------------------------------------------------------------------------
 static EWRAM_DATA bool8 sWildLegend;
+static EWRAM_DATA u8 sWildLegendType;
 
 static bool32 InCeruleanCave(void)
 {
@@ -210,32 +213,116 @@ static bool32 InCeruleanCave(void)
     return map == MAP_CERULEAN_CAVE_1F || map == MAP_CERULEAN_CAVE_2F || map == MAP_CERULEAN_CAVE_B1F;
 }
 
-bool32 GymLegend_IsCaveEncounterActive(void)
+static bool32 IsLoose(u32 type)
 {
-    return InCeruleanCave() && PlayerLegend() != SPECIES_NONE && !FlagGet(FLAG_GYM_LEGEND_CAUGHT)
-        && VarGet(VAR_GYM_LEGEND_STATE) == GYM_LEGEND_IN_CAVE;
+    if (GymLegend_GetSpecies(type) == SPECIES_NONE)
+        return FALSE;
+    if (type == VarGet(VAR_PLAYER_TYPE))
+        return !FlagGet(FLAG_GYM_LEGEND_CAUGHT) && VarGet(VAR_GYM_LEGEND_STATE) == GYM_LEGEND_IN_CAVE;
+    return FlagGet(FLAG_GYM_LEGEND_LOOSE_TYPE + type);
 }
 
-// A wild encounter in Cerulean Cave: 1 in 100 is the legendary. Creates it and returns TRUE.
+// The legendaries in Cerulean Cave: how many (and with `pick`, one of them at random)
+static u32 CountLoose(u32 *pick)
+{
+    u32 type, n = 0;
+    for (type = 0; type < NUMBER_OF_MON_TYPES; type++)
+        n += IsLoose(type);
+    if (pick != NULL && n != 0)
+    {
+        u32 k = Random() % n;
+        for (type = 0; type < NUMBER_OF_MON_TYPES; type++)
+        {
+            if (IsLoose(type) && k-- == 0)
+            {
+                *pick = type;
+                break;
+            }
+        }
+    }
+    return n;
+}
+
+bool32 GymLegend_IsCaveEncounterActive(void)
+{
+    return InCeruleanCave() && CountLoose(NULL) != 0;
+}
+
+// A wild encounter in Cerulean Cave: 1 in 100 is a legendary. Creates it and returns TRUE.
 bool32 GymLegend_TryCaveEncounter(void)
 {
+    u32 type = TYPE_NONE;
     sWildLegend = FALSE;
-    if (!GymLegend_IsCaveEncounterActive() || Random() % 100 != 0)
+    if (!InCeruleanCave() || Random() % 100 != 0 || CountLoose(&type) == 0)
         return FALSE;
-    CreateWildMon(PlayerLegend(), GYM_LEGEND_LEVEL);
+    CreateWildMon(GymLegend_GetSpecies(type), GYM_LEGEND_LEVEL);
     sWildLegend = TRUE;
+    sWildLegendType = type;
     return TRUE;
 }
 
-// After a wild battle: caught it? Then the rival has something to say (in the gym)
+// After a wild battle: caught it? Then (if it's the gym's type) the rival has something to say
 void GymLegend_AfterWildBattle(u32 outcome)
 {
     if (!sWildLegend)
         return;
     sWildLegend = FALSE;
-    if (outcome == B_OUTCOME_CAUGHT)
+    if (outcome != B_OUTCOME_CAUGHT)
+        return;
+    if (sWildLegendType == VarGet(VAR_PLAYER_TYPE))
     {
         FlagSet(FLAG_GYM_LEGEND_CAUGHT);
         VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_CAUGHT_NEWS);
     }
+    else
+    {
+        FlagClear(FLAG_GYM_LEGEND_LOOSE_TYPE + sWildLegendType);
+        FlagSet(FLAG_GYM_LEGEND_CAUGHT_TYPE + sWildLegendType);
+    }
+}
+
+// The gym changes type (src/gym_switch.c): the old type's legendary is put away (caught, or
+// loose in Cerulean Cave if it had appeared) and the new type's taken out. Returns TRUE if the new
+// one has never appeared: it comes to the gym (GYM_LEGEND_PENDING, or the script brings it now).
+// VAR_0x8007 = whether the old one was waiting on the stage (it leaves for the cave).
+bool32 GymLegend_ChangeType(u32 from, u32 to)
+{
+    u32 state = VarGet(VAR_GYM_LEGEND_STATE);
+    gSpecialVar_0x8007 = FALSE;
+    if (from < NUMBER_OF_MON_TYPES && GymLegend_GetSpecies(from) != SPECIES_NONE)
+    {
+        if (FlagGet(FLAG_GYM_LEGEND_CAUGHT))
+        {
+            FlagSet(FLAG_GYM_LEGEND_CAUGHT_TYPE + from);
+        }
+        else if (FlagGet(FLAG_GYM_LEGEND_APPEARED) && state != GYM_LEGEND_PENDING)
+        {
+            FlagSet(FLAG_GYM_LEGEND_LOOSE_TYPE + from);
+            gSpecialVar_0x8007 = (state == GYM_LEGEND_ON_STAGE);
+        }
+    }
+    FlagClear(FLAG_GYM_LEGEND_APPEARED);
+    FlagClear(FLAG_GYM_LEGEND_CAUGHT);
+    if (FlagGet(FLAG_GYM_LEGEND_CAUGHT_TYPE + to))
+    {
+        FlagClear(FLAG_GYM_LEGEND_CAUGHT_TYPE + to);
+        FlagSet(FLAG_GYM_LEGEND_APPEARED);
+        FlagSet(FLAG_GYM_LEGEND_CAUGHT);
+        VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_DONE);
+        return FALSE;
+    }
+    if (FlagGet(FLAG_GYM_LEGEND_LOOSE_TYPE + to))
+    {
+        FlagClear(FLAG_GYM_LEGEND_LOOSE_TYPE + to);
+        FlagSet(FLAG_GYM_LEGEND_APPEARED);
+        VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_IN_CAVE);
+        return FALSE;
+    }
+    if (GymLegend_GetSpecies(to) == SPECIES_NONE)
+    {
+        VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_DONE);
+        return FALSE;
+    }
+    VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_PENDING);
+    return TRUE;
 }

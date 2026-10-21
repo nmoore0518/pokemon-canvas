@@ -450,6 +450,25 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Rock: Diancie, Bug: Genesect, Ghost: Giratina, Steel: Dialga, Fire: Ho-Oh, Water: Palkia,
   Grass: Shaymin, Electric: Miraidon, Psychic: Cresselia, Ice: Glastrier, Dragon: Rayquaza,
   Dark: Darkrai, Fairy: Xerneas. Navel Rock's Ho-Oh (an event map) never appears now.
+- **Changing the gym's type** (`src/gym_switch.c`, `data/scripts/gym_switch.inc`): after the gym
+  is the player's, a streak of 20 wins (10 for every later type) masters its type. The streak's last
+  battle is the player's mentor with their full Gym Leader Convention team, at least 3 levels above
+  the player's average, with two Full Restores (`GYM_CHALLENGER_BOSS`; the aide announces them).
+  Beating them earns a new type, saved as a "ticket" (`switchTickets`/`switchesEarned` in
+  `GymChallengeSave`, `FLAG_GYM_RUN_MASTERED` 0x0DE), and the player can keep going: after each win
+  the aide offers KEEP GOING / CALL IT A DAY / TAKE A BREAK. When the streak ends (a loss, or
+  calling it a day), Oak walks in, says the player has mastered the type, and offers a new one:
+  YES opens a menu of types the gym hasn't had, the badge changes (and the pedestal), and the new
+  type's legendary arrives at once, as in the finale. NO keeps the ticket: Oak offers it again in
+  his lab ("Have you changed your mind?"). In the lab Oak also switches the gym back to any type it
+  has had, free (marked {STAR} in the menu; `FLAG_GYM_TYPE_OWNED` 0x100 + type); a new type chosen
+  there sends its legendary to the gym for the next visit (`GYM_LEGEND_PENDING`; the aide sees it
+  arrive). Before any mastery, the aide and Oak say what streak it takes. Each type's legendary is
+  kept: caught ones stay caught, and one that had appeared but wasn't caught goes to Cerulean Cave
+  when the gym changes type (`FLAG_GYM_LEGEND_CAUGHT_TYPE` 0x114 + type,
+  `FLAG_GYM_LEGEND_LOOSE_TYPE` 0x128 + type); the cave's 1% encounter picks one of the loose ones.
+  The rival's type never changes. The streak isn't reset by a switch, but the team rule means the
+  player needs a team of the new type to continue.
 - **Walking leaders**: FireRed's Gym Leader and Elite Four sprites only had standing frames;
   `tools/gym_hack/make_walk_frames.py` added walking frames, so visiting mentors take steps.
 - **New decorations message**: when key battles or badges unlock new gym decorations, the next
@@ -569,6 +588,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/type_item_art.py`, `test/battle/gym_hack/type_items.c` | The mentors' type items (and the Palm Pilot icon): icons and battle tests |
 | `data/scripts/palm_pilot.inc`, `tools/gym_hack/build_heal_pad.py` | The Palm Pilot and the Pokémon Center heal pads |
 | `src/gym_legend.c`, `data/scripts/gym_legend.inc` | The legendary of the player's type in their gym |
+| `src/gym_switch.c`, `data/scripts/gym_switch.inc` | Mastering a type and changing the gym's type (Oak, the mentor battle, the lab menu) |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |
@@ -614,6 +634,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] The player's badge per type (art, award to challengers, pedestal decoration)
    - [x] Finale: Oak in the Champion's room, then Oak's challenge for the gym after the credits
    - [x] Challengers and the ninth badge after becoming Leader (the challenges and the player's badge above)
+   - [x] Changing the gym's type: mastery streak (20, then 10) ending with the mentor, Oak's offer, free switch-back in the lab, each type's legendary
 6. Johto and the Gym Leader Convention (replaces the Sevii Islands)
    - [x] Johto maps imported (Olivine to Goldenrod, Ilex, Azalea, Route 40)
    - [x] Border guards, post-game wild levels, convention goodie bag, Johto map and FLY
@@ -632,6 +653,8 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          All species through Gen 9 are already in the ROM (the convention and challengers use them)
          and the National Dex already counts 1025; the work is maps, encounter tables (~640
          species, ~30 wild slots per map) and about 70 legendary encounters.
+         The 18 gym legendaries (`gGymLegends`) stay gym-only: no safari has them, Koraidon and
+         Miraidon included.
    - [ ] Evolutions into later Pokémon (Magnezone, Sylveon...) turned on in the post-game only, so
          the main game stays 386 (`P_GEN_x_CROSS_EVOS` gates the links); special evolution items
          and conditions obtainable.

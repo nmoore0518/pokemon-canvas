@@ -27,6 +27,9 @@ struct GymChallengeSave
     struct GymChallengeVictor victors[GYM_CHALLENGE_MAX_VICTORS];
     u16 conventionMagic;        // the Gym Leader Convention: who the player has beaten (src/gym_convention.c)
     u8 conventionBeaten[16];
+    u16 switchMagic;            // changing the gym's type (src/gym_switch.c)
+    u8 switchTickets;           // new types earned and not chosen yet
+    u8 switchesEarned;          // types mastered (the first takes a longer streak)
 };
 
 extern u8 gGymChallengeDefeatText[];
@@ -67,6 +70,8 @@ void GymChallenge_GenerateRecruit(u32 type);
 void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier, bool32 repeat);
 void GymChallenge_EndPractice(void);
 struct TrainerMon;
+void GymChallenge_RetireStreak(void);
+bool32 GymChallenge_WasBoss(void);
 void GymChallenge_SetupFixed(u32 trainerClass, u32 pic, bool32 female, const u8 *name,
                              const struct TrainerMon *party, u32 partySize);
 

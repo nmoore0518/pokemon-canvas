@@ -20,6 +20,8 @@
 #include "metatile_behavior.h"
 #include "gym_decor.h"
 #include "gym_candidate.h"
+#include "gym_convention.h"
+#include "gym_switch.h"
 #include "money.h"
 #include "pokemon.h"
 #include "random.h"
@@ -956,6 +958,47 @@ void GymChallenge_GenerateOakFinale(void)
     StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ho… ho ho…\nSplendid. Truly splendid."));
 }
 
+// The mastery battle (src/gym_switch.c): the player's mentor, with their full team from the Gym
+// Leader Convention, at least 3 levels above the player's average
+static void GenerateBoss(u32 streak)
+{
+    u32 type = VarGet(VAR_PLAYER_TYPE), level = GymChallenge_PlayerAverageLevel() + 3, i, total = 0, n;
+    const struct GymCandidateMentor *mentor = GymCandidate_GetMentorForType(type);
+    s32 index, shift;
+
+    if (mentor == NULL)
+        mentor = GymCandidate_GetMentorForType(TYPE_NORMAL);
+    index = Convention_SetupByName(GymCandidate_GetMentorName(mentor->who));
+    StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
+    GymSwitch_BufferTypeName(gStringVar2, type);
+    ConvertIntToDecimalStringN(gStringVar3, streak - 1, STR_CONV_MODE_LEFT_ALIGN, 5);
+    if (index < 0 || sChallenger.partySize == 0)    // (no team data: their usual challenge)
+    {
+        GenerateFamous(mentor->who % ARRAY_COUNT(sFamous), level);
+    }
+    else
+    {
+        n = sChallenger.partySize;
+        for (i = 0; i < n; i++)
+            total += sChallengerMons[i].lvl;
+        shift = (s32)level - (s32)((total + n / 2) / n);
+        for (i = 0; i < n && shift > 0; i++)
+            sChallengerMons[i].lvl = ClampLevel(sChallengerMons[i].lvl + shift);
+        VarSet(VAR_OBJ_GFX_ID_0, Convention_GetGraphicsId(index));
+    }
+    sChallenger.aiFlags |= AI_FLAG_SMART_TRAINER;
+    sChallenger.items[0] = ITEM_FULL_RESTORE;
+    sChallenger.items[1] = ITEM_FULL_RESTORE;
+    SetTexts(COMPOUND_STRING("{STR_VAR_1}: {PLAYER}! {STR_VAR_3} wins\nin a row? I had to see it myself!\p"
+                             "As your mentor, I'll test you with\nmy real team.\p"
+                             "Show me you've mastered\n{STR_VAR_2}-type POKéMON!"),
+             COMPOUND_STRING("Incredible…\nThe student surpasses the teacher!"),
+             COMPOUND_STRING("{STR_VAR_1}: You've truly mastered\n{STR_VAR_2}-type POKéMON, {PLAYER}.\p"
+                             "I'm proud to have been\nyour mentor!"),
+             COMPOUND_STRING("{STR_VAR_1}: Not yet, {PLAYER}!\nCome back stronger!"));
+    sKind = GYM_CHALLENGER_BOSS;
+}
+
 void GymChallenge_Generate(u32 kind, u32 index)
 {
     gGymPracticeBattle = FALSE;
@@ -981,7 +1024,13 @@ void GymChallenge_Generate(u32 kind, u32 index)
 void GymChallenge_NextChallenger(void)
 {
     u32 next = GymChallenge_GetSave()->streak + 1, roll = Random() % 12;
-    if (next % 7 == 0 || roll < 2)
+    if (GymSwitch_IsMasteryBattle(next))
+    {
+        gGymPracticeBattle = FALSE;
+        gGymGuestBattle = FALSE;
+        GenerateBoss(next);
+    }
+    else if (next % 7 == 0 || roll < 2)
     {
         u32 index;
         do
@@ -1100,6 +1149,22 @@ void GymChallenge_RecordLoss(void)
     BufferChallengerName(gStringVar3, sChallenger.trainerClass, sChallenger.trainerName);
     sLastStreak = save->streak;
     save->streak = 0;
+}
+
+// Special: the player ends an unbeaten streak themselves ("call it a day", after mastering their
+// type). STR_VAR_1 = the streak, STR_VAR_2 = best streak.
+void GymChallenge_RetireStreak(void)
+{
+    struct GymChallengeSave *save = GymChallenge_GetSave();
+    sLastStreak = save->streak;
+    save->streak = 0;
+    GymChallenge_BufferLastResult();
+}
+
+// Whether the last challenger was the mastery battle
+bool32 GymChallenge_WasBoss(void)
+{
+    return sKind == GYM_CHALLENGER_BOSS;
 }
 
 // Special: the loss again (STR_VAR_1 = the streak that ended, STR_VAR_2 = best streak)

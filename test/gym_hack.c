@@ -1930,3 +1930,176 @@ TEST("GymHack: the legendary is a 1% encounter in Cerulean Cave only after the r
     FlagSet(FLAG_GYM_LEGEND_CAUGHT);
     EXPECT(!GymLegend_IsCaveEncounterActive());
 }
+
+// ---- Changing the gym's type (src/gym_switch.c, data/scripts/gym_switch.inc) ----
+#include "gym_switch.h"
+
+extern const u8 GymSwitch_Text_AideGoal[], GymSwitch_Text_AnnounceMentor[], GymSwitch_Text_Mastered[], GymSwitch_Text_OakWillCome[], GymSwitch_Text_WhatNext[], GymSwitch_Text_CalledItADay[], GymSwitch_Text_OakMastered[], GymSwitch_Text_OakTryAnother[], GymSwitch_Text_OakKeepItUp[], GymSwitch_Text_OakOfferStands[], GymSwitch_Text_LabGoal[], GymSwitch_Text_LabOffer[], GymSwitch_Text_LabSwitchBack[], GymSwitch_Text_LabNo[], GymSwitch_Text_LabLegendHint[], GymSwitch_Text_WhichType[], GymSwitch_Text_WhichTypeStars[], GymSwitch_Text_ConfirmNew[], GymSwitch_Text_ConfirmOld[], GymSwitch_Text_NowType[], GymSwitch_Text_OldLegendLeaves[], GymSwitch_Text_NewTypeTips[], GymSwitch_Text_BackToType[], GymLegend_Text_OakCatchAnother[], GymLegend_Text_AideWhatOnEarth[];
+
+static void ResetGymTypes(u32 type)
+{
+    u32 t;
+    struct GymChallengeSave *save = GymChallenge_GetSave();
+    save->switchMagic = 0;
+    save->streak = 0;
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        FlagClear(FLAG_GYM_TYPE_OWNED + t);
+        FlagClear(FLAG_GYM_LEGEND_CAUGHT_TYPE + t);
+        FlagClear(FLAG_GYM_LEGEND_LOOSE_TYPE + t);
+    }
+    FlagClear(FLAG_GYM_LEGEND_APPEARED);
+    FlagClear(FLAG_GYM_LEGEND_CAUGHT);
+    FlagClear(FLAG_GYM_RUN_MASTERED);
+    VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_ON_STAGE);
+    VarSet(VAR_PLAYER_TYPE, type);
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    GymSwitch_GetGoal();   // (sets the save up)
+}
+
+static void SwitchTo(u32 type)
+{
+    gSpecialVar_Result = type;
+    GymSwitch_BufferChoice();
+    GymSwitch_SetType();
+}
+
+TEST("GymHack: switch: the mastery battle is the 20th win, then the 10th")
+{
+    u32 t;
+    ResetGymTypes(TYPE_ROCK);
+    EXPECT(GymSwitch_IsMasteryBattle(20));
+    EXPECT(!GymSwitch_IsMasteryBattle(10));
+    EXPECT(!GymSwitch_IsMasteryBattle(21));
+    GymChallenge_GetSave()->switchesEarned = 1;
+    EXPECT(GymSwitch_IsMasteryBattle(10));
+    EXPECT(!GymSwitch_IsMasteryBattle(20));
+    // Not before the gym is the player's, nor once it has had every type
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    EXPECT(!GymSwitch_IsMasteryBattle(10));
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+        FlagSet(FLAG_GYM_TYPE_OWNED + t);
+    EXPECT(!GymSwitch_IsMasteryBattle(10));
+}
+
+TEST("GymHack: switch: the mastery battle is the mentor with their convention team, and earns a type")
+{
+    const struct Trainer *trainer;
+    u32 i, total = 0;
+    ResetGymTypes(TYPE_WATER);
+    ZeroPlayerPartyMons();
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_LAPRAS, 60, 0, OTID_STRUCT_PLAYER_ID);
+    GymChallenge_GetSave()->streak = 19;
+    GymChallenge_NextChallenger();
+    EXPECT_EQ(gSpecialVar_Result, GYM_CHALLENGER_BOSS);
+    trainer = GymChallenge_GetTrainer(TRAINER_GYM_CHALLENGER);
+    EXPECT_EQ(StringCompare(trainer->trainerName, COMPOUND_STRING("MISTY")), 0);
+    EXPECT_GE((u32)trainer->partySize, 4);
+    for (i = 0; i < trainer->partySize; i++)
+        total += trainer->party[i].lvl;
+    EXPECT_GE(total / trainer->partySize, 62);
+    GymSwitch_AfterWin();
+    EXPECT(gSpecialVar_Result);
+    EXPECT(FlagGet(FLAG_GYM_RUN_MASTERED));
+    EXPECT_EQ(GymChallenge_GetSave()->switchTickets, 1);
+    EXPECT_EQ(GymSwitch_GetGoal(), GYM_SWITCH_NEXT_STREAK);
+    // An ordinary win earns nothing
+    GymChallenge_GetSave()->streak = 3;
+    GymChallenge_NextChallenger();
+    GymSwitch_AfterWin();
+    EXPECT(!gSpecialVar_Result);
+    EXPECT_EQ(GymChallenge_GetSave()->switchTickets, 1);
+}
+
+TEST("GymHack: switch: a new type uses the mastery up; old ones are free; each legendary is kept")
+{
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_CERULEAN_CAVE_1F);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_CERULEAN_CAVE_1F);
+    ResetGymTypes(TYPE_DARK);
+    GymChallenge_GetSave()->switchTickets = 1;
+    FlagSet(FLAG_GYM_LEGEND_APPEARED);   // Darkrai waits on the stage
+    FlagSet(FLAG_GYM_RUN_MASTERED);
+    EXPECT(!GymLegend_IsCaveEncounterActive());
+
+    SwitchTo(TYPE_FIRE);
+    EXPECT_EQ(VarGet(VAR_PLAYER_TYPE), TYPE_FIRE);
+    EXPECT(gSpecialVar_Result);                                       // Ho-Oh is coming
+    EXPECT_EQ(VarGet(VAR_GYM_LEGEND_STATE), GYM_LEGEND_PENDING);
+    EXPECT(gSpecialVar_0x8007);                                       // Darkrai left the stage
+    EXPECT_EQ(GymChallenge_GetSave()->switchTickets, 0);
+    EXPECT(!FlagGet(FLAG_GYM_RUN_MASTERED));
+    EXPECT(GymSwitch_IsOwned(TYPE_DARK));
+    EXPECT(GymLegend_IsCaveEncounterActive());                        // ...for Cerulean Cave
+
+    // Back to Dark, free: Darkrai is still in the cave; Ho-Oh never came, so it still will
+    gSpecialVar_Result = TYPE_DARK;
+    GymSwitch_BufferChoice();
+    EXPECT(!gSpecialVar_Result);
+    GymSwitch_SetType();
+    EXPECT(!gSpecialVar_Result);
+    EXPECT_EQ(VarGet(VAR_GYM_LEGEND_STATE), GYM_LEGEND_IN_CAVE);
+    EXPECT(FlagGet(FLAG_GYM_LEGEND_APPEARED));
+    EXPECT(GymLegend_IsCaveEncounterActive());
+    SwitchTo(TYPE_FIRE);
+    EXPECT_EQ(VarGet(VAR_GYM_LEGEND_STATE), GYM_LEGEND_PENDING);
+    EXPECT(GymLegend_IsCaveEncounterActive());
+
+    // A caught one stays caught
+    FlagSet(FLAG_GYM_LEGEND_APPEARED);
+    FlagSet(FLAG_GYM_LEGEND_CAUGHT);
+    VarSet(VAR_GYM_LEGEND_STATE, GYM_LEGEND_DONE);
+    SwitchTo(TYPE_DARK);
+    SwitchTo(TYPE_FIRE);
+    EXPECT(FlagGet(FLAG_GYM_LEGEND_CAUGHT));
+    EXPECT_EQ(VarGet(VAR_GYM_LEGEND_STATE), GYM_LEGEND_DONE);
+}
+
+TEST("GymHack: switch: all the new lines fit the message box")
+{
+    static const u8 *const texts[] = {GymSwitch_Text_AideGoal, GymSwitch_Text_AnnounceMentor, GymSwitch_Text_Mastered, GymSwitch_Text_OakWillCome, GymSwitch_Text_WhatNext, GymSwitch_Text_CalledItADay, GymSwitch_Text_OakMastered, GymSwitch_Text_OakTryAnother, GymSwitch_Text_OakKeepItUp, GymSwitch_Text_OakOfferStands, GymSwitch_Text_LabGoal, GymSwitch_Text_LabOffer, GymSwitch_Text_LabSwitchBack, GymSwitch_Text_LabNo, GymSwitch_Text_LabLegendHint, GymSwitch_Text_WhichType, GymSwitch_Text_WhichTypeStars, GymSwitch_Text_ConfirmNew, GymSwitch_Text_ConfirmOld, GymSwitch_Text_NowType, GymSwitch_Text_OldLegendLeaves, GymSwitch_Text_NewTypeTips, GymSwitch_Text_BackToType, GymLegend_Text_OakCatchAnother, GymLegend_Text_AideWhatOnEarth};
+    u32 i, type;
+    static const u8 *const numbered[] = {GymSwitch_Text_AideGoal, GymSwitch_Text_CalledItADay, GymSwitch_Text_LabGoal};
+    SetLongPlaceholders();
+    StringCopy(gStringVar1, COMPOUND_STRING("ELECTRIC"));
+    StringCopy(gStringVar3, COMPOUND_STRING("ELECTRIC"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+    StringCopy(gStringVar1, COMPOUND_STRING("9999"));
+    for (i = 0; i < ARRAY_COUNT(numbered); i++)
+        ExpectLinesFit(numbered[i], 27 * 8 - 4, TRUE);
+    // Every type and badge, and every legendary
+    for (type = 0; type < NUMBER_OF_MON_TYPES; type++)
+    {
+        if (GymHack_GetStarterSpeciesForType(type) == SPECIES_NONE)
+            continue;
+        gSpecialVar_Result = type;
+        GymSwitch_BufferChoice();
+        ExpectLinesFit(GymSwitch_Text_NowType, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(GymSwitch_Text_ConfirmNew, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(GymSwitch_Text_NewTypeTips, 27 * 8 - 4, TRUE);
+        StringCopy(gStringVar1, GetSpeciesName(GymLegend_GetSpecies(type)));
+        StringCopy(gStringVar3, GetSpeciesName(GymLegend_GetSpecies(type)));
+        ExpectLinesFit(GymLegend_Text_AideWhatOnEarth, 27 * 8 - 4, TRUE);
+        ExpectLinesFit(GymSwitch_Text_OldLegendLeaves, 27 * 8 - 4, TRUE);
+    }
+    // The mentors' mastery battle lines
+    ZeroPlayerPartyMons();
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_LAPRAS, 60, 0, OTID_STRUCT_PLAYER_ID);
+    for (type = 0; type < NUMBER_OF_MON_TYPES; type++)
+    {
+        if (GymHack_GetStarterSpeciesForType(type) == SPECIES_NONE)
+            continue;
+        ResetGymTypes(type);
+        GymChallenge_GetSave()->switchesEarned = 0;
+        GymChallenge_GetSave()->streak = GYM_SWITCH_FIRST_STREAK - 1;
+        GymChallenge_NextChallenger();
+        EXPECT_EQ(gSpecialVar_Result, GYM_CHALLENGER_BOSS);
+        ExpectLinesFit(gGymChallengeIntroText, 27 * 8 - 4, FALSE);
+        ExpectLinesFit(gGymChallengeAfterText, 27 * 8 - 4, FALSE);
+        ExpectLinesFit(gGymChallengeDefeatText, 27 * 8 - 4, FALSE);
+        ExpectLinesFit(gGymChallengeWinText, 27 * 8 - 4, FALSE);
+        StringCopy(gStringVar1, GymCandidate_GetMentorName(GymCandidate_GetMentorForType(type)->who));
+        ExpectLinesFit(GymSwitch_Text_AnnounceMentor, 27 * 8 - 4, TRUE);
+    }
+}

@@ -1,10 +1,47 @@
 @ Gym Trainer hack: the legendary Pokémon of the player's type (src/gym_legend.c). It appears on the
 @ battle stage right after Oak hands the gym over, and waits there until it's caught.
 
-@ In the finale, after Oak explains the gym challenges (Oak and the aide are there)
+@ In the finale, after Oak explains the gym challenges (Oak and the aide are there); and when the
+@ gym takes a new type (data/scripts/gym_switch.inc), with Oak there
 GymLegend_EventScript_Arrives::
-	special GymLegend_Setup
+	call GymLegend_EventScript_Appears
 	goto_if_eq VAR_RESULT, FALSE, GymLegend_EventScript_Return
+	playse SE_PIN
+	applymovement LOCALID_PLAYER, Common_Movement_ExclamationMark
+	applymovement LOCALID_PALLET_GYM_OAK, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox GymLegend_Text_OakWhatOnEarth
+	special GymSwitch_HasSwitched
+	goto_if_eq VAR_RESULT, TRUE, GymLegend_EventScript_OakCatchAnother
+	msgbox GymLegend_Text_OakCatchIt
+	return
+
+GymLegend_EventScript_OakCatchAnother::
+	msgbox GymLegend_Text_OakCatchAnother
+	return
+
+@ The gym's new type was chosen in Oak's lab: its legendary is there the next time the player
+@ comes in (the gym's ON_FRAME), and the aide sees it
+GymLegend_EventScript_ArrivesLater::
+	lockall
+	textcolor NPC_TEXT_COLOR_MALE
+	call GymLegend_EventScript_Appears
+	goto_if_eq VAR_RESULT, FALSE, GymLegend_EventScript_ArrivesLaterEnd
+	playse SE_PIN
+	applymovement LOCALID_PLAYER, Common_Movement_ExclamationMark
+	applymovement LOCALID_PALLET_GYM_AIDE, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox GymLegend_Text_AideWhatOnEarth
+	closemessage
+	fadedefaultbgm
+GymLegend_EventScript_ArrivesLaterEnd::
+	releaseall
+	end
+
+@ The lights go out and it appears (VAR_RESULT = FALSE: there's none, or it's caught)
+GymLegend_EventScript_Appears::
+	special GymLegend_Setup
+	goto_if_eq VAR_RESULT, FALSE, GymLegend_EventScript_NoLegend
 	copyvar VAR_0x8008, VAR_0x8004
 	special GymLegend_FindSpot
 	setobjectxyperm LOCALID_PALLET_GYM_LEGEND, VAR_0x8005, VAR_0x8006
@@ -39,13 +76,15 @@ GymLegend_EventScript_Arrives::
 	applymovement LOCALID_CAMERA, gGymLegendCameraOut
 	waitmovement 0
 	special RemoveCameraObject
-	playse SE_PIN
-	applymovement LOCALID_PLAYER, Common_Movement_ExclamationMark
-	applymovement LOCALID_PALLET_GYM_OAK, Common_Movement_ExclamationMark
-	waitmovement 0
-	msgbox GymLegend_Text_OakWhatOnEarth
-	msgbox GymLegend_Text_OakCatchIt
 	setflag FLAG_GYM_LEGEND_APPEARED
+	setvar VAR_GYM_LEGEND_STATE, GYM_LEGEND_ON_STAGE
+	special GymLegend_Setup   @ (the names again, for the lines after)
+	setvar VAR_RESULT, TRUE
+	return
+
+GymLegend_EventScript_NoLegend::
+	setvar VAR_GYM_LEGEND_STATE, GYM_LEGEND_DONE
+	setvar VAR_RESULT, FALSE
 GymLegend_EventScript_Return::
 	return
 
@@ -161,6 +200,19 @@ GymLegend_Text_OakCatchIt::
 	.string "just what your GYM needs!\p"
 	.string "It's waiting for you on the\n"
 	.string "stage. Good luck!$"
+
+GymLegend_Text_OakCatchAnother::
+	.string "OAK: Another legendary POKéMON,\n"
+	.string "drawn to your new GYM!\p"
+	.string "It's waiting for you on the\n"
+	.string "stage. Good luck, {PLAYER}!$"
+
+GymLegend_Text_AideWhatOnEarth::
+	.string "AIDE: W-What!? That's {STR_VAR_1}!\p"
+	.string "It must have sensed the new\n"
+	.string "{STR_VAR_2} GYM in KANTO!\p"
+	.string "LEADER {PLAYER}, it's waiting for\n"
+	.string "you on the stage!$"
 
 GymLegend_Text_Challenge::
 	.string "{STR_VAR_1} is waiting for a\n"

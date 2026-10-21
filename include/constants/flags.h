@@ -2514,6 +2514,13 @@
 #define FLAG_CONVENTION_TROPHY_FAIRY      (FLAG_CONVENTION_TROPHIES + 17)
 #define FLAG_CONVENTION_TROPHY_CHAMPIONS  (FLAG_CONVENTION_TROPHIES + 18)
 #define FLAG_CONVENTION_TROPHY_GRAND (FLAG_CONVENTION_TROPHIES + 19)   // 0x0DD
+// Changing the gym's type (src/gym_switch.c): the current streak beat the mentor (Oak comes when
+// it ends); the types the gym has had (+ type); legendaries of the other types, caught or loose in
+// Cerulean Cave (+ type: the current type's legendary uses FLAG_GYM_LEGEND_* above)
+#define FLAG_GYM_RUN_MASTERED         0x0DE
+#define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
+#define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
+#define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B
 
 
 #if TESTING
