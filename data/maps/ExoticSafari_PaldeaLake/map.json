@@ -1,0 +1,149 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_PALDEA_LAKE",
+  "name": "ExoticSafari_PaldeaLake",
+  "layout": "LAYOUT_EXOTIC_SAFARI_PALDEA_LAKE",
+  "music": "MUS_RG_ROUTE24",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(OKIDOGI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerOkidogi",
+      "flag": "FLAG_TEMP_1D"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(MUNKIDORI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerMunkidori",
+      "flag": "FLAG_TEMP_1E"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(FEZANDIPITI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerFezandipiti",
+      "flag": "FLAG_TEMP_1F"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(CHI_YU)",
+      "x": 22,
+      "y": 15,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_LegendChiYu",
+      "flag": "FLAG_EXOTIC_LEGEND_CHI_YU"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 1,
+      "y": 17,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW",
+      "dest_warp_id": "4"
+    },
+    {
+      "x": 22,
+      "y": 1,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_ToMeadow"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 17,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_ToMeadow"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 18,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_ToMeadow"
+    },
+    {
+      "type": "trigger",
+      "x": 21,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_ToSnow"
+    },
+    {
+      "type": "trigger",
+      "x": 22,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_ToSnow"
+    },
+    {
+      "type": "trigger",
+      "x": 23,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_PaldeaLake_EventScript_ToSnow"
+    }
+  ],
+  "bg_events": []
+}

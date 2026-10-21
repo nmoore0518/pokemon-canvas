@@ -4,5 +4,7 @@
 // Pokémon Canvas: the Exotic Pokémon Safari's hall doors (src/exotic_safari.c)
 void ExoticSafari_OnLoad(void);
 void ExoticSafari_OnStep(void);
+void ExoticSafari_AreaOnTransition(void);
+void ExoticSafari_Kiosk(void);
 
 #endif // GUARD_EXOTIC_SAFARI_H

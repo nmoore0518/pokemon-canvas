@@ -2522,6 +2522,22 @@
 // the gap in the counter), and the attendant behind the counter (hidden until then)
 #define FLAG_EXOTIC_SAFARI_PASS       0x0DF
 #define FLAG_HIDE_EXOTIC_SAFARI_DESK  0x0E0
+// Paldea's legendaries, caught (statics come back until they are; roamers: src/exotic_safari.c),
+// and the evolution items found in its areas (the hall's kiosk sells them after)
+#define FLAG_EXOTIC_LEGEND_WO_CHIEN       0x0E1
+#define FLAG_EXOTIC_LEGEND_CHIEN_PAO      0x0E2
+#define FLAG_EXOTIC_LEGEND_TING_LU        0x0E3
+#define FLAG_EXOTIC_LEGEND_CHI_YU         0x0E4
+#define FLAG_EXOTIC_LEGEND_OKIDOGI        0x0E5
+#define FLAG_EXOTIC_LEGEND_MUNKIDORI      0x0E6
+#define FLAG_EXOTIC_LEGEND_FEZANDIPITI    0x0E7
+#define FLAG_EXOTIC_LEGEND_OGERPON        0x0E8
+#define FLAG_EXOTIC_LEGEND_TERAPAGOS      0x0E9
+#define FLAG_EXOTIC_LEGEND_PECHARUNT      0x0EA
+#define FLAG_EXOTIC_ITEM_AUSPICIOUS_ARMOR    0x0EB
+#define FLAG_EXOTIC_ITEM_MALICIOUS_ARMOR     0x0EC
+#define FLAG_EXOTIC_ITEM_ICE_STONE           0x0ED
+#define FLAG_EXOTIC_ITEM_UNREMARKABLE_TEACUP 0x0EE
 #define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B

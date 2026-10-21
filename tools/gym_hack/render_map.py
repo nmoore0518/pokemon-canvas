@@ -17,6 +17,15 @@ NUM_PRIMARY_METATILES = 640
 NUM_PRIMARY_PALS = 7
 
 
+def set_version(version):
+    """Emerald's primary tilesets are smaller than FireRed's (HnS uses FireRed's sizes)"""
+    global NUM_PRIMARY_TILES, NUM_PRIMARY_METATILES, NUM_PRIMARY_PALS
+    if version == "emerald":
+        NUM_PRIMARY_TILES, NUM_PRIMARY_METATILES, NUM_PRIMARY_PALS = 512, 512, 6
+    else:
+        NUM_PRIMARY_TILES, NUM_PRIMARY_METATILES, NUM_PRIMARY_PALS = 640, 640, 7
+
+
 def tileset_dir(symbol):
     """gTileset_Lab_Frlg -> data/tilesets/secondary/lab_frlg (by reading headers/graphics)."""
     headers = (ROOT / "src/data/tilesets/headers.h").read_text()
@@ -24,7 +33,13 @@ def tileset_dir(symbol):
     block = headers[start:headers.index("};", start)]
     tiles_sym = block.split(".tiles = ")[1].split(",")[0].strip()
     graphics = (ROOT / "src/data/tilesets/graphics.h").read_text()
-    i = graphics.index(tiles_sym)
+    if tiles_sym + "[]" not in graphics:     # (Emerald's general tileset: defined elsewhere)
+        import re
+        snake = re.sub(r"(?<=[a-z])(?=[A-Z])", "_", symbol.replace("gTileset_", "")).lower()
+        for kind in ("primary", "secondary"):
+            if (ROOT / "data/tilesets" / kind / snake).is_dir():
+                return ROOT / "data/tilesets" / kind / snake
+    i = graphics.index(tiles_sym + "[]")
     path = graphics[i:].split('"')[1]
     return ROOT / Path(path).parent
 
@@ -80,6 +95,7 @@ def render(map_name, out, scale=3):
     m = json.loads((ROOT / f"data/maps/{map_name}/map.json").read_text())
     layouts = json.loads((ROOT / "data/layouts/layouts.json").read_text())["layouts"]
     lay = next(l for l in layouts if l.get("id") == m["layout"])
+    set_version(lay.get("layout_version"))
     prim = Tileset(tileset_dir(lay["primary_tileset"]))
     sec = Tileset(tileset_dir(lay["secondary_tileset"]))
     w, h = lay["width"], lay["height"]

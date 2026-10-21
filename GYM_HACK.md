@@ -661,7 +661,29 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Kalos, Alola, Galar, Paldea; names on plaques above), open to Gym Leaders only; shut doors
          say "COMING SOON". Normal wild battles, the player's own balls (no Safari Balls or step
          limit). `tools/gym_hack/build_exotic_safari.py` builds it all (ZONES lists the open zones).
-   - [x] Paldea test meadow (placeholder Pokémon, Lv 48-54)
+   - [x] The Paldea zone (Nick's planner, `tools/gym_hack/paldea.py`): eight maps linked by
+         walking off an edge (a trigger and a fade), doors and ladders. The MEADOW (the hub, from
+         the hall's door; normal/fairy) -> west the FOREST (Tagtree Thicket; bug/grass) -> south the
+         DESERT (Asado: Route 111's desert, its metatiles copied into a FireRed tileset,
+         `convert_emerald`; sandstorm; ground/rock) -> the Desert Ruins' door -> the CRATER
+         (Area Zero: Cerulean Cave 1F, ancient paradoxes) -> ladder -> the CRATER DEPTHS (B1F,
+         future paradoxes); meadow -> east the LAKE (Casseroya; water, Chi-Yu's island) -> north
+         the SNOWY MOUNTAIN (Glaseado: HnS's Mt. Silver summit plus a snowfield; its snow has
+         encounters and footprints; ice); meadow -> north the ACADEMY (the Pokémon Mansion's 1F;
+         "indoor" Pokémon: Gimmighoul, Poltchageist, Varoom...). Wild Pokémon Lv 48-58; the
+         starters are 1% slots (Sprigatito meadow/forest, Fuecoco desert, Quaxly lake and Super
+         Rod). Pre-evolutions come at the same high levels (nothing needs breeding).
+   - [x] Paldea's legendaries (Lv 70, `FLAG_EXOTIC_LEGEND_*`): Ogerpon (meadow), Wo-Chien
+         (forest), Ting-Lu (desert), Chi-Yu (lake island), Chien-Pao (summit), Terapagos and
+         Pecharunt (depths) stand in place and stay until caught. Okidogi, Munkidori and Fezandipiti
+         ROAM: each time the player enters an area, each uncaught one is there with a 1 in 8 chance,
+         wandering a random reachable grass/sand/cave spot away from the player
+         (`ExoticSafari_AreaOnTransition`, the spots from the builder); battled and not caught, it
+         runs off. Puzzles for them: to decide with Nick (plain encounters for now).
+   - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,
+         Brambleghast/Rabsca/Houndstone 30, Gholdengo 45, Hydrapple 50); the items (Auspicious and
+         Malicious Armor, Ice Stone, Unremarkable Teacup) are item balls in the desert, crater,
+         snowfield and academy, and once found the SAFARI KIOSK sells them (`ExoticSafari_Kiosk`).
    - [x] The hall: doors in each region's games' two colors (Gold/Silver, Ruby/Sapphire,
          Diamond/Pearl, Black/White, X/Y, Sun/Moon, Sword/Shield, Scarlet/Violet) that slide open
          when a pass holder stands in front of an open zone's door (`src/exotic_safari.c`); a

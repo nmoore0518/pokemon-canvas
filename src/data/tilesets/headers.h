@@ -1366,6 +1366,17 @@ const struct Tileset gTileset_ExoticSafari =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_ExoticDesert =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_ExoticDesert,
+    .palettes = gTilesetPalettes_ExoticDesert,
+    .metatiles = gMetatiles_ExoticDesert,
+    .metatileAttributes = gMetatileAttributes_ExoticDesert,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,
@@ -1916,6 +1927,17 @@ const struct Tileset gTileset_Lighthouse_Hns =
     .palettes = gTilesetPalettes_Lighthouse_Hns,
     .metatiles = gMetatiles_Lighthouse_Hns,
     .metatileAttributes = gMetatileAttributes_Lighthouse_Hns,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_MtSilverSnow_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_MtSilverSnow_Hns,
+    .palettes = gTilesetPalettes_MtSilverSnow_Hns,
+    .metatiles = gMetatiles_MtSilverSnow_Hns,
+    .metatileAttributes = gMetatileAttributes_MtSilverSnow_Hns,
     .callback = NULL,
 };
 

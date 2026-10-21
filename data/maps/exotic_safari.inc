@@ -1,3 +1,12 @@
 @ The Exotic Pokémon Safari's maps (tools/gym_hack/build_exotic_safari.py)
+	.include "data/scripts/exotic_safari.inc"
+	.include "data/scripts/exotic_safari_roamers.inc"
 	.include "data/maps/ExoticSafari_Hall/scripts.inc"
 	.include "data/maps/ExoticSafari_PaldeaMeadow/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaForest/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaDesert/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaCrater/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaCraterDepths/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaLake/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaSnowyMountain/scripts.inc"
+	.include "data/maps/ExoticSafari_PaldeaAcademy/scripts.inc"

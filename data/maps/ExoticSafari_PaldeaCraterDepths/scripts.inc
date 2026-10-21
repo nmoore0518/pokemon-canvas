@@ -1,0 +1,28 @@
+@ ExoticSafari_PaldeaCraterDepths (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/paldea.py)
+ExoticSafari_PaldeaCraterDepths_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, ExoticSafari_PaldeaCraterDepths_OnTransition
+	.byte 0
+
+ExoticSafari_PaldeaCraterDepths_OnTransition::
+	special ExoticSafari_AreaOnTransition
+	end
+
+ExoticSafari_PaldeaCraterDepths_EventScript_LegendTerapagos::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_TERAPAGOS
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_LEGEND_TERAPAGOS
+	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_PaldeaCraterDepths_EventScript_LegendPecharunt::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_PECHARUNT
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_LEGEND_PECHARUNT
+	goto ExoticSafari_EventScript_Release

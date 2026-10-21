@@ -352,6 +352,8 @@ const u16 gMetatileAttributes_PokemonTower[] = INCBIN_U16("data/tilesets/seconda
 
 const u16 gMetatiles_ExoticSafari[] = INCBIN_U16("data/tilesets/secondary/exotic_safari_frlg/metatiles.bin");
 const u16 gMetatileAttributes_ExoticSafari[] = INCBIN_U16("data/tilesets/secondary/exotic_safari_frlg/metatile_attributes.bin");
+const u16 gMetatiles_ExoticDesert[] = INCBIN_U16("data/tilesets/secondary/exotic_desert_frlg/metatiles.bin");
+const u16 gMetatileAttributes_ExoticDesert[] = INCBIN_U16("data/tilesets/secondary/exotic_desert_frlg/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 
@@ -510,6 +512,9 @@ const u16 gMetatileAttributes_KurtsHouse_Hns[] = INCBIN_U16("data/tilesets/secon
 
 const u16 gMetatiles_Lighthouse_Hns[] = INCBIN_U16("data/tilesets/secondary/lighthouse_hns/metatiles.bin");
 const u16 gMetatileAttributes_Lighthouse_Hns[] = INCBIN_U16("data/tilesets/secondary/lighthouse_hns/metatile_attributes.bin");
+
+const u16 gMetatiles_MtSilverSnow_Hns[] = INCBIN_U16("data/tilesets/secondary/mt_silver_snow_hns/metatiles.bin");
+const u16 gMetatileAttributes_MtSilverSnow_Hns[] = INCBIN_U16("data/tilesets/secondary/mt_silver_snow_hns/metatile_attributes.bin");
 
 const u16 gMetatiles_MtSilver_Exp_Hns[] = INCBIN_U16("data/tilesets/primary/mt_silver_exp_hns/metatiles.bin");
 const u16 gMetatileAttributes_MtSilver_Exp_Hns[] = INCBIN_U16("data/tilesets/primary/mt_silver_exp_hns/metatile_attributes.bin");

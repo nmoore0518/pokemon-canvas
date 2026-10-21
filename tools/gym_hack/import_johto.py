@@ -30,6 +30,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/home/claude/ext/pokehns-expansion")
 
+# Tilesets other tools build maps from (the Exotic Safari's snowy mountain: build_exotic_safari.py)
+EXTRA_TILESETS = {"gTileset_MtSilverSnow_Hns"}
+
 SKIP_MAPS = {
     "VermilionCity_PortInside_hns",                 # (we use our own Vermilion)
     "GoldenrodCity_DepartmentStoreElevator_hns",    # (needs their elevator scripts; the stairs work)
@@ -172,6 +175,7 @@ def main():
     for m in hall_srcs.values():
         l = hns_layouts[m["layout"]]
         tilesets |= {l["primary_tileset"], l["secondary_tileset"]}
+    tilesets |= EXTRA_TILESETS
     ts_behaviors = {}
 
     headers, graphics, metatiles, callbacks = [], [], [], set()

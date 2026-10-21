@@ -1281,6 +1281,13 @@
   ],
   "gMapGroup_ExoticSafari": [
     "ExoticSafari_Hall",
-    "ExoticSafari_PaldeaMeadow"
+    "ExoticSafari_PaldeaMeadow",
+    "ExoticSafari_PaldeaForest",
+    "ExoticSafari_PaldeaDesert",
+    "ExoticSafari_PaldeaCrater",
+    "ExoticSafari_PaldeaCraterDepths",
+    "ExoticSafari_PaldeaLake",
+    "ExoticSafari_PaldeaSnowyMountain",
+    "ExoticSafari_PaldeaAcademy"
   ]
 }

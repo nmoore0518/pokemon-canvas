@@ -31,17 +31,10 @@ PAL = 8              # the wall/door palette (index 1 dark slate, 2 grey, 3 wall
 
 # The regions, west to east, and which have a zone open (name -> its map). The hall's doors.
 REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALDEA"]
+# The regions with a zone open: their first area (the hall's door leads there). The areas
+# themselves: tools/gym_hack/paldea.py
 ZONES = {
-    "PALDEA": {
-        "map": "ExoticSafari_PaldeaMeadow",
-        "id": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW",
-        "label": "gExoticSafari_PaldeaMeadow",
-        # Placeholder Pokémon for the test meadow (Nick's planner will replace them): FireRed's 12
-        # grass slots (20, 20, 10, 10, 10, 10, 5, 5, 4, 4, 1, 1 %)
-        "land": [("LECHONK", 48, 52), ("TAROUNTULA", 48, 52), ("SMOLIV", 48, 52), ("FIDOUGH", 48, 52),
-                 ("NYMBLE", 48, 52), ("PAWMI", 48, 52), ("FLITTLE", 48, 52), ("TANDEMAUS", 48, 52),
-                 ("SQUAWKABILLY", 48, 52), ("SHROODLE", 48, 52), ("TOEDSCOOL", 50, 54), ("WATTREL", 50, 54)],
-    },
+    "PALDEA": {"id": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW"},
 }
 # Each door in its region's games' two colors (left half, right half)
 DOOR_COLORS = {
@@ -235,27 +228,84 @@ def build_tileset():
     return m
 
 
-def register_tileset():
-    """headers.h, graphics.h, metatiles.h: gTileset_ExoticSafari (like gTileset_SafariZoneBuilding)"""
+def register_tileset(name="ExoticSafari", dirname="exotic_safari_frlg"):
+    """headers.h, graphics.h, metatiles.h: gTileset_<name> (a FireRed secondary tileset, like
+    gTileset_SafariZoneBuilding)"""
     def put(path, anchor, text):
         s = path.read_text()
         if text.splitlines()[0] in s:
             return
         i = s.index(anchor)
         path.write_text(s[:i] + text + s[i:])
+    d = f"data/tilesets/secondary/{dirname}"
     put(ROOT / "src/data/tilesets/headers.h", "const struct Tileset gTileset_SafariZoneBuilding =",
-        "const struct Tileset gTileset_ExoticSafari =\n{\n    .isCompressed = TRUE,\n    .isSecondary = TRUE,\n"
-        "    .tiles = gTilesetTiles_ExoticSafari,\n    .palettes = gTilesetPalettes_ExoticSafari,\n"
-        "    .metatiles = gMetatiles_ExoticSafari,\n    .metatileAttributes = gMetatileAttributes_ExoticSafari,\n"
+        f"const struct Tileset gTileset_{name} =\n{{\n    .isCompressed = TRUE,\n    .isSecondary = TRUE,\n"
+        f"    .tiles = gTilesetTiles_{name},\n    .palettes = gTilesetPalettes_{name},\n"
+        f"    .metatiles = gMetatiles_{name},\n    .metatileAttributes = gMetatileAttributes_{name},\n"
         "    .callback = NULL,\n};\n\n")
     put(ROOT / "src/data/tilesets/graphics.h", "const u32 gTilesetTiles_SafariZoneBuilding[]",
-        'const u32 gTilesetTiles_ExoticSafari[] = INCGFX_U32("data/tilesets/secondary/exotic_safari_frlg/tiles.png", ".4bpp.fastSmol");\n\n'
-        "const u16 gTilesetPalettes_ExoticSafari[][16] =\n{\n" + "".join(
-            f'    INCGFX_U16("data/tilesets/secondary/exotic_safari_frlg/palettes/{i:02d}.pal", ".gbapal"),\n' for i in range(16))
+        f'const u32 gTilesetTiles_{name}[] = INCGFX_U32("{d}/tiles.png", ".4bpp.fastSmol");\n\n'
+        f"const u16 gTilesetPalettes_{name}[][16] =\n{{\n" + "".join(
+            f'    INCGFX_U16("{d}/palettes/{i:02d}.pal", ".gbapal"),\n' for i in range(16))
         + "};\n\n")
     put(ROOT / "src/data/tilesets/metatiles.h", "const u16 gMetatiles_SafariZoneBuilding[]",
-        'const u16 gMetatiles_ExoticSafari[] = INCBIN_U16("data/tilesets/secondary/exotic_safari_frlg/metatiles.bin");\n'
-        'const u16 gMetatileAttributes_ExoticSafari[] = INCBIN_U16("data/tilesets/secondary/exotic_safari_frlg/metatile_attributes.bin");\n')
+        f'const u16 gMetatiles_{name}[] = INCBIN_U16("{d}/metatiles.bin");\n'
+        f'const u16 gMetatileAttributes_{name}[] = INCBIN_U16("{d}/metatile_attributes.bin");\n')
+
+
+def convert_emerald(grid, tilesets, name, dirname):
+    """An Emerald layout's piece -> a FireRed one: the metatiles it uses copied into a new FireRed
+    secondary tileset (gTileset_<name>, over FireRed's general primary). Emerald's tileset
+    animations (water, flowers) don't come along: those tiles stay still."""
+    from collections import OrderedDict
+    pd, sd = (render_map.tileset_dir(s) for s in tilesets)
+    def metatiles(d):
+        b = (d / "metatiles.bin").read_bytes()
+        return [struct.unpack_from("<8H", b, i) for i in range(0, len(b), 16)]
+    def attrs(d):
+        b = (d / "metatile_attributes.bin").read_bytes()
+        return struct.unpack(f"<{len(b) // 2}H", b)
+    pm, sm, pa, sa = metatiles(pd), metatiles(sd), attrs(pd), attrs(sd)
+    pimg, simg = Image.open(pd / "tiles.png"), Image.open(sd / "tiles.png")
+    used = sorted({v & 0x3FF for row in grid for v in row})
+    assert len(used) <= 384
+    tiles, pals = OrderedDict(), OrderedDict()
+    new_mt, new_attr, remap = [], [], {}
+    for k, m in enumerate(used):
+        entries = pm[m] if m < 512 else sm[m - 512]
+        out = []
+        for e in entries:
+            t, flips, pal = e & 0x3FF, e & 0x0C00, e >> 12
+            if t not in tiles:
+                tiles[t] = len(tiles)
+            if pal not in pals:
+                pals[pal] = len(pals)
+            out.append((640 + tiles[t]) | flips | ((7 + pals[pal]) << 12))
+        new_mt.append(out)
+        a = pa[m] if m < 512 else sa[m - 512]
+        new_attr.append((a & 0xFF) | (((a >> 12) & 0xF) << 29))
+        remap[m] = 0x280 + k
+    assert len(tiles) <= 384 and len(pals) <= 6, (len(tiles), len(pals))
+    out = ROOT / "data/tilesets/secondary" / dirname
+    (out / "palettes").mkdir(parents=True, exist_ok=True)
+    n = len(tiles)
+    img = Image.new("P", (128, ((n + 15) // 16) * 8))
+    img.putpalette(pimg.getpalette())
+    for t, i in tiles.items():
+        src, ti = (pimg, t) if t < 512 else (simg, t - 512)
+        tile = src.crop(((ti % 16) * 8, (ti // 16) * 8, (ti % 16) * 8 + 8, (ti // 16) * 8 + 8))
+        img.paste(tile, ((i % 16) * 8, (i // 16) * 8))
+    img.save(out / "tiles.png")
+    black = "JASC-PAL\n0100\n16\n" + "0 0 0\n" * 16
+    for i in range(16):
+        (out / "palettes" / f"{i:02d}.pal").write_text(black)
+    for p, i in pals.items():
+        shutil.copy((pd if p < 6 else sd) / "palettes" / f"{p:02d}.pal", out / "palettes" / f"{7 + i:02d}.pal")
+    (out / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *e) for e in new_mt))
+    (out / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in new_attr))
+    register_tileset(name, dirname)
+    g = [[(v & ~0x3FF) | remap[v & 0x3FF] for v in row] for row in grid]
+    return g, ("gTileset_General_Frlg", f"gTileset_{name}")
 
 
 # ---------------------------------------------------------------------------------------------
@@ -301,72 +351,14 @@ def build_hall(m):
     return g
 
 
-def forest(x, y):
-    return (0x290, 0x291, 0x292)[x % 3] if y % 2 == 0 else (0x298, 0x299, 0x29A)[x % 3]
-
-
-def ground(x, y):
-    return (0x008, 0x009)[x % 2] if y % 2 == 0 else (0x010, 0x011)[x % 2]
-
-
-MEADOW = [   # the test meadow: T trees, . ground, g tall grass, P path (the exit)
-    "TTTTTTTTTTTTTTTTTTTTTTTT",
-    "TTTTTTTTTTTTTTTTTTTTTTTT",
-    "TTTTTTTTTTTTTTTTTTTTTTTT",
-    "TTTTTTTTTTTTTTTTTTTTTTTT",
-    "TTT..gggggg....ggggg.TTT",
-    "TTT.gggggggg..gggggg.TTT",
-    "TTT.gggggggg..gggggg.TTT",
-    "TTT..ggggg....ggggg..TTT",
-    "TTT........gg........TTT",
-    "TTTgg.....gggg....gg.TTT",
-    "TTTggg..gggggg...ggg.TTT",
-    "TTTggg..gggggg..gggg.TTT",
-    "TTT......gggg...ggg..TTT",
-    "TTT......gg..........TTT",
-    "TTT..................TTT",
-    "TTTTTTTTT...TTTTTTTTTTTT",
-    "TTTTTTTTTPPPTTTTTTTTTTTT",
-    "TTTTTTTTTPPPTTTTTTTTTTTT",
-    "TTTTTTTTTPPPTTTTTTTTTTTT",
-    "TTTTTTTTTPPPTTTTTTTTTTTT",
-]
-MEADOW_EXIT = 16      # the row of the exit (arrow warps) on the path
-
-
-def build_meadow():
-    rows = MEADOW
-    H, W = len(rows), len(rows[0])
-    g = [[0] * W for _ in range(H)]
-    open_ = lambda x, y: 0 <= y < H and 0 <= x < W and rows[y][x] != "T"
-    for y in range(H):
-        for x in range(W):
-            c = rows[y][x]
-            if c == "T":
-                if open_(x, y + 1) or open_(x, y + 2) and y % 2 == 0:
-                    # the forest's bottom edge (trunks over the ground), 2 rows
-                    below = y + 1 if open_(x, y + 1) else y + 2
-                    t = (0x2A0, 0x2A1, 0x2A2)[x % 3] if (below - y) == 2 else (0x2A3, 0x2A4, 0x2A5)[x % 3]
-                    g[y][x] = blk(t, 1)
-                elif open_(x, y - 1) and y % 2 == 1 and rows[y][x] == "T":
-                    g[y][x] = blk((0x288, 0x289, 0x28A)[x % 3], 1)          # the forest's top edge
-                else:
-                    g[y][x] = blk(forest(x, y), 1)
-            elif c == "g":
-                g[y][x] = blk(0x00D, 0)
-            elif c == "P":
-                g[y][x] = blk((0x2A8, 0x2A9, 0x2AA)[(x - 9)] if y == MEADOW_EXIT else (0x0DB, 0x0DC, 0x0DD)[x - 9], 0)
-            else:
-                g[y][x] = blk(ground(x, y), 0)
-    return g, W, H
-
-
-def write_layout(name, lid, grid, primary, secondary):
+def write_layout(name, lid, grid, primary, secondary, border=None):
     W, H = len(grid[0]), len(grid)
     d = ROOT / "data/layouts" / name
     d.mkdir(parents=True, exist_ok=True)
     (d / "map.bin").write_bytes(b"".join(struct.pack("<H", v) for row in grid for v in row))
-    border = [grid[0][0]] * 4
+    if border is None:
+        border = grid[0][0]
+    border = [border] * 4
     (d / "border.bin").write_bytes(struct.pack("<4H", *border))
     lj_path = ROOT / "data/layouts/layouts.json"
     lj = json.loads(lj_path.read_text())
@@ -384,18 +376,307 @@ def obj(gfx, x, y, script, movement="MOVEMENT_TYPE_FACE_DOWN", flag="0"):
             "trainer_sight_or_berry_tree_id": "0", "script": script, "flag": flag}
 
 
-def write_map(name, mid, layout, music, mapsec, map_type, objects, warps, bgs, show_name):
+def write_map(name, mid, layout, music, mapsec, map_type, objects, warps, bgs, show_name, coords=(), weather="WEATHER_NONE"):
     d = ROOT / "data/maps" / name
     d.mkdir(parents=True, exist_ok=True)
     m = {"id": mid, "name": name, "layout": layout, "music": music, "region": "REGION_KANTO",
-         "region_map_section": mapsec, "requires_flash": False, "weather": "WEATHER_NONE", "map_type": map_type,
+         "region_map_section": mapsec, "requires_flash": False, "weather": weather, "map_type": map_type,
          "allow_cycling": map_type != "MAP_TYPE_INDOOR", "allow_escaping": False, "allow_running": True,
          "show_map_name": show_name, "floor_number": 0, "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-         "connections": None, "object_events": objects, "warp_events": warps, "coord_events": [],
+         "connections": None, "object_events": objects, "warp_events": warps, "coord_events": list(coords),
          "bg_events": bgs}
     (d / "map.json").write_text(json.dumps(m, indent=2) + "\n")
     if not (d / "scripts.inc").exists():
         (d / "scripts.inc").write_text(f"{name}_MapScripts::\n\t.byte 0\n")
+
+
+# ---------------------------------------------------------------------------------------------
+# The zones' areas (tools/gym_hack/paldea.py: layouts, links, Pokémon, legendaries, items)
+# ---------------------------------------------------------------------------------------------
+import re
+import random
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paldea                                   # noqa: E402
+import render_map                               # noqa: E402  (tileset_dir)
+
+LEGEND_LEVEL = paldea.LEGEND_LEVEL
+KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
+                  "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
+ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10}
+ROAMER_SPOTS = 48                    # (per area: a sample of its reachable grass/sand/cave floor)
+
+
+def map_id(name):
+    return "MAP_" + re.sub(r"(?<=[a-z])(?=[A-Z])", "_", name).upper()
+
+
+def camel(s):
+    return "".join(w.title() for w in s.split("_"))
+
+
+def behavior_info():
+    """MB_* values, and which have wild encounters / are water"""
+    names = re.findall(r"^\s+(MB_\w+)", (ROOT / "include/constants/metatile_behaviors.h").read_text(), re.M)
+    value = {n: i for i, n in enumerate(names)}
+    src = (ROOT / "src/metatile_behavior.c").read_text()
+    enc, surf = set(), set()
+    for n, flags in re.findall(r"\[(MB_\w+)\]\s*=\s*([^,\n]+)", src):
+        if "HAS_ENCOUNTERS" in flags:
+            enc.add(value[n])
+        if "SURFABLE" in flags:
+            surf.add(value[n])
+    return value, enc, surf
+
+
+MB, MB_ENCOUNTERS, MB_SURFABLE = behavior_info()
+
+
+class Behaviors:
+    """metatile id -> behavior, for a layout's two tilesets"""
+    def __init__(self, tilesets, version):
+        self.emerald = version == "emerald"
+        self.nprim = 512 if self.emerald else 640
+        self.attrs = []
+        for sym in tilesets:
+            b = (render_map.tileset_dir(sym) / "metatile_attributes.bin").read_bytes()
+            fmt = "H" if self.emerald else "I"
+            self.attrs.append(struct.unpack(f"<{len(b) // struct.calcsize(fmt)}{fmt}", b))
+
+    def __call__(self, block):
+        m = block & 0x3FF
+        ts, i = (self.attrs[0], m) if m < self.nprim else (self.attrs[1], m - self.nprim)
+        if i >= len(ts):
+            return 0
+        return ts[i] & (0xFF if self.emerald else 0x1FF)
+
+
+def floor_near(g, x, y, beh):
+    """the most common open (dry) metatile around (x, y): to replace a ladder with"""
+    from collections import Counter
+    c = Counter(g[yy][xx] for yy in range(max(0, y - 3), min(len(g), y + 4)) for xx in range(max(0, x - 3), min(len(g[0]), x + 4))
+                if not (g[yy][xx] >> 10) & 3 and beh(g[yy][xx]) not in MB_SURFABLE)
+    return c.most_common(1)[0][0]
+
+
+def edge_run(g, row):
+    """the longest run of open cells on a row (an area's way out at its top or bottom)"""
+    best, run = [], []
+    for x in range(len(g[0])):
+        if not (g[row][x] >> 10) & 3:
+            run.append(x)
+            if len(run) > len(best):
+                best = run[:]
+        else:
+            run = []
+    return best
+
+
+def patch_snow(tilesets):
+    """HnS's snow has no encounters: its plain snow gets footprints (and wild Pokémon)"""
+    d = render_map.tileset_dir(tilesets[1])
+    b = bytearray((d / "metatile_attributes.bin").read_bytes())
+    for m in (0x281,):
+        i = (m - 640) * 4
+        v = struct.unpack_from("<I", b, i)[0]
+        struct.pack_into("<I", b, i, (v & ~0x1FF) | MB["MB_FOOTPRINTS"])
+    (d / "metatile_attributes.bin").write_bytes(b)
+
+
+def build_zones(zone_warp):
+    areas = paldea.AREAS
+    built = {}
+    # 1. Layouts
+    for key, a in areas.items():
+        g, w, h = a["build"]()
+        beh0 = Behaviors(a["tilesets"], a.get("version", "frlg"))
+        for x, y in a.get("remove_warps", []):
+            floor = floor_near(g, x, y + 1, beh0)
+            for yy in (y - 1, y):             # (ladders are two tiles tall)
+                g[yy][x] = floor
+        if key == "SNOW":
+            # The cliffs either side of the path up to the summit can't be walked on
+            for y in range(0, 21):
+                for x in range(w):
+                    if not (9 <= x <= 11 and y >= 5):
+                        g[y][x] |= 1 << 10
+            patch_snow(a["tilesets"])
+        links = {}
+        for lk, (kind, cells, arrival, target) in a["links"].items():
+            if cells in ("top", "bottom"):
+                row = 0 if cells == "top" else h - 1
+                xs = edge_run(g, row)
+                cells = [(x, row) for x in xs]
+                arrival = (xs[len(xs) // 2], 1 if row == 0 else h - 2)
+            links[lk] = (kind, cells, arrival, target)
+        tilesets = a["tilesets"]
+        if a.get("version") == "emerald":
+            g, tilesets = convert_emerald(g, tilesets, a["convert"][0], a["convert"][1])
+        built[key] = {"g": g, "w": w, "h": h, "links": links, "beh": Behaviors(tilesets, "frlg")}
+        # The border (beyond the map's edges): its most common wall (trees, rock), or as given
+        from collections import Counter
+        ring = [g[y][x] for y in range(h) for x in range(w) if (x in (0, w - 1) or y in (0, h - 1)) and (g[y][x] >> 10) & 3]
+        border = a.get("border", Counter(ring).most_common(1)[0][0] if ring else g[0][0])
+        write_layout(a["map"], "LAYOUT_" + map_id(a["map"])[4:], g, tilesets[0], tilesets[1], border)
+
+    # 2. Warps: each link's cells (warp tiles) or its arrival spot (edges: walking off is a trigger)
+    for key, b in built.items():
+        warps, arrive = [], {}
+        for lk, (kind, cells, arrival, target) in b["links"].items():
+            if kind == "warp":
+                near = min(range(len(cells)), key=lambda i: abs(cells[i][0] - arrival[0]) + abs(cells[i][1] - arrival[1]))
+                arrive[lk] = len(warps) + near
+                for x, y in cells:
+                    warps.append({"x": x, "y": y, "elevation": 3, "link": lk})
+            else:
+                arrive[lk] = len(warps)
+                warps.append({"x": arrival[0], "y": arrival[1], "elevation": 3, "link": lk})
+        b["warps"], b["arrive"] = warps, arrive
+    hall_index, hall_warps = zone_warp["PALDEA"]
+    hall_warps[hall_index]["dest_map"] = map_id(areas["MEADOW"]["map"])
+    hall_warps[hall_index]["dest_warp_id"] = str(built["MEADOW"]["arrive"]["HALL"])
+
+    def dest(key, lk):
+        tk, tl = areas[key]["links"][lk][3]
+        if tk == "HALL":
+            return "MAP_EXOTIC_SAFARI_HALL", hall_index
+        return map_id(areas[tk]["map"]), built[tk]["arrive"][tl]
+
+    # 3. Each area's map: objects, warps, triggers, scripts
+    header_areas, report = [], []
+    for key, a in areas.items():
+        b, name = built[key], a["map"]
+        g, w, h = b["g"], b["w"], b["h"]
+        elev = lambda x, y: (g[y][x] >> 12) & 0xF
+        warps = []
+        for wp in b["warps"]:
+            dm, di = dest(key, wp["link"])
+            kind = b["links"][wp["link"]][0]
+            # (an edge's arrival spot is only somewhere to arrive: it leads back to where it came from)
+            warps.append({"x": wp["x"], "y": wp["y"], "elevation": elev(wp["x"], wp["y"]) if kind == "warp" else 0,
+                          "dest_map": dm, "dest_warp_id": str(di)})
+        coords, scripts = [], [f"@ {name} (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/paldea.py)",
+                                f"{name}_MapScripts::", f"\tmap_script MAP_SCRIPT_ON_TRANSITION, {name}_OnTransition",
+                                "\t.byte 0", "", f"{name}_OnTransition::", "\tspecial ExoticSafari_AreaOnTransition", "\tend", ""]
+        for lk, (kind, cells, arrival, target) in b["links"].items():
+            if kind != "edge":
+                continue
+            dm, di = dest(key, lk)
+            label = f"{name}_EventScript_To{camel(lk)}"
+            for x, y in cells:
+                coords.append({"type": "trigger", "x": x, "y": y, "elevation": 0, "var": "VAR_TEMP_1",
+                               "var_value": "0", "script": label})
+            scripts += [f"{label}::", f"\twarpsilent {dm}, {di}", "\twaitstate", "\tend", ""]
+        # Objects: the roamers' slots (local ids 1-3), the legendaries, the items
+        objects = []
+        for i, r in enumerate(paldea.ROAMERS):
+            o = obj(f"OBJ_EVENT_GFX_SPECIES({r})", 0, 0, f"ExoticSafari_EventScript_Roamer{camel(r)}",
+                    "MOVEMENT_TYPE_WANDER_AROUND", f"FLAG_TEMP_{0x1D + i:X}")
+            o["movement_range_x"] = o["movement_range_y"] = 2
+            objects.append(o)
+        reach = reachable(b)
+        for species, (x, y) in a["statics"]:
+            assert (x, y) in reach, f"{key}: {species} at {(x, y)} can't be reached"
+            label = f"{name}_EventScript_Legend{camel(species)}"
+            o = obj(f"OBJ_EVENT_GFX_SPECIES({species})", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"FLAG_EXOTIC_LEGEND_{species}")
+            o["elevation"] = elev(x, y)
+            objects.append(o)
+            scripts += [f"{label}::", "\tlock", "\tfaceplayer", f"\tsetvar VAR_0x8004, SPECIES_{species}",
+                        "\tcall ExoticSafari_EventScript_LegendBattle",
+                        "\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays",
+                        "\tremoveobject VAR_LAST_TALKED", f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
+                        "\tgoto ExoticSafari_EventScript_Release", ""]
+        for item, (x, y) in a["items"]:
+            assert (x, y) in reach, f"{key}: {item} at {(x, y)} can't be reached"
+            label = f"{name}_EventScript_Item{camel(item)}"
+            o = obj("OBJ_EVENT_GFX_ITEM_BALL", x, y, label, "MOVEMENT_TYPE_LOOK_AROUND", f"FLAG_EXOTIC_ITEM_{item}")
+            o["elevation"] = elev(x, y)
+            objects.append(o)
+            scripts += [f"{label}::", f"\tfinditem ITEM_{item}", "\tend", ""]
+        write_map(name, map_id(name), "LAYOUT_" + map_id(name)[4:], a["music"], "MAPSEC_KANTO_SAFARI_ZONE",
+                  a["type"], objects, warps, [], False, coords=coords, weather=a["weather"])
+        (ROOT / "data/maps" / name / "scripts.inc").write_text("\n".join(scripts))
+        # Where the roamers can turn up: land encounter spots the player can reach
+        spots = sorted(p for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE
+                       and p not in {(x, y) for _, (x, y) in a["statics"] + a["items"]})
+        random.Random(key).shuffle(spots)
+        spots = sorted(spots[:ROAMER_SPOTS], key=lambda p: (p[1], p[0]))
+        header_areas.append((name, [(x, y, elev(x, y)) for x, y in spots]))
+        water = sum(1 for p in reach if b["beh"](g[p[1]][p[0]]) in MB_SURFABLE)
+        land_n = sum(1 for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE)
+        report.append(f"  {key:8} {name:34} {w}x{h}  {land_n} wild-Pokémon tiles, {water} water")
+
+    # 4. The header for src/exotic_safari.c: the areas (and their roamer spots), the roamers, the kiosk
+    c = ["// The Exotic Pokémon Safari's areas (made by tools/gym_hack/build_exotic_safari.py)",
+         "struct ExoticSafariArea { u8 mapGroup, mapNum; u8 spotCount; const u8 (*spots)[3]; };",
+         "struct ExoticSafariRoamer { u16 species, caughtFlag, hideFlag; };",
+         "struct ExoticSafariFind { u16 item, flag; };", ""]
+    for name, spots in header_areas:
+        c.append(f"static const u8 sSpots_{name}[][3] = {{" + ", ".join(f"{{{x}, {y}, {e}}}" for x, y, e in spots) + "};")
+    c += ["", "static const struct ExoticSafariArea sExoticSafariAreas[] =", "{"]
+    for name, spots in header_areas:
+        mid = map_id(name)
+        c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), ARRAY_COUNT(sSpots_{name}), sSpots_{name}}},")
+    c += ["};", "", f"#define EXOTIC_SAFARI_ROAMER_COUNT {len(paldea.ROAMERS)}",
+          "#define EXOTIC_SAFARI_ROAMER_LOCALID(i) (1 + (i))",
+          "static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =", "{"]
+    for i, r in enumerate(paldea.ROAMERS):
+        c.append(f"    {{SPECIES_{r}, FLAG_EXOTIC_LEGEND_{r}, FLAG_TEMP_{0x1D + i:X}}},")
+    c += ["};", "", "static const u16 sKioskSupplies[] = {" + ", ".join(f"ITEM_{i}" for i in KIOSK_SUPPLIES) + "};",
+          "static const struct ExoticSafariFind sKioskFinds[] =", "{"]
+    for a in areas.values():
+        for item, _ in a["items"]:
+            c.append(f"    {{ITEM_{item}, FLAG_EXOTIC_ITEM_{item}}},")
+    c.append("};")
+    (ROOT / "src/data/exotic_safari_areas.h").write_text("\n".join(c) + "\n")
+
+    # 5. The roamers' scripts (any area)
+    rs = ["@ The roaming legendaries (made by tools/gym_hack/build_exotic_safari.py)"]
+    for r in paldea.ROAMERS:
+        rs += [f"ExoticSafari_EventScript_Roamer{camel(r)}::", "\tlock", "\tfaceplayer", f"\tsetvar VAR_0x8004, SPECIES_{r}",
+               "\tcall ExoticSafari_EventScript_LegendBattle",
+               f"\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone",
+               f"\tsetflag FLAG_EXOTIC_LEGEND_{r}", "\tgoto ExoticSafari_EventScript_RoamerGone", ""]
+    (ROOT / "data/scripts/exotic_safari_roamers.inc").write_text("\n".join(rs))
+
+    # 6. Wild Pokémon
+    wp = ROOT / "src/data/wild_encounters.json"
+    wild = json.loads(wp.read_text())
+    group = wild["wild_encounter_groups"][0]
+    ids = {map_id(a["map"]) for a in areas.values()}
+    group["encounters"] = [e for e in group["encounters"] if e.get("map") not in ids]
+    mons = lambda lst: [{"min_level": lo, "max_level": hi, "species": "SPECIES_" + s} for s, lo, hi in lst]
+    for a in areas.values():
+        e = {"map": map_id(a["map"]), "base_label": "gExoticSafari_" + a["map"].split("_", 1)[1] + "_FireRed",
+             "land_mons": {"encounter_rate": ENCOUNTER_RATES[a["type"]], "mons": mons(a["land"])}}
+        if a.get("water"):
+            assert len(a["water"]) == 5
+            e["water_mons"] = {"encounter_rate": 2, "mons": mons(a["water"])}
+        if a.get("fishing"):
+            assert len(a["fishing"]) == 10
+            e["fishing_mons"] = {"encounter_rate": 20, "mons": mons(a["fishing"])}
+        group["encounters"].append(e)
+    wp.write_text(json.dumps(wild, indent=2, ensure_ascii=False) + "\n")
+
+    # (constants for the scripts)
+    print("exotic safari areas:\n" + "\n".join(report))
+    return [a["map"] for a in areas.values()]
+
+
+def reachable(b):
+    """the cells the player can get to (walking or surfing) from where they arrive"""
+    g, w, h = b["g"], b["w"], b["h"]
+    start = [wp for wp in b["warps"]]
+    seen, todo = set(), [(wp["x"], wp["y"]) for wp in start]
+    while todo:
+        x, y = todo.pop()
+        if (x, y) in seen or not (0 <= x < w and 0 <= y < h):
+            continue
+        if (g[y][x] >> 10) & 3 and (x, y) not in {(wp["x"], wp["y"]) for wp in start}:
+            continue
+        seen.add((x, y))
+        todo += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    return seen
 
 
 def main():
@@ -435,7 +716,7 @@ def main():
     for i, name in enumerate(REGIONS):
         x = door_x(i)
         if name in ZONES:
-            zone_warp[name] = len(warps)
+            zone_warp[name] = (len(warps), warps)
             warps.append({"x": x, "y": DOOR_Y, "elevation": 3, "dest_map": ZONES[name]["id"], "dest_warp_id": "0"})
         bgs.append({"type": "sign", "x": x, "y": 3, "elevation": 0, "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
                     "script": f"ExoticSafari_Hall_EventScript_Door{name.title()}"})
@@ -449,13 +730,7 @@ def main():
               warps, bgs, False)
 
     # The zones
-    for name, z in ZONES.items():
-        g, W, H = build_meadow()
-        lid = "LAYOUT_" + z["id"][4:]
-        write_layout(z["map"], lid, g, "gTileset_General_Frlg", "gTileset_ViridianForest")
-        write_map(z["map"], z["id"], lid, "MUS_RG_ROUTE24", "MAPSEC_SAFARI_ZONE", "MAP_TYPE_ROUTE", [],
-                  [{"x": x, "y": MEADOW_EXIT, "elevation": 3, "dest_map": "MAP_EXOTIC_SAFARI_HALL",
-                    "dest_warp_id": str(zone_warp[name])} for x in (9, 10, 11)], [], True)
+    zone_maps = build_zones(zone_warp)
 
     # Constants for the hall's scripts, and the doors for src/exotic_safari.c
     consts = ["// The Exotic Pokémon Safari (made by tools/gym_hack/build_exotic_safari.py)",
@@ -463,6 +738,7 @@ def main():
               f"#define EXOTIC_SAFARI_PASS_PRICE      10000",
               f"#define LOCALID_EXOTIC_SAFARI_ATTENDANT 1",
               f"#define LOCALID_EXOTIC_SAFARI_DESK      2",
+              f"#define EXOTIC_SAFARI_LEGEND_LEVEL      {LEGEND_LEVEL}",
               "#endif"]
     (ROOT / "include/constants/exotic_safari.h").write_text("\n".join(consts) + "\n")
     c = ["// The Exotic Pokémon Safari's doors (made by tools/gym_hack/build_exotic_safari.py)",
@@ -481,27 +757,22 @@ def main():
     # Map group, script includes
     gp = ROOT / "data/maps/map_groups.json"
     groups = json.loads(gp.read_text())
-    names = ["ExoticSafari_Hall"] + [z["map"] for z in ZONES.values()]
+    names = ["ExoticSafari_Hall"] + zone_maps
     if "gMapGroup_ExoticSafari" not in groups["group_order"]:
         groups["group_order"].append("gMapGroup_ExoticSafari")
     groups["gMapGroup_ExoticSafari"] = names
     gp.write_text(json.dumps(groups, indent=2) + "\n")
     (ROOT / "data/maps/exotic_safari.inc").write_text(
         "@ The Exotic Pokémon Safari's maps (tools/gym_hack/build_exotic_safari.py)\n"
+        + '\t.include "data/scripts/exotic_safari.inc"\n\t.include "data/scripts/exotic_safari_roamers.inc"\n'
         + "".join(f'\t.include "data/maps/{n}/scripts.inc"\n' for n in names))
 
-    # Wild Pokémon
-    wp = ROOT / "src/data/wild_encounters.json"
-    wild = json.loads(wp.read_text())
-    group = wild["wild_encounter_groups"][0]
-    for name, z in ZONES.items():
-        group["encounters"] = [e for e in group["encounters"] if e.get("map") != z["id"]]
-        group["encounters"].append({"map": z["id"], "base_label": z["label"] + "_FireRed",
-                                    "land_mons": {"encounter_rate": 21, "mons": [
-                                        {"min_level": lo, "max_level": hi, "species": "SPECIES_" + s}
-                                        for s, lo, hi in z["land"]]}})
-    wp.write_text(json.dumps(wild, indent=2, ensure_ascii=False) + "\n")
-    print(f"exotic safari: hall {HALL_W}x{HALL_H}, {len(ZONES)} zone(s), Fuchsia warp {fuchsia_warp}")
+    # (the hall's map.json again: the Paldea door's warp now points at the meadow)
+    hall_json = ROOT / "data/maps/ExoticSafari_Hall/map.json"
+    hj = json.loads(hall_json.read_text())
+    hj["warp_events"] = warps
+    hall_json.write_text(json.dumps(hj, indent=2) + "\n")
+    print(f"exotic safari: hall {HALL_W}x{HALL_H}, {len(zone_maps)} zone maps, Fuchsia warp {fuchsia_warp}")
 
 
 if __name__ == "__main__":

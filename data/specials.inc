@@ -732,6 +732,8 @@ gSpecials::
 	def_special GymSwitch_BufferChoice
 	def_special GymSwitch_SetType
 	def_special ExoticSafari_OnLoad
+	def_special ExoticSafari_AreaOnTransition
+	def_special ExoticSafari_Kiosk
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk

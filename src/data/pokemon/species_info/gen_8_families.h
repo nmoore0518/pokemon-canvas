@@ -2858,7 +2858,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         )
         .levelUpLearnset = sDipplinLevelUpLearnset,
         .teachableLearnset = sDipplinTeachableLearnset,
-        .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_HYDRAPPLE, CONDITIONS({IF_KNOWS_MOVE, MOVE_DRAGON_CHEER})}),
+        .evolutions = EVOLUTION({EVO_LEVEL, 50, SPECIES_HYDRAPPLE}),
     },
 
     [SPECIES_HYDRAPPLE] =

@@ -106,25 +106,9 @@ ExoticSafari_Hall_EventScript_Kiosk::
 	faceplayer
 	message ExoticSafari_Hall_Text_Kiosk
 	waitmessage
-	pokemart ExoticSafari_Hall_KioskItems
+	special ExoticSafari_Kiosk
+	waitstate
 	msgbox gText_PleaseComeAgain
-	release
-	end
-
-	.align 2
-ExoticSafari_Hall_KioskItems::
-	.2byte ITEM_POKE_BALL
-	.2byte ITEM_GREAT_BALL
-	.2byte ITEM_ULTRA_BALL
-	.2byte ITEM_QUICK_BALL
-	.2byte ITEM_DUSK_BALL
-	.2byte ITEM_NET_BALL
-	.2byte ITEM_MAX_REPEL
-	.2byte ITEM_HYPER_POTION
-	.2byte ITEM_MAX_POTION
-	.2byte ITEM_FULL_HEAL
-	.2byte ITEM_REVIVE
-	.2byte ITEM_NONE
 	release
 	end
 

@@ -1,0 +1,94 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_PALDEA_CRATER",
+  "name": "ExoticSafari_PaldeaCrater",
+  "layout": "LAYOUT_EXOTIC_SAFARI_PALDEA_CRATER",
+  "music": "MUS_RG_ROCKET_HIDEOUT",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(OKIDOGI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerOkidogi",
+      "flag": "FLAG_TEMP_1D"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(MUNKIDORI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerMunkidori",
+      "flag": "FLAG_TEMP_1E"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(FEZANDIPITI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerFezandipiti",
+      "flag": "FLAG_TEMP_1F"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 7,
+      "y": 3,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_PaldeaCrater_EventScript_ItemMaliciousArmor",
+      "flag": "FLAG_EXOTIC_ITEM_MALICIOUS_ARMOR"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 33,
+      "y": 21,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_PALDEA_DESERT",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_PALDEA_CRATER_DEPTHS",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": []
+}
