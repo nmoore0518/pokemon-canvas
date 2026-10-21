@@ -4183,6 +4183,28 @@ const u16 gTilesetPalettes_WhirlIslands_Hns[][16] =
 };
 
 // END Johto
+// <clone GalarMeadow>
+const u32 gTilesetTiles_GalarMeadow[] = INCGFX_U32("data/tilesets/secondary/galar_meadow/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_GalarMeadow[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/galar_meadow/palettes/15.pal", ".gbapal"),
+};
+// </clone GalarMeadow>
 // <clone GalarSnowGeneral>
 const u32 gTilesetTiles_GalarSnowGeneral[] = INCGFX_U32("data/tilesets/primary/galar_snow_general/tiles.png", ".4bpp.fastSmol");
 const u16 gTilesetPalettes_GalarSnowGeneral[][16] =

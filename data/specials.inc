@@ -737,6 +737,12 @@ gSpecials::
 	def_special ExoticSafari_Kiosk
 	def_special ExoticSafari_BufferSeal
 	def_special ExoticSafari_CountStakes
+	def_special ExoticSafari_MarkGone
+	def_special ExoticSafari_TryAppear
+	def_special ExoticSafari_AreaOnLoad
+	def_special ExoticSafari_Lamp
+	def_special ExoticSafari_Stone
+	def_special ExoticSafari_SetupDojo
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk

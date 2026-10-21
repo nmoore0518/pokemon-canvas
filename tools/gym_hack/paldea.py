@@ -77,10 +77,49 @@ def check_runs(rows):
     return bad
 
 
+def whole_trees(rows):
+    """No half trees: the trees are 3 columns wide (x % 3 == 0 the left one), so a stretch of trees
+    between two clearings must start and end on a tree's edge; a one-row strip of trees between two
+    clearings has no top. Such pieces become clearing (ground)."""
+    g = [list(r) for r in rows]
+    h, w = len(g), len(g[0])
+    changed = True
+    while changed:
+        changed = False
+        for y in range(h):
+            x = 0
+            while x < w:
+                if g[y][x] != "T":
+                    x += 1
+                    continue
+                x0 = x
+                while x < w and g[y][x] == "T":
+                    x += 1
+                x1 = x - 1                                  # (a stretch of trees: x0..x1)
+                lo, hi = x0, x1
+                if x0 > 0:                                  # (a clearing on the left)
+                    while lo <= hi and lo % 3 != 0:
+                        lo += 1
+                if x1 < w - 1:                              # (a clearing on the right)
+                    while hi >= lo and hi % 3 != 2:
+                        hi -= 1
+                for k in range(x0, x1 + 1):
+                    if not lo <= k <= hi:
+                        g[y][k] = "."
+                        changed = True
+        for y in range(1, h - 1):
+            for x in range(w):
+                if g[y][x] == "T" and g[y - 1][x] != "T" and g[y + 1][x] != "T":
+                    g[y][x] = "."
+                    changed = True
+    return ["".join(r) for r in g]
+
+
 def draw(rows, ponds=(), exit_row=None):
     """ASCII -> layout. T trees, . ground, g tall grass, f flowers, P sand path (3 wide, its first
     row the forest's dark edge when exit_row is that row: arrow warps out)."""
     assert len({len(r) for r in rows}) == 1, [len(r) for r in rows]
+    rows = whole_trees(rows)
     bad = check_runs(rows)
     assert not bad, f"clearings must start and end on even rows: {bad[:6]}"
     h, w = len(rows), len(rows[0])
@@ -247,8 +286,13 @@ def lake():
 # ---------------------------------------------------------------------------------------------
 # Copied areas
 # ---------------------------------------------------------------------------------------------
+SNOW_PAD = 8          # (columns added each side: the mountain's slopes carry on to the snowfield)
+
+
 def snowy_mountain():
-    """HnS's Mt. Silver summit, with a snowfield added below it"""
+    """HnS's Mt. Silver summit, with a snowfield added below it. The summit's slopes run off its
+    map's sides: widened here (SNOW_PAD columns each side), the slopes carried on diagonally until
+    they meet the snow; the sky above becomes snow-covered peaks (solid)"""
     import struct as _s
     data = (HNS / "data/layouts/MtSilver_SummitDay_hns/map.bin").read_bytes()
     w, h = 21, 27
@@ -257,13 +301,52 @@ def snowy_mountain():
     for y in (22, 23):                          # (the path up to the stairs was blocked)
         for x in range(9, 12):
             g[y][x] = snow
-    rows_below = 8
-    rock_l, rock_r = g[19][7], g[19][13]        # snowy cliff faces, for the sides
-    for k in range(rows_below):
-        row = [snow] * w
-        row[0] = row[w - 1] = (rock_l & 0x3FF) | (1 << 10) | (3 << 12)
-        g.append(row)
-    return g, w, h + rows_below
+    g += [[snow] * w for _ in range(8)]
+    P = SNOW_PAD
+    W = w + 2 * P
+    out = [[snow] * W for _ in range(len(g))]
+    sky = 0x38C
+    for y in range(len(g)):
+        for X in range(W):
+            x = X - P
+            if 0 <= x < w:
+                v = g[y][x]
+            elif y > 21:
+                v = snow
+            else:                               # (follow the slope up-and-in to the map)
+                k = -x if x < 0 else x - (w - 1)
+                sx, sy = (x + k if x < 0 else x - k), y - k
+                v = g[sy][sx] if sy >= 0 else g[0][0]
+                if y == 21:
+                    v = g[21][0]
+            if v & 0x3FF == sky:
+                v = snow | (1 << 10)
+            elif v & 0x3FF in PEAK_ON_SNOW:
+                v = (v & ~0x3FF) | PEAK_ON_SNOW[v & 0x3FF]
+            out[y][X] = v
+    snow_peaks(snow & 0x3FF)
+    return out, W, len(out)
+
+
+PEAK_ON_SNOW = {0x358: 0x350, 0x359: 0x351}
+
+
+def snow_peaks(snow):
+    """The slopes' top corners (0x358/0x359) are drawn over sky: copies of them over snow, in two
+    of the snow tileset's empty metatile slots (0x350/0x351)"""
+    import struct as _s
+    f = ROOT / "data/tilesets/secondary/mt_silver_snow_hns/metatiles.bin"
+    mt = bytearray(f.read_bytes())
+    ground = _s.unpack_from("<4H", mt, (snow - 0x280) * 16)
+    for src, dst in PEAK_ON_SNOW.items():
+        top = _s.unpack_from("<4H", mt, (src - 0x280) * 16 + 8)
+        _s.pack_into("<8H", mt, (dst - 0x280) * 16, *ground, *top)
+    at = bytearray((f.parent / "metatile_attributes.bin").read_bytes())
+    asz = len(at) // (len(mt) // 16)
+    for src, dst in PEAK_ON_SNOW.items():
+        at[(dst - 0x280) * asz:(dst - 0x279) * asz] = at[(src - 0x280) * asz:(src - 0x279) * asz]
+    f.write_bytes(mt)
+    (f.parent / "metatile_attributes.bin").write_bytes(at)
 
 
 def desert():
@@ -271,6 +354,15 @@ def desert():
     Desert Ruins' door at the bottom (down to the crater)"""
     src, lay = read_layout("LAYOUT_ROUTE111_NO_MIRAGE_TOWER")
     g = [row[11:39] for row in src[37:91]]
+    # The crop's edges cut through things: the cliffs' feet along the top (rock instead), the little
+    # trees in the bottom-left corner (grass) and the boulders' tops along the bottom (sand)
+    for x in range(12):
+        g[0][x] = 0x071 | (1 << 10)            # (Emerald's metatiles: converted later)
+    for x in range(1, 5):
+        g[53][x] = 0x001
+    for x in range(28):
+        if g[53][x] & 0x3FF in (0x0A3, 0x0A4):
+            g[53][x] = (g[53][x] & ~0x3FF & ~(3 << 10)) | 0x121
     return g, 28, 54
 
 
@@ -290,7 +382,7 @@ def snow_cliffs(g, w, h):
     """The cliffs either side of the path up to the summit can't be walked on"""
     for y in range(0, 21):
         for x in range(w):
-            if not (9 <= x <= 11 and y >= 5):
+            if not (9 + SNOW_PAD <= x <= 11 + SNOW_PAD and y >= 5):
                 g[y][x] |= 1 << 10
 
 
@@ -311,7 +403,7 @@ def land(*mons):
 
 AREAS = {
     "MEADOW": {
-        "map": "ExoticSafari_PaldeaMeadow", "build": meadow, "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
+        "map": "ExoticSafari_PaldeaMeadow", "build": meadow, "border_size": (3, 2), "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
         "music": "MUS_RG_ROUTE24", "weather": "WEATHER_SUNNY", "type": "MAP_TYPE_ROUTE",
         # links: key -> (kind, cells, arrival, (area, key)). kind: "edge" (walk off: a trigger),
         # "warp" (the cells are warp tiles: doors, arrows, ladders)
@@ -327,14 +419,14 @@ AREAS = {
         "items": [],
     },
     "FOREST": {
-        "map": "ExoticSafari_PaldeaForest", "build": forest_area, "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
+        "map": "ExoticSafari_PaldeaForest", "build": forest_area, "border_size": (3, 2), "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
         "music": "MUS_RG_VIRIDIAN_FOREST", "weather": "WEATHER_SHADE", "type": "MAP_TYPE_ROUTE",
         "links": {
             "MEADOW": ("edge", [(32, 10), (32, 11), (32, 12)], (31, 11), ("MEADOW", "FOREST")),
             "DESERT": ("edge", [(15, 27), (16, 27), (17, 27)], (16, 26), ("DESERT", "FOREST")),
         },
         "land": land("TAROUNTULA", "NYMBLE", "SMOLIV", "RELLOR", "BRAMBLIN", "TOEDSCOOL", "SHROODLE", "CAPSAKID",
-                     "TINKATINK", "MASCHIFF", ("SPRIGATITO", 48, 50), ("DIPPLIN", 50, 54)),
+                     "TINKATINK", ("URSALUNA_BLOODMOON", 52, 55), ("SPRIGATITO", 48, 50), ("DIPPLIN", 50, 54)),
         "statics": [("WO_CHIEN", (6, 6))],
         "items": [],
     },
@@ -380,7 +472,7 @@ AREAS = {
         "items": [],
     },
     "LAKE": {
-        "map": "ExoticSafari_PaldeaLake", "build": lake, "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
+        "map": "ExoticSafari_PaldeaLake", "build": lake, "border_size": (3, 2), "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
         "music": "MUS_RG_ROUTE24", "weather": "WEATHER_NONE", "type": "MAP_TYPE_ROUTE",
         "links": {
             "MEADOW": ("edge", [(0, 16), (0, 17), (0, 18)], (1, 17), ("MEADOW", "LAKE")),
@@ -401,12 +493,12 @@ AREAS = {
         "music": "MUS_RG_ROUTE24", "weather": "WEATHER_SNOW", "type": "MAP_TYPE_ROUTE", "border": 0x281,
         "post": snow_cliffs, "patch_snow": True,
         "links": {
-            "LAKE": ("edge", [(9, 34), (10, 34), (11, 34)], (10, 33), ("LAKE", "SNOW")),
+            "LAKE": ("edge", [(17, 34), (18, 34), (19, 34)], (18, 33), ("LAKE", "SNOW")),
         },
         "land": land("CETODDLE", "FRIGIBAX", "GREAVARD", "BOMBIRDIER", "CETITAN", "TINKATINK", ("ARCTIBAX", 50, 54),
                      "LOKIX", ("GARGANACL", 50, 54), "KILOWATTREL", ("BAXCALIBUR", 54, 56), ("ANNIHILAPE", 52, 55)),
-        "statics": [("CHIEN_PAO", (10, 6))],
-        "items": [("ICE_STONE", (2, 30))],
+        "statics": [("CHIEN_PAO", (18, 6))],
+        "items": [("ICE_STONE", (10, 30))],
     },
     "ACADEMY": {
         "map": "ExoticSafari_PaldeaAcademy", "build": academy, "tilesets": ("gTileset_BuildingFrlg", "gTileset_PokemonMansion"),
@@ -437,8 +529,8 @@ STAKE_FLAG_BASE = 0x0EF                                  # (FLAG_EXOTIC_STAKE_FI
 STAKES = {
     "PURPLE": [("MEADOW", (26, 4)), ("DESERT", (26, 42)), ("LAKE", (41, 4)), ("ACADEMY", (1, 30))],
     "YELLOW": [("FOREST", (26, 24)), ("CRATER", (38, 13)), ("DEPTHS", (38, 1)), ("MEADOW", (4, 17))],
-    "GREEN": [("SNOW", (20, 22)), ("LAKE", (41, 28)), ("ACADEMY", (36, 4)), ("DEPTHS", (34, 21))],
-    "BLUE": [("FOREST", (3, 18)), ("DESERT", (25, 52)), ("SNOW", (0, 22)), ("CRATER", (5, 20))],
+    "GREEN": [("SNOW", (28, 22)), ("LAKE", (41, 28)), ("ACADEMY", (36, 4)), ("DEPTHS", (34, 21))],
+    "BLUE": [("FOREST", (3, 18)), ("DESERT", (25, 52)), ("SNOW", (8, 22)), ("CRATER", (5, 20))],
 }
 # Items the kiosk doesn't sell once found (one of a kind)
 UNIQUE_ITEMS = {"WELLSPRING_MASK", "HEARTHFLAME_MASK", "CORNERSTONE_MASK"}

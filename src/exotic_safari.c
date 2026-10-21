@@ -13,6 +13,9 @@
 #include "fieldmap.h"
 #include "field_camera.h"
 #include "gym_switch.h"
+#include "gym_convention.h"
+#include "pokemon.h"
+#include "script.h"
 #include "string_util.h"
 #include "item.h"
 #include "overworld.h"
@@ -24,6 +27,7 @@
 #include "constants/items.h"
 #include "constants/maps.h"
 #include "constants/songs.h"
+#include "constants/vars.h"
 
 #include "data/exotic_safari_doors.h"
 #include "data/exotic_safari_areas.h"
@@ -166,6 +170,22 @@ static bool32 PlaceRoamer(const struct ExoticSafariArea *area, u32 roamer)
 // roamers) to be caught, Terapagos for every gym type to be mastered. Hidden (a temp flag) until
 // then, once caught, and for the rest of a visit after a battle that didn't catch it.
 // ---------------------------------------------------------------------------------------------
+enum { LEAD_LOVING, LEAD_DRAGON };
+
+// The lead POKéMON (the party's first): Enamorus wants one that loves its trainer as much as any
+// can (the most friendship), Regidrago a Dragon type
+static bool32 LeadIs(u32 what)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    u32 species;
+    if (GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(mon, MON_DATA_IS_EGG))
+        return FALSE;
+    if (what == LEAD_LOVING)
+        return GetMonData(mon, MON_DATA_FRIENDSHIP) >= MAX_FRIENDSHIP;
+    species = GetMonData(mon, MON_DATA_SPECIES);
+    return GetSpeciesType(species, 0) == TYPE_DRAGON || GetSpeciesType(species, 1) == TYPE_DRAGON;
+}
+
 static u32 CountFlagsLeft(const u16 *flags, u32 count)
 {
     u32 i, left = 0;
@@ -192,32 +212,86 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return StakesLeft(s->sealArg);
     case SEAL_MASKS:
         return CountFlagsLeft(sMaskFlags, ARRAY_COUNT(sMaskFlags));
-    case SEAL_ROAMERS:
+    case SEAL_ROAMERS:      // (its own region's: sealArg)
         for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)
-            left += !FlagGet(sExoticSafariRoamers[i].caughtFlag);
+            left += sExoticSafariRoamers[i].region == s->sealArg && !FlagGet(sExoticSafariRoamers[i].caughtFlag);
         return left;
     case SEAL_MASTERY:
         return !GymSwitch_AllTypesMastered();
+    case SEAL_ITEM:
+        return !FlagGet(sSealItems[s->sealArg][1]);
+    case SEAL_LAMPS:
+        for (i = 0; i < ARRAY_COUNT(sLamps); i++)
+            left += !FlagGet(FLAG_EXOTIC_LAMP_FIRST + i);
+        return left;
+    case SEAL_FRIENDSHIP:
+        return !LeadIs(LEAD_LOVING);
+    case SEAL_DOJO:
+        return !FlagGet(FLAG_EXOTIC_DOJO_WON);
+    case SEAL_STONES:
+        return !FlagGet(FLAG_EXOTIC_STONES_LIT);
+    case SEAL_DRAGON:
+        return !FlagGet(sSealItems[s->sealArg][1]) + !LeadIs(LEAD_DRAGON);
     }
     return 0;
 }
 
+// The seal as the hint should tell it (Regidrago's: the fang first, then the lead)
+static u32 SealToTell(const struct ExoticSafariStatic *s)
+{
+    if (s->seal == SEAL_DRAGON && FlagGet(sSealItems[s->sealArg][1]))
+        return SEAL_DRAGON_LEAD;
+    return s->seal;
+}
+
 // Special (the spot where a static legendary appears, while it isn't there): VAR_0x8004 = which
-// (sExoticSafariStatics). VAR_RESULT = its seal (SEAL_*), or 0xFF if it's caught, 0xFE if the seal
-// is broken (it's away for this visit). STR_VAR_1 = the stakes' color, STR_VAR_2 = how many left.
+// (sExoticSafariStatics). VAR_RESULT = its seal (SEAL_*), or SEAL_RESULT_CAUGHT, or
+// SEAL_RESULT_AWAY if the seal is broken (ExoticSafari_TryAppear: it may come now). STR_VAR_1 = the
+// stakes' color or the item it waits for, STR_VAR_2 = how many left.
 void ExoticSafari_BufferSeal(void)
 {
     const struct ExoticSafariStatic *s = &sExoticSafariStatics[gSpecialVar_0x8004 % ARRAY_COUNT(sExoticSafariStatics)];
     u32 left = SealLeft(s);
     if (FlagGet(s->caughtFlag))
-        gSpecialVar_Result = 0xFF;
+        gSpecialVar_Result = SEAL_RESULT_CAUGHT;
     else if (left == 0)
-        gSpecialVar_Result = 0xFE;
+        gSpecialVar_Result = SEAL_RESULT_AWAY;
     else
-        gSpecialVar_Result = s->seal;
+        gSpecialVar_Result = SealToTell(s);
     if (s->seal == SEAL_STAKES)
         StringCopy(gStringVar1, sStakeColorNames[s->sealArg]);
+    else if (s->seal == SEAL_ITEM || s->seal == SEAL_DRAGON)
+        CopyItemName(sSealItems[s->sealArg][0], gStringVar1);
     ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
+}
+
+// The statics that ran from a battle this visit (bit per local id: they stay away until the
+// player leaves the area; a temp var, cleared on the way in)
+#define VAR_LEGENDS_GONE VAR_TEMP_8
+
+// Special (a static legendary that wasn't caught): VAR_LAST_TALKED is gone for the visit
+void ExoticSafari_MarkGone(void)
+{
+    VarSet(VAR_LEGENDS_GONE, VarGet(VAR_LEGENDS_GONE) | (1 << (gSpecialVar_LastTalked % 16)));
+}
+
+// Special: VAR_0x8004 = a static legendary (sExoticSafariStatics). If it's in this area, its seal is
+// broken, it isn't caught or away for the visit, and isn't there yet: it comes (its temp flag
+// cleared; the script adds its object, local id VAR_0x8005). VAR_RESULT: TRUE if it came.
+void ExoticSafari_TryAppear(void)
+{
+    const struct ExoticSafariStatic *s = &sExoticSafariStatics[gSpecialVar_0x8004 % ARRAY_COUNT(sExoticSafariStatics)];
+    gSpecialVar_Result = FALSE;
+    if (s->mapGroup != gSaveBlock1Ptr->location.mapGroup || s->mapNum != gSaveBlock1Ptr->location.mapNum)
+        return;
+    if (FlagGet(s->caughtFlag) || SealLeft(s) != 0 || !FlagGet(s->hideFlag))
+        return;
+    if ((VarGet(VAR_LEGENDS_GONE) >> (s->localId % 16)) & 1)
+        return;
+    FlagClear(s->hideFlag);
+    gSpecialVar_0x8005 = s->localId;
+    gSpecialVar_0x8006 = s->species;
+    gSpecialVar_Result = TRUE;
 }
 
 // Special (a stake, just pulled): VAR_0x8004 = its color. VAR_RESULT = how many of that color are
@@ -253,6 +327,9 @@ void ExoticSafari_AreaOnTransition(void)
         FlagSet(sExoticSafariRoamers[i].hideFlag);
         if (area->spotCount == 0 || FlagGet(sExoticSafariRoamers[i].caughtFlag))
             continue;
+        // (Calyrex: only once its steed, Spectrier, is caught)
+        if (sExoticSafariRoamers[i].needFlag != 0 && !FlagGet(sExoticSafariRoamers[i].needFlag))
+            continue;
         if (Random() % CountRegionAreas(area->region) != 0)
             continue;
         if (PlaceRoamer(area, i))
@@ -277,4 +354,108 @@ void ExoticSafari_Kiosk(void)
     }
     sKioskItems[n] = ITEM_NONE;
     CreatePokemartMenu(sKioskItems);
+}
+
+// ---------------------------------------------------------------------------------------------
+// THE GALAR LEGENDARIES' PUZZLES (tools/gym_hack/galar.py)
+// Zarude's lamps: Glimwood's big mushrooms are dark until the player touches each (a flag apiece);
+// once all are lit, Zarude comes. Regieleki's stepping stones: a lightning bolt of stones in the
+// meadow, lit one by one as they're stepped on from the top of the bolt down (a stone out of order
+// puts them all out); all lit, Regieleki comes, and they stay lit.
+// ---------------------------------------------------------------------------------------------
+static bool32 InMap(u32 mapGroup, u32 mapNum)
+{
+    return gSaveBlock1Ptr->location.mapGroup == mapGroup && gSaveBlock1Ptr->location.mapNum == mapNum;
+}
+
+static void SetLamp(u32 lamp, bool32 lit, bool32 draw)
+{
+    u32 k, wide = sLamps[lamp][2];
+    u32 first = wide == 3 ? (lit ? EXOTIC_SAFARI_LAMP_GIANT_LIT : EXOTIC_SAFARI_LAMP_GIANT_DARK)
+                          : (lit ? EXOTIC_SAFARI_LAMP_BIG_LIT : EXOTIC_SAFARI_LAMP_BIG_DARK);
+    for (k = 0; k < wide * 2; k++)
+    {
+        s32 x = sLamps[lamp][0] + k % wide + MAP_OFFSET, y = sLamps[lamp][1] + k / wide + MAP_OFFSET;
+        MapGridSetMetatileIdAt(x, y, (first + k) | MAPGRID_COLLISION_MASK);
+        if (draw)
+            CurrentMapDrawMetatileAt(x, y);
+    }
+}
+
+#define VAR_STONES_LIT VAR_TEMP_9      // (how many stones are lit, in order, this visit)
+
+static void SetStone(u32 stone, bool32 lit, bool32 draw)
+{
+    s32 x = sStones[stone][0] + MAP_OFFSET, y = sStones[stone][1] + MAP_OFFSET;
+    MapGridSetMetatileIdAt(x, y, (lit ? EXOTIC_SAFARI_STONE_LIT : EXOTIC_SAFARI_STONE_DARK) + sStones[stone][0] % 2);
+    if (draw)
+        CurrentMapDrawMetatileAt(x, y);
+}
+
+// Special (each area's ON_LOAD): the lamps and stones already lit
+void ExoticSafari_AreaOnLoad(void)
+{
+    u32 i;
+    if (InMap(MAP_GROUP(EXOTIC_SAFARI_LAMP_MAP), MAP_NUM(EXOTIC_SAFARI_LAMP_MAP)))
+    {
+        for (i = 0; i < ARRAY_COUNT(sLamps); i++)
+        {
+            if (FlagGet(FLAG_EXOTIC_LAMP_FIRST + i))
+                SetLamp(i, TRUE, FALSE);
+        }
+    }
+    if (InMap(MAP_GROUP(EXOTIC_SAFARI_STONE_MAP), MAP_NUM(EXOTIC_SAFARI_STONE_MAP)) && FlagGet(FLAG_EXOTIC_STONES_LIT))
+    {
+        for (i = 0; i < ARRAY_COUNT(sStones); i++)
+            SetStone(i, TRUE, FALSE);
+    }
+}
+
+// Special (a big mushroom touched): VAR_0x8004 = which. VAR_RESULT: 0 already lit, 1 lit now
+// (STR_VAR_2: how many still dark), 2 lit now, the last one
+void ExoticSafari_Lamp(void)
+{
+    u32 lamp = gSpecialVar_0x8004 % ARRAY_COUNT(sLamps), i, left = 0;
+    gSpecialVar_Result = 0;
+    if (FlagGet(FLAG_EXOTIC_LAMP_FIRST + lamp))
+        return;
+    FlagSet(FLAG_EXOTIC_LAMP_FIRST + lamp);
+    SetLamp(lamp, TRUE, TRUE);
+    for (i = 0; i < ARRAY_COUNT(sLamps); i++)
+        left += !FlagGet(FLAG_EXOTIC_LAMP_FIRST + i);
+    ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
+    gSpecialVar_Result = left ? 1 : 2;
+}
+
+// Special (a stepping stone stepped on): VAR_0x8004 = which. VAR_RESULT: 0 nothing (already lit, or
+// all done), 1 lit, 2 lit and the last, 3 out of order (all put out)
+void ExoticSafari_Stone(void)
+{
+    u32 stone = gSpecialVar_0x8004, done = VarGet(VAR_STONES_LIT), i;
+    gSpecialVar_Result = 0;
+    if (FlagGet(FLAG_EXOTIC_STONES_LIT) || stone >= ARRAY_COUNT(sStones) || stone < done)
+        return;
+    if (stone == done)
+    {
+        SetStone(stone, TRUE, TRUE);
+        VarSet(VAR_STONES_LIT, ++done);
+        gSpecialVar_Result = 1;
+        if (done == ARRAY_COUNT(sStones))
+        {
+            FlagSet(FLAG_EXOTIC_STONES_LIT);
+            gSpecialVar_Result = 2;
+        }
+        return;
+    }
+    for (i = 0; i < done; i++)
+        SetStone(i, FALSE, TRUE);
+    VarSet(VAR_STONES_LIT, 0);
+    gSpecialVar_Result = 3;
+}
+
+// Special (Kubfu's dojo master, in the stadium's lobby): her battle, with her full team from the
+// Gym Leader Convention. VAR_RESULT: FALSE if she couldn't be set up.
+void ExoticSafari_SetupDojo(void)
+{
+    gSpecialVar_Result = Convention_SetupByName(COMPOUND_STRING("BEA")) >= 0;
 }

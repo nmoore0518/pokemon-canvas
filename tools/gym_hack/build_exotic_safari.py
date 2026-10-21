@@ -461,11 +461,14 @@ def write_layout(name, lid, grid, primary, secondary, border=None):
     (d / "map.bin").write_bytes(b"".join(struct.pack("<H", v) for row in grid for v in row))
     if border is None:
         border = grid[0][0]
-    border = [border] * 4
-    (d / "border.bin").write_bytes(struct.pack("<4H", *border))
+    if isinstance(border, int):
+        border = [[border] * 2] * 2
+    bh, bw = len(border), len(border[0])            # (a block that repeats beyond the edges, aligned
+    flat = [v for row in border for v in row]       #  with the map: x % bw, y % bh)
+    (d / "border.bin").write_bytes(struct.pack(f"<{len(flat)}H", *flat))
     lj_path = ROOT / "data/layouts/layouts.json"
     lj = json.loads(lj_path.read_text())
-    entry = {"id": lid, "name": f"{name}_Layout", "width": W, "height": H, "border_width": 2, "border_height": 2,
+    entry = {"id": lid, "name": f"{name}_Layout", "width": W, "height": H, "border_width": bw, "border_height": bh,
              "primary_tileset": primary, "secondary_tileset": secondary,
              "border_filepath": f"data/layouts/{name}/border.bin", "blockdata_filepath": f"data/layouts/{name}/map.bin",
              "layout_version": "frlg"}
@@ -509,6 +512,7 @@ REGION_MODULES = [paldea, galar]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10}
+ROAMER_FLAG_BASE = 0x1B             # (the roamers' hide flags: FLAG_TEMP_1B-1F; statics' from FLAG_TEMP_11)
 ROAMER_SPOTS = 48                    # (per area: a sample of its reachable grass/sand/cave floor)
 
 
@@ -632,6 +636,15 @@ def build_region(mod, zone_warp, out):
         from collections import Counter
         ring = [g[y][x] for y in range(h) for x in range(w) if (x in (0, w - 1) or y in (0, h - 1)) and (g[y][x] >> 10) & 3]
         border = a.get("border", Counter(ring).most_common(1)[0][0] if ring else g[0][0])
+        if "border" not in a:
+            # Better: the map's own trees (or rock) carried on past its edges - the most common solid
+            # block of the given size, at an aligned spot - so tree lines don't end in a cut
+            bw, bh = a.get("border_size", (2, 2))
+            blocks = Counter(tuple(tuple(g[y + j][x + i] for i in range(bw)) for j in range(bh))
+                             for y in range(0, h - bh + 1, bh) for x in range(0, w - bw + 1, bw)
+                             if all((g[y + j][x + i] >> 10) & 3 for i in range(bw) for j in range(bh)))
+            if blocks:
+                border = [list(r) for r in blocks.most_common(1)[0][0]]
         write_layout(a["map"], "LAYOUT_" + map_id(a["map"])[4:], g, tilesets[0], tilesets[1], border)
 
     # 2. Warps: each link's cells (warp tiles) or its arrival spot (edges: walking off is a trigger)
@@ -672,7 +685,9 @@ def build_region(mod, zone_warp, out):
                           "dest_map": dm, "dest_warp_id": str(di)})
         coords, scripts = [], [f"@ {name} (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/{mod.__name__}.py)",
                                 f"{name}_MapScripts::", f"\tmap_script MAP_SCRIPT_ON_TRANSITION, {name}_OnTransition",
-                                "\t.byte 0", "", f"{name}_OnTransition::", "\tspecial ExoticSafari_AreaOnTransition", "\tend", ""]
+                                f"\tmap_script MAP_SCRIPT_ON_LOAD, {name}_OnLoad",
+                                "\t.byte 0", "", f"{name}_OnTransition::", "\tspecial ExoticSafari_AreaOnTransition", "\tend", "",
+                                f"{name}_OnLoad::", "\tspecial ExoticSafari_AreaOnLoad", "\tend", ""]
         for lk, (kind, cells, arrival, target) in b["links"].items():
             if kind != "edge":
                 continue
@@ -686,7 +701,7 @@ def build_region(mod, zone_warp, out):
         objects = []
         for i, r in enumerate(mod.ROAMERS):
             o = obj(f"OBJ_EVENT_GFX_SPECIES({r})", 0, 0, f"ExoticSafari_EventScript_Roamer{camel(r)}",
-                    "MOVEMENT_TYPE_WANDER_AROUND", f"FLAG_TEMP_{0x1D + i:X}")
+                    "MOVEMENT_TYPE_WANDER_AROUND", f"FLAG_TEMP_{ROAMER_FLAG_BASE + i:X}")
             o["movement_range_x"] = o["movement_range_y"] = 2
             objects.append(o)
         reach = reachable(b)
@@ -700,12 +715,16 @@ def build_region(mod, zone_warp, out):
             o = obj(f"OBJ_EVENT_GFX_SPECIES({species})", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"FLAG_TEMP_{0x11 + i:X}")
             o["elevation"] = elev(x, y)
             objects.append(o)
+            assert 0x11 + i < ROAMER_FLAG_BASE
             scripts += [f"{label}::", "\tlock", "\tfaceplayer", f"\tsetvar VAR_0x8004, SPECIES_{species}",
                         "\tcall ExoticSafari_EventScript_LegendBattle",
                         "\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone",
                         "\tremoveobject VAR_LAST_TALKED", f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
                         "\tgoto ExoticSafari_EventScript_Release", ""]
-            out["statics"].append((name, species, i, getattr(mod, "CONDITIONS", {}).get(species, ("NONE", 0))))
+            seal, arg = getattr(mod, "CONDITIONS", {}).get(species, ("NONE", 0))
+            if seal == "ROAMERS":                   # (the roamers of its own region)
+                arg = out["region_index"]
+            out["statics"].append((name, species, i, (seal, arg), len(objects)))
             if species in getattr(mod, "CONDITIONS", {}):
                 # Where it will be: a hint at what it waits for (talking to the spot while it isn't there)
                 seal = f"{name}_EventScript_Seal{camel(species)}"
@@ -738,6 +757,9 @@ def build_region(mod, zone_warp, out):
             o = obj("OBJ_EVENT_GFX_VELVET_ROPE", x, y, "ExoticSafari_EventScript_Rope", "MOVEMENT_TYPE_FACE_DOWN")
             o["elevation"] = elev(x, y)
             objects.append(o)
+        if "extra" in a:                         # (anything else: puzzles' signs, triggers, people)
+            a["extra"]({"name": name, "objects": objects, "bgs": bgs, "coords": coords, "scripts": scripts,
+                        "elev": elev, "g": g, "reach": reach, "obj": obj})
         for o in a.get("objects", []):          # (anything else the area wants: decorations)
             objects.append(dict(obj(o["gfx"], o["x"], o["y"], o.get("script", "0"), o.get("movement", "MOVEMENT_TYPE_FACE_DOWN")),
                                 elevation=elev(o["x"], o["y"])))
@@ -753,8 +775,12 @@ def build_region(mod, zone_warp, out):
         water = sum(1 for p in reach if b["beh"](g[p[1]][p[0]]) in MB_SURFABLE)
         land_n = sum(1 for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE)
         out["report"].append(f"  {region:6} {key:8} {name:34} {w}x{h}  {land_n} wild-Pokémon tiles, {water} water")
+    assert len(mod.ROAMERS) <= 0x20 - ROAMER_FLAG_BASE
     for r in mod.ROAMERS:
         out["roamers"].append((r, out["region_index"]))
+    out["roamer_needs"].update(getattr(mod, "ROAMER_NEEDS", {}))
+    if hasattr(mod, "header_lines"):
+        out["header"] += mod.header_lines(map_id)
     for color in getattr(mod, "STAKE_COLORS", []):
         out["stake_colors"].append(color)
 
@@ -773,17 +799,22 @@ def build_region(mod, zone_warp, out):
     return [a["map"] for a in areas.values()]
 
 
+STATICS = []                         # (the static legendaries, in sExoticSafariStatics' order)
+
+
 def build_zones(zone_warp):
-    out = {"areas": [], "roamers": [], "statics": [], "finds": [], "stake_colors": [], "report": [], "wild": []}
+    out = {"areas": [], "roamers": [], "statics": [], "finds": [], "stake_colors": [], "report": [], "wild": [],
+           "roamer_needs": {}, "header": []}
     maps = []
     for i, mod in enumerate(REGION_MODULES):
         out["region_index"] = i
         maps += build_region(mod, zone_warp, out)
+    STATICS[:] = [species for _, species, *_ in out["statics"]]
 
     # The header for src/exotic_safari.c: the areas (and their roamer spots), the roamers, the kiosk
     c = ["// The Exotic Pokémon Safari's areas (made by tools/gym_hack/build_exotic_safari.py)",
          "struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; };",
-         "struct ExoticSafariRoamer { u16 species, caughtFlag, hideFlag; u8 region; };",
+         "struct ExoticSafariRoamer { u16 species, caughtFlag, hideFlag, needFlag; u8 region; };",
          "struct ExoticSafariFind { u16 item, flag; };", ""]
     for name, region, spots in out["areas"]:
         c.append(f"static const u8 sSpots_{name}[][3] = {{" + ", ".join(f"{{{x}, {y}, {e}}}" for x, y, e in spots) + "};")
@@ -794,26 +825,29 @@ def build_zones(zone_warp):
     c += ["};", "", f"#define EXOTIC_SAFARI_ROAMER_COUNT {len(out['roamers'])}",
           "static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =", "{"]
     slot = {}
+    needs = out["roamer_needs"]
     for r, region in out["roamers"]:
         i = slot[region] = slot.get(region, -1) + 1
-        c.append(f"    {{SPECIES_{r}, FLAG_EXOTIC_LEGEND_{r}, FLAG_TEMP_{0x1D + i:X}, {region}}},")
-    c += ["};", "#define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_1D)", "",
+        need = f"FLAG_EXOTIC_LEGEND_{needs[r]}" if r in needs else "0"
+        c.append(f"    {{SPECIES_{r}, FLAG_EXOTIC_LEGEND_{r}, FLAG_TEMP_{ROAMER_FLAG_BASE + i:X}, {need}, {region}}},")
+    c += ["};", f"#define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_{ROAMER_FLAG_BASE:X})", "",
           "static const u16 sKioskSupplies[] = {" + ", ".join(f"ITEM_{i}" for i in KIOSK_SUPPLIES) + "};",
           "static const struct ExoticSafariFind sKioskFinds[] =", "{"]
     for item, flag in out["finds"]:
         c.append(f"    {{ITEM_{item}, {flag}}},")
     c += ["};", "", "// The legendaries that stand in one place, and what each waits for",
-          "struct ExoticSafariStatic { u8 mapGroup, mapNum; u16 species, caughtFlag, hideFlag; u8 seal, sealArg; };",
+          "struct ExoticSafariStatic { u8 mapGroup, mapNum; u16 species, caughtFlag, hideFlag; u8 seal, sealArg, localId; };",
           "static const struct ExoticSafariStatic sExoticSafariStatics[] =", "{"]
-    for mname, species, i, (seal, arg) in out["statics"]:
+    for mname, species, i, (seal, arg), local in out["statics"]:
         mid = map_id(mname)
         c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), SPECIES_{species}, FLAG_EXOTIC_LEGEND_{species}, "
-                 f"FLAG_TEMP_{0x11 + i:X}, SEAL_{seal}, {arg}}},")
+                 f"FLAG_TEMP_{0x11 + i:X}, SEAL_{seal}, {arg}, {local}}},")
     c += ["};", "", f"#define EXOTIC_SAFARI_STAKE_COLORS {len(out['stake_colors'])}",
           "#define EXOTIC_SAFARI_STAKES_PER_COLOR 4",
           f"#define EXOTIC_SAFARI_STAKE_FLAGS 0x{paldea.STAKE_FLAG_BASE:03X}",
           "static const u8 *const sStakeColorNames[] = {" + ", ".join(f'COMPOUND_STRING("{c}")' for c in out["stake_colors"]) + "};",
-          "static const u16 sMaskFlags[] = {FLAG_EXOTIC_ITEM_WELLSPRING_MASK, FLAG_EXOTIC_ITEM_HEARTHFLAME_MASK, FLAG_EXOTIC_ITEM_CORNERSTONE_MASK};"]
+          "static const u16 sMaskFlags[] = {FLAG_EXOTIC_ITEM_WELLSPRING_MASK, FLAG_EXOTIC_ITEM_HEARTHFLAME_MASK, FLAG_EXOTIC_ITEM_CORNERSTONE_MASK};",
+          ""] + out["header"]
     (ROOT / "src/data/exotic_safari_areas.h").write_text("\n".join(c) + "\n")
 
     # The roamers' and stakes' scripts (any area)
@@ -918,7 +952,17 @@ def main():
               f"#define EXOTIC_SAFARI_LEGEND_LEVEL      {LEGEND_LEVEL}",
               "// What a static legendary waits for (src/exotic_safari.c)",
               "#define SEAL_STAKES   0", "#define SEAL_MASKS    1", "#define SEAL_ROAMERS  2", "#define SEAL_MASTERY  3", "#define SEAL_NONE     4",
-              "#endif"]
+              "#define SEAL_ITEM     5     // (an item found: Zacian's Rusted Sword, Zamazenta's Rusted Shield)",
+              "#define SEAL_LAMPS    6     // (Zarude: Glimwood's big mushrooms lit)",
+              "#define SEAL_FRIENDSHIP 7   // (Enamorus: a lead POKéMON with the most friendship)",
+              "#define SEAL_DOJO     8     // (Kubfu: the dojo master beaten)",
+              "#define SEAL_STONES   9     // (Regieleki: the stepping stones lit in order)",
+              "#define SEAL_DRAGON   10    // (Regidrago: the Dragon Fang found ...)",
+              "#define SEAL_DRAGON_LEAD 11 // (... and a Dragon-type POKéMON in the lead)",
+              "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
+              "// Each static legendary's index (sExoticSafariStatics)"]
+    consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]
+    consts += ["#endif"]
     (ROOT / "include/constants/exotic_safari.h").write_text("\n".join(consts) + "\n")
     c = ["// The Exotic Pokémon Safari's doors (made by tools/gym_hack/build_exotic_safari.py)",
          f"#define EXOTIC_SAFARI_DOOR_COUNT {len(REGIONS)}",

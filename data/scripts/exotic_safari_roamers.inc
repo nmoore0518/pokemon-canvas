@@ -44,6 +44,33 @@ ExoticSafari_EventScript_RoamerCalyrex::
 	setflag FLAG_EXOTIC_LEGEND_CALYREX
 	goto ExoticSafari_EventScript_RoamerGone
 
+ExoticSafari_EventScript_RoamerArticunoGalar::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_ARTICUNO_GALAR
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_ARTICUNO_GALAR
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerZapdosGalar::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_ZAPDOS_GALAR
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_ZAPDOS_GALAR
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerMoltresGalar::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_MOLTRES_GALAR
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_MOLTRES_GALAR
+	goto ExoticSafari_EventScript_RoamerGone
+
 ExoticSafari_EventScript_StakePurple::
 	setvar VAR_0x8004, 0
 	goto ExoticSafari_EventScript_Stake

@@ -1736,15 +1736,15 @@ static void QueueAnimTiles_BlackthornGym_Lava(u16 timer)
 }
 // END Johto
 
-// Pokémon Canvas: Glimwood Tangle (the Exotic Safari's Galar zone) - its mushrooms glow, brighter and
-// dimmer (palette 12, made by tools/gym_hack/galar.py: its cap and gill colors pulse)
-extern const u16 gTilesetPalettes_Glimwood[][16];
+// Pokémon Canvas: the Exotic Safari's Galar zone - Glimwood Tangle's mushrooms and the meadow's lit
+// stepping stones glow, brighter and dimmer (palette 12 of the map's secondary tileset, made by
+// tools/gym_hack/galar.py: its colors 4-12 pulse)
 
 static void TilesetAnim_Glimwood(u16 timer)
 {
     u32 i, step, f;
     u16 *dst = &gPlttBufferUnfaded[BG_PLTT_ID(12)];
-    const u16 *base = gTilesetPalettes_Glimwood[12];
+    const u16 *base = gMapHeader.mapLayout->secondaryTileset->palettes[12];
     if (timer % 4)
         return;
     if ((u8)FindTaskIdByFunc(Task_BattleTransition_Intro) != TASK_NONE)

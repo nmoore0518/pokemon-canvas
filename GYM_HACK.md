@@ -710,6 +710,28 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          (pitch) are one of a kind. Level-ups in place of other conditions: Sirfetch'd 40,
          Runerigus 34, Grapploct 35, Overqwil 40, Basculegion 40, Wyrdeer 40; no time of day for
          Obstagoon, Frosmoth, Sneasler, Ursaluna.
+   - [x] Galar round 2 (Nick's review). Legendary puzzles (`CONDITIONS` in galar.py; `SealLeft`,
+         `ExoticSafari_TryAppear` - a static comes as soon as its seal breaks, even mid-visit):
+         Zacian/Zamazenta at their plinths once the Rusted Sword (forest) / Rusted Shield (mine
+         B1F) is found (kept for the Crowned forms; never sold); Zarude once Glimwood's 8 dark
+         mushrooms (4 big, 4 giant) are touched and lit (`ExoticSafari_Lamp`, flags 0x221-0x228);
+         Enamorus at the pink glade for a lead with the most friendship; Kubfu on the pitch once the
+         dojo master (Bea, her Convention team) in the lobby is beaten; Regieleki once the meadow's 7
+         stepping stones (a lightning bolt, new glowing metatiles in a copy of the farmland tileset)
+         are stepped on from the top of the bolt down - out of order puts them out
+         (`ExoticSafari_Stone`); Regidrago for the Dragon Fang (mine 1F) and a Dragon-type lead.
+         Galarian Articuno, Zapdos and Moltres roam with Spectrier; Calyrex roams only once Spectrier
+         is caught (roamers' `needFlag`; hide flags FLAG_TEMP_1B-1F). Pecharunt counts only Paldea's
+         roamers. A static that ran stays away for the visit (`ExoticSafari_MarkGone`, VAR_TEMP_8).
+   - [x] Regional forms wild in their own generation's zone: Galar has Galarian Meowth, Ponyta,
+         Rapidash, Slowpoke, Slowbro, Farfetch'd, Weezing, Mr. Mime, Corsola, Zigzagoon, Linoone and
+         Hisuian Growlithe, Arcanine, Voltorb, Electrode, Typhlosion, Samurott, Lilligant, Zorua,
+         Zoroark, Braviary, Sliggoo, Decidueye (with the earlier ones); Paldea adds Bloodmoon
+         Ursaluna (forest). Hisuian Goodra: level 50, no rain needed.
+   - [x] Map edges: tree lines carried on by aligned border blocks (no cut trees), Paldea's drawn
+         tree strips whole; Mt. Silver's slopes widened, their sky turned to snow (peak corners
+         redrawn over snow); the desert's cut cliffs/boulders at its edges tidied; Glimwood's
+         south-east glade opened up (two trees cleared).
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

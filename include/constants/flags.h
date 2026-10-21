@@ -2555,6 +2555,9 @@
 #define FLAG_EXOTIC_LEGEND_SPECTRIER          0x206
 #define FLAG_EXOTIC_LEGEND_CALYREX            0x207
 #define FLAG_EXOTIC_LEGEND_ENAMORUS           0x208
+#define FLAG_EXOTIC_LEGEND_ARTICUNO_GALAR     0x209
+#define FLAG_EXOTIC_LEGEND_ZAPDOS_GALAR       0x20A
+#define FLAG_EXOTIC_LEGEND_MOLTRES_GALAR      0x20B
 #define FLAG_EXOTIC_ITEM_TART_APPLE           0x210
 #define FLAG_EXOTIC_ITEM_SWEET_APPLE          0x211
 #define FLAG_EXOTIC_ITEM_CRACKED_POT          0x212
@@ -2567,6 +2570,14 @@
 #define FLAG_EXOTIC_ITEM_RAZOR_CLAW           0x219
 #define FLAG_EXOTIC_ITEM_PEAT_BLOCK           0x21A
 #define FLAG_EXOTIC_ITEM_BLACK_AUGURITE       0x21B
+#define FLAG_EXOTIC_ITEM_RUSTED_SWORD         0x21C
+#define FLAG_EXOTIC_ITEM_RUSTED_SHIELD        0x21D
+#define FLAG_EXOTIC_ITEM_DRAGON_FANG          0x21E
+// The Galar legendaries' puzzles: the dojo master beaten (Kubfu), Regieleki's stepping stones lit,
+// Zarude's lamps (Glimwood's big mushrooms) lit
+#define FLAG_EXOTIC_DOJO_WON                  0x21F
+#define FLAG_EXOTIC_STONES_LIT                0x220
+#define FLAG_EXOTIC_LAMP_FIRST                0x221   // to 0x228 (8)
 #define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B

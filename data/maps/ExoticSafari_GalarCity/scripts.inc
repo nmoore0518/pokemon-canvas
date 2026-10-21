@@ -1,10 +1,15 @@
 @ ExoticSafari_GalarCity (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/galar.py)
 ExoticSafari_GalarCity_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ExoticSafari_GalarCity_OnTransition
+	map_script MAP_SCRIPT_ON_LOAD, ExoticSafari_GalarCity_OnLoad
 	.byte 0
 
 ExoticSafari_GalarCity_OnTransition::
 	special ExoticSafari_AreaOnTransition
+	end
+
+ExoticSafari_GalarCity_OnLoad::
+	special ExoticSafari_AreaOnLoad
 	end
 
 ExoticSafari_GalarCity_EventScript_ToLake::
@@ -27,6 +32,11 @@ ExoticSafari_GalarCity_EventScript_LegendZacian::
 	setflag FLAG_EXOTIC_LEGEND_ZACIAN
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_GalarCity_EventScript_SealZacian::
+	lockall
+	setvar VAR_0x8004, 10
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_GalarCity_EventScript_LegendZamazenta::
 	lock
 	faceplayer
@@ -36,6 +46,11 @@ ExoticSafari_GalarCity_EventScript_LegendZamazenta::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_ZAMAZENTA
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_GalarCity_EventScript_SealZamazenta::
+	lockall
+	setvar VAR_0x8004, 11
+	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_GalarCity_EventScript_ItemRazorClaw::
 	finditem ITEM_RAZOR_CLAW

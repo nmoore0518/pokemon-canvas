@@ -1,10 +1,15 @@
 @ ExoticSafari_PaldeaMeadow (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/paldea.py)
 ExoticSafari_PaldeaMeadow_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ExoticSafari_PaldeaMeadow_OnTransition
+	map_script MAP_SCRIPT_ON_LOAD, ExoticSafari_PaldeaMeadow_OnLoad
 	.byte 0
 
 ExoticSafari_PaldeaMeadow_OnTransition::
 	special ExoticSafari_AreaOnTransition
+	end
+
+ExoticSafari_PaldeaMeadow_OnLoad::
+	special ExoticSafari_AreaOnLoad
 	end
 
 ExoticSafari_PaldeaMeadow_EventScript_ToForest::

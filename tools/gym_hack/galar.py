@@ -44,16 +44,109 @@ def meadow():
     g = canvas(W, H, grass)
     paste(g, r39, 0, 0, 40, 8, 0, 0)          # the wheat field, the canal, the fence below
     paste(g, r39, 0, 8, 14, 5, 0, 8)          # autumn trees (left)
-    paste(g, r39, 14, 8, 14, 5, 26, 8)        # autumn trees (right)
+    paste(g, r39, 14, 7, 14, 6, 26, 7)        # autumn trees (right; with their tops)
     paste(g, r39, 10, 13, 18, 7, 1, 14)       # the farm: farmhouse, blue house, fences
     paste(g, r38, 13, 34, 12, 11, 27, 15)     # the fenced pond
     rect(g, 14, 7, 25, 7, grass)              # (no trees above the gap)
     rect(g, 2, 22, 15, 27, blk(0x00D, 0))     # tall grass meadows
     rect(g, 19, 13, 25, 26, blk(0x00D, 0))
-    paste(g, r38, 12, 45, 40, 3, 0, 29)       # trees along the south edge
+    # Trees along the south edge (Route 38's: their top edge, then rows of trees, carried on past
+    # the map's edge by the border: MEADOW_BORDER)
+    for x in range(W):
+        g[29][x] = r38[45][14 + x % 2]
+        g[30][x] = r38[46][14 - x % 2]
+        g[31][x] = r38[47][14 + x % 2]
     rect(g, 17, 28, 19, 31, grass)            # the way back to the hall (south)
     rect(g, 39, 13, 39, 14, grass)            # -> the lake (east)
+    import build_exotic_safari as B
+    B.clone_tileset("gTileset_Route38_Farmland_Hns", "GalarMeadow", edit=add_stones, callback="InitTilesetAnim_Glimwood")
+    for x, y in STONES:                       # (dark until stepped on)
+        g[y][x] = blk(STONE_FIRST + (x % 2), 0)
+    g[STONES_SIGN[1]][STONES_SIGN[0]] = blk(0x002, 1, 0)   # (a sign: which way the bolt falls)
     return g, W, H
+
+
+# Regieleki's stepping stones: a lightning bolt of flat stones in the clearing north of the farm,
+# to be stepped on from the top of the bolt down to its tip (src/exotic_safari.c: each lights up -
+# palette 12, pulsing like Glimwood's mushrooms; one out of order puts them all out)
+STONES = [(23, 8), (21, 9), (19, 10), (22, 10), (20, 11), (18, 12), (16, 13)]
+STONES_SIGN = (14, 8)
+STONE_FIRST = None                 # (dark on grass 0x000, 0x001; lit on 0x000, 0x001)
+STONE_PAL = [
+    (0, 0, 0), (52, 56, 64), (112, 118, 122), (164, 170, 166),   # 0 -, 1 outline, 2 shadow, 3 stone
+    (40, 92, 196), (88, 188, 240), (184, 238, 255), (255, 244, 120),   # 4-7 lit: edge, stone, shine, spark
+    (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0),
+    (255, 255, 255), (206, 210, 202), (0, 0, 0), (0, 0, 0),     # 12 lit sparkle; 13 stone's highlight
+]
+
+
+def stone_art(lit):
+    px = [[0] * 16 for _ in range(16)]
+    for y in range(16):
+        for x in range(16):
+            dx, dy = (x - 7.5) / 6.6, (y - 8.5) / 5.4
+            d = dx * dx + dy * dy
+            if d <= 1:
+                px[y][x] = 3 if dy < 0.45 else 2
+                if dy < -0.55 and dx < 0.3:
+                    px[y][x] = 13
+    for y in range(16):                            # outline
+        for x in range(16):
+            if px[y][x] and any(not (0 <= x + a < 16 and 0 <= y + b < 16) or not px[y + b][x + a]
+                                for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                px[y][x] = 1
+    for x, y in ((8, 5), (7, 6), (6, 7), (7, 7), (8, 7), (9, 7), (8, 8), (7, 9), (6, 10)):   # a carved bolt
+        px[y][x] = 1 if not lit else 7
+    if lit:
+        swap = {1: 4, 2: 5, 3: 5, 13: 6}
+        px = [[swap.get(c, c) for c in row] for row in px]
+        for x, y in ((4, 6), (11, 9), (10, 5)):
+            px[y][x] = 12
+    return px
+
+
+def add_stones(out):
+    """The meadow's secondary tileset (a copy of Route 38's) gets the stepping stones: palette 12
+    (unused by the meadow), their tiles, 4 metatiles over the plain grass (drawn under the player)"""
+    import struct
+    from PIL import Image
+    import build_exotic_safari as B
+    img = Image.open(out / "tiles.png")
+    mt = bytearray((out / "metatiles.bin").read_bytes())
+    at = bytearray((out / "metatile_attributes.bin").read_bytes())
+    prim = (B.render_map.tileset_dir("gTileset_Johto_General_Hns") / "metatiles.bin").read_bytes()
+    used = max((v & 0x3FF) for i in range(0, len(mt), 2) for v in [struct.unpack_from("<H", mt, i)[0]]
+               if v & 0x3FF >= 640) - 640 + 1
+    ntiles = (img.width // 8) * (img.height // 8)
+    need = used + 8
+    if need > ntiles:                               # (room for the new tiles)
+        new = Image.new("P", (128, ((need + 15) // 16) * 8))
+        new.putpalette(img.getpalette())
+        new.paste(img, (0, 0))
+        img = new
+    pix = img.load()
+    first = len(mt) // 16
+    for lit in (False, True):
+        art = stone_art(lit)
+        tiles = []
+        for k in range(4):
+            n = used
+            used += 1
+            for y in range(8):
+                for x in range(8):
+                    pix[(n % 16) * 8 + x, (n // 16) * 8 + y] = art[(k // 2) * 8 + y][(k % 2) * 8 + x]
+            tiles.append((640 + n) | (12 << 12))
+        for grass in (0x000, 0x001):
+            ground = struct.unpack_from("<4H", prim, grass * 16)
+            mt += struct.pack("<8H", *ground, *tiles)
+            at += struct.pack("<I", 1 << 29)        # (normal ground, drawn under the player)
+    assert used <= 384 and len(mt) // 16 <= 384
+    img.save(out / "tiles.png")
+    (out / "metatiles.bin").write_bytes(mt)
+    (out / "metatile_attributes.bin").write_bytes(at)
+    B.write_pal(out / "palettes" / "12.pal", STONE_PAL)
+    global STONE_FIRST
+    STONE_FIRST = 0x280 + first
 
 
 # ---------------------------------------------------------------------------------------------
@@ -68,6 +161,8 @@ def lake():
             if v & 0x3FF in (0x310, 0x318):           # (no PokéBlock feeders)
                 row[x] = 0x001 | (3 << 12)
     paste(g, [r[:] for r in g], 32, 28, 8, 10, 0, 28)      # (trees over the Safari Zone's building)
+    for y in range(28, 38):                                 # (its first column was the pond's edge)
+        g[y][0] = g[y][2]
     return g, 40, 38
 
 
@@ -167,8 +262,11 @@ GLOW_PAL = [
     (24, 104, 164), (64, 196, 232), (156, 248, 255), (236, 255, 255),   # 4-7 cap (dark -> bright)
     (200, 96, 192), (248, 176, 240),                              # 8-9 gills, pink caps
     (120, 48, 168), (180, 100, 230),                              # 10-11 violet caps
-    (255, 255, 255), (60, 40, 100), (0, 0, 0), (0, 0, 0),         # 12 sparkle, 13 shade
+    (255, 255, 255),                                              # 12 sparkle
+    (30, 48, 78), (52, 74, 104), (78, 52, 92),                    # 13-15 a dark mushroom's cap, its glints, gills
 ]
+# A big mushroom not lit yet (Zarude's lamps): its cap and gills in the colors that don't pulse
+DIM_COLOR = {4: 13, 5: 13, 6: 14, 7: 14, 8: 15, 9: 15, 12: 14}
 
 
 def mushroom_art(W=32):
@@ -265,9 +363,23 @@ def add_mushrooms(out):
     covered = (ground_attr & ~0x60000000) | (1 << 29)             # (drawn under the player)
     add_metatile(s1, 0, 0, covered)
     add_metatile(s2, 0, 0, covered)
-    giant, _, _ = mushroom_art(48)                                 # giant (3x2: where a tree was)
+    giant, _, _ = mushroom_art(48)                                 # giant (3x2: in front of a tree)
     for k in range(6):
-        add_metatile(giant, (k % 3) * 16, (k // 3) * 16, ground_attr & ~0x1FF)
+        # The tree stays behind it (its leaves as the bottom layer: nothing of the trees around is
+        # cut off), the mushroom on top
+        tree = struct.unpack_from("<8H", mt, (0x10 + (k // 3) * 8 + k % 3) * 16)   # (0x290-0x292, 0x298-0x29A)
+        top = [add_tile(giant, (k % 3) * 16 + (q % 2) * 8, (k // 3) * 16 + (q // 2) * 8) | (12 << 12) for q in range(4)]
+        mt += struct.pack("<8H", *tree[4:], *top)
+        at += struct.pack("<I", struct.unpack_from("<I", at, (0x10 + (k // 3) * 8 + k % 3) * 4)[0])
+    dim = [[DIM_COLOR.get(c, c) for c in row] for row in big]     # big, not lit yet (Zarude's lamps)
+    for k in range(4):
+        add_metatile(dim, (k % 2) * 16, (k // 2) * 16, ground_attr & ~0x1FF)
+    dim = [[DIM_COLOR.get(c, c) for c in row] for row in giant]   # giant, not lit yet
+    for k in range(6):
+        tree = struct.unpack_from("<8H", mt, (0x10 + (k // 3) * 8 + k % 3) * 16)
+        top = [add_tile(dim, (k % 3) * 16 + (q % 2) * 8, (k // 3) * 16 + (q // 2) * 8) | (12 << 12) for q in range(4)]
+        mt += struct.pack("<8H", *tree[4:], *top)
+        at += struct.pack("<I", struct.unpack_from("<I", at, (0x10 + (k // 3) * 8 + k % 3) * 4)[0])
     assert used <= 384
     img.save(out / "tiles.png")
     (out / "metatiles.bin").write_bytes(mt)
@@ -278,6 +390,8 @@ def add_mushrooms(out):
 
 
 MUSHROOM_FIRST = None
+LAMP_COUNT = 8                     # (Zarude's lamps: big and giant mushrooms, dark until touched)
+LAMPS = []                         # (their top-left corners and widths, 2 or 3: made by place_mushrooms)
 
 
 def place_mushrooms(g, w, h, reach_ok):
@@ -289,8 +403,9 @@ def place_mushrooms(g, w, h, reach_ok):
     cells = [(x, y) for y in range(h - 1) for x in range(w - 1)]
     rnd.shuffle(cells)
     placed, spots = 0, []
+    LAMPS.clear()
     for x, y in cells:
-        if placed >= 14:
+        if placed >= LAMP_COUNT:
             break
         if not all(floor(x + a, y + b) for a in (0, 1) for b in (0, 1)):
             continue
@@ -303,10 +418,11 @@ def place_mushrooms(g, w, h, reach_ok):
             continue
         old = [g[y + b][x + a] for b in (0, 1) for a in (0, 1)]
         for k, (a, b) in enumerate(((0, 0), (1, 0), (0, 1), (1, 1))):
-            g[y + b][x + a] = (MUSHROOM_FIRST + k) | (1 << 10) | (3 << 12)
+            g[y + b][x + a] = (MUSHROOM_FIRST + 12 + k) | (1 << 10) | (3 << 12)     # (dark until lit)
         if reach_ok(g):
             placed += 1
             spots.append((x, y))
+            LAMPS.append((x, y, 2))
         else:
             for k, (a, b) in enumerate(((0, 0), (1, 0), (0, 1), (1, 1))):
                 g[y + b][x + a] = old[k]
@@ -322,9 +438,14 @@ def place_mushrooms(g, w, h, reach_ok):
             break
         if any(abs(x - px) + abs(y - py) < 7 for px, py in giants + spots):
             continue
+        # (the first few that can be touched - floor beside them: lamps, dark until lit)
+        beside = [(x + a, y + b) for a in range(-1, 4) for b in (-1, 0, 1, 2) if (a in (-1, 3)) != (b in (-1, 2))]
+        lamp = len(LAMPS) < LAMP_COUNT and any(floor(*p) for p in beside)
         for k in range(6):
-            g[y + k // 3][x + k % 3] = (MUSHROOM_FIRST + 6 + k) | (1 << 10) | (3 << 12)
+            g[y + k // 3][x + k % 3] = (MUSHROOM_FIRST + (16 if lamp else 6) + k) | (1 << 10) | (3 << 12)
         giants.append((x, y))
+        if lamp:
+            LAMPS.append((x, y, 3))
     for x, y in cells[:]:
         if floor(x, y) and rnd.random() < 0.06:
             g[y][x] = (MUSHROOM_FIRST + 4 + rnd.randrange(2)) | (3 << 12)
@@ -336,8 +457,12 @@ def forest():
     B.clone_tileset("gTileset_IlexForest_Hns", "Glimwood", glimwood_color, edit=add_mushrooms,
                     callback="InitTilesetAnim_Glimwood")
     g, _ = read_layout("LAYOUT_ILEX_FOREST")
-    g = [row[17:57] for row in g[10:50]]
+    g = [row[17:56] for row in g[10:50]]                   # (39 wide: whole trees, 3 columns each)
     paste(g, [r[:] for r in g], 12, 0, 6, 6, 0, 0)        # (trees over Ilex Forest's gatehouse)
+    # (the south-east glade was cut off - Ilex's Cut tree: two whole trees and a post cleared)
+    for y in (28, 29):
+        for x in range(18, 25):
+            g[y][x] = (0x28E if x % 2 == 0 else 0x28F) | (3 << 12)
     # Mushrooms: each must leave everything else reachable (the floor shrinks by just its 4 cells)
     state = {"n": len(_flood(g, (15, 38)))}
     def reach_ok(grid):
@@ -346,8 +471,8 @@ def forest():
             state["n"] = n
             return True
         return False
-    place_mushrooms(g, 40, 40, reach_ok)
-    return g, 40, 40
+    place_mushrooms(g, 39, 40, reach_ok)
+    return g, 39, 40
 
 
 def _flood(grid, start):
@@ -363,7 +488,7 @@ def _flood(grid, start):
 
 
 def pitch_banner(out, remap):
-    """The stands' banner says WYNDON in place of BATTLE FRONTIER: its 5 text metatiles (0x2D5-0x2D9)
+    """The stands' banner says WYNDON in place of BATTLE FRONTIER: its 6 text metatiles (0x2D5-0x2DA)
     get new tiles (the banner's own colors, the text redrawn) and no top layer"""
     import struct
     from PIL import Image
@@ -372,7 +497,7 @@ def pitch_banner(out, remap):
     mt_path, img_path = out / "metatiles.bin", out / "tiles.png"
     b = bytearray(mt_path.read_bytes())
     img = Image.open(img_path)
-    ids = [remap[m] - 0x280 for m in range(0x2D5, 0x2DA)]
+    ids = [remap[m] - 0x280 for m in range(0x2D5, 0x2DB)]
     def tile(n):
         n -= 640
         return img.crop(((n % 16) * 8, (n // 16) * 8, (n % 16) * 8 + 8, (n // 16) * 8 + 8))
@@ -425,15 +550,16 @@ def pitch_banner(out, remap):
 LV = (48, 52)
 AREAS = {
     "MEADOW": {
-        "map": "ExoticSafari_GalarMeadow", "build": meadow, "tilesets": ("gTileset_Johto_General_Hns", "gTileset_Route38_Farmland_Hns"),
+        "map": "ExoticSafari_GalarMeadow", "build": meadow, "border": [[0x41D, 0x41C], [0x415, 0x414]], "tilesets": ("gTileset_Johto_General_Hns", "gTileset_GalarMeadow"),
         "music": "MUS_RG_ROUTE1", "weather": "WEATHER_NONE", "type": "MAP_TYPE_ROUTE",
         "links": {
             "HALL": ("edge", [(17, 31), (18, 31), (19, 31)], (18, 30), ("HALL", None)),
             "LAKE": ("edge", [(39, 13), (39, 14)], (38, 13), ("LAKE", "MEADOW")),
         },
-        "land": land("WOOLOO", "SKWOVET", "ROOKIDEE", "BLIPBUG", "NICKIT", "GOSSIFLEUR", "YAMPER", "APPLIN",
-                     "WYRDEER", "CORVISQUIRE", ("GROOKEY", 48, 50), ("DUBWOOL", 50, 54)),
-        "statics": [("REGIELEKI", (30, 28))],
+        "land": land("WOOLOO", "ZIGZAGOON_GALAR", "ROOKIDEE", "SKWOVET", "NICKIT", "FARFETCHD_GALAR", "YAMPER", "GOSSIFLEUR",
+                     "APPLIN", "GROWLITHE_HISUI", ("GROOKEY", 48, 50), ("ARCANINE_HISUI", 52, 55)),
+        "statics": [("REGIELEKI", (19, 7))],
+        "extra": lambda ctx: meadow_stones(ctx),
         "items": [("TART_APPLE", (14, 9)), ("SWEET_APPLE", (25, 9))],
     },
 }
@@ -448,9 +574,9 @@ AREAS.update({
             "CITY": ("edge", [(x, 0) for x in range(27, 33)], (29, 1), ("CITY", "LAKE")),
             "MINE": ("edge", [(39, 7)], (38, 7), ("MINE", "LAKE")),
         },
-        "land": land("CHEWTLE", "WOOLOO", "CRAMORANT", "TOXEL", "ELDEGOSS", "STUNFISK_GALAR", "PINCURCHIN",
-                     "URSALUNA", "DREEPY", "CORVIKNIGHT", ("SOBBLE", 48, 50), ("DREDNAW", 50, 54)),
-        "water": [("ARROKUDA", 48, 52), ("CHEWTLE", 48, 52), ("BASCULIN_WHITE_STRIPED", 48, 52), ("BARRASKEWDA", 50, 54), ("DREDNAW", 50, 54)],
+        "land": land("CHEWTLE", "SLOWPOKE_GALAR", "CRAMORANT", "ELDEGOSS", "STUNFISK_GALAR", "CORSOLA_GALAR", "PINCURCHIN",
+                     "SLOWBRO_GALAR", "URSALUNA", "DREEPY", ("SOBBLE", 48, 50), ("SAMUROTT_HISUI", 52, 55)),
+        "water": [("ARROKUDA", 48, 52), ("SLOWPOKE_GALAR", 48, 52), ("BASCULIN_WHITE_STRIPED", 48, 52), ("CORSOLA_GALAR", 50, 54), ("DREDNAW", 50, 54)],
         "fishing": [("ARROKUDA", 45, 50), ("CHEWTLE", 45, 50),                                          # Old Rod
                     ("ARROKUDA", 48, 52), ("BASCULIN_WHITE_STRIPED", 48, 52), ("QWILFISH_HISUI", 48, 52),  # Good Rod
                     ("BARRASKEWDA", 50, 54), ("QWILFISH_HISUI", 50, 54), ("BASCULIN_WHITE_STRIPED", 50, 54),  # Super Rod
@@ -470,7 +596,7 @@ AREAS.update({
         "land": land("ROLYCOLY", "SILICOBRA", "CARKOL", "STONJOURNER", "DURALUDON", "YAMASK_GALAR", "SIZZLIPEDE",
                      "CUFANT", "DRACOZOLT", "KLEAVOR", ("SCORBUNNY", 48, 50), ("COALOSSAL", 50, 54)),
         "statics": [],
-        "items": [("BLACK_AUGURITE", (5, 8))],
+        "items": [("BLACK_AUGURITE", (5, 8)), ("DRAGON_FANG", (26, 3))],
     },
     "DEPTHS": {
         "map": "ExoticSafari_GalarMineDepths", "build": lambda: mine(2), "tilesets": ("gTileset_General", "gTileset_Cave"),
@@ -481,10 +607,10 @@ AREAS.update({
             "UP_B": ("warp", [(4, 21)], (4, 22), ("MINE", "DEEP_B")),
         },
         "remove_holes": [(29, 13), (28, 21), (8, 5), (12, 3), (29, 2)],
-        "land": land("CUFANT", "YAMASK_GALAR", "DURALUDON", "CARKOL", "SANDACONDA", "STONJOURNER", "CENTISKORCH",
-                     "RUNERIGUS", "DREEPY", "COPPERAJAH", ("DRAKLOAK", 52, 55), ("DRAGAPULT", 55, 58)),
+        "land": land("YAMASK_GALAR", "SANDACONDA", "ZORUA_HISUI", "SLIGGOO_HISUI", "DURALUDON", "STONJOURNER", "CENTISKORCH",
+                     "RUNERIGUS", "DREEPY", "COPPERAJAH", ("ZOROARK_HISUI", 52, 55), ("DRAGAPULT", 55, 58)),
         "statics": [("REGIDRAGO", (20, 13))],
-        "items": [("PEAT_BLOCK", (1, 1))],
+        "items": [("PEAT_BLOCK", (1, 1)), ("RUSTED_SHIELD", (30, 1))],
     },
     "STADIUM": {
         "map": "ExoticSafari_GalarStadium", "build": stadium_lobby, "tilesets": ("gTileset_Building", "gTileset_BattleDome"),
@@ -494,10 +620,11 @@ AREAS.update({
             "CITY": ("warp", [(11, 16), (12, 16)], (11, 15), ("CITY", "STADIUM")),
             "PITCH": ("edge", [(5, 5), (17, 5)], (5, 6), ("PITCH", "LOBBY")),
         },
-        "land": land("INDEEDEE", "MORPEKO", "SINISTEA", "MILCERY", "MR_RIME", "TOXEL", "PERRSERKER", "CUFANT",
-                     "POLTEAGEIST", "ALCREMIE", ("INDEEDEE_F", 50, 54), ("TOXTRICITY_AMPED", 52, 55)),
+        "land": land("MEOWTH_GALAR", "INDEEDEE", "VOLTORB_HISUI", "MILCERY", "SINISTEA", "TOXEL", "MORPEKO", "WEEZING_GALAR",
+                     "PERRSERKER", "ELECTRODE_HISUI", ("INDEEDEE_F", 50, 54), ("TOXTRICITY_AMPED", 52, 55)),
         "statics": [],
         "items": [("CRACKED_POT", (2, 6))],
+        "extra": lambda ctx: dojo_master(ctx),
     },
     "PITCH": {
         "map": "ExoticSafari_GalarStadiumPitch", "build": stadium_pitch, "tilesets": ("gTileset_Building", "gTileset_BattleDome"),
@@ -507,8 +634,8 @@ AREAS.update({
         "links": {
             "LOBBY": ("edge", [(9, 13), (10, 13)], (9, 12), ("STADIUM", "PITCH")),
         },
-        "land": land("FALINKS", "CLOBBOPUS", "TOXEL", "SIRFETCHD", "PERRSERKER", "OBSTAGOON", "SNEASLER", "OVERQWIL",
-                     "GRAPPLOCT", "MR_RIME", ("TOXTRICITY_LOW_KEY", 52, 55), ("COPPERAJAH", 52, 55)),
+        "land": land("FALINKS", "CLOBBOPUS", "LINOONE_GALAR", "SIRFETCHD", "LILLIGANT_HISUI", "SNEASLER", "OBSTAGOON", "GRAPPLOCT",
+                     "BRAVIARY_HISUI", "OVERQWIL", ("TOXTRICITY_LOW_KEY", 52, 55), ("DECIDUEYE_HISUI", 52, 55)),
         "statics": [("KUBFU", (9, 6))],
         "items": [("SCROLL_OF_DARKNESS", (1, 12)), ("SCROLL_OF_WATERS", (18, 12))],
     },
@@ -521,27 +648,103 @@ AREAS.update({
             "LAKE": ("edge", [(x, 36) for x in range(5, 9)], (6, 35), ("LAKE", "CITY")),
             "STADIUM": ("edge", [(18, 0), (19, 0), (20, 0)], (19, 1), ("STADIUM", "CITY")),
         },
-        "land": land("SNOM", "DARUMAKA_GALAR", "EISCUE", "FROSMOTH", "SNEASEL_HISUI", "MR_RIME", "MORPEKO",
-                     "ARCTOZOLT", "ARCTOVISH", "CUFANT", "DARMANITAN_GALAR", ("AVALUGG_HISUI", 52, 55)),
+        "land": land("SNOM", "DARUMAKA_GALAR", "MR_MIME_GALAR", "SNEASEL_HISUI", "EISCUE", "WYRDEER", "FROSMOTH",
+                     "MR_RIME", "ARCTOZOLT", "ARCTOVISH", ("DARMANITAN_GALAR", 52, 55), ("AVALUGG_HISUI", 52, 55)),
         "statics": [("ZACIAN", (17, 30)), ("ZAMAZENTA", (21, 30))],
         "items": [("RAZOR_CLAW", (6, 24))],
     },
 })
 AREAS.update({
     "FOREST": {
-        "map": "ExoticSafari_GalarForest", "build": forest, "tilesets": ("gTileset_GlimwoodGeneral", "gTileset_Glimwood"),
+        "map": "ExoticSafari_GalarForest", "build": forest, "border_size": (3, 2), "tilesets": ("gTileset_GlimwoodGeneral", "gTileset_Glimwood"),
         "music": "MUS_RG_VIRIDIAN_FOREST", "weather": "WEATHER_NONE", "type": "MAP_TYPE_ROUTE",
         "links": {
             "LAKE": ("edge", [(15, 39), (16, 39)], (15, 38), ("LAKE", "FOREST")),
         },
-        "land": land("IMPIDIMP", "HATENNA", "PONYTA_GALAR", "MILCERY", "SINISTEA", "DOTTLER", "MORGREM", "HATTREM",
-                     "INDEEDEE", "SINISTEA_ANTIQUE", ("GRIMMSNARL", 52, 55), ("HATTERENE", 52, 55)),
+        "land": land("IMPIDIMP", "HATENNA", "PONYTA_GALAR", "DOTTLER", "MILCERY", "SINISTEA", "RAPIDASH_GALAR", "MORGREM",
+                     "SINISTEA_ANTIQUE", "HATTREM", ("TYPHLOSION_HISUI", 52, 55), ("HATTERENE", 52, 55)),
         "statics": [("ZARUDE", (32, 3)), ("ENAMORUS", (10, 32))],
-        "items": [("CHIPPED_POT", (35, 2)), ("STRAWBERRY_SWEET", (3, 7)), ("GALARICA_WREATH", (8, 28))],
+        "items": [("CHIPPED_POT", (35, 2)), ("STRAWBERRY_SWEET", (3, 7)), ("GALARICA_WREATH", (8, 28)),
+                  ("RUSTED_SWORD", (38, 29))],
+        "extra": lambda ctx: forest_lamps(ctx),
     },
 })
-ROAMERS = ["SPECTRIER", "CALYREX"]
-# Found once, never sold (Kubfu's scrolls: one of each); the Strawberry Sweet sells all seven Sweets
-UNIQUE_ITEMS = {"SCROLL_OF_DARKNESS", "SCROLL_OF_WATERS"}
+# Roamers: Spectrier, the Galarian birds; Calyrex only once Spectrier is caught (its steed)
+ROAMERS = ["SPECTRIER", "CALYREX", "ARTICUNO_GALAR", "ZAPDOS_GALAR", "MOLTRES_GALAR"]
+ROAMER_NEEDS = {"CALYREX": "SPECTRIER"}
+# What each static legendary waits for (src/exotic_safari.c; until then a hint where it will be)
+CONDITIONS = {
+    "ZACIAN": ("ITEM", 0), "ZAMAZENTA": ("ITEM", 1),      # (the Rusted Sword, the Rusted Shield found)
+    "ZARUDE": ("LAMPS", 0), "ENAMORUS": ("FRIENDSHIP", 0), "KUBFU": ("DOJO", 0),
+    "REGIELEKI": ("STONES", 0), "REGIDRAGO": ("DRAGON", 2),  # (the Dragon Fang, a Dragon-type lead)
+}
+# Found once, never sold (Kubfu's scrolls: one of each; the legendaries' relics); the Strawberry
+# Sweet sells all seven Sweets
+UNIQUE_ITEMS = {"SCROLL_OF_DARKNESS", "SCROLL_OF_WATERS", "RUSTED_SWORD", "RUSTED_SHIELD", "DRAGON_FANG"}
 KIOSK_ALSO = {"STRAWBERRY_SWEET": ["STRAWBERRY_SWEET", "BERRY_SWEET", "LOVE_SWEET", "STAR_SWEET", "CLOVER_SWEET",
                                    "FLOWER_SWEET", "RIBBON_SWEET"]}
+
+
+# ---------------------------------------------------------------------------------------------
+# The legendaries' puzzles: their signs, triggers and people (build_exotic_safari.py's "extra"),
+# and their data for src/exotic_safari.c
+# ---------------------------------------------------------------------------------------------
+def sign(ctx, x, y, label, body):
+    ctx["bgs"].append({"type": "sign", "x": x, "y": y, "elevation": 0, "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+                       "script": label})
+    ctx["scripts"] += [f"{label}::"] + body + [""]
+
+
+def meadow_stones(ctx):
+    name = ctx["name"]
+    for k, (x, y) in enumerate(STONES):
+        label = f"{name}_EventScript_Stone{k}"
+        ctx["coords"].append({"type": "trigger", "x": x, "y": y, "elevation": 0, "var": "VAR_TEMP_1",
+                              "var_value": "0", "script": label})
+        ctx["scripts"] += [f"{label}::", f"\tsetvar VAR_0x8004, {k}", "\tgoto ExoticSafari_EventScript_Stone", ""]
+    sign(ctx, *STONES_SIGN, f"{name}_EventScript_StonesSign",
+         ["\tmsgbox ExoticSafari_Text_StonesSign, MSGBOX_SIGN", "\tend"])
+
+
+def forest_lamps(ctx):
+    name = ctx["name"]
+    for k, (x, y, wide) in enumerate(LAMPS):
+        label = f"{name}_EventScript_Lamp{k}"
+        around = [(x + a, y + b) for a in range(-1, wide + 1) for b in (-1, 0, 1, 2)
+                  if (a in (-1, wide)) != (b in (-1, 2))]
+        if not any(p in ctx["reach"] for p in around):
+            print(f"WARNING FOREST: lamp {k} at {(x, y)} can't be touched")
+        for a, b in [(a, b) for b in (0, 1) for a in range(wide)]:
+            ctx["bgs"].append({"type": "sign", "x": x + a, "y": y + b, "elevation": 0,
+                               "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY", "script": label})
+        ctx["scripts"] += [f"{label}::", f"\tsetvar VAR_0x8004, {k}", "\tgoto ExoticSafari_EventScript_Lamp", ""]
+
+
+DOJO_MASTER = (8, 12)
+
+
+def dojo_master(ctx):
+    o = ctx["obj"]("OBJ_EVENT_GFX_CONV_BEA", *DOJO_MASTER, "ExoticSafari_EventScript_DojoMaster", "MOVEMENT_TYPE_FACE_DOWN")
+    o["elevation"] = ctx["elev"](*DOJO_MASTER)
+    ctx["objects"].append(o)
+
+
+def header_lines(map_id):
+    assert len(LAMPS) <= 8
+    return [
+        "// Zarude's lamps: Glimwood's big mushrooms (top-left corners), dark until touched",
+        f"#define EXOTIC_SAFARI_LAMP_MAP {map_id(AREAS['FOREST']['map'])}",
+        f"#define EXOTIC_SAFARI_LAMP_BIG_LIT 0x{MUSHROOM_FIRST:03X}     // (2x2)",
+        f"#define EXOTIC_SAFARI_LAMP_BIG_DARK 0x{MUSHROOM_FIRST + 12:03X}",
+        f"#define EXOTIC_SAFARI_LAMP_GIANT_LIT 0x{MUSHROOM_FIRST + 6:03X}   // (3x2, in front of a tree)",
+        f"#define EXOTIC_SAFARI_LAMP_GIANT_DARK 0x{MUSHROOM_FIRST + 16:03X}",
+        "static const u8 sLamps[][3] = {" + ", ".join(f"{{{x}, {y}, {wd}}}" for x, y, wd in LAMPS) + "};   // x, y, width",
+        "// Regieleki's stepping stones, in the order they're to be stepped on",
+        f"#define EXOTIC_SAFARI_STONE_MAP {map_id(AREAS['MEADOW']['map'])}",
+        f"#define EXOTIC_SAFARI_STONE_DARK 0x{STONE_FIRST:03X}   // (+ x % 2: the grass under it)",
+        f"#define EXOTIC_SAFARI_STONE_LIT 0x{STONE_FIRST + 2:03X}",
+        "static const u8 sStones[][2] = {" + ", ".join(f"{{{x}, {y}}}" for x, y in STONES) + "};",
+        "// The items the Galar legendaries wait for (SEAL_ITEM, SEAL_DRAGON: their index)",
+        "static const u16 sSealItems[][2] = {{ITEM_RUSTED_SWORD, FLAG_EXOTIC_ITEM_RUSTED_SWORD}, "
+        "{ITEM_RUSTED_SHIELD, FLAG_EXOTIC_ITEM_RUSTED_SHIELD}, {ITEM_DRAGON_FANG, FLAG_EXOTIC_ITEM_DRAGON_FANG}};",
+    ]

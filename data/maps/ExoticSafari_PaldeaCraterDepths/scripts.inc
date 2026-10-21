@@ -1,10 +1,15 @@
 @ ExoticSafari_PaldeaCraterDepths (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/paldea.py)
 ExoticSafari_PaldeaCraterDepths_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ExoticSafari_PaldeaCraterDepths_OnTransition
+	map_script MAP_SCRIPT_ON_LOAD, ExoticSafari_PaldeaCraterDepths_OnLoad
 	.byte 0
 
 ExoticSafari_PaldeaCraterDepths_OnTransition::
 	special ExoticSafari_AreaOnTransition
+	end
+
+ExoticSafari_PaldeaCraterDepths_OnLoad::
+	special ExoticSafari_AreaOnLoad
 	end
 
 ExoticSafari_PaldeaCraterDepths_EventScript_LegendTerapagos::

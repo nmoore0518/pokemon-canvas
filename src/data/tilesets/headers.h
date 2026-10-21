@@ -2162,6 +2162,19 @@ const struct Tileset gTileset_WhirlIslands_Hns =
 };
 
 // END Johto
+// <clone GalarMeadow>
+const struct Tileset gTileset_GalarMeadow =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_GalarMeadow,
+    .palettes = gTilesetPalettes_GalarMeadow,
+    .metatiles = gMetatiles_GalarMeadow,
+    .metatileAttributes = gMetatileAttributes_GalarMeadow,
+    .callback = InitTilesetAnim_Glimwood,
+};
+
+// </clone GalarMeadow>
 // <clone GalarSnowGeneral>
 const struct Tileset gTileset_GalarSnowGeneral =
 {

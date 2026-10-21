@@ -572,6 +572,10 @@ const u16 gMetatiles_WhirlIslands_Hns[] = INCBIN_U16("data/tilesets/secondary/wh
 const u16 gMetatileAttributes_WhirlIslands_Hns[] = INCBIN_U16("data/tilesets/secondary/whirl_islands_hns/metatile_attributes.bin");
 
 // END Johto
+// <clone GalarMeadow>
+const u16 gMetatiles_GalarMeadow[] = INCBIN_U16("data/tilesets/secondary/galar_meadow/metatiles.bin");
+const u16 gMetatileAttributes_GalarMeadow[] = INCBIN_U16("data/tilesets/secondary/galar_meadow/metatile_attributes.bin");
+// </clone GalarMeadow>
 // <clone GalarSnowGeneral>
 const u16 gMetatiles_GalarSnowGeneral[] = INCBIN_U16("data/tilesets/primary/galar_snow_general/metatiles.bin");
 const u16 gMetatileAttributes_GalarSnowGeneral[] = INCBIN_U16("data/tilesets/primary/galar_snow_general/metatile_attributes.bin");

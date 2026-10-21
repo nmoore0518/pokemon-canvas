@@ -1,10 +1,15 @@
 @ ExoticSafari_PaldeaSnowyMountain (made by tools/gym_hack/build_exotic_safari.py from tools/gym_hack/paldea.py)
 ExoticSafari_PaldeaSnowyMountain_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ExoticSafari_PaldeaSnowyMountain_OnTransition
+	map_script MAP_SCRIPT_ON_LOAD, ExoticSafari_PaldeaSnowyMountain_OnLoad
 	.byte 0
 
 ExoticSafari_PaldeaSnowyMountain_OnTransition::
 	special ExoticSafari_AreaOnTransition
+	end
+
+ExoticSafari_PaldeaSnowyMountain_OnLoad::
+	special ExoticSafari_AreaOnLoad
 	end
 
 ExoticSafari_PaldeaSnowyMountain_EventScript_ToLake::
