@@ -1,4 +1,4 @@
-# Credits
+# Credits: Pokémon Canvas
 
 This hack is built on community work. Thank you to everyone below.
 

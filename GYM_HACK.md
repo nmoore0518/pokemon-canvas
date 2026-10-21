@@ -1,4 +1,4 @@
-# Gym Trainer hack
+# Pokémon Canvas (the Gym Trainer hack)
 
 A FireRed hack built on pokeemerald-expansion (FireRed mode). The player is training to become a
 Gym Leader: they pick one type at the start and build their team, and later their own gym, around it.
@@ -623,7 +623,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] HGSS music
    - [x] Convention fans around Johto
    - [ ] The rest of Johto's people (random, faithful to HGSS, or quests: to decide)
-   - [ ] Title screen and credits (artists, HnS, AI disclosure) -- next
+   - [x] Title screen and credits: "Pokémon Canvas" (`tools/gym_hack/build_title.py`: CANVAS on a
+         brush stroke of type colors under the POKéMON logo); the credits open with the hack's own
+         (creator, AI disclosure, pret/RHH, HnS, Emerald Rogue, not-affiliated note) before FireRed's staff
 7. Regional safari zones and the full Pokédex (post-game, an idea for later)
    - [ ] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
          Pokémon past the first 386 can be caught, with puzzles opening sub-areas with legendaries.

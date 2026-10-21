@@ -119,6 +119,14 @@ enum CreditsString
     CREDITS_STRING_SPECIAL_THANKS_5,
     CREDITS_STRING_BRAILLE_CODE_CHECK_4,
     CREDITS_STRING_GRAPHIC_DESIGNER,
+    // Gym Trainer hack: Pokémon Canvas's own credits, before FireRed's
+    CREDITS_STRING_CANVAS_TITLE,
+    CREDITS_STRING_CANVAS_AI,
+    CREDITS_STRING_CANVAS_ENGINE,
+    CREDITS_STRING_CANVAS_JOHTO,
+    CREDITS_STRING_CANVAS_SPRITES,
+    CREDITS_STRING_CANVAS_FAN_GAME,
+    CREDITS_STRING_CANVAS_ORIGINAL,
     CREDITS_STRING_END
 };
 
@@ -346,7 +354,7 @@ static const struct WindowTemplate sWindowTemplates_Pikachu[] = {
 
 
 
-ALIGNED(4) const u8 gString_PokemonFireRed_Staff[] = _("Pokémon FireRed Version\nStaff");
+ALIGNED(4) const u8 gString_PokemonFireRed_Staff[] = _("Pokémon Canvas\nCredits");   // (Gym Trainer hack)
 ALIGNED(4) const u8 gString_PokemonLeafGreen_Staff[] = _("Pokémon LeafGreen Version\nStaff");
 ALIGNED(4) const u8 gCreditsString_Director[] = _("\n\nDirector\n\n\n\n");
 ALIGNED(4) const u8 gCreditsString_Junichi_Masuda[] = _("\n\n\nJunichi Masuda\n\n\n");
@@ -432,6 +440,22 @@ ALIGNED(4) const u8 gCreditsString_Braille_Code_Check_4[] = _("\nBraille Code Ch
 ALIGNED(4) const u8 gCreditsString_The_Royal_New_Zealand_Foundation_of_the_Blind_Greg_Moran[] = _("\n\nThe Royal New Zealand\nFoundation of the Blind\nGreg Moran\n\n");
 ALIGNED(4) const u8 gCreditsString_Graphic_Designer[] = _("\n\nGraphic Designer\n\n\n\n");
 ALIGNED(4) const u8 gCreditsString_Akira_Kinashi[] = _("\n\n\nAkira Kinashi\n\n\n");
+// Gym Trainer hack: Pokémon Canvas (see CREDITS.md)
+static const u8 sCreditsString_CANVAS_TITLE_Title[] = _("\n\nCreated by\n\n\n\n");
+static const u8 sCreditsString_CANVAS_TITLE_Names[] = _("\n\n\nNick\n\n\n");
+static const u8 sCreditsString_CANVAS_AI_Title[] = _("\nMade with AI\n\n\n\n\n");
+static const u8 sCreditsString_CANVAS_AI_Names[] = _("\n\nCode, maps and much of the art:\nClaude, Anthropic's AI,\ndirected by Nick\n\n");
+static const u8 sCreditsString_CANVAS_ENGINE_Title[] = _("\nBuilt On\n\n\n\n\n");
+static const u8 sCreditsString_CANVAS_ENGINE_Names[] = _("\n\npret: pokefirered and\npokeemerald decompilations\nRHH: pokeemerald-expansion\n\n");
+static const u8 sCreditsString_CANVAS_JOHTO_Title[] = _("\nJohto Maps and Music\n\n\n\n\n");
+static const u8 sCreditsString_CANVAS_JOHTO_Names[] = _("\n\nPokémon Heart & Soul (HnS)\nand its contributors\n\n\n");
+static const u8 sCreditsString_CANVAS_SPRITES_Title[] = _("\nLeader Sprites\n\n\n\n\n");
+static const u8 sCreditsString_CANVAS_SPRITES_Names[] = _("\n\nPokémon Emerald Rogue\n(Pokabbie) and its artists\n\n\n");
+static const u8 sCreditsString_CANVAS_FAN_GAME_Title[] = _("\nA Free Fan Game\n\n\n\n\n");
+static const u8 sCreditsString_CANVAS_FAN_GAME_Names[] = _("\n\nNot affiliated with Nintendo,\nGAME FREAK, Creatures or\nThe Pokémon Company.\n\n");
+static const u8 sCreditsString_CANVAS_ORIGINAL_Title[] = _("\n\nThe Original\nPOKéMON FIRERED Staff\n\n\n");
+static const u8 sCreditsString_CANVAS_ORIGINAL_Names[] = _("\n\n\n\n\n\n");
+
 
 static const u16 sCreditsMonCircle_Pal[] = INCGFX_U16("graphics/credits_frlg/white_circle.pal", ".gbapal");
 static const u32 sCreditsMonCircle_Tiles[] = INCGFX_U32("graphics/credits_frlg/white_circle.png", ".8bpp.smol");
@@ -492,6 +516,15 @@ static const struct CompressedGraphicsHeader sCopyrightOrTheEndGfxHeaders[] = {
 
 static const struct CreditsScrcmd sCreditsScript[] = {
     CREDITS_MAPNEXT(ROUTE23, 16),
+    // Gym Trainer hack: Pokémon Canvas's credits first
+    CREDITS_PRINT(CANVAS_TITLE, 240),
+    CREDITS_PRINT(CANVAS_AI, 240),
+    CREDITS_PRINT(CANVAS_ENGINE, 240),
+    CREDITS_PRINT(CANVAS_JOHTO, 240),
+    CREDITS_PRINT(CANVAS_SPRITES, 240),
+    CREDITS_PRINT(CANVAS_FAN_GAME, 240),
+    CREDITS_PRINT(CANVAS_ORIGINAL, 180),
+    CREDITS_PRINT(END, 60),
     CREDITS_PRINT(DIRECTOR, 300),
     CREDITS_PRINT(ART_DIRECTOR_BATTLE_DIRECTOR, 300),
     CREDITS_PRINT(PROGRAM_LEADER_PLANNING_LEADER_GRAPHIC_DESIGN_LEADER, 300),
@@ -815,7 +848,14 @@ static const struct CreditsTextHeader sCreditsTexts[] = {
     { gCreditsString_Special_Thanks_5, gCreditsString_Nicola_Pratt_Barlow_Shellie_Dow_Anthony_Howitt_Naoko_Saeki_Kyoko_Onishi, FALSE },
     { gCreditsString_Braille_Code_Check_4, gCreditsString_The_Royal_New_Zealand_Foundation_of_the_Blind_Greg_Moran, FALSE },
     { gCreditsString_Graphic_Designer, gCreditsString_Akira_Kinashi, FALSE },
-    { gText_EmptyString2, gText_EmptyString2, FALSE }
+    [CREDITS_STRING_CANVAS_TITLE] = { sCreditsString_CANVAS_TITLE_Title, sCreditsString_CANVAS_TITLE_Names, FALSE },
+    [CREDITS_STRING_CANVAS_AI] = { sCreditsString_CANVAS_AI_Title, sCreditsString_CANVAS_AI_Names, FALSE },
+    [CREDITS_STRING_CANVAS_ENGINE] = { sCreditsString_CANVAS_ENGINE_Title, sCreditsString_CANVAS_ENGINE_Names, FALSE },
+    [CREDITS_STRING_CANVAS_JOHTO] = { sCreditsString_CANVAS_JOHTO_Title, sCreditsString_CANVAS_JOHTO_Names, FALSE },
+    [CREDITS_STRING_CANVAS_SPRITES] = { sCreditsString_CANVAS_SPRITES_Title, sCreditsString_CANVAS_SPRITES_Names, FALSE },
+    [CREDITS_STRING_CANVAS_FAN_GAME] = { sCreditsString_CANVAS_FAN_GAME_Title, sCreditsString_CANVAS_FAN_GAME_Names, FALSE },
+    [CREDITS_STRING_CANVAS_ORIGINAL] = { sCreditsString_CANVAS_ORIGINAL_Title, sCreditsString_CANVAS_ORIGINAL_Names, FALSE },
+    [CREDITS_STRING_END] = { gText_EmptyString2, gText_EmptyString2, FALSE },
 };
 
 void CB2_StartCreditsSequence(void)
