@@ -613,14 +613,14 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Post-game gym challenges: random/famous/townsfolk challengers, streaks, rewards, statue
    - [x] The player's badge per type (art, award to challengers, pedestal decoration)
    - [x] Finale: Oak in the Champion's room, then Oak's challenge for the gym after the credits
-   - [ ] Challengers and the ninth badge after becoming Leader
+   - [x] Challengers and the ninth badge after becoming Leader (the challenges and the player's badge above)
 6. Johto and the Gym Leader Convention (replaces the Sevii Islands)
    - [x] Johto maps imported (Olivine to Goldenrod, Ilex, Azalea, Route 40)
    - [x] Border guards, post-game wild levels, convention goodie bag, Johto map and FLY
    - [x] The invitation (mentor), Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
    - [x] Convention Center (Radio Tower): 18 type halls + Champions' Hall, 127 leaders (Emerald
-         Rogue sprites), trophies
+         Rogue sprites), trophies (hall maps reviewed and kept as they are, Burned Tower and Sinjoh temple included)
    - [x] HGSS music
    - [x] Convention fans around Johto
    - [ ] The rest of Johto's people (random, faithful to HGSS, or quests: to decide)
-   - [ ] Title screen and credits (artists, HnS, AI disclosure)
+   - [ ] Title screen and credits (artists, HnS, AI disclosure) -- next
