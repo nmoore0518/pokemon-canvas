@@ -42,7 +42,9 @@
 #define GYM_LEGEND_DONE          4
 
 // VAR_JOHTO_STATE (src/johto.c)
-#define JOHTO_NOT_VISITED   0
-#define JOHTO_GOT_GOODIE_BAG 1
+#define JOHTO_NOT_INVITED       0
+#define JOHTO_INVITE_WAITING    1   // (after the gym's handed over: the mentor brings it next visit)
+#define JOHTO_INVITED           2   // (the ferry from Vermilion sails to Olivine)
+#define JOHTO_GOT_GOODIE_BAG    3
 
 #endif // GUARD_CONSTANTS_GYM_HACK_H

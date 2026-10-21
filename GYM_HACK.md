@@ -493,8 +493,15 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     (`tools/gym_hack/build_johto_map.py`; `REGION_MAP_JOHTO`). On the FLY map, R switches between
     KANTO and JOHTO once the player has it; Olivine, Ecruteak, Goldenrod and Azalea are FLY spots
     once visited (`FLAG_WORLD_MAP_*` 0x0C6-0x0C9). Johto counts as Kanto for battle music.
-  Next: the Vermilion-Olivine ferry, the Gym Leader Convention in the Radio Tower, and the Sevii
-  trip's removal.
+  - **The invitation**: once the gym is the player's (`FLAG_PALLET_GYM_AWARDED`), leaving it sets
+    `VAR_JOHTO_STATE` to `JOHTO_INVITE_WAITING` (Pallet Town); the next time they're in the gym,
+    their mentor walks in with the GYM LEADER CONVENTION invitation (a letter on the floor if
+    there's no mentor) -> `JOHTO_INVITED`.
+  - **The ferry**: with the invitation, Vermilion's harbor sailor sails the player to Olivine's
+    dock (the Seagallop scene, `SEAGALLOP_OLIVINE_CITY`); the sailor on Olivine's dock sails back.
+  - **No Sevii Islands**: Bill no longer waits on Cinnabar after the Volcano Badge (saves that had
+    the trip waiting drop it); **Moltres** is on Victory Road 2F (as in Red and Blue), Lv 50.
+  Next: the Gym Leader Convention in the Radio Tower.
 
 ## Code map
 
@@ -562,7 +569,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
 6. Johto and the Gym Leader Convention (replaces the Sevii Islands)
    - [x] Johto maps imported (Olivine to Goldenrod, Ilex, Azalea, Route 40)
    - [x] Border guards, post-game wild levels, convention goodie bag, Johto map and FLY
-   - [ ] Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
+   - [x] The invitation (mentor), Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
    - [ ] Convention Center (Radio Tower): 18 type halls + Champions' Hall, ~126 leaders (Emerald
          Rogue sprites), trophies
    - [ ] HGSS music, Johto NPCs

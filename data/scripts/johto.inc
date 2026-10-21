@@ -34,7 +34,7 @@ Johto_Mart_Items::
 
 @ ---------------------------------------------------------------------------
 @ The convention greeter at the Olivine ferry dock: the goodie bag (the convention badge, Johto on
-@ the TOWN MAP, supplies). VAR_JOHTO_STATE goes JOHTO_NOT_VISITED -> JOHTO_GOT_GOODIE_BAG.
+@ the TOWN MAP, supplies). VAR_JOHTO_STATE goes JOHTO_INVITED -> JOHTO_GOT_GOODIE_BAG.
 @ ---------------------------------------------------------------------------
 Johto_EventScript_GreeterStops::
 	lockall
@@ -191,3 +191,132 @@ Johto_Text_GuardTalk::
 	.string "during the convention.\p"
 	.string "Everything a LEADER needs is in\n"
 	.string "GOLDENROD's RADIO TOWER!$"
+
+@ ---------------------------------------------------------------------------
+@ The invitation: once the gym is the player's (the finale), leaving it sets the invitation waiting
+@ (Pallet Town); next time they're in the gym, their mentor walks in with it.
+@ ---------------------------------------------------------------------------
+Johto_EventScript_TryInviteWaiting::
+	goto_if_unset FLAG_PALLET_GYM_AWARDED, Common_EventScript_NopReturn
+	goto_if_ne VAR_JOHTO_STATE, JOHTO_NOT_INVITED, Common_EventScript_NopReturn
+	setvar VAR_JOHTO_STATE, JOHTO_INVITE_WAITING
+	return
+
+Johto_EventScript_Invitation::
+	lockall
+	special GymCandidate_PrepareMentorVisit
+	goto_if_eq VAR_RESULT, FALSE, Johto_EventScript_InvitationByMail
+	delay 20
+	playse SE_DOOR
+	setvar VAR_0x800A, LOCALID_PALLET_GYM_CHALLENGER
+	call GymCandidate_EventScript_VisitorWalksIn
+	special GymCandidate_BufferMentorName
+	msgbox Johto_Text_MentorInvite
+	call Johto_EventScript_ReceiveInvitation
+	special GymCandidate_BufferMentorName
+	msgbox Johto_Text_MentorInviteFerry
+	call GymCandidate_EventScript_VisitorWalksOut
+	setvar VAR_JOHTO_STATE, JOHTO_INVITED
+	releaseall
+	end
+
+Johto_EventScript_InvitationByMail::
+	msgbox Johto_Text_InvitationByMail
+	call Johto_EventScript_ReceiveInvitation
+	msgbox Johto_Text_InvitationFerry
+	setvar VAR_JOHTO_STATE, JOHTO_INVITED
+	releaseall
+	end
+
+Johto_EventScript_ReceiveInvitation::
+	playfanfare MUS_RG_OBTAIN_KEY_ITEM
+	message Johto_Text_ReceivedInvitation
+	waitfanfare
+	waitmessage
+	return
+
+Johto_Text_MentorInvite::
+	.string "{STR_VAR_1}: {PLAYER}!\n"
+	.string "So this is your gym. Not bad!\p"
+	.string "I came with news. Every year, the\n"
+	.string "JOHTO LEAGUE holds the GYM LEADER\l"
+	.string "CONVENTION in GOLDENROD CITY.\p"
+	.string "GYM LEADERS and ELITE FOUR from\n"
+	.string "every region come. KANTO, JOHTO,\l"
+	.string "HOENN, SINNOH… all the way to\l"
+	.string "PALDEA.\p"
+	.string "And this year, there's a new name\n"
+	.string "on the list. Yours!\p"
+	.string "Here's your invitation.$"
+
+Johto_Text_ReceivedInvitation::
+	.string "{PLAYER} received the GYM LEADER\n"
+	.string "CONVENTION invitation!$"
+
+Johto_Text_MentorInviteFerry::
+	.string "{STR_VAR_1}: There's a hall for every\n"
+	.string "type. Beat every LEADER of a type,\l"
+	.string "and you take home its trophy.\p"
+	.string "The ferry to OLIVINE CITY leaves\n"
+	.string "from VERMILION's harbor. Show the\l"
+	.string "sailor your invitation.\p"
+	.string "I'll see you in GOLDENROD!$"
+
+Johto_Text_InvitationByMail::
+	.string "There's a letter on the floor…\p"
+	.string "It's from the JOHTO LEAGUE! An\n"
+	.string "invitation to the GYM LEADER\l"
+	.string "CONVENTION in GOLDENROD CITY!$"
+
+Johto_Text_InvitationFerry::
+	.string "The ferry to OLIVINE CITY leaves\n"
+	.string "from VERMILION's harbor.$"
+
+@ ---------------------------------------------------------------------------
+@ The ferry: Vermilion's harbor sailor (data/maps/VermilionCity_Frlg) and Olivine's dock sailor
+@ ---------------------------------------------------------------------------
+Johto_EventScript_VermilionFerry::
+	msgbox Johto_Text_FerryToOlivine, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Johto_EventScript_FerryDeclined
+	goto Johto_EventScript_SailToOlivine
+
+Johto_EventScript_VermilionFerryTrigger::
+	msgbox Johto_Text_FerryToOlivine, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_WalkUpPier
+Johto_EventScript_SailToOlivine::
+	msgbox Johto_Text_FerryDeparting
+	setvar VAR_0x8004, SEAGALLOP_VERMILION_CITY
+	setvar VAR_0x8006, SEAGALLOP_OLIVINE_CITY
+	goto EventScript_SetSail
+
+Johto_EventScript_FerryDeclined::
+	msgbox Johto_Text_FerryLater
+	release
+	end
+
+Johto_EventScript_OlivineFerry::
+	lock
+	faceplayer
+	msgbox Johto_Text_FerryToVermilion, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Johto_EventScript_FerryDeclined
+	msgbox Johto_Text_FerryDeparting
+	setvar VAR_0x8004, SEAGALLOP_OLIVINE_CITY
+	setvar VAR_0x8006, SEAGALLOP_VERMILION_CITY
+	goto EventScript_SetSail
+
+Johto_Text_FerryToOlivine::
+	.string "Ah, a GYM LEADER CONVENTION\n"
+	.string "invitation!\p"
+	.string "This ferry sails to OLIVINE CITY in\n"
+	.string "JOHTO. Would you like to board?$"
+
+Johto_Text_FerryToVermilion::
+	.string "This ferry sails back to VERMILION\n"
+	.string "CITY in KANTO. All aboard?$"
+
+Johto_Text_FerryDeparting::
+	.string "All right! All aboard!$"
+
+Johto_Text_FerryLater::
+	.string "Come back anytime. The ferry's\n"
+	.string "always ready for a LEADER!$"

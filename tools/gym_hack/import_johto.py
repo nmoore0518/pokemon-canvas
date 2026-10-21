@@ -289,9 +289,14 @@ def main():
                             "movement_type": "MOVEMENT_TYPE_FACE_DOWN", "movement_range_x": 0,
                             "movement_range_y": 0, "trainer_type": "TRAINER_TYPE_NONE",
                             "trainer_sight_or_berry_tree_id": "0", "script": "Johto_EventScript_Greeter", "flag": "0"})
-            for x in (8,):      # (the top of the gangway)
+            objects.append({"local_id": "LOCALID_OLIVINE_PORT_SAILOR", "type": "object",
+                            "graphics_id": "OBJ_EVENT_GFX_SAILOR", "x": 10, "y": 14, "elevation": 3,
+                            "movement_type": "MOVEMENT_TYPE_FACE_LEFT", "movement_range_x": 0,
+                            "movement_range_y": 0, "trainer_type": "TRAINER_TYPE_NONE",
+                            "trainer_sight_or_berry_tree_id": "0", "script": "Johto_EventScript_OlivineFerry", "flag": "0"})
+            for x in (8,):      # (the top of the gangway; VAR_JOHTO_STATE == JOHTO_INVITED)
                 coords.append({"type": "trigger", "x": x, "y": 14, "elevation": 0, "var": "VAR_JOHTO_STATE",
-                               "var_value": "0", "script": "Johto_EventScript_GreeterStops"})
+                               "var_value": "2", "script": "Johto_EventScript_GreeterStops"})
         l = hns_layouts[m["layout"]]
         blockdata = (SRC / l["blockdata_filepath"]).read_bytes()
         for n, (bmap, edge, gfx) in enumerate([b for b in BORDERS if b[0] == hname]):

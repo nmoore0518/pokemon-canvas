@@ -633,6 +633,18 @@ void GymCandidate_PrepareMentorGift(void)
     gSpecialVar_Result = (mentor->who == leader) ? MENTOR_GIFT_LEADER : MENTOR_GIFT_VISIT;
 }
 
+// Special (Johto: the convention invitation): VAR_RESULT = whether the player has a mentor;
+// VAR_OBJ_GFX_ID_0 = how they look, STR_VAR_1 = their name
+void GymCandidate_PrepareMentorVisit(void)
+{
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    gSpecialVar_Result = (mentor != NULL);
+    if (mentor == NULL)
+        return;
+    VarSet(VAR_OBJ_GFX_ID_0, sMentorPeople[mentor->who].gfx);
+    StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
+}
+
 // Special: VAR_0x8009 = the gym (1 or 6) -> gStringVar4 = what the mentor says with the gift
 void GymCandidate_BufferMentorGift(void)
 {

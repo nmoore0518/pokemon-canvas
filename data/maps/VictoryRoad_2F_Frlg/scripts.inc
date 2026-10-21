@@ -1,6 +1,20 @@
 VictoryRoad_2F_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, VictoryRoad_2F_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, VictoryRoad_2F_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, VictoryRoad_2F_OnResume
 	.byte 0
+
+@ Gym Trainer hack: Moltres lives here (as in Red and Blue), not on Mt. Ember (no Sevii Islands)
+VictoryRoad_2F_OnTransition::
+	call_if_unset FLAG_FOUGHT_MOLTRES, MtEmber_Summit_EventScript_ShowMoltres
+	end
+
+VictoryRoad_2F_OnResume::
+	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, MtEmber_Summit_EventScript_TryRemoveMoltres
+	end
+
+VictoryRoad_2F_EventScript_Moltres::
+	goto MtEmber_Summit_EventScript_Moltres
 
 VictoryRoad_2F_OnLoad::
 	call_if_ne VAR_MAP_SCENE_VICTORY_ROAD_2F_BOULDER1, 100, VictoryRoad_2F_EventScript_SetRockBarrier1

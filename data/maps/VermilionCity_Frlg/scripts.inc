@@ -49,6 +49,7 @@ VermilionCity_EventScript_OldMan1SSAnneLeft::
 VermilionCity_EventScript_FerrySailor::
 	lock
 	faceplayer
+	goto_if_ge VAR_JOHTO_STATE, JOHTO_INVITED, Johto_EventScript_VermilionFerry
 	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_CheckSeagallopPresent
 	msgbox VermilionCity_Text_WelcomeToTheSSAnne
 	release
@@ -190,6 +191,7 @@ VermilionCity_EventScript_CheckTicket::
 	applymovement LOCALID_VERMILION_FERRY_SAILOR, Common_Movement_WalkInPlaceFasterLeft
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 	waitmovement 0
+	goto_if_ge VAR_JOHTO_STATE, JOHTO_INVITED, Johto_EventScript_VermilionFerryTrigger
 	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_CheckSeagallopPresentTrigger
 	msgbox VermilionCity_Text_DoYouHaveATicket
 	goto_if_unset FLAG_GOT_SS_TICKET, VermilionCity_EventScript_DontHaveSSTicket

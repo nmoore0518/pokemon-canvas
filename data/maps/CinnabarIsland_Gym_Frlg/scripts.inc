@@ -66,8 +66,7 @@ CinnabarIsland_Gym_EventScript_DefeatedBlaine::
 	setflag FLAG_DEFEATED_BLAINE
 	setflag FLAG_BADGE07_GET
 	setrespawn HEAL_LOCATION_CINNABAR_ISLAND
-	setvar VAR_MAP_SCENE_CINNABAR_ISLAND, 1
-	clearflag FLAG_HIDE_CINNABAR_BILL
+	@ (Gym Trainer hack: no Sevii Islands trip with Bill; Johto replaces them)
 	set_gym_trainers_frlg 7
 	goto CinnabarIsland_Gym_EventScript_GiveTM38
 	end

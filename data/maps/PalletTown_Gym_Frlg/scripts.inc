@@ -43,6 +43,7 @@ PalletTown_Gym_OnFrame::
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_GYM, 3, PalletTown_Gym_EventScript_OakWantsTheGym
 	map_script_2 VAR_GYM_LEGEND_STATE, GYM_LEGEND_ESCAPED, GymLegend_EventScript_RivalEscaped
 	map_script_2 VAR_GYM_LEGEND_STATE, GYM_LEGEND_CAUGHT_NEWS, GymLegend_EventScript_RivalCaught
+	map_script_2 VAR_JOHTO_STATE, JOHTO_INVITE_WAITING, Johto_EventScript_Invitation
 	.2byte 0
 
 @ Right after the first rival battle, Oak brings the player and the rival here.

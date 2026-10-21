@@ -6,6 +6,8 @@ CinnabarIsland_Frlg_MapScripts::
 CinnabarIsland_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_CINNABAR_ISLAND
 	call CinnabarIsland_EventScript_CheckUnlockGym
+	call_if_eq VAR_MAP_SCENE_CINNABAR_ISLAND, 1, CinnabarIsland_EventScript_NoSeviiTrip
+	call_if_eq VAR_MAP_SCENE_CINNABAR_ISLAND_2, 1, CinnabarIsland_EventScript_NoSeviiTrip
 	call_if_eq VAR_MAP_SCENE_CINNABAR_ISLAND, 1, CinnabarIsland_EventScript_ReadyObjectsSailToOneIsland
 	call_if_eq VAR_MAP_SCENE_CINNABAR_ISLAND, 3, CinnabarIsland_EventScript_ReadyObjectsReturnFromSeviiIslands
 	call_if_eq VAR_MAP_SCENE_CINNABAR_ISLAND_2, 1, CinnabarIsland_EventScript_ReadyObjectsSailToOneIslandFromPokeCenter
@@ -35,6 +37,15 @@ CinnabarIsland_EventScript_MoveSeagallopDown::
 CinnabarIsland_EventScript_ReadyObjectsReturnFromSeviiIslands::
 	setobjectxyperm LOCALID_CINNABAR_BILL, 21, 8
 	setobjectmovementtype LOCALID_CINNABAR_BILL, MOVEMENT_TYPE_FACE_UP
+	return
+
+@ Gym Trainer hack: Bill's trip to the Sevii Islands is gone (Johto replaces them). Saves that
+@ had it waiting just drop it.
+CinnabarIsland_EventScript_NoSeviiTrip::
+	setvar VAR_MAP_SCENE_CINNABAR_ISLAND, 0
+	setvar VAR_MAP_SCENE_CINNABAR_ISLAND_2, 0
+	setflag FLAG_HIDE_CINNABAR_BILL
+	setflag FLAG_HIDE_CINNABAR_POKECENTER_BILL
 	return
 
 CinnabarIsland_EventScript_CheckUnlockGym::
