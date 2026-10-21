@@ -283,11 +283,43 @@
     },
     {
       "type": "sign",
+      "x": 19,
+      "y": 29,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+    },
+    {
+      "type": "sign",
+      "x": 20,
+      "y": 29,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+    },
+    {
+      "type": "sign",
+      "x": 19,
+      "y": 30,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+    },
+    {
+      "type": "sign",
+      "x": 20,
+      "y": 30,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+    },
+    {
+      "type": "sign",
       "x": 6,
       "y": 4,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
     },
     {
       "type": "sign",
@@ -295,7 +327,7 @@
       "y": 4,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
     },
     {
       "type": "sign",
@@ -303,7 +335,7 @@
       "y": 5,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
     },
     {
       "type": "sign",
@@ -311,7 +343,7 @@
       "y": 5,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp2"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
     },
     {
       "type": "sign",
@@ -319,7 +351,7 @@
       "y": 26,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
     },
     {
       "type": "sign",
@@ -327,7 +359,7 @@
       "y": 26,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
     },
     {
       "type": "sign",
@@ -335,7 +367,7 @@
       "y": 27,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
     },
     {
       "type": "sign",
@@ -343,7 +375,7 @@
       "y": 27,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp3"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
     },
     {
       "type": "sign",
@@ -351,7 +383,7 @@
       "y": 5,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
     },
     {
       "type": "sign",
@@ -359,7 +391,7 @@
       "y": 5,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
     },
     {
       "type": "sign",
@@ -367,7 +399,7 @@
       "y": 6,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
     },
     {
       "type": "sign",
@@ -375,7 +407,7 @@
       "y": 6,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp4"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
     },
     {
       "type": "sign",
@@ -383,7 +415,7 @@
       "y": 38,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
     },
     {
       "type": "sign",
@@ -391,7 +423,7 @@
       "y": 38,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
     },
     {
       "type": "sign",
@@ -399,7 +431,7 @@
       "y": 39,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
     },
     {
       "type": "sign",
@@ -407,7 +439,7 @@
       "y": 39,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp5"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
     },
     {
       "type": "sign",
@@ -415,7 +447,7 @@
       "y": 38,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
     },
     {
       "type": "sign",
@@ -423,7 +455,7 @@
       "y": 38,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
     },
     {
       "type": "sign",
@@ -431,60 +463,12 @@
       "y": 39,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
+      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
     },
     {
       "type": "sign",
       "x": 25,
       "y": 39,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp6"
-    },
-    {
-      "type": "sign",
-      "x": 9,
-      "y": 18,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
-    },
-    {
-      "type": "sign",
-      "x": 10,
-      "y": 18,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
-    },
-    {
-      "type": "sign",
-      "x": 11,
-      "y": 18,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
-    },
-    {
-      "type": "sign",
-      "x": 9,
-      "y": 19,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
-    },
-    {
-      "type": "sign",
-      "x": 10,
-      "y": 19,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "ExoticSafari_GalarForest_EventScript_Lamp7"
-    },
-    {
-      "type": "sign",
-      "x": 11,
-      "y": 19,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ExoticSafari_GalarForest_EventScript_Lamp7"

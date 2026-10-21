@@ -727,11 +727,14 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Rapidash, Slowpoke, Slowbro, Farfetch'd, Weezing, Mr. Mime, Corsola, Zigzagoon, Linoone and
          Hisuian Growlithe, Arcanine, Voltorb, Electrode, Typhlosion, Samurott, Lilligant, Zorua,
          Zoroark, Braviary, Sliggoo, Decidueye (with the earlier ones); Paldea adds Bloodmoon
-         Ursaluna (forest). Hisuian Goodra: level 50, no rain needed.
+         Ursaluna (forest). Goodra (both forms): level 50, no rain needed.
    - [x] Map edges: tree lines carried on by aligned border blocks (no cut trees), Paldea's drawn
          tree strips whole; Mt. Silver's slopes widened, their sky turned to snow (peak corners
          redrawn over snow); the desert's cut cliffs/boulders at its edges tidied; Glimwood's
          south-east glade opened up (two trees cleared).
+   - [x] Glimwood's mushrooms drawn under the player (walking up to one from below, the player is in
+         front); the giant ones stand in clearings: two whole trees cleared (`clear_trees`), the
+         trees above ending in their trunks, the ones below starting with their tops (`retile`).
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

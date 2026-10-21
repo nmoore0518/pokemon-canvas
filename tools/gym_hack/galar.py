@@ -358,28 +358,22 @@ def add_mushrooms(out):
         top = [add_tile(rows, ox + (k % 2) * 8, oy + (k // 2) * 8) | (12 << 12) for k in range(4)]
         mt += struct.pack("<8H", *ground, *top)
         at += struct.pack("<I", attr)
+    # (all drawn under the player: the player walking up to one stands in front of it)
+    stand = (ground_attr & ~0x1FF & ~0x60000000) | (1 << 29)
     for k in range(4):                                             # big: top left, top right, bottom...
-        add_metatile(big, (k % 2) * 16, (k // 2) * 16, ground_attr & ~0x1FF)
+        add_metatile(big, (k % 2) * 16, (k // 2) * 16, stand)
     covered = (ground_attr & ~0x60000000) | (1 << 29)             # (drawn under the player)
     add_metatile(s1, 0, 0, covered)
     add_metatile(s2, 0, 0, covered)
-    giant, _, _ = mushroom_art(48)                                 # giant (3x2: in front of a tree)
+    giant, _, _ = mushroom_art(48)                                 # giant (3x2, in a clearing)
     for k in range(6):
-        # The tree stays behind it (its leaves as the bottom layer: nothing of the trees around is
-        # cut off), the mushroom on top
-        tree = struct.unpack_from("<8H", mt, (0x10 + (k // 3) * 8 + k % 3) * 16)   # (0x290-0x292, 0x298-0x29A)
-        top = [add_tile(giant, (k % 3) * 16 + (q % 2) * 8, (k // 3) * 16 + (q // 2) * 8) | (12 << 12) for q in range(4)]
-        mt += struct.pack("<8H", *tree[4:], *top)
-        at += struct.pack("<I", struct.unpack_from("<I", at, (0x10 + (k // 3) * 8 + k % 3) * 4)[0])
+        add_metatile(giant, (k % 3) * 16, (k // 3) * 16, stand)
     dim = [[DIM_COLOR.get(c, c) for c in row] for row in big]     # big, not lit yet (Zarude's lamps)
     for k in range(4):
-        add_metatile(dim, (k % 2) * 16, (k // 2) * 16, ground_attr & ~0x1FF)
+        add_metatile(dim, (k % 2) * 16, (k // 2) * 16, stand)
     dim = [[DIM_COLOR.get(c, c) for c in row] for row in giant]   # giant, not lit yet
     for k in range(6):
-        tree = struct.unpack_from("<8H", mt, (0x10 + (k // 3) * 8 + k % 3) * 16)
-        top = [add_tile(dim, (k % 3) * 16 + (q % 2) * 8, (k // 3) * 16 + (q // 2) * 8) | (12 << 12) for q in range(4)]
-        mt += struct.pack("<8H", *tree[4:], *top)
-        at += struct.pack("<I", struct.unpack_from("<I", at, (0x10 + (k // 3) * 8 + k % 3) * 4)[0])
+        add_metatile(dim, (k % 3) * 16, (k // 3) * 16, stand)
     assert used <= 384
     img.save(out / "tiles.png")
     (out / "metatiles.bin").write_bytes(mt)
@@ -394,7 +388,7 @@ LAMP_COUNT = 8                     # (Zarude's lamps: big and giant mushrooms, d
 LAMPS = []                         # (their top-left corners and widths, 2 or 3: made by place_mushrooms)
 
 
-def place_mushrooms(g, w, h, reach_ok):
+def place_mushrooms(g, w, h, reach_ok, reach_all):
     """Big mushrooms on 2x2 patches of forest floor beside the trees (never blocking a way through:
     reach_ok(g) checks), small ones dotted on the floor"""
     import random
@@ -426,29 +420,104 @@ def place_mushrooms(g, w, h, reach_ok):
         else:
             for k, (a, b) in enumerate(((0, 0), (1, 0), (0, 1), (1, 1))):
                 g[y + b][x + a] = old[k]
-    # Giant mushrooms in place of trees (a whole 3x2 tree) along the paths
-    tree = (0x290, 0x291, 0x292, 0x298, 0x299, 0x29A)
-    blocks = [(x, y) for y in range(h - 1) for x in range(w - 2)
-              if [g[y + b][x + a] & 0x3FF for b in (0, 1) for a in (0, 1, 2)] == list(tree)
-              and any(floor(x + a, y + d) for a in (-1, 0, 1, 2, 3) for d in (-2, -1, 2, 3))]
-    rnd.shuffle(blocks)
+    # Giant mushrooms in clearings: two trees beside a path cleared (whole trees: the trees above
+    # end in their trunks, the ones below start with their tops), the mushroom on the new floor
     giants = []
+    blocks = [(x, y) for y in range(1, h - 1) for x in range(w - 2)
+              if [g[y + b][x + a] & 0x3FF for b in (0, 1) for a in (0, 1, 2)] == [0x290, 0x291, 0x292, 0x298, 0x299, 0x29A]]
+    rnd.shuffle(blocks)
     for x, y in blocks:
-        if len(giants) >= 12:
+        if len(giants) >= 10:
             break
         if any(abs(x - px) + abs(y - py) < 7 for px, py in giants + spots):
             continue
-        # (the first few that can be touched - floor beside them: lamps, dark until lit)
-        beside = [(x + a, y + b) for a in range(-1, 4) for b in (-1, 0, 1, 2) if (a in (-1, 3)) != (b in (-1, 2))]
-        lamp = len(LAMPS) < LAMP_COUNT and any(floor(*p) for p in beside)
+        trial = [row[:] for row in g]
+        rows = clear_trees(trial, x, y, h)
+        if rows is None:
+            continue
+        gy = rows[-2]                                    # (the mushroom: the clearing's lowest two rows)
+        lamp = len(LAMPS) < LAMP_COUNT                     # (the first few: lamps, dark until lit)
         for k in range(6):
-            g[y + k // 3][x + k % 3] = (MUSHROOM_FIRST + (16 if lamp else 6) + k) | (1 << 10) | (3 << 12)
-        giants.append((x, y))
+            trial[gy + k // 3][x + k % 3] = (MUSHROOM_FIRST + (16 if lamp else 6) + k) | (1 << 10) | (3 << 12)
+        # The player must be able to walk up to it (and nothing else may be cut off)
+        reach = reach_all(trial)
+        around = [(x + a, gy + b) for a in range(-1, 4) for b in (-1, 0, 1, 2) if (a in (-1, 3)) != (b in (-1, 2))]
+        if reach is None or not any(p in reach for p in around):
+            continue
+        for r in range(len(g)):
+            g[r][x:x + 3] = trial[r][x:x + 3]
+        giants.append((x, gy))
         if lamp:
-            LAMPS.append((x, y, 3))
+            LAMPS.append((x, gy, 3))
     for x, y in cells[:]:
         if floor(x, y) and rnd.random() < 0.06:
             g[y][x] = (MUSHROOM_FIRST + 4 + rnd.randrange(2)) | (3 << 12)
+
+
+TREE_TOP, TREE_A, TREE_B, TREE_END, TREE_TRUNK = 0x288, 0x290, 0x298, 0x2A0, 0x2A8
+TREES = {b + i for b in (0x288, 0x290, 0x298, 0x2A0, 0x2A8, 0x2B0) for i in range(3)}
+
+
+def clear_trees(g, x, y, h):
+    """Glimwood (Ilex Forest) trees stack in 3-wide columns: a top edge row (0x288), pairs of canopy
+    rows (0x290/0x298), then the bottom (0x2A0) and the trunks (0x2A8). Clears the tree pair at rows
+    y, y+1 and the pair above it (or below), then retiles the rest of the column so every tree stays
+    whole: rows that can't make a whole tree are cleared too. Returns the cleared rows, or None."""
+    col = lambda r: 0 <= r < h and all(g[r][x + a] & 0x3FF in TREES for a in range(3))
+    clear = {y, y + 1} | ({y - 2, y - 1} if col(y - 1) and g[y - 1][x] & 0x3FF == TREE_B else {y + 2, y + 3})
+    if not all(col(r) for r in clear):
+        return None
+    def set_row(r, base):
+        for a in range(3):
+            g[r][x + a] = (base + a) | (1 << 10) | (3 << 12)
+    def floor_row(r):
+        for a in range(3):
+            g[r][x + a] = (0x28E if (x + a) % 2 == 0 else 0x28F) | (3 << 12)
+    for r in clear:
+        floor_row(r)
+    return retile(g, x, h, clear)
+
+
+def retile(g, x, h, clear):
+    """(clear_trees) the tree column at x either side of the cleared rows made whole again"""
+    col = lambda r: 0 <= r < h and all(g[r][x + a] & 0x3FF in TREES for a in range(3))
+    def set_row(r, base):
+        for a in range(3):
+            g[r][x + a] = (base + a) | (1 << 10) | (3 << 12)
+    def floor_row(r):
+        for a in range(3):
+            g[r][x + a] = (0x28E if (x + a) % 2 == 0 else 0x28F) | (3 << 12)
+    clear = set(clear)
+    while True:
+        # The tree runs either side of the clearing
+        changed = False
+        for side in (-1, 1):
+            r = (min(clear) - 1) if side < 0 else (max(clear) + 1)
+            if not col(r):
+                continue
+            s_, e_ = r, r
+            while col(s_ - 1):
+                s_ -= 1
+            while col(e_ + 1):
+                e_ += 1
+            top_edge, bottom_edge = s_ > 0, e_ < h - 1
+            mid = (e_ - (2 if bottom_edge else 0)) - (s_ + (1 if top_edge else 0)) + 1
+            if mid < 0 or mid % 2:            # (can't be whole trees: the row by the clearing goes)
+                clear.add(r)
+                floor_row(r)
+                changed = True
+                continue
+            k = s_
+            if top_edge:
+                set_row(k, TREE_TOP); k += 1
+            for i in range(mid):
+                set_row(k, TREE_A if i % 2 == 0 else TREE_B); k += 1
+            if bottom_edge:
+                set_row(k, TREE_END); set_row(k + 1, TREE_TRUNK)
+        if not changed:
+            break
+    rows = sorted(clear)
+    return rows if rows == list(range(rows[0], rows[-1] + 1)) and len(rows) <= 6 else None
 
 
 def forest():
@@ -463,6 +532,8 @@ def forest():
     for y in (28, 29):
         for x in range(18, 25):
             g[y][x] = (0x28E if x % 2 == 0 else 0x28F) | (3 << 12)
+    for x in (18, 21):
+        retile(g, x, 40, {28, 29})
     # Mushrooms: each must leave everything else reachable (the floor shrinks by just its 4 cells)
     state = {"n": len(_flood(g, (15, 38)))}
     def reach_ok(grid):
@@ -471,7 +542,10 @@ def forest():
             state["n"] = n
             return True
         return False
-    place_mushrooms(g, 39, 40, reach_ok)
+    def reach_all(grid):           # (what the player can reach: None if anything was cut off)
+        seen = _flood(grid, (15, 38))
+        return seen if len(seen) >= state["n"] else None
+    place_mushrooms(g, 39, 40, reach_ok, reach_all)
     return g, 39, 40
 
 
