@@ -641,3 +641,10 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          - Drop the Emerald songs the hack never plays (keep the ones a Hoenn safari would use).
          - Build the safaris from tilesets already in the ROM; reuse songs.
          - HnS has map material to start from (its Safari Zone, the Alola islands, Sinjoh Ruins).
+         - Music is low priority for Nick (he mostly plays with the sound off, except for big
+           battles and nostalgic Kanto areas): the safaris can reuse existing songs everywhere, no
+           new instrument sets. If space runs short, music is the first thing to cut (the HGSS set
+           is ~0.8 MB: Johto could fall back to fewer songs or FireRed's).
+         - Rough costs (measured on Johto): a map layout ~2 bytes per tile (Route 34, 60x90:
+           10.5 KB); a tileset ~12 KB (26 KB at most); a safari region of 8-10 maps with 3-4 new
+           tilesets ~200 KB without new music.
