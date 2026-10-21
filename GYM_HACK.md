@@ -624,3 +624,20 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Convention fans around Johto
    - [ ] The rest of Johto's people (random, faithful to HGSS, or quests: to decide)
    - [ ] Title screen and credits (artists, HnS, AI disclosure) -- next
+7. Regional safari zones and the full Pokédex (post-game, an idea for later)
+   - [ ] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
+         Pokémon past the first 386 can be caught, with puzzles opening sub-areas with legendaries.
+         All species through Gen 9 are already in the ROM (the convention and challengers use them)
+         and the National Dex already counts 1025; the work is maps, encounter tables (~640
+         species, ~30 wild slots per map) and about 70 legendary encounters.
+   - [ ] Evolutions into later Pokémon (Magnezone, Sylveon...) turned on in the post-game only, so
+         the main game stays 386 (`P_GEN_x_CROSS_EVOS` gates the links); special evolution items
+         and conditions obtainable.
+   - [ ] Space: about 4.4 MB of the 32 MB is free (October 2026). Ways to make room:
+         - Delete the Sevii Islands (unreachable since the ferry change): ~0.5-0.8 MB (159 map
+           layouts ~145 KB, 9 Sevii-only tilesets ~70 KB, their events, trainers, scripts, text).
+           Needs care: the trainer table, story flags, Celio and the Ruby/Sapphire quest, and the
+           Pokémon Center network machine point into them.
+         - Drop the Emerald songs the hack never plays (keep the ones a Hoenn safari would use).
+         - Build the safaris from tilesets already in the ROM; reuse songs.
+         - HnS has map material to start from (its Safari Zone, the Alola islands, Sinjoh Ruins).
