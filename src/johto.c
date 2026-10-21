@@ -12,9 +12,13 @@
 #include "constants/vars.h"
 
 // Special (testing): warp to map group VAR_TEMP_1, number VAR_TEMP_2, at its warp VAR_TEMP_3
+// (or, if that's 0xFF, at x VAR_TEMP_4, y VAR_TEMP_5)
 void Johto_DebugWarp(void)
 {
-    SetWarpDestination(VarGet(VAR_TEMP_1), VarGet(VAR_TEMP_2), VarGet(VAR_TEMP_3), -1, -1);
+    if (VarGet(VAR_TEMP_3) == 0xFF)
+        SetWarpDestination(VarGet(VAR_TEMP_1), VarGet(VAR_TEMP_2), WARP_ID_NONE, VarGet(VAR_TEMP_4), VarGet(VAR_TEMP_5));
+    else
+        SetWarpDestination(VarGet(VAR_TEMP_1), VarGet(VAR_TEMP_2), VarGet(VAR_TEMP_3), -1, -1);
     DoWarp();
     ResetInitialPlayerAvatarState();
 }

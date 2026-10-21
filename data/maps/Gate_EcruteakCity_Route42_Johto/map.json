@@ -4,7 +4,7 @@
   "layout": "LAYOUT_GATE_ECRUTEAK_CITY_ROUTE42",
   "music": "MUS_RG_ROUTE3",
   "region": "REGION_JOHTO",
-  "region_map_section": "MAPSEC_ROUTE_42",
+  "region_map_section": "MAPSEC_ECRUTEAK_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
@@ -15,7 +15,23 @@
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
-  "object_events": [],
+  "object_events": [
+    {
+      "local_id": "LOCALID_GATE_ECRUTEAK_CITY_ROUTE42_GUARD",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_POLICEMAN",
+      "x": 10,
+      "y": 5,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Johto_EventScript_GuardTalk",
+      "flag": "0"
+    }
+  ],
   "warp_events": [
     {
       "x": 1,
@@ -23,13 +39,6 @@
       "elevation": 0,
       "dest_map": "MAP_ECRUTEAK_CITY",
       "dest_warp_id": "1"
-    },
-    {
-      "x": 11,
-      "y": 5,
-      "elevation": 0,
-      "dest_map": "MAP_GATE_ECRUTEAK_CITY_ROUTE42",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

@@ -12,7 +12,8 @@ enum RegionMapType
     REGION_MAP_KANTO,
     REGION_MAP_SEVII123,
     REGION_MAP_SEVII45,
-    REGION_MAP_SEVII67
+    REGION_MAP_SEVII67,
+    REGION_MAP_JOHTO,   // Gym Trainer hack (tools/gym_hack/build_johto_map.py)
 };
 
 enum

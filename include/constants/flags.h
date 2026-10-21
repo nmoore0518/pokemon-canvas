@@ -2486,6 +2486,12 @@
 #define FLAG_HIDE_PALLET_GYM_LEGEND   0x0C2
 #define FLAG_GYM_LEGEND_APPEARED      0x0C3
 #define FLAG_GYM_LEGEND_CAUGHT        0x0C4
+// Johto (src/johto.c): the convention goodie bag (Johto on the Town Map), and towns for FLY
+#define FLAG_JOHTO_MAP                0x0C5
+#define FLAG_WORLD_MAP_OLIVINE_CITY   0x0C6
+#define FLAG_WORLD_MAP_ECRUTEAK_CITY  0x0C7
+#define FLAG_WORLD_MAP_GOLDENROD_CITY 0x0C8
+#define FLAG_WORLD_MAP_AZALEA_TOWN    0x0C9
 
 
 #if TESTING

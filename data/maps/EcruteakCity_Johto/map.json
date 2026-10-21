@@ -130,13 +130,6 @@
       "elevation": 0,
       "dest_map": "MAP_ECRUTEAK_CITY_GYM",
       "dest_warp_id": "0"
-    },
-    {
-      "x": 39,
-      "y": 46,
-      "elevation": 0,
-      "dest_map": "MAP_ECRUTEAK_CITY",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

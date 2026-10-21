@@ -44,13 +44,6 @@
       "elevation": 0,
       "dest_map": "MAP_ROUTE36",
       "dest_warp_id": "2"
-    },
-    {
-      "x": 7,
-      "y": 0,
-      "elevation": 0,
-      "dest_map": "MAP_GATE_NATIONAL_PARK",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

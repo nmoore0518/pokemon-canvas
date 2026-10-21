@@ -353,8 +353,8 @@
     {
       "id": "HEAL_LOCATION_AZALEA_TOWN",
       "map": "MAP_AZALEA_TOWN",
-      "x": 31,
-      "y": 16,
+      "x": 19,
+      "y": 12,
       "respawn_map": "MAP_AZALEA_TOWN_POKEMON_CENTER",
       "respawn_npc": "LOCALID_AZALEA_TOWN_POKEMON_CENTER_NURSE"
     },

@@ -41,4 +41,8 @@
 #define GYM_LEGEND_CAUGHT_NEWS   3   // caught; the rival comes to scoff
 #define GYM_LEGEND_DONE          4
 
+// VAR_JOHTO_STATE (src/johto.c)
+#define JOHTO_NOT_VISITED   0
+#define JOHTO_GOT_GOODIE_BAG 1
+
 #endif // GUARD_CONSTANTS_GYM_HACK_H

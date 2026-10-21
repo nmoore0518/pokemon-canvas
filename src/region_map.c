@@ -71,6 +71,15 @@ struct MultiNameFlyDest
 };
 
 static EWRAM_DATA struct RegionMap *sRegionMap = NULL;
+// Gym Trainer hack: on the FLY map, R shows the other region (Kanto/Johto). 0: the player's own;
+// otherwise the map section the cursor starts on there, + 1
+static EWRAM_DATA u16 sOtherRegionMapSec = 0;
+#define sShownMapSec (sOtherRegionMapSec ? sOtherRegionMapSec - 1 : MAPSEC_NONE)
+
+static u32 ShownMapSec(void)
+{
+    return sOtherRegionMapSec ? sOtherRegionMapSec - 1 : gMapHeader.regionMapSectionId;
+}
 
 static EWRAM_DATA struct {
     void (*callback)(void);
@@ -118,6 +127,7 @@ static void SpriteCB_FlyDestIcon(struct Sprite *sprite);
 static void CB_FadeInFlyMap(void);
 static void CB_HandleFlyMapInput(void);
 static void CB_ExitFlyMap(void);
+static void CB_SwitchFlyMapRegion(void);
 
 static const u16 sRegionMapCursorPal[] = INCGFX_U16("graphics/pokenav/region_map/cursor.pal", ".gbapal");
 static const u32 sRegionMapCursorSmallGfxLZ[] = INCGFX_U32("graphics/pokenav/region_map/cursor_small.png", ".4bpp.smol");
@@ -139,6 +149,7 @@ static const u8 sRegionMapPlayerIcon_LeafGfx[] = INCGFX_U8("graphics/pokenav/reg
 #include "data/region_map/region_map_layout_sevii123.h"
 #include "data/region_map/region_map_layout_sevii45.h"
 #include "data/region_map/region_map_layout_sevii67.h"
+#include "data/region_map/region_map_layout_johto.h"
 #include "data/region_map/region_map_entries.h"
 
 static const mapsec_u16_t sRegionMap_SpecialPlaceLocations[][2] =
@@ -327,6 +338,14 @@ static const u16 ALIGNED(4) sRegionMapSevii67_Pal[] = INCGFX_U16("graphics/poken
 static const u32 sRegionMapSevii67_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_sevii_67.png", ".8bpp.smol");
 static const u32 sRegionMapSevii67_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_sevii_67.bin", ".smolTM");
 
+// Gym Trainer hack: Johto (from Pokémon HnS; the convention area lit, tools/gym_hack/build_johto_map.py)
+static const u16 ALIGNED(4) sPokedexAreaMapJohto_Pal[] = INCGFX_U16("graphics/pokedex/region_map_johto.pal", ".gbapal");
+static const u32 sPokedexAreaMapJohto_Gfx[] = INCGFX_U32("graphics/pokedex/region_map_johto.png", ".8bpp.smol");
+static const u32 sPokedexAreaMapJohto_Tilemap[] = INCGFX_U32("graphics/pokedex/region_map_johto.bin", ".smolTM");
+static const u16 ALIGNED(4) sRegionMapJohto_Pal[] = INCGFX_U16("graphics/pokenav/region_map/map_johto.pal", ".gbapal");
+static const u32 sRegionMapJohto_Gfx[] = INCGFX_U32("graphics/pokenav/region_map/map_johto.png", ".8bpp.smol");
+static const u32 sRegionMapJohto_Tilemap[] = INCGFX_U32("graphics/pokenav/region_map/map_johto.bin", ".smolTM");
+
 const struct RegionMapInfo gRegionMapInfos[] =
 {
     [REGION_MAP_HOENN]    =
@@ -378,6 +397,16 @@ const struct RegionMapInfo gRegionMapInfos[] =
         .regionMapPalette = sRegionMapSevii67_Pal,
         .regionMapGfx = sRegionMapSevii67_Gfx,
         .regionMapTilemap = sRegionMapSevii67_Tilemap,
+    },
+    [REGION_MAP_JOHTO]    =
+    {
+        .dexMapPalette = sPokedexAreaMapJohto_Pal,
+        .dexMapGfx = sPokedexAreaMapJohto_Gfx,
+        .dexMapTilemap = sPokedexAreaMapJohto_Tilemap,
+        .dexMapPaletteSize = sizeof(sPokedexAreaMapJohto_Pal),
+        .regionMapPalette = sRegionMapJohto_Pal,
+        .regionMapGfx = sRegionMapJohto_Gfx,
+        .regionMapTilemap = sRegionMapJohto_Tilemap,
     },
 };
 
@@ -537,6 +566,10 @@ static const u8 sMapHealLocations[][3] =
     [MAPSEC_RIXY_CHAMBER] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_VIAPOIS_CHAMBER] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
     [MAPSEC_EMBER_SPA] = {MAP_GROUP(MAP_PALLET_TOWN), MAP_NUM(MAP_PALLET_TOWN), HEAL_LOCATION_NONE},
+    [MAPSEC_OLIVINE_CITY] = {MAP_GROUP(MAP_OLIVINE_CITY), MAP_NUM(MAP_OLIVINE_CITY), HEAL_LOCATION_OLIVINE_CITY},
+    [MAPSEC_ECRUTEAK_CITY] = {MAP_GROUP(MAP_ECRUTEAK_CITY), MAP_NUM(MAP_ECRUTEAK_CITY), HEAL_LOCATION_ECRUTEAK_CITY},
+    [MAPSEC_GOLDENROD_CITY] = {MAP_GROUP(MAP_GOLDENROD_CITY), MAP_NUM(MAP_GOLDENROD_CITY), HEAL_LOCATION_GOLDENROD_CITY},
+    [MAPSEC_AZALEA_TOWN] = {MAP_GROUP(MAP_AZALEA_TOWN), MAP_NUM(MAP_AZALEA_TOWN), HEAL_LOCATION_AZALEA_TOWN},
 };
 
 static const u8 *const sEverGrandeCityNames[] =
@@ -613,6 +646,9 @@ static const struct WindowTemplate sFlyMapWindowTemplates[] =
     },
     DUMMY_WIN_TEMPLATE
 };
+
+static const u8 sText_RJohto[] = _("R: JOHTO");
+static const u8 sText_RKanto[] = _("R: KANTO");
 
 static const struct SpritePalette sFlyTargetIconsSpritePalette =
 {
@@ -743,14 +779,14 @@ bool8 LoadRegionMapGfx(void)
     switch (sRegionMap->initStep)
     {
     case 0:
-        regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+        regionMapType = GetRegionMapType(ShownMapSec());
         if (sRegionMap->bgManaged)
             DecompressAndCopyTileDataToVram(sRegionMap->bgNum, gRegionMapInfos[regionMapType].regionMapGfx, 0, 0, 0);
         else
             DecompressDataWithHeaderVram(gRegionMapInfos[regionMapType].regionMapGfx, (u16 *)BG_CHAR_ADDR(2));
         break;
     case 1:
-        regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+        regionMapType = GetRegionMapType(ShownMapSec());
         if (sRegionMap->bgManaged)
         {
             if (!FreeTempTileDataBuffersIfPossible())
@@ -762,7 +798,7 @@ bool8 LoadRegionMapGfx(void)
         }
         break;
     case 2:
-        regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+        regionMapType = GetRegionMapType(ShownMapSec());
         if (!FreeTempTileDataBuffersIfPossible())
             LoadPalette(gRegionMapInfos[regionMapType].regionMapPalette, BG_PLTT_ID(7), 3 * PLTT_SIZE_4BPP);
         break;
@@ -1179,6 +1215,8 @@ enum RegionMapType GetRegionMapType(u32 mapSecId)
         default:
             return REGION_MAP_KANTO;
         }
+    case REGION_JOHTO:
+        return REGION_MAP_JOHTO;
     case REGION_HOENN:
     default:
         return REGION_MAP_HOENN;
@@ -1194,10 +1232,12 @@ static mapsec_u16_t GetMapSecIdAt(u16 x, u16 y)
     y -= MAPCURSOR_Y_MIN;
     x -= MAPCURSOR_X_MIN;
 
-    switch (GetCurrentRegion())
+    switch (GetRegionForSectionId(ShownMapSec()))
     {
+    case REGION_JOHTO:
+        return sRegionMapSections_Johto[y][x];
     case REGION_KANTO:
-        switch (GetKantoSubregion(gMapHeader.regionMapSectionId))
+        switch (GetKantoSubregion(ShownMapSec()))
         {
         case KANTO_SUBREGION_SEVII123:
                 return sRegionMapSections_Sevii123[y][x];
@@ -1226,6 +1266,15 @@ static void InitMapBasedOnPlayerLocation(void)
     u16 xOnMap;
     struct WarpData *warp;
 
+    if (sShownMapSec != MAPSEC_NONE)
+    {
+        // Gym Trainer hack: showing the other region (FLY, R button): the cursor starts at its port
+        sRegionMap->mapSecId = sShownMapSec;
+        sRegionMap->playerIsInCave = FALSE;
+        sRegionMap->cursorPosX = gRegionMapEntries[sShownMapSec].x + MAPCURSOR_X_MIN;
+        sRegionMap->cursorPosY = gRegionMapEntries[sShownMapSec].y + MAPCURSOR_Y_MIN;
+        return;
+    }
     if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_SS_TIDAL_CORRIDOR)
         && (gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_SS_TIDAL_CORRIDOR)
             || gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_SS_TIDAL_LOWER_DECK)
@@ -1504,6 +1553,14 @@ static u8 GetMapsecType(mapsec_u16_t mapSecId)
         return FlagGet(FLAG_WORLD_MAP_ROUTE4_POKEMON_CENTER_1F) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_ROUTE_10_POKECENTER:
         return FlagGet(FLAG_WORLD_MAP_ROUTE10_POKEMON_CENTER_1F) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+    case MAPSEC_OLIVINE_CITY:
+        return FlagGet(FLAG_WORLD_MAP_OLIVINE_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+    case MAPSEC_ECRUTEAK_CITY:
+        return FlagGet(FLAG_WORLD_MAP_ECRUTEAK_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+    case MAPSEC_GOLDENROD_CITY:
+        return FlagGet(FLAG_WORLD_MAP_GOLDENROD_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+    case MAPSEC_AZALEA_TOWN:
+        return FlagGet(FLAG_WORLD_MAP_AZALEA_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     default:
         return MAPSECTYPE_ROUTE;
     }
@@ -1765,6 +1822,7 @@ void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
     LoadSpritePalette(&palette);
     spriteId = CreateSprite(&template, 0, 0, 1);
     sRegionMap->playerIconSprite = &gSprites[spriteId];
+
     if (!sRegionMap->zoomed)
     {
         sRegionMap->playerIconSprite->x = sRegionMap->playerIconSpritePosX * 8 + 4;
@@ -1777,6 +1835,8 @@ void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
         sRegionMap->playerIconSprite->y = sRegionMap->playerIconSpritePosY * 16 - 0x42;
         sRegionMap->playerIconSprite->callback = SpriteCB_PlayerIconMapZoomed;
     }
+    if (sShownMapSec != MAPSEC_NONE)    // (Gym Trainer hack: the player isn't on the map being shown)
+        HideRegionMapPlayerIcon();
 }
 
 static void HideRegionMapPlayerIcon(void)
@@ -2011,6 +2071,12 @@ void CB2_OpenFlyMap(void)
         PutWindowTilemap(WIN_FLY_TO_WHERE);
         FillWindowPixelBuffer(WIN_FLY_TO_WHERE, PIXEL_FILL(0));
         AddTextPrinterParameterized(WIN_FLY_TO_WHERE, FONT_NORMAL, gText_FlyToWhere, 0, 1, 0, NULL);
+        if (FlagGet(FLAG_JOHTO_MAP))
+        {
+            // Gym Trainer hack: R shows the other region
+            const u8 *hint = GetRegionForSectionId(ShownMapSec()) == REGION_JOHTO ? sText_RKanto : sText_RJohto;
+            AddTextPrinterParameterized(WIN_FLY_TO_WHERE, FONT_SMALL, hint, GetStringRightAlignXOffset(FONT_SMALL, hint, 112), 1, 0, NULL);
+        }
         ScheduleBgCopyTilemapToVram(0);
         gMain.state++;
         break;
@@ -2321,6 +2387,10 @@ static const struct FlyLocation sFlyLocations[] =
         .mapsec = MAPSEC_ROUTE_10_POKECENTER,
         .flag = FLAG_WORLD_MAP_ROUTE10_POKEMON_CENTER_1F,
     },
+    { .regionMapType = REGION_MAP_JOHTO, .mapsec = MAPSEC_OLIVINE_CITY,   .flag = FLAG_WORLD_MAP_OLIVINE_CITY },
+    { .regionMapType = REGION_MAP_JOHTO, .mapsec = MAPSEC_ECRUTEAK_CITY,  .flag = FLAG_WORLD_MAP_ECRUTEAK_CITY },
+    { .regionMapType = REGION_MAP_JOHTO, .mapsec = MAPSEC_GOLDENROD_CITY, .flag = FLAG_WORLD_MAP_GOLDENROD_CITY },
+    { .regionMapType = REGION_MAP_JOHTO, .mapsec = MAPSEC_AZALEA_TOWN,    .flag = FLAG_WORLD_MAP_AZALEA_TOWN },
 };
 
 
@@ -2330,7 +2400,7 @@ static const struct FlyLocation sFlyLocations[] =
 
 static void CreateFlyDestIcons(void)
 {
-    enum RegionMapType regionMapType = GetRegionMapType(gMapHeader.regionMapSectionId);
+    enum RegionMapType regionMapType = GetRegionMapType(ShownMapSec());
     u32 i;
     u16 x;
     u16 y;
@@ -2468,6 +2538,39 @@ static void CB_HandleFlyMapInput(void)
             SetFlyMapCallback(CB_ExitFlyMap);
             break;
         }
+        if (JOY_NEW(R_BUTTON | L_BUTTON) && FlagGet(FLAG_JOHTO_MAP))
+        {
+            // Gym Trainer hack: show the other region
+            u32 own = GetRegionForSectionId(gMapHeader.regionMapSectionId);
+            u32 target = GetRegionForSectionId(ShownMapSec()) == REGION_JOHTO ? REGION_KANTO : REGION_JOHTO;
+            if (own == target)
+                sOtherRegionMapSec = 0;
+            else
+                sOtherRegionMapSec = (target == REGION_JOHTO ? MAPSEC_OLIVINE_CITY : MAPSEC_VERMILION_CITY) + 1;
+            m4aSongNumStart(SE_SELECT);
+            SetFlyMapCallback(CB_SwitchFlyMapRegion);
+        }
+    }
+}
+
+static void CB_SwitchFlyMapRegion(void)
+{
+    switch (sFlyMap->state)
+    {
+    case 0:
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        sFlyMap->state++;
+        break;
+    case 1:
+        if (!UpdatePaletteFade())
+        {
+            FreeRegionMapIconResources();
+            TRY_FREE_AND_SET_NULL(sFlyMap);
+            FreeAllWindowBuffers();
+            gMain.state = 0;
+            SetMainCallback2(CB2_OpenFlyMap);
+        }
+        break;
     }
 }
 
@@ -2483,6 +2586,7 @@ static void CB_ExitFlyMap(void)
         if (!UpdatePaletteFade())
         {
             FreeRegionMapIconResources();
+            sOtherRegionMapSec = 0;
             if (sFlyMap->choseFlyLocation)
             {
                 struct RegionMap* tempRegionMap = &sFlyMap->regionMap;

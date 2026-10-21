@@ -5187,7 +5187,7 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_PYRAMID_KING:
             return MUS_VS_FRONTIER_BRAIN;
         default:
-            if (GetCurrentRegion() == REGION_KANTO)
+            if (GetCurrentRegion() != REGION_HOENN) // (Gym Trainer hack: Johto too)
                 return MUS_RG_VS_TRAINER;
             else
                 return MUS_VS_TRAINER;
@@ -5195,7 +5195,7 @@ u16 GetBattleBGM(void)
     }
     else
     {
-        if (GetCurrentRegion() == REGION_KANTO)
+        if (GetCurrentRegion() != REGION_HOENN) // (Gym Trainer hack: Johto too)
             return MUS_RG_VS_WILD;
         else
             return MUS_VS_WILD;

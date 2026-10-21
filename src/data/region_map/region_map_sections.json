@@ -1632,140 +1632,140 @@
       "height": 1
     },
     {
+      "id": "MAPSEC_ROUTE_42",
+      "name": "ROUTE 42",
+      "x": 0,
+      "y": 0,
+      "width": 1,
+      "height": 1
+    },
+    {
       "id": "MAPSEC_OLIVINE_CITY",
       "name": "OLIVINE CITY",
-      "x": 14,
-      "y": 9,
+      "x": 6,
+      "y": 4,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_OLIVINE_LIGHTHOUSE",
       "name": "LIGHTHOUSE",
-      "x": 14,
-      "y": 9,
+      "x": 7,
+      "y": 4,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_ECRUTEAK_CITY",
       "name": "ECRUTEAK CITY",
-      "x": 14,
-      "y": 9,
+      "x": 10,
+      "y": 2,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_BURNED_TOWER",
       "name": "BURNED TOWER",
-      "x": 14,
-      "y": 9,
+      "x": 9,
+      "y": 1,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_TIN_TOWER",
       "name": "BELL TOWER",
-      "x": 14,
-      "y": 9,
+      "x": 10,
+      "y": 1,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_GOLDENROD_CITY",
       "name": "GOLDENROD CITY",
-      "x": 14,
-      "y": 9,
+      "x": 8,
+      "y": 8,
       "width": 1,
-      "height": 1
+      "height": 2
     },
     {
       "id": "MAPSEC_NATIONAL_PARK",
       "name": "NATIONAL PARK",
-      "x": 14,
-      "y": 9,
+      "x": 8,
+      "y": 4,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_ILEX_FOREST",
       "name": "ILEX FOREST",
-      "x": 14,
-      "y": 9,
-      "width": 1,
-      "height": 1
+      "x": 8,
+      "y": 12,
+      "width": 2,
+      "height": 2
     },
     {
       "id": "MAPSEC_AZALEA_TOWN",
       "name": "AZALEA TOWN",
-      "x": 14,
-      "y": 9,
+      "x": 10,
+      "y": 13,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_ROUTE_34",
       "name": "ROUTE 34",
-      "x": 14,
-      "y": 9,
+      "x": 8,
+      "y": 10,
       "width": 1,
-      "height": 1
+      "height": 2
     },
     {
       "id": "MAPSEC_ROUTE_35",
       "name": "ROUTE 35",
-      "x": 14,
-      "y": 9,
+      "x": 8,
+      "y": 5,
       "width": 1,
-      "height": 1
+      "height": 3
     },
     {
       "id": "MAPSEC_ROUTE_36",
       "name": "ROUTE 36",
-      "x": 14,
-      "y": 9,
-      "width": 1,
+      "x": 9,
+      "y": 4,
+      "width": 3,
       "height": 1
     },
     {
       "id": "MAPSEC_ROUTE_37",
       "name": "ROUTE 37",
-      "x": 14,
-      "y": 9,
+      "x": 10,
+      "y": 3,
       "width": 1,
       "height": 1
     },
     {
       "id": "MAPSEC_ROUTE_38",
       "name": "ROUTE 38",
-      "x": 14,
-      "y": 9,
-      "width": 1,
+      "x": 7,
+      "y": 2,
+      "width": 3,
       "height": 1
     },
     {
       "id": "MAPSEC_ROUTE_39",
       "name": "ROUTE 39",
-      "x": 14,
-      "y": 9,
+      "x": 6,
+      "y": 2,
       "width": 1,
-      "height": 1
+      "height": 2
     },
     {
       "id": "MAPSEC_ROUTE_40",
       "name": "ROUTE 40",
-      "x": 14,
-      "y": 9,
+      "x": 5,
+      "y": 4,
       "width": 1,
-      "height": 1
-    },
-    {
-      "id": "MAPSEC_ROUTE_42",
-      "name": "ROUTE 42",
-      "x": 14,
-      "y": 9,
-      "width": 1,
-      "height": 1
+      "height": 5
     }
   ]
 }

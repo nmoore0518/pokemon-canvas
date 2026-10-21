@@ -478,13 +478,23 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Ecruteak (Burned Tower, Bell Tower), National Park, Goldenrod, Ilex Forest and Azalea, with all
   their interiors (89 maps), come from **Pokémon HnS** (pokehns-expansion), imported by
   `tools/gym_hack/import_johto.py`: their layouts and tilesets (attributes converted to FireRed's
-  4-byte format), tileset animations, and daytime wild Pokémon; not their scripts (NPCs come
-  later). Maps are named `*_Johto` (`MAP_GOLDENROD_CITY`...), in `gMapGroup_Johto`. Johto's map
-  sections count as KANTO for map screens and battle music, placed at VERMILION (the ferry), so
-  the Hot Air Balloon flies home from Johto (`include/regions.h`). `tools/mapjson` accepts
-  `REGION_JOHTO` maps in FireRed builds. FireRed music stands in for HGSS's for now.
-  Not reachable yet: next come the Vermilion-Olivine ferry, the Gym Leader Convention in the
-  Radio Tower, and the Sevii trip's removal.
+  4-byte format), tileset animations, and daytime wild Pokémon at post-game levels (about 50-66);
+  not their scripts (NPCs come later). Maps are named `*_Johto` (`MAP_GOLDENROD_CITY`...), in
+  `gMapGroup_Johto`; warps out of the area are dropped. `tools/mapjson` accepts `REGION_JOHTO` maps
+  in FireRed builds. FireRed music stands in for HGSS's for now.
+  - **Guards** stand where Johto goes on (Azalea to Route 33, Route 36 to Violet and the Ruins,
+    Route 40 to Route 41 and the Trainer Hill, the Route 42 and Ruins gates): stepping toward them
+    sets them off ("Hey! You're not from around here... Oh! A GYM LEADER CONVENTION badge!") and
+    the player is turned back (`Johto_EventScript_BorderGuard`).
+  - **The greeter** at Olivine's ferry dock hands over the convention goodie bag on arrival
+    (`VAR_JOHTO_STATE` 0x40FF): the convention badge, Johto on the TOWN MAP (`FLAG_JOHTO_MAP` 0x0C5;
+    the TOWN MAP too if missing), 5 Ultra Balls and 3 Full Restores.
+  - **The Johto map** is HnS's region map with everything outside the convention area dimmed
+    (`tools/gym_hack/build_johto_map.py`; `REGION_MAP_JOHTO`). On the FLY map, R switches between
+    KANTO and JOHTO once the player has it; Olivine, Ecruteak, Goldenrod and Azalea are FLY spots
+    once visited (`FLAG_WORLD_MAP_*` 0x0C6-0x0C9). Johto counts as Kanto for battle music.
+  Next: the Vermilion-Olivine ferry, the Gym Leader Convention in the Radio Tower, and the Sevii
+  trip's removal.
 
 ## Code map
 
@@ -516,7 +526,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/item_use.c` (bottom) | Using the HM key items from the bag |
 | `data/maps/IndigoPlateau_PokemonCenter_1F_Frlg/` | League door team check |
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
-| `tools/gym_hack/import_johto.py`, `src/johto.c`, `data/scripts/johto.inc` | Johto: imported maps, its scripts |
+| `tools/gym_hack/import_johto.py`, `src/johto.c`, `data/scripts/johto.inc` | Johto: imported maps, guards, the greeter |
+| `tools/gym_hack/build_johto_map.py`, `src/region_map.c` | The Johto map (dimmed outside the convention area), FLY between regions |
 | `.github/workflows/build-rom.yml` | Automatic ROM builds |
 
 ## Building locally
@@ -550,8 +561,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [ ] Challengers and the ninth badge after becoming Leader
 6. Johto and the Gym Leader Convention (replaces the Sevii Islands)
    - [x] Johto maps imported (Olivine to Goldenrod, Ilex, Azalea, Route 40)
+   - [x] Border guards, post-game wild levels, convention goodie bag, Johto map and FLY
    - [ ] Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
    - [ ] Convention Center (Radio Tower): 18 type halls + Champions' Hall, ~126 leaders (Emerald
          Rogue sprites), trophies
-   - [ ] HGSS music, Johto NPCs, wild levels for the post-game
+   - [ ] HGSS music, Johto NPCs
    - [ ] Title screen and credits (artists, HnS, AI disclosure)

@@ -345,6 +345,7 @@
 #define VAR_GYM_DECOR_SEEN                               0x40FD
 // The legendary of the player's type after its battle on the stage: GYM_LEGEND_* (include/constants/gym_hack.h)
 #define VAR_GYM_LEGEND_STATE                             0x40FE
+#define VAR_JOHTO_STATE                                  0x40FF // (JOHTO_* in constants/gym_hack.h)
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000
