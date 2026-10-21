@@ -71,6 +71,42 @@ ExoticSafari_EventScript_RoamerMoltresGalar::
 	setflag FLAG_EXOTIC_LEGEND_MOLTRES_GALAR
 	goto ExoticSafari_EventScript_RoamerGone
 
+ExoticSafari_EventScript_RoamerTapuKoko::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_TAPU_KOKO
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_TAPU_KOKO
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerTapuLele::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_TAPU_LELE
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_TAPU_LELE
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerTapuBulu::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_TAPU_BULU
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_TAPU_BULU
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerTapuFini::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_TAPU_FINI
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_TAPU_FINI
+	goto ExoticSafari_EventScript_RoamerGone
+
 ExoticSafari_EventScript_StakePurple::
 	setvar VAR_0x8004, 0
 	goto ExoticSafari_EventScript_Stake

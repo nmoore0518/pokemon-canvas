@@ -735,6 +735,20 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Glimwood's mushrooms drawn under the player (walking up to one from below, the player is in
          front); the giant ones stand in clearings: two whole trees cleared (`clear_trees`), the
          trees above ending in their trunks, the ones below starting with their tops (`retile`).
+   - [x] The Alola zone (round 1, for Nick's review; `tools/gym_hack/alola.py`): islands linked by sea
+         (surf off an area's edge onto the next one's water). RESORT (Hano Beach: the Sevii Islands'
+         Resort Gorgeous, palm-garden grass added; its mansion door leads back to the hall; the hub)
+         -> west the OCEAN (Seafolk Village: Pacifidlog's rafts and houses out at sea, converted,
+         its sinking logs plain floor) -> west the RUINS (Ruins of Conflict: Ruin Valley's jungle);
+         east the BEACH (Big Wave Beach: Treasure Beach, a coast drawn at its foot); north the SNOWY
+         MOUNTAIN (Lanakila: Sevault Canyon with snowy copies of its metatiles above a ragged
+         snowline, green below, the sea at its foot); south the VOLCANO (Wela: Mt. Ember over Kindle
+         Road's beach and sea, its two caves joined). Alolan forms and the Ultra Beasts wild;
+         Type: Null, Magearna, Meltan (resort), Cosmog (beach), Zeraora (ocean), Marshadow (ruins),
+         Solgaleo and Necrozma (volcano), Lunala (mountain) stand; the Tapus roam. Plain
+         encounters for now (puzzles: round 2). Evolutions: Cosmoem (Sun/Moon Stone), Rockruff
+         (Sun/Moon/Dusk Stone: Midday/Midnight/Dusk), Meltan level 50; Sun, Moon and Dusk Stones
+         found in the volcano, mountain and ruins.
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

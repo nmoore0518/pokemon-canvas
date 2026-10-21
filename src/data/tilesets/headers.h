@@ -1432,6 +1432,17 @@ const struct Tileset gTileset_GalarPitch =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_AlolaOcean =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_AlolaOcean,
+    .palettes = gTilesetPalettes_AlolaOcean,
+    .metatiles = gMetatiles_AlolaOcean,
+    .metatileAttributes = gMetatileAttributes_AlolaOcean,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,
@@ -2227,3 +2238,16 @@ const struct Tileset gTileset_Glimwood =
 };
 
 // </clone Glimwood>
+// <clone AlolaLanakila>
+const struct Tileset gTileset_AlolaLanakila =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_AlolaLanakila,
+    .palettes = gTilesetPalettes_AlolaLanakila,
+    .metatiles = gMetatiles_AlolaLanakila,
+    .metatileAttributes = gMetatileAttributes_AlolaLanakila,
+    .callback = NULL,
+};
+
+// </clone AlolaLanakila>

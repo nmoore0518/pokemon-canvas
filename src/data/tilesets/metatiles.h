@@ -364,6 +364,8 @@ const u16 gMetatiles_GalarStadium[] = INCBIN_U16("data/tilesets/secondary/galar_
 const u16 gMetatileAttributes_GalarStadium[] = INCBIN_U16("data/tilesets/secondary/galar_stadium_frlg/metatile_attributes.bin");
 const u16 gMetatiles_GalarPitch[] = INCBIN_U16("data/tilesets/secondary/galar_pitch_frlg/metatiles.bin");
 const u16 gMetatileAttributes_GalarPitch[] = INCBIN_U16("data/tilesets/secondary/galar_pitch_frlg/metatile_attributes.bin");
+const u16 gMetatiles_AlolaOcean[] = INCBIN_U16("data/tilesets/secondary/alola_ocean_frlg/metatiles.bin");
+const u16 gMetatileAttributes_AlolaOcean[] = INCBIN_U16("data/tilesets/secondary/alola_ocean_frlg/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 
@@ -592,3 +594,7 @@ const u16 gMetatileAttributes_GlimwoodGeneral[] = INCBIN_U16("data/tilesets/prim
 const u16 gMetatiles_Glimwood[] = INCBIN_U16("data/tilesets/secondary/glimwood/metatiles.bin");
 const u16 gMetatileAttributes_Glimwood[] = INCBIN_U16("data/tilesets/secondary/glimwood/metatile_attributes.bin");
 // </clone Glimwood>
+// <clone AlolaLanakila>
+const u16 gMetatiles_AlolaLanakila[] = INCBIN_U16("data/tilesets/secondary/alola_lanakila/metatiles.bin");
+const u16 gMetatileAttributes_AlolaLanakila[] = INCBIN_U16("data/tilesets/secondary/alola_lanakila/metatile_attributes.bin");
+// </clone AlolaLanakila>

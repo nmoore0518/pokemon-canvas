@@ -19,6 +19,12 @@ static const u8 sSpots_ExoticSafari_GalarStadium[][3] = {{0, 5, 0}, {5, 5, 0}, {
 static const u8 sSpots_ExoticSafari_GalarStadiumPitch[][3] = {{1, 4, 0}, {10, 4, 0}, {11, 4, 0}, {18, 4, 0}, {0, 5, 0}, {1, 5, 0}, {2, 5, 0}, {11, 5, 0}, {15, 5, 0}, {18, 5, 0}, {19, 5, 0}, {1, 6, 0}, {3, 6, 0}, {5, 6, 0}, {6, 6, 0}, {7, 6, 0}, {19, 6, 0}, {1, 7, 0}, {2, 7, 0}, {4, 7, 0}, {11, 7, 0}, {12, 7, 0}, {14, 7, 0}, {19, 7, 0}, {4, 8, 0}, {5, 8, 0}, {6, 8, 0}, {10, 8, 0}, {7, 9, 0}, {12, 9, 0}, {13, 9, 0}, {1, 10, 0}, {4, 10, 0}, {6, 10, 0}, {7, 10, 0}, {6, 11, 0}, {15, 11, 0}, {17, 11, 0}, {19, 11, 0}, {0, 12, 0}, {3, 12, 0}, {5, 12, 0}, {7, 12, 0}, {11, 12, 0}, {15, 12, 0}, {16, 12, 0}, {8, 13, 0}, {9, 13, 0}};
 static const u8 sSpots_ExoticSafari_GalarCity[][3] = {{1, 10, 3}, {2, 10, 3}, {3, 10, 3}, {4, 10, 3}, {5, 10, 3}, {6, 10, 3}, {7, 10, 3}, {8, 10, 3}, {9, 10, 3}, {10, 10, 3}, {11, 10, 3}, {14, 10, 3}, {1, 11, 3}, {5, 11, 3}, {6, 11, 3}, {8, 11, 3}, {10, 11, 3}, {1, 12, 3}, {2, 12, 3}, {4, 12, 3}, {5, 12, 3}, {10, 12, 3}, {0, 13, 3}, {1, 13, 3}, {2, 13, 3}, {3, 13, 3}, {4, 13, 3}, {7, 13, 3}, {8, 13, 3}, {9, 13, 3}, {10, 13, 3}, {11, 13, 3}, {0, 14, 3}, {3, 14, 3}, {6, 14, 3}, {8, 14, 3}, {9, 14, 3}, {10, 14, 3}, {11, 14, 3}, {24, 16, 3}, {16, 17, 3}, {25, 17, 3}, {37, 17, 3}, {16, 19, 3}, {24, 19, 3}, {7, 20, 3}, {8, 20, 3}, {7, 28, 3}};
 static const u8 sSpots_ExoticSafari_GalarForest[][3] = {{24, 0, 3}, {21, 2, 3}, {22, 2, 3}, {27, 2, 3}, {25, 3, 3}, {17, 4, 3}, {5, 5, 3}, {12, 5, 3}, {5, 6, 3}, {19, 6, 3}, {20, 6, 3}, {36, 6, 3}, {2, 7, 3}, {28, 9, 3}, {18, 13, 3}, {19, 13, 3}, {10, 15, 3}, {7, 16, 3}, {6, 18, 3}, {7, 18, 3}, {18, 18, 3}, {14, 19, 3}, {2, 20, 3}, {5, 20, 3}, {14, 21, 3}, {0, 24, 3}, {0, 25, 3}, {14, 26, 3}, {4, 28, 3}, {22, 28, 3}, {30, 28, 3}, {18, 29, 3}, {30, 29, 3}, {35, 29, 3}, {18, 30, 3}, {0, 31, 3}, {23, 32, 3}, {21, 34, 3}, {28, 34, 3}, {29, 34, 3}, {31, 34, 3}, {32, 34, 3}, {37, 34, 3}, {38, 36, 3}, {5, 37, 3}, {14, 37, 3}, {36, 37, 3}, {5, 39, 3}};
+static const u8 sSpots_ExoticSafari_AlolaResort[][3] = {{30, 3, 3}, {31, 3, 3}, {32, 3, 3}, {34, 3, 3}, {35, 3, 3}, {28, 4, 3}, {29, 4, 3}, {31, 4, 3}, {33, 4, 3}, {35, 4, 3}, {21, 9, 3}, {23, 9, 3}, {24, 9, 3}, {27, 9, 3}, {28, 9, 3}, {11, 10, 3}, {12, 10, 3}, {14, 10, 3}, {21, 10, 3}, {22, 10, 3}, {27, 10, 3}, {28, 10, 3}, {29, 10, 3}, {40, 10, 3}, {41, 10, 3}, {44, 10, 3}, {46, 10, 3}, {11, 11, 3}, {12, 11, 3}, {13, 11, 3}, {14, 11, 3}, {24, 11, 3}, {26, 11, 3}, {29, 11, 3}, {41, 11, 3}, {43, 11, 3}, {45, 11, 3}, {26, 12, 3}, {27, 12, 3}, {28, 12, 3}, {29, 12, 3}, {40, 12, 3}, {46, 12, 3}, {62, 15, 3}, {63, 15, 3}, {64, 15, 3}, {65, 15, 3}, {66, 15, 3}};
+static const u8 sSpots_ExoticSafari_AlolaBeach[][3] = {{12, 24, 3}, {13, 24, 3}, {7, 25, 3}, {8, 25, 3}, {9, 25, 3}, {11, 25, 3}, {15, 25, 3}, {6, 26, 3}, {10, 26, 3}, {16, 26, 3}, {17, 26, 3}, {6, 27, 3}, {11, 27, 3}, {12, 27, 3}, {9, 28, 3}, {10, 28, 3}, {12, 28, 3}, {13, 28, 3}, {15, 28, 3}, {16, 28, 3}, {7, 29, 3}, {8, 29, 3}, {10, 29, 3}, {11, 29, 3}, {14, 29, 3}, {9, 30, 3}, {11, 30, 3}, {14, 30, 3}, {12, 31, 3}, {13, 31, 3}, {15, 31, 3}, {7, 32, 3}, {8, 32, 3}, {9, 32, 3}, {12, 32, 3}, {14, 32, 3}, {15, 32, 3}, {16, 32, 3}, {8, 33, 3}, {10, 33, 3}, {11, 33, 3}, {12, 33, 3}, {13, 33, 3}, {12, 34, 3}};
+static const u8 sSpots_ExoticSafari_AlolaOcean[][3] = {};
+static const u8 sSpots_ExoticSafari_AlolaRuins[][3] = {{17, 1, 3}, {27, 1, 3}, {13, 2, 3}, {17, 2, 3}, {28, 2, 3}, {6, 3, 3}, {20, 3, 3}, {33, 3, 3}, {4, 4, 3}, {22, 4, 3}, {24, 4, 3}, {31, 4, 3}, {32, 5, 3}, {34, 5, 3}, {3, 9, 3}, {2, 10, 3}, {19, 10, 5}, {22, 10, 5}, {19, 11, 5}, {20, 11, 5}, {3, 13, 3}, {6, 13, 5}, {8, 14, 5}, {13, 14, 5}, {14, 14, 5}, {14, 15, 5}, {6, 16, 3}, {3, 17, 3}, {14, 17, 5}, {2, 18, 3}, {3, 19, 3}, {4, 19, 3}, {5, 19, 3}, {10, 19, 5}, {4, 20, 3}, {5, 20, 3}, {8, 20, 3}, {8, 21, 3}, {34, 21, 3}, {3, 24, 3}, {31, 25, 5}, {7, 26, 3}, {9, 27, 3}, {12, 29, 3}, {30, 29, 3}, {13, 30, 3}, {28, 30, 3}, {28, 31, 3}};
+static const u8 sSpots_ExoticSafari_AlolaVolcano[][3] = {{41, 25, 3}, {38, 27, 3}, {39, 27, 3}, {41, 27, 3}, {38, 28, 3}, {40, 28, 3}, {36, 29, 3}, {38, 29, 3}, {35, 30, 3}, {35, 31, 3}, {36, 31, 3}, {37, 31, 3}, {35, 32, 3}, {36, 32, 3}, {3, 35, 3}, {2, 36, 3}, {3, 36, 3}, {1, 37, 3}, {2, 37, 3}, {3, 37, 3}, {1, 38, 3}, {2, 38, 3}, {3, 38, 3}, {3, 39, 3}, {4, 39, 3}, {1, 40, 3}, {5, 40, 3}, {1, 41, 3}, {4, 41, 3}, {14, 41, 3}, {16, 41, 3}, {20, 41, 3}, {21, 41, 3}, {22, 41, 3}, {3, 42, 3}, {13, 42, 3}, {15, 42, 3}, {17, 42, 3}, {20, 42, 3}, {21, 42, 3}, {22, 42, 3}, {4, 43, 3}, {12, 43, 3}, {14, 43, 3}, {16, 43, 3}, {18, 43, 3}, {19, 43, 3}, {23, 43, 3}};
+static const u8 sSpots_ExoticSafari_AlolaLanakila[][3] = {{15, 5, 3}, {16, 5, 3}, {18, 6, 3}, {18, 7, 3}, {7, 8, 3}, {12, 9, 3}, {7, 10, 3}, {8, 18, 5}, {9, 18, 5}, {8, 19, 5}, {7, 20, 5}, {10, 20, 5}, {9, 21, 5}, {11, 21, 5}, {7, 22, 5}, {9, 22, 5}, {10, 22, 5}, {11, 22, 5}, {8, 24, 5}, {13, 26, 3}, {14, 26, 3}, {13, 29, 3}, {14, 29, 3}, {15, 29, 3}, {15, 30, 3}, {9, 33, 3}, {8, 34, 3}, {9, 35, 3}, {8, 36, 3}, {9, 36, 3}, {14, 36, 3}, {8, 37, 3}, {10, 37, 3}, {11, 37, 3}, {12, 37, 3}, {13, 37, 3}, {9, 38, 3}, {13, 38, 3}, {12, 54, 3}, {9, 56, 3}, {9, 60, 3}, {10, 60, 3}, {9, 61, 3}, {10, 62, 3}, {13, 71, 3}, {16, 77, 3}, {16, 78, 3}, {15, 79, 3}};
 
 static const struct ExoticSafariArea sExoticSafariAreas[] =
 {
@@ -38,9 +44,15 @@ static const struct ExoticSafariArea sExoticSafariAreas[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarStadiumPitch), sSpots_ExoticSafari_GalarStadiumPitch},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_CITY), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarCity), sSpots_ExoticSafari_GalarCity},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_FOREST), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarForest), sSpots_ExoticSafari_GalarForest},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RESORT), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RESORT), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaResort), sSpots_ExoticSafari_AlolaResort},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_BEACH), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_BEACH), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaBeach), sSpots_ExoticSafari_AlolaBeach},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaOcean), sSpots_ExoticSafari_AlolaOcean},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RUINS), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaRuins), sSpots_ExoticSafari_AlolaRuins},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaVolcano), sSpots_ExoticSafari_AlolaVolcano},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaLanakila), sSpots_ExoticSafari_AlolaLanakila},
 };
 
-#define EXOTIC_SAFARI_ROAMER_COUNT 8
+#define EXOTIC_SAFARI_ROAMER_COUNT 12
 static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =
 {
     {SPECIES_OKIDOGI, FLAG_EXOTIC_LEGEND_OKIDOGI, FLAG_TEMP_1B, 0, 0},
@@ -51,6 +63,10 @@ static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER
     {SPECIES_ARTICUNO_GALAR, FLAG_EXOTIC_LEGEND_ARTICUNO_GALAR, FLAG_TEMP_1D, 0, 1},
     {SPECIES_ZAPDOS_GALAR, FLAG_EXOTIC_LEGEND_ZAPDOS_GALAR, FLAG_TEMP_1E, 0, 1},
     {SPECIES_MOLTRES_GALAR, FLAG_EXOTIC_LEGEND_MOLTRES_GALAR, FLAG_TEMP_1F, 0, 1},
+    {SPECIES_TAPU_KOKO, FLAG_EXOTIC_LEGEND_TAPU_KOKO, FLAG_TEMP_1B, 0, 2},
+    {SPECIES_TAPU_LELE, FLAG_EXOTIC_LEGEND_TAPU_LELE, FLAG_TEMP_1C, 0, 2},
+    {SPECIES_TAPU_BULU, FLAG_EXOTIC_LEGEND_TAPU_BULU, FLAG_TEMP_1D, 0, 2},
+    {SPECIES_TAPU_FINI, FLAG_EXOTIC_LEGEND_TAPU_FINI, FLAG_TEMP_1E, 0, 2},
 };
 #define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_1B)
 
@@ -78,6 +94,9 @@ static const struct ExoticSafariFind sKioskFinds[] =
     {ITEM_FLOWER_SWEET, FLAG_EXOTIC_ITEM_STRAWBERRY_SWEET},
     {ITEM_RIBBON_SWEET, FLAG_EXOTIC_ITEM_STRAWBERRY_SWEET},
     {ITEM_GALARICA_WREATH, FLAG_EXOTIC_ITEM_GALARICA_WREATH},
+    {ITEM_DUSK_STONE, FLAG_EXOTIC_ITEM_DUSK_STONE},
+    {ITEM_SUN_STONE, FLAG_EXOTIC_ITEM_SUN_STONE},
+    {ITEM_MOON_STONE, FLAG_EXOTIC_ITEM_MOON_STONE},
 };
 
 // The legendaries that stand in one place, and what each waits for
@@ -98,6 +117,15 @@ static const struct ExoticSafariStatic sExoticSafariStatics[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_CITY), SPECIES_ZAMAZENTA, FLAG_EXOTIC_LEGEND_ZAMAZENTA, FLAG_TEMP_12, SEAL_ITEM, 1, 7},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_FOREST), SPECIES_ZARUDE, FLAG_EXOTIC_LEGEND_ZARUDE, FLAG_TEMP_11, SEAL_LAMPS, 0, 6},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_FOREST), SPECIES_ENAMORUS, FLAG_EXOTIC_LEGEND_ENAMORUS, FLAG_TEMP_12, SEAL_FRIENDSHIP, 0, 7},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RESORT), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RESORT), SPECIES_TYPE_NULL, FLAG_EXOTIC_LEGEND_TYPE_NULL, FLAG_TEMP_11, SEAL_NONE, 0, 5},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RESORT), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RESORT), SPECIES_MAGEARNA, FLAG_EXOTIC_LEGEND_MAGEARNA, FLAG_TEMP_12, SEAL_NONE, 0, 6},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RESORT), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RESORT), SPECIES_MELTAN, FLAG_EXOTIC_LEGEND_MELTAN, FLAG_TEMP_13, SEAL_NONE, 0, 7},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_BEACH), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_BEACH), SPECIES_COSMOG, FLAG_EXOTIC_LEGEND_COSMOG, FLAG_TEMP_11, SEAL_NONE, 0, 5},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), SPECIES_ZERAORA, FLAG_EXOTIC_LEGEND_ZERAORA, FLAG_TEMP_11, SEAL_NONE, 0, 5},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RUINS), SPECIES_MARSHADOW, FLAG_EXOTIC_LEGEND_MARSHADOW, FLAG_TEMP_11, SEAL_NONE, 0, 5},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), SPECIES_SOLGALEO, FLAG_EXOTIC_LEGEND_SOLGALEO, FLAG_TEMP_11, SEAL_NONE, 0, 5},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), SPECIES_NECROZMA, FLAG_EXOTIC_LEGEND_NECROZMA, FLAG_TEMP_12, SEAL_NONE, 0, 6},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), SPECIES_LUNALA, FLAG_EXOTIC_LEGEND_LUNALA, FLAG_TEMP_11, SEAL_NONE, 0, 5},
 };
 
 #define EXOTIC_SAFARI_STAKE_COLORS 4

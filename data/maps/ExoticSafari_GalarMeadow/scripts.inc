@@ -13,7 +13,7 @@ ExoticSafari_GalarMeadow_OnLoad::
 	end
 
 ExoticSafari_GalarMeadow_EventScript_ToHall::
-	warpsilent MAP_EXOTIC_SAFARI_HALL, 3
+	warpsilent MAP_EXOTIC_SAFARI_HALL, 4
 	waitstate
 	end
 

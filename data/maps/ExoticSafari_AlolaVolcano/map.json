@@ -1,0 +1,549 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_ALOLA_VOLCANO",
+  "name": "ExoticSafari_AlolaVolcano",
+  "layout": "LAYOUT_EXOTIC_SAFARI_ALOLA_VOLCANO",
+  "music": "MUS_RG_SEVII_CAVE",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TAPU_KOKO)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerTapuKoko",
+      "flag": "FLAG_TEMP_1B"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TAPU_LELE)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerTapuLele",
+      "flag": "FLAG_TEMP_1C"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TAPU_BULU)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerTapuBulu",
+      "flag": "FLAG_TEMP_1D"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TAPU_FINI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerTapuFini",
+      "flag": "FLAG_TEMP_1E"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(SOLGALEO)",
+      "x": 23,
+      "y": 8,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_LegendSolgaleo",
+      "flag": "FLAG_TEMP_11"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(NECROZMA)",
+      "x": 32,
+      "y": 11,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_LegendNecrozma",
+      "flag": "FLAG_TEMP_12"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 13,
+      "y": 10,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ItemSunStone",
+      "flag": "FLAG_EXOTIC_ITEM_SUN_STONE"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 28,
+      "y": 68,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_ALOLA_RESORT",
+      "dest_warp_id": "4"
+    },
+    {
+      "x": 8,
+      "y": 24,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_ALOLA_VOLCANO",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 33,
+      "y": 19,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_ALOLA_VOLCANO",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 2,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 3,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 4,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 5,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 6,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 7,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 8,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 9,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 10,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 11,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 12,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 13,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 14,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 15,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 17,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 18,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 20,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 21,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 22,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 23,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 24,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 25,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 26,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 27,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 28,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 29,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 30,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 31,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 32,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 33,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 34,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 35,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 37,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 38,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 39,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 40,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 41,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 42,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 43,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    },
+    {
+      "type": "trigger",
+      "x": 44,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_AlolaVolcano_EventScript_ToResort"
+    }
+  ],
+  "bg_events": []
+}

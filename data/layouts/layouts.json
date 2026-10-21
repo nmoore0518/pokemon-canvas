@@ -10961,6 +10961,84 @@
       "border_filepath": "data/layouts/ExoticSafari_GalarForest/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_GalarForest/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_ALOLA_RESORT",
+      "name": "ExoticSafari_AlolaResort_Layout",
+      "width": 72,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SeviiIslands45",
+      "border_filepath": "data/layouts/ExoticSafari_AlolaResort/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_AlolaResort/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_ALOLA_BEACH",
+      "name": "ExoticSafari_AlolaBeach_Layout",
+      "width": 24,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SeviiIslands123",
+      "border_filepath": "data/layouts/ExoticSafari_AlolaBeach/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_AlolaBeach/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_ALOLA_OCEAN",
+      "name": "ExoticSafari_AlolaOcean_Layout",
+      "width": 36,
+      "height": 30,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_AlolaOcean",
+      "border_filepath": "data/layouts/ExoticSafari_AlolaOcean/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_AlolaOcean/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_ALOLA_RUINS",
+      "name": "ExoticSafari_AlolaRuins_Layout",
+      "width": 44,
+      "height": 34,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SeviiIslands67",
+      "border_filepath": "data/layouts/ExoticSafari_AlolaRuins/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_AlolaRuins/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_ALOLA_VOLCANO",
+      "name": "ExoticSafari_AlolaVolcano_Layout",
+      "width": 45,
+      "height": 70,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SeviiIslands123",
+      "border_filepath": "data/layouts/ExoticSafari_AlolaVolcano/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_AlolaVolcano/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_ALOLA_LANAKILA",
+      "name": "ExoticSafari_AlolaLanakila_Layout",
+      "width": 24,
+      "height": 80,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_AlolaLanakila",
+      "border_filepath": "data/layouts/ExoticSafari_AlolaLanakila/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_AlolaLanakila/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

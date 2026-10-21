@@ -2578,6 +2578,23 @@
 #define FLAG_EXOTIC_DOJO_WON                  0x21F
 #define FLAG_EXOTIC_STONES_LIT                0x220
 #define FLAG_EXOTIC_LAMP_FIRST                0x221   // to 0x228 (8)
+// Alola's legendaries, caught, and the evolution items found there (0x300-0x33F: the Alola zone)
+#define FLAG_EXOTIC_LEGEND_TYPE_NULL             0x300
+#define FLAG_EXOTIC_LEGEND_MAGEARNA              0x301
+#define FLAG_EXOTIC_LEGEND_MELTAN                0x302
+#define FLAG_EXOTIC_LEGEND_COSMOG                0x303
+#define FLAG_EXOTIC_LEGEND_SOLGALEO              0x304
+#define FLAG_EXOTIC_LEGEND_NECROZMA              0x305
+#define FLAG_EXOTIC_LEGEND_LUNALA                0x306
+#define FLAG_EXOTIC_LEGEND_MARSHADOW             0x307
+#define FLAG_EXOTIC_LEGEND_ZERAORA               0x308
+#define FLAG_EXOTIC_LEGEND_TAPU_KOKO             0x309
+#define FLAG_EXOTIC_LEGEND_TAPU_LELE             0x30A
+#define FLAG_EXOTIC_LEGEND_TAPU_BULU             0x30B
+#define FLAG_EXOTIC_LEGEND_TAPU_FINI             0x30C
+#define FLAG_EXOTIC_ITEM_SUN_STONE               0x320
+#define FLAG_EXOTIC_ITEM_MOON_STONE              0x321
+#define FLAG_EXOTIC_ITEM_DUSK_STONE              0x322
 #define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B

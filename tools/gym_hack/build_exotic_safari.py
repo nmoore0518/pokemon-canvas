@@ -34,6 +34,7 @@ REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALD
 # The regions with a zone open: their first area (the hall's door leads there). The areas
 # themselves: tools/gym_hack/paldea.py
 ZONES = {
+    "ALOLA": {"id": "MAP_EXOTIC_SAFARI_ALOLA_RESORT"},
     "GALAR": {"id": "MAP_EXOTIC_SAFARI_GALAR_MEADOW"},
     "PALDEA": {"id": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW"},
 }
@@ -505,10 +506,11 @@ import random
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import paldea                                   # noqa: E402
 import galar                                    # noqa: E402
+import alola                                    # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
-REGION_MODULES = [paldea, galar]
+REGION_MODULES = [paldea, galar, alola]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10}
@@ -627,6 +629,8 @@ def build_region(mod, zone_warp, out):
                 cells = [(x, row) for x in xs]
                 arrival = (xs[len(xs) // 2], 1 if row == 0 else h - 2)
             links[lk] = (kind, cells, arrival, target)
+            if (g[arrival[1]][arrival[0]] >> 10) & 3:
+                print(f"WARNING {key}: the arrival from {lk} at {arrival} is blocked")
         tilesets = a["tilesets"]
         if a.get("version") == "emerald" or a.get("convert_frlg"):
             g, tilesets = convert_layout(g, tilesets, a.get("version", "frlg"), a["convert"][0], a["convert"][1],
@@ -636,7 +640,9 @@ def build_region(mod, zone_warp, out):
         from collections import Counter
         ring = [g[y][x] for y in range(h) for x in range(w) if (x in (0, w - 1) or y in (0, h - 1)) and (g[y][x] >> 10) & 3]
         border = a.get("border", Counter(ring).most_common(1)[0][0] if ring else g[0][0])
-        if "border" not in a:
+        if "border_at" in a:                     # (a cell of the map, as converted: e.g. open sea)
+            border = g[a["border_at"][1]][a["border_at"][0]]
+        elif "border" not in a:
             # Better: the map's own trees (or rock) carried on past its edges - the most common solid
             # block of the given size, at an aligned spot - so tree lines don't end in a cut
             bw, bh = a.get("border_size", (2, 2))
