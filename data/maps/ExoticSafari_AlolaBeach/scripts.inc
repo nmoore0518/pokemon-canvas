@@ -26,3 +26,13 @@ ExoticSafari_AlolaBeach_EventScript_LegendCosmog::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_COSMOG
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_AlolaBeach_EventScript_SealCosmog::
+	lockall
+	setvar VAR_0x8004, 16
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_AlolaBeach_EventScript_Relic2::
+	lock
+	setvar VAR_0x8004, 2
+	goto ExoticSafari_EventScript_Relic

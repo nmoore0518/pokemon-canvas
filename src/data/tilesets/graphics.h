@@ -4315,6 +4315,94 @@ const u16 gTilesetPalettes_Glimwood[][16] =
     INCGFX_U16("data/tilesets/secondary/glimwood/palettes/15.pal", ".gbapal"),
 };
 // </clone Glimwood>
+// <clone AlolaResort>
+const u32 gTilesetTiles_AlolaResort[] = INCGFX_U32("data/tilesets/secondary/alola_resort/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_AlolaResort[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_resort/palettes/15.pal", ".gbapal"),
+};
+// </clone AlolaResort>
+// <clone AlolaBeach>
+const u32 gTilesetTiles_AlolaBeach[] = INCGFX_U32("data/tilesets/secondary/alola_beach/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_AlolaBeach[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_beach/palettes/15.pal", ".gbapal"),
+};
+// </clone AlolaBeach>
+// <clone AlolaRuins>
+const u32 gTilesetTiles_AlolaRuins[] = INCGFX_U32("data/tilesets/secondary/alola_ruins/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_AlolaRuins[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_ruins/palettes/15.pal", ".gbapal"),
+};
+// </clone AlolaRuins>
+// <clone AlolaVolcano>
+const u32 gTilesetTiles_AlolaVolcano[] = INCGFX_U32("data/tilesets/secondary/alola_volcano/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_AlolaVolcano[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/alola_volcano/palettes/15.pal", ".gbapal"),
+};
+// </clone AlolaVolcano>
 // <clone AlolaLanakila>
 const u32 gTilesetTiles_AlolaLanakila[] = INCGFX_U32("data/tilesets/secondary/alola_lanakila/tiles.png", ".4bpp.fastSmol");
 const u16 gTilesetPalettes_AlolaLanakila[][16] =

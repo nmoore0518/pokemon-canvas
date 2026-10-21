@@ -27,6 +27,21 @@ ExoticSafari_AlolaRuins_EventScript_LegendMarshadow::
 	setflag FLAG_EXOTIC_LEGEND_MARSHADOW
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_AlolaRuins_EventScript_SealMarshadow::
+	lockall
+	setvar VAR_0x8004, 18
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_AlolaRuins_EventScript_ItemDuskStone::
 	finditem ITEM_DUSK_STONE
 	end
+
+ExoticSafari_AlolaRuins_EventScript_Relic0::
+	lock
+	setvar VAR_0x8004, 0
+	goto ExoticSafari_EventScript_Relic
+
+ExoticSafari_AlolaRuins_EventScript_Relic3::
+	lock
+	setvar VAR_0x8004, 3
+	goto ExoticSafari_EventScript_Relic

@@ -2238,6 +2238,58 @@ const struct Tileset gTileset_Glimwood =
 };
 
 // </clone Glimwood>
+// <clone AlolaResort>
+const struct Tileset gTileset_AlolaResort =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_AlolaResort,
+    .palettes = gTilesetPalettes_AlolaResort,
+    .metatiles = gMetatiles_AlolaResort,
+    .metatileAttributes = gMetatileAttributes_AlolaResort,
+    .callback = NULL,
+};
+
+// </clone AlolaResort>
+// <clone AlolaBeach>
+const struct Tileset gTileset_AlolaBeach =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_AlolaBeach,
+    .palettes = gTilesetPalettes_AlolaBeach,
+    .metatiles = gMetatiles_AlolaBeach,
+    .metatileAttributes = gMetatileAttributes_AlolaBeach,
+    .callback = NULL,
+};
+
+// </clone AlolaBeach>
+// <clone AlolaRuins>
+const struct Tileset gTileset_AlolaRuins =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_AlolaRuins,
+    .palettes = gTilesetPalettes_AlolaRuins,
+    .metatiles = gMetatiles_AlolaRuins,
+    .metatileAttributes = gMetatileAttributes_AlolaRuins,
+    .callback = NULL,
+};
+
+// </clone AlolaRuins>
+// <clone AlolaVolcano>
+const struct Tileset gTileset_AlolaVolcano =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_AlolaVolcano,
+    .palettes = gTilesetPalettes_AlolaVolcano,
+    .metatiles = gMetatiles_AlolaVolcano,
+    .metatileAttributes = gMetatileAttributes_AlolaVolcano,
+    .callback = NULL,
+};
+
+// </clone AlolaVolcano>
 // <clone AlolaLanakila>
 const struct Tileset gTileset_AlolaLanakila =
 {

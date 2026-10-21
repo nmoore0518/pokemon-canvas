@@ -594,6 +594,22 @@ const u16 gMetatileAttributes_GlimwoodGeneral[] = INCBIN_U16("data/tilesets/prim
 const u16 gMetatiles_Glimwood[] = INCBIN_U16("data/tilesets/secondary/glimwood/metatiles.bin");
 const u16 gMetatileAttributes_Glimwood[] = INCBIN_U16("data/tilesets/secondary/glimwood/metatile_attributes.bin");
 // </clone Glimwood>
+// <clone AlolaResort>
+const u16 gMetatiles_AlolaResort[] = INCBIN_U16("data/tilesets/secondary/alola_resort/metatiles.bin");
+const u16 gMetatileAttributes_AlolaResort[] = INCBIN_U16("data/tilesets/secondary/alola_resort/metatile_attributes.bin");
+// </clone AlolaResort>
+// <clone AlolaBeach>
+const u16 gMetatiles_AlolaBeach[] = INCBIN_U16("data/tilesets/secondary/alola_beach/metatiles.bin");
+const u16 gMetatileAttributes_AlolaBeach[] = INCBIN_U16("data/tilesets/secondary/alola_beach/metatile_attributes.bin");
+// </clone AlolaBeach>
+// <clone AlolaRuins>
+const u16 gMetatiles_AlolaRuins[] = INCBIN_U16("data/tilesets/secondary/alola_ruins/metatiles.bin");
+const u16 gMetatileAttributes_AlolaRuins[] = INCBIN_U16("data/tilesets/secondary/alola_ruins/metatile_attributes.bin");
+// </clone AlolaRuins>
+// <clone AlolaVolcano>
+const u16 gMetatiles_AlolaVolcano[] = INCBIN_U16("data/tilesets/secondary/alola_volcano/metatiles.bin");
+const u16 gMetatileAttributes_AlolaVolcano[] = INCBIN_U16("data/tilesets/secondary/alola_volcano/metatile_attributes.bin");
+// </clone AlolaVolcano>
 // <clone AlolaLanakila>
 const u16 gMetatiles_AlolaLanakila[] = INCBIN_U16("data/tilesets/secondary/alola_lanakila/metatiles.bin");
 const u16 gMetatileAttributes_AlolaLanakila[] = INCBIN_U16("data/tilesets/secondary/alola_lanakila/metatile_attributes.bin");

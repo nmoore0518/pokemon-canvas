@@ -749,6 +749,17 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          encounters for now (puzzles: round 2). Evolutions: Cosmoem (Sun/Moon Stone), Rockruff
          (Sun/Moon/Dusk Stone: Midday/Midnight/Dusk), Meltan level 50; Sun, Moon and Dusk Stones
          found in the volcano, mountain and ruins.
+   - [x] Alola round 2 (Nick's review). Beach things: Emerald's Route 109 umbrellas and deck chairs and
+         a drawn palm tree (`tile_import.py`: metatiles copied between tilesets, their shadows redrawn
+         in the target's sand colors; tilesets compacted to make room) set about on the sand and
+         grass (`alola.scatter`, never cutting a way off); the resort's island and Big Wave Beach
+         widened (`paint_beach`: sand with its shore edges worked out). Seafolk Village's Pokémon
+         Center is an open platform with an umbrella and deck chairs. Puzzles: Type: Null from the
+         resort's caretaker once Rowlet, Litten and Popplio are caught; Cosmog once the four Tapus are
+         caught; Solgaleo/Lunala for the Sun Flute (ruins) / Moon Flute (village); Necrozma once both
+         are caught; Magearna for four machine parts (beach, ruins, volcano, mountain); Meltan for a
+         Steel-type lead, Marshadow a Fighting/Ghost one; Zeraora only in Seafolk Village's
+         thunderstorms (one visit in four: `ExoticSafari_AreaOnTransition`). Relic flags 0x330-0x335.
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

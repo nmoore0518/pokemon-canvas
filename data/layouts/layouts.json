@@ -10970,7 +10970,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_SeviiIslands45",
+      "secondary_tileset": "gTileset_AlolaResort",
       "border_filepath": "data/layouts/ExoticSafari_AlolaResort/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_AlolaResort/map.bin",
       "layout_version": "frlg"
@@ -10983,7 +10983,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_SeviiIslands123",
+      "secondary_tileset": "gTileset_AlolaBeach",
       "border_filepath": "data/layouts/ExoticSafari_AlolaBeach/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_AlolaBeach/map.bin",
       "layout_version": "frlg"
@@ -11009,7 +11009,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_SeviiIslands67",
+      "secondary_tileset": "gTileset_AlolaRuins",
       "border_filepath": "data/layouts/ExoticSafari_AlolaRuins/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_AlolaRuins/map.bin",
       "layout_version": "frlg"
@@ -11022,7 +11022,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_SeviiIslands123",
+      "secondary_tileset": "gTileset_AlolaVolcano",
       "border_filepath": "data/layouts/ExoticSafari_AlolaVolcano/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_AlolaVolcano/map.bin",
       "layout_version": "frlg"

@@ -14,5 +14,7 @@ void ExoticSafari_AreaOnLoad(void);
 void ExoticSafari_Lamp(void);
 void ExoticSafari_Stone(void);
 void ExoticSafari_SetupDojo(void);
+void ExoticSafari_TakeRelic(void);
+void ExoticSafari_CountStarters(void);
 
 #endif // GUARD_EXOTIC_SAFARI_H

@@ -31,9 +31,172 @@ def tileset_dir(sym):
 
 
 # ---------------------------------------------------------------------------------------------
+# Beach things: Emerald's umbrellas and deck chairs (Route 109's), and palm trees (drawn:
+# tile_import.py), added to copies of the Sevii Islands' tilesets and set about on the sand/grass
+# ---------------------------------------------------------------------------------------------
+SLATEPORT = ("gTileset_General", "gTileset_Slateport")
+UMBRELLAS = [[0x2E4, 0x2E5, 0x2EC, 0x2ED, 0x2F4, 0x2F5],      # red, blue, green (2x3)
+             [0x2E2, 0x2E3, 0x2EA, 0x2EB, 0x2F2, 0x2F3],
+             [0x2E6, 0x2E7, 0x2EE, 0x2EF, 0x2F6, 0x2F7]]
+CHAIR = [0x2E1, 0x2E9, 0x2F1]                                    # (1x3)
+SAND, GRASS = 0x115, 0x008                                       # (FireRed's general tileset)
+
+
+def _plain(like):
+    """FireRed's general metatiles drawn in just `like`'s colors (plain sand, plain grass, ripples or
+    tufts in any arrangement: no water's or rock's edge), nothing on top"""
+    from PIL import Image
+    d = tileset_dir("gTileset_General_Frlg")
+    prim = (d / "metatiles.bin").read_bytes()
+    img = Image.open(d / "tiles.png")
+    ent = lambda m: struct.unpack_from("<8H", prim, m * 16)
+    def colors(e):
+        t = e & 0x3FF
+        return set(img.crop(((t % 16) * 8, (t // 16) * 8, (t % 16) * 8 + 8, (t // 16) * 8 + 8)).getdata())
+    pal = ent(like)[0] >> 12
+    ok = set().union(*(colors(e) for e in ent(like)[:4]))
+    return {m for m in range(len(prim) // 16) if all(e >> 12 == pal and e & 0x3FF and colors(e) <= ok for e in ent(m)[:4])
+            and not any(e & 0x3FF for e in ent(m)[4:])}
+
+
+SANDS, GRASSES = _plain(0x115), {0x008, 0x010, 0x011, 0x009}
+DECOR = {}     # tileset name -> {"umbrellas": [...], "chair": [...], "palm_sand": [...], "palm_grass": [...]}
+
+
+def decor_edit(name, slots, keep=None):
+    """the tileset copy's edit hook: beach things in palette slots `slots` (umbrellas and chairs
+    share one; the palms another). Their ids in DECOR[name]"""
+    def edit(out):
+        import tile_import as T
+        tgt = T.Target(out)
+        if keep is not None:
+            tgt.compact(keep)
+        prim = tileset_dir("gTileset_General_Frlg")
+        sand = tgt.entries(SAND, prim)[:4]
+        d = {}
+        d["umbrellas"] = [T.import_metatiles(tgt, SLATEPORT, "emerald", u, [slots[0]], ground=sand, ground_like=0x124,
+                                             match={5: 5}) for u in UMBRELLAS]
+        d["chair"] = T.import_metatiles(tgt, SLATEPORT, "emerald", CHAIR, [slots[0]], ground=sand, ground_like=0x124,
+                                        match={5: 5})
+        d["palm_sand"] = T.add_palm(tgt, slots[1], sand, tgt.attr(SAND, prim))
+        d["palm_grass"] = T.add_palm(tgt, slots[1], tgt.entries(GRASS, prim)[:4], tgt.attr(GRASS, prim))
+        tgt.save()
+        DECOR[name] = d
+    return edit
+
+
+# Stamps: (width, ids key, which, collision mask by cell)
+STAMPS = {
+    "umbrella": (2, [0, 0, 1, 1, 0, 0]),
+    "chair": (1, [1, 1, 1]),
+    "palm": (2, [0, 0, 0, 0, 1, 0]),
+}
+
+
+def flood(g, start):
+    seen, todo = set(), [start]
+    h, w = len(g), len(g[0])
+    while todo:
+        x, y = todo.pop()
+        if (x, y) in seen or not (0 <= x < w and 0 <= y < h) or (g[y][x] >> 10) & 3:
+            continue
+        seen.add((x, y))
+        todo += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    return seen
+
+
+def scatter(g, name, plan, start, keep=(), seed="alola", rows=None):
+    """Sets beach things about: plan [(stamp, ground ('sand'/'grass'), count)]; each on plain sand or
+    grass (all its cells), spaced out, away from `keep` (links, legendaries, items), and never
+    cutting anything off from `start`"""
+    d = DECOR[name]
+    h, w = len(g), len(g[0])
+    rnd = random.Random(seed)
+    placed = []
+    base = len(flood(g, start))
+    for stamp, ground, count in plan:
+        sw, mask = STAMPS[stamp]
+        sh = len(mask) // sw
+        if stamp == "palm":
+            ids = d["palm_" + ground]
+        elif stamp == "umbrella":
+            ids = None
+        else:
+            ids = d["chair"]
+        ok_ids = SANDS if ground == "sand" else GRASSES
+        cells = [(x, y) for y in range(h - sh + 1) for x in range(w - sw + 1) if rows is None or rows[0] <= y <= rows[1]]
+        rnd.shuffle(cells)
+        n = 0
+        for x, y in cells:
+            if n >= count:
+                break
+            box = [(x + k % sw, y + k // sw) for k in range(sw * sh)]
+            if not all(g[cy][cx] & 0x3FF in ok_ids and not (g[cy][cx] >> 10) & 3 for cx, cy in box):
+                continue
+            if any(abs(cx - kx) <= 1 and abs(cy - ky) <= 1 for cx, cy in box for kx, ky in keep):
+                continue
+            if any(abs(x - px) + abs(y - py) < {"chair": 2, "palm": 4}.get(stamp, 5) for px, py in placed):
+                continue
+            use = ids or d["umbrellas"][n % 3]
+            old = [g[cy][cx] for cx, cy in box]
+            for k, (cx, cy) in enumerate(box):
+                g[cy][cx] = (g[cy][cx] & 0xF000) | use[k] | (mask[k] << 10)
+            if len(flood(g, start)) != base - sum(mask):
+                for k, (cx, cy) in enumerate(box):
+                    g[cy][cx] = old[k]
+                continue
+            base -= sum(mask)
+            placed.append((x, y))
+            n += 1
+    return placed
+
+
+def keep_cells(area):
+    """an area's links' cells and arrivals, legendaries, items: kept clear of beach things"""
+    a = AREAS[area]
+    out = [p for _, (_, cells, arr, _) in a["links"].items() for p in (cells if isinstance(cells, list) else []) + [arr]]
+    out += [p for n, ar, p in RELICS if ar == area] + ([CARETAKER] if area == "RESORT" else [])
+    return out + [p for _, p in a["statics"]] + [p for _, p in a["items"]]
+
+
+# ---------------------------------------------------------------------------------------------
 # Hano Beach: Resort Gorgeous, with palm-garden grass on its island
 # ---------------------------------------------------------------------------------------------
 TALL = blk(0x00D, 0)
+
+
+SHORE = {0x10C: (1, 0, 0, 1), 0x10D: (1, 0, 0, 0), 0x10E: (1, 0, 1, 0), 0x114: (0, 0, 0, 1), 0x115: (0, 0, 0, 0),
+         0x116: (0, 0, 1, 0), 0x11C: (0, 1, 0, 1), 0x11D: (0, 1, 0, 0), 0x11E: (0, 1, 1, 0),
+         0x125: None, 0x126: None, 0x12D: None, 0x12E: None}            # (sand and its edges on water)
+OPEN_SEA = 0x12B
+SEA_ROCK = (0x110, 0x111, 0x118, 0x119)                                 # (a rock in the sea, 2x2)
+
+
+def paint_beach(g, x0, y0, x1, y1):
+    """Widens a sandy island: the rectangle made sand (any sea rocks there gone), and every bit of
+    sand around it given the right edge against the water"""
+    h, w = len(g), len(g[0])
+    for y in range(max(0, y0 - 2), min(h, y1 + 3)):           # (sea rocks in the way: open sea)
+        for x in range(max(0, x0 - 2), min(w, x1 + 3)):
+            if g[y][x] & 0x3FF == SEA_ROCK[0] and any(x0 - 1 <= x + a <= x1 + 1 and y0 - 1 <= y + b <= y1 + 1
+                                                       for a in (0, 1) for b in (0, 1)):
+                for a in (0, 1):
+                    for b in (0, 1):
+                        g[y + b][x + a] = OPEN_SEA | (1 << 12)
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            g[y][x] = 0x115 | (3 << 12)
+    sea = lambda x, y: not (0 <= x < w and 0 <= y < h) or g[y][x] & 0x3FF in (OPEN_SEA,) + SEA_ROCK
+    for y in range(max(0, y0 - 2), min(h, y1 + 3)):
+        for x in range(max(0, x0 - 2), min(w, x1 + 3)):
+            if g[y][x] & 0x3FF not in SHORE:
+                continue
+            n, s_, e, w_ = sea(x, y - 1), sea(x, y + 1), sea(x + 1, y), sea(x - 1, y)
+            m = (0x10C if n and w_ else 0x10E if n and e else 0x11C if s_ and w_ else 0x11E if s_ and e else
+                 0x10D if n else 0x11D if s_ else 0x114 if w_ else 0x116 if e else
+                 0x125 if sea(x - 1, y - 1) else 0x126 if sea(x + 1, y - 1) else 0x12D if sea(x - 1, y + 1) else
+                 0x12E if sea(x + 1, y + 1) else 0x115)
+            g[y][x] = m | (3 << 12)
 
 
 def resort():
@@ -41,12 +204,17 @@ def resort():
     g, lay = read_layout("LAYOUT_FIVE_ISLAND_RESORT_GORGEOUS")
     g = [row[:] for row in g]
     beh = B.Behaviors((lay["primary_tileset"], lay["secondary_tileset"]), "frlg")
-    for x0, y0, x1, y1 in ((21, 9, 29, 12), (40, 10, 47, 12), (27, 3, 35, 4), (61, 15, 67, 15), (11, 10, 14, 11)):
+    for x0, y0, x1, y1 in ((21, 11, 29, 12), (40, 10, 47, 12), (27, 3, 35, 4), (61, 15, 67, 15), (11, 10, 14, 11)):
         for y in range(y0, y1 + 1):
             for x in range(x0, x1 + 1):
                 v = g[y][x]
                 if not (v >> 10) & 3 and beh(v) not in B.MB_SURFABLE and (x, y) != (39, 9):
                     g[y][x] = TALL
+    paint_beach(g, 21, 13, 50, 16)                          # (a long beach along the island's south)
+    paint_beach(g, 46, 3, 50, 12)                           # (and round its east end)
+    B.clone_tileset("gTileset_SeviiIslands45", "AlolaResort", edit=decor_edit("AlolaResort", [7, 8], used_ids(g)))
+    scatter(g, "AlolaResort", [("umbrella", "sand", 4), ("chair", "sand", 5), ("palm", "sand", 6)], (39, 9),
+            keep_cells("RESORT"))
     return g, lay["width"], lay["height"]
 
 
@@ -65,7 +233,16 @@ def beach():
     for y, k in ((35, kindle[17][4]), (36, kindle[18][5]), (37, kindle[19][5]), (38, kindle[20][5]), (39, kindle[20][5])):
         for x in range(24):
             g[y][x] = k if y > 35 or (g[34][x] >> 10) & 3 else kindle[18][5]
+    paint_beach(g, 5, 13, 18, 19)                           # (a wider beach above the grass)
+    import build_exotic_safari as B
+    B.clone_tileset("gTileset_SeviiIslands123", "AlolaBeach", edit=decor_edit("AlolaBeach", [7, 8], used_ids(g)))
+    scatter(g, "AlolaBeach", [("umbrella", "sand", 3), ("chair", "sand", 4), ("palm", "sand", 4)], (11, 24),
+            keep_cells("BEACH"))
     return g, 24, 40
+
+
+def used_ids(g):
+    return {v & 0x3FF for row in g for v in row}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -76,12 +253,20 @@ OCEAN_W, OCEAN_H, OCEAN_DX, OCEAN_DY = 36, 30, 8, 4
 
 def ocean():
     src, lay = read_layout("LAYOUT_PACIFIDLOG_TOWN")
+    src = [row[:] for row in src]
     sea = src[19][1]
+    # The Pokémon Center's raft: an open platform (the building gone; beach things on it: ocean_decor)
+    for y in (12, 13):
+        for x in range(6, 12):
+            src[y][x] = sea
+    for y in (14, 15, 16):
+        for x in range(7, 11):
+            src[y][x] = src[17][8]
     g = [[sea] * OCEAN_W for _ in range(OCEAN_H)]
     for y in range(9, 31):
         for x in range(20):
             v = src[y][x]
-            if y == 9 and src[10][x] == sea:      # (the cliff's shadow on the water: open sea here)
+            if y == 9 and v & 0x3FF in (0x189, 0x198, 0x19A):   # (the cliff's shadow on the water: open sea)
                 v = sea
             g[OCEAN_DY + y - 9][OCEAN_DX + x] = v
     rock = [[src[y][x] for x in (18, 19)] for y in (9, 10)]       # (a sea rock, 2x2)
@@ -95,7 +280,48 @@ def ocean():
 
 def ocean_doors():
     """the houses' and the Pokémon Center's doors, where they are in the ocean"""
-    return [(x + OCEAN_DX, y - 9 + OCEAN_DY) for x, y in ((8, 15), (16, 13), (3, 22), (12, 24), (2, 12), (17, 21))]
+    return [(x + OCEAN_DX, y - 9 + OCEAN_DY) for x, y in ((16, 13), (3, 22), (12, 24), (2, 12), (17, 21))]
+
+
+RAFT_FLOOR = 0x221            # (Pacifidlog's raft floor: Emerald's metatile)
+
+
+def ocean_decor_edit(out, remap):
+    """(the ocean's converted tileset) an umbrella and deck chairs for the platform, on its raft floor"""
+    import tile_import as T
+    tgt = T.Target(out)
+    floor = remap[RAFT_FLOOR]
+    ground = tgt.entries(floor, None)[4:]          # (the raft's planks are its top layer, over the sea)
+    raft_pal = ground[0] >> 12
+    # (every palette slot is taken: the umbrella's and chairs' colors matched to the closest palette)
+    import render_map
+    want = render_map.load_pal(tileset_dir(SLATEPORT[1]) / "palettes" / "11.pal")
+    def cost(k):
+        have = B_load_pal(out / "palettes" / f"{k:02d}.pal")
+        return sum(min(sum((x - y) ** 2 for x, y in zip(c[:3], h[:3])) for h in have[1:]) for c in want[1:])
+    best = min(range(7, 13), key=cost)
+    match = {5: raft_pal, 11: best}
+    # (no shadows on the wooden platform: the raft's floor under everything)
+    d = {"umbrellas": [T.import_metatiles(tgt, SLATEPORT, "emerald", UMBRELLAS[0], [], ground=ground, match=match)],
+         "chair": T.import_metatiles(tgt, SLATEPORT, "emerald", CHAIR, [], ground=ground, match=match)}
+    tgt.save()
+    DECOR["AlolaOcean"] = d
+
+
+def B_load_pal(path):
+    import render_map
+    return render_map.load_pal(path)
+
+
+def ocean_platform(g):
+    """(after conversion) the platform's umbrella and two deck chairs either side"""
+    d = DECOR["AlolaOcean"]
+    px, py = OCEAN_DX + 7, OCEAN_DY + 14 - 9
+    put = lambda x, y, ids, w, mask: [g[y + k // w].__setitem__(x + k % w, (g[y + k // w][x + k % w] & 0xF000) | ids[k] | (mask[k] << 10))
+                                      for k in range(len(ids))]
+    put(px + 1, py, d["umbrellas"][0], 2, STAMPS["umbrella"][1])
+    put(px, py, d["chair"], 1, STAMPS["chair"][1])
+    put(px + 3, py, d["chair"], 1, STAMPS["chair"][1])
 
 
 def pacifidlog_logs():
@@ -132,6 +358,11 @@ def volcano():
                      else kindle[19][5] if y == 19 else kindle[20][5])
             row.append(v)
         g.append(row)
+    import build_exotic_safari as B
+    B.clone_tileset("gTileset_SeviiIslands123", "AlolaVolcano", edit=decor_edit("AlolaVolcano", [7, 8], used_ids(g)))
+    # (palms at the mountain's green foot and on its beach: the tropics below the volcano)
+    scatter(g, "AlolaVolcano", [("palm", "grass", 5)], (KINDLE_DX + 17, len(g) - 2), keep_cells("VOLCANO"), rows=(30, 48))
+    scatter(g, "AlolaVolcano", [("palm", "sand", 4)], (KINDLE_DX + 17, len(g) - 2), keep_cells("VOLCANO"), rows=(48, len(g)))
     return g, W, len(g)
 
 
@@ -195,12 +426,22 @@ def lanakila():
         assert len(mt) // 16 <= 384
         (out / "metatiles.bin").write_bytes(mt)
         (out / "metatile_attributes.bin").write_bytes(at)
+        # Palm trees for its green foot (a palette slot the snow didn't take)
+        import tile_import as T
+        free = [k for k in SNOW_SLOTS if k not in slot.values()]
+        if free:
+            tgt = T.Target(out)
+            tgt.compact({v & 0x3FF for row in g for v in row} | set(new_id.values()))
+            DECOR["AlolaLanakila"] = {"palm_grass": T.add_palm(tgt, free[0], tgt.entries(GRASS, prim)[:4], tgt.attr(GRASS, prim))}
+            tgt.save()
 
     B.clone_tileset("gTileset_SeviiIslands67", "AlolaLanakila", edit=edit)
     for x in range(w):
         for y in range(line[x]):
             v = g[y][x]
             g[y][x] = (v & ~0x3FF) | new_id[v & 0x3FF]
+    if "AlolaLanakila" in DECOR:
+        scatter(g, "AlolaLanakila", [("palm", "grass", 4)], (15, 78), keep_cells("SNOW"), rows=(max(line) + 2, h - 1))
     return g, w, h
 
 
@@ -214,6 +455,9 @@ RUINS_X0, RUINS_Y0 = 4, 4
 def ruins():
     g, _ = read_layout("LAYOUT_SIX_ISLAND_RUIN_VALLEY")
     g = [row[RUINS_X0:48] for row in g[RUINS_Y0:38]]
+    import build_exotic_safari as B
+    B.clone_tileset("gTileset_SeviiIslands67", "AlolaRuins", edit=decor_edit("AlolaRuins", [8, 7], used_ids(g)))
+    scatter(g, "AlolaRuins", [("palm", "grass", 6)], R(46, 10), keep_cells("RUINS"))
     return g, 48 - RUINS_X0, 38 - RUINS_Y0
 
 
@@ -235,7 +479,7 @@ SEA_BLOCK = 0x112B            # (FireRed's open sea, General_Frlg: past the isla
 VOLCANO_H = 48 + 22
 AREAS = {
     "RESORT": {
-        "map": "ExoticSafari_AlolaResort", "build": resort, "tilesets": ("gTileset_General_Frlg", "gTileset_SeviiIslands45"),
+        "map": "ExoticSafari_AlolaResort", "build": resort, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaResort"),
         "border": SEA_BLOCK, "music": "MUS_RG_SEVII_45", "weather": "WEATHER_SUNNY", "type": "MAP_TYPE_ROUTE",
         "links": {
             "HALL": ("warp", [(39, 8)], (39, 9), ("HALL", None)),             # (the resort's mansion)
@@ -251,11 +495,11 @@ AREAS = {
         "fishing": [("MAGIKARP", 45, 50), ("WISHIWASHI", 45, 50),
                     ("WISHIWASHI", 48, 52), ("MAREANIE", 48, 52), ("BRUXISH", 48, 52),
                     ("BRUXISH", 50, 54), ("WISHIWASHI", 50, 54), ("TOXAPEX", 50, 54), ("DHELMISE", 52, 55), ("GYARADOS", 52, 55)],
-        "statics": [("TYPE_NULL", (27, 6)), ("MAGEARNA", (65, 14)), ("MELTAN", (10, 7))],
+        "statics": [("MAGEARNA", (65, 14)), ("MELTAN", (10, 7))],
         "items": [],
     },
     "BEACH": {
-        "map": "ExoticSafari_AlolaBeach", "build": beach, "tilesets": ("gTileset_General_Frlg", "gTileset_SeviiIslands123"),
+        "map": "ExoticSafari_AlolaBeach", "build": beach, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaBeach"),
         "border": SEA_BLOCK, "music": "MUS_RG_SEVII_123", "weather": "WEATHER_SUNNY", "type": "MAP_TYPE_ROUTE",
         "links": {
             "RESORT": ("edge", [(0, y) for y in range(24)], (1, 11), ("RESORT", "BEACH")),
@@ -272,6 +516,7 @@ AREAS = {
     "OCEAN": {
         "map": "ExoticSafari_AlolaOcean", "build": ocean, "tilesets": ("gTileset_General", "gTileset_Pacifidlog"),
         "version": "emerald", "convert": ("AlolaOcean", "alola_ocean_frlg"), "border_at": (0, 0),
+        "tileset_edit": ocean_decor_edit, "post_convert": ocean_platform,
         "music": "MUS_RG_SEVII_ROUTE", "weather": "WEATHER_SUNNY", "type": "MAP_TYPE_ROUTE",
         "links": {
             "RESORT": ("edge", [(OCEAN_W - 1, y) for y in range(OCEAN_H)], (OCEAN_W - 2, 14), ("RESORT", "OCEAN")),
@@ -288,7 +533,7 @@ AREAS = {
         "items": [],
     },
     "RUINS": {
-        "map": "ExoticSafari_AlolaRuins", "build": ruins, "tilesets": ("gTileset_General_Frlg", "gTileset_SeviiIslands67"),
+        "map": "ExoticSafari_AlolaRuins", "build": ruins, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaRuins"),
         "music": "MUS_RG_SEVII_DUNGEON", "weather": "WEATHER_NONE", "type": "MAP_TYPE_ROUTE",
         "links": {
             "OCEAN": ("edge", [R(47, y) for y in range(9, 13)], R(46, 10), ("OCEAN", "RUINS")),
@@ -301,7 +546,7 @@ AREAS = {
         "items": [("DUSK_STONE", R(6, 33))],
     },
     "VOLCANO": {
-        "map": "ExoticSafari_AlolaVolcano", "build": volcano, "tilesets": ("gTileset_General_Frlg", "gTileset_SeviiIslands123"),
+        "map": "ExoticSafari_AlolaVolcano", "build": volcano, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaVolcano"),
         "music": "MUS_RG_SEVII_CAVE", "weather": "WEATHER_SUNNY", "type": "MAP_TYPE_ROUTE",
         "links": {
             "RESORT": ("edge", [(x, VOLCANO_H - 1) for x in range(EMBER_X1 - EMBER_X0)], (KINDLE_DX + 17, VOLCANO_H - 2),
@@ -337,3 +582,60 @@ AREAS = {
 }
 ROAMERS = ["TAPU_KOKO", "TAPU_LELE", "TAPU_BULU", "TAPU_FINI"]
 UNIQUE_ITEMS = set()
+
+# What each static legendary waits for (src/exotic_safari.c; until then a hint where it will be)
+CONDITIONS = {
+    "COSMOG": ("GUARDIANS", 0),                         # (the four Tapus caught)
+    "SOLGALEO": ("FLUTE", 0), "LUNALA": ("FLUTE", 1),   # (the Sun Flute, the Moon Flute: relics)
+    "NECROZMA": ("LIGHT", 0),                           # (Solgaleo and Lunala caught)
+    "MAGEARNA": ("PARTS", 2),                           # (its four machine parts: relics 2-5)
+    "MELTAN": ("STEEL", 0), "MARSHADOW": ("SHADOW", 0),
+    "ZERAORA": ("STORM", 0),                            # (a thunderstorm over the village)
+}
+# The relics, found about the zone (flags from FLAG_EXOTIC_RELIC_FIRST, in this order)
+RELICS = [
+    ("SUN FLUTE", "RUINS", R(16, 12)),
+    ("MOON FLUTE", "OCEAN", (OCEAN_DX + 1, OCEAN_DY + 14 - 9)),
+    ("MACHINE PART", "BEACH", (19, 21)),
+    ("MACHINE PART", "RUINS", R(40, 33)),
+    ("MACHINE PART", "VOLCANO", V(33, 45)),
+    ("MACHINE PART", "SNOW", (8, 19)),
+]
+CARETAKER = (37, 10)
+STARTERS = ["ROWLET", "LITTEN", "POPPLIO"]
+
+
+def extra(area):
+    """an area's relics (and the resort's caretaker)"""
+    def add(ctx):
+        name = ctx["name"]
+        for k, (rname, rarea, (x, y)) in enumerate(RELICS):
+            if rarea != area:
+                continue
+            if (x, y) not in ctx["reach"]:
+                print(f"WARNING {area}: relic {rname} at {(x, y)} can't be reached")
+            label = f"{name}_EventScript_Relic{k}"
+            o = ctx["obj"]("OBJ_EVENT_GFX_ITEM_BALL", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"0x{0x330 + k:03X}")
+            o["elevation"] = ctx["elev"](x, y)
+            ctx["objects"].append(o)
+            ctx["scripts"] += [f"{label}::", "\tlock", f"\tsetvar VAR_0x8004, {k}", "\tgoto ExoticSafari_EventScript_Relic", ""]
+        if area == "RESORT":
+            o = ctx["obj"]("OBJ_EVENT_GFX_GENTLEMAN_FRLG", *CARETAKER, "ExoticSafari_EventScript_Caretaker", "MOVEMENT_TYPE_FACE_DOWN")
+            o["elevation"] = ctx["elev"](*CARETAKER)
+            ctx["objects"].append(o)
+    return add
+
+
+for _k in AREAS:
+    AREAS[_k]["extra"] = extra(_k)
+
+
+def header_lines(map_id):
+    lines = ["// Alola: Seafolk Village (its thunderstorms), the relics, the three first partners",
+             f"#define EXOTIC_SAFARI_STORM_MAP {map_id(AREAS['OCEAN']['map'])}",
+             "struct ExoticSafariRelic { u16 flag; const u8 *name; };",
+             "static const struct ExoticSafariRelic sRelics[] =", "{"]
+    lines += [f'    {{FLAG_EXOTIC_RELIC_FIRST + {k}, COMPOUND_STRING("{n}")}},' for k, (n, _, _) in enumerate(RELICS)]
+    lines += ["};", "#define EXOTIC_SAFARI_FIRST_PART 2",
+              "static const u16 sAlolaStarters[] = {" + ", ".join(f"SPECIES_{s}" for s in STARTERS) + "};"]
+    return lines

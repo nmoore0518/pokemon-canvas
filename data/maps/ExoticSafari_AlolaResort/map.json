@@ -74,20 +74,6 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_SPECIES(TYPE_NULL)",
-      "x": 27,
-      "y": 6,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
-      "movement_range_x": 1,
-      "movement_range_y": 1,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "ExoticSafari_AlolaResort_EventScript_LegendTypeNull",
-      "flag": "FLAG_TEMP_11"
-    },
-    {
-      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(MAGEARNA)",
       "x": 65,
       "y": 14,
@@ -98,7 +84,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_AlolaResort_EventScript_LegendMagearna",
-      "flag": "FLAG_TEMP_12"
+      "flag": "FLAG_TEMP_11"
     },
     {
       "type": "object",
@@ -112,7 +98,21 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_AlolaResort_EventScript_LegendMeltan",
-      "flag": "FLAG_TEMP_13"
+      "flag": "FLAG_TEMP_12"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_GENTLEMAN_FRLG",
+      "x": 37,
+      "y": 10,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_Caretaker",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -1279,5 +1279,22 @@
       "script": "ExoticSafari_AlolaResort_EventScript_ToVolcano"
     }
   ],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 65,
+      "y": 14,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_AlolaResort_EventScript_SealMagearna"
+    },
+    {
+      "type": "sign",
+      "x": 10,
+      "y": 7,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_AlolaResort_EventScript_SealMeltan"
+    }
+  ]
 }

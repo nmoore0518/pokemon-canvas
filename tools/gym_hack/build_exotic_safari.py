@@ -635,6 +635,8 @@ def build_region(mod, zone_warp, out):
         if a.get("version") == "emerald" or a.get("convert_frlg"):
             g, tilesets = convert_layout(g, tilesets, a.get("version", "frlg"), a["convert"][0], a["convert"][1],
                                          behaviors, a.get("recolor"), a.get("tileset_edit"))
+            if "post_convert" in a:                  # (changes in the converted tileset's metatiles)
+                a["post_convert"](g)
         built[key] = {"g": g, "w": w, "h": h, "links": links, "beh": Behaviors(tilesets, "frlg")}
         # The border (beyond the map's edges): its most common wall (trees, rock), or as given
         from collections import Counter
@@ -728,7 +730,7 @@ def build_region(mod, zone_warp, out):
                         "\tremoveobject VAR_LAST_TALKED", f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
                         "\tgoto ExoticSafari_EventScript_Release", ""]
             seal, arg = getattr(mod, "CONDITIONS", {}).get(species, ("NONE", 0))
-            if seal == "ROAMERS":                   # (the roamers of its own region)
+            if seal in ("ROAMERS", "GUARDIANS"):     # (the roamers of its own region)
                 arg = out["region_index"]
             out["statics"].append((name, species, i, (seal, arg), len(objects)))
             if species in getattr(mod, "CONDITIONS", {}):
@@ -965,6 +967,13 @@ def main():
               "#define SEAL_STONES   9     // (Regieleki: the stepping stones lit in order)",
               "#define SEAL_DRAGON   10    // (Regidrago: the Dragon Fang found ...)",
               "#define SEAL_DRAGON_LEAD 11 // (... and a Dragon-type POKéMON in the lead)",
+              "#define SEAL_GUARDIANS 12   // (Cosmog: its region's guardians - the roamers - caught)",
+              "#define SEAL_FLUTE    13    // (Solgaleo, Lunala: their flute found)",
+              "#define SEAL_LIGHT    14    // (Necrozma: Solgaleo and Lunala caught)",
+              "#define SEAL_PARTS    15    // (Magearna: its machine parts found)",
+              "#define SEAL_STEEL    16    // (Meltan: a Steel-type lead)",
+              "#define SEAL_SHADOW   17    // (Marshadow: a Fighting- or Ghost-type lead)",
+              "#define SEAL_STORM    18    // (Zeraora: a thunderstorm)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]

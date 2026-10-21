@@ -18,6 +18,13 @@
 #define SEAL_STONES   9     // (Regieleki: the stepping stones lit in order)
 #define SEAL_DRAGON   10    // (Regidrago: the Dragon Fang found ...)
 #define SEAL_DRAGON_LEAD 11 // (... and a Dragon-type POKéMON in the lead)
+#define SEAL_GUARDIANS 12   // (Cosmog: its region's guardians - the roamers - caught)
+#define SEAL_FLUTE    13    // (Solgaleo, Lunala: their flute found)
+#define SEAL_LIGHT    14    // (Necrozma: Solgaleo and Lunala caught)
+#define SEAL_PARTS    15    // (Magearna: its machine parts found)
+#define SEAL_STEEL    16    // (Meltan: a Steel-type lead)
+#define SEAL_SHADOW   17    // (Marshadow: a Fighting- or Ghost-type lead)
+#define SEAL_STORM    18    // (Zeraora: a thunderstorm)
 #define SEAL_RESULT_CAUGHT 0xFF
 #define SEAL_RESULT_AWAY 0xFE
 // Each static legendary's index (sExoticSafariStatics)
@@ -35,13 +42,12 @@
 #define EXOTIC_SAFARI_STATIC_ZAMAZENTA 11
 #define EXOTIC_SAFARI_STATIC_ZARUDE 12
 #define EXOTIC_SAFARI_STATIC_ENAMORUS 13
-#define EXOTIC_SAFARI_STATIC_TYPE_NULL 14
-#define EXOTIC_SAFARI_STATIC_MAGEARNA 15
-#define EXOTIC_SAFARI_STATIC_MELTAN 16
-#define EXOTIC_SAFARI_STATIC_COSMOG 17
-#define EXOTIC_SAFARI_STATIC_ZERAORA 18
-#define EXOTIC_SAFARI_STATIC_MARSHADOW 19
-#define EXOTIC_SAFARI_STATIC_SOLGALEO 20
-#define EXOTIC_SAFARI_STATIC_NECROZMA 21
-#define EXOTIC_SAFARI_STATIC_LUNALA 22
+#define EXOTIC_SAFARI_STATIC_MAGEARNA 14
+#define EXOTIC_SAFARI_STATIC_MELTAN 15
+#define EXOTIC_SAFARI_STATIC_COSMOG 16
+#define EXOTIC_SAFARI_STATIC_ZERAORA 17
+#define EXOTIC_SAFARI_STATIC_MARSHADOW 18
+#define EXOTIC_SAFARI_STATIC_SOLGALEO 19
+#define EXOTIC_SAFARI_STATIC_NECROZMA 20
+#define EXOTIC_SAFARI_STATIC_LUNALA 21
 #endif

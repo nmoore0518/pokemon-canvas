@@ -2595,6 +2595,8 @@
 #define FLAG_EXOTIC_ITEM_SUN_STONE               0x320
 #define FLAG_EXOTIC_ITEM_MOON_STONE              0x321
 #define FLAG_EXOTIC_ITEM_DUSK_STONE              0x322
+// The Alola legendaries' relics: the Sun and Moon Flutes, Magearna's four machine parts
+#define FLAG_EXOTIC_RELIC_FIRST               0x330   // to 0x335 (6)
 #define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B

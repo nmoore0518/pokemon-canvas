@@ -31,3 +31,13 @@ ExoticSafari_AlolaOcean_EventScript_LegendZeraora::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_ZERAORA
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_AlolaOcean_EventScript_SealZeraora::
+	lockall
+	setvar VAR_0x8004, 17
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_AlolaOcean_EventScript_Relic1::
+	lock
+	setvar VAR_0x8004, 1
+	goto ExoticSafari_EventScript_Relic

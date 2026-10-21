@@ -27,6 +27,16 @@ ExoticSafari_AlolaLanakila_EventScript_LegendLunala::
 	setflag FLAG_EXOTIC_LEGEND_LUNALA
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_AlolaLanakila_EventScript_SealLunala::
+	lockall
+	setvar VAR_0x8004, 21
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_AlolaLanakila_EventScript_ItemMoonStone::
 	finditem ITEM_MOON_STONE
 	end
+
+ExoticSafari_AlolaLanakila_EventScript_Relic5::
+	lock
+	setvar VAR_0x8004, 5
+	goto ExoticSafari_EventScript_Relic

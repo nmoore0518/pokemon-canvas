@@ -27,6 +27,11 @@ ExoticSafari_AlolaVolcano_EventScript_LegendSolgaleo::
 	setflag FLAG_EXOTIC_LEGEND_SOLGALEO
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_AlolaVolcano_EventScript_SealSolgaleo::
+	lockall
+	setvar VAR_0x8004, 19
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_AlolaVolcano_EventScript_LegendNecrozma::
 	lock
 	faceplayer
@@ -37,6 +42,16 @@ ExoticSafari_AlolaVolcano_EventScript_LegendNecrozma::
 	setflag FLAG_EXOTIC_LEGEND_NECROZMA
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_AlolaVolcano_EventScript_SealNecrozma::
+	lockall
+	setvar VAR_0x8004, 20
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_AlolaVolcano_EventScript_ItemSunStone::
 	finditem ITEM_SUN_STONE
 	end
+
+ExoticSafari_AlolaVolcano_EventScript_Relic4::
+	lock
+	setvar VAR_0x8004, 4
+	goto ExoticSafari_EventScript_Relic

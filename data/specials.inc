@@ -743,6 +743,8 @@ gSpecials::
 	def_special ExoticSafari_Lamp
 	def_special ExoticSafari_Stone
 	def_special ExoticSafari_SetupDojo
+	def_special ExoticSafari_TakeRelic
+	def_special ExoticSafari_CountStarters
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk

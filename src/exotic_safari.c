@@ -15,6 +15,9 @@
 #include "gym_switch.h"
 #include "gym_convention.h"
 #include "pokemon.h"
+#include "pokedex.h"
+#include "field_weather.h"
+#include "constants/weather.h"
 #include "script.h"
 #include "string_util.h"
 #include "item.h"
@@ -31,6 +34,8 @@
 
 #include "data/exotic_safari_doors.h"
 #include "data/exotic_safari_areas.h"
+
+#define VAR_STORM VAR_TEMP_7      // (Seafolk Village's thunderstorm, this visit)
 
 static EWRAM_DATA u8 sDoorsDrawnOpen;     // bit per door: drawn open
 
@@ -170,7 +175,7 @@ static bool32 PlaceRoamer(const struct ExoticSafariArea *area, u32 roamer)
 // roamers) to be caught, Terapagos for every gym type to be mastered. Hidden (a temp flag) until
 // then, once caught, and for the rest of a visit after a battle that didn't catch it.
 // ---------------------------------------------------------------------------------------------
-enum { LEAD_LOVING, LEAD_DRAGON };
+enum { LEAD_LOVING, LEAD_DRAGON, LEAD_STEEL, LEAD_SHADOW };
 
 // The lead POKéMON (the party's first): Enamorus wants one that loves its trainer as much as any
 // can (the most friendship), Regidrago a Dragon type
@@ -183,6 +188,11 @@ static bool32 LeadIs(u32 what)
     if (what == LEAD_LOVING)
         return GetMonData(mon, MON_DATA_FRIENDSHIP) >= MAX_FRIENDSHIP;
     species = GetMonData(mon, MON_DATA_SPECIES);
+    if (what == LEAD_SHADOW)        // (Marshadow: a Fighting or Ghost type)
+        return GetSpeciesType(species, 0) == TYPE_FIGHTING || GetSpeciesType(species, 1) == TYPE_FIGHTING
+            || GetSpeciesType(species, 0) == TYPE_GHOST || GetSpeciesType(species, 1) == TYPE_GHOST;
+    if (what == LEAD_STEEL)         // (Meltan)
+        return GetSpeciesType(species, 0) == TYPE_STEEL || GetSpeciesType(species, 1) == TYPE_STEEL;
     return GetSpeciesType(species, 0) == TYPE_DRAGON || GetSpeciesType(species, 1) == TYPE_DRAGON;
 }
 
@@ -213,6 +223,7 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
     case SEAL_MASKS:
         return CountFlagsLeft(sMaskFlags, ARRAY_COUNT(sMaskFlags));
     case SEAL_ROAMERS:      // (its own region's: sealArg)
+    case SEAL_GUARDIANS:
         for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)
             left += sExoticSafariRoamers[i].region == s->sealArg && !FlagGet(sExoticSafariRoamers[i].caughtFlag);
         return left;
@@ -232,6 +243,20 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return !FlagGet(FLAG_EXOTIC_STONES_LIT);
     case SEAL_DRAGON:
         return !FlagGet(sSealItems[s->sealArg][1]) + !LeadIs(LEAD_DRAGON);
+    case SEAL_FLUTE:        // (Solgaleo, Lunala: their flute found - a relic)
+        return !FlagGet(sRelics[s->sealArg].flag);
+    case SEAL_LIGHT:        // (Necrozma: Solgaleo and Lunala caught)
+        return !FlagGet(FLAG_EXOTIC_LEGEND_SOLGALEO) + !FlagGet(FLAG_EXOTIC_LEGEND_LUNALA);
+    case SEAL_PARTS:        // (Magearna: its machine parts found - relics from sealArg on)
+        for (i = s->sealArg; i < ARRAY_COUNT(sRelics); i++)
+            left += !FlagGet(sRelics[i].flag);
+        return left;
+    case SEAL_STEEL:
+        return !LeadIs(LEAD_STEEL);
+    case SEAL_SHADOW:
+        return !LeadIs(LEAD_SHADOW);
+    case SEAL_STORM:        // (Zeraora: a thunderstorm over the village, this visit)
+        return VarGet(VAR_STORM) == 0;
     }
     return 0;
 }
@@ -262,6 +287,8 @@ void ExoticSafari_BufferSeal(void)
         StringCopy(gStringVar1, sStakeColorNames[s->sealArg]);
     else if (s->seal == SEAL_ITEM || s->seal == SEAL_DRAGON)
         CopyItemName(sSealItems[s->sealArg][0], gStringVar1);
+    else if (s->seal == SEAL_FLUTE)
+        StringCopy(gStringVar1, sRelics[s->sealArg].name);
     ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
 }
 
@@ -309,6 +336,14 @@ void ExoticSafari_AreaOnTransition(void)
 {
     const struct ExoticSafariArea *area = GetArea();
     u32 i;
+    // Seafolk Village: a thunderstorm on one visit in four (Zeraora comes with it)
+    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(EXOTIC_SAFARI_STORM_MAP)
+     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(EXOTIC_SAFARI_STORM_MAP))
+    {
+        bool32 storm = (Random() % 4) == 0;
+        VarSet(VAR_STORM, storm);
+        SetSavedWeather(storm ? WEATHER_RAIN_THUNDERSTORM : WEATHER_SUNNY);
+    }
     for (i = 0; i < ARRAY_COUNT(sExoticSafariStatics); i++)
     {
         const struct ExoticSafariStatic *s = &sExoticSafariStatics[i];
@@ -458,4 +493,42 @@ void ExoticSafari_Stone(void)
 void ExoticSafari_SetupDojo(void)
 {
     gSpecialVar_Result = Convention_SetupByName(COMPOUND_STRING("BEA")) >= 0;
+}
+
+// ---------------------------------------------------------------------------------------------
+// THE ALOLA LEGENDARIES' PUZZLES (tools/gym_hack/alola.py): relics found about the zone (the Sun
+// and Moon Flutes, Magearna's machine parts), and Type: Null, handed over by the resort's
+// caretaker once the player has caught Alola's three first partners
+// ---------------------------------------------------------------------------------------------
+// Special (a relic picked up): VAR_0x8004 = which. STR_VAR_1 = its name; VAR_RESULT = how many of
+// Magearna's parts are still missing (if it's one of them), else 0xFF
+void ExoticSafari_TakeRelic(void)
+{
+    u32 relic = gSpecialVar_0x8004 % ARRAY_COUNT(sRelics), i, left = 0;
+    FlagSet(sRelics[relic].flag);
+    StringCopy(gStringVar1, sRelics[relic].name);
+    gSpecialVar_Result = 0xFF;
+    if (relic >= EXOTIC_SAFARI_FIRST_PART)
+    {
+        for (i = EXOTIC_SAFARI_FIRST_PART; i < ARRAY_COUNT(sRelics); i++)
+            left += !FlagGet(sRelics[i].flag);
+        gSpecialVar_Result = left;
+        ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
+    }
+}
+
+// Special (the caretaker): VAR_RESULT = how many of the three first partners the player hasn't caught;
+// STR_VAR_1 = the first of those
+void ExoticSafari_CountStarters(void)
+{
+    u32 i, left = 0;
+    for (i = 0; i < ARRAY_COUNT(sAlolaStarters); i++)
+    {
+        if (!GetSetPokedexFlag(SpeciesToNationalPokedexNum(sAlolaStarters[i]), FLAG_GET_CAUGHT))
+        {
+            if (left++ == 0)
+                StringCopy(gStringVar1, GetSpeciesName(sAlolaStarters[i]));
+        }
+    }
+    gSpecialVar_Result = left;
 }

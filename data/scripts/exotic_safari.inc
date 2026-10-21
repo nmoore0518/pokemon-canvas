@@ -44,6 +44,13 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_STONES, ExoticSafari_EventScript_SealStones
 	case SEAL_DRAGON, ExoticSafari_EventScript_SealDragon
 	case SEAL_DRAGON_LEAD, ExoticSafari_EventScript_SealDragonLead
+	case SEAL_GUARDIANS, ExoticSafari_EventScript_SealGuardians
+	case SEAL_FLUTE, ExoticSafari_EventScript_SealFlute
+	case SEAL_LIGHT, ExoticSafari_EventScript_SealLight
+	case SEAL_PARTS, ExoticSafari_EventScript_SealParts
+	case SEAL_STEEL, ExoticSafari_EventScript_SealSteel
+	case SEAL_SHADOW, ExoticSafari_EventScript_SealShadow
+	case SEAL_STORM, ExoticSafari_EventScript_SealStorm
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -97,6 +104,97 @@ ExoticSafari_EventScript_SealDragon::
 ExoticSafari_EventScript_SealDragonLead::
 	msgbox ExoticSafari_Text_SealDragonLead
 	releaseall
+	end
+
+ExoticSafari_EventScript_SealGuardians::
+	msgbox ExoticSafari_Text_SealGuardians
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealFlute::
+	msgbox ExoticSafari_Text_SealFlute
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealLight::
+	msgbox ExoticSafari_Text_SealLight
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealParts::
+	msgbox ExoticSafari_Text_SealParts
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealSteel::
+	msgbox ExoticSafari_Text_SealSteel
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealShadow::
+	msgbox ExoticSafari_Text_SealShadow
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealStorm::
+	msgbox ExoticSafari_Text_SealStorm
+	releaseall
+	end
+
+@ A relic of the Alola legendaries picked up (VAR_0x8004: which)
+ExoticSafari_EventScript_Relic::
+	special ExoticSafari_TakeRelic
+	removeobject VAR_LAST_TALKED
+	playfanfare MUS_RG_OBTAIN_KEY_ITEM
+	goto_if_ne VAR_RESULT, 0xFF, ExoticSafari_EventScript_Part
+	message ExoticSafari_Text_FoundRelic
+	waitmessage
+	waitfanfare
+	msgbox ExoticSafari_Text_RelicKept
+	release
+	end
+
+ExoticSafari_EventScript_Part::
+	message ExoticSafari_Text_FoundPart
+	waitmessage
+	waitfanfare
+	msgbox ExoticSafari_Text_PartsLeft
+	release
+	end
+
+@ Hano Beach's caretaker: Type: Null, for a trainer who has caught Alola's three first partners
+ExoticSafari_EventScript_Caretaker::
+	lock
+	faceplayer
+	goto_if_set FLAG_EXOTIC_LEGEND_TYPE_NULL, ExoticSafari_EventScript_CaretakerAfter
+	special ExoticSafari_CountStarters
+	goto_if_ne VAR_RESULT, 0, ExoticSafari_EventScript_CaretakerNotYet
+	msgbox ExoticSafari_Text_CaretakerGive
+	givemon SPECIES_TYPE_NULL, EXOTIC_SAFARI_LEGEND_LEVEL
+	goto_if_eq VAR_RESULT, MON_CANT_GIVE, ExoticSafari_EventScript_CaretakerFull
+	setflag FLAG_EXOTIC_LEGEND_TYPE_NULL
+	playfanfare MUS_LEVEL_UP
+	message ExoticSafari_Text_CaretakerGot
+	waitmessage
+	waitfanfare
+	msgbox ExoticSafari_Text_CaretakerAfter
+	release
+	end
+
+ExoticSafari_EventScript_CaretakerNotYet::
+	buffernumberstring STR_VAR_2, VAR_RESULT
+	msgbox ExoticSafari_Text_CaretakerNotYet
+	release
+	end
+
+ExoticSafari_EventScript_CaretakerFull::
+	msgbox ExoticSafari_Text_CaretakerFull
+	release
+	end
+
+ExoticSafari_EventScript_CaretakerAfter::
+	msgbox ExoticSafari_Text_CaretakerAfter
+	release
 	end
 
 ExoticSafari_EventScript_SealStakes::
@@ -423,3 +521,88 @@ ExoticSafari_Text_DojoDecline:
 ExoticSafari_Text_DojoLost:
 	.string "Training is everything. Come back\n"
 	.string "when you're stronger.$"
+
+ExoticSafari_Text_SealGuardians:
+	.string "Stars glitter in the sand here, as if\n"
+	.string "something fell from the sky…\p"
+	.string "It seems to hide from the island\n"
+	.string "guardians. {STR_VAR_2} of the TAPUs still\l"
+	.string "roam the zone.$"
+
+ExoticSafari_Text_SealFlute:
+	.string "An old altar. A carving shows a\n"
+	.string "flute being played to the sky…\p"
+	.string "Perhaps the {STR_VAR_1} would call\n"
+	.string "whatever this altar is for.$"
+
+ExoticSafari_Text_SealLight:
+	.string "The light here seems to drain away\n"
+	.string "into the dark…\p"
+	.string "Something here hungers for the light\n"
+	.string "of the sun and the moon.$"
+
+ExoticSafari_Text_SealParts:
+	.string "Little cogs lie in the sand, as if a\n"
+	.string "machine had come apart here…\p"
+	.string "{STR_VAR_2} of its MACHINE PARTS are still\n"
+	.string "lost somewhere in the zone.$"
+
+ExoticSafari_Text_SealSteel:
+	.string "Nuts and bolts are scattered about,\n"
+	.string "chewed on…\p"
+	.string "Whatever left them might come out\n"
+	.string "for a STEEL-type POKéMON in the\l"
+	.string "lead.$"
+
+ExoticSafari_Text_SealShadow:
+	.string "A shadow flickers at the edge of the\n"
+	.string "shrine, then it's gone…\p"
+	.string "It might show itself to a lead\n"
+	.string "POKéMON of the FIGHTING or GHOST\l"
+	.string "type.$"
+
+ExoticSafari_Text_SealStorm:
+	.string "Scorch marks streak the planks, as\n"
+	.string "if lightning ran across them…\p"
+	.string "Whatever made them must come with\n"
+	.string "the thunderstorms.$"
+
+ExoticSafari_Text_FoundRelic:
+	.string "{PLAYER} found the {STR_VAR_1}!$"
+
+ExoticSafari_Text_FoundPart:
+	.string "{PLAYER} found a MACHINE PART!$"
+
+ExoticSafari_Text_PartsLeft:
+	.string "It's an odd little cog, finely made.\n"
+	.string "MACHINE PARTS still to find: {STR_VAR_2}$"
+
+ExoticSafari_Text_RelicKept:
+	.string "{PLAYER} put the {STR_VAR_1} away\n"
+	.string "carefully.$"
+
+ExoticSafari_Text_CaretakerNotYet:
+	.string "I look after this resort… and a\n"
+	.string "POKéMON in its care, TYPE: NULL.\p"
+	.string "I'd only trust it to a trainer who\n"
+	.string "has caught Alola's three first\l"
+	.string "partners: ROWLET, LITTEN, POPPLIO.\p"
+	.string "You haven't caught {STR_VAR_1} yet.\n"
+	.string "({STR_VAR_2} to go.)$"
+
+ExoticSafari_Text_CaretakerGive:
+	.string "ROWLET, LITTEN and POPPLIO… you've\n"
+	.string "caught them all!\p"
+	.string "Then please, take TYPE: NULL. It\n"
+	.string "needs a trainer like you.$"
+
+ExoticSafari_Text_CaretakerGot:
+	.string "{PLAYER} received TYPE: NULL!$"
+
+ExoticSafari_Text_CaretakerFull:
+	.string "Oh dear, you have no room for it.\n"
+	.string "Come back when you do.$"
+
+ExoticSafari_Text_CaretakerAfter:
+	.string "Bond with TYPE: NULL, and it might\n"
+	.string "become something more.$"
