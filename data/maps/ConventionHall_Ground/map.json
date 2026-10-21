@@ -95,7 +95,7 @@
   "warp_events": [
     {
       "x": 5,
-      "y": 20,
+      "y": 24,
       "elevation": 0,
       "dest_map": "MAP_GOLDENROD_CITY_RADIO_TOWER_1F",
       "dest_warp_id": "2"

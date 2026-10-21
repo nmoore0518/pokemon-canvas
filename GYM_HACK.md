@@ -507,21 +507,24 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - **The receptionist** in the lobby (1F) lists the halls with how many there the player has
     beaten (a star once cleared) and sends the player there; a hall's door leads back to the lobby.
     Halls can be visited in any order.
-  - **The halls** are HnS gyms (`tools/gym_hack/convention_halls.py`, run by `import_johto.py`):
-    NORMAL Goldenrod Gym, FIRE Seafoam Gym, WATER Cerulean, GRASS Celadon, ELECTRIC Vermilion (its
-    beam barrier left off), ICE Mahogany (the ice slide), FIGHTING the Saffron Dojo, POISON
-    Fuchsia, GROUND Viridian, FLYING Violet, PSYCHIC Saffron (teleporters), BUG the National Park,
-    ROCK Pewter, GHOST Ecruteak (the invisible floor), DRAGON Blackthorn (its lava bridges built),
-    DARK Karen's room, STEEL Olivine, FAIRY the Ecruteak Dance Theater, CHAMPIONS the Champion's
-    room. Each hall's first trainer stands where the gym's leader stood, the others where its
-    trainers stood (on the ice they're what stops the slide), then on free spots picked so nobody
-    blocks a path and everyone can be talked to. `MAP_CONVENTION_HALL_*`, in `gMapGroup_Johto`.
+  - **The halls** are HnS maps (`tools/gym_hack/convention_halls.py`, run by `import_johto.py`):
+    NORMAL Goldenrod Gym, FIRE Seafoam Gym, WATER the Whirl Islands' waterfall cave, GRASS Celadon,
+    ELECTRIC Vermilion (its beam barrier left off), ICE Mahogany (the ice slide), FIGHTING the
+    Saffron Dojo, POISON Fuchsia, GROUND Viridian, FLYING Violet, PSYCHIC Will's room, BUG the
+    National Park, ROCK Pewter, GHOST the Burned Tower, DRAGON Blackthorn (its lava bridges built),
+    DARK Karen's room, STEEL Olivine, FAIRY the Ecruteak Dance Theater, CHAMPIONS the Sinjoh Ruins'
+    temple. Grass, Ground, Rock, Psychic and Dark are made bigger (`RESHAPE`: columns and rows
+    repeated, with tile swaps so emblems and boxes aren't). Each hall's first trainer stands where
+    the gym's leader stood, the others where its trainers stood (on the ice they're what stops the
+    slide), then on free spots picked so nobody blocks a path and everyone can be talked to.
+    `MAP_CONVENTION_HALL_*`, in `gMapGroup_Johto`.
   - **Battles**: talk to anyone. Teams are full, fully evolved and itemized
     (`tools/gym_hack/convention_teams.py`, built into `src/data/gym_convention.h` by
     `build_convention.py`): Gym Leaders Lv 75 (ace 76), Elite Four 78 (79), Champions 85-88, IVs 31,
     natures by their moves. Battles use the challenger slot (`TRAINER_GYM_CHALLENGER`,
     `GymChallenge_SetupFixed`), no whiteout, and the party is healed after every battle, won or
-    lost. Beaten trainers offer rematches. Blue uses the rival's name.
+    lost. Rematches open once everyone in that hall is beaten (until then, the ones already
+    beaten just talk, so it's clear who's left). Blue uses the rival's name.
   - **Trophies**: clearing a hall wins its trophy, clearing all 19 the Grand Trophy
     (`FLAG_CONVENTION_TROPHY_*` 0x0CA-0x0DD), sent to the gym's storage as decorations (category
     TROPHIES). They're small, one picture in many colors: the gym's video memory is full.

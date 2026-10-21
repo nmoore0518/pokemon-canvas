@@ -17,14 +17,28 @@ from convention_roster import HALLS, all_trainers
 ROOT = Path(__file__).resolve().parents[2]
 
 SOURCES = {
-    "NORMAL": "GoldenrodCity_Gym_hns", "FIRE": "SeafoamIslands_Gym_hns", "WATER": "CeruleanCity_Gym_hns",
+    "NORMAL": "GoldenrodCity_Gym_hns", "FIRE": "SeafoamIslands_Gym_hns", "WATER": "WhirlIslands_B2F_hns",
     "GRASS": "CeladonCity_Gym_hns", "ELECTRIC": "VermilionCity_Gym_hns", "ICE": "MahoganyTown_Gym_hns",
     "FIGHTING": "SaffronCity_FightingDojo_hns", "POISON": "FuchsiaCity_Gym_hns", "GROUND": "ViridianCity_Gym_hns",
-    "FLYING": "VioletCity_Gym_hns", "PSYCHIC": "SaffronCity_Gym_hns", "BUG": "NationalPark_Normal_hns",
-    "ROCK": "PewterCity_Gym_hns", "GHOST": "EcruteakCity_Gym_hns", "DRAGON": "BlackthornCity_Gym_hns",
+    "FLYING": "VioletCity_Gym_hns", "PSYCHIC": "PokemonLeague_WillsRoom_hns", "BUG": "NationalPark_Normal_hns",
+    "ROCK": "PewterCity_Gym_hns", "GHOST": "BurnedTower_1F_hns", "DRAGON": "BlackthornCity_Gym_hns",
     "DARK": "PokemonLeague_KarensRoom_hns", "STEEL": "OlivineCity_Gym_hns", "FAIRY": "EcruteakCity_Theater_hns",
-    "CHAMPIONS": "PokemonLeague_ChampionsRoom_hns",
+    "CHAMPIONS": "SinjohRuins_ArceusRoom_hns",
 }
+# (Will's/Karen's room: the box around the floor's emblem is rows 4-9, columns 4-8; the emblem
+# rows 5-8, columns 5-7. New rows go inside the box, above and below the emblem.)
+BOX_ROW = {**{x: (x, 5) for x in range(28)}, 5: (3, 5), 6: (3, 5), 7: (3, 5)}   # (row 5 without the emblem)
+# Halls made bigger: (columns, rows) repeated, [(x or y in the gym's own layout, extra copies[, swaps])]
+RESHAPE = {
+    # Will's and Karen's rooms: more floor beside the pillars, a taller box around the emblem
+    "PSYCHIC": ([(3, 3), (9, 3)], [(4, 2, BOX_ROW), (8, 2, BOX_ROW)]),
+    "DARK": ([(3, 1), (9, 1)], [(4, 1, BOX_ROW), (8, 1, BOX_ROW)]),
+    "GRASS": ([(3, 2), (9, 2)], [(6, 1), (8, 1), (17, 1)]),   # (not through the paths or statues)
+    "GROUND": ([], [(12, 1), (14, 2), (18, 1)]),   # (taller: its walls don't widen well)
+    "ROCK": ([(2, 2), (10, 2)], [(4, 1), (6, 1), (10, 1), (13, 1)]),    # (not through the stage or statues)
+}
+# Warps left out (by index): the Burned Tower's ladder and hole down to its basement
+DROP_WARPS = {"GHOST": {1, 2}}
 # Puzzles left solved: the setmetatiles of these script labels (by prefix), applied to the layout
 SOLVED = {
     "DRAGON": ["BlackthornGym_MapScript_BuildBridge"],
@@ -75,6 +89,40 @@ def solved_patches(src, hall):
                 v = labels[mt] if mt in labels else int(mt, 0)
                 out.append((int(x), int(y), v, imp in ("TRUE", "1")))
     return out
+
+
+def stretch(blockdata, width, height, cols, rows):
+    """Makes a layout bigger by repeating columns and rows. cols/rows = [(x, n) or (x, n, swaps)]:
+    column x is repeated n more times (right after itself); in the copies, swaps {y: (sx, sy)}
+    puts the tile from (sx, sy) at row y instead (to widen a box without repeating its edge, or
+    stretch a floor without repeating its emblem). Coordinates are the old layout's.
+    -> (blockdata, width, height, where(x, y) -> [(x, y)...]: the old tile's new spot, then its copies)"""
+    def lines(spec, count):
+        # (x, n[, swaps[, k]]): after lines x..x+k-1, n more copies of them (k = 2 keeps a
+        # two-tile floor pattern in step)
+        extra = {e[0] + (e[3] if len(e) > 3 else 1) - 1: e for e in spec}
+        out = []
+        for i in range(count):
+            out.append((i, {}))
+            if i in extra:
+                e = extra[i]
+                k = e[3] if len(e) > 3 else 1
+                swaps = e[2] if len(e) > 2 else {}
+                out += [(j, swaps) for _ in range(e[1]) for j in range(e[0], e[0] + k)]
+        return out
+    cx, ry = lines(cols, width), lines(rows, height)
+    old = [struct.unpack_from("<H", blockdata, i * 2)[0] for i in range(width * height)]
+    out = bytearray()
+    for y, rswaps in ry:
+        for x, cswaps in cx:
+            sx, sy = rswaps.get(x) or cswaps.get(y) or (x, y)
+            out += struct.pack("<H", old[sy * width + sx])
+
+    def where(x, y):
+        xs = [i for i, (v, _) in enumerate(cx) if v == x]
+        ys = [i for i, (v, _) in enumerate(ry) if v == y]
+        return [(a, b) for b in ys for a in xs]
+    return bytes(out), len(cx), len(ry), where
 
 
 def patch_layout(blockdata, width, patches):
@@ -220,22 +268,31 @@ def build(src, hns_layouts, hns_maps, behavior_names, layout_id_for, layout_bin_
         l = hns_layouts[m["layout"]]
         blockdata = patch_layout((src / l["blockdata_filepath"]).read_bytes(), l["width"],
                                  solved_patches(src, hall))
-        layout_bin_for(hall, m, blockdata)
-        grid = Grid(blockdata, l["width"], l["height"], behavior_names(l))
+        cols, rows = RESHAPE.get(hall, ([], []))
+        blockdata, width, height, where = stretch(blockdata, l["width"], l["height"], cols, rows)
+        layout_bin_for(hall, m, blockdata, width, height)
+        grid = Grid(blockdata, width, height, behavior_names(l))
         warps = []
         exits = []
+        copies = []
         for i, w in enumerate(m.get("warp_events") or []):
+            if i in DROP_WARPS.get(hall, ()):
+                continue                    # (none of these come before a kept warp another one points to)
+            spots = where(w["x"], w["y"])
+            w = dict(w, x=spots[0][0], y=spots[0][1])
             if w["dest_map"] == m["id"]:
                 warps.append(dict(w, dest_map=hall_id(hall), internal=int(w["dest_warp_id"])))
+                copies += [dict(warps[-1], x=x, y=y) for x, y in spots[1:]]   # (a pit made wider)
             else:
                 warps.append(dict(w, dest_map=LOBBY_MAP, dest_warp_id="LOBBY"))
-                exits.append(i)
+                exits.append(len(warps) - 1)
+        warps += copies
         entrance_warp = warps[exits[0]]
         ex, ey = entrance_warp["x"], entrance_warp["y"]
         start = next(((ex + dx, ey + dy) for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0))
                       if grid.passable(ex + dx, ey + dy) and grid.behavior(ex + dx, ey + dy) in WALKABLE_EXTRA), (ex, ey - 1))
         members = [t for t in trainers if t[1] == hall]
-        preferred = [(o["x"], o["y"]) for o in (m.get("object_events") or [])
+        preferred = [where(o["x"], o["y"])[0] for o in (m.get("object_events") or [])
                      if not any(w in o["graphics_id"] for w in ("GYM_GUY", "MON_BASE", "ITEM_BALL", "PROF_OAK", "GIRL_1"))]
         print(hall, end=": ")
         spots = place(grid, start, warps, preferred, len(members))
@@ -256,9 +313,9 @@ def build(src, hns_layouts, hns_maps, behavior_names, layout_id_for, layout_bin_
             "id": hall_id(hall), "name": hall_name(hall), "layout": layout_id_for(hall, m),
             "music": MUSIC.get(hall, "MUS_RG_GYM"), "region": "REGION_JOHTO",
             "region_map_section": "MAPSEC_GOLDENROD_CITY", "requires_flash": False, "weather": "WEATHER_NONE",
-            "map_type": m["map_type"], "allow_cycling": False, "allow_escaping": False, "allow_running": True,
+            "map_type": m["map_type"] if m["map_type"] != "MAP_TYPE_NONE" else "MAP_TYPE_INDOOR", "allow_cycling": False, "allow_escaping": False, "allow_running": True,
             "show_map_name": False, "floor_number": 0,
-            "battle_scene": "MAP_BATTLE_SCENE_NORMAL" if m["map_type"] != "MAP_TYPE_INDOOR" else "MAP_BATTLE_SCENE_GYM",
+            "battle_scene": "MAP_BATTLE_SCENE_NORMAL" if m["map_type"] in ("MAP_TYPE_TOWN", "MAP_TYPE_CITY", "MAP_TYPE_ROUTE") else "MAP_BATTLE_SCENE_GYM",
             "connections": None, "object_events": objects, "warp_events": warps, "coord_events": [], "bg_events": [],
         }, scripts, exits[0])
     return out

@@ -148,7 +148,8 @@ static const u8 *TrainerName(u32 index)
 }
 
 // Special: VAR_0x8004 = trainer. Sets up their battle and lines; STR_VAR_1 = their name.
-// VAR_RESULT = whether the player has beaten them before.
+// VAR_RESULT: 0 not beaten yet, 1 beaten (no rematches until their whole hall is cleared: the
+// player can see who's left), 2 beaten and the hall cleared (a rematch).
 void Convention_SetupTrainer(void)
 {
     u32 index = gSpecialVar_0x8004, n;
@@ -163,7 +164,12 @@ void Convention_SetupTrainer(void)
     StringExpandPlaceholders(gGymChallengeIntroText, t->intro);
     StringExpandPlaceholders(gGymChallengeDefeatText, t->defeat);
     StringExpandPlaceholders(gGymChallengeAfterText, t->after);
-    gSpecialVar_Result = Convention_IsBeaten(index);
+    if (!Convention_IsBeaten(index))
+        gSpecialVar_Result = 0;
+    else if (!IsHallCleared(t->hall))
+        gSpecialVar_Result = 1;
+    else
+        gSpecialVar_Result = 2;
 }
 
 // Special: VAR_0x8004 = the trainer just beaten. VAR_RESULT: 0, or CONVENTION_WON_HALL (their

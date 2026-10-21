@@ -13,7 +13,7 @@
   "allow_running": true,
   "show_map_name": false,
   "floor_number": 0,
-  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "battle_scene": "MAP_BATTLE_SCENE_GYM",
   "connections": null,
   "object_events": [
     {

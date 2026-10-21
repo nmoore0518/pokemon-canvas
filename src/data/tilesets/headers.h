@@ -1556,6 +1556,17 @@ const struct Tileset gTileset_HallOfFame =
 #endif // IS_FRLG
 
 // BEGIN Johto (tools/gym_hack/import_johto.py)
+const struct Tileset gTileset_ArceusRoom_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_ArceusRoom_Hns,
+    .palettes = gTilesetPalettes_ArceusRoom_Hns,
+    .metatiles = gMetatiles_ArceusRoom_Hns,
+    .metatileAttributes = gMetatileAttributes_ArceusRoom_Hns,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_AzaleaTown_Gym_Hns =
 {
     .isCompressed = TRUE,
@@ -1630,17 +1641,6 @@ const struct Tileset gTileset_Cafe_Hns =
     .palettes = gTilesetPalettes_Cafe_Hns,
     .metatiles = gMetatiles_Cafe_Hns,
     .metatileAttributes = gMetatileAttributes_Cafe_Hns,
-    .callback = NULL,
-};
-
-const struct Tileset gTileset_CeruleanCity_Gym_Hns =
-{
-    .isCompressed = TRUE,
-    .isSecondary = TRUE,
-    .tiles = gTilesetTiles_CeruleanCity_Gym_Hns,
-    .palettes = gTilesetPalettes_CeruleanCity_Gym_Hns,
-    .metatiles = gMetatiles_CeruleanCity_Gym_Hns,
-    .metatileAttributes = gMetatileAttributes_CeruleanCity_Gym_Hns,
     .callback = NULL,
 };
 
@@ -1842,6 +1842,17 @@ const struct Tileset gTileset_Johto_General_Hns =
     .callback = InitTilesetAnim_JohtoGeneral,
 };
 
+const struct Tileset gTileset_Johto_NorthEast_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_Johto_NorthEast_Hns,
+    .palettes = gTilesetPalettes_Johto_NorthEast_Hns,
+    .metatiles = gMetatiles_Johto_NorthEast_Hns,
+    .metatileAttributes = gMetatileAttributes_Johto_NorthEast_Hns,
+    .callback = InitTilesetAnim_JohtoGeneral,
+};
+
 const struct Tileset gTileset_Johto_NorthWest_Hns =
 {
     .isCompressed = TRUE,
@@ -1894,6 +1905,17 @@ const struct Tileset gTileset_Lighthouse_Hns =
     .palettes = gTilesetPalettes_Lighthouse_Hns,
     .metatiles = gMetatiles_Lighthouse_Hns,
     .metatileAttributes = gMetatileAttributes_Lighthouse_Hns,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_MtSilver_Exp_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_MtSilver_Exp_Hns,
+    .palettes = gTilesetPalettes_MtSilver_Exp_Hns,
+    .metatiles = gMetatiles_MtSilver_Exp_Hns,
+    .metatileAttributes = gMetatileAttributes_MtSilver_Exp_Hns,
     .callback = NULL,
 };
 
@@ -1985,17 +2007,6 @@ const struct Tileset gTileset_Route40_Hns =
     .callback = NULL,
 };
 
-const struct Tileset gTileset_SaffronCity_Gym_Hns =
-{
-    .isCompressed = TRUE,
-    .isSecondary = TRUE,
-    .tiles = gTilesetTiles_SaffronCity_Gym_Hns,
-    .palettes = gTilesetPalettes_SaffronCity_Gym_Hns,
-    .metatiles = gMetatiles_SaffronCity_Gym_Hns,
-    .metatileAttributes = gMetatileAttributes_SaffronCity_Gym_Hns,
-    .callback = NULL,
-};
-
 const struct Tileset gTileset_ShopRooftop_Hns =
 {
     .isCompressed = TRUE,
@@ -2048,6 +2059,17 @@ const struct Tileset gTileset_ViridianCity_Gym_Hns =
     .palettes = gTilesetPalettes_ViridianCity_Gym_Hns,
     .metatiles = gMetatiles_ViridianCity_Gym_Hns,
     .metatileAttributes = gMetatileAttributes_ViridianCity_Gym_Hns,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_WhirlIslands_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_WhirlIslands_Hns,
+    .palettes = gTilesetPalettes_WhirlIslands_Hns,
+    .metatiles = gMetatiles_WhirlIslands_Hns,
+    .metatileAttributes = gMetatileAttributes_WhirlIslands_Hns,
     .callback = NULL,
 };
 

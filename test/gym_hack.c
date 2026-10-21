@@ -632,6 +632,11 @@ TEST("GymHack: convention: beating a whole hall wins its trophy, and every hall 
         gSpecialVar_0x8004 = i;
         Convention_RecordWin();
         EXPECT(Convention_IsBeaten(i));
+        if (i == 0)                         // (no rematch while the rest of the hall is left)
+        {
+            Convention_SetupTrainer();
+            EXPECT_EQ(gSpecialVar_Result, 1);
+        }
         if (i == CONVENTION_TRAINER_COUNT - 1)
             EXPECT_EQ(gSpecialVar_Result, CONVENTION_WON_ALL);
     }
@@ -639,6 +644,9 @@ TEST("GymHack: convention: beating a whole hall wins its trophy, and every hall 
         EXPECT(FlagGet(FLAG_CONVENTION_TROPHIES + hall));
     EXPECT(FlagGet(FLAG_CONVENTION_TROPHY_GRAND));
     EXPECT_GT(GymDecor_CountOwned(GYM_DECOR_TROPHY_GRAND), 0);
+    gSpecialVar_0x8004 = 0;                 // (the hall is cleared: rematches)
+    Convention_SetupTrainer();
+    EXPECT_EQ(gSpecialVar_Result, 2);
     gSpecialVar_0x8004 = 0;                 // (beating someone again wins nothing more)
     Convention_RecordWin();
     EXPECT_EQ(gSpecialVar_Result, 0);

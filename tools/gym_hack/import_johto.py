@@ -186,6 +186,9 @@ def main():
         tiles_sym = re.search(r"\.tiles\s*=\s*(\w+)", body).group(1)
         pal_sym = re.search(r"\.palettes\s*=\s*(\w+)", body).group(1)
         cb = re.search(r"\.callback\s*=\s*(\w+)", body).group(1)
+        if cb == "InitTilesetAnim_MtSilverExp":         # (its steam isn't imported: no animation)
+            body = body.replace(cb, "NULL")
+            cb = "NULL"
         if cb != "NULL":
             callbacks.add(cb)
         tiles_path = re.search(re.escape(tiles_sym) + r"\[\]\s*=\s*INCBIN_U32\(\"([^\"]+)\"", gfx_src).group(1)
@@ -267,7 +270,7 @@ def main():
         return lambda mt: (prim[mt] if mt < len(prim) else ("MB_NORMAL", False)) if mt < 640 else \
             (sec[mt - 640] if mt - 640 < len(sec) else ("MB_NORMAL", False))
 
-    def hall_layout_bin(hall, m, blockdata):
+    def hall_layout_bin(hall, m, blockdata, width, height):
         l = hns_layouts[m["layout"]]
         name = conv.hall_name(hall)
         dst = ROOT / "data/layouts" / name
@@ -278,8 +281,8 @@ def main():
         (dst / "border.bin").write_bytes(border)
         bw = 2 if len(border) == 8 else int((len(border) // 2) ** 0.5)
         lj["layouts"].append({
-            "id": "LAYOUT_CONVENTION_HALL_" + hall, "name": name + "_Layout", "width": l["width"],
-            "height": l["height"], "border_width": bw, "border_height": len(border) // 2 // bw,
+            "id": "LAYOUT_CONVENTION_HALL_" + hall, "name": name + "_Layout", "width": width,
+            "height": height, "border_width": bw, "border_height": len(border) // 2 // bw,
             "primary_tileset": l["primary_tileset"], "secondary_tileset": l["secondary_tileset"],
             "border_filepath": f"data/layouts/{name}/border.bin",
             "blockdata_filepath": f"data/layouts/{name}/map.bin", "layout_version": "frlg"})

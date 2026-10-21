@@ -42,7 +42,8 @@ Convention_EventScript_Trainer::
 	lock
 	faceplayer
 	special Convention_SetupTrainer
-	goto_if_eq VAR_RESULT, TRUE, Convention_EventScript_Rematch
+	goto_if_eq VAR_RESULT, 1, Convention_EventScript_AlreadyBeaten
+	goto_if_eq VAR_RESULT, 2, Convention_EventScript_Rematch
 	msgbox gGymChallengeIntroText
 	closemessage
 Convention_EventScript_Battle::
@@ -72,6 +73,13 @@ Convention_EventScript_Rematch::
 	goto_if_eq VAR_RESULT, NO, Convention_EventScript_NoRematch
 	closemessage
 	goto Convention_EventScript_Battle
+
+@ Beaten, but not everyone in the hall yet: no rematch until then
+Convention_EventScript_AlreadyBeaten::
+	msgbox gGymChallengeAfterText
+	msgbox Convention_Text_RematchLater
+	release
+	end
 
 Convention_EventScript_NoRematch::
 	release
@@ -135,6 +143,10 @@ Convention_Text_Lost:
 Convention_Text_Rematch:
 	.string "{STR_VAR_1}: How about another\n"
 	.string "battle?$"
+
+Convention_Text_RematchLater:
+	.string "{STR_VAR_1}: Beat everyone else in\n"
+	.string "this hall, then let's battle again!$"
 
 Convention_Text_WonHall:
 	.string "You've beaten everyone in the\n"
