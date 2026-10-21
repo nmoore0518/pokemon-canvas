@@ -190,7 +190,7 @@ static const struct FormChange sGengarFormChangeTable[] =
 #endif //P_FAMILY_GASTLY
 
 #if P_FAMILY_ONIX
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const struct FormChange sSteelixFormChangeTable[] =
 {
 #if P_MEGA_EVOLUTIONS
@@ -200,7 +200,7 @@ static const struct FormChange sSteelixFormChangeTable[] =
     {FORM_CHANGE_END_BATTLE,                    SPECIES_STEELIX},
     {FORM_CHANGE_TERMINATOR},
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ONIX
 
 #if P_FAMILY_KRABBY
@@ -240,7 +240,7 @@ static const struct FormChange sStarmieFormChangeTable[] =
 #endif //P_FAMILY_STARYU
 
 #if P_FAMILY_SCYTHER
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const struct FormChange sScizorFormChangeTable[] =
 {
 #if P_MEGA_EVOLUTIONS
@@ -250,7 +250,7 @@ static const struct FormChange sScizorFormChangeTable[] =
     {FORM_CHANGE_END_BATTLE,                    SPECIES_SCIZOR},
     {FORM_CHANGE_TERMINATOR},
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_SCYTHER
 
 #if P_FAMILY_PINSIR
@@ -481,7 +481,7 @@ static const struct FormChange sGardevoirFormChangeTable[] =
     {FORM_CHANGE_TERMINATOR},
 };
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const struct FormChange sGalladeFormChangeTable[] =
 {
 #if P_MEGA_EVOLUTIONS
@@ -491,7 +491,7 @@ static const struct FormChange sGalladeFormChangeTable[] =
     {FORM_CHANGE_END_BATTLE,                    SPECIES_GALLADE},
     {FORM_CHANGE_TERMINATOR},
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_RALTS
 
 #if P_FAMILY_SABLEYE

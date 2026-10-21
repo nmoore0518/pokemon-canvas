@@ -53,6 +53,15 @@
 //#define P_GEN_7_CROSS_EVOS             // Alolan evolutions handled by P_ALOLAN_FORMS.
 #define P_GEN_8_CROSS_EVOS               FALSE // Gym Trainer hack: only the 386 Gen 1-3 Pokémon // Regional evolutions handled by P_GALARIAN_FORMS and P_HISUIAN_FORMS.
 #define P_GEN_9_CROSS_EVOS               FALSE // Gym Trainer hack: only the 386 Gen 1-3 Pokémon // Clodsire handled by P_PALDEAN_FORMS.
+// Gym Trainer hack: the cross-generation evolutions still exist (the Gym Leader Convention's
+// trainers use them: src/gym_convention.c), but the 386 Gen 1-3 Pokémon don't evolve into them
+// (P_GEN_x_CROSS_EVOS above gates only the evolution links)
+#define P_GEN_2_CROSS_EVO_SPECIES        P_GEN_2_POKEMON
+#define P_GEN_3_CROSS_EVO_SPECIES        P_GEN_3_POKEMON
+#define P_GEN_4_CROSS_EVO_SPECIES        P_GEN_4_POKEMON
+#define P_GEN_6_CROSS_EVO_SPECIES        P_GEN_6_POKEMON
+#define P_GEN_8_CROSS_EVO_SPECIES        P_GEN_8_POKEMON
+#define P_GEN_9_CROSS_EVO_SPECIES        P_GEN_9_POKEMON
 
 // To disable specific families, replace P_GEN_x_POKEMON with FALSE.
 #define P_FAMILY_BULBASAUR               P_GEN_1_POKEMON

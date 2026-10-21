@@ -401,6 +401,105 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedMauvi
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedMauvilleOldMan2;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTree;
 
+// BEGIN Convention externs (tools/gym_hack/import_convention_sprites.py)
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvWhitney;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvCheren;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvLenora;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvIlima;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvLarry;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvChili;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKiawe;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKabu;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvFlint;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMalva;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvWake;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvCress;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMarlon;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvLana;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvNessa;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKofu;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvSiebold;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGardenia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvCilan;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvRamos;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMallow;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMilo;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBrassius;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvVolkner;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvElesa;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvClemont;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvSophocles;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvIono;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvPryce;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvCandice;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBrycen;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvWulfric;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMelony;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGrusha;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvChuck;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMaylene;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKorrina;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvHala;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBea;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMarshal;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvJanine;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvRoxie;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvClay;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvHapu;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBertha;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvRika;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvFalkner;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvSkyla;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKahili;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvOlympia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvTulip;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvWill;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvLucian;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvCaitlin;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBugsy;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBurgh;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvViola;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKaty;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvAaron;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvRoark;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGrant;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvOlivia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGordie;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMorty;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvFantina;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvAcerola;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvAllister;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvRyme;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvShauntal;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvClair;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvDrayden;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvIrisL;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvRaihan;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvDrasna;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvHassel;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvPiers;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMarnie;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvNanu;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKaren;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGrimsley;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvJasmine;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvByron;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMolayne;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvWikstrom;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvPoppy;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvValerie;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvMina;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvOpal;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvBede;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvCynthia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvAlder;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvDiantha;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKukui;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvLeon;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGeeta;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvNemona;
+// END Convention externs
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
     [OBJ_EVENT_GFX_BRENDAN_MACH_BIKE] =        &gObjectEventGraphicsInfo_BrendanMachBike,
@@ -791,6 +890,104 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
 #endif // IS_FRLG
+// BEGIN Convention (tools/gym_hack/import_convention_sprites.py)
+    [OBJ_EVENT_GFX_CONV_WHITNEY] = &gObjectEventGraphicsInfo_ConvWhitney,
+    [OBJ_EVENT_GFX_CONV_CHEREN] = &gObjectEventGraphicsInfo_ConvCheren,
+    [OBJ_EVENT_GFX_CONV_LENORA] = &gObjectEventGraphicsInfo_ConvLenora,
+    [OBJ_EVENT_GFX_CONV_ILIMA] = &gObjectEventGraphicsInfo_ConvIlima,
+    [OBJ_EVENT_GFX_CONV_LARRY] = &gObjectEventGraphicsInfo_ConvLarry,
+    [OBJ_EVENT_GFX_CONV_CHILI] = &gObjectEventGraphicsInfo_ConvChili,
+    [OBJ_EVENT_GFX_CONV_KIAWE] = &gObjectEventGraphicsInfo_ConvKiawe,
+    [OBJ_EVENT_GFX_CONV_KABU] = &gObjectEventGraphicsInfo_ConvKabu,
+    [OBJ_EVENT_GFX_CONV_FLINT] = &gObjectEventGraphicsInfo_ConvFlint,
+    [OBJ_EVENT_GFX_CONV_MALVA] = &gObjectEventGraphicsInfo_ConvMalva,
+    [OBJ_EVENT_GFX_CONV_WAKE] = &gObjectEventGraphicsInfo_ConvWake,
+    [OBJ_EVENT_GFX_CONV_CRESS] = &gObjectEventGraphicsInfo_ConvCress,
+    [OBJ_EVENT_GFX_CONV_MARLON] = &gObjectEventGraphicsInfo_ConvMarlon,
+    [OBJ_EVENT_GFX_CONV_LANA] = &gObjectEventGraphicsInfo_ConvLana,
+    [OBJ_EVENT_GFX_CONV_NESSA] = &gObjectEventGraphicsInfo_ConvNessa,
+    [OBJ_EVENT_GFX_CONV_KOFU] = &gObjectEventGraphicsInfo_ConvKofu,
+    [OBJ_EVENT_GFX_CONV_SIEBOLD] = &gObjectEventGraphicsInfo_ConvSiebold,
+    [OBJ_EVENT_GFX_CONV_GARDENIA] = &gObjectEventGraphicsInfo_ConvGardenia,
+    [OBJ_EVENT_GFX_CONV_CILAN] = &gObjectEventGraphicsInfo_ConvCilan,
+    [OBJ_EVENT_GFX_CONV_RAMOS] = &gObjectEventGraphicsInfo_ConvRamos,
+    [OBJ_EVENT_GFX_CONV_MALLOW] = &gObjectEventGraphicsInfo_ConvMallow,
+    [OBJ_EVENT_GFX_CONV_MILO] = &gObjectEventGraphicsInfo_ConvMilo,
+    [OBJ_EVENT_GFX_CONV_BRASSIUS] = &gObjectEventGraphicsInfo_ConvBrassius,
+    [OBJ_EVENT_GFX_CONV_VOLKNER] = &gObjectEventGraphicsInfo_ConvVolkner,
+    [OBJ_EVENT_GFX_CONV_ELESA] = &gObjectEventGraphicsInfo_ConvElesa,
+    [OBJ_EVENT_GFX_CONV_CLEMONT] = &gObjectEventGraphicsInfo_ConvClemont,
+    [OBJ_EVENT_GFX_CONV_SOPHOCLES] = &gObjectEventGraphicsInfo_ConvSophocles,
+    [OBJ_EVENT_GFX_CONV_IONO] = &gObjectEventGraphicsInfo_ConvIono,
+    [OBJ_EVENT_GFX_CONV_PRYCE] = &gObjectEventGraphicsInfo_ConvPryce,
+    [OBJ_EVENT_GFX_CONV_CANDICE] = &gObjectEventGraphicsInfo_ConvCandice,
+    [OBJ_EVENT_GFX_CONV_BRYCEN] = &gObjectEventGraphicsInfo_ConvBrycen,
+    [OBJ_EVENT_GFX_CONV_WULFRIC] = &gObjectEventGraphicsInfo_ConvWulfric,
+    [OBJ_EVENT_GFX_CONV_MELONY] = &gObjectEventGraphicsInfo_ConvMelony,
+    [OBJ_EVENT_GFX_CONV_GRUSHA] = &gObjectEventGraphicsInfo_ConvGrusha,
+    [OBJ_EVENT_GFX_CONV_CHUCK] = &gObjectEventGraphicsInfo_ConvChuck,
+    [OBJ_EVENT_GFX_CONV_MAYLENE] = &gObjectEventGraphicsInfo_ConvMaylene,
+    [OBJ_EVENT_GFX_CONV_KORRINA] = &gObjectEventGraphicsInfo_ConvKorrina,
+    [OBJ_EVENT_GFX_CONV_HALA] = &gObjectEventGraphicsInfo_ConvHala,
+    [OBJ_EVENT_GFX_CONV_BEA] = &gObjectEventGraphicsInfo_ConvBea,
+    [OBJ_EVENT_GFX_CONV_MARSHAL] = &gObjectEventGraphicsInfo_ConvMarshal,
+    [OBJ_EVENT_GFX_CONV_JANINE] = &gObjectEventGraphicsInfo_ConvJanine,
+    [OBJ_EVENT_GFX_CONV_ROXIE] = &gObjectEventGraphicsInfo_ConvRoxie,
+    [OBJ_EVENT_GFX_CONV_CLAY] = &gObjectEventGraphicsInfo_ConvClay,
+    [OBJ_EVENT_GFX_CONV_HAPU] = &gObjectEventGraphicsInfo_ConvHapu,
+    [OBJ_EVENT_GFX_CONV_BERTHA] = &gObjectEventGraphicsInfo_ConvBertha,
+    [OBJ_EVENT_GFX_CONV_RIKA] = &gObjectEventGraphicsInfo_ConvRika,
+    [OBJ_EVENT_GFX_CONV_FALKNER] = &gObjectEventGraphicsInfo_ConvFalkner,
+    [OBJ_EVENT_GFX_CONV_SKYLA] = &gObjectEventGraphicsInfo_ConvSkyla,
+    [OBJ_EVENT_GFX_CONV_KAHILI] = &gObjectEventGraphicsInfo_ConvKahili,
+    [OBJ_EVENT_GFX_CONV_OLYMPIA] = &gObjectEventGraphicsInfo_ConvOlympia,
+    [OBJ_EVENT_GFX_CONV_TULIP] = &gObjectEventGraphicsInfo_ConvTulip,
+    [OBJ_EVENT_GFX_CONV_WILL] = &gObjectEventGraphicsInfo_ConvWill,
+    [OBJ_EVENT_GFX_CONV_LUCIAN] = &gObjectEventGraphicsInfo_ConvLucian,
+    [OBJ_EVENT_GFX_CONV_CAITLIN] = &gObjectEventGraphicsInfo_ConvCaitlin,
+    [OBJ_EVENT_GFX_CONV_BUGSY] = &gObjectEventGraphicsInfo_ConvBugsy,
+    [OBJ_EVENT_GFX_CONV_BURGH] = &gObjectEventGraphicsInfo_ConvBurgh,
+    [OBJ_EVENT_GFX_CONV_VIOLA] = &gObjectEventGraphicsInfo_ConvViola,
+    [OBJ_EVENT_GFX_CONV_KATY] = &gObjectEventGraphicsInfo_ConvKaty,
+    [OBJ_EVENT_GFX_CONV_AARON] = &gObjectEventGraphicsInfo_ConvAaron,
+    [OBJ_EVENT_GFX_CONV_ROARK] = &gObjectEventGraphicsInfo_ConvRoark,
+    [OBJ_EVENT_GFX_CONV_GRANT] = &gObjectEventGraphicsInfo_ConvGrant,
+    [OBJ_EVENT_GFX_CONV_OLIVIA] = &gObjectEventGraphicsInfo_ConvOlivia,
+    [OBJ_EVENT_GFX_CONV_GORDIE] = &gObjectEventGraphicsInfo_ConvGordie,
+    [OBJ_EVENT_GFX_CONV_MORTY] = &gObjectEventGraphicsInfo_ConvMorty,
+    [OBJ_EVENT_GFX_CONV_FANTINA] = &gObjectEventGraphicsInfo_ConvFantina,
+    [OBJ_EVENT_GFX_CONV_ACEROLA] = &gObjectEventGraphicsInfo_ConvAcerola,
+    [OBJ_EVENT_GFX_CONV_ALLISTER] = &gObjectEventGraphicsInfo_ConvAllister,
+    [OBJ_EVENT_GFX_CONV_RYME] = &gObjectEventGraphicsInfo_ConvRyme,
+    [OBJ_EVENT_GFX_CONV_SHAUNTAL] = &gObjectEventGraphicsInfo_ConvShauntal,
+    [OBJ_EVENT_GFX_CONV_CLAIR] = &gObjectEventGraphicsInfo_ConvClair,
+    [OBJ_EVENT_GFX_CONV_DRAYDEN] = &gObjectEventGraphicsInfo_ConvDrayden,
+    [OBJ_EVENT_GFX_CONV_IRIS_L] = &gObjectEventGraphicsInfo_ConvIrisL,
+    [OBJ_EVENT_GFX_CONV_RAIHAN] = &gObjectEventGraphicsInfo_ConvRaihan,
+    [OBJ_EVENT_GFX_CONV_DRASNA] = &gObjectEventGraphicsInfo_ConvDrasna,
+    [OBJ_EVENT_GFX_CONV_HASSEL] = &gObjectEventGraphicsInfo_ConvHassel,
+    [OBJ_EVENT_GFX_CONV_PIERS] = &gObjectEventGraphicsInfo_ConvPiers,
+    [OBJ_EVENT_GFX_CONV_MARNIE] = &gObjectEventGraphicsInfo_ConvMarnie,
+    [OBJ_EVENT_GFX_CONV_NANU] = &gObjectEventGraphicsInfo_ConvNanu,
+    [OBJ_EVENT_GFX_CONV_KAREN] = &gObjectEventGraphicsInfo_ConvKaren,
+    [OBJ_EVENT_GFX_CONV_GRIMSLEY] = &gObjectEventGraphicsInfo_ConvGrimsley,
+    [OBJ_EVENT_GFX_CONV_JASMINE] = &gObjectEventGraphicsInfo_ConvJasmine,
+    [OBJ_EVENT_GFX_CONV_BYRON] = &gObjectEventGraphicsInfo_ConvByron,
+    [OBJ_EVENT_GFX_CONV_MOLAYNE] = &gObjectEventGraphicsInfo_ConvMolayne,
+    [OBJ_EVENT_GFX_CONV_WIKSTROM] = &gObjectEventGraphicsInfo_ConvWikstrom,
+    [OBJ_EVENT_GFX_CONV_POPPY] = &gObjectEventGraphicsInfo_ConvPoppy,
+    [OBJ_EVENT_GFX_CONV_VALERIE] = &gObjectEventGraphicsInfo_ConvValerie,
+    [OBJ_EVENT_GFX_CONV_MINA] = &gObjectEventGraphicsInfo_ConvMina,
+    [OBJ_EVENT_GFX_CONV_OPAL] = &gObjectEventGraphicsInfo_ConvOpal,
+    [OBJ_EVENT_GFX_CONV_BEDE] = &gObjectEventGraphicsInfo_ConvBede,
+    [OBJ_EVENT_GFX_CONV_CYNTHIA] = &gObjectEventGraphicsInfo_ConvCynthia,
+    [OBJ_EVENT_GFX_CONV_ALDER] = &gObjectEventGraphicsInfo_ConvAlder,
+    [OBJ_EVENT_GFX_CONV_DIANTHA] = &gObjectEventGraphicsInfo_ConvDiantha,
+    [OBJ_EVENT_GFX_CONV_KUKUI] = &gObjectEventGraphicsInfo_ConvKukui,
+    [OBJ_EVENT_GFX_CONV_LEON] = &gObjectEventGraphicsInfo_ConvLeon,
+    [OBJ_EVENT_GFX_CONV_GEETA] = &gObjectEventGraphicsInfo_ConvGeeta,
+    [OBJ_EVENT_GFX_CONV_NEMONA] = &gObjectEventGraphicsInfo_ConvNemona,
+// END Convention
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {

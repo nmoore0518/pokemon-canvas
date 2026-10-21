@@ -2971,7 +2971,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
     },
 #endif //P_MEGA_EVOLUTIONS
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_GALLADE] =
     {
         .baseHP        = 68,
@@ -3123,7 +3123,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .formChangeTable = sGalladeFormChangeTable,
     },
 #endif //P_MEGA_EVOLUTIONS
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_RALTS
 
 #if P_FAMILY_SURSKIT
@@ -4346,7 +4346,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_PROBOPASS] =
     {
         .baseHP        = 60,
@@ -4418,7 +4418,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .levelUpLearnset = sProbopassLevelUpLearnset,
         .teachableLearnset = sProbopassTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_NOSEPASS
 
 #if P_FAMILY_SKITTY
@@ -5962,7 +5962,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
 #endif //P_FAMILY_VOLBEAT_ILLUMISE
 
 #if P_FAMILY_ROSELIA
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_BUDEW] =
     {
         .baseHP        = 40,
@@ -6033,7 +6033,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .eggMoveLearnset = sBudewEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_ROSELIA, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD},{IF_NOT_TIME, TIME_NIGHT})}),
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 
     [SPECIES_ROSELIA] =
     {
@@ -6121,7 +6121,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_ROSERADE] =
     {
         .baseHP        = 60,
@@ -6210,7 +6210,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .levelUpLearnset = sRoseradeLevelUpLearnset,
         .teachableLearnset = sRoseradeTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ROSELIA
 
 #if P_FAMILY_GULPIN
@@ -9989,7 +9989,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_DUSKNOIR] =
     {
         .baseHP        = 45,
@@ -10076,7 +10076,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .levelUpLearnset = sDusknoirLevelUpLearnset,
         .teachableLearnset = sDusknoirTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_DUSKULL
 
 #if P_FAMILY_TROPIUS
@@ -10156,7 +10156,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
 #endif //P_FAMILY_TROPIUS
 
 #if P_FAMILY_CHIMECHO
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_CHINGLING] =
     {
         .baseHP        = 45,
@@ -10231,7 +10231,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .eggMoveLearnset = sChinglingEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_CHIMECHO, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD},{IF_TIME, TIME_NIGHT})}),
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 
     [SPECIES_CHIMECHO] =
     {
@@ -10837,7 +10837,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
     },
 #endif //P_MEGA_EVOLUTIONS
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_FROSLASS] =
     {
         .baseHP        = 70,
@@ -10967,7 +10967,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .formChangeTable = sFroslassFormChangeTable,
     },
 #endif //P_GEN_9_MEGA_EVOLUTIONS
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_SNORUNT
 
 #if P_FAMILY_SPHEAL

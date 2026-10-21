@@ -7,7 +7,11 @@ This hack is built on community work. Thank you to everyone below.
   https://github.com/rh-hideout/pokeemerald-expansion
 - **Pokémon Heart & Soul (HnS)** — the Johto maps, tilesets and tileset animations
   (pokehns-expansion): https://github.com/PokemonHnS-Development/pokehns-expansion — see their
-  CREDITS.md for the artists and contributors behind them.
+  CREDITS.md for the artists and contributors behind them. Also the gyms used as the convention's
+  halls, and Janine's sprites.
+- **Pokémon Emerald Rogue** (Pokabbie) — the Gym Leader Convention's trainer sprites (front pictures
+  and overworld sprites of the later generations' leaders):
+  https://github.com/Pokabbie/pokeemerald-rogue — see its credits for the sprite artists.
 
 ## AI disclosure
 

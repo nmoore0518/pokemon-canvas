@@ -583,6 +583,201 @@ const union AnimCmd *const sBackAnims_OldManPokedude[] = {
         .animation = anim,                                                                   \
     }}
 
+// BEGIN Convention gfx
+const u32 gTrainerFrontPic_ConvWhitney[] = INCGFX_U32("graphics/trainers/front_pics/convention/whitney.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvWhitney[] = INCGFX_U16("graphics/trainers/palettes/convention/whitney.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvCheren[] = INCGFX_U32("graphics/trainers/front_pics/convention/cheren.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvCheren[] = INCGFX_U16("graphics/trainers/palettes/convention/cheren.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvLenora[] = INCGFX_U32("graphics/trainers/front_pics/convention/lenora.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvLenora[] = INCGFX_U16("graphics/trainers/palettes/convention/lenora.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvIlima[] = INCGFX_U32("graphics/trainers/front_pics/convention/ilima.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvIlima[] = INCGFX_U16("graphics/trainers/palettes/convention/ilima.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvLarry[] = INCGFX_U32("graphics/trainers/front_pics/convention/larry.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvLarry[] = INCGFX_U16("graphics/trainers/palettes/convention/larry.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvChili[] = INCGFX_U32("graphics/trainers/front_pics/convention/chili.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvChili[] = INCGFX_U16("graphics/trainers/palettes/convention/chili.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKiawe[] = INCGFX_U32("graphics/trainers/front_pics/convention/kiawe.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKiawe[] = INCGFX_U16("graphics/trainers/palettes/convention/kiawe.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKabu[] = INCGFX_U32("graphics/trainers/front_pics/convention/kabu.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKabu[] = INCGFX_U16("graphics/trainers/palettes/convention/kabu.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvFlint[] = INCGFX_U32("graphics/trainers/front_pics/convention/flint.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvFlint[] = INCGFX_U16("graphics/trainers/palettes/convention/flint.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMalva[] = INCGFX_U32("graphics/trainers/front_pics/convention/malva.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMalva[] = INCGFX_U16("graphics/trainers/palettes/convention/malva.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvWake[] = INCGFX_U32("graphics/trainers/front_pics/convention/wake.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvWake[] = INCGFX_U16("graphics/trainers/palettes/convention/wake.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvCress[] = INCGFX_U32("graphics/trainers/front_pics/convention/cress.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvCress[] = INCGFX_U16("graphics/trainers/palettes/convention/cress.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMarlon[] = INCGFX_U32("graphics/trainers/front_pics/convention/marlon.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMarlon[] = INCGFX_U16("graphics/trainers/palettes/convention/marlon.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvLana[] = INCGFX_U32("graphics/trainers/front_pics/convention/lana.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvLana[] = INCGFX_U16("graphics/trainers/palettes/convention/lana.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvNessa[] = INCGFX_U32("graphics/trainers/front_pics/convention/nessa.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvNessa[] = INCGFX_U16("graphics/trainers/palettes/convention/nessa.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKofu[] = INCGFX_U32("graphics/trainers/front_pics/convention/kofu.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKofu[] = INCGFX_U16("graphics/trainers/palettes/convention/kofu.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvSiebold[] = INCGFX_U32("graphics/trainers/front_pics/convention/siebold.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvSiebold[] = INCGFX_U16("graphics/trainers/palettes/convention/siebold.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvGardenia[] = INCGFX_U32("graphics/trainers/front_pics/convention/gardenia.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvGardenia[] = INCGFX_U16("graphics/trainers/palettes/convention/gardenia.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvCilan[] = INCGFX_U32("graphics/trainers/front_pics/convention/cilan.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvCilan[] = INCGFX_U16("graphics/trainers/palettes/convention/cilan.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvRamos[] = INCGFX_U32("graphics/trainers/front_pics/convention/ramos.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvRamos[] = INCGFX_U16("graphics/trainers/palettes/convention/ramos.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMallow[] = INCGFX_U32("graphics/trainers/front_pics/convention/mallow.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMallow[] = INCGFX_U16("graphics/trainers/palettes/convention/mallow.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMilo[] = INCGFX_U32("graphics/trainers/front_pics/convention/milo.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMilo[] = INCGFX_U16("graphics/trainers/palettes/convention/milo.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBrassius[] = INCGFX_U32("graphics/trainers/front_pics/convention/brassius.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBrassius[] = INCGFX_U16("graphics/trainers/palettes/convention/brassius.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvVolkner[] = INCGFX_U32("graphics/trainers/front_pics/convention/volkner.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvVolkner[] = INCGFX_U16("graphics/trainers/palettes/convention/volkner.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvElesa[] = INCGFX_U32("graphics/trainers/front_pics/convention/elesa.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvElesa[] = INCGFX_U16("graphics/trainers/palettes/convention/elesa.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvClemont[] = INCGFX_U32("graphics/trainers/front_pics/convention/clemont.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvClemont[] = INCGFX_U16("graphics/trainers/palettes/convention/clemont.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvSophocles[] = INCGFX_U32("graphics/trainers/front_pics/convention/sophocles.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvSophocles[] = INCGFX_U16("graphics/trainers/palettes/convention/sophocles.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvIono[] = INCGFX_U32("graphics/trainers/front_pics/convention/iono.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvIono[] = INCGFX_U16("graphics/trainers/palettes/convention/iono.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvPryce[] = INCGFX_U32("graphics/trainers/front_pics/convention/pryce.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvPryce[] = INCGFX_U16("graphics/trainers/palettes/convention/pryce.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvCandice[] = INCGFX_U32("graphics/trainers/front_pics/convention/candice.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvCandice[] = INCGFX_U16("graphics/trainers/palettes/convention/candice.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBrycen[] = INCGFX_U32("graphics/trainers/front_pics/convention/brycen.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBrycen[] = INCGFX_U16("graphics/trainers/palettes/convention/brycen.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvWulfric[] = INCGFX_U32("graphics/trainers/front_pics/convention/wulfric.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvWulfric[] = INCGFX_U16("graphics/trainers/palettes/convention/wulfric.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMelony[] = INCGFX_U32("graphics/trainers/front_pics/convention/melony.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMelony[] = INCGFX_U16("graphics/trainers/palettes/convention/melony.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvGrusha[] = INCGFX_U32("graphics/trainers/front_pics/convention/grusha.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvGrusha[] = INCGFX_U16("graphics/trainers/palettes/convention/grusha.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvChuck[] = INCGFX_U32("graphics/trainers/front_pics/convention/chuck.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvChuck[] = INCGFX_U16("graphics/trainers/palettes/convention/chuck.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMaylene[] = INCGFX_U32("graphics/trainers/front_pics/convention/maylene.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMaylene[] = INCGFX_U16("graphics/trainers/palettes/convention/maylene.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKorrina[] = INCGFX_U32("graphics/trainers/front_pics/convention/korrina.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKorrina[] = INCGFX_U16("graphics/trainers/palettes/convention/korrina.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvHala[] = INCGFX_U32("graphics/trainers/front_pics/convention/hala.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvHala[] = INCGFX_U16("graphics/trainers/palettes/convention/hala.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBea[] = INCGFX_U32("graphics/trainers/front_pics/convention/bea.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBea[] = INCGFX_U16("graphics/trainers/palettes/convention/bea.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMarshal[] = INCGFX_U32("graphics/trainers/front_pics/convention/marshal.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMarshal[] = INCGFX_U16("graphics/trainers/palettes/convention/marshal.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvJanine[] = INCGFX_U32("graphics/trainers/front_pics/convention/janine.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvJanine[] = INCGFX_U16("graphics/trainers/palettes/convention/janine.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvRoxie[] = INCGFX_U32("graphics/trainers/front_pics/convention/roxie.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvRoxie[] = INCGFX_U16("graphics/trainers/palettes/convention/roxie.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvClay[] = INCGFX_U32("graphics/trainers/front_pics/convention/clay.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvClay[] = INCGFX_U16("graphics/trainers/palettes/convention/clay.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvHapu[] = INCGFX_U32("graphics/trainers/front_pics/convention/hapu.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvHapu[] = INCGFX_U16("graphics/trainers/palettes/convention/hapu.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBertha[] = INCGFX_U32("graphics/trainers/front_pics/convention/bertha.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBertha[] = INCGFX_U16("graphics/trainers/palettes/convention/bertha.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvRika[] = INCGFX_U32("graphics/trainers/front_pics/convention/rika.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvRika[] = INCGFX_U16("graphics/trainers/palettes/convention/rika.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvFalkner[] = INCGFX_U32("graphics/trainers/front_pics/convention/falkner.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvFalkner[] = INCGFX_U16("graphics/trainers/palettes/convention/falkner.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvSkyla[] = INCGFX_U32("graphics/trainers/front_pics/convention/skyla.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvSkyla[] = INCGFX_U16("graphics/trainers/palettes/convention/skyla.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKahili[] = INCGFX_U32("graphics/trainers/front_pics/convention/kahili.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKahili[] = INCGFX_U16("graphics/trainers/palettes/convention/kahili.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvOlympia[] = INCGFX_U32("graphics/trainers/front_pics/convention/olympia.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvOlympia[] = INCGFX_U16("graphics/trainers/palettes/convention/olympia.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvTulip[] = INCGFX_U32("graphics/trainers/front_pics/convention/tulip.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvTulip[] = INCGFX_U16("graphics/trainers/palettes/convention/tulip.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvWill[] = INCGFX_U32("graphics/trainers/front_pics/convention/will.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvWill[] = INCGFX_U16("graphics/trainers/palettes/convention/will.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvLucian[] = INCGFX_U32("graphics/trainers/front_pics/convention/lucian.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvLucian[] = INCGFX_U16("graphics/trainers/palettes/convention/lucian.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvCaitlin[] = INCGFX_U32("graphics/trainers/front_pics/convention/caitlin.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvCaitlin[] = INCGFX_U16("graphics/trainers/palettes/convention/caitlin.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBugsy[] = INCGFX_U32("graphics/trainers/front_pics/convention/bugsy.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBugsy[] = INCGFX_U16("graphics/trainers/palettes/convention/bugsy.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBurgh[] = INCGFX_U32("graphics/trainers/front_pics/convention/burgh.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBurgh[] = INCGFX_U16("graphics/trainers/palettes/convention/burgh.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvViola[] = INCGFX_U32("graphics/trainers/front_pics/convention/viola.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvViola[] = INCGFX_U16("graphics/trainers/palettes/convention/viola.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKaty[] = INCGFX_U32("graphics/trainers/front_pics/convention/katy.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKaty[] = INCGFX_U16("graphics/trainers/palettes/convention/katy.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvAaron[] = INCGFX_U32("graphics/trainers/front_pics/convention/aaron.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvAaron[] = INCGFX_U16("graphics/trainers/palettes/convention/aaron.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvRoark[] = INCGFX_U32("graphics/trainers/front_pics/convention/roark.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvRoark[] = INCGFX_U16("graphics/trainers/palettes/convention/roark.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvGrant[] = INCGFX_U32("graphics/trainers/front_pics/convention/grant.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvGrant[] = INCGFX_U16("graphics/trainers/palettes/convention/grant.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvOlivia[] = INCGFX_U32("graphics/trainers/front_pics/convention/olivia.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvOlivia[] = INCGFX_U16("graphics/trainers/palettes/convention/olivia.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvGordie[] = INCGFX_U32("graphics/trainers/front_pics/convention/gordie.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvGordie[] = INCGFX_U16("graphics/trainers/palettes/convention/gordie.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMorty[] = INCGFX_U32("graphics/trainers/front_pics/convention/morty.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMorty[] = INCGFX_U16("graphics/trainers/palettes/convention/morty.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvFantina[] = INCGFX_U32("graphics/trainers/front_pics/convention/fantina.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvFantina[] = INCGFX_U16("graphics/trainers/palettes/convention/fantina.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvAcerola[] = INCGFX_U32("graphics/trainers/front_pics/convention/acerola.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvAcerola[] = INCGFX_U16("graphics/trainers/palettes/convention/acerola.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvAllister[] = INCGFX_U32("graphics/trainers/front_pics/convention/allister.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvAllister[] = INCGFX_U16("graphics/trainers/palettes/convention/allister.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvRyme[] = INCGFX_U32("graphics/trainers/front_pics/convention/ryme.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvRyme[] = INCGFX_U16("graphics/trainers/palettes/convention/ryme.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvShauntal[] = INCGFX_U32("graphics/trainers/front_pics/convention/shauntal.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvShauntal[] = INCGFX_U16("graphics/trainers/palettes/convention/shauntal.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvClair[] = INCGFX_U32("graphics/trainers/front_pics/convention/clair.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvClair[] = INCGFX_U16("graphics/trainers/palettes/convention/clair.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvDrayden[] = INCGFX_U32("graphics/trainers/front_pics/convention/drayden.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvDrayden[] = INCGFX_U16("graphics/trainers/palettes/convention/drayden.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvIrisL[] = INCGFX_U32("graphics/trainers/front_pics/convention/iris_l.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvIrisL[] = INCGFX_U16("graphics/trainers/palettes/convention/iris_l.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvRaihan[] = INCGFX_U32("graphics/trainers/front_pics/convention/raihan.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvRaihan[] = INCGFX_U16("graphics/trainers/palettes/convention/raihan.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvDrasna[] = INCGFX_U32("graphics/trainers/front_pics/convention/drasna.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvDrasna[] = INCGFX_U16("graphics/trainers/palettes/convention/drasna.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvHassel[] = INCGFX_U32("graphics/trainers/front_pics/convention/hassel.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvHassel[] = INCGFX_U16("graphics/trainers/palettes/convention/hassel.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvPiers[] = INCGFX_U32("graphics/trainers/front_pics/convention/piers.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvPiers[] = INCGFX_U16("graphics/trainers/palettes/convention/piers.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMarnie[] = INCGFX_U32("graphics/trainers/front_pics/convention/marnie.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMarnie[] = INCGFX_U16("graphics/trainers/palettes/convention/marnie.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvNanu[] = INCGFX_U32("graphics/trainers/front_pics/convention/nanu.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvNanu[] = INCGFX_U16("graphics/trainers/palettes/convention/nanu.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKaren[] = INCGFX_U32("graphics/trainers/front_pics/convention/karen.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKaren[] = INCGFX_U16("graphics/trainers/palettes/convention/karen.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvGrimsley[] = INCGFX_U32("graphics/trainers/front_pics/convention/grimsley.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvGrimsley[] = INCGFX_U16("graphics/trainers/palettes/convention/grimsley.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvJasmine[] = INCGFX_U32("graphics/trainers/front_pics/convention/jasmine.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvJasmine[] = INCGFX_U16("graphics/trainers/palettes/convention/jasmine.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvByron[] = INCGFX_U32("graphics/trainers/front_pics/convention/byron.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvByron[] = INCGFX_U16("graphics/trainers/palettes/convention/byron.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMolayne[] = INCGFX_U32("graphics/trainers/front_pics/convention/molayne.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMolayne[] = INCGFX_U16("graphics/trainers/palettes/convention/molayne.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvWikstrom[] = INCGFX_U32("graphics/trainers/front_pics/convention/wikstrom.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvWikstrom[] = INCGFX_U16("graphics/trainers/palettes/convention/wikstrom.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvPoppy[] = INCGFX_U32("graphics/trainers/front_pics/convention/poppy.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvPoppy[] = INCGFX_U16("graphics/trainers/palettes/convention/poppy.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvValerie[] = INCGFX_U32("graphics/trainers/front_pics/convention/valerie.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvValerie[] = INCGFX_U16("graphics/trainers/palettes/convention/valerie.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvMina[] = INCGFX_U32("graphics/trainers/front_pics/convention/mina.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvMina[] = INCGFX_U16("graphics/trainers/palettes/convention/mina.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvOpal[] = INCGFX_U32("graphics/trainers/front_pics/convention/opal.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvOpal[] = INCGFX_U16("graphics/trainers/palettes/convention/opal.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvBede[] = INCGFX_U32("graphics/trainers/front_pics/convention/bede.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvBede[] = INCGFX_U16("graphics/trainers/palettes/convention/bede.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvCynthia[] = INCGFX_U32("graphics/trainers/front_pics/convention/cynthia.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvCynthia[] = INCGFX_U16("graphics/trainers/palettes/convention/cynthia.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvAlder[] = INCGFX_U32("graphics/trainers/front_pics/convention/alder.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvAlder[] = INCGFX_U16("graphics/trainers/palettes/convention/alder.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvDiantha[] = INCGFX_U32("graphics/trainers/front_pics/convention/diantha.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvDiantha[] = INCGFX_U16("graphics/trainers/palettes/convention/diantha.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvKukui[] = INCGFX_U32("graphics/trainers/front_pics/convention/kukui.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvKukui[] = INCGFX_U16("graphics/trainers/palettes/convention/kukui.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvLeon[] = INCGFX_U32("graphics/trainers/front_pics/convention/leon.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvLeon[] = INCGFX_U16("graphics/trainers/palettes/convention/leon.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvGeeta[] = INCGFX_U32("graphics/trainers/front_pics/convention/geeta.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvGeeta[] = INCGFX_U16("graphics/trainers/palettes/convention/geeta.pal", ".gbapal");
+const u32 gTrainerFrontPic_ConvNemona[] = INCGFX_U32("graphics/trainers/front_pics/convention/nemona.png", ".4bpp.smol");
+const u16 gTrainerPalette_ConvNemona[] = INCGFX_U16("graphics/trainers/palettes/convention/nemona.pal", ".gbapal");
+// END Convention gfx
+
 const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
 {
     [TRAINER_PIC_NONE] =
@@ -1226,4 +1421,390 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PainterFrlg, gTrainerPalette_PainterFrlg),
     },
+// BEGIN Convention (tools/gym_hack/import_convention_sprites.py)
+    [TRAINER_PIC_CONV_WHITNEY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvWhitney, gTrainerPalette_ConvWhitney),
+    },
+    [TRAINER_PIC_CONV_CHEREN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvCheren, gTrainerPalette_ConvCheren),
+    },
+    [TRAINER_PIC_CONV_LENORA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvLenora, gTrainerPalette_ConvLenora),
+    },
+    [TRAINER_PIC_CONV_ILIMA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvIlima, gTrainerPalette_ConvIlima),
+    },
+    [TRAINER_PIC_CONV_LARRY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvLarry, gTrainerPalette_ConvLarry),
+    },
+    [TRAINER_PIC_CONV_CHILI] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvChili, gTrainerPalette_ConvChili),
+    },
+    [TRAINER_PIC_CONV_KIAWE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKiawe, gTrainerPalette_ConvKiawe),
+    },
+    [TRAINER_PIC_CONV_KABU] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKabu, gTrainerPalette_ConvKabu),
+    },
+    [TRAINER_PIC_CONV_FLINT] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvFlint, gTrainerPalette_ConvFlint),
+    },
+    [TRAINER_PIC_CONV_MALVA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMalva, gTrainerPalette_ConvMalva),
+    },
+    [TRAINER_PIC_CONV_WAKE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvWake, gTrainerPalette_ConvWake),
+    },
+    [TRAINER_PIC_CONV_CRESS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvCress, gTrainerPalette_ConvCress),
+    },
+    [TRAINER_PIC_CONV_MARLON] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMarlon, gTrainerPalette_ConvMarlon),
+    },
+    [TRAINER_PIC_CONV_LANA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvLana, gTrainerPalette_ConvLana),
+    },
+    [TRAINER_PIC_CONV_NESSA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvNessa, gTrainerPalette_ConvNessa),
+    },
+    [TRAINER_PIC_CONV_KOFU] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKofu, gTrainerPalette_ConvKofu),
+    },
+    [TRAINER_PIC_CONV_SIEBOLD] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvSiebold, gTrainerPalette_ConvSiebold),
+    },
+    [TRAINER_PIC_CONV_GARDENIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvGardenia, gTrainerPalette_ConvGardenia),
+    },
+    [TRAINER_PIC_CONV_CILAN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvCilan, gTrainerPalette_ConvCilan),
+    },
+    [TRAINER_PIC_CONV_RAMOS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvRamos, gTrainerPalette_ConvRamos),
+    },
+    [TRAINER_PIC_CONV_MALLOW] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMallow, gTrainerPalette_ConvMallow),
+    },
+    [TRAINER_PIC_CONV_MILO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMilo, gTrainerPalette_ConvMilo),
+    },
+    [TRAINER_PIC_CONV_BRASSIUS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBrassius, gTrainerPalette_ConvBrassius),
+    },
+    [TRAINER_PIC_CONV_VOLKNER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvVolkner, gTrainerPalette_ConvVolkner),
+    },
+    [TRAINER_PIC_CONV_ELESA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvElesa, gTrainerPalette_ConvElesa),
+    },
+    [TRAINER_PIC_CONV_CLEMONT] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvClemont, gTrainerPalette_ConvClemont),
+    },
+    [TRAINER_PIC_CONV_SOPHOCLES] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvSophocles, gTrainerPalette_ConvSophocles),
+    },
+    [TRAINER_PIC_CONV_IONO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvIono, gTrainerPalette_ConvIono),
+    },
+    [TRAINER_PIC_CONV_PRYCE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvPryce, gTrainerPalette_ConvPryce),
+    },
+    [TRAINER_PIC_CONV_CANDICE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvCandice, gTrainerPalette_ConvCandice),
+    },
+    [TRAINER_PIC_CONV_BRYCEN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBrycen, gTrainerPalette_ConvBrycen),
+    },
+    [TRAINER_PIC_CONV_WULFRIC] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvWulfric, gTrainerPalette_ConvWulfric),
+    },
+    [TRAINER_PIC_CONV_MELONY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMelony, gTrainerPalette_ConvMelony),
+    },
+    [TRAINER_PIC_CONV_GRUSHA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvGrusha, gTrainerPalette_ConvGrusha),
+    },
+    [TRAINER_PIC_CONV_CHUCK] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvChuck, gTrainerPalette_ConvChuck),
+    },
+    [TRAINER_PIC_CONV_MAYLENE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMaylene, gTrainerPalette_ConvMaylene),
+    },
+    [TRAINER_PIC_CONV_KORRINA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKorrina, gTrainerPalette_ConvKorrina),
+    },
+    [TRAINER_PIC_CONV_HALA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvHala, gTrainerPalette_ConvHala),
+    },
+    [TRAINER_PIC_CONV_BEA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBea, gTrainerPalette_ConvBea),
+    },
+    [TRAINER_PIC_CONV_MARSHAL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMarshal, gTrainerPalette_ConvMarshal),
+    },
+    [TRAINER_PIC_CONV_JANINE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvJanine, gTrainerPalette_ConvJanine),
+    },
+    [TRAINER_PIC_CONV_ROXIE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvRoxie, gTrainerPalette_ConvRoxie),
+    },
+    [TRAINER_PIC_CONV_CLAY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvClay, gTrainerPalette_ConvClay),
+    },
+    [TRAINER_PIC_CONV_HAPU] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvHapu, gTrainerPalette_ConvHapu),
+    },
+    [TRAINER_PIC_CONV_BERTHA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBertha, gTrainerPalette_ConvBertha),
+    },
+    [TRAINER_PIC_CONV_RIKA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvRika, gTrainerPalette_ConvRika),
+    },
+    [TRAINER_PIC_CONV_FALKNER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvFalkner, gTrainerPalette_ConvFalkner),
+    },
+    [TRAINER_PIC_CONV_SKYLA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvSkyla, gTrainerPalette_ConvSkyla),
+    },
+    [TRAINER_PIC_CONV_KAHILI] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKahili, gTrainerPalette_ConvKahili),
+    },
+    [TRAINER_PIC_CONV_OLYMPIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvOlympia, gTrainerPalette_ConvOlympia),
+    },
+    [TRAINER_PIC_CONV_TULIP] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvTulip, gTrainerPalette_ConvTulip),
+    },
+    [TRAINER_PIC_CONV_WILL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvWill, gTrainerPalette_ConvWill),
+    },
+    [TRAINER_PIC_CONV_LUCIAN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvLucian, gTrainerPalette_ConvLucian),
+    },
+    [TRAINER_PIC_CONV_CAITLIN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvCaitlin, gTrainerPalette_ConvCaitlin),
+    },
+    [TRAINER_PIC_CONV_BUGSY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBugsy, gTrainerPalette_ConvBugsy),
+    },
+    [TRAINER_PIC_CONV_BURGH] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBurgh, gTrainerPalette_ConvBurgh),
+    },
+    [TRAINER_PIC_CONV_VIOLA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvViola, gTrainerPalette_ConvViola),
+    },
+    [TRAINER_PIC_CONV_KATY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKaty, gTrainerPalette_ConvKaty),
+    },
+    [TRAINER_PIC_CONV_AARON] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvAaron, gTrainerPalette_ConvAaron),
+    },
+    [TRAINER_PIC_CONV_ROARK] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvRoark, gTrainerPalette_ConvRoark),
+    },
+    [TRAINER_PIC_CONV_GRANT] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvGrant, gTrainerPalette_ConvGrant),
+    },
+    [TRAINER_PIC_CONV_OLIVIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvOlivia, gTrainerPalette_ConvOlivia),
+    },
+    [TRAINER_PIC_CONV_GORDIE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvGordie, gTrainerPalette_ConvGordie),
+    },
+    [TRAINER_PIC_CONV_MORTY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMorty, gTrainerPalette_ConvMorty),
+    },
+    [TRAINER_PIC_CONV_FANTINA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvFantina, gTrainerPalette_ConvFantina),
+    },
+    [TRAINER_PIC_CONV_ACEROLA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvAcerola, gTrainerPalette_ConvAcerola),
+    },
+    [TRAINER_PIC_CONV_ALLISTER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvAllister, gTrainerPalette_ConvAllister),
+    },
+    [TRAINER_PIC_CONV_RYME] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvRyme, gTrainerPalette_ConvRyme),
+    },
+    [TRAINER_PIC_CONV_SHAUNTAL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvShauntal, gTrainerPalette_ConvShauntal),
+    },
+    [TRAINER_PIC_CONV_CLAIR] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvClair, gTrainerPalette_ConvClair),
+    },
+    [TRAINER_PIC_CONV_DRAYDEN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvDrayden, gTrainerPalette_ConvDrayden),
+    },
+    [TRAINER_PIC_CONV_IRIS_L] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvIrisL, gTrainerPalette_ConvIrisL),
+    },
+    [TRAINER_PIC_CONV_RAIHAN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvRaihan, gTrainerPalette_ConvRaihan),
+    },
+    [TRAINER_PIC_CONV_DRASNA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvDrasna, gTrainerPalette_ConvDrasna),
+    },
+    [TRAINER_PIC_CONV_HASSEL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvHassel, gTrainerPalette_ConvHassel),
+    },
+    [TRAINER_PIC_CONV_PIERS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvPiers, gTrainerPalette_ConvPiers),
+    },
+    [TRAINER_PIC_CONV_MARNIE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMarnie, gTrainerPalette_ConvMarnie),
+    },
+    [TRAINER_PIC_CONV_NANU] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvNanu, gTrainerPalette_ConvNanu),
+    },
+    [TRAINER_PIC_CONV_KAREN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKaren, gTrainerPalette_ConvKaren),
+    },
+    [TRAINER_PIC_CONV_GRIMSLEY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvGrimsley, gTrainerPalette_ConvGrimsley),
+    },
+    [TRAINER_PIC_CONV_JASMINE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvJasmine, gTrainerPalette_ConvJasmine),
+    },
+    [TRAINER_PIC_CONV_BYRON] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvByron, gTrainerPalette_ConvByron),
+    },
+    [TRAINER_PIC_CONV_MOLAYNE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMolayne, gTrainerPalette_ConvMolayne),
+    },
+    [TRAINER_PIC_CONV_WIKSTROM] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvWikstrom, gTrainerPalette_ConvWikstrom),
+    },
+    [TRAINER_PIC_CONV_POPPY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvPoppy, gTrainerPalette_ConvPoppy),
+    },
+    [TRAINER_PIC_CONV_VALERIE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvValerie, gTrainerPalette_ConvValerie),
+    },
+    [TRAINER_PIC_CONV_MINA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvMina, gTrainerPalette_ConvMina),
+    },
+    [TRAINER_PIC_CONV_OPAL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvOpal, gTrainerPalette_ConvOpal),
+    },
+    [TRAINER_PIC_CONV_BEDE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvBede, gTrainerPalette_ConvBede),
+    },
+    [TRAINER_PIC_CONV_CYNTHIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvCynthia, gTrainerPalette_ConvCynthia),
+    },
+    [TRAINER_PIC_CONV_ALDER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvAlder, gTrainerPalette_ConvAlder),
+    },
+    [TRAINER_PIC_CONV_DIANTHA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvDiantha, gTrainerPalette_ConvDiantha),
+    },
+    [TRAINER_PIC_CONV_KUKUI] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvKukui, gTrainerPalette_ConvKukui),
+    },
+    [TRAINER_PIC_CONV_LEON] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvLeon, gTrainerPalette_ConvLeon),
+    },
+    [TRAINER_PIC_CONV_GEETA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvGeeta, gTrainerPalette_ConvGeeta),
+    },
+    [TRAINER_PIC_CONV_NEMONA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvNemona, gTrainerPalette_ConvNemona),
+    },
+// END Convention
 };

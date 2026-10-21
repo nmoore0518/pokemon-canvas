@@ -16,7 +16,8 @@ struct DynamicListMenuEventArgs;
 #define GYM_DECOR_CAT_GENERAL  0
 #define GYM_DECOR_CAT_TRAINERS 1
 #define GYM_DECOR_CAT_TYPE(type) (2 + (type))
-#define GYM_DECOR_CAT_COUNT    GYM_DECOR_CAT_TYPE(NUMBER_OF_MON_TYPES)
+#define GYM_DECOR_CAT_TROPHIES GYM_DECOR_CAT_TYPE(NUMBER_OF_MON_TYPES)
+#define GYM_DECOR_CAT_COUNT    (GYM_DECOR_CAT_TROPHIES + 1)
 
 struct GymDecor
 {
@@ -38,6 +39,7 @@ extern const struct GymDecor gGymDecor[GYM_DECOR_COUNT];
 #define GYM_DECOR_MAX_PLACED 650   // the room has about 500 free squares; the rest of the space holds gym challenge records
 
 bool32 GymDecor_IsUnlocked(u32 id);
+void GymDecor_Give(u32 id);
 bool32 GymDecor_IsTypeUnlocked(u32 type);
 void GymDecor_PatchTilesetGfx(struct MapLayout const *mapLayout);
 u32 GymDecor_CountOwned(u32 id);

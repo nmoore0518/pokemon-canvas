@@ -47,4 +47,8 @@
 #define JOHTO_INVITED           2   // (the ferry from Vermilion sails to Olivine)
 #define JOHTO_GOT_GOODIE_BAG    3
 
+// The Gym Leader Convention (src/gym_convention.c): Convention_RecordWin's results
+#define CONVENTION_WON_HALL     1
+#define CONVENTION_WON_ALL      2
+
 #endif // GUARD_CONSTANTS_GYM_HACK_H

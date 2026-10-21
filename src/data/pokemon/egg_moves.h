@@ -152,7 +152,7 @@ static const u16 sEkansEggMoveLearnset[] = {
 #endif //P_FAMILY_EKANS
 
 #if P_FAMILY_PIKACHU
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sPichuEggMoveLearnset[] = {
     MOVE_REVERSAL,
     MOVE_BIDE,
@@ -172,7 +172,7 @@ static const u16 sPichuEggMoveLearnset[] = {
     MOVE_ELECTRIC_TERRAIN,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_PIKACHU
 
 #if P_FAMILY_SANDSHREW
@@ -249,7 +249,7 @@ static const u16 sNidoranMEggMoveLearnset[] = {
 #endif //P_FAMILY_NIDORAN
 
 #if P_FAMILY_CLEFAIRY
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sCleffaEggMoveLearnset[] = {
     MOVE_PRESENT,
     MOVE_METRONOME,
@@ -267,7 +267,7 @@ static const u16 sCleffaEggMoveLearnset[] = {
     MOVE_HEAL_PULSE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_CLEFAIRY
 
 #if P_FAMILY_VULPIX
@@ -310,7 +310,7 @@ static const u16 sVulpixAlolaEggMoveLearnset[] = {
 #endif //P_FAMILY_VULPIX
 
 #if P_FAMILY_JIGGLYPUFF
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sIgglybuffEggMoveLearnset[] = {
     MOVE_PERISH_SONG,
     MOVE_PRESENT,
@@ -327,7 +327,7 @@ static const u16 sIgglybuffEggMoveLearnset[] = {
     MOVE_HEAL_PULSE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_JIGGLYPUFF
 
 #if P_FAMILY_ZUBAT
@@ -990,7 +990,7 @@ static const u16 sCuboneEggMoveLearnset[] = {
 #endif //P_FAMILY_CUBONE
 
 #if P_FAMILY_HITMONS
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sTyrogueEggMoveLearnset[] = {
     MOVE_RAPID_SPIN,
     MOVE_HIGH_JUMP_KICK,
@@ -1005,7 +1005,7 @@ static const u16 sTyrogueEggMoveLearnset[] = {
     MOVE_FEINT,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_HITMONS
 
 #if P_FAMILY_LICKITUNG
@@ -1069,7 +1069,7 @@ static const u16 sRhyhornEggMoveLearnset[] = {
 #endif //P_FAMILY_RHYHORN
 
 #if P_FAMILY_CHANSEY
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sHappinyEggMoveLearnset[] = {
     MOVE_PRESENT,
     MOVE_METRONOME,
@@ -1084,7 +1084,7 @@ static const u16 sHappinyEggMoveLearnset[] = {
     MOVE_ENDURE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sChanseyEggMoveLearnset[] = {
     MOVE_PRESENT,
     MOVE_METRONOME,
@@ -1176,7 +1176,7 @@ static const u16 sGoldeenEggMoveLearnset[] = {
 #endif //P_FAMILY_GOLDEEN
 
 #if P_FAMILY_MR_MIME
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sMimeJrEggMoveLearnset[] = {
     MOVE_FUTURE_SIGHT,
     MOVE_HYPNOSIS,
@@ -1195,7 +1195,7 @@ static const u16 sMimeJrEggMoveLearnset[] = {
     MOVE_PSYCHIC_TERRAIN,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sMrMimeEggMoveLearnset[] = {
     MOVE_FUTURE_SIGHT,
     MOVE_HYPNOSIS,
@@ -1241,7 +1241,7 @@ static const u16 sScytherEggMoveLearnset[] = {
 #endif //P_FAMILY_SCYTHER
 
 #if P_FAMILY_JYNX
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sSmoochumEggMoveLearnset[] = {
     MOVE_MEDITATE,
     MOVE_FAKE_OUT,
@@ -1253,11 +1253,11 @@ static const u16 sSmoochumEggMoveLearnset[] = {
     MOVE_CAPTIVATE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_JYNX
 
 #if P_FAMILY_ELECTABUZZ
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sElekidEggMoveLearnset[] = {
     MOVE_KARATE_CHOP,
     MOVE_BARRIER,
@@ -1272,11 +1272,11 @@ static const u16 sElekidEggMoveLearnset[] = {
     MOVE_FOCUS_PUNCH,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ELECTABUZZ
 
 #if P_FAMILY_MAGMAR
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sMagbyEggMoveLearnset[] = {
     MOVE_KARATE_CHOP,
     MOVE_MEGA_PUNCH,
@@ -1294,7 +1294,7 @@ static const u16 sMagbyEggMoveLearnset[] = {
     MOVE_BELCH,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_MAGMAR
 
 #if P_FAMILY_PINSIR
@@ -1429,7 +1429,7 @@ static const u16 sAerodactylEggMoveLearnset[] = {
 #endif //P_FAMILY_AERODACTYL
 
 #if P_FAMILY_SNORLAX
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sMunchlaxEggMoveLearnset[] = {
     MOVE_LICK,
     MOVE_CHARM,
@@ -1445,7 +1445,7 @@ static const u16 sMunchlaxEggMoveLearnset[] = {
     MOVE_BELCH,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sSnorlaxEggMoveLearnset[] = {
     MOVE_LICK,
     MOVE_CHARM,
@@ -1692,7 +1692,7 @@ static const u16 sMareepEggMoveLearnset[] = {
 #endif //P_FAMILY_MAREEP
 
 #if P_FAMILY_MARILL
-#if P_GEN_3_CROSS_EVOS
+#if P_GEN_3_CROSS_EVO_SPECIES
 static const u16 sAzurillEggMoveLearnset[] = {
     MOVE_ENCORE,
     MOVE_SING,
@@ -1708,7 +1708,7 @@ static const u16 sAzurillEggMoveLearnset[] = {
     MOVE_CAMOUFLAGE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_3_CROSS_EVOS
+#endif //P_GEN_3_CROSS_EVO_SPECIES
 static const u16 sMarillEggMoveLearnset[] = {
     MOVE_PRESENT,
     MOVE_AMNESIA,
@@ -1728,7 +1728,7 @@ static const u16 sMarillEggMoveLearnset[] = {
 #endif //P_FAMILY_MARILL
 
 #if P_FAMILY_SUDOWOODO
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sBonslyEggMoveLearnset[] = {
     MOVE_SELF_DESTRUCT,
     MOVE_HEADBUTT,
@@ -1741,7 +1741,7 @@ static const u16 sBonslyEggMoveLearnset[] = {
     MOVE_ENDURE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sSudowoodoEggMoveLearnset[] = {
     MOVE_SELF_DESTRUCT,
     MOVE_HEADBUTT,
@@ -2240,7 +2240,7 @@ static const u16 sDelibirdEggMoveLearnset[] = {
 #endif //P_FAMILY_DELIBIRD
 
 #if P_FAMILY_MANTINE
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sMantykeEggMoveLearnset[] = {
     MOVE_TWISTER,
     MOVE_HYDRO_PUMP,
@@ -2256,7 +2256,7 @@ static const u16 sMantykeEggMoveLearnset[] = {
     MOVE_TAILWIND,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sMantineEggMoveLearnset[] = {
     MOVE_TWISTER,
     MOVE_HYDRO_PUMP,
@@ -2866,7 +2866,7 @@ static const u16 sIllumiseEggMoveLearnset[] = {
 #endif //P_FAMILY_VOLBEAT_ILLUMISE
 
 #if P_FAMILY_ROSELIA
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sBudewEggMoveLearnset[] = {
     MOVE_SPIKES,
     MOVE_SYNTHESIS,
@@ -2883,7 +2883,7 @@ static const u16 sBudewEggMoveLearnset[] = {
     MOVE_GRASS_WHISTLE,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sRoseliaEggMoveLearnset[] = {
     MOVE_SPIKES,
     MOVE_SYNTHESIS,
@@ -3294,7 +3294,7 @@ static const u16 sTropiusEggMoveLearnset[] = {
 #endif //P_FAMILY_TROPIUS
 
 #if P_FAMILY_CHIMECHO
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sChinglingEggMoveLearnset[] = {
     MOVE_DISABLE,
     MOVE_CURSE,
@@ -3307,7 +3307,7 @@ static const u16 sChinglingEggMoveLearnset[] = {
     MOVE_COSMIC_POWER,
     MOVE_UNAVAILABLE,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sChimechoEggMoveLearnset[] = {
     MOVE_DISABLE,
     MOVE_CURSE,

@@ -42,6 +42,7 @@ void InitTilesetAnim_MtEmber(void);
 
 // BEGIN Johto (tools/gym_hack/import_johto.py)
 void InitTilesetAnim_AzaleaTownGym(void);
+void InitTilesetAnim_BlackthornGym(void);
 void InitTilesetAnim_EcruteakTheater(void);
 void InitTilesetAnim_JohtoGeneral(void);
 void InitTilesetAnim_NationalPark(void);

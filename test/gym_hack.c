@@ -604,11 +604,56 @@ TEST("GymHack: decor: every decoration has a name, a price and fits the gym")
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
         EXPECT(gGymDecor[i].name != NULL);
-        if (i != GYM_DECOR_BATTLE_STAGE && GymCandidate_GetRecruitByDecor(i) == NULL)   // recruits join, they aren't sold
+        if (i != GYM_DECOR_BATTLE_STAGE && GymCandidate_GetRecruitByDecor(i) == NULL   // recruits join, they aren't sold
+         && gGymDecor[i].category != GYM_DECOR_CAT_TROPHIES)                          // (trophies are won)
             EXPECT_GT(gGymDecor[i].price, 0);
         EXPECT_LE(gGymDecor[i].width, 4);
         EXPECT_LE(gGymDecor[i].height, 5);
         EXPECT_LE(GetStringWidth(FONT_NORMAL, gGymDecor[i].name, 0), 13 * 8); // the list sits at x 15
+    }
+}
+
+// ---- The Gym Leader Convention ----
+#include "gym_convention.h"
+#include "gym_challenge.h"
+#include "constants/gym_convention.h"
+
+TEST("GymHack: convention: beating a whole hall wins its trophy, and every hall the grand one")
+{
+    u32 i, hall;
+    memset(GymChallenge_GetSave()->conventionBeaten, 0xFF, 16);   // (a save from before the convention)
+    GymChallenge_GetSave()->conventionMagic = 0;
+    EXPECT(!Convention_IsBeaten(0));
+    for (hall = 0; hall < CONVENTION_HALL_COUNT; hall++)
+        FlagClear(FLAG_CONVENTION_TROPHIES + hall);
+    FlagClear(FLAG_CONVENTION_TROPHY_GRAND);
+    for (i = 0; i < CONVENTION_TRAINER_COUNT; i++)
+    {
+        gSpecialVar_0x8004 = i;
+        Convention_RecordWin();
+        EXPECT(Convention_IsBeaten(i));
+        if (i == CONVENTION_TRAINER_COUNT - 1)
+            EXPECT_EQ(gSpecialVar_Result, CONVENTION_WON_ALL);
+    }
+    for (hall = 0; hall < CONVENTION_HALL_COUNT; hall++)
+        EXPECT(FlagGet(FLAG_CONVENTION_TROPHIES + hall));
+    EXPECT(FlagGet(FLAG_CONVENTION_TROPHY_GRAND));
+    EXPECT_GT(GymDecor_CountOwned(GYM_DECOR_TROPHY_GRAND), 0);
+    gSpecialVar_0x8004 = 0;                 // (beating someone again wins nothing more)
+    Convention_RecordWin();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+}
+
+TEST("GymHack: convention: every trainer has a full team and lines")
+{
+    u32 i;
+    for (i = 0; i < CONVENTION_TRAINER_COUNT; i++)
+    {
+        gSpecialVar_0x8004 = i;
+        Convention_SetupTrainer();
+        EXPECT_EQ((u32)GymChallenge_GetTrainer(TRAINER_GYM_CHALLENGER)->partySize, PARTY_SIZE);
+        EXPECT(gGymChallengeIntroText[0] != EOS);
+        EXPECT(gGymChallengeAfterText[0] != EOS);
     }
 }
 

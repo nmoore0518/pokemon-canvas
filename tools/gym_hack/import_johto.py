@@ -158,6 +158,9 @@ def main():
             continue
         hns_maps[p.parent.name] = json.load(open(p))
     ids = {m["id"] for m in hns_maps.values()}
+    sys.path.insert(0, str(Path(__file__).parent))
+    import convention_halls as conv           # (the Gym Leader Convention's halls)
+    hall_srcs = {h: hns_maps.get(n) or json.load(open(SRC / "data/maps" / n / "map.json")) for h, n in conv.SOURCES.items()}
 
     # ---- Tilesets --------------------------------------------------------------------------
     hdr_src = (SRC / "src/data/tilesets/headers.h").read_text()
@@ -172,6 +175,10 @@ def main():
     for m in hns_maps.values():
         l = hns_layouts[m["layout"]]
         tilesets |= {l["primary_tileset"], l["secondary_tileset"]}
+    for m in hall_srcs.values():
+        l = hns_layouts[m["layout"]]
+        tilesets |= {l["primary_tileset"], l["secondary_tileset"]}
+    ts_behaviors = {}
 
     headers, graphics, metatiles, callbacks = [], [], [], set()
     for ts in sorted(tilesets):
@@ -193,6 +200,12 @@ def main():
             name = BEHAVIOR_SUBST.get(name, name)
             out += struct.pack("<I", ours_mb[name] | (((a >> 12) & 3) << 29))
         (ROOT / d / "metatile_attributes.bin").write_bytes(out)
+        # (behavior, whether something is drawn over objects standing there: a statue's top, a roof)
+        mts = (SRC / d / "metatiles.bin").read_bytes()
+        over = [((a >> 12) & 3) != 1 and any(struct.unpack_from("<H", mts, i * 16 + k * 2)[0] & 0x3FF for k in range(4, 8))
+                for i, (a,) in enumerate(struct.iter_unpack("<H", raw))]
+        ts_behaviors[ts] = [(BEHAVIOR_SUBST.get(hns_mb.get(a & 0xFF, "MB_NORMAL"), hns_mb.get(a & 0xFF, "MB_NORMAL")),
+                             over[i]) for i, (a,) in enumerate(struct.iter_unpack("<H", raw))]
         pal_block = re.search(re.escape(pal_sym) + r"\[\]\[16\]\s*=\s*\{(.*?)\};", gfx_src, re.S).group(1)
         graphics.append(f'const u32 {tiles_sym}[] = INCGFX_U32("{d}/tiles.png", ".4bpp.fastSmol");\n\n'
                         f"const u16 {pal_sym}[][16] =\n{{{pal_block}}};\n\n")
@@ -218,7 +231,7 @@ def main():
             cur = ""
     chunks.append(cur)
     keep_words = [cb.replace("InitTilesetAnim_", "") for cb in callbacks]
-    drop_words = ["CeladonCity", "CeruleanCity", "SilphCo", "BlackthornGym", "MtSilverExp"]
+    drop_words = ["CeladonCity", "CeruleanCity", "SilphCo", "MtSilverExp"]
     kept = [c for c in chunks if not any(w in c for w in drop_words)]
     # (all of these are FireRed-sized layouts here)
     kept = [c.replace("sSecondaryTilesetBaseTile", "NUM_TILES_IN_PRIMARY_FRLG") for c in kept]
@@ -229,7 +242,8 @@ def main():
     # ---- Layouts ---------------------------------------------------------------------------
     layouts_json = ROOT / "data/layouts/layouts.json"
     lj = json.load(open(layouts_json))
-    lj["layouts"] = [l for l in lj["layouts"] if not l.get("name", "").endswith("_Johto_Layout")]
+    lj["layouts"] = [l for l in lj["layouts"] if not l.get("name", "").endswith("_Johto_Layout")
+                     and not l.get("name", "").startswith("ConventionHall_")]
     for m in hns_maps.values():
         l = hns_layouts[m["layout"]]
         name = new_name(m["name"])
@@ -246,10 +260,36 @@ def main():
             "primary_tileset": l["primary_tileset"], "secondary_tileset": l["secondary_tileset"],
             "border_filepath": f"data/layouts/{name}/border.bin",
             "blockdata_filepath": f"data/layouts/{name}/map.bin", "layout_version": "frlg"})
+
+    # The convention halls: copies of the gyms' layouts (puzzles solved), their trainers placed
+    def behavior_names(l):
+        prim, sec = ts_behaviors[l["primary_tileset"]], ts_behaviors[l["secondary_tileset"]]
+        return lambda mt: (prim[mt] if mt < len(prim) else ("MB_NORMAL", False)) if mt < 640 else \
+            (sec[mt - 640] if mt - 640 < len(sec) else ("MB_NORMAL", False))
+
+    def hall_layout_bin(hall, m, blockdata):
+        l = hns_layouts[m["layout"]]
+        name = conv.hall_name(hall)
+        dst = ROOT / "data/layouts" / name
+        shutil.rmtree(dst, ignore_errors=True)
+        dst.mkdir(parents=True)
+        (dst / "map.bin").write_bytes(blockdata)
+        border = (SRC / l["border_filepath"]).read_bytes()
+        (dst / "border.bin").write_bytes(border)
+        bw = 2 if len(border) == 8 else int((len(border) // 2) ** 0.5)
+        lj["layouts"].append({
+            "id": "LAYOUT_CONVENTION_HALL_" + hall, "name": name + "_Layout", "width": l["width"],
+            "height": l["height"], "border_width": bw, "border_height": len(border) // 2 // bw,
+            "primary_tileset": l["primary_tileset"], "secondary_tileset": l["secondary_tileset"],
+            "border_filepath": f"data/layouts/{name}/border.bin",
+            "blockdata_filepath": f"data/layouts/{name}/map.bin", "layout_version": "frlg"})
+
+    halls = conv.build(SRC, hns_layouts, {conv.SOURCES[h]: m for h, m in hall_srcs.items()}, behavior_names,
+                     lambda hall, m: "LAYOUT_CONVENTION_HALL_" + hall, hall_layout_bin)
     layouts_json.write_text(json.dumps(lj, indent=2, ensure_ascii=False) + "\n")
 
     # ---- Maps ------------------------------------------------------------------------------
-    for old in (ROOT / "data/maps").glob("*_Johto"):
+    for old in list((ROOT / "data/maps").glob("*_Johto")) + list((ROOT / "data/maps").glob("ConventionHall_*")):
         shutil.rmtree(old)
     # Warps out of the area are dropped (their doors do nothing); the others are renumbered
     warp_index = {}
@@ -282,6 +322,17 @@ def main():
                  for w in m.get("warp_events") or [] if w["dest_map"] in ids]
         conns = [dict(c, map=new_id(c["map"])) for c in (m.get("connections") or []) if c["map"] in ids]
         coords, extra_scripts = [], ""
+        if hname == conv.LOBBY:
+            # The convention's lobby: the receptionist sends the player to the halls, whose doors
+            # lead back here (data/scripts/gym_convention.inc)
+            lobby_landing = len(warps)
+            warps.append({"x": conv.LOBBY_LANDING[0], "y": conv.LOBBY_LANDING[1], "elevation": 3,
+                          "dest_map": mid, "dest_warp_id": str(lobby_landing)})
+            for lid, gfx, x, y, face, script in conv.LOBBY_OBJECTS:
+                objects.append({"local_id": lid, "type": "object", "graphics_id": gfx, "x": x, "y": y,
+                                "elevation": 3, "movement_type": f"MOVEMENT_TYPE_FACE_{face}",
+                                "movement_range_x": 0, "movement_range_y": 0, "trainer_type": "TRAINER_TYPE_NONE",
+                                "trainer_sight_or_berry_tree_id": "0", "script": script, "flag": "0"})
         if hname == "OlivineCity_PortInside_hns":
             # The convention greeter at the ferry dock: the goodie bag (data/scripts/johto.inc)
             objects.append({"local_id": "LOCALID_OLIVINE_PORT_GREETER", "type": "object",
@@ -354,6 +405,20 @@ def main():
             scripts += "\t.byte 0\n"
         (d / "scripts.inc").write_text(scripts + extra_scripts)
         script_includes.append(f'\t.include "data/maps/{name}/scripts.inc"\n')
+    (ROOT / "src/data/gym_convention_halls.h").write_text(
+        "// Generated by tools/gym_hack/import_johto.py (convention_halls.py): each convention hall's\n"
+        "// map and the warp the player arrives at\nstatic const struct ConventionHall sConventionHalls[] = {\n"
+        + "".join(f"    [CONVENTION_HALL_{h}] = {{MAP_GROUP({conv.hall_id(h)}), MAP_NUM({conv.hall_id(h)}), {e}}},\n"
+                  for h, (_, _, e) in halls.items()) + "};\n")
+    for hall, (out, scripts, _) in halls.items():
+        for w in out["warp_events"]:
+            if w["dest_warp_id"] == "LOBBY":
+                w["dest_warp_id"] = str(lobby_landing)
+        d = ROOT / "data/maps" / out["name"]
+        d.mkdir()
+        (d / "map.json").write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n")
+        (d / "scripts.inc").write_text(scripts)
+        script_includes.append(f'\t.include "data/maps/{out['name']}/scripts.inc"\n')
     (ROOT / "data/maps/johto.inc").write_text("@ Johto map scripts (tools/gym_hack/import_johto.py)\n" + "".join(sorted(script_includes)))
 
     # Map group
@@ -361,7 +426,7 @@ def main():
     g = json.load(open(groups_json))
     if "gMapGroup_Johto" not in g["group_order"]:
         g["group_order"].append("gMapGroup_Johto")
-    g["gMapGroup_Johto"] = sorted(new_name(n) for n in hns_maps)
+    g["gMapGroup_Johto"] = sorted(new_name(n) for n in hns_maps) + [conv.hall_name(h) for h in conv.HALLS]
     groups_json.write_text(json.dumps(g, indent=2, ensure_ascii=False) + "\n")
 
     # Heal locations: in front of each Pokémon Center's door
@@ -382,7 +447,6 @@ def main():
     rms = ROOT / "src/data/region_map/region_map_sections.json"
     r = json.load(open(rms))
     r["map_sections"] = [s for s in r["map_sections"] if s["id"] not in MAPSECS]
-    sys.path.insert(0, str(Path(__file__).parent))
     import build_johto_map                  # (where each one is on the Johto map)
     build_johto_map.SRC = SRC
     pos = build_johto_map.positions()

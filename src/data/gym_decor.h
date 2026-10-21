@@ -120,39 +120,59 @@ static const u16 sGymDecorBlocks_FAIRY_STAR_LAMP[] = { 0x3D5, 0x3D6 | GYM_DECOR_
 static const u16 sGymDecorBlocks_RECRUIT_NORMAL[] = { 0x281 | GYM_DECOR_SOLID };
 static const u16 sGymDecorEditBlocks_RECRUIT_NORMAL[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_FIGHTING[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_FIGHTING[] = { 0x3D8 };
+static const u16 sGymDecorEditBlocks_RECRUIT_FIGHTING[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_FLYING[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_FLYING[] = { 0x3D9 };
+static const u16 sGymDecorEditBlocks_RECRUIT_FLYING[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_POISON[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_POISON[] = { 0x3DA };
+static const u16 sGymDecorEditBlocks_RECRUIT_POISON[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_GROUND[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_GROUND[] = { 0x3DB };
+static const u16 sGymDecorEditBlocks_RECRUIT_GROUND[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_ROCK[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_ROCK[] = { 0x3DC };
+static const u16 sGymDecorEditBlocks_RECRUIT_ROCK[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_BUG[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_BUG[] = { 0x3DD };
+static const u16 sGymDecorEditBlocks_RECRUIT_BUG[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_GHOST[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_GHOST[] = { 0x3DE };
+static const u16 sGymDecorEditBlocks_RECRUIT_GHOST[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_STEEL[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_STEEL[] = { 0x3DF };
+static const u16 sGymDecorEditBlocks_RECRUIT_STEEL[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_FIRE[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_FIRE[] = { 0x3E0 };
+static const u16 sGymDecorEditBlocks_RECRUIT_FIRE[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_WATER[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_WATER[] = { 0x3E1 };
+static const u16 sGymDecorEditBlocks_RECRUIT_WATER[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_GRASS[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_GRASS[] = { 0x3E2 };
+static const u16 sGymDecorEditBlocks_RECRUIT_GRASS[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_ELECTRIC[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_ELECTRIC[] = { 0x3E3 };
+static const u16 sGymDecorEditBlocks_RECRUIT_ELECTRIC[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_PSYCHIC[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_PSYCHIC[] = { 0x3E4 };
+static const u16 sGymDecorEditBlocks_RECRUIT_PSYCHIC[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_ICE[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_ICE[] = { 0x3E5 };
+static const u16 sGymDecorEditBlocks_RECRUIT_ICE[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_DRAGON[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_DRAGON[] = { 0x3E6 };
+static const u16 sGymDecorEditBlocks_RECRUIT_DRAGON[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_DARK[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_DARK[] = { 0x3E7 };
+static const u16 sGymDecorEditBlocks_RECRUIT_DARK[] = { 0x3D7 };
 static const u16 sGymDecorBlocks_RECRUIT_FAIRY[] = { 0x281 | GYM_DECOR_SOLID };
-static const u16 sGymDecorEditBlocks_RECRUIT_FAIRY[] = { 0x3E8 };
+static const u16 sGymDecorEditBlocks_RECRUIT_FAIRY[] = { 0x3D7 };
+static const u16 sGymDecorBlocks_TROPHY_NORMAL[] = { 0x3D8 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_FIRE[] = { 0x3D9 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_WATER[] = { 0x3DA | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_GRASS[] = { 0x3DB | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_ELECTRIC[] = { 0x3DC | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_ICE[] = { 0x3DD | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_FIGHTING[] = { 0x3DE | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_POISON[] = { 0x3DF | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_GROUND[] = { 0x3E0 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_FLYING[] = { 0x3E1 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_PSYCHIC[] = { 0x3E2 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_BUG[] = { 0x3E3 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_ROCK[] = { 0x3E4 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_GHOST[] = { 0x3E5 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_DRAGON[] = { 0x3E6 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_DARK[] = { 0x3E7 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_STEEL[] = { 0x3E8 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_FAIRY[] = { 0x3E9 | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_CHAMPIONS[] = { 0x3EA | GYM_DECOR_SOLID };
+static const u16 sGymDecorBlocks_TROPHY_GRAND[] = { 0x3EB | GYM_DECOR_SOLID };
 
 const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
 {
@@ -1740,6 +1760,246 @@ const struct GymDecor gGymDecor[GYM_DECOR_COUNT] =
         .blocks = sGymDecorBlocks_RECRUIT_FAIRY,
         .editBlocks = sGymDecorEditBlocks_RECRUIT_FAIRY,
     },
+    [GYM_DECOR_TROPHY_NORMAL] =
+    {
+        .name = COMPOUND_STRING("NORMAL TROPHY"),
+        .description = COMPOUND_STRING("Won in the NORMAL HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_NORMAL,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_NORMAL,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_FIRE] =
+    {
+        .name = COMPOUND_STRING("FIRE TROPHY"),
+        .description = COMPOUND_STRING("Won in the FIRE HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_FIRE,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_FIRE,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_WATER] =
+    {
+        .name = COMPOUND_STRING("WATER TROPHY"),
+        .description = COMPOUND_STRING("Won in the WATER HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_WATER,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_WATER,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_GRASS] =
+    {
+        .name = COMPOUND_STRING("GRASS TROPHY"),
+        .description = COMPOUND_STRING("Won in the GRASS HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_GRASS,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_GRASS,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_ELECTRIC] =
+    {
+        .name = COMPOUND_STRING("ELECTRIC TROPHY"),
+        .description = COMPOUND_STRING("Won in the ELECTRIC HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_ELECTRIC,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_ELECTRIC,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_ICE] =
+    {
+        .name = COMPOUND_STRING("ICE TROPHY"),
+        .description = COMPOUND_STRING("Won in the ICE HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_ICE,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_ICE,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_FIGHTING] =
+    {
+        .name = COMPOUND_STRING("FIGHTING TROPHY"),
+        .description = COMPOUND_STRING("Won in the FIGHTING HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_FIGHTING,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_FIGHTING,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_POISON] =
+    {
+        .name = COMPOUND_STRING("POISON TROPHY"),
+        .description = COMPOUND_STRING("Won in the POISON HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_POISON,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_POISON,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_GROUND] =
+    {
+        .name = COMPOUND_STRING("GROUND TROPHY"),
+        .description = COMPOUND_STRING("Won in the GROUND HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_GROUND,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_GROUND,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_FLYING] =
+    {
+        .name = COMPOUND_STRING("FLYING TROPHY"),
+        .description = COMPOUND_STRING("Won in the FLYING HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_FLYING,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_FLYING,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_PSYCHIC] =
+    {
+        .name = COMPOUND_STRING("PSYCHIC TROPHY"),
+        .description = COMPOUND_STRING("Won in the PSYCHIC HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_PSYCHIC,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_PSYCHIC,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_BUG] =
+    {
+        .name = COMPOUND_STRING("BUG TROPHY"),
+        .description = COMPOUND_STRING("Won in the BUG HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_BUG,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_BUG,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_ROCK] =
+    {
+        .name = COMPOUND_STRING("ROCK TROPHY"),
+        .description = COMPOUND_STRING("Won in the ROCK HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_ROCK,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_ROCK,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_GHOST] =
+    {
+        .name = COMPOUND_STRING("GHOST TROPHY"),
+        .description = COMPOUND_STRING("Won in the GHOST HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_GHOST,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_GHOST,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_DRAGON] =
+    {
+        .name = COMPOUND_STRING("DRAGON TROPHY"),
+        .description = COMPOUND_STRING("Won in the DRAGON HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_DRAGON,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_DRAGON,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_DARK] =
+    {
+        .name = COMPOUND_STRING("DARK TROPHY"),
+        .description = COMPOUND_STRING("Won in the DARK HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_DARK,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_DARK,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_STEEL] =
+    {
+        .name = COMPOUND_STRING("STEEL TROPHY"),
+        .description = COMPOUND_STRING("Won in the STEEL HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_STEEL,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_STEEL,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_FAIRY] =
+    {
+        .name = COMPOUND_STRING("FAIRY TROPHY"),
+        .description = COMPOUND_STRING("Won in the FAIRY HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_FAIRY,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_FAIRY,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_CHAMPIONS] =
+    {
+        .name = COMPOUND_STRING("CHAMPIONS TROPHY"),
+        .description = COMPOUND_STRING("Won in the CHAMPIONS' HALL."),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_CHAMPIONS,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_CHAMPIONS,
+        .editBlocks = NULL,
+    },
+    [GYM_DECOR_TROPHY_GRAND] =
+    {
+        .name = COMPOUND_STRING("GRAND TROPHY"),
+        .description = COMPOUND_STRING("Every hall of the CONVENTION won!"),
+        .price = 0,
+        .unlockFlag = FLAG_CONVENTION_TROPHY_GRAND,
+        .category = GYM_DECOR_CAT_TROPHIES,
+        .width = 1,
+        .height = 1,
+        .blocks = sGymDecorBlocks_TROPHY_GRAND,
+        .editBlocks = NULL,
+    },
 };
 
 // Tiles of the decorations drawn in code (tools/gym_hack/decor_art.py). They're copied to
@@ -2556,6 +2816,14 @@ static const u32 sGymDecorArtTiles[] =
     0x00000000, 0x01111111, 0x01BCCCCC, 0x01BACCCC, 0x01BCCC22, 0x01BCCC22, 0x01BCCC22, 0x01BCCC22,
     0xCCCCCC10, 0x222CCC10, 0x222CCC10, 0x222CCC10, 0x222CCC10, 0x222BBB10, 0x11111110, 0x00000000,
     0x01BCCCCC, 0x01BCC222, 0x01BCC222, 0x01BCC222, 0x01BCC222, 0x01BBB222, 0x01111111, 0x00000000,
+    0x11111100, 0xCCC2C110, 0xCCC2C110, 0xCCC2C110, 0xCCCB1010, 0xBBBB1000, 0xBB100000, 0xBB100000,
+    0xFF100000, 0x11111100, 0xFFF2F100, 0x333FF100, 0x333FF100, 0xFFFFF100, 0x44444411, 0x11111110,
+    0x66100000, 0x11111100, 0x66626100, 0x33366100, 0x33366100, 0x66666100, 0x44444411, 0x11111110,
+    0xCC100000, 0x11111100, 0xCCC2C100, 0x333CC100, 0x333CC100, 0xCCCCC100, 0x44444411, 0x11111110,
+    0xAA100000, 0x11111100, 0xAAA2A100, 0x333AA100, 0x333AA100, 0xAAAAA100, 0x44444411, 0x11111110,
+    0x88100000, 0x11111100, 0x88828100, 0x33388100, 0x33388100, 0x88888100, 0x44444411, 0x11111110,
+    0xDD100000, 0x11111100, 0xDDD2D100, 0x333DD100, 0x333DD100, 0xDDDDD100, 0x44444411, 0x11111110,
+    0x55100000, 0x11111100, 0x55525100, 0x33355100, 0x33355100, 0x55555100, 0x44444411, 0x11111110,
 };
 static const u16 sGymDecorArtRuns[][2] =
 {
@@ -2590,5 +2858,5 @@ static const u16 sGymDecorArtRuns[][2] =
     {681, 13},
     {696, 16},
     {714, 14},
-    {823, 193},
+    {823, 201},
 };

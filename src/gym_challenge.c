@@ -904,6 +904,20 @@ void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier, bool32 r
     gGymGuestBattle = repeat ? 1 : 2;   // the challenger pays the stand-in a Gym Leader's prize (doubled the first time)
 }
 
+// A trainer with a set team (the Gym Leader Convention's, src/gym_convention.c)
+void GymChallenge_SetupFixed(u32 trainerClass, u32 pic, bool32 female, const u8 *name,
+                             const struct TrainerMon *party, u32 partySize)
+{
+    u32 i;
+    gGymPracticeBattle = FALSE;
+    gGymGuestBattle = FALSE;
+    SetupTrainer(trainerClass, pic, female, name, min(partySize, (u32)PARTY_SIZE));
+    sChallenger.encounterMusic = TRAINER_ENCOUNTER_MUSIC_MALE;
+    for (i = 0; i < sChallenger.partySize; i++)
+        sChallengerMons[i] = party[i];
+    sKind = GYM_CHALLENGER_FAMOUS;
+}
+
 // Special: after a practice battle
 void GymChallenge_EndPractice(void)
 {

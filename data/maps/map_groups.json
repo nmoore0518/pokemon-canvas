@@ -1257,6 +1257,25 @@
     "TinTower_8F_Johto",
     "TinTower_9F_Johto",
     "TinTower_RoofDay_Johto",
-    "TinTower_RoofNight_Johto"
+    "TinTower_RoofNight_Johto",
+    "ConventionHall_Normal",
+    "ConventionHall_Fire",
+    "ConventionHall_Water",
+    "ConventionHall_Grass",
+    "ConventionHall_Electric",
+    "ConventionHall_Ice",
+    "ConventionHall_Fighting",
+    "ConventionHall_Poison",
+    "ConventionHall_Ground",
+    "ConventionHall_Flying",
+    "ConventionHall_Psychic",
+    "ConventionHall_Bug",
+    "ConventionHall_Rock",
+    "ConventionHall_Ghost",
+    "ConventionHall_Dragon",
+    "ConventionHall_Dark",
+    "ConventionHall_Steel",
+    "ConventionHall_Fairy",
+    "ConventionHall_Champions"
   ]
 }

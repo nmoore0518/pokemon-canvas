@@ -229,6 +229,19 @@ for _type, _name, _cls in (("NORMAL", "ANDREA", "LASS"), ("FIGHTING", "HITOSHI",
                             desc=f"{_cls}. Joined your GYM. Trains {_type} types.", art="trainer_recruit",
                             trainer=True, category="GYM_DECOR_CAT_TRAINERS"))
 
+# --- Gym Leader Convention trophies (src/gym_convention.c): one for clearing each hall, one for
+# clearing them all. Not sold: each goes to the gym's storage when it's won.
+for _hall in ("NORMAL", "FIRE", "WATER", "GRASS", "ELECTRIC", "ICE", "FIGHTING", "POISON", "GROUND", "FLYING",
+              "PSYCHIC", "BUG", "ROCK", "GHOST", "DRAGON", "DARK", "STEEL", "FAIRY", "CHAMPIONS"):
+    DECORATIONS.append(dict(key=f"TROPHY_{_hall}", name=f"{_hall} TROPHY", price=0,
+                            unlock=f"FLAG_CONVENTION_TROPHY_{_hall}",
+                            desc=("Won in the CHAMPIONS' HALL." if _hall == "CHAMPIONS"
+                                  else f"Won in the {_hall} HALL."),
+                            art=f"convention_trophy_{_hall.lower()}", category="GYM_DECOR_CAT_TROPHIES"))
+DECORATIONS.append(dict(key="TROPHY_GRAND", name="GRAND TROPHY", price=0, unlock="FLAG_CONVENTION_TROPHY_GRAND",
+                        desc="Every hall of the CONVENTION won!", art="convention_trophy_grand",
+                        category="GYM_DECOR_CAT_TROPHIES"))
+
 # Fixed pieces of the gym itself (not for sale)
 FIXED = {
     "PC_TOP": "f:63",
@@ -540,6 +553,7 @@ class DynArt:
         self.ts, self.free_tiles, self.free_mts = ts, list(free_tiles), list(free_mts)
         self.tiles = []          # (vram tile, 64 color indices), in the order they were given out
         self.index = {}
+        self.blocks = {}
 
     def tile_entry(self, slot, px):
         if not any(px):
@@ -562,6 +576,9 @@ class DynArt:
         return t | (slot << 12)
 
     def block(self, entries, attr):
+        key = (tuple(entries), attr)          # (identical blocks are shared: the trophies' cups)
+        if key in self.blocks:
+            return self.blocks[key]
         if not self.free_mts:
             raise SystemExit("out of free gym tileset blocks for code-drawn decorations")
         m = self.free_mts.pop(0)
@@ -570,6 +587,7 @@ class DynArt:
             self.ts.attr.append(0)
         self.ts.mt[m - 0x280] = list(entries)
         self.ts.attr[m - 0x280] = attr
+        self.blocks[key] = m
         return m
 
     def decoration(self, d):

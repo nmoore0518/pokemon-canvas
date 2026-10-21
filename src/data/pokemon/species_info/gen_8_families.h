@@ -2797,7 +2797,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
     },
 #endif //P_GIGANTAMAX_FORMS
 
-#if P_GEN_9_CROSS_EVOS
+#if P_GEN_9_CROSS_EVO_SPECIES
     [SPECIES_DIPPLIN] =
     {
         .baseHP        = 80,
@@ -2923,7 +2923,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .levelUpLearnset = sHydrappleLevelUpLearnset,
         .teachableLearnset = sHydrappleTeachableLearnset,
     },
-#endif //P_GEN_9_CROSS_EVOS
+#endif //P_GEN_9_CROSS_EVO_SPECIES
 #endif //P_FAMILY_APPLIN
 
 #if P_FAMILY_SILICOBRA
@@ -6650,7 +6650,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
     },
 #endif //P_GIGANTAMAX_FORMS
 
-#if P_GEN_9_CROSS_EVOS
+#if P_GEN_9_CROSS_EVO_SPECIES
     [SPECIES_ARCHALUDON] =
     {
         .baseHP        = 90,
@@ -6713,7 +6713,7 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
         .levelUpLearnset = sArchaludonLevelUpLearnset,
         .teachableLearnset = sArchaludonTeachableLearnset,
     },
-#endif //P_GEN_9_CROSS_EVOS
+#endif //P_GEN_9_CROSS_EVO_SPECIES
 #endif //P_FAMILY_DURALUDON
 
 #if P_FAMILY_DREEPY

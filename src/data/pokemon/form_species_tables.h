@@ -88,13 +88,13 @@ static const u16 sRaticateFormSpeciesIdTable[] = {
 #endif //P_FAMILY_RATTATA
 
 #if P_FAMILY_PIKACHU
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sPichuFormSpeciesIdTable[] = {
     SPECIES_PICHU,
     SPECIES_PICHU_SPIKY_EARED,
     FORM_SPECIES_END,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
 static const u16 sPikachuFormSpeciesIdTable[] = {
     SPECIES_PIKACHU,
@@ -336,7 +336,7 @@ static const u16 sSlowbroFormSpeciesIdTable[] = {
     FORM_SPECIES_END,
 };
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sSlowkingFormSpeciesIdTable[] = {
     SPECIES_SLOWKING,
 #if P_GALARIAN_FORMS
@@ -344,7 +344,7 @@ static const u16 sSlowkingFormSpeciesIdTable[] = {
 #endif
     FORM_SPECIES_END,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_SLOWPOKE
 
 #if P_FAMILY_FARFETCHD
@@ -389,7 +389,7 @@ static const u16 sGengarFormSpeciesIdTable[] = {
 #endif //P_FAMILY_GASTLY
 
 #if P_FAMILY_ONIX
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sSteelixFormSpeciesIdTable[] = {
     SPECIES_STEELIX,
 #if P_MEGA_EVOLUTIONS
@@ -397,7 +397,7 @@ static const u16 sSteelixFormSpeciesIdTable[] = {
 #endif
     FORM_SPECIES_END,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ONIX
 
 #if P_FAMILY_KRABBY
@@ -490,7 +490,7 @@ static const u16 sMrMimeFormSpeciesIdTable[] = {
 #endif //P_FAMILY_MR_MIME
 
 #if P_FAMILY_SCYTHER
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
 static const u16 sScizorFormSpeciesIdTable[] = {
     SPECIES_SCIZOR,
 #if P_MEGA_EVOLUTIONS
@@ -498,7 +498,7 @@ static const u16 sScizorFormSpeciesIdTable[] = {
 #endif
     FORM_SPECIES_END,
 };
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_SCYTHER
 
 #if P_FAMILY_PINSIR
@@ -852,7 +852,7 @@ static const u16 sGardevoirFormSpeciesIdTable[] = {
     FORM_SPECIES_END,
 };
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
 static const u16 sGalladeFormSpeciesIdTable[] = {
     SPECIES_GALLADE,
 #if P_MEGA_EVOLUTIONS
@@ -860,7 +860,7 @@ static const u16 sGalladeFormSpeciesIdTable[] = {
 #endif
     FORM_SPECIES_END,
 };
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_RALTS
 
 #if P_FAMILY_SABLEYE

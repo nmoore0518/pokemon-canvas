@@ -2791,7 +2791,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 #endif //P_FAMILY_EKANS
 
 #if P_FAMILY_PIKACHU
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_PICHU] =
     {
         .baseHP        = 20,
@@ -2929,7 +2929,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sPichuEggMoveLearnset,
         .formSpeciesIdTable = sPichuFormSpeciesIdTable,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
 #define PIKACHU_DEFENSE (P_UPDATED_STATS >= GEN_6 ? 40 : 30)
 #define PIKACHU_SP_DEF (P_UPDATED_STATS >= GEN_6 || P_UPDATED_STATS == GEN_1 ? 50 : 40)
@@ -5100,7 +5100,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #define CLEFAIRY_FAMILY_TYPES { TYPE_NORMAL, TYPE_NORMAL }
 #endif
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_CLEFFA] =
     {
         .baseHP        = 50,
@@ -5176,7 +5176,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sCleffaEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_CLEFAIRY, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD})}),
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
     [SPECIES_CLEFAIRY] =
     {
@@ -5695,7 +5695,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #define JIGGLYPUFF_FAMILY_TYPES { TYPE_NORMAL, TYPE_NORMAL}
 #endif
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_IGGLYBUFF] =
     {
         .baseHP        = 90,
@@ -5771,7 +5771,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sIgglybuffEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_JIGGLYPUFF, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD})}),
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
     [SPECIES_JIGGLYPUFF] =
     {
@@ -6135,7 +6135,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_CROBAT] =
     {
         .baseHP        = 85,
@@ -6223,7 +6223,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sCrobatLevelUpLearnset,
         .teachableLearnset = sCrobatTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ZUBAT
 
 #if P_FAMILY_ODDISH
@@ -6477,7 +6477,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sVileplumeTeachableLearnset,
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_BELLOSSOM] =
     {
         .baseHP        = 75,
@@ -6566,7 +6566,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sBellossomLevelUpLearnset,
         .teachableLearnset = sBellossomTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ODDISH
 
 #if P_FAMILY_PARAS
@@ -8016,7 +8016,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_9_CROSS_EVOS
+#if P_GEN_9_CROSS_EVO_SPECIES
     [SPECIES_ANNIHILAPE] =
     {
         .baseHP        = 110,
@@ -8080,7 +8080,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sAnnihilapeLevelUpLearnset,
         .teachableLearnset = sAnnihilapeTeachableLearnset,
     },
-#endif //P_GEN_9_CROSS_EVOS
+#endif //P_GEN_9_CROSS_EVO_SPECIES
 #endif //P_FAMILY_MANKEY
 
 #if P_FAMILY_GROWLITHE
@@ -8586,7 +8586,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sPoliwrathTeachableLearnset,
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_POLITOED] =
     {
         .baseHP        = 90,
@@ -8678,7 +8678,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sPolitoedLevelUpLearnset,
         .teachableLearnset = sPolitoedTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_POLIWAG
 
 #if P_FAMILY_ABRA
@@ -10649,7 +10649,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .formChangeTable = sSlowbroFormChangeTable,
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_SLOWKING] =
     {
         .baseHP        = 95,
@@ -10718,7 +10718,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sSlowkingTeachableLearnset,
         .formSpeciesIdTable = sSlowkingFormSpeciesIdTable,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
 #if P_MEGA_EVOLUTIONS
     [SPECIES_SLOWBRO_MEGA] =
@@ -10934,7 +10934,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .formSpeciesIdTable = sSlowbroFormSpeciesIdTable,
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_SLOWKING_GALAR] =
     {
         .baseHP        = 95,
@@ -10999,7 +10999,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sSlowkingGalarTeachableLearnset,
         .formSpeciesIdTable = sSlowkingFormSpeciesIdTable,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_GALARIAN_FORMS
 #endif //P_FAMILY_SLOWPOKE
 
@@ -11155,7 +11155,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_MAGNEZONE] =
     {
         .baseHP        = 70,
@@ -11232,7 +11232,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sMagnezoneLevelUpLearnset,
         .teachableLearnset = sMagnezoneTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_MAGNEMITE
 
 #if P_FAMILY_FARFETCHD
@@ -12678,7 +12678,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_STEELIX] =
     {
         .baseHP        = 75,
@@ -12839,7 +12839,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .formChangeTable = sSteelixFormChangeTable,
     },
 #endif //P_MEGA_EVOLUTIONS
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ONIX
 
 #if P_FAMILY_DROWZEE
@@ -14017,7 +14017,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 #endif //P_FAMILY_CUBONE
 
 #if P_FAMILY_HITMONS
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_TYROGUE] =
     {
         .baseHP        = 35,
@@ -14091,7 +14091,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
                                 {EVO_LEVEL, 20, SPECIES_HITMONLEE, CONDITIONS({IF_ATK_GT_DEF})},
                                 {EVO_LEVEL, 20, SPECIES_HITMONTOP, CONDITIONS({IF_ATK_EQ_DEF})}),
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
     [SPECIES_HITMONLEE] =
     {
@@ -14243,7 +14243,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sHitmonchanTeachableLearnset,
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_HITMONTOP] =
     {
         .baseHP        = 50,
@@ -14316,7 +14316,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sHitmontopLevelUpLearnset,
         .teachableLearnset = sHitmontopTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_HITMONS
 
 #if P_FAMILY_LICKITUNG
@@ -14391,7 +14391,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_LICKILICKY] =
     {
         .baseHP        = 110,
@@ -14465,7 +14465,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sLickilickyLevelUpLearnset,
         .teachableLearnset = sLickilickyTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_LICKITUNG
 
 #if P_FAMILY_KOFFING
@@ -14866,7 +14866,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_RHYPERIOR] =
     {
         .baseHP        = 115,
@@ -14954,11 +14954,11 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sRhyperiorLevelUpLearnset,
         .teachableLearnset = sRhyperiorTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_RHYHORN
 
 #if P_FAMILY_CHANSEY
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_HAPPINY] =
     {
         .baseHP        = 100,
@@ -15029,7 +15029,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_CHANSEY, CONDITIONS({IF_NOT_TIME, TIME_NIGHT},{IF_HOLD_ITEM, ITEM_OVAL_STONE})},
                                 {EVO_ITEM, ITEM_OVAL_STONE, SPECIES_CHANSEY, CONDITIONS({IF_NOT_TIME, TIME_NIGHT})}),
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 
     [SPECIES_CHANSEY] =
     {
@@ -15103,7 +15103,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_BLISSEY] =
     {
         .baseHP        = 255,
@@ -15177,7 +15177,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sBlisseyLevelUpLearnset,
         .teachableLearnset = sBlisseyTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_CHANSEY
 
 #if P_FAMILY_TANGELA
@@ -15256,7 +15256,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_TANGROWTH] =
     {
         .baseHP        = 100,
@@ -15338,7 +15338,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sTangrowthLevelUpLearnset,
         .teachableLearnset = sTangrowthTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_TANGELA
 
 #if P_FAMILY_KANGASKHAN
@@ -15648,7 +15648,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_KINGDRA] =
     {
         .baseHP        = 75,
@@ -15730,7 +15730,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sKingdraLevelUpLearnset,
         .teachableLearnset = sKingdraTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_HORSEA
 
 #if P_FAMILY_GOLDEEN
@@ -16117,7 +16117,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 #endif //P_FAMILY_STARYU
 
 #if P_FAMILY_MR_MIME
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_MIME_JR] =
     {
         .baseHP        = 20,
@@ -16201,7 +16201,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
                             #endif
                             ),
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 
     [SPECIES_MR_MIME] =
     {
@@ -16516,7 +16516,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_SCIZOR] =
     {
         .baseHP        = 70,
@@ -16674,9 +16674,9 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .formChangeTable = sScizorFormChangeTable,
     },
 #endif //P_MEGA_EVOLUTIONS
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
-#if P_GEN_8_CROSS_EVOS
+#if P_GEN_8_CROSS_EVO_SPECIES
     [SPECIES_KLEAVOR] =
     {
         .baseHP        = 70,
@@ -16739,11 +16739,11 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sKleavorLevelUpLearnset,
         .teachableLearnset = sKleavorTeachableLearnset,
     },
-#endif //P_GEN_8_CROSS_EVOS
+#endif //P_GEN_8_CROSS_EVO_SPECIES
 #endif //P_FAMILY_SCYTHER
 
 #if P_FAMILY_JYNX
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_SMOOCHUM] =
     {
         .baseHP        = 45,
@@ -16816,7 +16816,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sSmoochumEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 30, SPECIES_JYNX}),
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
     [SPECIES_JYNX] =
     {
@@ -16893,7 +16893,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 #endif //P_FAMILY_JYNX
 
 #if P_FAMILY_ELECTABUZZ
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_ELEKID] =
     {
         .baseHP        = 45,
@@ -16964,7 +16964,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sElekidEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 30, SPECIES_ELECTABUZZ}),
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
     [SPECIES_ELECTABUZZ] =
     {
@@ -17041,7 +17041,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_ELECTIVIRE] =
     {
         .baseHP        = 75,
@@ -17115,11 +17115,11 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sElectivireLevelUpLearnset,
         .teachableLearnset = sElectivireTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_ELECTABUZZ
 
 #if P_FAMILY_MAGMAR
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_MAGBY] =
     {
         .baseHP        = 45,
@@ -17191,7 +17191,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sMagbyEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 30, SPECIES_MAGMAR}),
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
     [SPECIES_MAGMAR] =
     {
@@ -17264,7 +17264,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_MAGMORTAR] =
     {
         .baseHP        = 75,
@@ -17338,7 +17338,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sMagmortarLevelUpLearnset,
         .teachableLearnset = sMagmortarTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 #endif //P_FAMILY_MAGMAR
 
 #if P_FAMILY_PINSIR
@@ -18330,7 +18330,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
                             #if P_GEN_6_CROSS_EVOS
                                 ,{EVO_LEVEL, 0, SPECIES_SYLVEON, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD}, {IF_KNOWS_MOVE_TYPE, TYPE_FAIRY})}
                             #endif
-                            #if P_GEN_2_CROSS_EVOS
+                            #if P_GEN_2_CROSS_EVO_SPECIES
                                 // Gym Trainer hack: FireRed has no clock, so these use items instead of time of day
                                 ,{EVO_ITEM, ITEM_SUN_SHARD, SPECIES_ESPEON},
                                 {EVO_ITEM, ITEM_MOON_SHARD, SPECIES_UMBREON}
@@ -18678,7 +18678,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sFlareonTeachableLearnset,
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_ESPEON] =
     {
         .baseHP        = 65,
@@ -18811,9 +18811,9 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sUmbreonLevelUpLearnset,
         .teachableLearnset = sUmbreonTeachableLearnset,
     },
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_LEAFEON] =
     {
         .baseHP        = 65,
@@ -18947,9 +18947,9 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sGlaceonLevelUpLearnset,
         .teachableLearnset = sGlaceonTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 
-#if P_GEN_6_CROSS_EVOS
+#if P_GEN_6_CROSS_EVO_SPECIES
     [SPECIES_SYLVEON] =
     {
         .baseHP        = 95,
@@ -19017,7 +19017,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sSylveonLevelUpLearnset,
         .teachableLearnset = sSylveonTeachableLearnset,
     },
-#endif //P_GEN_6_CROSS_EVOS
+#endif //P_GEN_6_CROSS_EVO_SPECIES
 #endif //P_FAMILY_EEVEE
 
 #if P_FAMILY_PORYGON
@@ -19097,7 +19097,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_2_CROSS_EVOS
+#if P_GEN_2_CROSS_EVO_SPECIES
     [SPECIES_PORYGON2] =
     {
         .baseHP        = 85,
@@ -19176,7 +19176,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
     #endif
     },
 
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_PORYGON_Z] =
     {
         .baseHP        = 85,
@@ -19251,8 +19251,8 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .levelUpLearnset = sPorygonZLevelUpLearnset,
         .teachableLearnset = sPorygonZTeachableLearnset,
     },
-#endif //P_GEN_4_CROSS_EVOS
-#endif //P_GEN_2_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
+#endif //P_GEN_2_CROSS_EVO_SPECIES
 #endif //P_FAMILY_PORYGON
 
 #if P_FAMILY_OMANYTE
@@ -19714,7 +19714,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 #endif //P_FAMILY_AERODACTYL
 
 #if P_FAMILY_SNORLAX
-#if P_GEN_4_CROSS_EVOS
+#if P_GEN_4_CROSS_EVO_SPECIES
     [SPECIES_MUNCHLAX] =
     {
         .baseHP        = 135,
@@ -19785,7 +19785,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sMunchlaxEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 0, SPECIES_SNORLAX, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD})}),
     },
-#endif //P_GEN_4_CROSS_EVOS
+#endif //P_GEN_4_CROSS_EVO_SPECIES
 
     [SPECIES_SNORLAX] =
     {

@@ -1449,6 +1449,8 @@ static void TilesetAnim_EcruteakTheater(u16);
 static void QueueAnimTiles_EcruteakTheater_Flower(u16);
 static void TilesetAnim_AzaleaTownGym(u16);
 static void QueueAnimTiles_AzaleaTownGym_Flower(u16);
+static void TilesetAnim_BlackthornGym(u16);
+static void QueueAnimTiles_BlackthornGym_Lava(u16);
 
 // Johto General primary tileset frame data
 
@@ -1710,5 +1712,26 @@ static void TilesetAnim_AzaleaTownGym(u16 timer)
 static void QueueAnimTiles_AzaleaTownGym_Flower(u16 timer)
 {
     AppendTilesetAnimToBuffer(sAzaleaTownGym_Flower[timer % ARRAY_COUNT(sAzaleaTownGym_Flower)], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY_FRLG + 99)), 0x80);
+}
+
+// Blackthorn Gym -- lava and steam reusing existing Lavaridge/Cave frame data
+
+void InitTilesetAnim_BlackthornGym(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = 160;
+    sSecondaryTilesetAnimCallback = TilesetAnim_BlackthornGym;
+}
+
+static void TilesetAnim_BlackthornGym(u16 timer)
+{
+    if (timer % 16 == 1)
+        QueueAnimTiles_BlackthornGym_Lava(timer / 16);
+}
+
+static void QueueAnimTiles_BlackthornGym_Lava(u16 timer)
+{
+    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Cave_Lava);
+    AppendTilesetAnimToBuffer(gTilesetAnims_Lavaridge_Cave_Lava[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY_FRLG + 321)), 4 * TILE_SIZE_4BPP);
 }
 // END Johto

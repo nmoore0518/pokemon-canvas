@@ -5,7 +5,8 @@
 
 #include "constants/gym_hack.h"
 
-#define GYM_CHALLENGE_MAX_VICTORS 20     // challengers who beat the player, shown on the gym statue
+#define GYM_CHALLENGE_MAX_VICTORS 19     // challengers who beat the player, shown on the gym statue
+                                         // (20 before the convention: its records took the last one's place)
 
 
 struct GymChallengeVictor
@@ -24,9 +25,13 @@ struct GymChallengeSave
     u16 losses;
     u16 numVictors;             // everyone who ever beat the player (the list keeps the latest 20)
     struct GymChallengeVictor victors[GYM_CHALLENGE_MAX_VICTORS];
+    u16 conventionMagic;        // the Gym Leader Convention: who the player has beaten (src/gym_convention.c)
+    u8 conventionBeaten[16];
 };
 
 extern u8 gGymChallengeDefeatText[];
+extern u8 gGymChallengeIntroText[];
+extern u8 gGymChallengeAfterText[];
 extern bool8 gGymPracticeBattle;
 extern u8 gGymGuestBattle;     // 0, or how many Gym Leader prizes a Guest Leader challenger pays
 
@@ -61,5 +66,8 @@ void GymChallenge_GeneratePracticeTier(u32 tier, u32 instance);
 void GymChallenge_GenerateRecruit(u32 type);
 void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier, bool32 repeat);
 void GymChallenge_EndPractice(void);
+struct TrainerMon;
+void GymChallenge_SetupFixed(u32 trainerClass, u32 pic, bool32 female, const u8 *name,
+                             const struct TrainerMon *party, u32 partySize);
 
 #endif // GUARD_GYM_CHALLENGE_H

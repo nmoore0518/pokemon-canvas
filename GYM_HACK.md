@@ -501,7 +501,37 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     dock (the Seagallop scene, `SEAGALLOP_OLIVINE_CITY`); the sailor on Olivine's dock sails back.
   - **No Sevii Islands**: Bill no longer waits on Cinnabar after the Volcano Badge (saves that had
     the trip waiting drop it); **Moltres** is on Victory Road 2F (as in Red and Blue), Lv 50.
-  Next: the Gym Leader Convention in the Radio Tower.
+- **The Gym Leader Convention** fills Goldenrod's Radio Tower: every Gym Leader (Kahunas and Trial
+  Captains too), Elite Four member and Champion from generations 1-9, 127 trainers in 18 type halls
+  and the Champions' Hall (`tools/gym_hack/convention_roster.py`).
+  - **The receptionist** in the lobby (1F) lists the halls with how many there the player has
+    beaten (a star once cleared) and sends the player there; a hall's door leads back to the lobby.
+    Halls can be visited in any order.
+  - **The halls** are HnS gyms (`tools/gym_hack/convention_halls.py`, run by `import_johto.py`):
+    NORMAL Goldenrod Gym, FIRE Seafoam Gym, WATER Cerulean, GRASS Celadon, ELECTRIC Vermilion (its
+    beam barrier left off), ICE Mahogany (the ice slide), FIGHTING the Saffron Dojo, POISON
+    Fuchsia, GROUND Viridian, FLYING Violet, PSYCHIC Saffron (teleporters), BUG the National Park,
+    ROCK Pewter, GHOST Ecruteak (the invisible floor), DRAGON Blackthorn (its lava bridges built),
+    DARK Karen's room, STEEL Olivine, FAIRY the Ecruteak Dance Theater, CHAMPIONS the Champion's
+    room. Each hall's first trainer stands where the gym's leader stood, the others where its
+    trainers stood (on the ice they're what stops the slide), then on free spots picked so nobody
+    blocks a path and everyone can be talked to. `MAP_CONVENTION_HALL_*`, in `gMapGroup_Johto`.
+  - **Battles**: talk to anyone. Teams are full, fully evolved and itemized
+    (`tools/gym_hack/convention_teams.py`, built into `src/data/gym_convention.h` by
+    `build_convention.py`): Gym Leaders Lv 75 (ace 76), Elite Four 78 (79), Champions 85-88, IVs 31,
+    natures by their moves. Battles use the challenger slot (`TRAINER_GYM_CHALLENGER`,
+    `GymChallenge_SetupFixed`), no whiteout, and the party is healed after every battle, won or
+    lost. Beaten trainers offer rematches. Blue uses the rival's name.
+  - **Trophies**: clearing a hall wins its trophy, clearing all 19 the Grand Trophy
+    (`FLAG_CONVENTION_TROPHY_*` 0x0CA-0x0DD), sent to the gym's storage as decorations (category
+    TROPHIES). They're small, one picture in many colors: the gym's video memory is full.
+  - **Save**: whom the player has beaten is a bit per trainer after the challenge records
+    (`GymChallengeSave.conventionBeaten`, with its own magic; the victors list went from 20 to 19
+    to make room).
+  - **Species**: the convention uses later Pokémon that evolve from Gen 1-3 ones (Rhyperior,
+    Magnezone, Sylveon, Kingambit...). They exist (`P_GEN_x_CROSS_EVO_SPECIES`), but the 386 still
+    don't evolve into them (`P_GEN_x_CROSS_EVOS` FALSE gates only the evolution links).
+    `tools/gym_hack/check_convention.py` checks every team's species is in the built ROM.
 
 ## Code map
 
@@ -535,6 +565,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/` | Helper scripts: map preview renderer, rival team generator, shelf art |
 | `tools/gym_hack/import_johto.py`, `src/johto.c`, `data/scripts/johto.inc` | Johto: imported maps, guards, the greeter |
 | `tools/gym_hack/build_johto_map.py`, `src/region_map.c` | The Johto map (dimmed outside the convention area), FLY between regions |
+| `src/gym_convention.c`, `data/scripts/gym_convention.inc` | The Gym Leader Convention: receptionist, hall battles, wins, trophies |
+| `tools/gym_hack/convention_roster.py`, `convention_teams.py`, `build_convention.py` | Its trainers: who's in which hall, teams and lines -> `src/data/gym_convention.h` |
+| `tools/gym_hack/import_convention_sprites.py`, `convention_halls.py`, `check_convention.py` | Their sprites (Emerald Rogue), the halls (HnS gyms), the species check |
 | `.github/workflows/build-rom.yml` | Automatic ROM builds |
 
 ## Building locally
@@ -570,7 +603,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Johto maps imported (Olivine to Goldenrod, Ilex, Azalea, Route 40)
    - [x] Border guards, post-game wild levels, convention goodie bag, Johto map and FLY
    - [x] The invitation (mentor), Vermilion-Olivine ferry; Sevii trip removed; Moltres to Victory Road
-   - [ ] Convention Center (Radio Tower): 18 type halls + Champions' Hall, ~126 leaders (Emerald
+   - [x] Convention Center (Radio Tower): 18 type halls + Champions' Hall, 127 leaders (Emerald
          Rogue sprites), trophies
    - [ ] HGSS music, Johto NPCs
    - [ ] Title screen and credits (artists, HnS, AI disclosure)

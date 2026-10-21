@@ -157,7 +157,8 @@ static u32 CountUnlockedDecor(void)
     u32 i, n = 0;
     for (i = 1; i < GYM_DECOR_COUNT; i++)
     {
-        if (gGymDecor[i].category != GYM_DECOR_CAT_TRAINERS && GymDecor_IsUnlocked(i))
+        if (gGymDecor[i].category != GYM_DECOR_CAT_TRAINERS && gGymDecor[i].category != GYM_DECOR_CAT_TROPHIES
+         && GymDecor_IsUnlocked(i))
             n++;
     }
     return n;
@@ -184,7 +185,7 @@ void GymDecor_MarkUnlocksSeen(void)
 bool32 GymDecor_IsUnlocked(u32 id)
 {
     u32 category = gGymDecor[id].category;
-    if (category >= GYM_DECOR_CAT_TYPE(0) && !GymDecor_IsTypeUnlocked(category - GYM_DECOR_CAT_TYPE(0)))
+    if (category >= GYM_DECOR_CAT_TYPE(0) && category < GYM_DECOR_CAT_TROPHIES && !GymDecor_IsTypeUnlocked(category - GYM_DECOR_CAT_TYPE(0)))
         return FALSE;
     return gGymDecor[id].unlockFlag == 0 || FlagGet(gGymDecor[id].unlockFlag);
 }
@@ -446,6 +447,7 @@ static const u8 *const sCategoryNames[GYM_DECOR_CAT_COUNT] =
     [GYM_DECOR_CAT_TYPE(TYPE_DRAGON)] = COMPOUND_STRING("DRAGON"),
     [GYM_DECOR_CAT_TYPE(TYPE_DARK)] = COMPOUND_STRING("DARK"),
     [GYM_DECOR_CAT_TYPE(TYPE_FAIRY)] = COMPOUND_STRING("FAIRY"),
+    [GYM_DECOR_CAT_TROPHIES] = COMPOUND_STRING("TROPHIES"),
 };
 
 static bool32 InShop(u32 id)
@@ -532,6 +534,14 @@ void GymDecor_BufferDecorInfo(void)
         return;
     StringCopy(gStringVar1, gGymDecor[id].name);
     ConvertIntToDecimalStringN(gStringVar2, gGymDecor[id].price, STR_CONV_MODE_LEFT_ALIGN, 6);
+}
+
+// A decoration won (a convention trophy): one more in storage
+void GymDecor_Give(u32 id)
+{
+    struct GymDecorSave *save = GetSave();
+    if (id < GYM_DECOR_COUNT && save->owned[id] < 0xFF)
+        save->owned[id]++;
 }
 
 // VAR_0x8004 = decoration. VAR_RESULT: 0 bought, 1 not enough money, 2 storage full

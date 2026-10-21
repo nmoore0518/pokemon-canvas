@@ -11584,7 +11584,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
     #endif
     },
 
-#if P_GEN_9_CROSS_EVOS
+#if P_GEN_9_CROSS_EVO_SPECIES
     [SPECIES_KINGAMBIT] =
     {
         .baseHP        = 100,
@@ -11647,7 +11647,7 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
         .levelUpLearnset = sKingambitLevelUpLearnset,
         .teachableLearnset = sKingambitTeachableLearnset,
     },
-#endif //P_GEN_9_CROSS_EVOS
+#endif //P_GEN_9_CROSS_EVO_SPECIES
 #endif //P_FAMILY_PAWNIARD
 
 #if P_FAMILY_BOUFFALANT

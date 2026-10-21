@@ -1283,8 +1283,53 @@ def trainer_recruit():
     return c
 
 
+# ---- Gym Leader Convention trophies (one per hall, and one for all of them) ---------------
+# The gym's video memory is nearly full, so the trophies are small (one block) and all the same
+# picture: a gold cup on a pedestal whose colour is one palette index (TROPHY_COLORS: palette
+# slot, index). Pictures that differ only in their palette slot share tiles, and each half of a
+# trophy is the other half flipped, so all twenty need just eight tiles.
+TROPHY_COLORS = {
+    "FIRE": (8, 6), "WATER": (9, 6), "POISON": (10, 6),
+    "ELECTRIC": (8, 10), "FLYING": (9, 10), "FAIRY": (10, 10),
+    "GROUND": (8, 12), "GRASS": (9, 12), "CHAMPIONS": (10, 12),
+    "FIGHTING": (8, 8), "ICE": (9, 8), "PSYCHIC": (10, 8),
+    "ROCK": (8, 13), "BUG": (9, 13), "DARK": (10, 13),
+    "GRAND": (8, 5), "DRAGON": (9, 5), "GHOST": (10, 5),
+    "NORMAL": (8, 15), "STEEL": (9, 15),
+}
+
+
+def _trophy(hall):
+    def piece():
+        slot, idx = TROPHY_COLORS[hall]
+        col = PALETTES[slot][idx - 1][0]
+        c = C(1, 1)
+        for x0 in (0,):          # the left half; mirrored below
+            c.rect(2, 0, 7, 0, "K")                       # the cup's rim
+            c.rect(3, 1, 7, 4, "GO")
+            c.set(2, 1, "K"); c.rect(2, 2, 2, 3, "K")
+            c.rect(4, 1, 4, 3, "W")                       # shine
+            c.rect(3, 4, 4, 4, "DGO")
+            c.rect(4, 5, 7, 5, "DGO"); c.set(3, 5, "K"); c.set(3, 4, "K")
+            c.rect(1, 1, 1, 3, "K"); c.set(1, 4, "K")     # handle
+            c.rect(6, 6, 7, 7, "DGO"); c.set(5, 6, "K"); c.set(5, 7, "K")
+            c.rect(6, 8, 7, 8, col); c.set(5, 8, "K")     # neck
+            c.rect(3, 9, 7, 14, col)                      # pedestal
+            c.rect(3, 9, 7, 9, "K"); c.rect(2, 9, 2, 14, "K")
+            c.rect(5, 11, 7, 12, "L")                     # name plate
+            c.set(4, 10, "W")
+            c.rect(1, 14, 7, 15, "G"); c.rect(1, 15, 7, 15, "K"); c.set(0, 14, "K"); c.set(1, 14, "K")
+        c.mirror()
+        return c
+    return piece
+
+
+for _h in TROPHY_COLORS:
+    globals()[f"convention_trophy_{_h.lower()}"] = _trophy(_h)
+
+
 PIECES = {name: fn for name, fn in globals().items() if callable(fn) and not name.startswith("_")
-          and name not in ("C", "Canvas")}
+          and name not in ("C", "Canvas") and name != "piece"}
 
 
 # ---------------------------------------------------------------------------
