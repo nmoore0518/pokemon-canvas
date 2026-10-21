@@ -24,8 +24,9 @@ ROOT = Path(__file__).resolve().parents[2]
 D = ROOT / "graphics/title_screen_frlg/firered"
 ORIG = Path(__file__).parent / "title_orig"            # (FireRed's logo, kept to rebuild from)
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf"
-WORD, SIZE, GAP, SLANT = "CANVAS", 23, 2, 0.18
-PLACE = (2, 62)                                        # where the art goes (pixels)
+WORD, SIZE, GAP, SLANT = "CANVAS", 25, 3, 0.18
+LOGO_CENTER_X, ART_TOP = 86, 62                        # (CANVAS is centered under POKéMON)
+SMEARGLE_SCALE = 1.5
 PAINT = [(224, 40, 48), (248, 136, 32), (248, 208, 40), (64, 176, 64), (40, 120, 232), (144, 64, 208)]
 OUTLINE, WHITE, GRAY = (16, 16, 24), (248, 248, 248), (208, 208, 216)
 
@@ -111,10 +112,10 @@ def box_art():
     src = Image.open(ROOT / "graphics/pokemon/smeargle/anim_front.png")
     frame = src.crop((0, 0, 64, 64))
     frame = frame.crop(frame.getbbox() or (0, 0, 64, 64))
-    big = frame.resize((frame.width * 2, frame.height * 2), Image.NEAREST)
-    x0, y0 = 239 - big.width, 150 - big.height          # (right of the logo, above the copyright)
+    big = frame.resize((int(frame.width * SMEARGLE_SCALE), int(frame.height * SMEARGLE_SCALE)), Image.NEAREST)
+    x0, y0 = 236 - big.width, 148 - big.height          # (right of the logo, above the copyright)
     logo = art()
-    right = PLACE[0] + max(x for x, y in logo) + 1
+    right = place()[0] + max(x for x, y in logo) + 1
     assert x0 >= right, f"Smeargle at x {x0} would run under CANVAS (to x {right})"
     pal = src.getpalette()[:48]
     screen = np.zeros((160, 256), int)
@@ -162,6 +163,13 @@ def box_art():
     return out
 
 
+def place():
+    """Where the CANVAS art goes: centered under the POKéMON logo"""
+    px = art()
+    w = max(x for x, y in px) + 1
+    return LOGO_CENTER_X - w // 2, ART_TOP
+
+
 def main():
     if not ORIG.exists():
         ORIG.mkdir()
@@ -193,6 +201,7 @@ def main():
     free = [i for i in range(1, 208) if i not in used]
     index = {}
     px = art()
+    px0, py = place()
     for (x, y), c in px.items():
         if c not in index:
             near = next((i for i in sorted(used) if i and pal[i] == c), None)
@@ -201,7 +210,7 @@ def main():
                 pal[near] = c
                 used.add(near)
             index[c] = near
-        screen[PLACE[1] + y, PLACE[0] + x] = index[c]
+        screen[py + y, px0 + x] = index[c]
 
     # Back into tiles
     tiles, lookup, out = [tuple([0] * 64)], {tuple([0] * 64): 0}, []
