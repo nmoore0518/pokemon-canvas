@@ -543,7 +543,7 @@ def build_zones(zone_warp):
         return map_id(areas[tk]["map"]), built[tk]["arrive"][tl]
 
     # 3. Each area's map: objects, warps, triggers, scripts
-    header_areas, report = [], []
+    header_areas, report, static_rows = [], [], []
     for key, a in areas.items():
         b, name = built[key], a["map"]
         g, w, h = b["g"], b["w"], b["h"]
@@ -566,7 +566,7 @@ def build_zones(zone_warp):
             for x, y in cells:
                 coords.append({"type": "trigger", "x": x, "y": y, "elevation": 0, "var": "VAR_TEMP_1",
                                "var_value": "0", "script": label})
-            scripts += [f"{label}::", f"\twarpsilent {dm}, {di}", "\twaitstate", "\tend", ""]
+            scripts += [f"{label}::", f"\twarpsilent {dm}, {di}", "\tend", ""]
         # Objects: the roamers' slots (local ids 1-3), the legendaries, the items
         objects = []
         for i, r in enumerate(paldea.ROAMERS):
@@ -575,17 +575,27 @@ def build_zones(zone_warp):
             o["movement_range_x"] = o["movement_range_y"] = 2
             objects.append(o)
         reach = reachable(b)
-        for species, (x, y) in a["statics"]:
+        bgs = []
+        for i, (species, (x, y)) in enumerate(a["statics"]):
             assert (x, y) in reach, f"{key}: {species} at {(x, y)} can't be reached"
             label = f"{name}_EventScript_Legend{camel(species)}"
-            o = obj(f"OBJ_EVENT_GFX_SPECIES({species})", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"FLAG_EXOTIC_LEGEND_{species}")
+            # Hidden (a temp flag, set on the way in: src/exotic_safari.c) once caught, until what it
+            # waits for is done, and for the rest of the visit after a battle that didn't catch it
+            o = obj(f"OBJ_EVENT_GFX_SPECIES({species})", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"FLAG_TEMP_{0x11 + i:X}")
             o["elevation"] = elev(x, y)
             objects.append(o)
-            scripts += [f"{label}::", "\tlock", "\tfaceplayer", f"\tsetvar VAR_0x8004, SPECIES_{species}",
-                        "\tcall ExoticSafari_EventScript_LegendBattle",
-                        "\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays",
-                        "\tremoveobject VAR_LAST_TALKED", f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
-                        "\tgoto ExoticSafari_EventScript_Release", ""]
+            scripts += [f"{label}::", "	lock", "	faceplayer", f"	setvar VAR_0x8004, SPECIES_{species}",
+                        "	call ExoticSafari_EventScript_LegendBattle",
+                        "	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone",
+                        "	removeobject VAR_LAST_TALKED", f"	setflag FLAG_EXOTIC_LEGEND_{species}",
+                        "	goto ExoticSafari_EventScript_Release", ""]
+            static_rows.append((name, species, i))
+            # Where it will be: a hint at what it waits for (talking to the spot while it isn't there)
+            seal = f"{name}_EventScript_Seal{camel(species)}"
+            bgs.append({"type": "sign", "x": x, "y": y, "elevation": 0, "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+                        "script": seal})
+            scripts += [f"{seal}::", "	lockall", f"	setvar VAR_0x8004, {len(static_rows) - 1}",
+                        "	goto ExoticSafari_EventScript_Seal", ""]
         for item, (x, y) in a["items"]:
             assert (x, y) in reach, f"{key}: {item} at {(x, y)} can't be reached"
             label = f"{name}_EventScript_Item{camel(item)}"
@@ -593,8 +603,21 @@ def build_zones(zone_warp):
             o["elevation"] = elev(x, y)
             objects.append(o)
             scripts += [f"{label}::", f"\tfinditem ITEM_{item}", "\tend", ""]
+        for c, color in enumerate(paldea.STAKE_COLORS):
+            for k, (area, (x, y)) in enumerate(paldea.STAKES[color]):
+                if area != key:
+                    continue
+                assert (x, y) in reach, f"{key}: {color} stake at {(x, y)} can't be reached"
+                o = obj(f"OBJ_EVENT_GFX_EXOTIC_STAKE_{color}", x, y, f"ExoticSafari_EventScript_Stake{color.title()}",
+                        "MOVEMENT_TYPE_FACE_DOWN", f"0x{0x0EF + c * 4 + k:03X}")
+                o["elevation"] = elev(x, y)
+                objects.append(o)
+        for x, y in a.get("ropes", []):
+            o = obj("OBJ_EVENT_GFX_VELVET_ROPE", x, y, "ExoticSafari_EventScript_Rope", "MOVEMENT_TYPE_FACE_DOWN")
+            o["elevation"] = elev(x, y)
+            objects.append(o)
         write_map(name, map_id(name), "LAYOUT_" + map_id(name)[4:], a["music"], "MAPSEC_KANTO_SAFARI_ZONE",
-                  a["type"], objects, warps, [], False, coords=coords, weather=a["weather"])
+                  a["type"], objects, warps, bgs, False, coords=coords, weather=a["weather"])
         (ROOT / "data/maps" / name / "scripts.inc").write_text("\n".join(scripts))
         # Where the roamers can turn up: land encounter spots the player can reach
         spots = sorted(p for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE
@@ -626,8 +649,20 @@ def build_zones(zone_warp):
           "static const struct ExoticSafariFind sKioskFinds[] =", "{"]
     for a in areas.values():
         for item, _ in a["items"]:
-            c.append(f"    {{ITEM_{item}, FLAG_EXOTIC_ITEM_{item}}},")
-    c.append("};")
+            if item not in paldea.UNIQUE_ITEMS:
+                c.append(f"    {{ITEM_{item}, FLAG_EXOTIC_ITEM_{item}}},")
+    c += ["};", "", "// The legendaries that stand in one place, and what each waits for",
+          "struct ExoticSafariStatic { u8 mapGroup, mapNum; u16 species, caughtFlag, hideFlag; u8 seal, sealArg; };",
+          "static const struct ExoticSafariStatic sExoticSafariStatics[] =", "{"]
+    for mname, species, i in static_rows:
+        seal, arg = paldea.CONDITIONS.get(species, ("NONE", 0))
+        mid = map_id(mname)
+        c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), SPECIES_{species}, FLAG_EXOTIC_LEGEND_{species}, "
+                 f"FLAG_TEMP_{0x11 + i:X}, SEAL_{seal}, {arg}}},")
+    c += ["};", "", f"#define EXOTIC_SAFARI_STAKE_COLORS {len(paldea.STAKE_COLORS)}",
+          "#define EXOTIC_SAFARI_STAKES_PER_COLOR 4",
+          "static const u8 *const sStakeColorNames[] = {" + ", ".join(f'COMPOUND_STRING("{c}")' for c in paldea.STAKE_COLORS) + "};",
+          "static const u16 sMaskFlags[] = {FLAG_EXOTIC_ITEM_WELLSPRING_MASK, FLAG_EXOTIC_ITEM_HEARTHFLAME_MASK, FLAG_EXOTIC_ITEM_CORNERSTONE_MASK};"]
     (ROOT / "src/data/exotic_safari_areas.h").write_text("\n".join(c) + "\n")
 
     # 5. The roamers' scripts (any area)
@@ -637,6 +672,9 @@ def build_zones(zone_warp):
                "\tcall ExoticSafari_EventScript_LegendBattle",
                f"\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone",
                f"\tsetflag FLAG_EXOTIC_LEGEND_{r}", "\tgoto ExoticSafari_EventScript_RoamerGone", ""]
+    for c, color in enumerate(paldea.STAKE_COLORS):
+        rs += [f"ExoticSafari_EventScript_Stake{color.title()}::", f"\tsetvar VAR_0x8004, {c}",
+               "\tgoto ExoticSafari_EventScript_Stake", ""]
     (ROOT / "data/scripts/exotic_safari_roamers.inc").write_text("\n".join(rs))
 
     # 6. Wild Pokémon
@@ -739,6 +777,8 @@ def main():
               f"#define LOCALID_EXOTIC_SAFARI_ATTENDANT 1",
               f"#define LOCALID_EXOTIC_SAFARI_DESK      2",
               f"#define EXOTIC_SAFARI_LEGEND_LEVEL      {LEGEND_LEVEL}",
+              "// What a static legendary waits for (src/exotic_safari.c)",
+              "#define SEAL_STAKES   0", "#define SEAL_MASKS    1", "#define SEAL_ROAMERS  2", "#define SEAL_MASTERY  3",
               "#endif"]
     (ROOT / "include/constants/exotic_safari.h").write_text("\n".join(consts) + "\n")
     c = ["// The Exotic Pokémon Safari's doors (made by tools/gym_hack/build_exotic_safari.py)",

@@ -2801,3 +2801,24 @@ static const struct SpriteFrameImage sPicTable_ConvNemona[] = {
 };
 
 // END Convention
+
+static const struct SpriteFrameImage sPicTable_ExoticStakePurple[] = {
+    overworld_frame(gObjectEventPic_ExoticStakePurple, 2, 4, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ExoticStakeYellow[] = {
+    overworld_frame(gObjectEventPic_ExoticStakeYellow, 2, 4, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ExoticStakeGreen[] = {
+    overworld_frame(gObjectEventPic_ExoticStakeGreen, 2, 4, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ExoticStakeBlue[] = {
+    overworld_frame(gObjectEventPic_ExoticStakeBlue, 2, 4, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_VelvetRope[] = {
+    overworld_frame(gObjectEventPic_VelvetRope, 2, 2, 0),
+};
+

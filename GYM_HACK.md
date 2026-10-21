@@ -675,15 +675,28 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Rod). Pre-evolutions come at the same high levels (nothing needs breeding).
    - [x] Paldea's legendaries (Lv 70, `FLAG_EXOTIC_LEGEND_*`): Ogerpon (meadow), Wo-Chien
          (forest), Ting-Lu (desert), Chi-Yu (lake island), Chien-Pao (summit), Terapagos and
-         Pecharunt (depths) stand in place and stay until caught. Okidogi, Munkidori and Fezandipiti
-         ROAM: each time the player enters an area, each uncaught one is there with a 1 in 8 chance,
-         wandering a random reachable grass/sand/cave spot away from the player
-         (`ExoticSafari_AreaOnTransition`, the spots from the builder); battled and not caught, it
-         runs off. Puzzles for them: to decide with Nick (plain encounters for now).
+         Pecharunt (depths) stand in one place. A battle that doesn't catch one makes it disappear
+         for the rest of the visit (a temp flag); it's back the next time the area loads. Each waits
+         for something first (until then, talking to its spot gives a hint):
+         - the Treasures of Ruin: their 4 stakes pulled (purple Wo-Chien, yellow Chien-Pao, green
+           Ting-Lu, blue Chi-Yu; 16 stakes, two in each area, never in the legendary's own;
+           `STAKES` in paldea.py; sprites by `tools/gym_hack/exotic_safari_art.py`)
+         - Ogerpon: its 3 masks found (Wellspring on the lake's island, Hearthflame in the desert,
+           Cornerstone in the crater; the player keeps them for its forms)
+         - Pecharunt: the Loyal Three caught
+         - Terapagos: every gym type mastered (`FLAG_GYM_TYPE_MASTERED` + type, set by the mastery
+           battle; the gym's last type now has a mastery battle too, and Oak's visit after it hints
+           at the crater). Arceus (later) will wait for the same.
+         Okidogi, Munkidori and Fezandipiti ROAM: each time the player enters an area, each uncaught
+         one is there with a 1 in 8 chance, wandering a random reachable grass/sand/cave spot away
+         from the player (`ExoticSafari_AreaOnTransition`, the spots from the builder); battled and
+         not caught, it runs off.
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,
          Brambleghast/Rabsca/Houndstone 30, Gholdengo 45, Hydrapple 50); the items (Auspicious and
-         Malicious Armor, Ice Stone, Unremarkable Teacup) are item balls in the desert, crater,
-         snowfield and academy, and once found the SAFARI KIOSK sells them (`ExoticSafari_Kiosk`).
+         Malicious Armor, Ice Stone, Unremarkable and Masterpiece Teacups) are item balls in the desert,
+         crater, snowfield and academy, and once found the SAFARI KIOSK sells them (`ExoticSafari_Kiosk`).
+         All four Squawkabilly plumages are wild (meadow, academy), and Artisan Poltchageist (academy).
+         The academy's stairs (they lead nowhere) are behind velvet ropes.
    - [x] The hall: doors in each region's games' two colors (Gold/Silver, Ruby/Sapphire,
          Diamond/Pearl, Black/White, X/Y, Sun/Moon, Sword/Shield, Scarlet/Violet) that slide open
          when a pass holder stands in front of an open zone's door (`src/exotic_safari.c`); a

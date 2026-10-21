@@ -70,7 +70,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_PaldeaDesert_EventScript_LegendTingLu",
-      "flag": "FLAG_EXOTIC_LEGEND_TING_LU"
+      "flag": "FLAG_TEMP_11"
     },
     {
       "type": "object",
@@ -85,6 +85,48 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_PaldeaDesert_EventScript_ItemAuspiciousArmor",
       "flag": "FLAG_EXOTIC_ITEM_AUSPICIOUS_ARMOR"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 24,
+      "y": 22,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_PaldeaDesert_EventScript_ItemHearthflameMask",
+      "flag": "FLAG_EXOTIC_ITEM_HEARTHFLAME_MASK"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_EXOTIC_STAKE_PURPLE",
+      "x": 26,
+      "y": 42,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_StakePurple",
+      "flag": "0x0F0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_EXOTIC_STAKE_BLUE",
+      "x": 25,
+      "y": 52,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_StakeBlue",
+      "flag": "0x0FC"
     }
   ],
   "warp_events": [
@@ -204,5 +246,14 @@
       "script": "ExoticSafari_PaldeaDesert_EventScript_ToForest"
     }
   ],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 2,
+      "y": 40,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_PaldeaDesert_EventScript_SealTingLu"
+    }
+  ]
 }

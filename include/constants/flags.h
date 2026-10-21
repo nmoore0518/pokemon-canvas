@@ -2538,9 +2538,17 @@
 #define FLAG_EXOTIC_ITEM_MALICIOUS_ARMOR     0x0EC
 #define FLAG_EXOTIC_ITEM_ICE_STONE           0x0ED
 #define FLAG_EXOTIC_ITEM_UNREMARKABLE_TEACUP 0x0EE
+// The Treasures of Ruin's stakes (4 each, pulled in other areas: the legendary appears once its 4
+// are out), the Masterpiece Teacup, and Ogerpon's masks (it appears once all 3 are found)
+#define FLAG_EXOTIC_STAKE_FIRST           0x0EF   // to 0x0FE (16)
+#define FLAG_EXOTIC_ITEM_MASTERPIECE_TEACUP  0x0FF
+#define FLAG_EXOTIC_ITEM_WELLSPRING_MASK     0x150
+#define FLAG_EXOTIC_ITEM_HEARTHFLAME_MASK    0x151
+#define FLAG_EXOTIC_ITEM_CORNERSTONE_MASK    0x152
 #define FLAG_GYM_TYPE_OWNED           0x100   // to 0x113
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B
+#define FLAG_GYM_TYPE_MASTERED        0x13C   // to 0x14F (+ type: its streak has been mastered)
 
 
 #if TESTING

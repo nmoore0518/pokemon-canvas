@@ -10,3 +10,7 @@ ExoticSafari_PaldeaAcademy_OnTransition::
 ExoticSafari_PaldeaAcademy_EventScript_ItemUnremarkableTeacup::
 	finditem ITEM_UNREMARKABLE_TEACUP
 	end
+
+ExoticSafari_PaldeaAcademy_EventScript_ItemMasterpieceTeacup::
+	finditem ITEM_MASTERPIECE_TEACUP
+	end

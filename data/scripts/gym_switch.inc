@@ -90,7 +90,15 @@ GymSwitch_EventScript_OakNoRoom::
 	end
 
 GymSwitch_EventScript_OakNothingToOffer::
+	special GymSwitch_AllMastered
+	goto_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_OakAllMastered
 	msgbox GymSwitch_Text_OakKeepItUp
+	goto GymSwitch_EventScript_OakLeaves
+	end
+
+@ The last type mastered: every type's streak done. Oak's hint for Paldea's Terapagos.
+GymSwitch_EventScript_OakAllMastered::
+	msgbox GymSwitch_Text_OakAllMastered
 	goto GymSwitch_EventScript_OakLeaves
 	end
 
@@ -274,6 +282,19 @@ GymSwitch_Text_OakTryAnother::
 GymSwitch_Text_OakKeepItUp::
 	.string "Splendid work, {PLAYER}!\n"
 	.string "Keep it up!$"
+
+GymSwitch_Text_OakAllMastered::
+	.string "And that's every type there is!\n"
+	.string "{PLAYER}, you've mastered them ALL!\p"
+	.string "I never thought I'd see the day…\p"
+	.string "Oh! That reminds me. The EXOTIC\n"
+	.string "SAFARI's staff told me a story.\p"
+	.string "Deep in its PALDEA CRATER, they\n"
+	.string "say, sleeps a POKéMON that holds\l"
+	.string "the power of every type.\p"
+	.string "It only shows itself to a trainer\n"
+	.string "who has mastered them all.\p"
+	.string "Sounds like someone I know!$"
 
 GymSwitch_Text_OakOfferStands::
 	.string "OAK: I see! Well, you've earned it,\n"

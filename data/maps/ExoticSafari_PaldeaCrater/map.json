@@ -71,6 +71,48 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_PaldeaCrater_EventScript_ItemMaliciousArmor",
       "flag": "FLAG_EXOTIC_ITEM_MALICIOUS_ARMOR"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 36,
+      "y": 2,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_PaldeaCrater_EventScript_ItemCornerstoneMask",
+      "flag": "FLAG_EXOTIC_ITEM_CORNERSTONE_MASK"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_EXOTIC_STAKE_YELLOW",
+      "x": 38,
+      "y": 13,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_StakeYellow",
+      "flag": "0x0F4"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_EXOTIC_STAKE_BLUE",
+      "x": 5,
+      "y": 20,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_StakeBlue",
+      "flag": "0x0FE"
     }
   ],
   "warp_events": [

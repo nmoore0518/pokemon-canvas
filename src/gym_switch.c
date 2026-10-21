@@ -75,16 +75,47 @@ static bool32 CanTakeNewType(void)
     return Save()->switchTickets != 0 && CountTypes(FALSE) != 0;
 }
 
+static bool32 IsMastered(u32 type)
+{
+    return FlagGet(FLAG_GYM_TYPE_MASTERED + type);
+}
+
+// Whether every gym type's streak has been mastered (Paldea's Terapagos waits for it)
+bool32 GymSwitch_AllTypesMastered(void)
+{
+    u32 type;
+    for (type = 0; type < NUMBER_OF_MON_TYPES; type++)
+    {
+        if (IsGymType(type) && !IsMastered(type))
+            return FALSE;
+    }
+    return TRUE;
+}
+
+// Special: VAR_RESULT = GymSwitch_AllTypesMastered()
+void GymSwitch_AllMastered(void)
+{
+    gSpecialVar_Result = GymSwitch_AllTypesMastered();
+}
+
+// Whether a streak can still master something: a type the gym hasn't had is left to earn, or the
+// gym's own type hasn't been mastered yet (the last type still has its mastery battle)
+static bool32 MasteryAhead(void)
+{
+    return CountTypes(FALSE) != 0 || !IsMastered(CurrentType());
+}
+
 // The streak that masters the gym's type
 u32 GymSwitch_GetGoal(void)
 {
     return Save()->switchesEarned == 0 ? GYM_SWITCH_FIRST_STREAK : GYM_SWITCH_NEXT_STREAK;
 }
 
-// Whether this battle of a streak is the mastery battle (none once the gym has had every type)
+// Whether this battle of a streak is the mastery battle (none once the gym has had every type and
+// mastered them all)
 bool32 GymSwitch_IsMasteryBattle(u32 streak)
 {
-    return FlagGet(FLAG_PALLET_GYM_AWARDED) && CountTypes(FALSE) != 0 && streak == GymSwitch_GetGoal();
+    return FlagGet(FLAG_PALLET_GYM_AWARDED) && MasteryAhead() && streak == GymSwitch_GetGoal();
 }
 
 static void CopyUppercase(u8 *dst, const u8 *src)
@@ -107,7 +138,8 @@ void GymSwitch_AfterWin(void)
     gSpecialVar_Result = FALSE;
     if (!GymChallenge_WasBoss())
         return;
-    if (save->switchTickets < 0xFF)
+    FlagSet(FLAG_GYM_TYPE_MASTERED + CurrentType());
+    if (save->switchTickets < 0xFF && CountTypes(FALSE) != 0)    // (no ticket once there's no new type)
         save->switchTickets++;
     if (save->switchesEarned < 0xFF)
         save->switchesEarned++;
@@ -120,7 +152,7 @@ void GymSwitch_AfterWin(void)
 // STR_VAR_1 = the streak it takes
 void GymSwitch_BufferGoal(void)
 {
-    gSpecialVar_Result = CountTypes(FALSE) != 0 && GymChallenge_GetSave()->streak < GymSwitch_GetGoal();
+    gSpecialVar_Result = MasteryAhead() && GymChallenge_GetSave()->streak < GymSwitch_GetGoal();
     ConvertIntToDecimalStringN(gStringVar1, GymSwitch_GetGoal(), STR_CONV_MODE_LEFT_ALIGN, 3);
 }
 

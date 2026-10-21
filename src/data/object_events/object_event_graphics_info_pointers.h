@@ -498,6 +498,11 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvKukui;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvLeon;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvGeeta;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ConvNemona;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStakePurple;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStakeYellow;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStakeGreen;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStakeBlue;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_VelvetRope;
 // END Convention externs
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -988,6 +993,11 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_CONV_GEETA] = &gObjectEventGraphicsInfo_ConvGeeta,
     [OBJ_EVENT_GFX_CONV_NEMONA] = &gObjectEventGraphicsInfo_ConvNemona,
 // END Convention
+    [OBJ_EVENT_GFX_EXOTIC_STAKE_PURPLE] = &gObjectEventGraphicsInfo_ExoticStakePurple,
+    [OBJ_EVENT_GFX_EXOTIC_STAKE_YELLOW] = &gObjectEventGraphicsInfo_ExoticStakeYellow,
+    [OBJ_EVENT_GFX_EXOTIC_STAKE_GREEN] = &gObjectEventGraphicsInfo_ExoticStakeGreen,
+    [OBJ_EVENT_GFX_EXOTIC_STAKE_BLUE] = &gObjectEventGraphicsInfo_ExoticStakeBlue,
+    [OBJ_EVENT_GFX_VELVET_ROPE] = &gObjectEventGraphicsInfo_VelvetRope,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {

@@ -9,12 +9,10 @@ ExoticSafari_PaldeaLake_OnTransition::
 
 ExoticSafari_PaldeaLake_EventScript_ToMeadow::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_MEADOW, 4
-	waitstate
 	end
 
 ExoticSafari_PaldeaLake_EventScript_ToSnow::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN, 0
-	waitstate
 	end
 
 ExoticSafari_PaldeaLake_EventScript_LegendChiYu::
@@ -22,7 +20,16 @@ ExoticSafari_PaldeaLake_EventScript_LegendChiYu::
 	faceplayer
 	setvar VAR_0x8004, SPECIES_CHI_YU
 	call ExoticSafari_EventScript_LegendBattle
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_CHI_YU
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_PaldeaLake_EventScript_SealChiYu::
+	lockall
+	setvar VAR_0x8004, 5
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_PaldeaLake_EventScript_ItemWellspringMask::
+	finditem ITEM_WELLSPRING_MASK
+	end

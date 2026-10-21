@@ -10,3 +10,7 @@ ExoticSafari_PaldeaCrater_OnTransition::
 ExoticSafari_PaldeaCrater_EventScript_ItemMaliciousArmor::
 	finditem ITEM_MALICIOUS_ARMOR
 	end
+
+ExoticSafari_PaldeaCrater_EventScript_ItemCornerstoneMask::
+	finditem ITEM_CORNERSTONE_MASK
+	end

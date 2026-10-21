@@ -25,3 +25,19 @@ ExoticSafari_EventScript_RoamerFezandipiti::
 	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
 	setflag FLAG_EXOTIC_LEGEND_FEZANDIPITI
 	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_StakePurple::
+	setvar VAR_0x8004, 0
+	goto ExoticSafari_EventScript_Stake
+
+ExoticSafari_EventScript_StakeYellow::
+	setvar VAR_0x8004, 1
+	goto ExoticSafari_EventScript_Stake
+
+ExoticSafari_EventScript_StakeGreen::
+	setvar VAR_0x8004, 2
+	goto ExoticSafari_EventScript_Stake
+
+ExoticSafari_EventScript_StakeBlue::
+	setvar VAR_0x8004, 3
+	goto ExoticSafari_EventScript_Stake

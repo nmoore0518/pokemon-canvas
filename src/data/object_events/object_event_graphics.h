@@ -827,4 +827,10 @@ const u16 gObjectEventPic_ConvGeeta[] = INCGFX_U16("graphics/object_events/pics/
 const u16 gObjectEventPal_ConvGeeta[] = INCGFX_U16("graphics/object_events/pics/people/convention/geeta.png", ".gbapal");
 const u16 gObjectEventPic_ConvNemona[] = INCGFX_U16("graphics/object_events/pics/people/convention/nemona.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPal_ConvNemona[] = INCGFX_U16("graphics/object_events/pics/people/convention/nemona.png", ".gbapal");
+const u16 gObjectEventPic_ExoticStakePurple[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/stake_purple.png", ".4bpp");
+const u16 gObjectEventPic_ExoticStakeYellow[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/stake_yellow.png", ".4bpp");
+const u16 gObjectEventPic_ExoticStakeGreen[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/stake_green.png", ".4bpp");
+const u16 gObjectEventPic_ExoticStakeBlue[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/stake_blue.png", ".4bpp");
+const u16 gObjectEventPic_VelvetRope[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/velvet_rope.png", ".4bpp");
+const u16 gObjectEventPal_ExoticSafari[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/velvet_rope.png", ".gbapal");
 // END Convention

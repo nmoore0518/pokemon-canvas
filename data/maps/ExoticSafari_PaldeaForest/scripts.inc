@@ -9,12 +9,10 @@ ExoticSafari_PaldeaForest_OnTransition::
 
 ExoticSafari_PaldeaForest_EventScript_ToMeadow::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_MEADOW, 3
-	waitstate
 	end
 
 ExoticSafari_PaldeaForest_EventScript_ToDesert::
 	warpsilent MAP_EXOTIC_SAFARI_PALDEA_DESERT, 0
-	waitstate
 	end
 
 ExoticSafari_PaldeaForest_EventScript_LegendWoChien::
@@ -22,7 +20,12 @@ ExoticSafari_PaldeaForest_EventScript_LegendWoChien::
 	faceplayer
 	setvar VAR_0x8004, SPECIES_WO_CHIEN
 	call ExoticSafari_EventScript_LegendBattle
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_WO_CHIEN
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_PaldeaForest_EventScript_SealWoChien::
+	lockall
+	setvar VAR_0x8004, 1
+	goto ExoticSafari_EventScript_Seal

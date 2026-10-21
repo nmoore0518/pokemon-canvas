@@ -12,11 +12,14 @@
 #include "field_player_avatar.h"
 #include "fieldmap.h"
 #include "field_camera.h"
+#include "gym_switch.h"
+#include "string_util.h"
 #include "item.h"
 #include "overworld.h"
 #include "random.h"
 #include "shop.h"
 #include "sound.h"
+#include "constants/exotic_safari.h"
 #include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/maps.h"
@@ -149,11 +152,89 @@ static bool32 PlaceRoamer(const struct ExoticSafariArea *area, u32 roamer)
     return FALSE;
 }
 
-// Special (each area's ON_TRANSITION)
+// ---------------------------------------------------------------------------------------------
+// THE STATIC LEGENDARIES: each waits for something (its seal): the Treasures of Ruin for their 4
+// stakes to be pulled, Ogerpon for its 3 masks to be found, Pecharunt for the Loyal Three (the
+// roamers) to be caught, Terapagos for every gym type to be mastered. Hidden (a temp flag) until
+// then, once caught, and for the rest of a visit after a battle that didn't catch it.
+// ---------------------------------------------------------------------------------------------
+static u32 CountFlagsLeft(const u16 *flags, u32 count)
+{
+    u32 i, left = 0;
+    for (i = 0; i < count; i++)
+        left += !FlagGet(flags[i]);
+    return left;
+}
+
+static u32 StakesLeft(u32 color)
+{
+    u32 k, left = 0;
+    for (k = 0; k < EXOTIC_SAFARI_STAKES_PER_COLOR; k++)
+        left += !FlagGet(FLAG_EXOTIC_STAKE_FIRST + color * EXOTIC_SAFARI_STAKES_PER_COLOR + k);
+    return left;
+}
+
+// How much of a static legendary's seal is left (0: it's free to appear)
+static u32 SealLeft(const struct ExoticSafariStatic *s)
+{
+    u32 i, left = 0;
+    switch (s->seal)
+    {
+    case SEAL_STAKES:
+        return StakesLeft(s->sealArg);
+    case SEAL_MASKS:
+        return CountFlagsLeft(sMaskFlags, ARRAY_COUNT(sMaskFlags));
+    case SEAL_ROAMERS:
+        for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)
+            left += !FlagGet(sExoticSafariRoamers[i].caughtFlag);
+        return left;
+    case SEAL_MASTERY:
+        return !GymSwitch_AllTypesMastered();
+    }
+    return 0;
+}
+
+// Special (the spot where a static legendary appears, while it isn't there): VAR_0x8004 = which
+// (sExoticSafariStatics). VAR_RESULT = its seal (SEAL_*), or 0xFF if it's caught, 0xFE if the seal
+// is broken (it's away for this visit). STR_VAR_1 = the stakes' color, STR_VAR_2 = how many left.
+void ExoticSafari_BufferSeal(void)
+{
+    const struct ExoticSafariStatic *s = &sExoticSafariStatics[gSpecialVar_0x8004 % ARRAY_COUNT(sExoticSafariStatics)];
+    u32 left = SealLeft(s);
+    if (FlagGet(s->caughtFlag))
+        gSpecialVar_Result = 0xFF;
+    else if (left == 0)
+        gSpecialVar_Result = 0xFE;
+    else
+        gSpecialVar_Result = s->seal;
+    if (s->seal == SEAL_STAKES)
+        StringCopy(gStringVar1, sStakeColorNames[s->sealArg]);
+    ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
+}
+
+// Special (a stake, just pulled): VAR_0x8004 = its color. VAR_RESULT = how many of that color are
+// left; STR_VAR_1 = the color, STR_VAR_2 = the count.
+void ExoticSafari_CountStakes(void)
+{
+    u32 color = gSpecialVar_0x8004 % EXOTIC_SAFARI_STAKE_COLORS;
+    gSpecialVar_Result = StakesLeft(color);
+    StringCopy(gStringVar1, sStakeColorNames[color]);
+    ConvertIntToDecimalStringN(gStringVar2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 2);
+}
+
+// Special (each area's ON_TRANSITION): its static legendaries shown or not, the roamers placed
 void ExoticSafari_AreaOnTransition(void)
 {
     const struct ExoticSafariArea *area = GetArea();
     u32 i;
+    for (i = 0; i < ARRAY_COUNT(sExoticSafariStatics); i++)
+    {
+        const struct ExoticSafariStatic *s = &sExoticSafariStatics[i];
+        if (s->mapGroup != gSaveBlock1Ptr->location.mapGroup || s->mapNum != gSaveBlock1Ptr->location.mapNum)
+            continue;
+        if (FlagGet(s->caughtFlag) || SealLeft(s) != 0)
+            FlagSet(s->hideFlag);
+    }
     for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)
     {
         FlagSet(sExoticSafariRoamers[i].hideFlag);

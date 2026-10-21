@@ -70,7 +70,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_PaldeaCraterDepths_EventScript_LegendTerapagos",
-      "flag": "FLAG_EXOTIC_LEGEND_TERAPAGOS"
+      "flag": "FLAG_TEMP_11"
     },
     {
       "type": "object",
@@ -84,7 +84,35 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_PaldeaCraterDepths_EventScript_LegendPecharunt",
-      "flag": "FLAG_EXOTIC_LEGEND_PECHARUNT"
+      "flag": "FLAG_TEMP_12"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_EXOTIC_STAKE_YELLOW",
+      "x": 38,
+      "y": 1,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_StakeYellow",
+      "flag": "0x0F5"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_EXOTIC_STAKE_GREEN",
+      "x": 34,
+      "y": 21,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_StakeGreen",
+      "flag": "0x0FA"
     }
   ],
   "warp_events": [
@@ -97,5 +125,22 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 7,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_PaldeaCraterDepths_EventScript_SealTerapagos"
+    },
+    {
+      "type": "sign",
+      "x": 35,
+      "y": 4,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_PaldeaCraterDepths_EventScript_SealPecharunt"
+    }
+  ]
 }

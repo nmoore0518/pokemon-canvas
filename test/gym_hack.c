@@ -1951,6 +1951,7 @@ static void ResetGymTypes(u32 type)
         FlagClear(FLAG_GYM_TYPE_OWNED + t);
         FlagClear(FLAG_GYM_LEGEND_CAUGHT_TYPE + t);
         FlagClear(FLAG_GYM_LEGEND_LOOSE_TYPE + t);
+        FlagClear(FLAG_GYM_TYPE_MASTERED + t);
     }
     FlagClear(FLAG_GYM_LEGEND_APPEARED);
     FlagClear(FLAG_GYM_LEGEND_CAUGHT);
@@ -1978,13 +1979,31 @@ TEST("GymHack: switch: the mastery battle is the 20th win, then the 10th")
     GymChallenge_GetSave()->switchesEarned = 1;
     EXPECT(GymSwitch_IsMasteryBattle(10));
     EXPECT(!GymSwitch_IsMasteryBattle(20));
-    // Not before the gym is the player's, nor once it has had every type
+    // Not before the gym is the player's, nor once it has had every type and mastered its own
     FlagClear(FLAG_PALLET_GYM_AWARDED);
     EXPECT(!GymSwitch_IsMasteryBattle(10));
     FlagSet(FLAG_PALLET_GYM_AWARDED);
     for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
         FlagSet(FLAG_GYM_TYPE_OWNED + t);
+    EXPECT(GymSwitch_IsMasteryBattle(10));      // (the last type still has its mastery battle)
+    FlagSet(FLAG_GYM_TYPE_MASTERED + TYPE_ROCK);
     EXPECT(!GymSwitch_IsMasteryBattle(10));
+}
+
+TEST("GymHack: switch: every type mastered (Terapagos) takes all 18 gym types' streaks")
+{
+    u32 t, n = 0;
+    ResetGymTypes(TYPE_ROCK);
+    EXPECT(!GymSwitch_AllTypesMastered());
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (t == TYPE_NONE || t == TYPE_MYSTERY || t == TYPE_STELLAR)
+            continue;
+        FlagSet(FLAG_GYM_TYPE_MASTERED + t);
+        n++;
+        EXPECT(GymSwitch_AllTypesMastered() == (n == 18));
+    }
+    EXPECT_EQ(n, 18);
 }
 
 TEST("GymHack: switch: the mastery battle is the mentor with their convention team, and earns a type")

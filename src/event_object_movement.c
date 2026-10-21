@@ -682,6 +682,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_ConvGeeta, OBJ_EVENT_PAL_TAG_CONV_GEETA},
     {gObjectEventPal_ConvNemona, OBJ_EVENT_PAL_TAG_CONV_NEMONA},
 // END Convention
+    {gObjectEventPal_ExoticSafari, OBJ_EVENT_PAL_TAG_EXOTIC_SAFARI},
 #ifdef BUGFIX
     {NULL,                                  OBJ_EVENT_PAL_TAG_NONE},
 #else

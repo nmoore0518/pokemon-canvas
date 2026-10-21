@@ -311,7 +311,7 @@ AREAS = {
             "LAKE": ("edge", [(29, 10), (29, 11), (29, 12)], (28, 11), ("LAKE", "MEADOW")),
             "ACADEMY": ("edge", [(15, 0), (16, 0), (17, 0)], (16, 1), ("ACADEMY", "MEADOW")),
         },
-        "land": land("LECHONK", "FIDOUGH", "TANDEMAUS", "SQUAWKABILLY", "SMOLIV", "PAWMI", "FLITTLE",
+        "land": land("LECHONK", "FIDOUGH", "TANDEMAUS", "SQUAWKABILLY", "SQUAWKABILLY_YELLOW", "PAWMI", "FLITTLE",
                      "TAUROS_PALDEA_COMBAT", "WOOPER_PALDEA", "DUDUNSPARCE", ("SPRIGATITO", 48, 50), ("FARIGIRAF", 50, 54)),
         "statics": [("OGERPON", (22, 6))],
         "items": [],
@@ -338,7 +338,7 @@ AREAS = {
         "land": land("NACLI", "BRAMBLIN", "CYCLIZAR", "ORTHWORM", "KLAWF", "RELLOR", "VAROOM", "MASCHIFF",
                      "CHARCADET", "TAUROS_PALDEA_BLAZE", ("FUECOCO", 48, 50), ("ARCHALUDON", 52, 55)),
         "statics": [("TING_LU", (2, 40))],
-        "items": [("AUSPICIOUS_ARMOR", (1, 1))],
+        "items": [("AUSPICIOUS_ARMOR", (1, 1)), ("HEARTHFLAME_MASK", (24, 22))],
     },
     "CRATER": {
         "map": "ExoticSafari_PaldeaCrater", "build": lambda: crater(1), "tilesets": ("gTileset_General_Frlg", "gTileset_CeruleanCave"),
@@ -353,7 +353,7 @@ AREAS = {
                      ("RAGING_BOLT", 55, 58), ("GLIMMORA", 52, 55)),
         "water": [("WIGLETT", 48, 52), ("TATSUGIRI_DROOPY", 48, 52), ("VELUZA", 48, 52), ("DONDOZO", 50, 54), ("TATSUGIRI_STRETCHY", 50, 54)],
         "statics": [],
-        "items": [("MALICIOUS_ARMOR", (7, 3))],
+        "items": [("MALICIOUS_ARMOR", (7, 3)), ("CORNERSTONE_MASK", (36, 2))],
     },
     "DEPTHS": {
         "map": "ExoticSafari_PaldeaCraterDepths", "build": lambda: crater(2), "tilesets": ("gTileset_General_Frlg", "gTileset_CeruleanCave"),
@@ -384,7 +384,7 @@ AREAS = {
                     ("VELUZA", 50, 54), ("TATSUGIRI_DROOPY", 50, 54), ("DONDOZO", 50, 54),       # Super Rod
                     ("PALAFIN", 52, 55), ("QUAXLY", 48, 50)],
         "statics": [("CHI_YU", (22, 15))],
-        "items": [],
+        "items": [("WELLSPRING_MASK", (18, 12))],
     },
     "SNOW": {
         "map": "ExoticSafari_PaldeaSnowyMountain", "build": snowy_mountain, "tilesets": ("gTileset_Johto_General_Hns", "gTileset_MtSilverSnow_Hns"),
@@ -404,13 +404,32 @@ AREAS = {
             "MEADOW": ("warp", [(7, 33), (8, 33), (9, 33), (34, 33), (35, 34)], (8, 32), ("MEADOW", "ACADEMY")),
         },
         "remove_warps": [],
-        "land": land("VAROOM", "GIMMIGHOUL_ROAMING", "POLTCHAGEIST", "TADBULB", "TINKATINK", "GREAVARD",
-                     "GIMMIGHOUL_CHEST", "CHARCADET", "RELLOR", "SQUAWKABILLY_BLUE", ("GHOLDENGO", 52, 55),
+        "land": land("VAROOM", "GIMMIGHOUL_ROAMING", "POLTCHAGEIST", "TADBULB", "POLTCHAGEIST_ARTISAN", "GREAVARD",
+                     "GIMMIGHOUL_CHEST", "CHARCADET", "SQUAWKABILLY_WHITE", "SQUAWKABILLY_BLUE", ("GHOLDENGO", 52, 55),
                      ("SINISTCHA", 52, 55)),
         "statics": [],
-        "items": [("UNREMARKABLE_TEACUP", (22, 5))],
+        "items": [("UNREMARKABLE_TEACUP", (22, 5)), ("MASTERPIECE_TEACUP", (35, 8))],
+        "ropes": [(9, 13), (10, 14)],      # (in front of the stairs: they lead nowhere)
     },
 }
+
+# What each static legendary waits for (src/exotic_safari.c): its 4 stakes pulled (the Treasures
+# of Ruin), Ogerpon's 3 masks found, the Loyal Three caught (Pecharunt), every gym type mastered
+# (Terapagos: the power of every type). Until then a sign-like hint where it will appear.
+CONDITIONS = {
+    "WO_CHIEN": ("STAKES", 0), "CHIEN_PAO": ("STAKES", 1), "TING_LU": ("STAKES", 2), "CHI_YU": ("STAKES", 3),
+    "OGERPON": ("MASKS", 0), "PECHARUNT": ("ROAMERS", 0), "TERAPAGOS": ("MASTERY", 0),
+}
+# The stakes: 4 per Treasure of Ruin, in the other areas (two stakes in each area)
+STAKE_COLORS = ["PURPLE", "YELLOW", "GREEN", "BLUE"]     # Wo-Chien, Chien-Pao, Ting-Lu, Chi-Yu
+STAKES = {
+    "PURPLE": [("MEADOW", (26, 4)), ("DESERT", (26, 42)), ("LAKE", (41, 4)), ("ACADEMY", (1, 30))],
+    "YELLOW": [("FOREST", (26, 24)), ("CRATER", (38, 13)), ("DEPTHS", (38, 1)), ("MEADOW", (4, 17))],
+    "GREEN": [("SNOW", (20, 22)), ("LAKE", (41, 28)), ("ACADEMY", (36, 4)), ("DEPTHS", (34, 21))],
+    "BLUE": [("FOREST", (3, 18)), ("DESERT", (25, 52)), ("SNOW", (0, 22)), ("CRATER", (5, 20))],
+}
+# Items the kiosk doesn't sell once found (one of a kind)
+UNIQUE_ITEMS = {"WELLSPRING_MASK", "HEARTHFLAME_MASK", "CORNERSTONE_MASK"}
 
 # Legendaries: statics (above) and the roamers (any area, a different one each time the player
 # comes in: src/exotic_safari.c). Level 70, like the gym's.

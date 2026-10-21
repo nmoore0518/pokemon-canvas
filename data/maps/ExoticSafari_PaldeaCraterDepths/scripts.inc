@@ -12,17 +12,27 @@ ExoticSafari_PaldeaCraterDepths_EventScript_LegendTerapagos::
 	faceplayer
 	setvar VAR_0x8004, SPECIES_TERAPAGOS
 	call ExoticSafari_EventScript_LegendBattle
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_TERAPAGOS
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_PaldeaCraterDepths_EventScript_SealTerapagos::
+	lockall
+	setvar VAR_0x8004, 3
+	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_PaldeaCraterDepths_EventScript_LegendPecharunt::
 	lock
 	faceplayer
 	setvar VAR_0x8004, SPECIES_PECHARUNT
 	call ExoticSafari_EventScript_LegendBattle
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendStays
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_PECHARUNT
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_PaldeaCraterDepths_EventScript_SealPecharunt::
+	lockall
+	setvar VAR_0x8004, 4
+	goto ExoticSafari_EventScript_Seal

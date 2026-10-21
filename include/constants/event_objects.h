@@ -511,6 +511,12 @@ enum
     OBJ_EVENT_GFX_CONV_GEETA,
     OBJ_EVENT_GFX_CONV_NEMONA,
 // END Convention
+// The Exotic Safari (tools/gym_hack/exotic_safari_art.py)
+    OBJ_EVENT_GFX_EXOTIC_STAKE_PURPLE,
+    OBJ_EVENT_GFX_EXOTIC_STAKE_YELLOW,
+    OBJ_EVENT_GFX_EXOTIC_STAKE_GREEN,
+    OBJ_EVENT_GFX_EXOTIC_STAKE_BLUE,
+    OBJ_EVENT_GFX_VELVET_ROPE,
     NUM_OBJ_EVENT_GFX,
 };
 
@@ -807,6 +813,7 @@ enum
 #define OBJ_EVENT_PAL_TAG_CONV_GEETA 0x135e
 #define OBJ_EVENT_PAL_TAG_CONV_NEMONA 0x135f
 // END Convention palette tags
+#define OBJ_EVENT_PAL_TAG_EXOTIC_SAFARI 0x1360
 #define OBJ_EVENT_PAL_TAG_WHITE                   (OBJ_EVENT_PAL_TAG_NONE - 1)
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 

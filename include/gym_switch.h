@@ -19,5 +19,7 @@ void GymSwitch_OnlyNewTypes(void);
 void GymSwitch_PushTypes(void);
 void GymSwitch_BufferChoice(void);
 void GymSwitch_SetType(void);
+void GymSwitch_AllMastered(void);
+bool32 GymSwitch_AllTypesMastered(void);
 
 #endif // GUARD_GYM_SWITCH_H
