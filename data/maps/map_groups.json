@@ -75,7 +75,8 @@
     "gMapGroup_IndoorTwoIslandRoute_Frlg",
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
-    "gMapGroup_Johto"
+    "gMapGroup_Johto",
+    "gMapGroup_ExoticSafari"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1277,5 +1278,9 @@
     "ConventionHall_Steel",
     "ConventionHall_Fairy",
     "ConventionHall_Champions"
+  ],
+  "gMapGroup_ExoticSafari": [
+    "ExoticSafari_Hall",
+    "ExoticSafari_PaldeaMeadow"
   ]
 }

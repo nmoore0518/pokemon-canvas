@@ -590,6 +590,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `data/scripts/palm_pilot.inc`, `tools/gym_hack/build_heal_pad.py` | The Palm Pilot and the Pokémon Center heal pads |
 | `src/gym_legend.c`, `data/scripts/gym_legend.inc` | The legendary of the player's type in their gym |
 | `src/gym_switch.c`, `data/scripts/gym_switch.inc` | Mastering a type and changing the gym's type (Oak, the mentor battle, the lab menu) |
+| `tools/gym_hack/build_exotic_safari.py`, `data/maps/ExoticSafari_*` | The Exotic Pokémon Safari: Fuchsia door, the hall of region doors (plaques drawn by the script), the zones and their Pokémon |
 | `src/stat_items.c`, `data/scripts/stat_items.inc` | Stat training items, EV editor, Pallet Mart stock, boss gifts |
 | `src/gym_challenge.c`, `data/scripts/gym_challenge.inc` | Post-game gym challengers, rewards, records, statue |
 | `data/scripts/gym_aides.inc` | Oak's aides in the eight gyms (objects in each gym's map.json) |
@@ -649,6 +650,12 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          brush stroke of type colors under the POKéMON logo; Smeargle in Charizard's place; no flames); the credits open with the hack's own
          (creator, AI disclosure, pret/RHH, HnS, Emerald Rogue, not-affiliated note) before FireRed's staff
 7. Regional safari zones and the full Pokédex (post-game, an idea for later)
+   - [x] The Exotic Pokémon Safari's entrance: a second door on Fuchsia's Safari Zone building (sign:
+         "NEW! EXOTIC POKéMON SAFARI"), a hall with a door per region (Johto, Hoenn, Sinnoh, Unova,
+         Kalos, Alola, Galar, Paldea; names on plaques above), open to Gym Leaders only; shut doors
+         say "COMING SOON". Normal wild battles, the player's own balls (no Safari Balls or step
+         limit). `tools/gym_hack/build_exotic_safari.py` builds it all (ZONES lists the open zones).
+   - [x] Paldea test meadow (placeholder Pokémon, Lv 48-54)
    - [ ] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
          Pokémon past the first 386 can be caught, with puzzles opening sub-areas with legendaries.
          All species through Gen 9 are already in the ROM (the convention and challengers use them)

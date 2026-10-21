@@ -10740,6 +10740,32 @@
       "border_filepath": "data/layouts/ConventionHall_Champions/border.bin",
       "blockdata_filepath": "data/layouts/ConventionHall_Champions/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HALL",
+      "name": "ExoticSafari_Hall_Layout",
+      "width": 35,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_ExoticSafari",
+      "border_filepath": "data/layouts/ExoticSafari_Hall/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_Hall/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_PALDEA_MEADOW",
+      "name": "ExoticSafari_PaldeaMeadow_Layout",
+      "width": 24,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_ViridianForest",
+      "border_filepath": "data/layouts/ExoticSafari_PaldeaMeadow/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_PaldeaMeadow/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

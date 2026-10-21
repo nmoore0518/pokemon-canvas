@@ -1355,6 +1355,17 @@ const struct Tileset gTileset_PokemonTower =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_ExoticSafari =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_ExoticSafari,
+    .palettes = gTilesetPalettes_ExoticSafari,
+    .metatiles = gMetatiles_ExoticSafari,
+    .metatileAttributes = gMetatileAttributes_ExoticSafari,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,

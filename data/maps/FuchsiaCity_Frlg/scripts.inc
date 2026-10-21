@@ -250,3 +250,12 @@ FuchsiaCity_Text_MyFatherIsGymLeader::
 	.string "I'm training to use POISON POKéMON\n"
 	.string "as well as my father.$"
 
+
+@ Pokémon Canvas: the Exotic Pokémon Safari's door, beside the Safari Zone's
+FuchsiaCity_EventScript_ExoticSafariSign::
+	msgbox FuchsiaCity_Text_ExoticSafariSign, MSGBOX_SIGN
+	end
+
+FuchsiaCity_Text_ExoticSafariSign::
+	.string "NEW! EXOTIC POKéMON SAFARI\n"
+	.string "POKéMON from faraway regions!$"

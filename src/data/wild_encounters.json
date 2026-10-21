@@ -38934,6 +38934,75 @@
               }
             ]
           }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW",
+          "base_label": "gExoticSafari_PaldeaMeadow_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_LECHONK"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TAROUNTULA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SMOLIV"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FIDOUGH"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_NYMBLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PAWMI"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLITTLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TANDEMAUS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SQUAWKABILLY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHROODLE"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_TOEDSCOOL"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_WATTREL"
+              }
+            ]
+          }
         }
       ]
     },

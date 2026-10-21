@@ -1,0 +1,131 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_HALL",
+  "name": "ExoticSafari_Hall",
+  "layout": "LAYOUT_EXOTIC_SAFARI_HALL",
+  "music": "MUS_RG_FUCHSIA",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_FUCHSIA_CITY",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_INDOOR",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_WORKER_M",
+      "x": 19,
+      "y": 6,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_Hall_EventScript_Attendant",
+      "flag": "0"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 16,
+      "y": 7,
+      "elevation": 3,
+      "dest_map": "MAP_FUCHSIA_CITY",
+      "dest_warp_id": "11"
+    },
+    {
+      "x": 17,
+      "y": 7,
+      "elevation": 3,
+      "dest_map": "MAP_FUCHSIA_CITY",
+      "dest_warp_id": "11"
+    },
+    {
+      "x": 18,
+      "y": 7,
+      "elevation": 3,
+      "dest_map": "MAP_FUCHSIA_CITY",
+      "dest_warp_id": "11"
+    },
+    {
+      "x": 31,
+      "y": 3,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 3,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorJohto"
+    },
+    {
+      "type": "sign",
+      "x": 7,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorHoenn"
+    },
+    {
+      "type": "sign",
+      "x": 11,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorSinnoh"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorUnova"
+    },
+    {
+      "type": "sign",
+      "x": 19,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorKalos"
+    },
+    {
+      "type": "sign",
+      "x": 23,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorAlola"
+    },
+    {
+      "type": "sign",
+      "x": 27,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorGalar"
+    },
+    {
+      "type": "sign",
+      "x": 31,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "ExoticSafari_Hall_EventScript_DoorPaldea"
+    }
+  ]
+}
