@@ -20,6 +20,8 @@ Reruns replace everything it made before.
 """
 import json
 import re
+import contextlib
+import io
 import shutil
 import struct
 import sys
@@ -150,6 +152,8 @@ def main():
     ids = {m["id"] for m in hns_maps.values()}
     sys.path.insert(0, str(Path(__file__).parent))
     import convention_halls as conv           # (the Gym Leader Convention's halls)
+    from johto_npcs import NPCS, NPC_SPOTS
+    from build_convention import wrap
     hall_srcs = {h: hns_maps.get(n) or json.load(open(SRC / "data/maps" / n / "map.json")) for h, n in conv.SOURCES.items()}
 
     # ---- Tilesets --------------------------------------------------------------------------
@@ -371,6 +375,32 @@ def main():
                                 "elevation": 3, "movement_type": "MOVEMENT_TYPE_FACE_DOWN" if dy >= 0 and dx == 0 else "MOVEMENT_TYPE_LOOK_AROUND",
                                 "movement_range_x": 0, "movement_range_y": 0, "trainer_type": "TRAINER_TYPE_NONE",
                                 "trainer_sight_or_berry_tree_id": "0", "script": "Johto_EventScript_GuardTalk", "flag": "0"})
+        if hname in NPCS:
+            # People talking about the convention (tools/gym_hack/johto_npcs.py), on free spots
+            l = hns_layouts[m["layout"]]
+            grid = conv.Grid((SRC / l["blockdata_filepath"]).read_bytes(), l["width"], l["height"], behavior_names(l))
+            taken = {(o["x"], o["y"]) for o in objects} | {(c["x"], c["y"]) for c in coords}
+            if hname == conv.LOBBY:
+                taken |= {conv.LOBBY_LANDING, (conv.LOBBY_LANDING[0], conv.LOBBY_LANDING[1] - 1)}
+            w0 = warps[0]
+            start = next(((w0["x"] + dx, w0["y"] + dy) for dx, dy in ((0, -1), (0, 1), (-1, 0), (1, 0))
+                          if grid.passable(w0["x"] + dx, w0["y"] + dy)), (w0["x"], w0["y"] - 1))
+            outdoors = m["map_type"] in ("MAP_TYPE_TOWN", "MAP_TYPE_CITY", "MAP_TYPE_ROUTE")
+            with contextlib.redirect_stdout(io.StringIO()):
+                spots = conv.place(grid, start, [dict(w) for w in warps], [], len(NPCS[hname]),
+                                   blocked=frozenset(taken), sample=300 if outdoors else None, open_spots=True)
+            if hname in NPC_SPOTS:            # (set by hand)
+                spots = NPC_SPOTS[hname]
+            for n, ((gfx, text), (x, y, face)) in enumerate(zip(NPCS[hname], spots)):
+                label = f"{name}_EventScript_ConventionFan{n}"
+                e = grid.elevation(x, y)
+                objects.append({"local_id": f"LOCALID_{mid[4:]}_FAN_{n}", "type": "object", "graphics_id": gfx,
+                                "x": x, "y": y, "elevation": e if e not in (0, 15) else 3,
+                                "movement_type": "MOVEMENT_TYPE_LOOK_AROUND" if outdoors else f"MOVEMENT_TYPE_FACE_{face}",
+                                "movement_range_x": 0, "movement_range_y": 0, "trainer_type": "TRAINER_TYPE_NONE",
+                                "trainer_sight_or_berry_tree_id": "0", "script": label, "flag": "0"})
+                extra_scripts += (f"\n{label}::\n\tmsgbox {label}_Text, MSGBOX_NPC\n\tend\n\n"
+                                  f"{label}_Text:\n\t.string \"{wrap(text)}$\"\n")
         out = {
             "id": mid, "name": name, "layout": new_id(m["layout"]),
             "music": "MUS_HG_POKEATHLON_LOBBY" if hname.startswith("GoldenrodCity_RadioTower") else   # (the convention)

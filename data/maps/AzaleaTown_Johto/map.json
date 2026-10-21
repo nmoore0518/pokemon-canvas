@@ -30,6 +30,36 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Johto_EventScript_GuardTalk",
       "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_AZALEA_TOWN_FAN_0",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
+      "x": 15,
+      "y": 21,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "AzaleaTown_Johto_EventScript_ConventionFan0",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_AZALEA_TOWN_FAN_1",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_BUG_CATCHER",
+      "x": 20,
+      "y": 26,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "AzaleaTown_Johto_EventScript_ConventionFan1",
+      "flag": "0"
     }
   ],
   "warp_events": [

@@ -202,15 +202,19 @@ def reachable(grid, start, warps, blocked=frozenset()):
     return dist
 
 
-def place(grid, entrance, warps, preferred, count):
+def place(grid, entrance, warps, preferred, count, blocked=frozenset(), sample=None, open_spots=False):
     """Spots for count trainers: [(x, y, facing)], the first the farthest preferred spot.
     The gym's own trainers' spots come first, as they were (they may be part of its puzzle: the
     ice gym's trainers stop the player sliding); then free spots."""
     warp_tiles = {(w["x"], w["y"]) for w in warps}
     fixed = [p for p in preferred if grid.passable(*p) and p not in warp_tiles][:count]
-    base = reachable(grid, entrance, warps, frozenset(fixed))
+    base = reachable(grid, entrance, warps, frozenset(fixed) | blocked)
     fixed = [p for p in fixed if any(n in base for n in ((p[0] + 1, p[1]), (p[0] - 1, p[1]), (p[0], p[1] + 1), (p[0], p[1] - 1)))]
-    base = reachable(grid, entrance, warps, frozenset(fixed))
+    base = reachable(grid, entrance, warps, frozenset(fixed) | blocked)
+    candidates = sorted(base)
+    if sample and len(candidates) > sample:        # (big outdoor maps: a spread-out sample of spots)
+        import random
+        candidates = sorted(random.Random(len(candidates)).sample(candidates, sample))
     near_entrance = {p for p, d in base.items() if d <= 3}
 
     def ok_spot(p, taken):
@@ -219,8 +223,10 @@ def place(grid, entrance, warps, preferred, count):
             return False
         if grid.behavior(x, y) not in PLACEABLE or grid.layer(x, y):
             return False          # (on plain floor, not under a statue's top or a roof)
+        if p in blocked or any(n in blocked for n in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))):
+            return False                            # (not right next to someone else either)
         new = taken | {p}
-        r = reachable(grid, entrance, warps, frozenset(new))
+        r = reachable(grid, entrance, warps, frozenset(new) | blocked)
         if len(r) < len(base) - len(new):          # something else got cut off
             return False
         for t in new:                                # everyone can still be talked to
@@ -234,14 +240,18 @@ def place(grid, entrance, warps, preferred, count):
     spots = sorted(fixed, key=far)
     while len(spots) < count:
         best, score = None, None
-        for p in sorted(base):
+        for p in candidates:
             if not ok_spot(p, set(spots)):
                 continue
             x, y = p
-            others = spots + [entrance]
+            others = spots + [entrance] + list(blocked)
             md = min(abs(x - a) + abs(y - b) for a, b in others)
             wall = sum(not grid.passable(*n) for n in ((x + 1, y), (x - 1, y), (x, y - 1)))
-            s = min(md, 6) * 10 + wall * 3 + base[p] / 100
+            if open_spots:      # (people out and about: in the open, on paths, not in corners)
+                around = sum(n in base for n in ((x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)))
+                s = min(md, 10) * 10 + around * 4 - wall * 10
+            else:
+                s = min(md, 6) * 10 + wall * 3 + base[p] / 100
             if score is None or s > score:
                 best, score = p, s
         if best is None:
@@ -249,7 +259,7 @@ def place(grid, entrance, warps, preferred, count):
             break
         spots.append(best)
     out = []
-    final = reachable(grid, entrance, warps, frozenset(spots))
+    final = reachable(grid, entrance, warps, frozenset(spots) | blocked)
     for x, y in spots:
         opts = [(final[n], d) for n, d in (((x, y + 1), "DOWN"), ((x - 1, y), "LEFT"), ((x + 1, y), "RIGHT"),
                                             ((x, y - 1), "UP")) if n in final]

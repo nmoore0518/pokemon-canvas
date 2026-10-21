@@ -507,6 +507,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     instrument set (`sound/voicegroups/hgss/`, voicegroups renamed `voicegroup_hg229`...), with its
     key split tables and samples. `MUS_HG_*` come right after the FireRed songs (`END_MUS`); the
     phonemes moved up.
+  - **Convention fans** (`tools/gym_hack/johto_npcs.py`): 21 people around Goldenrod (the Radio Tower
+    too), Olivine, Ecruteak, Azalea and their Pokémon Centers talk about the convention and their
+    favorite leaders. They stand on free spots picked by `convention_halls.place` (in the open, out
+    of the way), or spots set by hand (`NPC_SPOTS`). The rest of Johto's people are still to come.
   - **No Sevii Islands**: Bill no longer waits on Cinnabar after the Volcano Badge (saves that had
     the trip waiting drop it); **Moltres** is on Victory Road 2F (as in Red and Blue), Lv 50.
 - **The Gym Leader Convention** fills Goldenrod's Radio Tower: every Gym Leader (Kahunas and Trial
@@ -617,5 +621,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Convention Center (Radio Tower): 18 type halls + Champions' Hall, 127 leaders (Emerald
          Rogue sprites), trophies
    - [x] HGSS music
-   - [ ] Johto NPCs
+   - [x] Convention fans around Johto
+   - [ ] The rest of Johto's people (random, faithful to HGSS, or quests: to decide)
    - [ ] Title screen and credits (artists, HnS, AI disclosure)
