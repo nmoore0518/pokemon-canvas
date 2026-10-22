@@ -33,6 +33,17 @@ CPP = ["arm-none-eabi-gcc", "-E", "-P", "-w", "-iquote", "include", "-I", "inclu
 # ---------------------------------------------------------------------------------------------
 # Reading the game's data
 # ---------------------------------------------------------------------------------------------
+def species_numbers():
+    """SPECIES_* -> number, aliases (SPECIES_OGERPON = SPECIES_OGERPON_TEAL) resolved"""
+    pairs = re.findall(r"\b(SPECIES_\w+)\s*=\s*(\w+)", (ROOT / "include/constants/species.h").read_text())
+    nums = {n: int(v) for n, v in pairs if v.isdigit()}
+    for _ in range(4):
+        for n, v in pairs:
+            if not v.isdigit() and v in nums:
+                nums.setdefault(n, nums[v])
+    return nums
+
+
 def preprocess(src):
     out = OUT_DIR / (Path(src).stem + ".i")
     if not out.exists() or out.stat().st_mtime < (ROOT / src).stat().st_mtime:
@@ -620,9 +631,7 @@ def main():
             parents.setdefault(target, (k, txt))
     loc = locations(data)
     # (the data's names for a species can be aliases: SPECIES_TORNADUS is SPECIES_TORNADUS_INCARNATE)
-    nums = {}
-    for name, val in re.findall(r"\b(SPECIES_\w+)\s*=\s*(\w+)", (ROOT / "include/constants/species.h").read_text()):
-        nums[name] = int(val) if val.isdigit() else nums.get(val)
+    nums = species_numbers()
     canon = {}
     for k in infos:
         if nums.get(k) is not None:
