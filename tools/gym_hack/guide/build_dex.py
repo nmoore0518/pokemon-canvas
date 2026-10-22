@@ -276,6 +276,30 @@ def prettify_map(folder):
     return out
 
 
+# Gifts the scripts give by variable (prizes, choices, fossils)
+MANUAL = [
+    ("SPECIES_OMANYTE", "Cinnabar Lab", "Revive the Helix Fossil (Mt. Moon)", "After Badge 5"),
+    ("SPECIES_KABUTO", "Cinnabar Lab", "Revive the Dome Fossil (Mt. Moon)", "After Badge 5"),
+    ("SPECIES_AERODACTYL", "Cinnabar Lab", "Revive the Old Amber (Pewter Museum)", "After Badge 5"),
+    ("SPECIES_HITMONLEE", "Saffron Fighting Dojo", "Gift: beat the dojo, choose Hitmonlee or Hitmonchan (Lv 25)", "After Badge 5"),
+    ("SPECIES_HITMONCHAN", "Saffron Fighting Dojo", "Gift: beat the dojo, choose Hitmonlee or Hitmonchan (Lv 25)", "After Badge 5"),
+]
+for _sp, _coins in (("ABRA", "180"), ("CLEFAIRY", "500"), ("DRATINI", "2,800"), ("SCYTHER", "5,500"), ("PORYGON", "9,999")):
+    MANUAL.append((f"SPECIES_{_sp}", "Celadon Game Corner", f"Prize for {_coins} coins", "After Badge 3"))
+
+SEVII = re.compile(r"MAP_((ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN)_ISLAND|MT_EMBER|BIRTH_ISLAND|NAVEL_ROCK|TRAINER_TOWER)")
+
+
+def const_name(map_const):
+    """MAP_ROUTE34 -> Route 34; MAP_ILEX_FOREST -> Ilex Forest"""
+    words = []
+    for w in map_const[4:].split("_"):
+        m = re.fullmatch(r"([A-Z]+)(\d+)", w)
+        words.append(f"{m.group(1).title()} {m.group(2)}" if m and m.group(1) not in ("B",) else
+                     w if re.fullmatch(r"B?\d+F", w) else w.title())
+    return " ".join(words).replace("Pokemon", "Pokémon")
+
+
 def locations(data):
     """species key -> list of (sort key, html line)"""
     loc = defaultdict(list)
@@ -287,13 +311,17 @@ def locations(data):
     for e in group["encounters"]:
         if not e["base_label"].endswith("_FireRed"):
             continue
+        if SEVII.match(e["map"]):
+            continue                                 # (the Sevii Islands can't be reached in this game)
         safari = safari_name(e["map"]) if "EXOTIC_SAFARI" in e["map"] else None
         if safari:
             where, when, order = f"{safari[0]}: {safari[1]}", "post-game", 2
+        elif "_Johto_" in e["base_label"]:
+            where, when, order = "Johto: " + const_name(e["map"]), "post-game", 2
         elif e["map"] in names:
             (where, when), order = names[e["map"]], 1
         else:
-            where, when, order = prettify_map(e["map"][4:].title().replace("_", "")), "", 1
+            where, when, order = const_name(e["map"]), "", 1
         for method, label in (("land_mons", "Grass/Cave"), ("water_mons", "Surf"), ("rock_smash_mons", "Rock Smash")):
             mons = e.get(method, {}).get("mons", [])
             per = defaultdict(lambda: [0, 99, 0])
@@ -334,6 +362,9 @@ def locations(data):
         loc[sp].append((2, f"{s[0]}: {s[1]}", "Legendary (Lv 70). " + PUZZLES.get(sp[8:], ""), "post-game"))
     for sp, need, region in re.findall(r"\{(SPECIES_\w+), FLAG_EXOTIC_LEGEND_\w+, FLAG_TEMP_\w+, (\w+), (\d)\}", areas_h):
         loc[sp].append((2, f"{REGION_OF_SAFARI[int(region)]} Safari", "Roams: 1 in 8 chance in any area you enter (Lv 70)." + ROAM_NOTES.get(sp[8:], ""), "post-game"))
+    for sp, place, how, when in MANUAL:
+        loc[sp].append((1, place, how, when))
+    loc["SPECIES_MOLTRES"].append((1, "Victory Road 2F", "One-time battle (Lv 50)", "After Badge 8"))
     loc["SPECIES_TYPE_NULL"].append((2, "Alola Safari: Hano Beach", "Gift. " + PUZZLES["TYPE_NULL"], "post-game"))
 
     # Gifts and one-off battles in Kanto's map scripts
@@ -342,10 +373,14 @@ def locations(data):
         if folder.startswith(("ExoticSafari", "Test")):
             continue
         text = f.read_text(errors="replace")
+        if re.match(r"(One|Two|Three|Four|Five|Six|Seven)Island|MtEmber|BirthIsland|NavelRock|TrainerTower", folder):
+            continue
         if not (folder.endswith("_Frlg") or folder.startswith("PalletTown")):
             continue                                 # (Emerald's maps aren't in FireRed's world)
-        for kind, sp in re.findall(r"\b(givemon|setwildbattle)\s+(SPECIES_\w+)", text):
-            what = "Gift" if kind == "givemon" else "One-time battle"
+        for kind, sp, lv in re.findall(r"\b(givemon|setwildbattle)\s+(SPECIES_\w+),\s*(\d+)", text):
+            if folder.startswith(("PokemonTower_6F", "CinnabarIsland_PokemonLab", "CeladonCity_GameCorner", "SaffronCity_Dojo")):
+                continue                             # (the ghost: it can't be caught)
+            what = ("Gift" if kind == "givemon" else "One-time battle") + f" (Lv {lv})"
             where = prettify_map(folder)
             loc[sp].append((1, where, what, ""))
     return loc
