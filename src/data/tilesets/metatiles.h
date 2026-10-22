@@ -368,6 +368,16 @@ const u16 gMetatiles_AlolaOcean[] = INCBIN_U16("data/tilesets/secondary/alola_oc
 const u16 gMetatileAttributes_AlolaOcean[] = INCBIN_U16("data/tilesets/secondary/alola_ocean_frlg/metatile_attributes.bin");
 const u16 gMetatiles_KalosBadlands[] = INCBIN_U16("data/tilesets/secondary/kalos_badlands_frlg/metatiles.bin");
 const u16 gMetatileAttributes_KalosBadlands[] = INCBIN_U16("data/tilesets/secondary/kalos_badlands_frlg/metatile_attributes.bin");
+const u16 gMetatiles_UnovaChasm[] = INCBIN_U16("data/tilesets/secondary/unova_chasm/metatiles.bin");
+const u16 gMetatileAttributes_UnovaChasm[] = INCBIN_U16("data/tilesets/secondary/unova_chasm/metatile_attributes.bin");
+const u16 gMetatiles_UnovaDragonspiral[] = INCBIN_U16("data/tilesets/secondary/unova_dragonspiral/metatiles.bin");
+const u16 gMetatileAttributes_UnovaDragonspiral[] = INCBIN_U16("data/tilesets/secondary/unova_dragonspiral/metatile_attributes.bin");
+const u16 gMetatiles_UnovaChargestone[] = INCBIN_U16("data/tilesets/secondary/unova_chargestone/metatiles.bin");
+const u16 gMetatileAttributes_UnovaChargestone[] = INCBIN_U16("data/tilesets/secondary/unova_chargestone/metatile_attributes.bin");
+const u16 gMetatiles_UnovaRelicCastle[] = INCBIN_U16("data/tilesets/secondary/unova_relic_castle/metatiles.bin");
+const u16 gMetatileAttributes_UnovaRelicCastle[] = INCBIN_U16("data/tilesets/secondary/unova_relic_castle/metatile_attributes.bin");
+const u16 gMetatiles_UnovaAbyssalRuins[] = INCBIN_U16("data/tilesets/secondary/unova_abyssal_ruins/metatiles.bin");
+const u16 gMetatileAttributes_UnovaAbyssalRuins[] = INCBIN_U16("data/tilesets/secondary/unova_abyssal_ruins/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 
@@ -640,3 +650,7 @@ const u16 gMetatileAttributes_KalosSnowRoute[] = INCBIN_U16("data/tilesets/secon
 const u16 gMetatiles_KalosCave[] = INCBIN_U16("data/tilesets/secondary/kalos_cave/metatiles.bin");
 const u16 gMetatileAttributes_KalosCave[] = INCBIN_U16("data/tilesets/secondary/kalos_cave/metatile_attributes.bin");
 // </clone KalosCave>
+// <clone UnovaSkyarrow>
+const u16 gMetatiles_UnovaSkyarrow[] = INCBIN_U16("data/tilesets/secondary/unova_skyarrow/metatiles.bin");
+const u16 gMetatileAttributes_UnovaSkyarrow[] = INCBIN_U16("data/tilesets/secondary/unova_skyarrow/metatile_attributes.bin");
+// </clone UnovaSkyarrow>

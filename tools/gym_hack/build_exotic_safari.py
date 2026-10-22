@@ -34,6 +34,7 @@ REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALD
 # The regions with a zone open: their first area (the hall's door leads there). The areas
 # themselves: tools/gym_hack/paldea.py
 ZONES = {
+    "UNOVA": {"id": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW"},
     "KALOS": {"id": "MAP_EXOTIC_SAFARI_KALOS_CITY"},
     "ALOLA": {"id": "MAP_EXOTIC_SAFARI_ALOLA_RESORT"},
     "GALAR": {"id": "MAP_EXOTIC_SAFARI_GALAR_MEADOW"},
@@ -509,13 +510,14 @@ import paldea                                   # noqa: E402
 import galar                                    # noqa: E402
 import alola                                    # noqa: E402
 import kalos                                    # noqa: E402
+import unova                                    # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
-REGION_MODULES = [paldea, galar, alola, kalos]
+REGION_MODULES = [paldea, galar, alola, kalos, unova]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
-ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10}
+ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10, "MAP_TYPE_UNDERWATER": 10}
 ROAMER_FLAG_BASE = 0x1B             # (the roamers' hide flags: FLAG_TEMP_1B-1F; statics' from FLAG_TEMP_11)
 ROAMER_SPOTS = 48                    # (per area: a sample of its reachable grass/sand/cave floor)
 

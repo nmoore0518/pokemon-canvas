@@ -123,8 +123,7 @@ ExoticSafari_Hall_EventScript_DoorSinnoh::
 	bufferstring STR_VAR_1, ExoticSafari_Hall_Text_Sinnoh
 	goto ExoticSafari_Hall_EventScript_ShutSign
 ExoticSafari_Hall_EventScript_DoorUnova::
-	bufferstring STR_VAR_1, ExoticSafari_Hall_Text_Unova
-	goto ExoticSafari_Hall_EventScript_ShutSign
+	end
 ExoticSafari_Hall_EventScript_DoorKalos::
 	end
 ExoticSafari_Hall_EventScript_DoorAlola::
@@ -196,9 +195,9 @@ ExoticSafari_Hall_Text_TakeALook::
 	.string "region, from JOHTO to PALDEA!$"
 
 ExoticSafari_Hall_Text_GoOnThrough::
-	.string "The KALOS, ALOLA, GALAR and PALDEA\n"
-	.string "ZONES are open. The rest are still\l"
-	.string "being built!\p"
+	.string "The UNOVA, KALOS, ALOLA, GALAR and\n"
+	.string "PALDEA ZONES are open. The rest are\l"
+	.string "still being built!\p"
 	.string "Just walk up to a door. It opens\n"
 	.string "for pass holders.\p"
 	.string "No SAFARI BALLS here: battle and\n"

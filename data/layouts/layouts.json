@@ -11117,6 +11117,84 @@
       "border_filepath": "data/layouts/ExoticSafari_KalosOcean/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_KalosOcean/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_UNOVA_SKYARROW",
+      "name": "ExoticSafari_UnovaSkyarrow_Layout",
+      "width": 96,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_UnovaSkyarrow",
+      "border_filepath": "data/layouts/ExoticSafari_UnovaSkyarrow/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_UnovaSkyarrow/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_UNOVA_GIANT_CHASM",
+      "name": "ExoticSafari_UnovaGiantChasm_Layout",
+      "width": 60,
+      "height": 32,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_UnovaChasm",
+      "border_filepath": "data/layouts/ExoticSafari_UnovaGiantChasm/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_UnovaGiantChasm/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL",
+      "name": "ExoticSafari_UnovaDragonspiral_Layout",
+      "width": 27,
+      "height": 25,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_UnovaDragonspiral",
+      "border_filepath": "data/layouts/ExoticSafari_UnovaDragonspiral/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_UnovaDragonspiral/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_UNOVA_CHARGESTONE",
+      "name": "ExoticSafari_UnovaChargestone_Layout",
+      "width": 48,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_UnovaChargestone",
+      "border_filepath": "data/layouts/ExoticSafari_UnovaChargestone/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_UnovaChargestone/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE",
+      "name": "ExoticSafari_UnovaRelicCastle_Layout",
+      "width": 21,
+      "height": 17,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_UnovaRelicCastle",
+      "border_filepath": "data/layouts/ExoticSafari_UnovaRelicCastle/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_UnovaRelicCastle/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS",
+      "name": "ExoticSafari_UnovaAbyssalRuins_Layout",
+      "width": 44,
+      "height": 17,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_UnovaAbyssalRuins",
+      "border_filepath": "data/layouts/ExoticSafari_UnovaAbyssalRuins/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_UnovaAbyssalRuins/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

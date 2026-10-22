@@ -31,6 +31,12 @@ static const u8 sSpots_ExoticSafari_KalosSnowyPath[][3] = {{22, 1, 3}, {23, 1, 3
 static const u8 sSpots_ExoticSafari_KalosCave[][3] = {{36, 2, 3}, {28, 4, 3}, {32, 4, 3}, {36, 4, 3}, {8, 6, 3}, {9, 6, 3}, {26, 8, 3}, {6, 9, 3}, {17, 9, 3}, {21, 9, 3}, {10, 11, 3}, {3, 12, 3}, {16, 12, 3}, {38, 13, 3}, {7, 15, 3}, {10, 15, 3}, {45, 15, 3}, {45, 17, 3}, {12, 18, 3}, {17, 18, 3}, {24, 19, 3}, {16, 20, 3}, {26, 20, 3}, {15, 21, 3}, {31, 22, 3}, {42, 24, 3}, {44, 25, 3}, {2, 26, 3}, {30, 26, 3}, {20, 27, 3}, {26, 27, 3}, {11, 28, 3}, {25, 28, 3}, {34, 28, 3}, {38, 28, 3}, {15, 29, 3}, {18, 29, 3}, {18, 30, 3}, {43, 30, 3}, {37, 31, 3}, {45, 32, 3}, {38, 33, 3}, {39, 33, 3}, {42, 34, 3}, {27, 35, 3}, {37, 35, 3}, {28, 37, 3}, {31, 37, 3}};
 static const u8 sSpots_ExoticSafari_KalosBadlands[][3] = {{29, 2, 3}, {30, 2, 3}, {32, 2, 3}, {28, 3, 3}, {29, 3, 3}, {32, 3, 3}, {33, 3, 3}, {35, 3, 3}, {40, 3, 3}, {25, 4, 3}, {32, 4, 3}, {23, 5, 3}, {26, 5, 3}, {29, 5, 3}, {33, 5, 3}, {10, 6, 3}, {24, 6, 3}, {26, 6, 3}, {30, 6, 3}, {42, 6, 3}, {43, 6, 3}, {47, 6, 3}, {48, 6, 3}, {9, 7, 3}, {27, 7, 3}, {43, 7, 3}, {46, 7, 3}, {48, 7, 3}, {49, 7, 3}, {50, 7, 3}, {6, 8, 3}, {43, 8, 3}, {47, 8, 3}, {9, 9, 3}, {38, 9, 3}, {39, 9, 3}, {41, 9, 3}, {46, 9, 3}, {47, 9, 3}, {59, 9, 3}, {11, 10, 3}, {39, 10, 3}, {15, 11, 3}, {40, 11, 3}, {58, 11, 3}, {11, 12, 3}, {13, 12, 3}, {14, 12, 3}};
 static const u8 sSpots_ExoticSafari_KalosOcean[][3] = {};
+static const u8 sSpots_ExoticSafari_UnovaSkyarrow[][3] = {{67, 5, 3}, {69, 5, 3}, {71, 5, 3}, {72, 5, 3}, {54, 6, 3}, {55, 6, 3}, {57, 6, 3}, {68, 6, 3}, {69, 6, 3}, {71, 6, 3}, {72, 6, 3}, {73, 6, 3}, {74, 6, 3}, {55, 7, 3}, {56, 7, 3}, {57, 7, 3}, {61, 7, 3}, {62, 7, 3}, {63, 7, 3}, {65, 7, 3}, {74, 7, 3}, {76, 7, 3}, {58, 8, 3}, {59, 8, 3}, {63, 8, 3}, {64, 8, 3}, {73, 9, 3}, {75, 9, 3}, {76, 9, 3}, {58, 10, 3}, {74, 10, 3}, {79, 10, 3}, {80, 10, 3}, {76, 11, 3}, {77, 11, 3}, {78, 11, 3}, {79, 11, 3}, {83, 11, 3}, {83, 12, 3}, {84, 12, 3}, {81, 13, 3}, {82, 13, 3}, {83, 13, 3}, {84, 13, 3}, {80, 14, 3}, {81, 14, 3}, {83, 14, 3}, {84, 14, 3}};
+static const u8 sSpots_ExoticSafari_UnovaGiantChasm[][3] = {{15, 4, 3}, {16, 4, 3}, {21, 4, 3}, {31, 4, 3}, {32, 4, 3}, {41, 4, 3}, {7, 6, 3}, {11, 6, 3}, {14, 6, 3}, {28, 6, 3}, {39, 6, 3}, {41, 7, 3}, {47, 7, 3}, {47, 9, 3}, {49, 9, 3}, {52, 9, 3}, {33, 10, 3}, {35, 10, 3}, {53, 10, 3}, {7, 11, 3}, {7, 13, 3}, {25, 13, 3}, {32, 13, 3}, {44, 13, 3}, {11, 14, 3}, {12, 14, 3}, {10, 15, 3}, {31, 15, 3}, {38, 15, 3}, {29, 16, 3}, {34, 17, 3}, {36, 17, 3}, {49, 17, 3}, {6, 18, 3}, {43, 18, 3}, {6, 19, 3}, {52, 19, 3}, {11, 20, 3}, {20, 20, 3}, {28, 20, 3}, {36, 20, 3}, {7, 21, 3}, {14, 21, 3}, {22, 21, 3}, {35, 22, 3}, {7, 23, 3}, {30, 24, 3}, {44, 24, 3}};
+static const u8 sSpots_ExoticSafari_UnovaDragonspiral[][3] = {{14, 4, 3}, {2, 6, 3}, {7, 6, 3}, {23, 6, 3}, {5, 7, 3}, {7, 7, 3}, {11, 7, 3}, {22, 7, 3}, {3, 8, 3}, {4, 8, 3}, {14, 8, 3}, {2, 9, 3}, {5, 9, 3}, {23, 9, 3}, {24, 9, 3}, {25, 10, 3}, {15, 11, 3}, {23, 11, 3}, {2, 12, 3}, {9, 12, 3}, {10, 12, 3}, {12, 12, 3}, {15, 12, 3}, {21, 12, 3}, {4, 13, 3}, {23, 13, 3}, {3, 14, 3}, {25, 14, 3}, {3, 16, 3}, {5, 17, 3}, {3, 18, 3}, {4, 18, 3}, {10, 18, 3}, {6, 19, 3}, {10, 19, 3}, {14, 19, 3}, {17, 19, 3}, {19, 19, 3}, {20, 19, 3}, {10, 20, 3}, {13, 20, 3}, {19, 20, 3}, {6, 21, 3}, {20, 21, 3}, {6, 22, 3}, {12, 22, 3}, {18, 22, 3}, {20, 22, 3}};
+static const u8 sSpots_ExoticSafari_UnovaChargestone[][3] = {{21, 2, 3}, {20, 3, 3}, {1, 4, 3}, {4, 5, 3}, {11, 5, 3}, {37, 5, 3}, {9, 7, 3}, {15, 8, 3}, {19, 10, 3}, {9, 11, 3}, {27, 11, 3}, {23, 12, 3}, {25, 12, 3}, {33, 12, 3}, {27, 13, 3}, {44, 13, 3}, {15, 14, 3}, {23, 14, 3}, {4, 15, 3}, {40, 15, 3}, {42, 15, 3}, {45, 15, 3}, {3, 16, 3}, {38, 16, 3}, {38, 17, 3}, {8, 19, 3}, {43, 19, 3}, {45, 19, 3}, {28, 23, 3}, {23, 24, 3}, {26, 24, 3}, {26, 25, 3}, {5, 28, 3}, {25, 28, 3}, {26, 28, 3}, {22, 29, 3}, {25, 29, 3}, {1, 31, 3}, {39, 31, 3}, {18, 32, 3}, {2, 35, 3}, {37, 35, 3}, {42, 36, 3}, {28, 37, 3}, {31, 37, 3}, {15, 38, 3}, {29, 38, 3}, {38, 38, 3}};
+static const u8 sSpots_ExoticSafari_UnovaRelicCastle[][3] = {{7, 2, 3}, {8, 2, 3}, {12, 2, 3}, {14, 2, 3}, {16, 2, 3}, {4, 3, 3}, {5, 3, 3}, {6, 3, 3}, {7, 3, 3}, {8, 3, 3}, {10, 3, 3}, {11, 3, 3}, {14, 3, 3}, {2, 4, 3}, {3, 4, 3}, {5, 4, 3}, {14, 4, 3}, {3, 5, 3}, {18, 5, 3}, {4, 6, 3}, {17, 6, 3}, {2, 8, 3}, {16, 8, 3}, {18, 8, 3}, {2, 9, 3}, {3, 9, 3}, {16, 9, 3}, {17, 9, 3}, {18, 9, 3}, {3, 10, 3}, {4, 10, 3}, {17, 10, 3}, {2, 11, 3}, {3, 11, 3}, {4, 11, 3}, {17, 11, 3}, {3, 12, 3}, {5, 12, 3}, {15, 12, 3}, {6, 13, 3}, {9, 13, 3}, {11, 13, 3}, {12, 13, 3}, {13, 13, 3}, {14, 13, 3}, {15, 13, 3}, {6, 14, 3}, {7, 14, 3}};
+static const u8 sSpots_ExoticSafari_UnovaAbyssalRuins[][3] = {{4, 2, 3}, {11, 2, 3}, {12, 2, 3}, {15, 2, 3}, {19, 2, 3}, {36, 2, 3}, {10, 3, 3}, {12, 5, 3}, {17, 5, 3}, {22, 5, 3}, {26, 5, 3}, {27, 5, 3}, {35, 5, 3}, {36, 5, 3}, {39, 5, 3}, {28, 6, 3}, {32, 8, 3}, {42, 8, 3}, {1, 9, 3}, {4, 9, 3}, {6, 9, 3}, {8, 9, 3}, {13, 9, 3}, {18, 9, 3}, {25, 9, 3}, {11, 10, 3}, {2, 11, 3}, {26, 11, 3}, {32, 11, 3}, {5, 12, 3}, {16, 12, 3}, {20, 12, 3}, {26, 12, 3}, {27, 12, 3}, {41, 12, 3}, {42, 12, 3}, {23, 13, 3}, {8, 14, 3}, {10, 14, 3}, {15, 14, 3}, {26, 14, 3}, {30, 14, 3}, {37, 14, 3}, {38, 14, 3}, {9, 15, 3}, {19, 15, 3}, {21, 15, 3}, {31, 15, 3}};
 
 static const struct ExoticSafariArea sExoticSafariAreas[] =
 {
@@ -62,9 +68,15 @@ static const struct ExoticSafariArea sExoticSafariAreas[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CAVE), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosCave), sSpots_ExoticSafari_KalosCave},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosBadlands), sSpots_ExoticSafari_KalosBadlands},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_OCEAN), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosOcean), sSpots_ExoticSafari_KalosOcean},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaSkyarrow), sSpots_ExoticSafari_UnovaSkyarrow},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaGiantChasm), sSpots_ExoticSafari_UnovaGiantChasm},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaDragonspiral), sSpots_ExoticSafari_UnovaDragonspiral},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaChargestone), sSpots_ExoticSafari_UnovaChargestone},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaRelicCastle), sSpots_ExoticSafari_UnovaRelicCastle},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaAbyssalRuins), sSpots_ExoticSafari_UnovaAbyssalRuins},
 };
 
-#define EXOTIC_SAFARI_ROAMER_COUNT 12
+#define EXOTIC_SAFARI_ROAMER_COUNT 14
 static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =
 {
     {SPECIES_OKIDOGI, FLAG_EXOTIC_LEGEND_OKIDOGI, FLAG_TEMP_1B, 0, 0},
@@ -79,6 +91,8 @@ static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER
     {SPECIES_TAPU_LELE, FLAG_EXOTIC_LEGEND_TAPU_LELE, FLAG_TEMP_1C, 0, 2},
     {SPECIES_TAPU_BULU, FLAG_EXOTIC_LEGEND_TAPU_BULU, FLAG_TEMP_1D, 0, 2},
     {SPECIES_TAPU_FINI, FLAG_EXOTIC_LEGEND_TAPU_FINI, FLAG_TEMP_1E, 0, 2},
+    {SPECIES_THUNDURUS, FLAG_EXOTIC_LEGEND_THUNDURUS, FLAG_TEMP_1B, 0, 4},
+    {SPECIES_LANDORUS, FLAG_EXOTIC_LEGEND_LANDORUS, FLAG_TEMP_1C, 0, 4},
 };
 #define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_1B)
 
@@ -144,6 +158,14 @@ static const struct ExoticSafariStatic sExoticSafariStatics[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CAVE), SPECIES_HOOPA, FLAG_EXOTIC_LEGEND_HOOPA, FLAG_TEMP_11, SEAL_BOTTLE, 0, 1},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), SPECIES_YVELTAL, FLAG_EXOTIC_LEGEND_YVELTAL, FLAG_TEMP_11, SEAL_DRAIN, 10, 1},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_OCEAN), SPECIES_VOLCANION, FLAG_EXOTIC_LEGEND_VOLCANION, FLAG_TEMP_11, SEAL_STEAM, 0, 1},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), SPECIES_TERRAKION, FLAG_EXOTIC_LEGEND_TERRAKION, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), SPECIES_VIRIZION, FLAG_EXOTIC_LEGEND_VIRIZION, FLAG_TEMP_12, SEAL_NONE, 0, 4},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), SPECIES_COBALION, FLAG_EXOTIC_LEGEND_COBALION, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), SPECIES_KYUREM, FLAG_EXOTIC_LEGEND_KYUREM, FLAG_TEMP_12, SEAL_NONE, 0, 4},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), SPECIES_RESHIRAM, FLAG_EXOTIC_LEGEND_RESHIRAM, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), SPECIES_ZEKROM, FLAG_EXOTIC_LEGEND_ZEKROM, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), SPECIES_VICTINI, FLAG_EXOTIC_LEGEND_VICTINI, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), SPECIES_KELDEO, FLAG_EXOTIC_LEGEND_KELDEO, FLAG_TEMP_11, SEAL_NONE, 0, 3},
 };
 
 #define EXOTIC_SAFARI_STAKE_COLORS 4

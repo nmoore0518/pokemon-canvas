@@ -2839,6 +2839,116 @@ const u16 gTilesetPalettes_KalosBadlands[][16] =
     INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_UnovaChasm[] = INCGFX_U32("data/tilesets/secondary/unova_chasm/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_UnovaChasm[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chasm/palettes/15.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_UnovaDragonspiral[] = INCGFX_U32("data/tilesets/secondary/unova_dragonspiral/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_UnovaDragonspiral[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_dragonspiral/palettes/15.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_UnovaChargestone[] = INCGFX_U32("data/tilesets/secondary/unova_chargestone/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_UnovaChargestone[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_chargestone/palettes/15.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_UnovaRelicCastle[] = INCGFX_U32("data/tilesets/secondary/unova_relic_castle/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_UnovaRelicCastle[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_relic_castle/palettes/15.pal", ".gbapal"),
+};
+
+const u32 gTilesetTiles_UnovaAbyssalRuins[] = INCGFX_U32("data/tilesets/secondary/unova_abyssal_ruins/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_UnovaAbyssalRuins[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_abyssal_ruins/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_SafariZoneBuilding[] = INCGFX_U32("data/tilesets/secondary/safari_zone_building_frlg/tiles.png", ".4bpp.fastSmol");
 
 const u16 gTilesetPalettes_SafariZoneBuilding[][16] =
@@ -4579,3 +4689,25 @@ const u16 gTilesetPalettes_KalosCave[][16] =
     INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/15.pal", ".gbapal"),
 };
 // </clone KalosCave>
+// <clone UnovaSkyarrow>
+const u32 gTilesetTiles_UnovaSkyarrow[] = INCGFX_U32("data/tilesets/secondary/unova_skyarrow/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_UnovaSkyarrow[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/unova_skyarrow/palettes/15.pal", ".gbapal"),
+};
+// </clone UnovaSkyarrow>

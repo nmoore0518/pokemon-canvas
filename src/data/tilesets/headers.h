@@ -1454,6 +1454,61 @@ const struct Tileset gTileset_KalosBadlands =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_UnovaChasm =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UnovaChasm,
+    .palettes = gTilesetPalettes_UnovaChasm,
+    .metatiles = gMetatiles_UnovaChasm,
+    .metatileAttributes = gMetatileAttributes_UnovaChasm,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_UnovaDragonspiral =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UnovaDragonspiral,
+    .palettes = gTilesetPalettes_UnovaDragonspiral,
+    .metatiles = gMetatiles_UnovaDragonspiral,
+    .metatileAttributes = gMetatileAttributes_UnovaDragonspiral,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_UnovaChargestone =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UnovaChargestone,
+    .palettes = gTilesetPalettes_UnovaChargestone,
+    .metatiles = gMetatiles_UnovaChargestone,
+    .metatileAttributes = gMetatileAttributes_UnovaChargestone,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_UnovaRelicCastle =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UnovaRelicCastle,
+    .palettes = gTilesetPalettes_UnovaRelicCastle,
+    .metatiles = gMetatiles_UnovaRelicCastle,
+    .metatileAttributes = gMetatileAttributes_UnovaRelicCastle,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_UnovaAbyssalRuins =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UnovaAbyssalRuins,
+    .palettes = gTilesetPalettes_UnovaAbyssalRuins,
+    .metatiles = gMetatiles_UnovaAbyssalRuins,
+    .metatileAttributes = gMetatileAttributes_UnovaAbyssalRuins,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,
@@ -2392,3 +2447,16 @@ const struct Tileset gTileset_KalosCave =
 };
 
 // </clone KalosCave>
+// <clone UnovaSkyarrow>
+const struct Tileset gTileset_UnovaSkyarrow =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_UnovaSkyarrow,
+    .palettes = gTilesetPalettes_UnovaSkyarrow,
+    .metatiles = gMetatiles_UnovaSkyarrow,
+    .metatileAttributes = gMetatileAttributes_UnovaSkyarrow,
+    .callback = NULL,
+};
+
+// </clone UnovaSkyarrow>

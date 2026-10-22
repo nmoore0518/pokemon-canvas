@@ -2604,6 +2604,17 @@
 #define FLAG_EXOTIC_LEGEND_VOLCANION          0x343
 #define FLAG_EXOTIC_CELL_FIRST                0x344   // to 0x34B (8): Zygarde Cells found
 #define FLAG_EXOTIC_PRISON_BOTTLE             0x34C   // (Hoopa's: taken from its pedestal)
+// Unova's legendaries, caught (0x360-0x38F: the Unova zone)
+#define FLAG_EXOTIC_LEGEND_VICTINI            0x360
+#define FLAG_EXOTIC_LEGEND_COBALION           0x361
+#define FLAG_EXOTIC_LEGEND_TERRAKION          0x362
+#define FLAG_EXOTIC_LEGEND_VIRIZION           0x363
+#define FLAG_EXOTIC_LEGEND_THUNDURUS          0x364
+#define FLAG_EXOTIC_LEGEND_RESHIRAM           0x365
+#define FLAG_EXOTIC_LEGEND_ZEKROM             0x366
+#define FLAG_EXOTIC_LEGEND_LANDORUS           0x367
+#define FLAG_EXOTIC_LEGEND_KYUREM             0x368
+#define FLAG_EXOTIC_LEGEND_KELDEO             0x369
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

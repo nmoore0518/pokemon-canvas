@@ -787,6 +787,20 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          it Unbound); Volcanion for a Fire- or Water-type lead with the other type behind it;
          Yveltal once ten Kalos POKéMON (Dex 650-721) are caught. A Furfrou groomer on the plaza
          gives any of the ten trims for ¥500 (`ExoticSafari_TrimFurfrou`).
+   - [x] The Unova zone (round 1, for Nick's review; `tools/gym_hack/unova.py`). BRIDGE (Skyarrow
+         Bridge: the Sevii Islands' Bond Bridge, the hub; its east end leads back to the hall) ->
+         its forest opening the CHASM (Giant Chasm: Pattern Bush under snow) -> its far path the
+         TOWER (Dragonspiral Tower: Johto's Burned Tower in gray-green stone); a cave cut into its
+         cliff (Route 4's cave mouth) the CAVE (Chargestone Cave: Rock Tunnel B1F charged blue) ->
+         its far ladder the CASTLE (Relic Castle: Hoenn's Mirage Tower 1F); one of Tanoby's shrines
+         on its beach (`tile_import`) -> stairs down to the RUINS (Abyssal Ruins: two Tanoby
+         chambers side by side in deep blue-green, MAP_TYPE_UNDERWATER: the player swims in a
+         diving helmet - `OBJ_EVENT_GFX_PLAYER_DIVER`, Emerald's underwater sprite with a glass
+         helmet and Red's cap, now FireRed's underwater avatar; underwater battle backgrounds).
+         Unova Pokémon wild (Deerling/Sawsbuck seasons, Basculin stripes, the starters, fossils);
+         Terrakion and Virizion (bridge), Cobalion and Kyurem (chasm), Reshiram (tower), Zekrom
+         (cave), Victini (castle), Keldeo (ruins) stand; Thundurus and Landorus roam (Tornadus,
+         Meloetta and Genesect are gym-only). Karrablast/Shelmet evolve with a Linking Cord.
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,
