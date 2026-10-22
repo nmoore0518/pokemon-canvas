@@ -914,6 +914,11 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Flash; HO-OH: Ho-Oh in the party; 0x4C9-0x4CC); once all are open, every wild Unown there is
          any of the 28 forms (`ExoticSafari_WildSpecies`, from `CreateWildMon`). The Red Gyarados
          stays as it is. (0x0B0-0x0BF looked free but the game sets them: don't use them.)
+   - [x] `tools/gym_hack/audit_obtainable.py`: every Pokémon and form in the game - can the
+         player get it (wild in a reachable map, gifts, statics, prizes, trades, safari and gym
+         legendaries, starters, then evolutions and form changes with the items they can get), and
+         what only comes from a one-time source. First run (v66): 1,137 of 1,571 entries
+         obtainable; 179 are battle-only or totem forms; the rest are listed for Nick.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops
