@@ -41975,6 +41975,664 @@
               }
             ]
           }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_LAKE",
+          "base_label": "gExoticSafari_SinnohLake_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BIDOOF"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_STARLY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHINX"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUNEARY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_KRICKETOT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_STARAVIA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_LUXIO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BIBAREL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_LOPUNNY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_PIPLUP"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_LUXRAY"
+              }
+            ]
+          },
+          "water_mons": {
+            "encounter_rate": 2,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHELLOS_WEST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FINNEON"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_GASTRODON_WEST"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_FLOATZEL"
+              }
+            ]
+          },
+          "fishing_mons": {
+            "encounter_rate": 20,
+            "mons": [
+              {
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_FINNEON"
+              },
+              {
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FINNEON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHELLOS_WEST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_LUMINEON"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_GASTRODON_WEST"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_FLOATZEL"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_LUMINEON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_PIPLUP"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_MEADOW",
+          "base_label": "gExoticSafari_SinnohMeadow_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUDEW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_COMBEE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CHERUBI"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PACHIRISU"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BURMY_PLANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CHATOT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DRIFLOON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MUNCHLAX"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CHERRIM"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MOTHIM"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_TURTWIG"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_ROSERADE"
+              }
+            ]
+          },
+          "water_mons": {
+            "encounter_rate": 2,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHELLOS_WEST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FINNEON"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_SHELLOS_WEST"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_FLOATZEL"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_MARSH",
+          "base_label": "gExoticSafari_SinnohMarsh_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKORUPI"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CROAGUNK"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CARNIVINE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHELLOS_EAST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_YANMEGA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HAPPINY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_STUNKY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GASTRODON_EAST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TOXICROAK"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DRAPION"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_MIME_JR"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_TANGROWTH"
+              }
+            ]
+          },
+          "water_mons": {
+            "encounter_rate": 2,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHELLOS_EAST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GASTRODON_EAST"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FINNEON"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_LUMINEON"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_CITY",
+          "base_label": "gExoticSafari_SinnohCity_FireRed",
+          "land_mons": {
+            "encounter_rate": 15,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SNOVER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GLAMEOW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BRONZOR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ABOMASNOW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SNOVER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PURUGLY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_WEAVILE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MAMOSWINE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FROSLASS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BURMY_TRASH"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_RIOLU"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_GLACEON"
+              }
+            ]
+          },
+          "water_mons": {
+            "encounter_rate": 2,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MANTYKE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FINNEON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BUIZEL"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_LUMINEON"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_FLOATZEL"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_STARK_MOUNTAIN",
+          "base_label": "gExoticSafari_SinnohStarkMountain_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HIPPOPOTAS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CRANIDOS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHIELDON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GLISCOR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BONSLY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BURMY_SANDY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HIPPOWDON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKUNTANK"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MAGMORTAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_RHYPERIOR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_CHIMCHAR"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_GARCHOMP"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE",
+          "base_label": "gExoticSafari_SinnohStarkInside_FireRed",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GIBLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BRONZOR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CRANIDOS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SHIELDON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PROBOPASS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GABITE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_RAMPARDOS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BASTIODON"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MAGMORTAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BRONZONG"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_INFERNAPE"
+              },
+              {
+                "min_level": 54,
+                "max_level": 56,
+                "species": "SPECIES_GARCHOMP"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN",
+          "base_label": "gExoticSafari_SinnohHallOfOrigin_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CHINGLING"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BRONZOR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BRONZONG"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MISMAGIUS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HONCHKROW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TOGEKISS"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GALLADE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DUSKNOIR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PORYGON_Z"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SPIRITOMB"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_ROTOM"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_ELECTIVIRE"
+              }
+            ]
+          }
         }
       ]
     },

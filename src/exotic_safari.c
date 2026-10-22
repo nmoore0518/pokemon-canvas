@@ -116,6 +116,20 @@ void ExoticSafari_OnStep(void)
 // roamer (local ids 1-3, hidden by a temp flag unless it's there). Talking to it: a battle; if it
 // isn't caught, it runs off (the object goes; it's somewhere else next time).
 // ---------------------------------------------------------------------------------------------
+// The area's name (the place in the games it's based on) for the map name pop-up, or NULL when the
+// player isn't in the Exotic Safari
+const u8 *ExoticSafari_GetAreaName(void)
+{
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sExoticSafariAreas); i++)
+    {
+        if (sExoticSafariAreas[i].mapGroup == gSaveBlock1Ptr->location.mapGroup
+         && sExoticSafariAreas[i].mapNum == gSaveBlock1Ptr->location.mapNum)
+            return sExoticSafariAreas[i].name;
+    }
+    return NULL;
+}
+
 static const struct ExoticSafariArea *GetArea(void)
 {
     u32 i;

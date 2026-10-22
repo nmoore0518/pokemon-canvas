@@ -16,6 +16,7 @@ Writes:
   src/data/wild_encounters.json                 each zone's Pokémon (ZONES below)
 """
 import json
+import os
 import shutil
 import struct
 import sys
@@ -34,6 +35,7 @@ REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALD
 # The regions with a zone open: their first area (the hall's door leads there). The areas
 # themselves: tools/gym_hack/paldea.py
 ZONES = {
+    "SINNOH": {"id": "MAP_EXOTIC_SAFARI_SINNOH_LAKE"},
     "UNOVA": {"id": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW"},
     "KALOS": {"id": "MAP_EXOTIC_SAFARI_KALOS_CITY"},
     "ALOLA": {"id": "MAP_EXOTIC_SAFARI_ALOLA_RESORT"},
@@ -304,6 +306,9 @@ def convert_layout(grid, tilesets, version, name, dirname, behaviors=None, recol
         keep = [p for p in use if p not in fold and p != drop]
         dist = lambda a, b: sum((x - y) ** 2 for ca, cb in zip(a[1:], b[1:]) for x, y in zip(ca[:3], cb[:3]))
         fold[drop] = min(keep, key=lambda p: dist(pal_colors(drop), pal_colors(p)))
+    for p in list(fold):                     # (a palette folded into one later folded: its last stop)
+        while fold[p] in fold:
+            fold[p] = fold[fold[p]]
     tiles, pals = OrderedDict(), OrderedDict()
     new_mt, new_attr, remap = [], [], {}
     for k, m in enumerate(used):
@@ -522,10 +527,12 @@ import galar                                    # noqa: E402
 import alola                                    # noqa: E402
 import kalos                                    # noqa: E402
 import unova                                    # noqa: E402
+import sinnoh                                   # noqa: E402
+import safari_names                             # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
-REGION_MODULES = [paldea, galar, alola, kalos, unova]
+REGION_MODULES = [paldea, galar, alola, kalos, unova, sinnoh]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10, "MAP_TYPE_UNDERWATER": 10}
@@ -632,7 +639,7 @@ def build_region(mod, zone_warp, out):
             # Wild Pokémon indoors: the plain floor (walkable, MB_NORMAL) becomes MB_INDOOR_ENCOUNTER
             for row in g:
                 for v in row:
-                    if not (v >> 10) & 3 and beh0(v) == MB["MB_NORMAL"]:
+                    if not (v >> 10) & 3 and beh0(v) in (MB["MB_NORMAL"], MB["MB_MOUNTAIN_TOP"]):
                         behaviors.setdefault(v & 0x3FF, "MB_INDOOR_ENCOUNTER")
         if a.get("patch_snow"):
             patch_snow(a["tilesets"])
@@ -729,6 +736,9 @@ def build_region(mod, zone_warp, out):
             o["movement_range_x"] = o["movement_range_y"] = 2
             objects.append(o)
         reach = reachable(b)
+        if os.environ.get("SAFARI_REACH_DUMP"):     # (debugging: where the player can get to)
+            dump = Path(os.environ["SAFARI_REACH_DUMP"]) / f"{name}.json"
+            dump.write_text(json.dumps({"w": b["w"], "h": b["h"], "reach": sorted(reach)}))
         bgs = []
         for i, (species, (x, y)) in enumerate(a["statics"]):
             if (x, y) not in reach:
@@ -791,7 +801,7 @@ def build_region(mod, zone_warp, out):
             objects.append(dict(obj(o["gfx"], o["x"], o["y"], o.get("script", "0"), o.get("movement", "MOVEMENT_TYPE_FACE_DOWN")),
                                 elevation=elev(o["x"], o["y"])))
         write_map(name, map_id(name), "LAYOUT_" + map_id(name)[4:], a["music"], "MAPSEC_KANTO_SAFARI_ZONE",
-                  a["type"], objects, warps, bgs, False, coords=coords, weather=a["weather"])
+                  a["type"], objects, warps, bgs, True, coords=coords, weather=a["weather"])   # (its name pops up)
         (ROOT / "data/maps" / name / "scripts.inc").write_text("\n".join(scripts))
         # Where the roamers can turn up: land encounter spots the player can reach
         spots = sorted(p for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE
@@ -840,7 +850,7 @@ def build_zones(zone_warp):
 
     # The header for src/exotic_safari.c: the areas (and their roamer spots), the roamers, the kiosk
     c = ["// The Exotic Pokémon Safari's areas (made by tools/gym_hack/build_exotic_safari.py)",
-         "struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; };",
+         "struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; const u8 *name; };",
          "struct ExoticSafariRoamer { u16 species, caughtFlag, hideFlag, needFlag; u8 region; };",
          "struct ExoticSafariFind { u16 item, flag; };", ""]
     for name, region, spots in out["areas"]:
@@ -848,7 +858,9 @@ def build_zones(zone_warp):
     c += ["", "static const struct ExoticSafariArea sExoticSafariAreas[] =", "{"]
     for name, region, spots in out["areas"]:
         mid = map_id(name)
-        c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), {region}, ARRAY_COUNT(sSpots_{name}), sSpots_{name}}},")
+        title = safari_names.SAFARI_NAMES[name.split("_", 1)[1]].upper()
+        c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), {region}, ARRAY_COUNT(sSpots_{name}), sSpots_{name}, "
+                 f'COMPOUND_STRING("{title}")}},')
     c += ["};", "", f"#define EXOTIC_SAFARI_ROAMER_COUNT {len(out['roamers'])}",
           "static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =", "{"]
     slot = {}

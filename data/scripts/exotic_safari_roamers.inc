@@ -125,6 +125,15 @@ ExoticSafari_EventScript_RoamerLandorus::
 	setflag FLAG_EXOTIC_LEGEND_LANDORUS
 	goto ExoticSafari_EventScript_RoamerGone
 
+ExoticSafari_EventScript_RoamerManaphy::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_MANAPHY
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_MANAPHY
+	goto ExoticSafari_EventScript_RoamerGone
+
 ExoticSafari_EventScript_StakePurple::
 	setvar VAR_0x8004, 0
 	goto ExoticSafari_EventScript_Stake

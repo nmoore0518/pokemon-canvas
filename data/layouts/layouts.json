@@ -11195,6 +11195,97 @@
       "border_filepath": "data/layouts/ExoticSafari_UnovaAbyssalRuins/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_UnovaAbyssalRuins/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_LAKE",
+      "name": "ExoticSafari_SinnohLake_Layout",
+      "width": 60,
+      "height": 40,
+      "border_width": 3,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohLake",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohLake/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohLake/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_MEADOW",
+      "name": "ExoticSafari_SinnohMeadow_Layout",
+      "width": 60,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohMeadow",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohMeadow/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohMeadow/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_MARSH",
+      "name": "ExoticSafari_SinnohMarsh_Layout",
+      "width": 40,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohMarsh",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohMarsh/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohMarsh/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_CITY",
+      "name": "ExoticSafari_SinnohCity_Layout",
+      "width": 48,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohCity",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohCity/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohCity/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_STARK_MOUNTAIN",
+      "name": "ExoticSafari_SinnohStarkMountain_Layout",
+      "width": 30,
+      "height": 46,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohStark",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohStarkMountain/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohStarkMountain/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_STARK_INSIDE",
+      "name": "ExoticSafari_SinnohStarkInside_Layout",
+      "width": 35,
+      "height": 38,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohStarkInside",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohStarkInside/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohStarkInside/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN",
+      "name": "ExoticSafari_SinnohHallOfOrigin_Layout",
+      "width": 27,
+      "height": 24,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SinnohOrigin",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohHallOfOrigin/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohHallOfOrigin/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

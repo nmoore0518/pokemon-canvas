@@ -1509,6 +1509,83 @@ const struct Tileset gTileset_UnovaAbyssalRuins =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_SinnohLake =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohLake,
+    .palettes = gTilesetPalettes_SinnohLake,
+    .metatiles = gMetatiles_SinnohLake,
+    .metatileAttributes = gMetatileAttributes_SinnohLake,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_SinnohMeadow =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohMeadow,
+    .palettes = gTilesetPalettes_SinnohMeadow,
+    .metatiles = gMetatiles_SinnohMeadow,
+    .metatileAttributes = gMetatileAttributes_SinnohMeadow,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_SinnohMarsh =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohMarsh,
+    .palettes = gTilesetPalettes_SinnohMarsh,
+    .metatiles = gMetatiles_SinnohMarsh,
+    .metatileAttributes = gMetatileAttributes_SinnohMarsh,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_SinnohCity =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohCity,
+    .palettes = gTilesetPalettes_SinnohCity,
+    .metatiles = gMetatiles_SinnohCity,
+    .metatileAttributes = gMetatileAttributes_SinnohCity,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_SinnohStark =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohStark,
+    .palettes = gTilesetPalettes_SinnohStark,
+    .metatiles = gMetatiles_SinnohStark,
+    .metatileAttributes = gMetatileAttributes_SinnohStark,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_SinnohOrigin =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohOrigin,
+    .palettes = gTilesetPalettes_SinnohOrigin,
+    .metatiles = gMetatiles_SinnohOrigin,
+    .metatileAttributes = gMetatileAttributes_SinnohOrigin,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_SinnohStarkInside =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_SinnohStarkInside,
+    .palettes = gTilesetPalettes_SinnohStarkInside,
+    .metatiles = gMetatiles_SinnohStarkInside,
+    .metatileAttributes = gMetatileAttributes_SinnohStarkInside,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,

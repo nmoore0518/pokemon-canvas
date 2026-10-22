@@ -1,4 +1,5 @@
 #include "global.h"
+#include "exotic_safari.h"
 #include "battle_pyramid.h"
 #include "bg.h"
 #include "event_data.h"
@@ -562,7 +563,11 @@ static bool32 IsCeladonDeptStore(const struct MapHeader *mapHeader)
 
 u8 *GetPopUpMapName(u8 *dest, const struct MapHeader *mapHeader)
 {
-    if (IsCeladonDeptStore(mapHeader))
+    const u8 *safariArea = (mapHeader == &gMapHeader) ? ExoticSafari_GetAreaName() : NULL;
+
+    if (safariArea != NULL)                 // (Gym Trainer hack: the Exotic Safari's areas by name)
+        StringCopy(dest, safariArea);
+    else if (IsCeladonDeptStore(mapHeader))
         StringCopy(dest, COMPOUND_STRING("CELADON DEPT."));
     else
         GetMapName(dest, mapHeader->regionMapSectionId, 0);

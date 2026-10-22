@@ -213,21 +213,8 @@ def sprite(info, data):
 # ---------------------------------------------------------------------------------------------
 # Where each Pokémon is found
 # ---------------------------------------------------------------------------------------------
-SAFARI_NAMES = {
-    "PaldeaMeadow": "South Province", "PaldeaForest": "Tagtree Thicket", "PaldeaDesert": "Asado Desert",
-    "PaldeaCrater": "Area Zero", "PaldeaCraterDepths": "Area Zero depths", "PaldeaLake": "Casseroya Lake",
-    "PaldeaSnowyMountain": "Glaseado Mountain", "PaldeaAcademy": "Naranja/Uva Academy",
-    "GalarMeadow": "Postwick countryside", "GalarLake": "Lake District", "GalarMine": "Galar Mine",
-    "GalarMineDepths": "Galar Mine B1F", "GalarStadium": "Wyndon Stadium", "GalarStadiumPitch": "Wyndon Stadium pitch",
-    "GalarCity": "Circhester", "GalarForest": "Glimwood Tangle",
-    "AlolaResort": "Hano Beach", "AlolaBeach": "Big Wave Beach", "AlolaOcean": "Seafolk Village",
-    "AlolaRuins": "Ruins of Conflict", "AlolaVolcano": "Wela Volcano Park", "AlolaLanakila": "Mount Lanakila",
-    "KalosCity": "Lumiose City", "KalosWoods": "Winding Woods", "KalosSnowyPath": "Mamoswine Road",
-    "KalosCave": "Glittering Cave", "KalosBadlands": "Lumiose Badlands", "KalosOcean": "Azure Bay",
-    "UnovaSkyarrow": "Skyarrow Bridge", "UnovaGiantChasm": "Giant Chasm", "UnovaDragonspiral": "Dragonspiral Tower",
-    "UnovaChargestone": "Chargestone Cave", "UnovaRelicCastle": "Relic Castle", "UnovaAbyssalRuins": "Abyssal Ruins",
-}
-REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova"]     # (the roamers' region index)
+from safari_names import SAFARI_NAMES   # noqa: E402  (tools/gym_hack/safari_names.py)
+REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova", "Sinnoh"]     # (the roamers' region index)
 TYPE_NAMES = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire",
               "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"]
 
@@ -267,6 +254,13 @@ PUZZLES = {
     "ZEKROM": "Find the Dark Stone in the Abyssal Ruins; then it appears in Chargestone Cave.",
     "VICTINI": "Find the Liberty Pass on Skyarrow Bridge; then it appears in Relic Castle.",
     "KELDEO": "Catch Terrakion, Virizion and Cobalion; then it appears in the Abyssal Ruins.",
+    "UXIE": "Stands on the island in Lake Verity (The Three Lakes, west): Surf to it.",
+    "AZELF": "Stands on the island in Lake Acuity (The Three Lakes, east): Surf to it.",
+    "MESPRIT": "Stands on the island in Lake Valor (The Three Lakes, south): Surf to it.",
+    "HEATRAN": "Deep inside Stark Mountain: through the cave halfway down its slopes, at the top of the far passage.",
+    "REGIGIGAS": "Stands in Snowpoint City, west of the harbor steps.",
+    "PHIONE": "Stands by the ponds in the Great Marsh's west.",
+    "ARCEUS": "Stands at the top of the Hall of Origin (Snowpoint City's cave leads up to it).",
     "TYPE_NULL": "A gift from Hano Beach's caretaker once you've caught Rowlet, Litten and Popplio.",
 }
 ROAM_NOTES = {"CALYREX": " Starts roaming once Spectrier is caught.",

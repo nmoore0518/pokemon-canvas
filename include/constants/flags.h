@@ -2621,6 +2621,15 @@
 #define FLAG_EXOTIC_UNOVA_KEY_FIRST           0x372   // to 0x374: the Light Stone, Dark Stone, Liberty Pass
 // Kanto extras: the Amulet Coin's item ball in the Pokemon Mansion
 #define FLAG_HIDE_POKEMON_MANSION_3F_AMULET_COIN  0x375
+// Sinnoh's legendaries, caught (0x378-0x38F: the Sinnoh zone)
+#define FLAG_EXOTIC_LEGEND_UXIE               0x378
+#define FLAG_EXOTIC_LEGEND_MESPRIT            0x379
+#define FLAG_EXOTIC_LEGEND_AZELF              0x37A
+#define FLAG_EXOTIC_LEGEND_HEATRAN            0x37B
+#define FLAG_EXOTIC_LEGEND_REGIGIGAS          0x37C
+#define FLAG_EXOTIC_LEGEND_PHIONE             0x37D
+#define FLAG_EXOTIC_LEGEND_MANAPHY            0x37E
+#define FLAG_EXOTIC_LEGEND_ARCEUS             0x37F
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

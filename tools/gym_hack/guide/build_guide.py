@@ -114,6 +114,8 @@ REGIONS = [
     ("Kalos", "kalos", "Lumiose City, with the Prism Tower in its plaza, is the hub; its four gates lead out."),
     ("Unova", "unova", "Skyarrow Bridge is the hub: a long bridge between grasslands, with a cave in its cliff and an old "
      "shrine on its beach whose stairs go down to ruins under the sea."),
+    ("Sinnoh", "sinnoh", "The Three Lakes are the hub: Lake Verity, Lake Valor and Lake Acuity in the pinewoods, an island "
+     "in each. Snowpoint City's cave climbs to the Hall of Origin, and Stark Mountain has a cave of its own."),
 ]
 
 

@@ -1,5 +1,5 @@
 // The Exotic Pokémon Safari's areas (made by tools/gym_hack/build_exotic_safari.py)
-struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; };
+struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; const u8 *name; };
 struct ExoticSafariRoamer { u16 species, caughtFlag, hideFlag, needFlag; u8 region; };
 struct ExoticSafariFind { u16 item, flag; };
 
@@ -37,46 +37,60 @@ static const u8 sSpots_ExoticSafari_UnovaDragonspiral[][3] = {{14, 4, 3}, {2, 6,
 static const u8 sSpots_ExoticSafari_UnovaChargestone[][3] = {{21, 2, 3}, {20, 3, 3}, {1, 4, 3}, {4, 5, 3}, {11, 5, 3}, {37, 5, 3}, {9, 7, 3}, {15, 8, 3}, {19, 10, 3}, {9, 11, 3}, {27, 11, 3}, {23, 12, 3}, {25, 12, 3}, {33, 12, 3}, {27, 13, 3}, {44, 13, 3}, {15, 14, 3}, {23, 14, 3}, {4, 15, 3}, {40, 15, 3}, {42, 15, 3}, {45, 15, 3}, {3, 16, 3}, {38, 16, 3}, {38, 17, 3}, {8, 19, 3}, {43, 19, 3}, {45, 19, 3}, {28, 23, 3}, {23, 24, 3}, {26, 24, 3}, {26, 25, 3}, {5, 28, 3}, {25, 28, 3}, {26, 28, 3}, {22, 29, 3}, {25, 29, 3}, {1, 31, 3}, {39, 31, 3}, {18, 32, 3}, {2, 35, 3}, {37, 35, 3}, {42, 36, 3}, {28, 37, 3}, {31, 37, 3}, {15, 38, 3}, {29, 38, 3}, {38, 38, 3}};
 static const u8 sSpots_ExoticSafari_UnovaRelicCastle[][3] = {{7, 2, 3}, {8, 2, 3}, {12, 2, 3}, {14, 2, 3}, {16, 2, 3}, {4, 3, 3}, {5, 3, 3}, {6, 3, 3}, {7, 3, 3}, {8, 3, 3}, {10, 3, 3}, {11, 3, 3}, {14, 3, 3}, {2, 4, 3}, {3, 4, 3}, {5, 4, 3}, {14, 4, 3}, {3, 5, 3}, {18, 5, 3}, {4, 6, 3}, {17, 6, 3}, {2, 8, 3}, {16, 8, 3}, {18, 8, 3}, {2, 9, 3}, {3, 9, 3}, {16, 9, 3}, {17, 9, 3}, {18, 9, 3}, {3, 10, 3}, {4, 10, 3}, {17, 10, 3}, {2, 11, 3}, {3, 11, 3}, {4, 11, 3}, {17, 11, 3}, {3, 12, 3}, {5, 12, 3}, {15, 12, 3}, {6, 13, 3}, {9, 13, 3}, {11, 13, 3}, {12, 13, 3}, {13, 13, 3}, {14, 13, 3}, {15, 13, 3}, {6, 14, 3}, {7, 14, 3}};
 static const u8 sSpots_ExoticSafari_UnovaAbyssalRuins[][3] = {{4, 2, 3}, {11, 2, 3}, {12, 2, 3}, {15, 2, 3}, {19, 2, 3}, {36, 2, 3}, {10, 3, 3}, {12, 5, 3}, {17, 5, 3}, {22, 5, 3}, {26, 5, 3}, {27, 5, 3}, {35, 5, 3}, {36, 5, 3}, {39, 5, 3}, {28, 6, 3}, {32, 8, 3}, {42, 8, 3}, {1, 9, 3}, {4, 9, 3}, {6, 9, 3}, {8, 9, 3}, {13, 9, 3}, {18, 9, 3}, {25, 9, 3}, {11, 10, 3}, {2, 11, 3}, {26, 11, 3}, {32, 11, 3}, {5, 12, 3}, {16, 12, 3}, {20, 12, 3}, {26, 12, 3}, {27, 12, 3}, {41, 12, 3}, {42, 12, 3}, {23, 13, 3}, {8, 14, 3}, {10, 14, 3}, {15, 14, 3}, {26, 14, 3}, {30, 14, 3}, {37, 14, 3}, {38, 14, 3}, {9, 15, 3}, {19, 15, 3}, {21, 15, 3}, {31, 15, 3}};
+static const u8 sSpots_ExoticSafari_SinnohLake[][3] = {{32, 4, 3}, {55, 4, 3}, {27, 5, 3}, {54, 5, 3}, {5, 7, 3}, {52, 7, 3}, {27, 8, 3}, {5, 9, 3}, {26, 9, 3}, {31, 9, 3}, {33, 9, 3}, {27, 10, 3}, {33, 11, 3}, {46, 21, 3}, {47, 21, 3}, {50, 21, 3}, {55, 21, 3}, {5, 22, 3}, {9, 22, 3}, {10, 22, 3}, {13, 22, 3}, {43, 22, 3}, {54, 22, 3}, {11, 23, 3}, {46, 23, 3}, {55, 23, 3}, {11, 24, 3}, {51, 24, 3}, {9, 25, 3}, {45, 25, 3}, {46, 25, 3}, {55, 25, 3}, {12, 26, 3}, {44, 27, 3}, {45, 28, 3}, {48, 28, 3}, {49, 28, 3}, {7, 29, 3}, {10, 29, 3}, {45, 29, 3}, {4, 30, 3}, {43, 30, 3}, {44, 30, 3}, {52, 30, 3}, {11, 31, 3}, {43, 31, 3}, {47, 33, 3}, {49, 33, 3}};
+static const u8 sSpots_ExoticSafari_SinnohMeadow[][3] = {{40, 0, 3}, {49, 0, 3}, {10, 1, 3}, {49, 1, 3}, {52, 1, 3}, {8, 2, 3}, {9, 2, 3}, {10, 2, 3}, {11, 2, 3}, {12, 2, 3}, {14, 2, 3}, {41, 2, 3}, {47, 2, 3}, {39, 3, 3}, {40, 3, 3}, {45, 3, 3}, {38, 4, 3}, {40, 4, 3}, {18, 13, 3}, {19, 13, 3}, {18, 14, 3}, {19, 14, 3}, {29, 14, 3}, {30, 14, 3}, {17, 15, 3}, {19, 15, 3}, {28, 15, 3}, {30, 15, 3}, {31, 15, 3}, {32, 15, 3}, {17, 16, 3}, {18, 16, 3}, {19, 16, 3}, {30, 16, 3}, {31, 16, 3}, {32, 16, 3}, {33, 16, 3}, {28, 17, 3}, {29, 17, 3}, {30, 17, 3}, {31, 17, 3}, {32, 17, 3}, {31, 18, 3}, {32, 18, 3}, {33, 18, 3}, {34, 18, 3}, {32, 19, 3}, {33, 19, 3}};
+static const u8 sSpots_ExoticSafari_SinnohMarsh[][3] = {{5, 10, 3}, {6, 10, 3}, {5, 11, 3}, {6, 11, 3}, {4, 12, 3}, {4, 13, 3}, {2, 14, 3}, {3, 14, 3}, {4, 14, 3}, {2, 15, 3}, {4, 15, 3}, {5, 15, 3}, {3, 16, 3}, {2, 17, 3}, {7, 22, 3}, {8, 22, 3}, {9, 24, 3}, {11, 24, 3}, {9, 25, 3}, {10, 25, 3}, {11, 25, 3}, {13, 25, 3}, {12, 26, 3}, {10, 27, 3}, {12, 27, 3}, {13, 27, 3}, {12, 28, 3}, {13, 28, 3}, {27, 30, 3}, {30, 30, 3}, {27, 31, 3}, {29, 31, 3}, {33, 31, 3}, {26, 32, 3}, {27, 32, 3}, {28, 32, 3}, {29, 32, 3}, {32, 32, 3}, {26, 33, 3}, {27, 33, 3}, {30, 33, 3}, {31, 33, 3}, {30, 34, 3}, {31, 34, 3}, {34, 34, 3}, {35, 34, 3}, {31, 35, 3}, {33, 35, 3}};
+static const u8 sSpots_ExoticSafari_SinnohCity[][3] = {{16, 6, 3}, {17, 6, 3}, {15, 8, 3}, {11, 9, 3}, {13, 9, 3}, {15, 9, 3}, {10, 10, 3}, {5, 14, 3}, {6, 14, 3}, {7, 14, 3}, {5, 15, 3}, {6, 15, 3}, {7, 15, 3}, {5, 16, 3}, {6, 16, 3}, {7, 16, 3}, {5, 17, 3}, {6, 17, 3}, {7, 17, 3}, {6, 18, 3}, {7, 18, 3}, {5, 19, 3}, {6, 19, 3}, {7, 19, 3}, {5, 20, 3}, {6, 20, 3}, {7, 20, 3}, {6, 21, 3}, {5, 22, 3}, {6, 22, 3}, {7, 22, 3}, {5, 23, 3}, {6, 23, 3}, {7, 23, 3}, {18, 28, 3}, {19, 28, 3}, {20, 28, 3}, {21, 28, 3}, {22, 28, 3}, {23, 28, 3}, {24, 28, 3}, {18, 29, 3}, {19, 29, 3}, {20, 29, 3}, {21, 29, 3}, {22, 29, 3}, {23, 29, 3}, {24, 29, 3}};
+static const u8 sSpots_ExoticSafari_SinnohStarkMountain[][3] = {{14, 7, 3}, {16, 7, 3}, {17, 7, 3}, {18, 7, 3}, {10, 8, 3}, {13, 8, 3}, {15, 10, 3}, {13, 12, 3}, {17, 12, 3}, {14, 13, 3}, {20, 15, 3}, {21, 16, 3}, {12, 17, 3}, {8, 19, 3}, {13, 19, 3}, {16, 19, 3}, {19, 19, 3}, {10, 20, 3}, {12, 20, 3}, {16, 21, 3}, {22, 21, 3}, {16, 22, 3}, {18, 22, 3}, {9, 23, 3}, {23, 24, 3}, {17, 25, 3}, {9, 27, 3}, {10, 29, 3}, {12, 29, 3}, {17, 29, 3}, {18, 29, 3}, {7, 31, 3}, {8, 31, 3}, {13, 31, 3}, {20, 31, 3}, {17, 32, 3}, {19, 32, 3}, {11, 33, 3}, {12, 33, 3}, {14, 33, 3}, {8, 34, 3}, {15, 34, 3}, {21, 34, 3}, {14, 35, 3}, {17, 35, 3}, {17, 38, 3}, {13, 39, 3}, {17, 39, 3}};
+static const u8 sSpots_ExoticSafari_SinnohStarkInside[][3] = {{20, 2, 3}, {7, 3, 3}, {9, 4, 3}, {4, 7, 3}, {6, 7, 3}, {6, 8, 3}, {18, 8, 3}, {19, 9, 3}, {3, 10, 3}, {9, 11, 3}, {10, 11, 3}, {19, 11, 3}, {20, 11, 3}, {3, 12, 3}, {12, 15, 3}, {19, 16, 3}, {3, 17, 3}, {18, 17, 3}, {3, 18, 3}, {19, 18, 3}, {20, 18, 3}, {3, 19, 3}, {3, 20, 3}, {24, 20, 3}, {2, 22, 3}, {3, 22, 3}, {5, 22, 3}, {23, 22, 3}, {25, 22, 3}, {5, 23, 3}, {5, 24, 3}, {27, 24, 3}, {5, 25, 3}, {5, 26, 3}, {5, 27, 3}, {27, 27, 3}, {8, 29, 3}, {6, 30, 3}, {9, 32, 3}, {25, 32, 3}, {7, 33, 3}, {9, 33, 3}, {25, 33, 3}, {4, 34, 3}, {6, 34, 3}, {27, 34, 3}, {25, 36, 3}, {27, 36, 3}};
+static const u8 sSpots_ExoticSafari_SinnohHallOfOrigin[][3] = {{14, 4, 3}, {15, 4, 3}, {10, 5, 3}, {11, 5, 3}, {14, 5, 3}, {17, 5, 3}, {11, 6, 3}, {10, 7, 3}, {15, 7, 3}, {20, 7, 3}, {10, 8, 3}, {14, 8, 3}, {15, 8, 3}, {17, 8, 3}, {11, 9, 3}, {13, 9, 3}, {14, 9, 3}, {21, 9, 3}, {22, 9, 3}, {8, 10, 3}, {10, 10, 3}, {12, 10, 3}, {16, 10, 3}, {11, 11, 3}, {14, 11, 3}, {15, 11, 3}, {17, 11, 3}, {9, 12, 3}, {10, 12, 3}, {11, 12, 3}, {15, 12, 3}, {16, 12, 3}, {17, 12, 3}, {18, 12, 3}, {11, 14, 3}, {10, 15, 3}, {16, 15, 3}, {17, 15, 3}, {19, 15, 3}, {8, 16, 3}, {11, 16, 3}, {16, 16, 3}, {19, 16, 3}, {8, 17, 3}, {11, 17, 3}, {15, 17, 3}, {16, 17, 3}, {19, 17, 3}};
 
 static const struct ExoticSafariArea sExoticSafariAreas[] =
 {
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_MEADOW), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_MEADOW), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaMeadow), sSpots_ExoticSafari_PaldeaMeadow},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_FOREST), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaForest), sSpots_ExoticSafari_PaldeaForest},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_DESERT), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_DESERT), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaDesert), sSpots_ExoticSafari_PaldeaDesert},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_CRATER), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_CRATER), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaCrater), sSpots_ExoticSafari_PaldeaCrater},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_CRATER_DEPTHS), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_CRATER_DEPTHS), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaCraterDepths), sSpots_ExoticSafari_PaldeaCraterDepths},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_LAKE), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaLake), sSpots_ExoticSafari_PaldeaLake},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaSnowyMountain), sSpots_ExoticSafari_PaldeaSnowyMountain},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_ACADEMY), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_ACADEMY), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaAcademy), sSpots_ExoticSafari_PaldeaAcademy},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_MEADOW), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_MEADOW), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarMeadow), sSpots_ExoticSafari_GalarMeadow},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_LAKE), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarLake), sSpots_ExoticSafari_GalarLake},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_MINE), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_MINE), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarMine), sSpots_ExoticSafari_GalarMine},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_MINE_DEPTHS), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_MINE_DEPTHS), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarMineDepths), sSpots_ExoticSafari_GalarMineDepths},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_STADIUM), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_STADIUM), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarStadium), sSpots_ExoticSafari_GalarStadium},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarStadiumPitch), sSpots_ExoticSafari_GalarStadiumPitch},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_CITY), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarCity), sSpots_ExoticSafari_GalarCity},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_FOREST), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarForest), sSpots_ExoticSafari_GalarForest},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RESORT), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RESORT), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaResort), sSpots_ExoticSafari_AlolaResort},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_BEACH), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_BEACH), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaBeach), sSpots_ExoticSafari_AlolaBeach},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaOcean), sSpots_ExoticSafari_AlolaOcean},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RUINS), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaRuins), sSpots_ExoticSafari_AlolaRuins},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaVolcano), sSpots_ExoticSafari_AlolaVolcano},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaLanakila), sSpots_ExoticSafari_AlolaLanakila},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CITY), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosCity), sSpots_ExoticSafari_KalosCity},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_WOODS), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_WOODS), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosWoods), sSpots_ExoticSafari_KalosWoods},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosSnowyPath), sSpots_ExoticSafari_KalosSnowyPath},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CAVE), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosCave), sSpots_ExoticSafari_KalosCave},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosBadlands), sSpots_ExoticSafari_KalosBadlands},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_OCEAN), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosOcean), sSpots_ExoticSafari_KalosOcean},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaSkyarrow), sSpots_ExoticSafari_UnovaSkyarrow},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaGiantChasm), sSpots_ExoticSafari_UnovaGiantChasm},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaDragonspiral), sSpots_ExoticSafari_UnovaDragonspiral},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaChargestone), sSpots_ExoticSafari_UnovaChargestone},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaRelicCastle), sSpots_ExoticSafari_UnovaRelicCastle},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaAbyssalRuins), sSpots_ExoticSafari_UnovaAbyssalRuins},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_MEADOW), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_MEADOW), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaMeadow), sSpots_ExoticSafari_PaldeaMeadow, COMPOUND_STRING("SOUTH PROVINCE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_FOREST), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaForest), sSpots_ExoticSafari_PaldeaForest, COMPOUND_STRING("TAGTREE THICKET")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_DESERT), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_DESERT), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaDesert), sSpots_ExoticSafari_PaldeaDesert, COMPOUND_STRING("ASADO DESERT")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_CRATER), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_CRATER), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaCrater), sSpots_ExoticSafari_PaldeaCrater, COMPOUND_STRING("AREA ZERO")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_CRATER_DEPTHS), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_CRATER_DEPTHS), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaCraterDepths), sSpots_ExoticSafari_PaldeaCraterDepths, COMPOUND_STRING("AREA ZERO DEPTHS")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_LAKE), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaLake), sSpots_ExoticSafari_PaldeaLake, COMPOUND_STRING("CASSEROYA LAKE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_SNOWY_MOUNTAIN), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaSnowyMountain), sSpots_ExoticSafari_PaldeaSnowyMountain, COMPOUND_STRING("GLASEADO MOUNTAIN")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_PALDEA_ACADEMY), MAP_NUM(MAP_EXOTIC_SAFARI_PALDEA_ACADEMY), 0, ARRAY_COUNT(sSpots_ExoticSafari_PaldeaAcademy), sSpots_ExoticSafari_PaldeaAcademy, COMPOUND_STRING("NARANJA ACADEMY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_MEADOW), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_MEADOW), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarMeadow), sSpots_ExoticSafari_GalarMeadow, COMPOUND_STRING("POSTWICK COUNTRYSIDE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_LAKE), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarLake), sSpots_ExoticSafari_GalarLake, COMPOUND_STRING("LAKE DISTRICT")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_MINE), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_MINE), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarMine), sSpots_ExoticSafari_GalarMine, COMPOUND_STRING("GALAR MINE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_MINE_DEPTHS), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_MINE_DEPTHS), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarMineDepths), sSpots_ExoticSafari_GalarMineDepths, COMPOUND_STRING("GALAR MINE B1F")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_STADIUM), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_STADIUM), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarStadium), sSpots_ExoticSafari_GalarStadium, COMPOUND_STRING("WYNDON STADIUM")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_STADIUM_PITCH), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarStadiumPitch), sSpots_ExoticSafari_GalarStadiumPitch, COMPOUND_STRING("WYNDON STADIUM PITCH")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_CITY), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarCity), sSpots_ExoticSafari_GalarCity, COMPOUND_STRING("CIRCHESTER")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_GALAR_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_GALAR_FOREST), 1, ARRAY_COUNT(sSpots_ExoticSafari_GalarForest), sSpots_ExoticSafari_GalarForest, COMPOUND_STRING("GLIMWOOD TANGLE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RESORT), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RESORT), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaResort), sSpots_ExoticSafari_AlolaResort, COMPOUND_STRING("HANO BEACH")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_BEACH), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_BEACH), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaBeach), sSpots_ExoticSafari_AlolaBeach, COMPOUND_STRING("BIG WAVE BEACH")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_OCEAN), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaOcean), sSpots_ExoticSafari_AlolaOcean, COMPOUND_STRING("SEAFOLK VILLAGE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_RUINS), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaRuins), sSpots_ExoticSafari_AlolaRuins, COMPOUND_STRING("RUINS OF CONFLICT")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_VOLCANO), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaVolcano), sSpots_ExoticSafari_AlolaVolcano, COMPOUND_STRING("WELA VOLCANO PARK")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), MAP_NUM(MAP_EXOTIC_SAFARI_ALOLA_LANAKILA), 2, ARRAY_COUNT(sSpots_ExoticSafari_AlolaLanakila), sSpots_ExoticSafari_AlolaLanakila, COMPOUND_STRING("MOUNT LANAKILA")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CITY), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosCity), sSpots_ExoticSafari_KalosCity, COMPOUND_STRING("LUMIOSE CITY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_WOODS), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_WOODS), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosWoods), sSpots_ExoticSafari_KalosWoods, COMPOUND_STRING("WINDING WOODS")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosSnowyPath), sSpots_ExoticSafari_KalosSnowyPath, COMPOUND_STRING("MAMOSWINE ROAD")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CAVE), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosCave), sSpots_ExoticSafari_KalosCave, COMPOUND_STRING("GLITTERING CAVE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_BADLANDS), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosBadlands), sSpots_ExoticSafari_KalosBadlands, COMPOUND_STRING("LUMIOSE BADLANDS")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_OCEAN), MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_OCEAN), 3, ARRAY_COUNT(sSpots_ExoticSafari_KalosOcean), sSpots_ExoticSafari_KalosOcean, COMPOUND_STRING("AZURE BAY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaSkyarrow), sSpots_ExoticSafari_UnovaSkyarrow, COMPOUND_STRING("SKYARROW BRIDGE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaGiantChasm), sSpots_ExoticSafari_UnovaGiantChasm, COMPOUND_STRING("GIANT CHASM")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaDragonspiral), sSpots_ExoticSafari_UnovaDragonspiral, COMPOUND_STRING("DRAGONSPIRAL TOWER")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaChargestone), sSpots_ExoticSafari_UnovaChargestone, COMPOUND_STRING("CHARGESTONE CAVE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaRelicCastle), sSpots_ExoticSafari_UnovaRelicCastle, COMPOUND_STRING("RELIC CASTLE")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), 4, ARRAY_COUNT(sSpots_ExoticSafari_UnovaAbyssalRuins), sSpots_ExoticSafari_UnovaAbyssalRuins, COMPOUND_STRING("ABYSSAL RUINS")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_LAKE), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohLake), sSpots_ExoticSafari_SinnohLake, COMPOUND_STRING("THE THREE LAKES")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_MEADOW), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_MEADOW), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohMeadow), sSpots_ExoticSafari_SinnohMeadow, COMPOUND_STRING("FLOAROMA MEADOW")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_MARSH), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_MARSH), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohMarsh), sSpots_ExoticSafari_SinnohMarsh, COMPOUND_STRING("GREAT MARSH")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_CITY), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohCity), sSpots_ExoticSafari_SinnohCity, COMPOUND_STRING("SNOWPOINT CITY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_MOUNTAIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_MOUNTAIN), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohStarkMountain), sSpots_ExoticSafari_SinnohStarkMountain, COMPOUND_STRING("STARK MOUNTAIN")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohStarkInside), sSpots_ExoticSafari_SinnohStarkInside, COMPOUND_STRING("STARK MOUNTAIN")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohHallOfOrigin), sSpots_ExoticSafari_SinnohHallOfOrigin, COMPOUND_STRING("HALL OF ORIGIN")},
 };
 
-#define EXOTIC_SAFARI_ROAMER_COUNT 14
+#define EXOTIC_SAFARI_ROAMER_COUNT 15
 static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =
 {
     {SPECIES_OKIDOGI, FLAG_EXOTIC_LEGEND_OKIDOGI, FLAG_TEMP_1B, 0, 0},
@@ -93,6 +107,7 @@ static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER
     {SPECIES_TAPU_FINI, FLAG_EXOTIC_LEGEND_TAPU_FINI, FLAG_TEMP_1E, 0, 2},
     {SPECIES_THUNDURUS, FLAG_EXOTIC_LEGEND_THUNDURUS, FLAG_TEMP_1B, 0, 4},
     {SPECIES_LANDORUS, FLAG_EXOTIC_LEGEND_LANDORUS, FLAG_TEMP_1C, FLAG_EXOTIC_LEGEND_THUNDURUS, 4},
+    {SPECIES_MANAPHY, FLAG_EXOTIC_LEGEND_MANAPHY, FLAG_TEMP_1B, 0, 5},
 };
 #define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_1B)
 
@@ -166,6 +181,13 @@ static const struct ExoticSafariStatic sExoticSafariStatics[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE), SPECIES_ZEKROM, FLAG_EXOTIC_LEGEND_ZEKROM, FLAG_TEMP_11, SEAL_KEY, 1, 3},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE), SPECIES_VICTINI, FLAG_EXOTIC_LEGEND_VICTINI, FLAG_TEMP_11, SEAL_KEY, 2, 3},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_ABYSSAL_RUINS), SPECIES_KELDEO, FLAG_EXOTIC_LEGEND_KELDEO, FLAG_TEMP_11, SEAL_CAUGHT, 1, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_LAKE), SPECIES_UXIE, FLAG_EXOTIC_LEGEND_UXIE, FLAG_TEMP_11, SEAL_NONE, 0, 2},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_LAKE), SPECIES_AZELF, FLAG_EXOTIC_LEGEND_AZELF, FLAG_TEMP_12, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_LAKE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_LAKE), SPECIES_MESPRIT, FLAG_EXOTIC_LEGEND_MESPRIT, FLAG_TEMP_13, SEAL_NONE, 0, 4},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_MARSH), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_MARSH), SPECIES_PHIONE, FLAG_EXOTIC_LEGEND_PHIONE, FLAG_TEMP_11, SEAL_NONE, 0, 2},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_CITY), SPECIES_REGIGIGAS, FLAG_EXOTIC_LEGEND_REGIGIGAS, FLAG_TEMP_11, SEAL_NONE, 0, 2},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), SPECIES_HEATRAN, FLAG_EXOTIC_LEGEND_HEATRAN, FLAG_TEMP_11, SEAL_NONE, 0, 2},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), SPECIES_ARCEUS, FLAG_EXOTIC_LEGEND_ARCEUS, FLAG_TEMP_11, SEAL_NONE, 0, 2},
 };
 
 #define EXOTIC_SAFARI_STAKE_COLORS 4

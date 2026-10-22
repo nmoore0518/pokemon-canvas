@@ -1,4 +1,5 @@
 #include "global.h"
+#include "exotic_safari.h"
 #include "event_data.h"
 #include "field_screen_effect.h"
 #include "field_weather.h"
@@ -341,6 +342,10 @@ static const struct BgTemplate sMapPreviewBgTemplate[1] = {
 
 bool32 ShouldRunMapPreview(void)
 {
+    // Gym Trainer hack: no Safari Zone preview (its savanna picture) in the Exotic Safari's areas;
+    // each area's own name pops up instead (map_name_popup.c)
+    if (ExoticSafari_GetAreaName() != NULL)
+        return FALSE;
     if (MPS_ENABLE_MAP_PREVIEWS && FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE && GetLastUsedWarpMapSectionId() != gMapHeader.regionMapSectionId)
         return TRUE;
 

@@ -834,8 +834,27 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Reshiram and Zekrom are caught, then the Chasm's old man gives the DNA Splicers (0x370);
          Landorus roams once Thundurus is caught, and the bridge's shrine keeper gives the Reveal
          Glass once both are (0x371).
+   - [x] The Sinnoh zone (round 1, for Nick's review; `tools/gym_hack/sinnoh.py`). LAKE (The Three
+         Lakes: drawn pinewoods, three oval lakes each with an island - Verity, Valor, Acuity -
+         painted from a water mask with FireRed's edge and inner-corner pieces, `paint_water`; the
+         hub) -> west MEADOW (Floaroma Meadow: Hoenn's Route 117, its Day Care gone); south-east
+         MARSH (Great Marsh: Hoenn's Safari Zone SW, murky water, rain); north CITY (Snowpoint City:
+         Four Island under snow, snowy grass) -> Icefall Cave's mouth up to RUINS (Hall of Origin:
+         Sky Pillar's top in white and gold under a violet sky); east VOLCANO (Stark Mountain:
+         Jagged Pass in dark basalt and ash, encounters on its whole floor) -> its cave DEPTHS
+         (Stark Mountain's inside: the Fiery Path). Sinnoh (Gen 4) Pokémon wild, both Shellos seas,
+         the three Burmy cloaks, the starters, fossils, babies, Rotom. Uxie, Mesprit and Azelf on
+         the islands, Phione (marsh), Regigigas (city), Heatran (inside), Arceus (hall) stand;
+         Manaphy roams (flags 0x378-0x37F). Dialga, Palkia, Giratina, Cresselia, Darkrai and
+         Shaymin are gym-only.
+   - [x] Area names: each Exotic Safari area pops up its own name (the place it's based on:
+         `tools/gym_hack/safari_names.py`, shared with the guides; `ExoticSafari_GetAreaName`, used
+         by the map name pop-up), every time the player walks into an area; the Safari Zone's
+         savanna preview screen no longer shows for them.
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
-     folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
+     folded when there are too many - a folded palette's palette folded too now follows through),
+     `clone_tileset` (a recolored copy of a tileset). `SAFARI_REACH_DUMP=<dir>` writes each area's
+     reachable cells (debugging spots).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,
          Brambleghast/Rabsca/Houndstone 30, Gholdengo 45, Hydrapple 50); the items (Auspicious and
          Malicious Armor, Ice Stone, Unremarkable and Masterpiece Teacups) are item balls in the desert,
