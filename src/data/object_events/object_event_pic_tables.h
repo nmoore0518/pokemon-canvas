@@ -2822,3 +2822,11 @@ static const struct SpriteFrameImage sPicTable_VelvetRope[] = {
     overworld_frame(gObjectEventPic_VelvetRope, 2, 2, 0),
 };
 
+static const struct SpriteFrameImage sPicTable_ZygardeCell[] = {
+    overworld_frame(gObjectEventPic_ZygardeCell, 2, 2, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_PrisonBottle[] = {
+    overworld_frame(gObjectEventPic_PrisonBottle, 2, 4, 0),
+};
+

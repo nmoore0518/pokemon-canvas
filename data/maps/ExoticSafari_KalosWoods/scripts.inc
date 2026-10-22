@@ -21,3 +21,13 @@ ExoticSafari_KalosWoods_EventScript_ToSnow::
 	warpsilent MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH, 0
 	waitstate
 	end
+
+ExoticSafari_KalosWoods_EventScript_Cell0::
+	lock
+	setvar VAR_0x8004, 1
+	goto ExoticSafari_EventScript_Cell
+
+ExoticSafari_KalosWoods_EventScript_Cell1::
+	lock
+	setvar VAR_0x8004, 2
+	goto ExoticSafari_EventScript_Cell

@@ -20,3 +20,8 @@ ExoticSafari_KalosSnowyPath_EventScript_ToWoods::
 ExoticSafari_KalosSnowyPath_EventScript_ItemShinyStone::
 	finditem ITEM_SHINY_STONE
 	end
+
+ExoticSafari_KalosSnowyPath_EventScript_Cell0::
+	lock
+	setvar VAR_0x8004, 3
+	goto ExoticSafari_EventScript_Cell

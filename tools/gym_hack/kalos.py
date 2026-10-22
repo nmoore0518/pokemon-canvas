@@ -1,5 +1,9 @@
 """The Exotic Pokémon Safari's Kalos zone (Pokémon Canvas), for build_exotic_safari.py.
 
+Puzzles: Zygarde's Cells about the zone; Hoopa's Prison Bottle on a pedestal (the cave); Volcanion
+for Fire and Water together (a lead of one, the other behind it); Yveltal for ten Kalos POKéMON
+caught; a Furfrou groomer in the city.
+
 Six areas from Nick's planner (exotic-safari-planner-kalos_update.xlsx):
 
     Hall door -> CITY (Lumiose: FireRed's Saffron City, its four gates the way to everything, the
@@ -42,10 +46,50 @@ def rgb(h, s, v):
 # drawing, its lights pulsing: InitTilesetAnim_Lumiose) and flower gardens (tall grass)
 # ---------------------------------------------------------------------------------------------
 FLOOR = 0x2E9                         # (Saffron's paving)
-SILPH = (29, 16, 37, 30)              # (where Silph Co. stood)
-TOWER = (31, 19, 5, 11)               # (the Prism Tower: x, y, width, height)
+SILPH = (29, 16, 37, 30)              # (where Silph Co. stood: Saffron's coordinates)
 TOWER_SLOT = 7                        # (a palette Saffron doesn't use: the tower's, pulsing)
 TALL = blk(0x00D, 0)
+# The city made bigger: two columns put in inside each side of its fence ring, two rows inside
+# the top and the bottom (Saffron's x/y -> ours: cx, cy)
+COL_LEFT, COL_RIGHT, ROW_TOP, ROW_BOTTOM = 15, 52, 16, 40
+CITY_W, CITY_H = 66 + 4, 55 + 4
+
+
+def cx(x):
+    return x + 2 * (x > COL_LEFT) + 2 * (x > COL_RIGHT)
+
+
+def cy(y):
+    return y + 2 * (y > ROW_TOP) + 2 * (y > ROW_BOTTOM)
+
+
+TOWER = (cx(29) + 1, cy(18), 7, 13)   # (the Prism Tower on its base: x, y, width, height)
+GROOMER = (TOWER[0] - 3, TOWER[1] + TOWER[3] + 1)   # (the Furfrou groomer, out on the plaza)
+PEDESTAL, HOOPA_SPOT = (34, 20), (34, 23)          # (Glittering Cave: the Prison Bottle, where Hoopa comes)
+
+
+def _periodic(v):                     # (trees and fence posts: patterns two long, kept in step)
+    return 0x00E <= v & 0x3FF <= 0x027 or v & 0x3FF in (0x30E, 0x30F)
+
+
+def _insert_cols(g, k_of_row):
+    out = []
+    for y, row in enumerate(g):
+        k = k_of_row(y)
+        if _periodic(row[k]) and _periodic(row[k - 1]):
+            ins = [row[k - 1], row[k]]
+        elif _periodic(row[k + 1]) and _periodic(row[k + 2]):
+            ins = [row[k + 1], row[k + 2]]
+        else:
+            ins = [row[k], row[k]]
+        out.append(row[:k + 1] + ins + row[k + 1:])
+    return out
+
+
+def _insert_rows(g, k):
+    t = [list(r) for r in zip(*g)]
+    t = _insert_cols(t, lambda _: k)
+    return [list(r) for r in zip(*t)]
 
 
 def city():
@@ -57,13 +101,31 @@ def city():
     for y in range(y0, y1 + 1):
         for x in range(x0, x1 + 1):
             g[y][x] = blk(FLOOR, 0)
-    # flower gardens round the tower's plaza
-    for y in range(y0 + 1, y1):
-        for x in (x0, x0 + 1, x1 - 1, x1):
-            g[y][x] = TALL
-    for x in range(x0 + 2, x1 - 1):
-        g[y0 + 1][x] = TALL
+    for y in range(17, 22):                         # (the house beside it: its right side, which
+        g[y][x0] = g[y - 7][24]                     # Silph stood over; another house's)
+    for y in (22, 23, 24):                          # (Silph's sides)
+        g[y][x0 - 1] = g[y][x1 + 1] = blk(FLOOR, 0)
+    # bigger: columns (the top-right house runs up to the fence: there, the trees beyond move out)
+    g = _insert_cols(g, lambda y: COL_LEFT)
+    g = _insert_cols(g, lambda y: cx(COL_RIGHT) if y >= 14 else cx(COL_RIGHT) + 1)
+    rx = cx(COL_RIGHT) + 1                          # (the new trees above the fence's corner end)
+    g[12][rx + 1], g[12][rx + 2] = blk(0x024, 1), blk(0x025, 1)
+    g[13][rx] = g[13][rx + 1] = blk(FLOOR, 0)
+    g[13][rx + 2] = blk(0x2EA, 0)
+    g = _insert_rows(g, ROW_TOP)
+    g = _insert_rows(g, ROW_BOTTOM + 2)
+    assert len(g) == CITY_H and len(g[0]) == CITY_W, (len(g[0]), len(g))
+    # grass: a little round the tower's foot, and in the city's four corners
     tx, ty, tw, th = TOWER
+    for y in range(ty + th - 4, ty + th):
+        g[y][tx - 1] = g[y][tx + tw] = TALL
+    corners = [(cx(COL_LEFT), cy(10)), (cx(COL_RIGHT) + 2 - 3, cy(15)),
+               (cx(COL_LEFT), cy(ROW_BOTTOM) + 1), (cx(COL_RIGHT) + 2 - 3, cy(ROW_BOTTOM) + 1)]
+    for gx, gy in corners:
+        for y in range(gy, gy + 3):
+            for x in range(gx, gx + 4):
+                if g[y][x] == blk(FLOOR, 0):
+                    g[y][x] = TALL
     ids = {}
 
     def edit(out):
@@ -77,7 +139,7 @@ def city():
     B.clone_tileset("gTileset_SaffronCity", "KalosLumiose", edit=edit, callback="InitTilesetAnim_Lumiose")
     for k, m in enumerate(ids["tower"]):
         g[ty + k // tw][tx + k % tw] = blk(m, 1)
-    return g, lay["width"], lay["height"]
+    return g, CITY_W, CITY_H
 
 
 # ---------------------------------------------------------------------------------------------
@@ -144,8 +206,25 @@ def woods_rows():
 def woods():
     import build_exotic_safari as B
     B.clone_tileset("gTileset_General_Frlg", "KalosWoodsGeneral", woods_color)
-    B.clone_tileset("gTileset_ViridianForest", "KalosWoods", woods_color)
-    return draw(woods_rows()), WOODS_W, WOODS_H
+    # The treetops: a tree's crown pokes up into the row above it (Viridian Forest's 0x281: a tip
+    # over grass); draw leaves it out (its forests are deep), so walls standing in a clearing had
+    # flat tops. Tips over each clearing ground, the ground's own attributes kept
+    import tile_import as T
+    tips = {}
+
+    def edit(out):
+        tgt = T.Target(out)
+        prim = tileset_dir("gTileset_General_Frlg")
+        for m in (0x00D, 0x008, 0x009, 0x010, 0x011):
+            tips[m] = tgt.add_metatile(list(tgt.entries(m, prim)[:4]) + [0, 0, 0x8284, 0x8684], tgt.attr(m, prim))
+        tgt.save()
+    B.clone_tileset("gTileset_ViridianForest", "KalosWoods", woods_color, edit=edit)
+    g = draw(woods_rows())
+    for y in range(WOODS_H - 1):
+        for x in range(WOODS_W):
+            if g[y + 1][x] & 0x3FF == 0x289 and g[y][x] & 0x3FF in tips:
+                g[y][x] = (g[y][x] & ~0x3FF) | tips[g[y][x] & 0x3FF]
+    return g, WOODS_W, WOODS_H
 
 
 # ---------------------------------------------------------------------------------------------
@@ -242,16 +321,16 @@ AREAS = {
         "map": "ExoticSafari_KalosCity", "build": city, "tilesets": ("gTileset_General_Frlg", "gTileset_KalosLumiose"),
         "music": "MUS_RG_CELADON", "weather": "WEATHER_NONE", "type": "MAP_TYPE_CITY",
         "links": {
-            "HALL": ("warp", [(34, 46), (35, 46)], (34, 45), ("HALL", None)),              # (the south gate)
-            "WOODS": ("warp", [(34, 5), (35, 5)], (34, 6), ("WOODS", "CITY")),            # (the north gate)
-            "CAVE": ("warp", [(8, 27)], (9, 27), ("CAVE", "CITY")),                         # (the west gate)
-            "DESERT": ("warp", [(58, 27)], (57, 27), ("DESERT", "CITY")),                   # (the east gate)
+            "HALL": ("warp", [(cx(34), cy(46)), (cx(35), cy(46))], (cx(34), cy(45)), ("HALL", None)),              # (the south gate)
+            "WOODS": ("warp", [(cx(34), 5), (cx(35), 5)], (cx(34), 6), ("WOODS", "CITY")),            # (the north gate)
+            "CAVE": ("warp", [(8, cy(27))], (9, cy(27)), ("CAVE", "CITY")),                         # (the west gate)
+            "DESERT": ("warp", [(cx(58), cy(27))], (cx(57), cy(27)), ("DESERT", "CITY")),                   # (the east gate)
         },
         # (the buildings' doors stay, leading nowhere: the city's homes are private)
         "land": land("ESPURR", "FLABEBE", "FLABEBE_YELLOW", "FURFROU", "SPRITZEE", "SWIRLIX", "FLABEBE_ORANGE", "LITLEO",
                      "FLABEBE_BLUE", "FLABEBE_WHITE", ("SCATTERBUG_ELEGANT", 48, 50), ("VIVILLON_MODERN", 50, 54)),
-        "statics": [("ZYGARDE", (34, 31))],
-        "items": [("SACHET", (17, 33)), ("WHIPPED_DREAM", (50, 33))],
+        "statics": [("ZYGARDE", (TOWER[0] + 3, TOWER[1] + TOWER[3]))],
+        "items": [("SACHET", (cx(17), cy(33))), ("WHIPPED_DREAM", (cx(50), cy(33)))],
     },
     "WOODS": {
         "map": "ExoticSafari_KalosWoods", "build": woods, "border_size": (3, 2),
@@ -286,7 +365,7 @@ AREAS = {
         "remove_holes": [(5, 6), (19, 14), (31, 16)],
         "land": land("CARBINK", "NOIBAT", "BINACLE", "GOOMY", "INKAY", "HAWLUCHA", "BARBARACLE", "SLIGGOO",
                      "NOIVERN", "MALAMAR", ("TYRUNT", 48, 50), ("AMAURA", 48, 50)),
-        "statics": [("HOOPA", (34, 21))],
+        "statics": [("HOOPA", HOOPA_SPOT)],
         "items": [],
     },
     "DESERT": {
@@ -322,3 +401,73 @@ AREAS = {
 }
 ROAMERS = []
 UNIQUE_ITEMS = set()
+
+# ---------------------------------------------------------------------------------------------
+# The puzzles
+# ---------------------------------------------------------------------------------------------
+CONDITIONS = {
+    "ZYGARDE": ("CELLS", 3),          # (three of its Cells found: its 10% Forme; all: whole)
+    "HOOPA": ("BOTTLE", 0),           # (the Prison Bottle taken from its pedestal)
+    "VOLCANION": ("STEAM", 0),        # (a Fire- or Water-type lead, the other type behind it)
+    "YVELTAL": ("DRAIN", 10),         # (ten Kalos POKéMON caught)
+}
+PRE_BATTLE = {"ZYGARDE": "ExoticSafari_EventScript_ZygardePre"}
+# Zygarde's Cells, about the zone (flags from FLAG_EXOTIC_CELL_FIRST): how many in each area, put
+# on out-of-the-way ground the player can reach (picked: far from the way in, never in a corridor)
+CELLS = {"CITY": 1, "WOODS": 2, "SNOW": 1, "CAVE": 2, "DESERT": 1, "OCEAN": 1}
+
+
+def _pick_spots(ctx, n, seed, taken):
+    import build_exotic_safari as B
+    reach, g = ctx["reach"], ctx["g"]
+    starts = [(o["x"], o["y"]) for o in ctx.get("warps", [])]
+    def land(p):
+        return p in reach and not (g[p[1]][p[0]] >> 10) & 3 and ctx["beh"](g[p[1]][p[0]]) not in B.MB_SURFABLE
+    cands = [p for p in sorted(reach) if land(p) and p not in taken
+             and sum(land((p[0] + dx, p[1] + dy)) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))) >= 3
+             and all(abs(p[0] - q[0]) + abs(p[1] - q[1]) > 3 for q in taken)]
+    rnd = random.Random(seed)
+    out = []
+    for _ in range(n):
+        far = sorted(cands, key=lambda p: -min([abs(p[0] - q[0]) + abs(p[1] - q[1]) for q in out + starts] or [0]))
+        p = rnd.choice(far[:max(1, len(far) // 4)])
+        out.append(p)
+        cands = [q for q in cands if abs(q[0] - p[0]) + abs(q[1] - p[1]) > 6]
+    return out
+
+
+def extra(area):
+    def add(ctx):
+        name = ctx["name"]
+        taken = {(o["x"], o["y"]) for o in ctx["objects"]} | {PEDESTAL, (PEDESTAL[0], PEDESTAL[1] + 1), GROOMER}
+        first = sum(CELLS[k] for k in list(CELLS)[:list(CELLS).index(area)])
+        for k, (x, y) in enumerate(_pick_spots(ctx, CELLS[area], "cell " + area, taken)):
+            label = f"{name}_EventScript_Cell{k}"
+            o = ctx["obj"]("OBJ_EVENT_GFX_ZYGARDE_CELL", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"0x{0x344 + first + k:03X}")
+            o["elevation"] = ctx["elev"](x, y)
+            ctx["objects"].append(o)
+            ctx["scripts"] += [f"{label}::", "\tlock", f"\tsetvar VAR_0x8004, {first + k}", "\tgoto ExoticSafari_EventScript_Cell", ""]
+        if area == "CAVE":
+            x, y = PEDESTAL
+            if (x, y + 1) not in ctx["reach"]:
+                print(f"WARNING CAVE: the Prison Bottle's pedestal at {(x, y)} can't be reached")
+            o = ctx["obj"]("OBJ_EVENT_GFX_PRISON_BOTTLE", x, y, "ExoticSafari_EventScript_PrisonBottle", "MOVEMENT_TYPE_FACE_DOWN",
+                           "FLAG_EXOTIC_PRISON_BOTTLE")
+            o["elevation"] = ctx["elev"](x, y)
+            ctx["objects"].append(o)
+        if area == "CITY":
+            x, y = GROOMER
+            if (x, y) not in ctx["reach"]:
+                print(f"WARNING CITY: the groomer at {(x, y)} can't be reached")
+            o = ctx["obj"]("OBJ_EVENT_GFX_WOMAN_2_FRLG", x, y, "ExoticSafari_EventScript_Groomer", "MOVEMENT_TYPE_FACE_DOWN")
+            o["elevation"] = ctx["elev"](x, y)
+            ctx["objects"].append(o)
+    return add
+
+
+for _k in AREAS:
+    AREAS[_k]["extra"] = extra(_k)
+
+
+def header_lines(map_id):
+    return ["// Kalos: Zygarde's Cells", f"#define EXOTIC_SAFARI_CELLS {sum(CELLS.values())}"]

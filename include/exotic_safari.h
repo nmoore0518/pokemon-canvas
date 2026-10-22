@@ -16,5 +16,10 @@ void ExoticSafari_Stone(void);
 void ExoticSafari_SetupDojo(void);
 void ExoticSafari_TakeRelic(void);
 void ExoticSafari_CountStarters(void);
+void ExoticSafari_TakeCell(void);
+void ExoticSafari_CountCells(void);
+void ExoticSafari_LegendForm(void);
+void ExoticSafari_IsFurfrou(void);
+void ExoticSafari_TrimFurfrou(void);
 
 #endif // GUARD_EXOTIC_SAFARI_H

@@ -31,3 +31,13 @@ ExoticSafari_KalosBadlands_EventScript_LegendYveltal::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_YVELTAL
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_KalosBadlands_EventScript_SealYveltal::
+	lockall
+	setvar VAR_0x8004, 24
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_KalosBadlands_EventScript_Cell0::
+	lock
+	setvar VAR_0x8004, 6
+	goto ExoticSafari_EventScript_Cell

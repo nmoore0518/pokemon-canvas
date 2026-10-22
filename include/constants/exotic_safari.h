@@ -25,6 +25,10 @@
 #define SEAL_STEEL    16    // (Meltan: a Steel-type lead)
 #define SEAL_SHADOW   17    // (Marshadow: a Fighting- or Ghost-type lead)
 #define SEAL_STORM    18    // (Zeraora: a thunderstorm)
+#define SEAL_CELLS    19    // (Zygarde: enough of its Cells found)
+#define SEAL_BOTTLE   20    // (Hoopa: the Prison Bottle taken from its pedestal)
+#define SEAL_STEAM    21    // (Volcanion: a Fire- or Water-type lead, the other type behind it)
+#define SEAL_DRAIN    22    // (Yveltal: Kalos POKéMON caught)
 #define SEAL_RESULT_CAUGHT 0xFF
 #define SEAL_RESULT_AWAY 0xFE
 // Each static legendary's index (sExoticSafariStatics)

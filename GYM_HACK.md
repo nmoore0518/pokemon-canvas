@@ -772,6 +772,21 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Kalos Pokémon wild (Flabébé colors, Pumpkaboo sizes, Vivillon patterns, the starters,
          fossils); Zygarde (city), Hoopa (cave), Yveltal (badlands), Volcanion (islet) stand.
          Tyrunt/Amaura evolve at 39 with no time condition. `reachable` now jumps ledges.
+   - [x] Kalos round 2 (Nick's review). Lumiose made bigger (two rows and columns put in inside its
+         fence ring: `_insert_cols`, trees and fence posts kept in step), small tall-grass beds in
+         its four corners and at the tower's foot (the gardens round the plaza gone; the house Silph
+         Co. stood over given back its right side). The Prism Tower redrawn in the buildings' style:
+         seen corner-on, a lit face and a shaded one, girders bent round the near edge, the deck a
+         band of glass, standing on a base building with an arched door (`prism_tower_art`, 7x13).
+         Winding Woods: the trees standing in clearings get their crowns' tips (Viridian Forest's
+         0x281 tip, over each clearing ground) - no more flat tops. Puzzles: eight Zygarde Cells
+         about the zone (object `ZYGARDE_CELL`, flags 0x344-0x34B); with three found Zygarde comes
+         as its 10% Forme (the player may wait), with all eight whole, with Power Construct
+         (`ExoticSafari_LegendForm`, `PRE_BATTLE` scripts); Hoopa comes through a ring when the
+         Prison Bottle is taken from its pedestal in Glittering Cave (flag 0x34C; the bottle turns
+         it Unbound); Volcanion for a Fire- or Water-type lead with the other type behind it;
+         Yveltal once ten Kalos POKéMON (Dex 650-721) are caught. A Furfrou groomer on the plaza
+         gives any of the ten trims for ¥500 (`ExoticSafari_TrimFurfrou`).
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

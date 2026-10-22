@@ -832,5 +832,7 @@ const u16 gObjectEventPic_ExoticStakeYellow[] = INCGFX_U16("graphics/object_even
 const u16 gObjectEventPic_ExoticStakeGreen[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/stake_green.png", ".4bpp");
 const u16 gObjectEventPic_ExoticStakeBlue[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/stake_blue.png", ".4bpp");
 const u16 gObjectEventPic_VelvetRope[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/velvet_rope.png", ".4bpp");
+const u16 gObjectEventPic_ZygardeCell[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/zygarde_cell.png", ".4bpp");
+const u16 gObjectEventPic_PrisonBottle[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/prison_bottle.png", ".4bpp");
 const u16 gObjectEventPal_ExoticSafari[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/velvet_rope.png", ".gbapal");
 // END Convention

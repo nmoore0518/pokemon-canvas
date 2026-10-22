@@ -7,6 +7,7 @@ ExoticSafari_EventScript_LegendBattle::
 	playmoncry VAR_0x8008, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	special ExoticSafari_LegendForm
 	setvar VAR_0x8005, EXOTIC_SAFARI_LEGEND_LEVEL
 	setvar VAR_0x8006, ITEM_NONE
 	special CreateEnemyEventMon
@@ -51,6 +52,10 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_STEEL, ExoticSafari_EventScript_SealSteel
 	case SEAL_SHADOW, ExoticSafari_EventScript_SealShadow
 	case SEAL_STORM, ExoticSafari_EventScript_SealStorm
+	case SEAL_CELLS, ExoticSafari_EventScript_SealCells
+	case SEAL_BOTTLE, ExoticSafari_EventScript_SealBottle
+	case SEAL_STEAM, ExoticSafari_EventScript_SealSteam
+	case SEAL_DRAIN, ExoticSafari_EventScript_SealDrain
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -139,6 +144,132 @@ ExoticSafari_EventScript_SealShadow::
 ExoticSafari_EventScript_SealStorm::
 	msgbox ExoticSafari_Text_SealStorm
 	releaseall
+	end
+
+ExoticSafari_EventScript_SealCells::
+	msgbox ExoticSafari_Text_SealCells
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealBottle::
+	msgbox ExoticSafari_Text_SealBottle
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealSteam::
+	msgbox ExoticSafari_Text_SealSteam
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealDrain::
+	msgbox ExoticSafari_Text_SealDrain
+	releaseall
+	end
+
+@ A Zygarde Cell picked up (VAR_0x8004: which)
+ExoticSafari_EventScript_Cell::
+	special ExoticSafari_TakeCell
+	removeobject VAR_LAST_TALKED
+	playfanfare MUS_OBTAIN_ITEM
+	message ExoticSafari_Text_FoundCell
+	waitmessage
+	waitfanfare
+	goto_if_eq VAR_RESULT, 0, ExoticSafari_EventScript_LastCell
+	msgbox ExoticSafari_Text_CellsLeft
+	release
+	end
+
+ExoticSafari_EventScript_LastCell::
+	msgbox ExoticSafari_Text_LastCell
+	release
+	end
+
+@ Zygarde, before its battle: whole once all its Cells are found; before that, its 10% Forme (the
+@ player can wait)
+ExoticSafari_EventScript_ZygardePre::
+	special ExoticSafari_CountCells
+	goto_if_eq VAR_RESULT, 0, ExoticSafari_EventScript_ZygardeWhole
+	msgbox ExoticSafari_Text_ZygardePartial, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ExoticSafari_EventScript_ZygardeWait
+	return
+
+ExoticSafari_EventScript_ZygardeWhole::
+	msgbox ExoticSafari_Text_ZygardeWhole
+	return
+
+ExoticSafari_EventScript_ZygardeWait::
+	msgbox ExoticSafari_Text_ZygardeWait
+	release
+	end
+
+@ Glittering Cave: the Prison Bottle on its pedestal. Taken, it calls Hoopa through a ring
+ExoticSafari_EventScript_PrisonBottle::
+	lock
+	msgbox ExoticSafari_Text_PrisonBottle, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ExoticSafari_EventScript_PrisonBottleLeft
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_PRISON_BOTTLE
+	giveitem ITEM_PRISON_BOTTLE
+	msgbox ExoticSafari_Text_PrisonBottleShakes
+	setvar VAR_0x8004, EXOTIC_SAFARI_STATIC_HOOPA
+	special ExoticSafari_TryAppear
+	goto_if_eq VAR_RESULT, TRUE, ExoticSafari_EventScript_Appear
+	release
+	end
+
+ExoticSafari_EventScript_PrisonBottleLeft::
+	release
+	end
+
+@ Lumiose's Furfrou groomer: a trim for ¥500
+ExoticSafari_EventScript_Groomer::
+	lock
+	faceplayer
+	msgbox ExoticSafari_Text_GroomerIntro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ExoticSafari_EventScript_GroomerBye
+	checkmoney 500
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_GroomerNoMoney
+	msgbox ExoticSafari_Text_GroomerWhich
+	special ChoosePartyMon
+	waitstate
+	goto_if_ge VAR_0x8004, PARTY_SIZE, ExoticSafari_EventScript_GroomerBye
+	special ExoticSafari_IsFurfrou
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_GroomerNotFurfrou
+	message ExoticSafari_Text_GroomerStyle
+	waitmessage
+	dynmultichoice 0, 0, FALSE, 5, 0, DYN_MULTICHOICE_CB_NONE, ExoticSafari_Text_TrimHeart, ExoticSafari_Text_TrimStar, ExoticSafari_Text_TrimDiamond, ExoticSafari_Text_TrimDebutante, ExoticSafari_Text_TrimMatron, ExoticSafari_Text_TrimDandy, ExoticSafari_Text_TrimLaReine, ExoticSafari_Text_TrimKabuki, ExoticSafari_Text_TrimPharaoh, ExoticSafari_Text_TrimNatural
+	closemessage
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, ExoticSafari_EventScript_GroomerBye
+	copyvar VAR_0x8005, VAR_RESULT
+	special ExoticSafari_TrimFurfrou
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_GroomerSame
+	removemoney 500
+	fadescreen FADE_TO_BLACK
+	playse SE_USE_ITEM
+	delay 60
+	fadescreen FADE_FROM_BLACK
+	msgbox ExoticSafari_Text_GroomerDone
+	release
+	end
+
+ExoticSafari_EventScript_GroomerSame::
+	msgbox ExoticSafari_Text_GroomerSame
+	release
+	end
+
+ExoticSafari_EventScript_GroomerNotFurfrou::
+	msgbox ExoticSafari_Text_GroomerNotFurfrou
+	release
+	end
+
+ExoticSafari_EventScript_GroomerNoMoney::
+	msgbox ExoticSafari_Text_GroomerNoMoney
+	release
+	end
+
+ExoticSafari_EventScript_GroomerBye::
+	msgbox ExoticSafari_Text_GroomerBye
+	release
 	end
 
 @ A relic of the Alola legendaries picked up (VAR_0x8004: which)
@@ -606,3 +737,122 @@ ExoticSafari_Text_CaretakerFull:
 ExoticSafari_Text_CaretakerAfter:
 	.string "Bond with TYPE: NULL, and it might\n"
 	.string "become something more.$"
+
+ExoticSafari_Text_SealCells:
+	.string "Little green specks drift about the\n"
+	.string "tower's foot, gathering, scattering…\p"
+	.string "ZYGARDE CELLS are hidden about the\n"
+	.string "zone. Find {STR_VAR_2} more, and they\l"
+	.string "may come together here.$"
+
+ExoticSafari_Text_SealBottle:
+	.string "A faint ring of light flickers in the\n"
+	.string "air… and fades.\p"
+	.string "Something here is bound to the\n"
+	.string "bottle on the pedestal nearby.$"
+
+ExoticSafari_Text_SealSteam:
+	.string "Steam hisses from cracks in the\n"
+	.string "rock: fire and water, together…\p"
+	.string "Whatever lives here might come out\n"
+	.string "for a FIRE- or WATER-type POKéMON\l"
+	.string "in the lead, with the other type\l"
+	.string "behind it.$"
+
+ExoticSafari_Text_SealDrain:
+	.string "The scrub here is withered and gray,\n"
+	.string "as if its life had been drained\l"
+	.string "away…\p"
+	.string "Something waits for the life of\n"
+	.string "KALOS: catch {STR_VAR_2} more KALOS\l"
+	.string "POKéMON.$"
+
+ExoticSafari_Text_FoundCell:
+	.string "{PLAYER} found a ZYGARDE CELL!\p"
+	.string "It wriggled free… and drifted off\n"
+	.string "toward LUMIOSE CITY.$"
+
+ExoticSafari_Text_CellsLeft:
+	.string "ZYGARDE CELLS found: {STR_VAR_1}\n"
+	.string "Still out there: {STR_VAR_2}$"
+
+ExoticSafari_Text_LastCell:
+	.string "That was the last of them!\n"
+	.string "Every ZYGARDE CELL has been found.$"
+
+ExoticSafari_Text_ZygardePartial:
+	.string "ZYGARDE is only partly here: its\n"
+	.string "10% FORME, still missing {STR_VAR_2} CELLS.\p"
+	.string "Find them all and it will be whole.\n"
+	.string "Battle it as it is?$"
+
+ExoticSafari_Text_ZygardeWhole:
+	.string "Every CELL has come together.\n"
+	.string "ZYGARDE stands whole!$"
+
+ExoticSafari_Text_ZygardeWait:
+	.string "ZYGARDE watches, waiting for the rest\n"
+	.string "of itself…$"
+
+ExoticSafari_Text_PrisonBottle:
+	.string "An ornate bottle sits on the\n"
+	.string "pedestal. It's humming faintly…\p"
+	.string "Take the bottle?$"
+
+ExoticSafari_Text_PrisonBottleShakes:
+	.string "The PRISON BOTTLE shakes!\n"
+	.string "A ring of light opens nearby…$"
+
+ExoticSafari_Text_GroomerIntro:
+	.string "Bonjour! I'm LUMIOSE's FURFROU\n"
+	.string "groomer.\p"
+	.string "A trim is ¥500. Shall I give your\n"
+	.string "FURFROU a new look?$"
+
+ExoticSafari_Text_GroomerWhich:
+	.string "Which POKéMON shall I groom?$"
+
+ExoticSafari_Text_GroomerStyle:
+	.string "Magnifique! Which trim would\n"
+	.string "{STR_VAR_1} like?$"
+
+ExoticSafari_Text_GroomerDone:
+	.string "Voilà! {STR_VAR_1} looks wonderful!\n"
+	.string "Come back for a new trim any time.$"
+
+ExoticSafari_Text_GroomerSame:
+	.string "But {STR_VAR_1} already has that\n"
+	.string "trim! No charge, of course.$"
+
+ExoticSafari_Text_GroomerNotFurfrou:
+	.string "Oh, I only groom FURFROU, I'm\n"
+	.string "afraid.$"
+
+ExoticSafari_Text_GroomerNoMoney:
+	.string "Oh dear, a trim is ¥500, and you\n"
+	.string "don't have enough.$"
+
+ExoticSafari_Text_GroomerBye:
+	.string "Au revoir! Bring your FURFROU by\n"
+	.string "any time.$"
+
+ExoticSafari_Text_TrimHeart:
+	.string "HEART$"
+ExoticSafari_Text_TrimStar:
+	.string "STAR$"
+ExoticSafari_Text_TrimDiamond:
+	.string "DIAMOND$"
+ExoticSafari_Text_TrimDebutante:
+	.string "DEBUTANTE$"
+ExoticSafari_Text_TrimMatron:
+	.string "MATRON$"
+ExoticSafari_Text_TrimDandy:
+	.string "DANDY$"
+ExoticSafari_Text_TrimLaReine:
+	.string "LA REINE$"
+ExoticSafari_Text_TrimKabuki:
+	.string "KABUKI$"
+ExoticSafari_Text_TrimPharaoh:
+	.string "PHARAOH$"
+ExoticSafari_Text_TrimNatural:
+	.string "NATURAL$"

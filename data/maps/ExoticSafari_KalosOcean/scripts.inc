@@ -26,3 +26,13 @@ ExoticSafari_KalosOcean_EventScript_LegendVolcanion::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_VOLCANION
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_KalosOcean_EventScript_SealVolcanion::
+	lockall
+	setvar VAR_0x8004, 25
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_KalosOcean_EventScript_Cell0::
+	lock
+	setvar VAR_0x8004, 7
+	goto ExoticSafari_EventScript_Cell

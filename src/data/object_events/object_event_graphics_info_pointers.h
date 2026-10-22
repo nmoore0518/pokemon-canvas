@@ -503,6 +503,8 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStake
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStakeGreen;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ExoticStakeBlue;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_VelvetRope;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ZygardeCell;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PrisonBottle;
 // END Convention externs
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -998,6 +1000,8 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_EXOTIC_STAKE_GREEN] = &gObjectEventGraphicsInfo_ExoticStakeGreen,
     [OBJ_EVENT_GFX_EXOTIC_STAKE_BLUE] = &gObjectEventGraphicsInfo_ExoticStakeBlue,
     [OBJ_EVENT_GFX_VELVET_ROPE] = &gObjectEventGraphicsInfo_VelvetRope,
+    [OBJ_EVENT_GFX_ZYGARDE_CELL] = &gObjectEventGraphicsInfo_ZygardeCell,
+    [OBJ_EVENT_GFX_PRISON_BOTTLE] = &gObjectEventGraphicsInfo_PrisonBottle,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {

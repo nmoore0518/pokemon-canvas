@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """The Exotic Safari's object sprites (Pokémon Canvas): the Treasures of Ruin's stakes (a color
-each) and a velvet rope, sharing one 16-color palette.
+each), a velvet rope, a Zygarde Cell and the Prison Bottle on its pedestal, sharing one 16-color
+palette.
 
     python3 tools/gym_hack/exotic_safari_art.py
 Writes graphics/object_events/pics/misc/exotic/*.png
@@ -80,6 +81,62 @@ ROPE = [
     ".ooooo..........",
 ]
 
+# A Zygarde Cell (16x16): a green blob, its red nucleus, a white glint (g/G green, R red)
+CELL = [
+    "................",
+    "................",
+    "................",
+    "......oooo......",
+    ".....oGGGGo.....",
+    "....oGWGGGGo....",
+    "...oGGGGGGGgo...",
+    "...oGGGRRGGgo...",
+    "...oGGRRRRGgo...",
+    "...oGGGRRGGgo...",
+    "....ogGGGGggo...",
+    ".....oggggoo....",
+    "......oooo......",
+    "................",
+    "................",
+    "................",
+]
+# The Prison Bottle on a pedestal (16x32): a purple bottle with gold bands (P/p purple, Y/y gold) on
+# a white-and-brass stand
+PEDESTAL = [
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    ".......oo.......",
+    "......oYYo......",
+    "......oyyo......",
+    ".......oo.......",
+    "......oPPo......",
+    ".....oPWPPo.....",
+    "....oPPPPPpo....",
+    "....oYYYYYyo....",
+    "....oPPPPPpo....",
+    "....oPWPPPpo....",
+    "....oPPPPPpo....",
+    "....oYYYYYyo....",
+    ".....oppppo.....",
+    "...ooooooooo....",
+    "..oBBBBBBBBBo...",
+    "...oWWWWWWWo....",
+    "....oWWWWWo.....",
+    "....oWWBWWo.....",
+    "....oWWWWWo.....",
+    "....oWWBWWo.....",
+    "....oWWWWWo.....",
+    "....oWWWWWo.....",
+    "...oBBBBBBBo....",
+    "..oBBBBBBBBBo...",
+    "..ooooooooooo...",
+    "................",
+    "................",
+]
+
 
 def draw(rows, mapping):
     img = Image.new("P", (len(rows[0]), len(rows)))
@@ -97,6 +154,8 @@ def main():
     for name, (dark, light) in COLORS.items():
         draw(STAKE, dict(base, D=dark, L=light)).save(OUT / f"stake_{name}.png")
     draw(ROPE, base).save(OUT / "velvet_rope.png")
+    draw(CELL, dict(base, g=9, G=10, R=14)).save(OUT / "zygarde_cell.png")
+    draw(PEDESTAL, dict(base, P=5, p=5, Y=8, y=7)).save(OUT / "prison_bottle.png")
 
 
 if __name__ == "__main__":

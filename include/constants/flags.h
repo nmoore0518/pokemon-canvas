@@ -2602,6 +2602,8 @@
 #define FLAG_EXOTIC_LEGEND_ZYGARDE            0x341
 #define FLAG_EXOTIC_LEGEND_HOOPA              0x342
 #define FLAG_EXOTIC_LEGEND_VOLCANION          0x343
+#define FLAG_EXOTIC_CELL_FIRST                0x344   // to 0x34B (8): Zygarde Cells found
+#define FLAG_EXOTIC_PRISON_BOTTLE             0x34C   // (Hoopa's: taken from its pedestal)
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

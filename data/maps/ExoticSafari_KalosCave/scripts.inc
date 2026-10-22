@@ -21,3 +21,18 @@ ExoticSafari_KalosCave_EventScript_LegendHoopa::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_HOOPA
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_KalosCave_EventScript_SealHoopa::
+	lockall
+	setvar VAR_0x8004, 23
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_KalosCave_EventScript_Cell0::
+	lock
+	setvar VAR_0x8004, 4
+	goto ExoticSafari_EventScript_Cell
+
+ExoticSafari_KalosCave_EventScript_Cell1::
+	lock
+	setvar VAR_0x8004, 5
+	goto ExoticSafari_EventScript_Cell

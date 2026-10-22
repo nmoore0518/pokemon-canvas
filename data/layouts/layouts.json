@@ -11043,8 +11043,8 @@
     {
       "id": "LAYOUT_EXOTIC_SAFARI_KALOS_CITY",
       "name": "ExoticSafari_KalosCity_Layout",
-      "width": 66,
-      "height": 55,
+      "width": 70,
+      "height": 59,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",

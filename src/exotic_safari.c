@@ -175,7 +175,26 @@ static bool32 PlaceRoamer(const struct ExoticSafariArea *area, u32 roamer)
 // roamers) to be caught, Terapagos for every gym type to be mastered. Hidden (a temp flag) until
 // then, once caught, and for the rest of a visit after a battle that didn't catch it.
 // ---------------------------------------------------------------------------------------------
-enum { LEAD_LOVING, LEAD_DRAGON, LEAD_STEEL, LEAD_SHADOW };
+enum { LEAD_LOVING, LEAD_DRAGON, LEAD_STEEL, LEAD_SHADOW, LEAD_STEAM };
+
+static bool32 SpeciesHasType(u32 species, u32 type)
+{
+    return GetSpeciesType(species, 0) == type || GetSpeciesType(species, 1) == type;
+}
+
+// Whether a party member other than the lead has a type
+static bool32 BehindLeadHas(u32 type)
+{
+    u32 i;
+    for (i = 1; i < PARTY_SIZE; i++)
+    {
+        struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][i];
+        if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE && !GetMonData(mon, MON_DATA_IS_EGG)
+         && SpeciesHasType(GetMonData(mon, MON_DATA_SPECIES), type))
+            return TRUE;
+    }
+    return FALSE;
+}
 
 // The lead POKéMON (the party's first): Enamorus wants one that loves its trainer as much as any
 // can (the most friendship), Regidrago a Dragon type
@@ -188,6 +207,9 @@ static bool32 LeadIs(u32 what)
     if (what == LEAD_LOVING)
         return GetMonData(mon, MON_DATA_FRIENDSHIP) >= MAX_FRIENDSHIP;
     species = GetMonData(mon, MON_DATA_SPECIES);
+    if (what == LEAD_STEAM)         // (Volcanion: Fire in the lead and Water behind it, or the reverse)
+        return (SpeciesHasType(species, TYPE_FIRE) && BehindLeadHas(TYPE_WATER))
+            || (SpeciesHasType(species, TYPE_WATER) && BehindLeadHas(TYPE_FIRE));
     if (what == LEAD_SHADOW)        // (Marshadow: a Fighting or Ghost type)
         return GetSpeciesType(species, 0) == TYPE_FIGHTING || GetSpeciesType(species, 1) == TYPE_FIGHTING
             || GetSpeciesType(species, 0) == TYPE_GHOST || GetSpeciesType(species, 1) == TYPE_GHOST;
@@ -210,6 +232,24 @@ static u32 StakesLeft(u32 color)
     for (k = 0; k < EXOTIC_SAFARI_STAKES_PER_COLOR; k++)
         left += !FlagGet(EXOTIC_SAFARI_STAKE_FLAGS + color * EXOTIC_SAFARI_STAKES_PER_COLOR + k);
     return left;
+}
+
+// The Zygarde Cells found
+static u32 CellsFound(void)
+{
+    u32 i, n = 0;
+    for (i = 0; i < EXOTIC_SAFARI_CELLS; i++)
+        n += FlagGet(FLAG_EXOTIC_CELL_FIRST + i) != 0;
+    return n;
+}
+
+// The Kalos POKéMON (National Dex 650-721) the player has caught
+static u32 KalosCaught(void)
+{
+    u32 n, count = 0;
+    for (n = NATIONAL_DEX_CHESPIN; n <= NATIONAL_DEX_VOLCANION; n++)
+        count += GetSetPokedexFlag(n, FLAG_GET_CAUGHT) != 0;
+    return count;
 }
 
 // How much of a static legendary's seal is left (0: it's free to appear)
@@ -257,6 +297,14 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return !LeadIs(LEAD_SHADOW);
     case SEAL_STORM:        // (Zeraora: a thunderstorm over the village, this visit)
         return VarGet(VAR_STORM) == 0;
+    case SEAL_CELLS:        // (Zygarde: sealArg of its Cells found)
+        return CellsFound() >= s->sealArg ? 0 : s->sealArg - CellsFound();
+    case SEAL_BOTTLE:       // (Hoopa: the Prison Bottle taken)
+        return !FlagGet(FLAG_EXOTIC_PRISON_BOTTLE);
+    case SEAL_STEAM:
+        return !LeadIs(LEAD_STEAM);
+    case SEAL_DRAIN:        // (Yveltal: sealArg Kalos POKéMON caught)
+        return KalosCaught() >= s->sealArg ? 0 : s->sealArg - KalosCaught();
     }
     return 0;
 }
@@ -531,4 +579,65 @@ void ExoticSafari_CountStarters(void)
         }
     }
     gSpecialVar_Result = left;
+}
+
+// Special (a Zygarde Cell picked up): VAR_0x8004 = which. VAR_RESULT = how many are still out there;
+// STR_VAR_1 = how many found, STR_VAR_2 = how many left
+void ExoticSafari_TakeCell(void)
+{
+    FlagSet(FLAG_EXOTIC_CELL_FIRST + gSpecialVar_0x8004 % EXOTIC_SAFARI_CELLS);
+    gSpecialVar_Result = EXOTIC_SAFARI_CELLS - CellsFound();
+    ConvertIntToDecimalStringN(gStringVar1, CellsFound(), STR_CONV_MODE_LEFT_ALIGN, 2);
+    ConvertIntToDecimalStringN(gStringVar2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 2);
+}
+
+// Special (Zygarde, before its battle): VAR_RESULT = its Cells still out there; STR_VAR_2 = that
+void ExoticSafari_CountCells(void)
+{
+    gSpecialVar_Result = EXOTIC_SAFARI_CELLS - CellsFound();
+    ConvertIntToDecimalStringN(gStringVar2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 2);
+}
+
+// Special (a legendary's battle, VAR_0x8004 its species): the form it battles in. Zygarde: its 10%
+// Forme until all its Cells are found; then whole, with Power Construct (Complete Forme in battle)
+void ExoticSafari_LegendForm(void)
+{
+    if (gSpecialVar_0x8004 == SPECIES_ZYGARDE)
+        gSpecialVar_0x8004 = CellsFound() >= EXOTIC_SAFARI_CELLS ? SPECIES_ZYGARDE_50_POWER_CONSTRUCT : SPECIES_ZYGARDE_10;
+}
+
+// The Furfrou groomer's trims, in her menu's order
+static const u16 sFurfrouTrims[] =
+{
+    SPECIES_FURFROU_HEART, SPECIES_FURFROU_STAR, SPECIES_FURFROU_DIAMOND, SPECIES_FURFROU_DEBUTANTE,
+    SPECIES_FURFROU_MATRON, SPECIES_FURFROU_DANDY, SPECIES_FURFROU_LA_REINE, SPECIES_FURFROU_KABUKI,
+    SPECIES_FURFROU_PHARAOH, SPECIES_FURFROU_NATURAL,
+};
+
+// Special: VAR_RESULT = whether party slot VAR_0x8004 is a Furfrou (STR_VAR_1: its name)
+void ExoticSafari_IsFurfrou(void)
+{
+    struct Pokemon *mon;
+    gSpecialVar_Result = FALSE;
+    if (gSpecialVar_0x8004 >= PARTY_SIZE)
+        return;
+    mon = &gParties[B_TRAINER_PLAYER][gSpecialVar_0x8004];
+    if (GetMonData(mon, MON_DATA_IS_EGG) || GET_BASE_SPECIES_ID(GetMonData(mon, MON_DATA_SPECIES)) != SPECIES_FURFROU)
+        return;
+    GetMonData(mon, MON_DATA_NICKNAME, gStringVar1);
+    StringGet_Nickname(gStringVar1);
+    gSpecialVar_Result = TRUE;
+}
+
+// Special: party slot VAR_0x8004 (a Furfrou) given trim VAR_0x8005 (sFurfrouTrims). VAR_RESULT: FALSE
+// if it already has that trim
+void ExoticSafari_TrimFurfrou(void)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gSpecialVar_0x8004 % PARTY_SIZE];
+    u16 species = sFurfrouTrims[gSpecialVar_0x8005 % ARRAY_COUNT(sFurfrouTrims)];
+    gSpecialVar_Result = GetMonData(mon, MON_DATA_SPECIES) != species;
+    if (!gSpecialVar_Result)
+        return;
+    SetMonData(mon, MON_DATA_SPECIES, &species);
+    CalculateMonStats(mon);
 }

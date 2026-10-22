@@ -726,7 +726,9 @@ def build_region(mod, zone_warp, out):
             o["elevation"] = elev(x, y)
             objects.append(o)
             assert 0x11 + i < ROAMER_FLAG_BASE
-            scripts += [f"{label}::", "\tlock", "\tfaceplayer", f"\tsetvar VAR_0x8004, SPECIES_{species}",
+            pre = getattr(mod, "PRE_BATTLE", {}).get(species)     # (a word before the battle: may end it)
+            scripts += [f"{label}::", "\tlock", "\tfaceplayer"] + ([f"\tcall {pre}"] if pre else []) + [
+                        f"\tsetvar VAR_0x8004, SPECIES_{species}",
                         "\tcall ExoticSafari_EventScript_LegendBattle",
                         "\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone",
                         "\tremoveobject VAR_LAST_TALKED", f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
@@ -769,7 +771,8 @@ def build_region(mod, zone_warp, out):
             objects.append(o)
         if "extra" in a:                         # (anything else: puzzles' signs, triggers, people)
             a["extra"]({"name": name, "objects": objects, "bgs": bgs, "coords": coords, "scripts": scripts,
-                        "elev": elev, "g": g, "reach": reach, "obj": obj})
+                        "elev": elev, "g": g, "reach": reach, "obj": obj, "beh": b["beh"],
+                        "warps": b["warps"]})
         for o in a.get("objects", []):          # (anything else the area wants: decorations)
             objects.append(dict(obj(o["gfx"], o["x"], o["y"], o.get("script", "0"), o.get("movement", "MOVEMENT_TYPE_FACE_DOWN")),
                                 elevation=elev(o["x"], o["y"])))
@@ -987,6 +990,10 @@ def main():
               "#define SEAL_STEEL    16    // (Meltan: a Steel-type lead)",
               "#define SEAL_SHADOW   17    // (Marshadow: a Fighting- or Ghost-type lead)",
               "#define SEAL_STORM    18    // (Zeraora: a thunderstorm)",
+              "#define SEAL_CELLS    19    // (Zygarde: enough of its Cells found)",
+              "#define SEAL_BOTTLE   20    // (Hoopa: the Prison Bottle taken from its pedestal)",
+              "#define SEAL_STEAM    21    // (Volcanion: a Fire- or Water-type lead, the other type behind it)",
+              "#define SEAL_DRAIN    22    // (Yveltal: Kalos POKéMON caught)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]

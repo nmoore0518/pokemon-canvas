@@ -230,16 +230,20 @@ def add_palm(tgt, slot, ground, ground_attr):
 # palette: tileset_anims.c's TilesetAnim_Lumiose)
 # ---------------------------------------------------------------------------------------------
 PRISM_PAL = [
-    (0, 0, 0), (36, 36, 52), (84, 92, 116), (132, 140, 164),            # 1 outline, 2-3 steel
-    (64, 104, 208), (104, 168, 248), (176, 216, 255), (255, 224, 104),   # 4-6 blue lights, 7 gold
-    (255, 246, 196), (232, 120, 64), (0, 0, 0), (0, 0, 0),               # 8 pale gold, 9 orange
-    (255, 255, 255), (188, 196, 214), (228, 232, 242), (0, 0, 0),        # 12 white; 13-14 steel light
+    (0, 0, 0), (28, 30, 46), (70, 78, 104), (112, 122, 150),             # 1 outline, 2-3 steel (shade)
+    (56, 96, 200), (96, 160, 248), (172, 214, 255), (255, 214, 96),      # 4-6 blue lights, 7 gold (these pulse)
+    (255, 244, 190), (40, 64, 128), (132, 186, 255), (0, 0, 0),          # 8 pale gold, 9 glass dark, 10 glass
+    (255, 255, 255), (164, 172, 198), (218, 224, 238), (238, 232, 214),  # 12 white; 13-14 steel lit; 15 wall
 ]
 
 
-def prism_tower_art(W=80, H=176):
+def prism_tower_art(W=112, H=208):
+    """The Prism Tower seen corner-on from above, like the games' buildings: two lattice faces (the
+    left lit, the right in shade) meeting at the near edge, girders bent round it, the observation
+    deck a lit band of glass round the tower; it stands on a base building (roof and front wall,
+    the bottom three rows)"""
     px = [[0] * W for _ in range(H)]
-    cx = W / 2
+    cx = W // 2
 
     def put(x, y, c):
         x, y = int(round(x)), int(round(y))
@@ -252,62 +256,128 @@ def prism_tower_art(W=80, H=176):
             t = i / n
             put(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, c)
 
-    def half(y):                       # the tower's half-width at height y
-        if y < 30:
-            return 1.2
-        if y < 84:
-            return 3 + (y - 30) * (8 / 54)
-        if y < 96:
-            return 17
-        if y < 140:
-            return 11 + (y - 96) * (13 / 44)
-        return 24 + (y - 140) * (14 / 36)
+    # -- the base building: a flat roof (its far edge, its top lit, a lip in front), a front wall
+    #    with glass and an entrance under the tower's legs
+    BY = 150                          # (the roof's far edge)
+    FY = 178                          # (where the front wall starts)
+    for y in range(BY, H):
+        for x in range(2, W - 2):
+            if y < FY - 4:
+                c = 14 if (y - BY) < 3 else 13
+                if x in (2, W - 3) or y == BY:
+                    c = 1
+            elif y < FY:
+                c = 3 if y < FY - 1 else 1
+                if x in (2, W - 3):
+                    c = 1
+            else:
+                c = 15
+                if x in (2, W - 3) or y == H - 1:
+                    c = 1
+                elif x in (3, W - 4) or y >= H - 3:
+                    c = 13
+            px[y][x] = c
+    for wx in list(range(8, cx - 16, 10)) + list(range(cx + 18, W - 10, 10)):   # windows
+        for y in range(FY + 5, FY + 19):
+            for x in range(wx, wx + 6):
+                edge = x in (wx, wx + 5) or y in (FY + 5, FY + 18)
+                px[y][x] = 1 if edge else (6 if y < FY + 9 else 10 if x < wx + 3 else 9)
+    for x in range(cx - 12, cx + 13):                                         # the entrance, arched
+        t = (x - cx) / 12
+        top = FY + 3 + int(6 * t * t)
+        for y in range(top, H - 1):
+            px[y][x] = 1 if abs(x - cx) == 12 or y == top else (9 if y < H - 8 else 2)
+    for x in range(cx - 8, cx + 9, 4):
+        put(x, FY + 2, 7)                                                     # lights over the door
 
-    # spire, its tip a light
-    for y in range(4, 30):
-        put(cx - 1, y, 2); put(cx, y, 13); put(cx + 1, y, 1)
-    for y in range(0, 5):
-        for x in range(-1, 2):
-            put(cx + x, y, 7 if y > 1 else 12)
-    # the body: outline edges, lattice crosses, a steel fill behind the lattice
-    for y in range(30, H):
-        hw = half(y)
-        for x in range(int(cx - hw), int(cx + hw) + 1):
-            if px[y][x] == 0 and not (y >= 150 and abs(x - cx) < hw - 8 - (y - 150) * 0.1):
-                inner = abs(x - cx) < hw - 1
-                px[y][x] = 2 if inner and (x + y) % 2 else (3 if inner else 1)
-        put(cx - hw, y, 1); put(cx + hw, y, 1)
-        put(cx - hw + 1, y, 14); put(cx + hw - 1, y, 13)
-    for y0 in range(34, H - 8, 10):    # lattice crosses
-        y1 = y0 + 10
-        a, b = half(y0), half(y1)
-        line(cx - a + 1, y0, cx + b - 1, y1, 13)
-        line(cx + a - 1, y0, cx - b + 1, y1, 13)
-        line(cx - a, y0, cx + a, y0, 1)
-    # the arch between the legs
-    for x in range(int(cx - 16), int(cx + 17)):
-        t = (x - cx) / 16
-        top = 150 + 10 * t * t
-        for y in range(int(top), H):
-            if abs(x - cx) < half(y) - 6:
-                px[y][x] = 0
-        put(x, top, 1)
-    # the observation deck: a band of windows, lit
-    for y in range(84, 96):
-        hw = half(y)
-        for x in range(int(cx - hw), int(cx + hw) + 1):
-            edge = y in (84, 95) or abs(x - cx) >= hw - 1
-            px[y][x] = 1 if edge else (6 if (x // 3) % 2 else 5) if 87 <= y <= 92 else 3
-    # lights up the edges
-    for y in range(36, H - 4, 8):
-        hw = half(y)
-        put(cx - hw, y, 7); put(cx + hw, y, 7)
-    for x in range(int(cx - 22), int(cx + 23), 6):
-        put(x, 140, 8)
+    # -- the tower: half-width hw(y) of its (corner-on) silhouette
+    def hw(y):
+        if y < 34:
+            return 1.5
+        if y < 64:
+            return 3 + (y - 34) * (5 / 30)
+        if y < 82:
+            return 8 + (y - 64) * (2 / 18)
+        if y < 98:
+            return 13                 # (the deck)
+        if y < 118:
+            return 10 + (y - 98) * (6 / 20)
+        return 16 + (y - 118) * (22 / 46)
+
+    def bend(y, x):                   # (girders bend round the near edge: lower in front)
+        return y + 3 * (1 - abs(x - cx) / max(hw(y), 1))
+
+    TOP = 34
+    END = 168                         # (the legs reach the roof)
+    for y in range(TOP, END):
+        h = hw(y)
+        for x in range(int(cx - h), int(cx + h) + 1):
+            left = x < cx
+            k = (x + y) % 2
+            px[y][x] = (13 if k else 3) if left else (3 if k and (x + y) % 4 == 1 else 2)
+        put(cx - h, y, 1); put(cx + h, y, 1); put(cx, y, 14)
+        put(cx - h + 1, y, 14); put(cx + h - 1, y, 2)
+    # girders and lattice crosses, panel by panel
+    ys = list(range(TOP + 4, 82, 8)) + list(range(100, END, 10))
+    for a, b in zip(ys, ys[1:]):
+        if a < 98 <= b:
+            continue
+        for side in (-1, 1):
+            ha, hb = hw(a), hw(b)
+            lit = 14 if side < 0 else 13
+            line(cx + side * (ha - 1), a, cx, bend(a, cx), 1)            # the girder
+            line(cx + side * (ha - 1), a + 1, cx, bend(a, cx) + 1, lit)
+            line(cx + side * (ha - 1), a + 1, cx + side, bend(b, cx) - 1, lit)   # the cross
+            line(cx + side, bend(a, cx) + 1, cx + side * (hb - 1), b - 1, lit)
+    # the arches between the legs, one in each face
+    for side in (-1, 1):
+        mid = cx + side * 18
+        for x in range(mid - 11, mid + 12):
+            t = (x - mid) / 11
+            top = 136 + int(14 * t * t)
+            for y in range(top + 1, END):
+                if abs(x - cx) < hw(y) - 3 and abs(x - cx) > 3:
+                    px[y][x] = 0 if y < BY else (13 if y < FY - 4 else px[y][x])
+            put(x, top, 1)
+            put(x, top + 1, 14 if side < 0 else 3)
+    # its shadow on the roof (the light from the left)
+    for y in range(BY + 1, FY - 4):
+        h = int(hw(min(y, END - 1)))
+        for x in range(cx + h + 1, min(W - 3, cx + h + 10 - (y - BY) // 4)):
+            if px[y][x] in (13, 14):
+                px[y][x] = 3
+    # the observation deck: a lit band of glass, its roof a light rim, its floor dark
+    for y in range(82, 98):
+        h = hw(y)
+        for x in range(int(cx - h), int(cx + h) + 1):
+            left = x < cx
+            if y <= 84:
+                c = 14 if left else 13
+            elif y >= 95:
+                c = 2
+            else:
+                c = (6 if (x // 3) % 2 else 5) if left else (5 if (x // 3) % 2 else 4)
+            px[y][x] = c
+        put(cx - h, y, 1); put(cx + h, y, 1)
+        if 85 <= y <= 94:
+            put(cx, y, 12)
+    line(cx - 13, 82, cx + 13, 82, 1); line(cx - 13, 97, cx, 99, 1); line(cx, 99, cx + 13, 97, 1)
+    # spire and its light
+    for y in range(6, TOP):
+        put(cx - 1, y, 14); put(cx, y, 13); put(cx + 1, y, 2)
+    for y in range(0, 6):
+        for x in (-1, 0, 1):
+            put(cx + x, y, 12 if y < 2 else 7)
+    # lights up the edges (gold) and round the deck's rim
+    for y in range(40, END - 4, 8):
+        h = hw(y)
+        put(cx - h, y, 7); put(cx + h, y, 7); put(cx, y, 8)
+    for x in range(cx - 12, cx + 13, 4):
+        put(x, 83, 8)
     return px
 
 
-def add_prism_tower(tgt, slot, ground, ground_attr, wide=5, tall=11):
+def add_prism_tower(tgt, slot, ground, ground_attr, wide=7, tall=13):
     """the tower's metatiles (wide x tall, rows top to bottom), over `ground`, palette `slot`; all
     solid (set the collision on the map). Returns their ids"""
     B.write_pal(tgt.out / "palettes" / f"{slot:02d}.pal", PRISM_PAL)

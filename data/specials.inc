@@ -745,6 +745,11 @@ gSpecials::
 	def_special ExoticSafari_SetupDojo
 	def_special ExoticSafari_TakeRelic
 	def_special ExoticSafari_CountStarters
+	def_special ExoticSafari_TakeCell
+	def_special ExoticSafari_CountCells
+	def_special ExoticSafari_LegendForm
+	def_special ExoticSafari_IsFurfrou
+	def_special ExoticSafari_TrimFurfrou
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk
