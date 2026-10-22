@@ -77,10 +77,31 @@ def cstring(s):
 
 
 def field(body, name):
-    m = re.search(r"\." + name + r"\s*=\s*(.*?),\s*\n\s*\.", body, re.S)
+    """the value of `.name = ...` in a struct initializer (up to its comma at the same depth)"""
+    m = re.search(r"\." + name + r"\s*=\s*", body)
     if not m:
-        m = re.search(r"\." + name + r"\s*=\s*(.*?)\s*,?\s*$", body, re.S)
-    return m.group(1).strip() if m else None
+        return None
+    i, depth, instr = m.end(), 0, False
+    j = i
+    while j < len(body):
+        c = body[j]
+        if instr:
+            if c == "\\":
+                j += 1
+            elif c == '"':
+                instr = False
+        elif c == '"':
+            instr = True
+        elif c in "({[":
+            depth += 1
+        elif c in ")}]":
+            if depth == 0:
+                break
+            depth -= 1
+        elif c == "," and depth == 0:
+            break
+        j += 1
+    return body[i:j].strip()
 
 
 def enum_values(path, prefix):
@@ -112,7 +133,7 @@ def load():
     for m in re.finditer(r"struct LevelUpMove (s\w+LevelUpLearnset)\[\] = \{(.*?)\};", poke, re.S):
         data["learnsets"][m.group(1)] = [(int(l), mv) for mv, l in re.findall(r"\.move = (MOVE_\w+), \.level = (\d+)", m.group(2))]
     data["gfx"] = {s: p for s, p in re.findall(r"(gMon(?:FrontPic|Palette)_\w+)\[\] = INCGFX_U\d+\(\"([^\"]+)\"", poke)}
-    species = blocks(poke, r"\[(SPECIES_\w+)\]\s*=\s*\n\s*(?=\{)")
+    species = blocks(poke, r"\[(SPECIES_\w+)\]\s*=\s*(?=\{)")
     data["species"] = species
     return data
 
@@ -649,6 +670,15 @@ def main():
         is_base = base_of[sp["dex_num"]] == k
         if is_base or loc.get(k) or (k in parents and (loc.get(parents[k][0]) or base_of[infos[parents[k][0]]["dex_num"]] == parents[k][0] and False)):
             chosen.append(k)
+    # a species' first form with nothing of its own, when another of its forms can be found: left out
+    by_dex = defaultdict(list)
+    for k in chosen:
+        by_dex[infos[k]["dex_num"]].append(k)
+    for n, ks in by_dex.items():
+        if len(ks) > 1:
+            for k in ks:
+                if not loc.get(k) and k not in parents:
+                    chosen.remove(k)
     # form names: what the constant adds to the species' own name (SPECIES_DEERLING_WINTER: Winter)
     REGIONAL = {"ALOLA": "Alolan Form", "GALAR": "Galarian Form", "HISUI": "Hisuian Form", "PALDEA": "Paldean Form",
                 "F": "Female", "M": "Male"}
