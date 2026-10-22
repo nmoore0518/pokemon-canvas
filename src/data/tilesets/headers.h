@@ -1586,6 +1586,83 @@ const struct Tileset gTileset_SinnohStarkInside =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_HoennFortree =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennFortree,
+    .palettes = gTilesetPalettes_HoennFortree,
+    .metatiles = gMetatiles_HoennFortree,
+    .metatileAttributes = gMetatileAttributes_HoennFortree,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HoennPacifidlog =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennPacifidlog,
+    .palettes = gTilesetPalettes_HoennPacifidlog,
+    .metatiles = gMetatiles_HoennPacifidlog,
+    .metatileAttributes = gMetatileAttributes_HoennPacifidlog,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HoennMtChimney =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennMtChimney,
+    .palettes = gTilesetPalettes_HoennMtChimney,
+    .metatiles = gMetatiles_HoennMtChimney,
+    .metatileAttributes = gMetatileAttributes_HoennMtChimney,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HoennSootopolis =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennSootopolis,
+    .palettes = gTilesetPalettes_HoennSootopolis,
+    .metatiles = gMetatiles_HoennSootopolis,
+    .metatileAttributes = gMetatileAttributes_HoennSootopolis,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HoennTomb =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennTomb,
+    .palettes = gTilesetPalettes_HoennTomb,
+    .metatiles = gMetatiles_HoennTomb,
+    .metatileAttributes = gMetatileAttributes_HoennTomb,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HoennRuins =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennRuins,
+    .palettes = gTilesetPalettes_HoennRuins,
+    .metatiles = gMetatiles_HoennRuins,
+    .metatileAttributes = gMetatileAttributes_HoennRuins,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HoennIce =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HoennIce,
+    .palettes = gTilesetPalettes_HoennIce,
+    .metatiles = gMetatiles_HoennIce,
+    .metatileAttributes = gMetatileAttributes_HoennIce,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,

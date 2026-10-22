@@ -214,7 +214,7 @@ def sprite(info, data):
 # Where each Pokémon is found
 # ---------------------------------------------------------------------------------------------
 from safari_names import SAFARI_NAMES   # noqa: E402  (tools/gym_hack/safari_names.py)
-REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova", "Sinnoh"]     # (the roamers' region index)
+REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova", "Sinnoh", "Hoenn"]     # (the roamers' region index)
 TYPE_NAMES = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire",
               "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"]
 
@@ -261,6 +261,12 @@ PUZZLES = {
     "REGIGIGAS": "Wakes in Snowpoint City, west of the harbor steps, when Regirock, Regice and Registeel are all in your party.",
     "PHIONE": "Stands by the ponds in the Great Marsh's west.",
     "ARCEUS": "Master every gym type, then see the elder in Snowpoint City for the Azure Flute; Arceus then appears at the top of the Hall of Origin (Snowpoint City's cave leads up to it).",
+    "REGISTEEL": "At the top of the Ancient Tomb: surf to the mound in the pond south of Route 120's bridge (Fortree City's east), then go up through the tomb's inner door.",
+    "REGIROCK": "At the top of the Desert Ruins: the cave in the rock west of Mt. Chimney's summit, then up through the inner door.",
+    "REGICE": "At the top of the Island Cave: the cave in the cliff over Pacifidlog Town, then up through the inner door.",
+    "KYOGRE": "Floats in the open sea west of Pacifidlog Town. Surf to it.",
+    "JIRACHI": "On the little island in Sootopolis City's lake (Sky Pillar's cave, west of Pacifidlog, leads to the city). Surf to it.",
+    "DEOXYS": "At the summit of Mt. Chimney, on the lava lake's shore.",
     "TYPE_NULL": "A gift from Hano Beach's caretaker once you've caught Rowlet, Litten and Popplio.",
 }
 ROAM_NOTES = {"CALYREX": " Starts roaming once Spectrier is caught.",

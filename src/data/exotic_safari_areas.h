@@ -44,6 +44,13 @@ static const u8 sSpots_ExoticSafari_SinnohCity[][3] = {{16, 6, 3}, {17, 6, 3}, {
 static const u8 sSpots_ExoticSafari_SinnohStarkMountain[][3] = {{14, 7, 3}, {16, 7, 3}, {17, 7, 3}, {18, 7, 3}, {10, 8, 3}, {13, 8, 3}, {15, 10, 3}, {13, 12, 3}, {17, 12, 3}, {14, 13, 3}, {20, 15, 3}, {21, 16, 3}, {12, 17, 3}, {8, 19, 3}, {13, 19, 3}, {16, 19, 3}, {19, 19, 3}, {10, 20, 3}, {12, 20, 3}, {16, 21, 3}, {22, 21, 3}, {16, 22, 3}, {18, 22, 3}, {9, 23, 3}, {23, 24, 3}, {17, 25, 3}, {9, 27, 3}, {10, 29, 3}, {12, 29, 3}, {17, 29, 3}, {18, 29, 3}, {7, 31, 3}, {8, 31, 3}, {13, 31, 3}, {20, 31, 3}, {17, 32, 3}, {19, 32, 3}, {11, 33, 3}, {12, 33, 3}, {14, 33, 3}, {8, 34, 3}, {15, 34, 3}, {21, 34, 3}, {14, 35, 3}, {17, 35, 3}, {17, 38, 3}, {13, 39, 3}, {17, 39, 3}};
 static const u8 sSpots_ExoticSafari_SinnohStarkInside[][3] = {{20, 2, 3}, {7, 3, 3}, {9, 4, 3}, {4, 7, 3}, {6, 7, 3}, {6, 8, 3}, {18, 8, 3}, {19, 9, 3}, {3, 10, 3}, {9, 11, 3}, {10, 11, 3}, {19, 11, 3}, {20, 11, 3}, {3, 12, 3}, {12, 15, 3}, {19, 16, 3}, {3, 17, 3}, {18, 17, 3}, {3, 18, 3}, {19, 18, 3}, {20, 18, 3}, {3, 19, 3}, {3, 20, 3}, {24, 20, 3}, {2, 22, 3}, {3, 22, 3}, {5, 22, 3}, {23, 22, 3}, {25, 22, 3}, {5, 23, 3}, {5, 24, 3}, {27, 24, 3}, {5, 25, 3}, {5, 26, 3}, {5, 27, 3}, {27, 27, 3}, {8, 29, 3}, {6, 30, 3}, {9, 32, 3}, {25, 32, 3}, {7, 33, 3}, {9, 33, 3}, {25, 33, 3}, {4, 34, 3}, {6, 34, 3}, {27, 34, 3}, {25, 36, 3}, {27, 36, 3}};
 static const u8 sSpots_ExoticSafari_SinnohHallOfOrigin[][3] = {{14, 4, 3}, {15, 4, 3}, {10, 5, 3}, {11, 5, 3}, {14, 5, 3}, {17, 5, 3}, {11, 6, 3}, {10, 7, 3}, {15, 7, 3}, {20, 7, 3}, {10, 8, 3}, {14, 8, 3}, {15, 8, 3}, {17, 8, 3}, {11, 9, 3}, {13, 9, 3}, {14, 9, 3}, {21, 9, 3}, {22, 9, 3}, {8, 10, 3}, {10, 10, 3}, {12, 10, 3}, {16, 10, 3}, {11, 11, 3}, {14, 11, 3}, {15, 11, 3}, {17, 11, 3}, {9, 12, 3}, {10, 12, 3}, {11, 12, 3}, {15, 12, 3}, {16, 12, 3}, {17, 12, 3}, {18, 12, 3}, {11, 14, 3}, {10, 15, 3}, {16, 15, 3}, {17, 15, 3}, {19, 15, 3}, {8, 16, 3}, {11, 16, 3}, {16, 16, 3}, {19, 16, 3}, {8, 17, 3}, {11, 17, 3}, {15, 17, 3}, {16, 17, 3}, {19, 17, 3}};
+static const u8 sSpots_ExoticSafari_HoennFortree[][3] = {{66, 6, 3}, {68, 6, 3}, {69, 6, 3}, {71, 6, 3}, {72, 6, 3}, {65, 7, 3}, {66, 7, 3}, {67, 7, 3}, {68, 7, 3}, {70, 7, 3}, {71, 7, 3}, {72, 7, 3}, {73, 7, 3}, {74, 7, 3}, {75, 7, 3}, {60, 8, 3}, {61, 8, 3}, {63, 8, 3}, {64, 8, 3}, {66, 8, 3}, {67, 8, 3}, {71, 8, 3}, {72, 8, 3}, {75, 8, 3}, {60, 9, 3}, {62, 9, 3}, {63, 9, 3}, {64, 9, 3}, {70, 9, 3}, {71, 9, 3}, {72, 9, 3}, {74, 9, 3}, {77, 9, 3}, {69, 10, 3}, {70, 10, 3}, {71, 10, 3}, {73, 10, 3}, {76, 10, 3}, {69, 11, 3}, {70, 11, 3}, {72, 11, 3}, {75, 11, 3}, {76, 11, 3}, {68, 12, 3}, {73, 12, 3}, {74, 12, 3}, {75, 12, 3}, {71, 13, 3}};
+static const u8 sSpots_ExoticSafari_HoennPacifidlog[][3] = {{34, 7, 3}, {35, 7, 3}, {36, 7, 3}, {37, 7, 3}, {38, 7, 3}, {34, 8, 3}, {35, 8, 3}, {36, 8, 3}, {37, 8, 3}, {38, 8, 3}, {67, 9, 3}, {68, 9, 3}, {69, 9, 3}, {70, 9, 3}, {71, 9, 3}, {67, 10, 3}, {68, 10, 3}, {69, 10, 3}, {70, 10, 3}, {71, 10, 3}};
+static const u8 sSpots_ExoticSafari_HoennMtChimney[][3] = {{29, 5, 3}, {32, 6, 3}, {12, 7, 3}, {8, 8, 3}, {10, 8, 3}, {9, 9, 3}, {30, 11, 3}, {11, 12, 3}, {12, 12, 3}, {11, 13, 3}, {30, 13, 3}, {10, 14, 3}, {11, 14, 3}, {22, 16, 3}, {29, 17, 3}, {30, 17, 3}, {19, 18, 3}, {15, 19, 3}, {16, 19, 3}, {17, 19, 3}, {26, 19, 3}, {20, 20, 3}, {19, 21, 3}, {22, 21, 3}, {17, 22, 3}, {25, 22, 3}, {27, 25, 3}, {18, 26, 3}, {21, 27, 3}, {26, 27, 3}, {25, 28, 3}, {29, 28, 3}, {28, 29, 3}, {26, 30, 3}, {29, 30, 3}, {27, 34, 3}, {20, 35, 3}, {21, 35, 3}, {23, 35, 3}, {24, 35, 3}, {25, 35, 3}, {27, 35, 3}, {24, 36, 3}, {26, 36, 3}, {25, 37, 3}, {17, 38, 3}, {21, 38, 3}, {24, 38, 3}};
+static const u8 sSpots_ExoticSafari_HoennSootopolis[][3] = {{30, 33, 3}, {31, 33, 3}, {34, 34, 3}, {27, 35, 3}, {28, 35, 3}, {30, 35, 3}, {31, 35, 3}, {33, 35, 3}, {34, 35, 3}, {20, 36, 3}, {27, 36, 3}, {28, 36, 3}, {32, 36, 3}, {43, 38, 3}, {15, 39, 3}, {16, 39, 3}, {17, 39, 3}, {41, 39, 3}, {15, 40, 3}, {17, 40, 3}, {43, 40, 3}, {7, 41, 3}, {14, 41, 3}, {16, 41, 3}, {48, 41, 3}, {49, 41, 3}, {9, 42, 3}, {13, 42, 3}, {16, 42, 3}, {17, 42, 3}, {42, 42, 3}, {43, 42, 3}, {45, 42, 3}, {48, 42, 3}, {13, 43, 3}, {45, 43, 3}, {47, 43, 3}, {11, 44, 3}, {13, 44, 3}, {47, 44, 3}, {48, 44, 3}, {10, 45, 3}, {13, 45, 3}, {17, 45, 3}, {45, 45, 3}, {12, 46, 3}, {13, 46, 3}, {13, 47, 3}};
+static const u8 sSpots_ExoticSafari_HoennAncientTomb[][3] = {{4, 3, 3}, {5, 3, 3}, {7, 4, 3}, {8, 4, 3}, {9, 4, 3}, {11, 4, 3}, {9, 5, 3}, {11, 5, 3}, {8, 6, 3}, {12, 6, 3}, {3, 8, 3}, {6, 8, 3}, {10, 8, 3}, {13, 8, 3}, {3, 9, 3}, {4, 9, 3}, {5, 9, 3}, {8, 9, 3}, {11, 9, 3}, {6, 11, 3}, {7, 11, 3}, {12, 11, 3}, {4, 21, 3}, {5, 21, 3}, {8, 22, 3}, {9, 22, 3}, {10, 22, 3}, {5, 23, 3}, {6, 23, 3}, {10, 23, 3}, {6, 24, 3}, {8, 24, 3}, {10, 24, 3}, {3, 25, 3}, {6, 25, 3}, {7, 25, 3}, {13, 25, 3}, {3, 26, 3}, {5, 26, 3}, {6, 26, 3}, {8, 26, 3}, {10, 26, 3}, {12, 26, 3}, {13, 26, 3}, {9, 27, 3}, {7, 28, 3}, {8, 28, 3}, {10, 29, 3}};
+static const u8 sSpots_ExoticSafari_HoennDesertRuins[][3] = {{8, 3, 3}, {11, 3, 3}, {4, 4, 3}, {8, 4, 3}, {11, 4, 3}, {6, 5, 3}, {9, 5, 3}, {10, 5, 3}, {8, 6, 3}, {7, 7, 3}, {10, 7, 3}, {3, 8, 3}, {5, 8, 3}, {6, 8, 3}, {7, 8, 3}, {4, 9, 3}, {5, 9, 3}, {7, 10, 3}, {8, 10, 3}, {11, 10, 3}, {12, 10, 3}, {4, 11, 3}, {5, 11, 3}, {6, 11, 3}, {9, 11, 3}, {11, 21, 3}, {6, 22, 3}, {8, 22, 3}, {3, 23, 3}, {5, 23, 3}, {13, 23, 3}, {3, 24, 3}, {4, 24, 3}, {6, 24, 3}, {7, 24, 3}, {11, 24, 3}, {3, 26, 3}, {4, 26, 3}, {7, 26, 3}, {11, 26, 3}, {5, 27, 3}, {9, 27, 3}, {12, 27, 3}, {4, 28, 3}, {5, 28, 3}, {8, 28, 3}, {9, 28, 3}, {10, 29, 3}};
+static const u8 sSpots_ExoticSafari_HoennIslandCave[][3] = {{4, 3, 3}, {6, 3, 3}, {8, 4, 3}, {12, 4, 3}, {3, 5, 3}, {4, 5, 3}, {11, 5, 3}, {12, 5, 3}, {3, 6, 3}, {6, 6, 3}, {8, 6, 3}, {13, 6, 3}, {3, 7, 3}, {7, 7, 3}, {6, 8, 3}, {7, 8, 3}, {9, 8, 3}, {11, 8, 3}, {12, 8, 3}, {4, 9, 3}, {8, 9, 3}, {9, 9, 3}, {12, 9, 3}, {4, 10, 3}, {5, 10, 3}, {8, 10, 3}, {5, 11, 3}, {6, 11, 3}, {4, 21, 3}, {8, 23, 3}, {12, 23, 3}, {7, 24, 3}, {9, 24, 3}, {10, 24, 3}, {3, 25, 3}, {4, 25, 3}, {5, 25, 3}, {3, 26, 3}, {5, 26, 3}, {12, 26, 3}, {13, 26, 3}, {3, 27, 3}, {7, 27, 3}, {12, 27, 3}, {7, 28, 3}, {10, 28, 3}, {5, 29, 3}, {10, 29, 3}};
 
 static const struct ExoticSafariArea sExoticSafariAreas[] =
 {
@@ -88,6 +95,13 @@ static const struct ExoticSafariArea sExoticSafariAreas[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_MOUNTAIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_MOUNTAIN), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohStarkMountain), sSpots_ExoticSafari_SinnohStarkMountain},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohStarkInside), sSpots_ExoticSafari_SinnohStarkInside},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), 5, ARRAY_COUNT(sSpots_ExoticSafari_SinnohHallOfOrigin), sSpots_ExoticSafari_SinnohHallOfOrigin},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_FORTREE), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_FORTREE), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennFortree), sSpots_ExoticSafari_HoennFortree},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_PACIFIDLOG), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_PACIFIDLOG), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennPacifidlog), sSpots_ExoticSafari_HoennPacifidlog},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_MT_CHIMNEY), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_MT_CHIMNEY), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennMtChimney), sSpots_ExoticSafari_HoennMtChimney},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_SOOTOPOLIS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_SOOTOPOLIS), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennSootopolis), sSpots_ExoticSafari_HoennSootopolis},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennAncientTomb), sSpots_ExoticSafari_HoennAncientTomb},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennDesertRuins), sSpots_ExoticSafari_HoennDesertRuins},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), 6, ARRAY_COUNT(sSpots_ExoticSafari_HoennIslandCave), sSpots_ExoticSafari_HoennIslandCave},
 };
 
 // Every zone map's name (rooms too: ExoticSafari_GetAreaName)
@@ -136,9 +150,16 @@ static const struct ExoticSafariName sExoticSafariNames[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), COMPOUND_STRING("STARK MOUNTAIN")},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), COMPOUND_STRING("HALL OF ORIGIN")},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_ROTOM_ROOM), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_ROTOM_ROOM), COMPOUND_STRING("ROTOM'S ROOM")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_FORTREE), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_FORTREE), COMPOUND_STRING("FORTREE CITY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_PACIFIDLOG), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_PACIFIDLOG), COMPOUND_STRING("PACIFIDLOG TOWN")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_MT_CHIMNEY), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_MT_CHIMNEY), COMPOUND_STRING("MT. CHIMNEY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_SOOTOPOLIS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_SOOTOPOLIS), COMPOUND_STRING("SOOTOPOLIS CITY")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), COMPOUND_STRING("ANCIENT TOMB")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), COMPOUND_STRING("DESERT RUINS")},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), COMPOUND_STRING("ISLAND CAVE")},
 };
 
-#define EXOTIC_SAFARI_ROAMER_COUNT 15
+#define EXOTIC_SAFARI_ROAMER_COUNT 17
 static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =
 {
     {SPECIES_OKIDOGI, FLAG_EXOTIC_LEGEND_OKIDOGI, FLAG_TEMP_1B, 0, 0},
@@ -156,6 +177,8 @@ static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER
     {SPECIES_THUNDURUS, FLAG_EXOTIC_LEGEND_THUNDURUS, FLAG_TEMP_1B, 0, 4},
     {SPECIES_LANDORUS, FLAG_EXOTIC_LEGEND_LANDORUS, FLAG_TEMP_1C, FLAG_EXOTIC_LEGEND_THUNDURUS, 4},
     {SPECIES_MANAPHY, FLAG_EXOTIC_LEGEND_MANAPHY, FLAG_TEMP_1B, 0, 5},
+    {SPECIES_LATIAS, FLAG_EXOTIC_LEGEND_LATIAS, FLAG_TEMP_1B, 0, 6},
+    {SPECIES_LATIOS, FLAG_EXOTIC_LEGEND_LATIOS, FLAG_TEMP_1C, 0, 6},
 };
 #define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_1B)
 
@@ -236,6 +259,12 @@ static const struct ExoticSafariStatic sExoticSafariStatics[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_CITY), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_CITY), SPECIES_REGIGIGAS, FLAG_EXOTIC_LEGEND_REGIGIGAS, FLAG_TEMP_11, SEAL_REGIS, 0, 2},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_STARK_INSIDE), SPECIES_HEATRAN, FLAG_EXOTIC_LEGEND_HEATRAN, FLAG_TEMP_11, SEAL_NONE, 0, 2},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), MAP_NUM(MAP_EXOTIC_SAFARI_SINNOH_HALL_OF_ORIGIN), SPECIES_ARCEUS, FLAG_EXOTIC_LEGEND_ARCEUS, FLAG_TEMP_11, SEAL_AZURE_FLUTE, 0, 2},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_PACIFIDLOG), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_PACIFIDLOG), SPECIES_KYOGRE, FLAG_EXOTIC_LEGEND_KYOGRE, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_MT_CHIMNEY), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_MT_CHIMNEY), SPECIES_DEOXYS, FLAG_EXOTIC_LEGEND_DEOXYS, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_SOOTOPOLIS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_SOOTOPOLIS), SPECIES_JIRACHI, FLAG_EXOTIC_LEGEND_JIRACHI, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), SPECIES_REGISTEEL, FLAG_EXOTIC_LEGEND_REGISTEEL, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), SPECIES_REGIROCK, FLAG_EXOTIC_LEGEND_REGIROCK, FLAG_TEMP_11, SEAL_NONE, 0, 3},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), SPECIES_REGICE, FLAG_EXOTIC_LEGEND_REGICE, FLAG_TEMP_11, SEAL_NONE, 0, 3},
 };
 
 #define EXOTIC_SAFARI_STAKE_COLORS 4

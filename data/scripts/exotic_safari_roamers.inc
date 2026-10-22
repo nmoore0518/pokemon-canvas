@@ -134,6 +134,24 @@ ExoticSafari_EventScript_RoamerManaphy::
 	setflag FLAG_EXOTIC_LEGEND_MANAPHY
 	goto ExoticSafari_EventScript_RoamerGone
 
+ExoticSafari_EventScript_RoamerLatias::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_LATIAS
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_LATIAS
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerLatios::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_LATIOS
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_LATIOS
+	goto ExoticSafari_EventScript_RoamerGone
+
 ExoticSafari_EventScript_StakePurple::
 	setvar VAR_0x8004, 0
 	goto ExoticSafari_EventScript_Stake

@@ -35,6 +35,7 @@ REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALD
 # The regions with a zone open: their first area (the hall's door leads there). The areas
 # themselves: tools/gym_hack/paldea.py
 ZONES = {
+    "HOENN": {"id": "MAP_EXOTIC_SAFARI_HOENN_FORTREE"},
     "SINNOH": {"id": "MAP_EXOTIC_SAFARI_SINNOH_LAKE"},
     "UNOVA": {"id": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW"},
     "KALOS": {"id": "MAP_EXOTIC_SAFARI_KALOS_CITY"},
@@ -528,11 +529,12 @@ import alola                                    # noqa: E402
 import kalos                                    # noqa: E402
 import unova                                    # noqa: E402
 import sinnoh                                   # noqa: E402
+import hoenn                                    # noqa: E402
 import safari_names                             # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
-REGION_MODULES = [paldea, galar, alola, kalos, unova, sinnoh]
+REGION_MODULES = [paldea, galar, alola, kalos, unova, sinnoh, hoenn]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10, "MAP_TYPE_UNDERWATER": 10}

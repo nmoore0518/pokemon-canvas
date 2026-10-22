@@ -18,4 +18,7 @@ SAFARI_NAMES = {
     "SinnohLake": "The Three Lakes", "SinnohMeadow": "Floaroma Meadow", "SinnohMarsh": "Great Marsh",
     "SinnohCity": "Snowpoint City", "SinnohStarkMountain": "Stark Mountain", "SinnohStarkInside": "Stark Mountain",
     "SinnohHallOfOrigin": "Hall of Origin", "SinnohRotomRoom": "Rotom's Room",
+    "HoennFortree": "Fortree City", "HoennPacifidlog": "Pacifidlog Town", "HoennMtChimney": "Mt. Chimney",
+    "HoennAncientTomb": "Ancient Tomb", "HoennSootopolis": "Sootopolis City", "HoennDesertRuins": "Desert Ruins",
+    "HoennIslandCave": "Island Cave",
 }

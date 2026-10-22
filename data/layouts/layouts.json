@@ -11299,6 +11299,97 @@
       "border_filepath": "data/layouts/ExoticSafari_SinnohRotomRoom/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_SinnohRotomRoom/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_FORTREE",
+      "name": "ExoticSafari_HoennFortree_Layout",
+      "width": 80,
+      "height": 25,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennFortree",
+      "border_filepath": "data/layouts/ExoticSafari_HoennFortree/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennFortree/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_PACIFIDLOG",
+      "name": "ExoticSafari_HoennPacifidlog_Layout",
+      "width": 80,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennPacifidlog",
+      "border_filepath": "data/layouts/ExoticSafari_HoennPacifidlog/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennPacifidlog/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_MT_CHIMNEY",
+      "name": "ExoticSafari_HoennMtChimney_Layout",
+      "width": 40,
+      "height": 47,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennMtChimney",
+      "border_filepath": "data/layouts/ExoticSafari_HoennMtChimney/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennMtChimney/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_SOOTOPOLIS",
+      "name": "ExoticSafari_HoennSootopolis_Layout",
+      "width": 60,
+      "height": 60,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennSootopolis",
+      "border_filepath": "data/layouts/ExoticSafari_HoennSootopolis/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennSootopolis/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB",
+      "name": "ExoticSafari_HoennAncientTomb_Layout",
+      "width": 17,
+      "height": 33,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennTomb",
+      "border_filepath": "data/layouts/ExoticSafari_HoennAncientTomb/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennAncientTomb/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_DESERT_RUINS",
+      "name": "ExoticSafari_HoennDesertRuins_Layout",
+      "width": 17,
+      "height": 33,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennRuins",
+      "border_filepath": "data/layouts/ExoticSafari_HoennDesertRuins/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennDesertRuins/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_HOENN_ISLAND_CAVE",
+      "name": "ExoticSafari_HoennIslandCave_Layout",
+      "width": 17,
+      "height": 33,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_HoennIce",
+      "border_filepath": "data/layouts/ExoticSafari_HoennIslandCave/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_HoennIslandCave/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

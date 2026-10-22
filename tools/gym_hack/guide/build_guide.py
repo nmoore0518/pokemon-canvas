@@ -118,6 +118,11 @@ REGIONS = [
      "in each. Floaroma Meadow's flower fields lie west, the Great Marsh south. Snowpoint City's cave climbs to the Hall of "
      "Origin, and one of its houses is Rotom's Room: five old appliances a Rotom can slip into (its form and move, as with "
      "the Rotom Catalog; again to come back out). Stark Mountain has a cave of its own."),
+    ("Hoenn", "hoenn", "Fortree City, its houses up in the treetops, is the hub, with Route 120's grass and ponds to its "
+     "east (surf to the mound in the pond for the Ancient Tomb). West is the sea: Pacifidlog Town's floating huts, and "
+     "Sky Pillar's islet, whose cave leads into Sootopolis City's crater; a cave in Pacifidlog's cliff is the Island "
+     "Cave. East is Mt. Chimney, with the Desert Ruins in its summit's rock. Each Regi chamber has two rooms: its "
+     "Regi waits in the upper one. Latias and Latios roam."),
 ]
 
 

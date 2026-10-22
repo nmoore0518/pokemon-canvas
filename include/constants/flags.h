@@ -2631,6 +2631,15 @@
 #define FLAG_EXOTIC_LEGEND_MANAPHY            0x37E
 #define FLAG_EXOTIC_LEGEND_ARCEUS             0x37F
 #define FLAG_EXOTIC_AZURE_FLUTE               0x380   // (from the Snowpoint elder, once every gym type is mastered)
+// Hoenn's legendaries, caught (0x381-0x388: the Hoenn zone)
+#define FLAG_EXOTIC_LEGEND_REGIROCK           0x381
+#define FLAG_EXOTIC_LEGEND_REGICE             0x382
+#define FLAG_EXOTIC_LEGEND_REGISTEEL          0x383
+#define FLAG_EXOTIC_LEGEND_LATIAS             0x384
+#define FLAG_EXOTIC_LEGEND_LATIOS             0x385
+#define FLAG_EXOTIC_LEGEND_KYOGRE             0x386
+#define FLAG_EXOTIC_LEGEND_JIRACHI            0x387
+#define FLAG_EXOTIC_LEGEND_DEOXYS             0x388
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

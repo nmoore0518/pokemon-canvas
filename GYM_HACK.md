@@ -868,6 +868,20 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          the mine was blocked by a boulder, Skyarrow Bridge's cave mouth stood on a beach cut off
          by sea rocks, and Chargestone's and Paldea's crater's ladders onward were in halves of
          their caves the way in doesn't reach (moved to ladders that are).
+   - [x] The Hoenn zone (round 1, for Nick's review; `tools/gym_hack/hoenn.py`). FOREST (Fortree
+         City on its stilts, with Route 120's north end east of it: tall grass, the ponds under the
+         bridge; the hub, arrival at the Pokémon Center's door) -> the mound in the pond (surf to
+         it) TOMB (Ancient Tomb, steel grey); west OCEAN (Pacifidlog Town and Route 131 with Sky
+         Pillar's islet; Pacifidlog's cliff given a west end, a second cave copied into it, its logs
+         plain floor, wild Pokémon on the two beaches) -> Sky Pillar's cave to CRATER (Sootopolis
+         City, in through the Cave of Origin's door; wild Pokémon on its lawns) and Pacifidlog's
+         cave to ICE (Island Cave, ice blue); east VOLCANO (Mt. Chimney's summit, encounters on its
+         whole floor) -> a cave (Jagged Pass's) in its rock to RUINS (Desert Ruins, sandstone). The
+         three Regi chambers are Emerald's two-room layout (the Regi up through the inner door),
+         recolored. Gen 3 Pokémon wild, the three starters rare. Regirock, Regice, Registeel,
+         Kyogre (open sea), Jirachi (Sootopolis's island), Deoxys (by the lava) stand; Latias and
+         Latios roam (flags 0x381-0x388). Groudon and Rayquaza are gym-only. Regigigas can now be
+         caught.
    - [x] Area names: each Exotic Safari area pops up its own name (the place it's based on:
          `tools/gym_hack/safari_names.py`, shared with the guides; `ExoticSafari_GetAreaName`, used
          by the map name pop-up), every time the player walks into an area; the Safari Zone's
