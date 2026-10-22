@@ -1,0 +1,226 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH",
+  "name": "ExoticSafari_KalosSnowyPath",
+  "layout": "LAYOUT_EXOTIC_SAFARI_KALOS_SNOWY_PATH",
+  "music": "MUS_RG_ROUTE24",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_SNOW",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 63,
+      "y": 2,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ItemShinyStone",
+      "flag": "FLAG_EXOTIC_ITEM_SHINY_STONE"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 1,
+      "y": 9,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_WOODS",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 1,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 2,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 3,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 4,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 5,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 6,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 7,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 8,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 9,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 10,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 11,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 12,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 14,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 15,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 16,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 17,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 18,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    },
+    {
+      "type": "trigger",
+      "x": 0,
+      "y": 19,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosSnowyPath_EventScript_ToWoods"
+    }
+  ],
+  "bg_events": []
+}

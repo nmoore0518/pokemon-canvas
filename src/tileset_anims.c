@@ -1740,11 +1740,11 @@ static void QueueAnimTiles_BlackthornGym_Lava(u16 timer)
 // stepping stones glow, brighter and dimmer (palette 12 of the map's secondary tileset, made by
 // tools/gym_hack/galar.py: its colors 4-12 pulse)
 
-static void TilesetAnim_Glimwood(u16 timer)
+static void PulsePalette(u16 timer, u32 slot)
 {
     u32 i, step, f;
-    u16 *dst = &gPlttBufferUnfaded[BG_PLTT_ID(12)];
-    const u16 *base = gMapHeader.mapLayout->secondaryTileset->palettes[12];
+    u16 *dst = &gPlttBufferUnfaded[BG_PLTT_ID(slot)];
+    const u16 *base = gMapHeader.mapLayout->secondaryTileset->palettes[slot];
     if (timer % 4)
         return;
     if ((u8)FindTaskIdByFunc(Task_BattleTransition_Intro) != TASK_NONE)
@@ -1761,7 +1761,25 @@ static void TilesetAnim_Glimwood(u16 timer)
         }
         dst[i] = c;
     }
-    BlendPalette(BG_PLTT_ID(12), 16, gPaletteFade.y, gPaletteFade.blendColor & 0x7FFF);
+    BlendPalette(BG_PLTT_ID(slot), 16, gPaletteFade.y, gPaletteFade.blendColor & 0x7FFF);
+}
+
+static void TilesetAnim_Glimwood(u16 timer)
+{
+    PulsePalette(timer, 12);
+}
+
+// Lumiose City (the Kalos zone): the Prism Tower's lights (palette 7)
+static void TilesetAnim_Lumiose(u16 timer)
+{
+    PulsePalette(timer, 7);
+}
+
+void InitTilesetAnim_Lumiose(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = 256;
+    sSecondaryTilesetAnimCallback = TilesetAnim_Lumiose;
 }
 
 void InitTilesetAnim_Glimwood(void)

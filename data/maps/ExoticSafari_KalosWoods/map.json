@@ -1,0 +1,92 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_KALOS_WOODS",
+  "name": "ExoticSafari_KalosWoods",
+  "layout": "LAYOUT_EXOTIC_SAFARI_KALOS_WOODS",
+  "music": "MUS_RG_VIRIDIAN_FOREST",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [],
+  "warp_events": [
+    {
+      "x": 22,
+      "y": 46,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_CITY",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 40,
+      "y": 1,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 21,
+      "y": 47,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosWoods_EventScript_ToCity"
+    },
+    {
+      "type": "trigger",
+      "x": 22,
+      "y": 47,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosWoods_EventScript_ToCity"
+    },
+    {
+      "type": "trigger",
+      "x": 23,
+      "y": 47,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosWoods_EventScript_ToCity"
+    },
+    {
+      "type": "trigger",
+      "x": 39,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosWoods_EventScript_ToSnow"
+    },
+    {
+      "type": "trigger",
+      "x": 40,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosWoods_EventScript_ToSnow"
+    },
+    {
+      "type": "trigger",
+      "x": 41,
+      "y": 0,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_KalosWoods_EventScript_ToSnow"
+    }
+  ],
+  "bg_events": []
+}

@@ -223,3 +223,103 @@ def add_palm(tgt, slot, ground, ground_attr):
         attr = (ground_attr & ~0x1FF & ~0x60000000) | (0 if k < 4 else 1 << 29)
         ids.append(tgt.add_metatile(list(ground) + top, attr))
     return ids
+
+
+# ---------------------------------------------------------------------------------------------
+# Lumiose City's Prism Tower, drawn: a lattice tower, its lights pulsing (colors 4-12 of its
+# palette: tileset_anims.c's TilesetAnim_Lumiose)
+# ---------------------------------------------------------------------------------------------
+PRISM_PAL = [
+    (0, 0, 0), (36, 36, 52), (84, 92, 116), (132, 140, 164),            # 1 outline, 2-3 steel
+    (64, 104, 208), (104, 168, 248), (176, 216, 255), (255, 224, 104),   # 4-6 blue lights, 7 gold
+    (255, 246, 196), (232, 120, 64), (0, 0, 0), (0, 0, 0),               # 8 pale gold, 9 orange
+    (255, 255, 255), (188, 196, 214), (228, 232, 242), (0, 0, 0),        # 12 white; 13-14 steel light
+]
+
+
+def prism_tower_art(W=80, H=176):
+    px = [[0] * W for _ in range(H)]
+    cx = W / 2
+
+    def put(x, y, c):
+        x, y = int(round(x)), int(round(y))
+        if 0 <= x < W and 0 <= y < H:
+            px[y][x] = c
+
+    def line(x0, y0, x1, y1, c):
+        n = int(max(abs(x1 - x0), abs(y1 - y0))) + 1
+        for i in range(n + 1):
+            t = i / n
+            put(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, c)
+
+    def half(y):                       # the tower's half-width at height y
+        if y < 30:
+            return 1.2
+        if y < 84:
+            return 3 + (y - 30) * (8 / 54)
+        if y < 96:
+            return 17
+        if y < 140:
+            return 11 + (y - 96) * (13 / 44)
+        return 24 + (y - 140) * (14 / 36)
+
+    # spire, its tip a light
+    for y in range(4, 30):
+        put(cx - 1, y, 2); put(cx, y, 13); put(cx + 1, y, 1)
+    for y in range(0, 5):
+        for x in range(-1, 2):
+            put(cx + x, y, 7 if y > 1 else 12)
+    # the body: outline edges, lattice crosses, a steel fill behind the lattice
+    for y in range(30, H):
+        hw = half(y)
+        for x in range(int(cx - hw), int(cx + hw) + 1):
+            if px[y][x] == 0 and not (y >= 150 and abs(x - cx) < hw - 8 - (y - 150) * 0.1):
+                inner = abs(x - cx) < hw - 1
+                px[y][x] = 2 if inner and (x + y) % 2 else (3 if inner else 1)
+        put(cx - hw, y, 1); put(cx + hw, y, 1)
+        put(cx - hw + 1, y, 14); put(cx + hw - 1, y, 13)
+    for y0 in range(34, H - 8, 10):    # lattice crosses
+        y1 = y0 + 10
+        a, b = half(y0), half(y1)
+        line(cx - a + 1, y0, cx + b - 1, y1, 13)
+        line(cx + a - 1, y0, cx - b + 1, y1, 13)
+        line(cx - a, y0, cx + a, y0, 1)
+    # the arch between the legs
+    for x in range(int(cx - 16), int(cx + 17)):
+        t = (x - cx) / 16
+        top = 150 + 10 * t * t
+        for y in range(int(top), H):
+            if abs(x - cx) < half(y) - 6:
+                px[y][x] = 0
+        put(x, top, 1)
+    # the observation deck: a band of windows, lit
+    for y in range(84, 96):
+        hw = half(y)
+        for x in range(int(cx - hw), int(cx + hw) + 1):
+            edge = y in (84, 95) or abs(x - cx) >= hw - 1
+            px[y][x] = 1 if edge else (6 if (x // 3) % 2 else 5) if 87 <= y <= 92 else 3
+    # lights up the edges
+    for y in range(36, H - 4, 8):
+        hw = half(y)
+        put(cx - hw, y, 7); put(cx + hw, y, 7)
+    for x in range(int(cx - 22), int(cx + 23), 6):
+        put(x, 140, 8)
+    return px
+
+
+def add_prism_tower(tgt, slot, ground, ground_attr, wide=5, tall=11):
+    """the tower's metatiles (wide x tall, rows top to bottom), over `ground`, palette `slot`; all
+    solid (set the collision on the map). Returns their ids"""
+    B.write_pal(tgt.out / "palettes" / f"{slot:02d}.pal", PRISM_PAL)
+    art = prism_tower_art(wide * 16, tall * 16)
+    ids = []
+    for k in range(wide * tall):
+        ox, oy = (k % wide) * 16, (k // wide) * 16
+        top = []
+        for q in range(4):
+            tile = Image.new("P", (8, 8))
+            tile.putdata([art[oy + (q // 2) * 8 + y][ox + (q % 2) * 8 + x] for y in range(8) for x in range(8)])
+            top.append(tgt.add_tile(tile) | (slot << 12) if any(tile.getdata()) else 0)
+        # (drawn over the player: the tower stands above anyone walking behind its foot)
+        ids.append(tgt.add_metatile(list(ground) + top, ground_attr & ~0x1FF & ~0x60000000))
+    return ids

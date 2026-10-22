@@ -41082,6 +41082,505 @@
               }
             ]
           }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_KALOS_CITY",
+          "base_label": "gExoticSafari_KalosCity_FireRed",
+          "land_mons": {
+            "encounter_rate": 15,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ESPURR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLABEBE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLABEBE_YELLOW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FURFROU"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SPRITZEE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SWIRLIX"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLABEBE_ORANGE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_LITLEO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLABEBE_BLUE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLABEBE_WHITE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_SCATTERBUG_ELEGANT"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_VIVILLON_MODERN"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_KALOS_WOODS",
+          "base_label": "gExoticSafari_KalosWoods_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PHANTUMP"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PUMPKABOO_AVERAGE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PUMPKABOO_SMALL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PUMPKABOO_LARGE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HONEDGE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SPEWPA_GARDEN"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TREVENANT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DOUBLADE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PUMPKABOO_SUPER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_VIVILLON_JUNGLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_CHESPIN"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_GOURGEIST_SUPER"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_KALOS_SNOWY_PATH",
+          "base_label": "gExoticSafari_KalosSnowyPath_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BERGMITE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SNOVER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PILOSWINE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CRYOGONAL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SCATTERBUG_POLAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_VIVILLON_TUNDRA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MAMOSWINE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_ABOMASNOW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_AVALUGG"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_VIVILLON_ICY_SNOW"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_AMAURA"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_AURORUS"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_KALOS_CAVE",
+          "base_label": "gExoticSafari_KalosCave_FireRed",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CARBINK"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_NOIBAT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BINACLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GOOMY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_INKAY"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HAWLUCHA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BARBARACLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SLIGGOO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_NOIVERN"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_MALAMAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_TYRUNT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_AMAURA"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_KALOS_BADLANDS",
+          "base_label": "gExoticSafari_KalosBadlands_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HELIOPTILE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PANCHAM"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKIDDO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_LITLEO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLETCHINDER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_DEDENNE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HELIOLISK"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PANGORO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_GOGOAT"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PYROAR"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_FENNEKIN"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_VIVILLON_SANDSTORM"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_EXOTIC_SAFARI_KALOS_OCEAN",
+          "base_label": "gExoticSafari_KalosOcean_FireRed",
+          "land_mons": {
+            "encounter_rate": 21,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_FLETCHLING"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_WINGULL"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_BINACLE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKRELP"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CLAUNCHER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_VIVILLON_MARINE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_PELIPPER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SCATTERBUG_OCEAN"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_VIVILLON_ARCHIPELAGO"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_HAWLUCHA"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_FROAKIE"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_VIVILLON_OCEAN"
+              }
+            ]
+          },
+          "water_mons": {
+            "encounter_rate": 2,
+            "mons": [
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CLAUNCHER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKRELP"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_TENTACOOL"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_CLAWITZER"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_DRAGALGE"
+              }
+            ]
+          },
+          "fishing_mons": {
+            "encounter_rate": 20,
+            "mons": [
+              {
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_LUVDISC"
+              },
+              {
+                "min_level": 45,
+                "max_level": 50,
+                "species": "SPECIES_CLAUNCHER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_CLAUNCHER"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_SKRELP"
+              },
+              {
+                "min_level": 48,
+                "max_level": 52,
+                "species": "SPECIES_LUVDISC"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_SKRELP"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_CLAUNCHER"
+              },
+              {
+                "min_level": 50,
+                "max_level": 54,
+                "species": "SPECIES_CLAWITZER"
+              },
+              {
+                "min_level": 52,
+                "max_level": 55,
+                "species": "SPECIES_DRAGALGE"
+              },
+              {
+                "min_level": 48,
+                "max_level": 50,
+                "species": "SPECIES_FROAKIE"
+              }
+            ]
+          }
         }
       ]
     },

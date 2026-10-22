@@ -2817,6 +2817,28 @@ const u16 gTilesetPalettes_AlolaOcean[][16] =
     INCGFX_U16("data/tilesets/secondary/alola_ocean_frlg/palettes/15.pal", ".gbapal"),
 };
 
+const u32 gTilesetTiles_KalosBadlands[] = INCGFX_U32("data/tilesets/secondary/kalos_badlands_frlg/tiles.png", ".4bpp.fastSmol");
+
+const u16 gTilesetPalettes_KalosBadlands[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_badlands_frlg/palettes/15.pal", ".gbapal"),
+};
+
 const u32 gTilesetTiles_SafariZoneBuilding[] = INCGFX_U32("data/tilesets/secondary/safari_zone_building_frlg/tiles.png", ".4bpp.fastSmol");
 
 const u16 gTilesetPalettes_SafariZoneBuilding[][16] =
@@ -4425,3 +4447,135 @@ const u16 gTilesetPalettes_AlolaLanakila[][16] =
     INCGFX_U16("data/tilesets/secondary/alola_lanakila/palettes/15.pal", ".gbapal"),
 };
 // </clone AlolaLanakila>
+// <clone KalosLumiose>
+const u32 gTilesetTiles_KalosLumiose[] = INCGFX_U32("data/tilesets/secondary/kalos_lumiose/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_KalosLumiose[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_lumiose/palettes/15.pal", ".gbapal"),
+};
+// </clone KalosLumiose>
+// <clone KalosWoodsGeneral>
+const u32 gTilesetTiles_KalosWoodsGeneral[] = INCGFX_U32("data/tilesets/primary/kalos_woods_general/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_KalosWoodsGeneral[][16] =
+{
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_woods_general/palettes/15.pal", ".gbapal"),
+};
+// </clone KalosWoodsGeneral>
+// <clone KalosWoods>
+const u32 gTilesetTiles_KalosWoods[] = INCGFX_U32("data/tilesets/secondary/kalos_woods/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_KalosWoods[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_woods/palettes/15.pal", ".gbapal"),
+};
+// </clone KalosWoods>
+// <clone KalosSnowGeneral>
+const u32 gTilesetTiles_KalosSnowGeneral[] = INCGFX_U32("data/tilesets/primary/kalos_snow_general/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_KalosSnowGeneral[][16] =
+{
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/primary/kalos_snow_general/palettes/15.pal", ".gbapal"),
+};
+// </clone KalosSnowGeneral>
+// <clone KalosSnowRoute>
+const u32 gTilesetTiles_KalosSnowRoute[] = INCGFX_U32("data/tilesets/secondary/kalos_snow_route/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_KalosSnowRoute[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_snow_route/palettes/15.pal", ".gbapal"),
+};
+// </clone KalosSnowRoute>
+// <clone KalosCave>
+const u32 gTilesetTiles_KalosCave[] = INCGFX_U32("data/tilesets/secondary/kalos_cave/tiles.png", ".4bpp.fastSmol");
+const u16 gTilesetPalettes_KalosCave[][16] =
+{
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/00.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/01.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/02.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/03.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/04.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/05.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/06.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/07.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/08.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/09.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/10.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/11.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/12.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/13.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/14.pal", ".gbapal"),
+    INCGFX_U16("data/tilesets/secondary/kalos_cave/palettes/15.pal", ".gbapal"),
+};
+// </clone KalosCave>

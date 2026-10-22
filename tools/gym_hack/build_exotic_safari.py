@@ -34,6 +34,7 @@ REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALD
 # The regions with a zone open: their first area (the hall's door leads there). The areas
 # themselves: tools/gym_hack/paldea.py
 ZONES = {
+    "KALOS": {"id": "MAP_EXOTIC_SAFARI_KALOS_CITY"},
     "ALOLA": {"id": "MAP_EXOTIC_SAFARI_ALOLA_RESORT"},
     "GALAR": {"id": "MAP_EXOTIC_SAFARI_GALAR_MEADOW"},
     "PALDEA": {"id": "MAP_EXOTIC_SAFARI_PALDEA_MEADOW"},
@@ -507,10 +508,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import paldea                                   # noqa: E402
 import galar                                    # noqa: E402
 import alola                                    # noqa: E402
+import kalos                                    # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
-REGION_MODULES = [paldea, galar, alola]
+REGION_MODULES = [paldea, galar, alola, kalos]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10}
@@ -886,15 +888,26 @@ def reachable(b):
     """the cells the player can get to (walking or surfing) from where they arrive"""
     g, w, h = b["g"], b["w"], b["h"]
     start = [wp for wp in b["warps"]]
-    seen, todo = set(), [(wp["x"], wp["y"]) for wp in start]
+    starts = {(wp["x"], wp["y"]) for wp in start}
+    beh = b.get("beh")
+    jumps = {MB["MB_JUMP_EAST"]: (1, 0), MB["MB_JUMP_WEST"]: (-1, 0), MB["MB_JUMP_NORTH"]: (0, -1), MB["MB_JUMP_SOUTH"]: (0, 1)}
+    def ok(x, y):
+        return 0 <= x < w and 0 <= y < h and (not (g[y][x] >> 10) & 3 or (x, y) in starts)
+    seen, todo = set(), list(starts)
     while todo:
         x, y = todo.pop()
-        if (x, y) in seen or not (0 <= x < w and 0 <= y < h):
-            continue
-        if (g[y][x] >> 10) & 3 and (x, y) not in {(wp["x"], wp["y"]) for wp in start}:
+        if (x, y) in seen or not ok(x, y):
             continue
         seen.add((x, y))
-        todo += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            if not (0 <= nx < w and 0 <= ny < h):
+                continue
+            j = jumps.get(beh(g[ny][nx])) if beh else None
+            if j is None:
+                todo.append((nx, ny))
+            elif j == (dx, dy):                     # a ledge: only jumped down, landing past it
+                todo.append((nx + dx, ny + dy))
     return seen
 
 

@@ -1443,6 +1443,17 @@ const struct Tileset gTileset_AlolaOcean =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_KalosBadlands =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_KalosBadlands,
+    .palettes = gTilesetPalettes_KalosBadlands,
+    .metatiles = gMetatiles_KalosBadlands,
+    .metatileAttributes = gMetatileAttributes_KalosBadlands,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,
@@ -2303,3 +2314,81 @@ const struct Tileset gTileset_AlolaLanakila =
 };
 
 // </clone AlolaLanakila>
+// <clone KalosLumiose>
+const struct Tileset gTileset_KalosLumiose =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_KalosLumiose,
+    .palettes = gTilesetPalettes_KalosLumiose,
+    .metatiles = gMetatiles_KalosLumiose,
+    .metatileAttributes = gMetatileAttributes_KalosLumiose,
+    .callback = InitTilesetAnim_Lumiose,
+};
+
+// </clone KalosLumiose>
+// <clone KalosWoodsGeneral>
+const struct Tileset gTileset_KalosWoodsGeneral =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_KalosWoodsGeneral,
+    .palettes = gTilesetPalettes_KalosWoodsGeneral,
+    .metatiles = gMetatiles_KalosWoodsGeneral,
+    .metatileAttributes = gMetatileAttributes_KalosWoodsGeneral,
+    .callback = InitTilesetAnim_General_Frlg,
+};
+
+// </clone KalosWoodsGeneral>
+// <clone KalosWoods>
+const struct Tileset gTileset_KalosWoods =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_KalosWoods,
+    .palettes = gTilesetPalettes_KalosWoods,
+    .metatiles = gMetatiles_KalosWoods,
+    .metatileAttributes = gMetatileAttributes_KalosWoods,
+    .callback = NULL,
+};
+
+// </clone KalosWoods>
+// <clone KalosSnowGeneral>
+const struct Tileset gTileset_KalosSnowGeneral =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_KalosSnowGeneral,
+    .palettes = gTilesetPalettes_KalosSnowGeneral,
+    .metatiles = gMetatiles_KalosSnowGeneral,
+    .metatileAttributes = gMetatileAttributes_KalosSnowGeneral,
+    .callback = InitTilesetAnim_General_Frlg,
+};
+
+// </clone KalosSnowGeneral>
+// <clone KalosSnowRoute>
+const struct Tileset gTileset_KalosSnowRoute =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_KalosSnowRoute,
+    .palettes = gTilesetPalettes_KalosSnowRoute,
+    .metatiles = gMetatiles_KalosSnowRoute,
+    .metatileAttributes = gMetatileAttributes_KalosSnowRoute,
+    .callback = NULL,
+};
+
+// </clone KalosSnowRoute>
+// <clone KalosCave>
+const struct Tileset gTileset_KalosCave =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_KalosCave,
+    .palettes = gTilesetPalettes_KalosCave,
+    .metatiles = gMetatiles_KalosCave,
+    .metatileAttributes = gMetatileAttributes_KalosCave,
+    .callback = NULL,
+};
+
+// </clone KalosCave>

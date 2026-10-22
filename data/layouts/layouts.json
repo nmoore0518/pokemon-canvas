@@ -11039,6 +11039,84 @@
       "border_filepath": "data/layouts/ExoticSafari_AlolaLanakila/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_AlolaLanakila/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_KALOS_CITY",
+      "name": "ExoticSafari_KalosCity_Layout",
+      "width": 66,
+      "height": 55,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_KalosLumiose",
+      "border_filepath": "data/layouts/ExoticSafari_KalosCity/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_KalosCity/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_KALOS_WOODS",
+      "name": "ExoticSafari_KalosWoods_Layout",
+      "width": 51,
+      "height": 48,
+      "border_width": 3,
+      "border_height": 2,
+      "primary_tileset": "gTileset_KalosWoodsGeneral",
+      "secondary_tileset": "gTileset_KalosWoods",
+      "border_filepath": "data/layouts/ExoticSafari_KalosWoods/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_KalosWoods/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_KALOS_SNOWY_PATH",
+      "name": "ExoticSafari_KalosSnowyPath_Layout",
+      "width": 72,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_KalosSnowGeneral",
+      "secondary_tileset": "gTileset_KalosSnowRoute",
+      "border_filepath": "data/layouts/ExoticSafari_KalosSnowyPath/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_KalosSnowyPath/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_KALOS_CAVE",
+      "name": "ExoticSafari_KalosCave_Layout",
+      "width": 48,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_KalosCave",
+      "border_filepath": "data/layouts/ExoticSafari_KalosCave/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_KalosCave/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_KALOS_BADLANDS",
+      "name": "ExoticSafari_KalosBadlands_Layout",
+      "width": 60,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_KalosBadlands",
+      "border_filepath": "data/layouts/ExoticSafari_KalosBadlands/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_KalosBadlands/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_KALOS_OCEAN",
+      "name": "ExoticSafari_KalosOcean_Layout",
+      "width": 72,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SeviiIslands45",
+      "border_filepath": "data/layouts/ExoticSafari_KalosOcean/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_KalosOcean/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

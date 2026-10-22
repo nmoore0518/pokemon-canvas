@@ -760,6 +760,18 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          are caught; Magearna for four machine parts (beach, ruins, volcano, mountain); Meltan for a
          Steel-type lead, Marshadow a Fighting/Ghost one; Zeraora only in Seafolk Village's
          thunderstorms (one visit in four: `ExoticSafari_AreaOnTransition`). Relic flags 0x330-0x335.
+   - [x] The Kalos zone (round 1, for Nick's review; `tools/gym_hack/kalos.py`). CITY (Lumiose:
+         Saffron with Silph Co. cleared into a plaza and a drawn Prism Tower, `tile_import.
+         add_prism_tower`, its lights pulsing - `TilesetAnim_Lumiose`; flower gardens; the hub, its
+         gates leading out; the homes' doors lead nowhere) -> north the WOODS (Winding Woods: a
+         generated maze of tree walls and tall grass, `woods_rows`, in dim blue-green copies of the
+         forest tilesets) -> north the SNOWY PATH (Mamoswine Road: Route 9 under snow, its road
+         trodden snow, its rock frosted); west the CAVE (Glittering Cave: Mt. Moon 1F in cold blue);
+         east the DESERT (Lumiose Badlands: Hoenn's Route 113 as dust and red rock) -> east the
+         OCEAN (Azure Bay: Five Island's Water Labyrinth, a gap opened in the islet's rocks).
+         Kalos Pokémon wild (Flabébé colors, Pumpkaboo sizes, Vivillon patterns, the starters,
+         fossils); Zygarde (city), Hoopa (cave), Yveltal (badlands), Volcanion (islet) stand.
+         Tyrunt/Amaura evolve at 39 with no time condition. `reachable` now jumps ledges.
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

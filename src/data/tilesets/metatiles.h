@@ -366,6 +366,8 @@ const u16 gMetatiles_GalarPitch[] = INCBIN_U16("data/tilesets/secondary/galar_pi
 const u16 gMetatileAttributes_GalarPitch[] = INCBIN_U16("data/tilesets/secondary/galar_pitch_frlg/metatile_attributes.bin");
 const u16 gMetatiles_AlolaOcean[] = INCBIN_U16("data/tilesets/secondary/alola_ocean_frlg/metatiles.bin");
 const u16 gMetatileAttributes_AlolaOcean[] = INCBIN_U16("data/tilesets/secondary/alola_ocean_frlg/metatile_attributes.bin");
+const u16 gMetatiles_KalosBadlands[] = INCBIN_U16("data/tilesets/secondary/kalos_badlands_frlg/metatiles.bin");
+const u16 gMetatileAttributes_KalosBadlands[] = INCBIN_U16("data/tilesets/secondary/kalos_badlands_frlg/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 
@@ -614,3 +616,27 @@ const u16 gMetatileAttributes_AlolaVolcano[] = INCBIN_U16("data/tilesets/seconda
 const u16 gMetatiles_AlolaLanakila[] = INCBIN_U16("data/tilesets/secondary/alola_lanakila/metatiles.bin");
 const u16 gMetatileAttributes_AlolaLanakila[] = INCBIN_U16("data/tilesets/secondary/alola_lanakila/metatile_attributes.bin");
 // </clone AlolaLanakila>
+// <clone KalosLumiose>
+const u16 gMetatiles_KalosLumiose[] = INCBIN_U16("data/tilesets/secondary/kalos_lumiose/metatiles.bin");
+const u16 gMetatileAttributes_KalosLumiose[] = INCBIN_U16("data/tilesets/secondary/kalos_lumiose/metatile_attributes.bin");
+// </clone KalosLumiose>
+// <clone KalosWoodsGeneral>
+const u16 gMetatiles_KalosWoodsGeneral[] = INCBIN_U16("data/tilesets/primary/kalos_woods_general/metatiles.bin");
+const u16 gMetatileAttributes_KalosWoodsGeneral[] = INCBIN_U16("data/tilesets/primary/kalos_woods_general/metatile_attributes.bin");
+// </clone KalosWoodsGeneral>
+// <clone KalosWoods>
+const u16 gMetatiles_KalosWoods[] = INCBIN_U16("data/tilesets/secondary/kalos_woods/metatiles.bin");
+const u16 gMetatileAttributes_KalosWoods[] = INCBIN_U16("data/tilesets/secondary/kalos_woods/metatile_attributes.bin");
+// </clone KalosWoods>
+// <clone KalosSnowGeneral>
+const u16 gMetatiles_KalosSnowGeneral[] = INCBIN_U16("data/tilesets/primary/kalos_snow_general/metatiles.bin");
+const u16 gMetatileAttributes_KalosSnowGeneral[] = INCBIN_U16("data/tilesets/primary/kalos_snow_general/metatile_attributes.bin");
+// </clone KalosSnowGeneral>
+// <clone KalosSnowRoute>
+const u16 gMetatiles_KalosSnowRoute[] = INCBIN_U16("data/tilesets/secondary/kalos_snow_route/metatiles.bin");
+const u16 gMetatileAttributes_KalosSnowRoute[] = INCBIN_U16("data/tilesets/secondary/kalos_snow_route/metatile_attributes.bin");
+// </clone KalosSnowRoute>
+// <clone KalosCave>
+const u16 gMetatiles_KalosCave[] = INCBIN_U16("data/tilesets/secondary/kalos_cave/metatiles.bin");
+const u16 gMetatileAttributes_KalosCave[] = INCBIN_U16("data/tilesets/secondary/kalos_cave/metatile_attributes.bin");
+// </clone KalosCave>

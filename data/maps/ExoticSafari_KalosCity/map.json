@@ -1,0 +1,108 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_KALOS_CITY",
+  "name": "ExoticSafari_KalosCity",
+  "layout": "LAYOUT_EXOTIC_SAFARI_KALOS_CITY",
+  "music": "MUS_RG_CELADON",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_CITY",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ZYGARDE)",
+      "x": 34,
+      "y": 31,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_KalosCity_EventScript_LegendZygarde",
+      "flag": "FLAG_TEMP_11"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 17,
+      "y": 33,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_KalosCity_EventScript_ItemSachet",
+      "flag": "FLAG_EXOTIC_ITEM_SACHET"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 50,
+      "y": 33,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_KalosCity_EventScript_ItemWhippedDream",
+      "flag": "FLAG_EXOTIC_ITEM_WHIPPED_DREAM"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 34,
+      "y": 46,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_HALL",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 35,
+      "y": 46,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_HALL",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 34,
+      "y": 5,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_WOODS",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 35,
+      "y": 5,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_WOODS",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 8,
+      "y": 27,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_CAVE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 58,
+      "y": 27,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_KALOS_BADLANDS",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": []
+}
