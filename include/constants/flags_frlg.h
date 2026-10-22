@@ -968,12 +968,12 @@
 #define DAILY_FLAGS_END          (FLAG_0x3CF + (7 - FLAG_0x3CF % 8))
 #define NUM_DAILY_FLAGS                             (DAILY_FLAGS_END - DAILY_FLAGS_START + 1)
 
-#define FLAG_0x3D0               0x3D0
-#define FLAG_0x3D1               0x3D1
-#define FLAG_0x3D2               0x3D2
-#define FLAG_0x3D3               0x3D3
-#define FLAG_0x3D4               0x3D4
-#define FLAG_0x3D5               0x3D5
+#define FLAG_EXOTIC_LEGEND_LUGIA     0x3D0   // (the Johto zone)
+#define FLAG_EXOTIC_LEGEND_CELEBI    0x3D1   // (the Johto zone)
+#define FLAG_EXOTIC_LEGEND_RAIKOU    0x3D2   // (the Johto zone)
+#define FLAG_EXOTIC_LEGEND_ENTEI     0x3D3   // (the Johto zone)
+#define FLAG_EXOTIC_LEGEND_SUICUNE   0x3D4   // (the Johto zone)
+#define FLAG_EXOTIC_RED_GYARADOS     0x3D5   // (the Johto zone)
 #define FLAG_0x3D6               0x3D6
 #define FLAG_0x3D7               0x3D7
 #define FLAG_MYSTERY_GIFT_DONE   0x3D8

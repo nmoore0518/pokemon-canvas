@@ -21,4 +21,7 @@ SAFARI_NAMES = {
     "HoennFortree": "Fortree City", "HoennPacifidlog": "Pacifidlog Town", "HoennMtChimney": "Mt. Chimney",
     "HoennAncientTomb": "Ancient Tomb", "HoennSootopolis": "Sootopolis City", "HoennDesertRuins": "Desert Ruins",
     "HoennIslandCave": "Island Cave",
+    "JohtoNewBark": "New Bark Town", "JohtoLakeOfRage": "Lake of Rage", "JohtoRuinsOfAlph": "Ruins of Alph",
+    "JohtoDragonsDen": "Dragon's Den", "JohtoIcePath": "Ice Path", "JohtoIlexForest": "Ilex Forest",
+    "JohtoWhirlIslands": "Whirl Islands",
 }

@@ -1330,6 +1330,13 @@
     "ExoticSafari_HoennSootopolis",
     "ExoticSafari_HoennAncientTomb",
     "ExoticSafari_HoennDesertRuins",
-    "ExoticSafari_HoennIslandCave"
+    "ExoticSafari_HoennIslandCave",
+    "ExoticSafari_JohtoNewBark",
+    "ExoticSafari_JohtoLakeOfRage",
+    "ExoticSafari_JohtoRuinsOfAlph",
+    "ExoticSafari_JohtoIlexForest",
+    "ExoticSafari_JohtoIcePath",
+    "ExoticSafari_JohtoDragonsDen",
+    "ExoticSafari_JohtoWhirlIslands"
   ]
 }

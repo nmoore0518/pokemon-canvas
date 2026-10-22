@@ -152,6 +152,33 @@ ExoticSafari_EventScript_RoamerLatios::
 	setflag FLAG_EXOTIC_LEGEND_LATIOS
 	goto ExoticSafari_EventScript_RoamerGone
 
+ExoticSafari_EventScript_RoamerRaikou::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_RAIKOU
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_RAIKOU
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerEntei::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_ENTEI
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_ENTEI
+	goto ExoticSafari_EventScript_RoamerGone
+
+ExoticSafari_EventScript_RoamerSuicune::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_SUICUNE
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RoamerGone
+	setflag FLAG_EXOTIC_LEGEND_SUICUNE
+	goto ExoticSafari_EventScript_RoamerGone
+
 ExoticSafari_EventScript_StakePurple::
 	setvar VAR_0x8004, 0
 	goto ExoticSafari_EventScript_Stake

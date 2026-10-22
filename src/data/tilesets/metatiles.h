@@ -493,6 +493,12 @@ const u16 gMetatileAttributes_BurnedTower_Hns[] = INCBIN_U16("data/tilesets/seco
 const u16 gMetatiles_Cafe_Hns[] = INCBIN_U16("data/tilesets/secondary/cafe_hns/metatiles.bin");
 const u16 gMetatileAttributes_Cafe_Hns[] = INCBIN_U16("data/tilesets/secondary/cafe_hns/metatile_attributes.bin");
 
+const u16 gMetatiles_Cave_DragonsDen_Hns[] = INCBIN_U16("data/tilesets/secondary/cave_dragons_den_hns/metatiles.bin");
+const u16 gMetatileAttributes_Cave_DragonsDen_Hns[] = INCBIN_U16("data/tilesets/secondary/cave_dragons_den_hns/metatile_attributes.bin");
+
+const u16 gMetatiles_Cave_Ice_Hns[] = INCBIN_U16("data/tilesets/secondary/cave_ice_hns/metatiles.bin");
+const u16 gMetatileAttributes_Cave_Ice_Hns[] = INCBIN_U16("data/tilesets/secondary/cave_ice_hns/metatile_attributes.bin");
+
 const u16 gMetatiles_DepartmentStore_Hns[] = INCBIN_U16("data/tilesets/secondary/department_store_hns/metatiles.bin");
 const u16 gMetatileAttributes_DepartmentStore_Hns[] = INCBIN_U16("data/tilesets/secondary/department_store_hns/metatile_attributes.bin");
 
@@ -565,6 +571,9 @@ const u16 gMetatileAttributes_KurtsHouse_Hns[] = INCBIN_U16("data/tilesets/secon
 const u16 gMetatiles_Lighthouse_Hns[] = INCBIN_U16("data/tilesets/secondary/lighthouse_hns/metatiles.bin");
 const u16 gMetatileAttributes_Lighthouse_Hns[] = INCBIN_U16("data/tilesets/secondary/lighthouse_hns/metatile_attributes.bin");
 
+const u16 gMetatiles_MahoganyTown_Hns[] = INCBIN_U16("data/tilesets/secondary/mahogany_town_hns/metatiles.bin");
+const u16 gMetatileAttributes_MahoganyTown_Hns[] = INCBIN_U16("data/tilesets/secondary/mahogany_town_hns/metatile_attributes.bin");
+
 const u16 gMetatiles_MtSilverSnow_Hns[] = INCBIN_U16("data/tilesets/secondary/mt_silver_snow_hns/metatiles.bin");
 const u16 gMetatileAttributes_MtSilverSnow_Hns[] = INCBIN_U16("data/tilesets/secondary/mt_silver_snow_hns/metatile_attributes.bin");
 
@@ -573,6 +582,9 @@ const u16 gMetatileAttributes_MtSilver_Exp_Hns[] = INCBIN_U16("data/tilesets/pri
 
 const u16 gMetatiles_NationalPark_Hns[] = INCBIN_U16("data/tilesets/secondary/national_park_hns/metatiles.bin");
 const u16 gMetatileAttributes_NationalPark_Hns[] = INCBIN_U16("data/tilesets/secondary/national_park_hns/metatile_attributes.bin");
+
+const u16 gMetatiles_NewBarkTown_Hns[] = INCBIN_U16("data/tilesets/secondary/new_bark_town_hns/metatiles.bin");
+const u16 gMetatileAttributes_NewBarkTown_Hns[] = INCBIN_U16("data/tilesets/secondary/new_bark_town_hns/metatile_attributes.bin");
 
 const u16 gMetatiles_OlivineCity_Hns[] = INCBIN_U16("data/tilesets/secondary/olivine_city_hns/metatiles.bin");
 const u16 gMetatileAttributes_OlivineCity_Hns[] = INCBIN_U16("data/tilesets/secondary/olivine_city_hns/metatile_attributes.bin");
@@ -594,6 +606,9 @@ const u16 gMetatileAttributes_Route38_Farmland_Hns[] = INCBIN_U16("data/tilesets
 
 const u16 gMetatiles_Route40_Hns[] = INCBIN_U16("data/tilesets/secondary/route_40_hns/metatiles.bin");
 const u16 gMetatileAttributes_Route40_Hns[] = INCBIN_U16("data/tilesets/secondary/route_40_hns/metatile_attributes.bin");
+
+const u16 gMetatiles_RuinsOfAlph_Outside_Hns[] = INCBIN_U16("data/tilesets/secondary/ruins_of_alph_outside_hns/metatiles.bin");
+const u16 gMetatileAttributes_RuinsOfAlph_Outside_Hns[] = INCBIN_U16("data/tilesets/secondary/ruins_of_alph_outside_hns/metatile_attributes.bin");
 
 const u16 gMetatiles_ShopRooftop_Hns[] = INCBIN_U16("data/tilesets/secondary/shop_rooftop_hns/metatiles.bin");
 const u16 gMetatileAttributes_ShopRooftop_Hns[] = INCBIN_U16("data/tilesets/secondary/shop_rooftop_hns/metatile_attributes.bin");

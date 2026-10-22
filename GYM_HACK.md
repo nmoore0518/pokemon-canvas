@@ -893,6 +893,21 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Kyogre rises for a lead holding the Blue Orb (Sootopolis's lawn); Deoxys comes once the
          Meteorite is found (Mt. Chimney's summit; it changes Deoxys's Forme); Jirachi wakes once
          the zone's seven other legendaries are caught (seals 30-32; items 0x38D-0x38F).
+   - [x] The Johto zone (round 1, for Nick's review; `tools/gym_hack/johto_safari.py`): HnS's own maps
+         on their tilesets (`import_johto.py` now brings in New Bark's, Mahogany's, the Ruins of Alph's,
+         Dragon's Den's and the Ice Path's too). GRASSLAND (New Bark Town with Route 29 west of it, as
+         HGSS joins them; woods in the corners; the hub, in at Elm's lab) -> west RUINS (Ruins of Alph,
+         in at the Route 32 gate) -> its north gate FOREST (Ilex Forest, Celebi by the shrine); Route
+         29's gate LAKE (Lake of Rage, the Red Gyarados - shiny, level 55, its own script, 0x3D5 -
+         in the middle) -> its south-west path ICE (Ice Path 1F: ice to slide across) -> its ladder
+         CAVE (Dragon's Den) -> the shrine's door LUGIA (Whirl Islands' Lugia chamber, Lugia on its
+         island). Gen 2 Pokémon wild (Unown A, L, P, H and ? in the ruins), the starters rare.
+         Raikou, Entei and Suicune roam (flags 0x3D0-0x3D4). Ho-Oh is gym-only.
+   - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
+         closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
+         0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops
+         it). It found a real one: Galar's Glimwood Tangle glade (Zarude, the Chipped Pot) was raised
+         ground with no way up - now level with the rest.
    - [x] Area names: each Exotic Safari area pops up its own name (the place it's based on:
          `tools/gym_hack/safari_names.py`, shared with the guides; `ExoticSafari_GetAreaName`, used
          by the map name pop-up), every time the player walks into an area; the Safari Zone's

@@ -1,0 +1,203 @@
+{
+  "id": "MAP_EXOTIC_SAFARI_JOHTO_LAKE_OF_RAGE",
+  "name": "ExoticSafari_JohtoLakeOfRage",
+  "layout": "LAYOUT_EXOTIC_SAFARI_JOHTO_LAKE_OF_RAGE",
+  "music": "MUS_HG_ROUTE42",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(RAIKOU)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerRaikou",
+      "flag": "FLAG_TEMP_1B"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ENTEI)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerEntei",
+      "flag": "FLAG_TEMP_1C"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(SUICUNE)",
+      "x": 0,
+      "y": 0,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 2,
+      "movement_range_y": 2,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RoamerSuicune",
+      "flag": "FLAG_TEMP_1D"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES_SHINY(GYARADOS)",
+      "x": 30,
+      "y": 20,
+      "elevation": 1,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_EventScript_RedGyarados",
+      "flag": "FLAG_EXOTIC_RED_GYARADOS"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 30,
+      "y": 45,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_JOHTO_NEW_BARK",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "elevation": 0,
+      "dest_map": "MAP_EXOTIC_SAFARI_JOHTO_ICE_PATH",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 26,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 27,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 28,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 29,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 30,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 31,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 32,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 33,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 34,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 35,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToGrassland"
+    },
+    {
+      "type": "trigger",
+      "x": 18,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToIce"
+    },
+    {
+      "type": "trigger",
+      "x": 19,
+      "y": 46,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_JohtoLakeOfRage_EventScript_ToIce"
+    }
+  ],
+  "bg_events": []
+}

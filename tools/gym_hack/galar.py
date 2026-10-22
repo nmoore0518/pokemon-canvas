@@ -537,6 +537,12 @@ def forest():
             g[y][x] = (0x28E if x % 2 == 0 else 0x28F) | (3 << 12)
     for x in (18, 21):
         retile(g, x, 40, {28, 29})
+    # (the glade in the north-east corner, where Zarude waits, was Ilex's raised ground - elevation 4,
+    # reached from outside the part cut out: level with the rest, so it can be walked into)
+    for y in range(0, 6):
+        for x in range(28, 39):
+            if not (g[y][x] >> 10) & 3 and (g[y][x] >> 12) == 4:
+                g[y][x] = (g[y][x] & 0x0FFF) | (3 << 12)
     # Mushrooms: each must leave everything else reachable (the floor shrinks by just its 4 cells)
     state = {"n": len(_flood(g, (15, 38)))}
     def reach_ok(grid):

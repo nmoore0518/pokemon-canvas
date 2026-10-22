@@ -11390,6 +11390,97 @@
       "border_filepath": "data/layouts/ExoticSafari_HoennIslandCave/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_HoennIslandCave/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_NEW_BARK",
+      "name": "ExoticSafari_JohtoNewBark_Layout",
+      "width": 100,
+      "height": 32,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_General_Hns",
+      "secondary_tileset": "gTileset_NewBarkTown_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoNewBark/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoNewBark/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_LAKE_OF_RAGE",
+      "name": "ExoticSafari_JohtoLakeOfRage_Layout",
+      "width": 64,
+      "height": 47,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_NorthEast_Hns",
+      "secondary_tileset": "gTileset_MahoganyTown_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoLakeOfRage/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoLakeOfRage/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_RUINS_OF_ALPH",
+      "name": "ExoticSafari_JohtoRuinsOfAlph_Layout",
+      "width": 46,
+      "height": 48,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_NorthEast_Hns",
+      "secondary_tileset": "gTileset_RuinsOfAlph_Outside_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoRuinsOfAlph/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoRuinsOfAlph/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_ILEX_FOREST",
+      "name": "ExoticSafari_JohtoIlexForest_Layout",
+      "width": 82,
+      "height": 73,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_South_Hns",
+      "secondary_tileset": "gTileset_IlexForest_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoIlexForest/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoIlexForest/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_ICE_PATH",
+      "name": "ExoticSafari_JohtoIcePath_Layout",
+      "width": 53,
+      "height": 35,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_General_Hns",
+      "secondary_tileset": "gTileset_Cave_Ice_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoIcePath/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoIcePath/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_DRAGONS_DEN",
+      "name": "ExoticSafari_JohtoDragonsDen_Layout",
+      "width": 60,
+      "height": 54,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_NorthEast_Hns",
+      "secondary_tileset": "gTileset_Cave_DragonsDen_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoDragonsDen/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoDragonsDen/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_JOHTO_WHIRL_ISLANDS",
+      "name": "ExoticSafari_JohtoWhirlIslands_Layout",
+      "width": 59,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Johto_NorthEast_Hns",
+      "secondary_tileset": "gTileset_WhirlIslands_Hns",
+      "border_filepath": "data/layouts/ExoticSafari_JohtoWhirlIslands/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_JohtoWhirlIslands/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

@@ -1952,6 +1952,28 @@ const struct Tileset gTileset_Cafe_Hns =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_Cave_DragonsDen_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Cave_DragonsDen_Hns,
+    .palettes = gTilesetPalettes_Cave_DragonsDen_Hns,
+    .metatiles = gMetatiles_Cave_DragonsDen_Hns,
+    .metatileAttributes = gMetatileAttributes_Cave_DragonsDen_Hns,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_Cave_Ice_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Cave_Ice_Hns,
+    .palettes = gTilesetPalettes_Cave_Ice_Hns,
+    .metatiles = gMetatiles_Cave_Ice_Hns,
+    .metatileAttributes = gMetatileAttributes_Cave_Ice_Hns,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_DepartmentStore_Hns =
 {
     .isCompressed = TRUE,
@@ -2216,6 +2238,17 @@ const struct Tileset gTileset_Lighthouse_Hns =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_MahoganyTown_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_MahoganyTown_Hns,
+    .palettes = gTilesetPalettes_MahoganyTown_Hns,
+    .metatiles = gMetatiles_MahoganyTown_Hns,
+    .metatileAttributes = gMetatileAttributes_MahoganyTown_Hns,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_MtSilverSnow_Hns =
 {
     .isCompressed = TRUE,
@@ -2247,6 +2280,17 @@ const struct Tileset gTileset_NationalPark_Hns =
     .metatiles = gMetatiles_NationalPark_Hns,
     .metatileAttributes = gMetatileAttributes_NationalPark_Hns,
     .callback = InitTilesetAnim_NationalPark,
+};
+
+const struct Tileset gTileset_NewBarkTown_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_NewBarkTown_Hns,
+    .palettes = gTilesetPalettes_NewBarkTown_Hns,
+    .metatiles = gMetatiles_NewBarkTown_Hns,
+    .metatileAttributes = gMetatileAttributes_NewBarkTown_Hns,
+    .callback = NULL,
 };
 
 const struct Tileset gTileset_OlivineCity_Hns =
@@ -2323,6 +2367,17 @@ const struct Tileset gTileset_Route40_Hns =
     .palettes = gTilesetPalettes_Route40_Hns,
     .metatiles = gMetatiles_Route40_Hns,
     .metatileAttributes = gMetatileAttributes_Route40_Hns,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_RuinsOfAlph_Outside_Hns =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_RuinsOfAlph_Outside_Hns,
+    .palettes = gTilesetPalettes_RuinsOfAlph_Outside_Hns,
+    .metatiles = gMetatiles_RuinsOfAlph_Outside_Hns,
+    .metatileAttributes = gMetatileAttributes_RuinsOfAlph_Outside_Hns,
     .callback = NULL,
 };
 

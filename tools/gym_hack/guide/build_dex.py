@@ -214,7 +214,7 @@ def sprite(info, data):
 # Where each Pokémon is found
 # ---------------------------------------------------------------------------------------------
 from safari_names import SAFARI_NAMES   # noqa: E402  (tools/gym_hack/safari_names.py)
-REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova", "Sinnoh", "Hoenn"]     # (the roamers' region index)
+REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova", "Sinnoh", "Hoenn", "Johto"]     # (the roamers' region index)
 TYPE_NAMES = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire",
               "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"]
 
@@ -267,6 +267,8 @@ PUZZLES = {
     "KYOGRE": "Rises in the open sea west of Pacifidlog Town when your lead holds the Blue Orb (on Sootopolis City's south-west lawn). Surf to it.",
     "JIRACHI": "Wakes on the little island in Sootopolis City's lake (Sky Pillar's cave, west of Pacifidlog, leads to the city) once Regirock, Regice, Registeel, Latias, Latios, Kyogre and Deoxys are all caught. Surf to it.",
     "DEOXYS": "Find the Meteorite near Mt. Chimney's summit; then Deoxys appears on the lava lake's shore. Use the Meteorite on it to change its Forme.",
+    "LUGIA": "In the Whirl Islands' deepest chamber, on the island in its middle: the door of Dragon's Den's shrine leads there (Dragon's Den is down the ladder in the Ice Path).",
+    "CELEBI": "In front of the little shrine in Ilex Forest.",
     "TYPE_NULL": "A gift from Hano Beach's caretaker once you've caught Rowlet, Litten and Popplio.",
 }
 ROAM_NOTES = {"CALYREX": " Starts roaming once Spectrier is caught.",

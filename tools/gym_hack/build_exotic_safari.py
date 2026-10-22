@@ -35,6 +35,7 @@ REGIONS = ["JOHTO", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "GALAR", "PALD
 # The regions with a zone open: their first area (the hall's door leads there). The areas
 # themselves: tools/gym_hack/paldea.py
 ZONES = {
+    "JOHTO": {"id": "MAP_EXOTIC_SAFARI_JOHTO_NEW_BARK"},
     "HOENN": {"id": "MAP_EXOTIC_SAFARI_HOENN_FORTREE"},
     "SINNOH": {"id": "MAP_EXOTIC_SAFARI_SINNOH_LAKE"},
     "UNOVA": {"id": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW"},
@@ -530,11 +531,12 @@ import kalos                                    # noqa: E402
 import unova                                    # noqa: E402
 import sinnoh                                   # noqa: E402
 import hoenn                                    # noqa: E402
+import johto_safari                             # noqa: E402
 import safari_names                             # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
-REGION_MODULES = [paldea, galar, alola, kalos, unova, sinnoh, hoenn]
+REGION_MODULES = [paldea, galar, alola, kalos, unova, sinnoh, hoenn, johto_safari]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
                   "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10, "MAP_TYPE_UNDERWATER": 10}
@@ -925,6 +927,71 @@ def build_zones(zone_warp):
     return maps
 
 
+JUMPS = {MB["MB_JUMP_EAST"]: (1, 0), MB["MB_JUMP_WEST"]: (-1, 0), MB["MB_JUMP_NORTH"]: (0, -1), MB["MB_JUMP_SOUTH"]: (0, 1)}
+
+
+def elev_at(g, x, y):
+    return (g[y][x] >> 12) & 0xF
+
+
+def start_state(g, x, y):
+    """the player arriving on (x, y): its elevation (on a 15 tile, the usual 3)"""
+    e = elev_at(g, x, y)
+    return (x, y, 3 if e == 15 else e)
+
+
+def moves_from(g, w, h, beh, x, y, extra=frozenset(), e=None):
+    """where one step from (x, y) can take the player: walking or surfing, jumping a ledge (only
+    the way it faces), sliding across ice (on until the next tile is blocked, or off the ice).
+    `extra`: cells that count as open (warp tiles: doors are solid). With `e` (the elevation the
+    player is at), the game's elevation rule too, and states (x, y, e) come back instead of cells:
+    a step only to the same elevation, or onto a 0 or 15 tile, or from 0 (stairs, ladders), or
+    between land at 3 and water (surfing on and off); a 15 tile (a bridge) keeps the elevation the
+    player came at"""
+    surf = MB_SURFABLE
+
+    def free(cx, cy):
+        return 0 <= cx < w and 0 <= cy < h and (not (g[cy][cx] >> 10) & 3 or (cx, cy) in extra)
+
+    def fits(ce, cx, cy, nx, ny):
+        if ce is None:
+            return True
+        te = elev_at(g, nx, ny)
+        if ce in (0, 15) or te in (0, 15) or te == ce:
+            return True
+        a, b = beh(g[cy][cx]) in surf, beh(g[ny][nx]) in surf
+        return a != b and (ce if b else te) == 3            # (surfing on, or off onto land at 3)
+
+    def carry(ce, nx, ny):
+        if ce is None:
+            return None
+        te = elev_at(g, nx, ny)
+        return ce if te == 15 else te                     # (a 0 tile: the player's at 0, free to go on)
+
+    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        nx, ny = x + dx, y + dy
+        if not (0 <= nx < w and 0 <= ny < h):
+            continue
+        j = JUMPS.get(beh(g[ny][nx]))
+        if j is not None:
+            if j == (dx, dy) and free(nx + dx, ny + dy):
+                yield (nx + dx, ny + dy) if e is None else (nx + dx, ny + dy, carry(e, nx + dx, ny + dy))
+            continue
+        if not free(nx, ny) or not fits(e, x, y, nx, ny):
+            continue
+        ce = carry(e, nx, ny)
+        while (beh(g[ny][nx]) == MB["MB_ICE"] and (nx, ny) not in extra and free(nx + dx, ny + dy)
+               and JUMPS.get(beh(g[ny + dy][nx + dx])) is None and fits(ce, nx, ny, nx + dx, ny + dy)):
+            nx, ny = nx + dx, ny + dy
+            ce = carry(ce, nx, ny)
+        yield (nx, ny) if e is None else (nx, ny, ce)
+
+
+def state_moves(g, w, h, beh, state, extra=frozenset()):
+    x, y, e = state
+    return moves_from(g, w, h, beh, x, y, extra, e)
+
+
 def unstick(g, w, h, beh, links, where=""):
     """Ledges only go one way: wherever one would leave the player somewhere they can't get back
     to every way out, open a gap in it (one tile of the ledge becomes the floor below it), as few
@@ -933,20 +1000,12 @@ def unstick(g, w, h, beh, links, where=""):
     exits = [set(cells) for _, cells, _, _ in links.values()]
     starts = set().union(*exits) if exits else set()
 
-    def moves(x, y):
-        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            nx, ny = x + dx, y + dy
-            if not (0 <= nx < w and 0 <= ny < h):
-                continue
-            j = jumps.get(beh(g[ny][nx]))
-            if j is None:
-                if not (g[ny][nx] >> 10) & 3 or (nx, ny) in starts:
-                    yield nx, ny
-            elif j == (dx, dy) and 0 <= nx + dx < w and 0 <= ny + dy < h and not (g[ny + dy][nx + dx] >> 10) & 3:
-                yield nx + dx, ny + dy
+    def moves(*state):
+        return state_moves(g, w, h, beh, state, starts)
 
     def forward(srcs):
-        seen, todo = set(), list(srcs)
+        """the states (x, y, elevation) the player can get to from cells (srcs)"""
+        seen, todo = set(), [start_state(g, *c) for c in srcs]
         while todo:
             c = todo.pop()
             if c in seen:
@@ -965,14 +1024,14 @@ def unstick(g, w, h, beh, links, where=""):
                 for n in moves(*c):
                     if n in back:
                         back[n].append(c)
-            ok, todo = set(), list(ex)
+            ok, todo = set(), [c for c in reach if c[:2] in ex]
             while todo:
                 c = todo.pop()
                 if c in ok:
                     continue
                 ok.add(c)
                 todo.extend(back.get(c, []))
-            bad |= reach - ok
+            bad |= {c[:2] for c in reach - ok}
         return bad
 
     # the ledges, in runs (a line of the same jump direction)
@@ -994,7 +1053,7 @@ def unstick(g, w, h, beh, links, where=""):
     # every way out can be got to from every other (but ways back to the same area)
     targets = [t for _, _, _, t in links.values()]
     for a_i, a_ex in enumerate(exits):
-        reach = forward(a_ex)
+        reach = {c[:2] for c in forward(a_ex)}
         for b_i, b_ex in enumerate(exits):
             if targets[a_i][0] != targets[b_i][0] and not reach & b_ex and os.environ.get("SAFARI_STUCK_DEBUG"):
                 print(f"WARNING {where}: the way to {targets[b_i][0]} can't be reached from the way to {targets[a_i][0]}")
@@ -1017,7 +1076,7 @@ def unstick(g, w, h, beh, links, where=""):
         if best is None or best[0] >= len(bad):
             print(f"WARNING {where}: {len(bad)} cells can't get back to every way out, e.g. {sorted(bad)[:4]}")
             if os.environ.get("SAFARI_STUCK_DEBUG"):
-                reach = forward(starts)
+                reach = {c[:2] for c in forward(starts)}
                 for lk, (_, cells, _, _) in links.items():
                     print("   ", lk, cells[:3], "reachable:", any(c in reach for c in cells))
             break
@@ -1037,24 +1096,14 @@ def reachable(b):
     starts = {(wp["x"], wp["y"]) for wp in start}
     beh = b.get("beh")
     jumps = {MB["MB_JUMP_EAST"]: (1, 0), MB["MB_JUMP_WEST"]: (-1, 0), MB["MB_JUMP_NORTH"]: (0, -1), MB["MB_JUMP_SOUTH"]: (0, 1)}
-    def ok(x, y):
-        return 0 <= x < w and 0 <= y < h and (not (g[y][x] >> 10) & 3 or (x, y) in starts)
-    seen, todo = set(), list(starts)
+    seen, todo = set(), [start_state(g, *c) for c in starts]
     while todo:
-        x, y = todo.pop()
-        if (x, y) in seen or not ok(x, y):
+        c = todo.pop()
+        if c in seen:
             continue
-        seen.add((x, y))
-        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            nx, ny = x + dx, y + dy
-            if not (0 <= nx < w and 0 <= ny < h):
-                continue
-            j = jumps.get(beh(g[ny][nx])) if beh else None
-            if j is None:
-                todo.append((nx, ny))
-            elif j == (dx, dy):                     # a ledge: only jumped down, landing past it
-                todo.append((nx + dx, ny + dy))
-    return seen
+        seen.add(c)
+        todo.extend(state_moves(g, w, h, beh, c, starts) if beh else [])
+    return {c[:2] for c in seen}
 
 
 def main():

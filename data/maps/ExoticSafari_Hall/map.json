@@ -82,6 +82,13 @@
       "dest_warp_id": "11"
     },
     {
+      "x": 3,
+      "y": 3,
+      "elevation": 3,
+      "dest_map": "MAP_EXOTIC_SAFARI_JOHTO_NEW_BARK",
+      "dest_warp_id": "0"
+    },
+    {
       "x": 7,
       "y": 3,
       "elevation": 3,

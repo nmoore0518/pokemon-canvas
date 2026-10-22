@@ -123,6 +123,11 @@ REGIONS = [
      "Sky Pillar's islet, whose cave leads into Sootopolis City's crater; a cave in Pacifidlog's cliff is the Island "
      "Cave. East is Mt. Chimney, with the Desert Ruins in its summit's rock. Each Regi chamber has two rooms: its "
      "Regi waits in the upper one, behind a Braille wall: see the legendaries below."),
+    ("Johto", "johto_safari", "New Bark Town is the hub (in at Professor Elm's lab), with Route 29 west of it. Route 29's "
+     "west end leads to the Ruins of Alph, whose north gate opens into Ilex Forest; Route 29's gatehouse leads to the "
+     "Lake of Rage, where the Red Gyarados (shiny, level 55) swims in the middle of the lake. The lake's south-west path goes "
+     "to the Ice Path (slide across its ice), whose ladder drops into Dragon's Den; the den's shrine opens on the "
+     "Whirl Islands' deepest chamber. Raikou, Entei and Suicune roam."),
 ]
 
 

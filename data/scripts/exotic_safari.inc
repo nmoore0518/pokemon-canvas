@@ -299,6 +299,37 @@ ExoticSafari_EventScript_RegiWallSealed::
 	releaseall
 	end
 
+@ Johto: the Red Gyarados in the middle of the Lake of Rage (shiny; not a legendary)
+ExoticSafari_EventScript_RedGyarados::
+	lock
+	faceplayer
+	playmoncry SPECIES_GYARADOS, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setvar VAR_0x8004, SPECIES_GYARADOS
+	setvar VAR_0x8005, 55
+	setvar VAR_0x8006, ITEM_NONE
+	special CreateEnemyEventMon
+	createmon 1, 0, SPECIES_GYARADOS, 55, shinyMode=SHINY_MODE_ALWAYS
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	special BattleSetup_StartLegendaryBattle
+	waitstate
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_RedGyaradosGone
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_RED_GYARADOS
+	release
+	end
+
+ExoticSafari_EventScript_RedGyaradosGone::
+	fadescreen FADE_TO_BLACK
+	removeobject VAR_LAST_TALKED
+	fadescreen FADE_FROM_BLACK
+	msgbox ExoticSafari_Text_LegendGone
+	release
+	end
+
 @ Sinnoh: the Snowpoint elder. Once every gym type is mastered he gives the Azure Flute (Arceus,
 @ at the top of the Hall of Origin, answers it); before that, a hint
 ExoticSafari_EventScript_SnowpointElder::

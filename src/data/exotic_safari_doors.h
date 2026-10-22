@@ -2,7 +2,7 @@
 #define EXOTIC_SAFARI_DOOR_COUNT 8
 #define EXOTIC_SAFARI_DOOR_Y 3
 static const u8 sDoorX[EXOTIC_SAFARI_DOOR_COUNT] = {3, 7, 11, 15, 19, 23, 27, 31};
-static const bool8 sDoorHasZone[EXOTIC_SAFARI_DOOR_COUNT] = {FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE};
+static const bool8 sDoorHasZone[EXOTIC_SAFARI_DOOR_COUNT] = {TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE};
 // top left, top middle, top right, door left, door middle, door right
 static const u16 sDoorOpen[6] = {0x302, 0x303, 0x304, 0x28B, 0x28C, 0x28D};
 static const u16 sDoorClosed[EXOTIC_SAFARI_DOOR_COUNT][6] =

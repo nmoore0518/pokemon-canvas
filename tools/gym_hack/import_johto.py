@@ -30,8 +30,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/home/claude/ext/pokehns-expansion")
 
-# Tilesets other tools build maps from (the Exotic Safari's snowy mountain: build_exotic_safari.py)
-EXTRA_TILESETS = {"gTileset_MtSilverSnow_Hns"}
+# Tilesets other tools build maps from (the Exotic Safari: Paldea's snowy mountain; the Johto zone,
+# tools/gym_hack/johto_safari.py)
+EXTRA_TILESETS = {"gTileset_MtSilverSnow_Hns", "gTileset_NewBarkTown_Hns", "gTileset_MahoganyTown_Hns",
+                  "gTileset_RuinsOfAlph_Outside_Hns", "gTileset_Cave_DragonsDen_Hns", "gTileset_Cave_Ice_Hns"}
 
 SKIP_MAPS = {
     "VermilionCity_PortInside_hns",                 # (we use our own Vermilion)
@@ -496,6 +498,8 @@ def main():
                 if k.endswith("_mons"):
                     for mon in v["mons"]:
                         mon["min_level"], mon["max_level"] = wild_level(mon["min_level"]), wild_level(mon["max_level"])
+            if "water_mons" in e:              # (FireRed's surfing tables have 5 slots)
+                e["water_mons"]["mons"] = e["water_mons"]["mons"][:5]
             grp["encounters"].append(dict(e, map=new_id(e["map"]), base_label=e["base_label"][:-8] + "_Johto_FireRed"))
     wj.write_text(json.dumps(w, indent=2, ensure_ascii=False) + "\n")
 

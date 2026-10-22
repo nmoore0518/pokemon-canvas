@@ -46,23 +46,14 @@ def load(name):
 def walk(a, starts):
     g, w, h, beh = a["g"], a["w"], a["h"], a["beh"]
     out_cells = {c for c, _ in a["outs"]} | {(wp["x"], wp["y"]) for wp in a["warps"]}
-    seen, todo = set(), list(starts)
+    seen, todo = set(), [B.start_state(g, *c) for c in starts]
     while todo:
-        x, y = todo.pop()
-        if (x, y) in seen:
+        c = todo.pop()
+        if c in seen:
             continue
-        seen.add((x, y))
-        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            nx, ny = x + dx, y + dy
-            if not (0 <= nx < w and 0 <= ny < h):
-                continue
-            j = JUMPS.get(beh(g[ny][nx]))
-            if j is None:
-                if not (g[ny][nx] >> 10) & 3 or (nx, ny) in out_cells:
-                    todo.append((nx, ny))
-            elif j == (dx, dy):
-                todo.append((nx + dx, ny + dy))
-    return seen
+        seen.add(c)
+        todo.extend(B.state_moves(g, w, h, beh, c, out_cells))
+    return seen          # (states: x, y, elevation)
 
 
 def main():
@@ -82,13 +73,15 @@ def main():
         done.add((name, wid))
         a = areas[name]
         wp = a["warps"][wid]
-        cells = walk(a, [(wp["x"], wp["y"])])
-        reached[name] |= cells
+        states = walk(a, [(wp["x"], wp["y"])])
+        reached[name] |= states
+        cells = {s[:2] for s in states}
         for c, (dest, dw) in a["outs"]:
             if c in cells and dest in ids:
                 todo.append((ids[dest], dw))
     for name, a in areas.items():
-        cells = reached[name]
+        states = reached[name]
+        cells = {s[:2] for s in states}
         if not cells:
             print(f"{name}: can't be reached at all"); problems += 1
             continue
@@ -104,7 +97,7 @@ def main():
         # no getting stuck: from every reached cell, some way out
         exits = [c for c, _ in a["outs"]]
         back = walk_back(a, exits)
-        stuck = cells - back
+        stuck = {s[:2] for s in states - back}
         if stuck:
             print(f"{name}: {len(stuck)} cells with no way out, e.g. {sorted(stuck)[:3]}"); problems += 1
     print(f"{len(areas)} areas checked, {problems} problems")
@@ -112,25 +105,19 @@ def main():
 
 
 def walk_back(a, exits):
-    """the cells from which some way out can be reached"""
+    """the states (x, y, elevation) from which some way out can be reached"""
     g, w, h, beh = a["g"], a["w"], a["h"], a["beh"]
-    all_cells = [(x, y) for y in range(h) for x in range(w)]
     out_cells = set(exits) | {(wp["x"], wp["y"]) for wp in a["warps"]}
+    elevs = {(v >> 12) & 0xF for row in g for v in row} | {3}
     rev = {}
-    for x, y in all_cells:
-        if (g[y][x] >> 10) & 3 and (x, y) not in out_cells:
-            continue
-        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            nx, ny = x + dx, y + dy
-            if not (0 <= nx < w and 0 <= ny < h):
+    for y in range(h):
+        for x in range(w):
+            if (g[y][x] >> 10) & 3 and (x, y) not in out_cells:
                 continue
-            j = JUMPS.get(beh(g[ny][nx]))
-            if j is None:
-                if not (g[ny][nx] >> 10) & 3 or (nx, ny) in out_cells:
-                    rev.setdefault((nx, ny), []).append((x, y))
-            elif j == (dx, dy):
-                rev.setdefault((nx + dx, ny + dy), []).append((x, y))
-    ok, todo = set(), list(exits)
+            for e in elevs:
+                for n in B.state_moves(g, w, h, beh, (x, y, e), out_cells):
+                    rev.setdefault(n, []).append((x, y, e))
+    ok, todo = set(), [(x, y, e) for x, y in exits for e in elevs]
     while todo:
         c = todo.pop()
         if c in ok:
