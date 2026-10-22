@@ -21,3 +21,13 @@ ExoticSafari_UnovaRelicCastle_EventScript_LegendVictini::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_VICTINI
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_UnovaRelicCastle_EventScript_SealVictini::
+	lockall
+	setvar VAR_0x8004, 32
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_UnovaRelicCastle_EventScript_Key0::
+	lock
+	setvar VAR_0x8004, 0
+	goto ExoticSafari_EventScript_Key

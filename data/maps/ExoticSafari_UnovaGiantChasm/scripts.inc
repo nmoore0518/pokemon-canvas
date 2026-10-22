@@ -22,6 +22,11 @@ ExoticSafari_UnovaGiantChasm_EventScript_LegendCobalion::
 	setflag FLAG_EXOTIC_LEGEND_COBALION
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_UnovaGiantChasm_EventScript_SealCobalion::
+	lockall
+	setvar VAR_0x8004, 28
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_UnovaGiantChasm_EventScript_LegendKyurem::
 	lock
 	faceplayer
@@ -31,3 +36,8 @@ ExoticSafari_UnovaGiantChasm_EventScript_LegendKyurem::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_KYUREM
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_UnovaGiantChasm_EventScript_SealKyurem::
+	lockall
+	setvar VAR_0x8004, 29
+	goto ExoticSafari_EventScript_Seal

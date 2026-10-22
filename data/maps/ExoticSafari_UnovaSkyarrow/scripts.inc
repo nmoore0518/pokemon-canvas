@@ -36,3 +36,8 @@ ExoticSafari_UnovaSkyarrow_EventScript_LegendVirizion::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_VIRIZION
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_UnovaSkyarrow_EventScript_Key2::
+	lock
+	setvar VAR_0x8004, 2
+	goto ExoticSafari_EventScript_Key

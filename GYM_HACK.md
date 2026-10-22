@@ -801,6 +801,16 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Terrakion and Virizion (bridge), Cobalion and Kyurem (chasm), Reshiram (tower), Zekrom
          (cave), Victini (castle), Keldeo (ruins) stand; Thundurus and Landorus roam (Tornadus,
          Meloetta and Genesect are gym-only). Karrablast/Shelmet evolve with a Linking Cord.
+   - [x] Unova round 2 (Nick's review: the layouts kept). Chargestone's boulders and pebbles glow:
+         their top layer in a palette of their own that pulses (`unova.cave_glow`,
+         `InitTilesetAnim_Chargestone`; converted tilesets can now take an animation callback,
+         `tileset_callback`). Puzzles: Cobalion once Terrakion and Virizion are caught, Keldeo once
+         all three Swords are (SEAL_CAUGHT: `sCaughtSeals`, the hint names who's left); Reshiram
+         for the Light Stone (Relic Castle), Zekrom for the Dark Stone (Abyssal Ruins), Victini for
+         the Liberty Pass (Skyarrow Bridge) (SEAL_KEY: `sUnovaKeys`, flags 0x372-0x374); Kyurem once
+         Reshiram and Zekrom are caught, then the Chasm's old man gives the DNA Splicers (0x370);
+         Landorus roams once Thundurus is caught, and the bridge's shrine keeper gives the Reveal
+         Glass once both are (0x371).
    - Tools: `convert_layout` (any Emerald or FireRed layout piece -> its own FireRed tileset, palettes
      folded when there are too many), `clone_tileset` (a recolored copy of a tileset).
    - [x] Evolutions: Paldea's walk/battle/move-count evolutions are level-ups (Pawmot 38,

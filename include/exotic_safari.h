@@ -21,5 +21,7 @@ void ExoticSafari_CountCells(void);
 void ExoticSafari_LegendForm(void);
 void ExoticSafari_IsFurfrou(void);
 void ExoticSafari_TrimFurfrou(void);
+void ExoticSafari_TakeKey(void);
+void ExoticSafari_LegendCaught(void);
 
 #endif // GUARD_EXOTIC_SAFARI_H

@@ -1775,6 +1775,19 @@ static void TilesetAnim_Lumiose(u16 timer)
     PulsePalette(timer, 7);
 }
 
+// Chargestone Cave (the Unova zone): its charged stones (palette 12)
+static void TilesetAnim_Chargestone(u16 timer)
+{
+    PulsePalette(timer, 12);
+}
+
+void InitTilesetAnim_Chargestone(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = 256;
+    sSecondaryTilesetAnimCallback = TilesetAnim_Chargestone;
+}
+
 void InitTilesetAnim_Lumiose(void)
 {
     sSecondaryTilesetAnimCounter = 0;

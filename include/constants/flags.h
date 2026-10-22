@@ -2615,6 +2615,9 @@
 #define FLAG_EXOTIC_LEGEND_LANDORUS           0x367
 #define FLAG_EXOTIC_LEGEND_KYUREM             0x368
 #define FLAG_EXOTIC_LEGEND_KELDEO             0x369
+#define FLAG_EXOTIC_GOT_DNA_SPLICERS          0x370
+#define FLAG_EXOTIC_GOT_REVEAL_GLASS          0x371
+#define FLAG_EXOTIC_UNOVA_KEY_FIRST           0x372   // to 0x374: the Light Stone, Dark Stone, Liberty Pass
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

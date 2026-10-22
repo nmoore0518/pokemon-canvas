@@ -20,6 +20,7 @@
 #include "constants/weather.h"
 #include "script.h"
 #include "string_util.h"
+#include "constants/characters.h"
 #include "item.h"
 #include "overworld.h"
 #include "random.h"
@@ -243,6 +244,39 @@ static u32 CellsFound(void)
     return n;
 }
 
+// A legendary's caught flag (sExoticSafariStatics or the roamers)
+static u16 CaughtFlag(u16 species)
+{
+    u32 i;
+    for (i = 0; i < ARRAY_COUNT(sExoticSafariStatics); i++)
+        if (sExoticSafariStatics[i].species == species)
+            return sExoticSafariStatics[i].caughtFlag;
+    for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)
+        if (sExoticSafariRoamers[i].species == species)
+            return sExoticSafariRoamers[i].caughtFlag;
+    return 0;
+}
+
+// STR_VAR_1: the legendaries of sCaughtSeals[k] not yet caught ("A", "A and B", "A, B and C")
+static void BufferUncaught(u32 k)
+{
+    u32 i, n = 0, total = 0;
+    u8 *s = gStringVar1;
+    for (i = 0; i < ARRAY_COUNT(sCaughtSeals[0]); i++)
+        total += sCaughtSeals[k][i] != SPECIES_NONE && !FlagGet(CaughtFlag(sCaughtSeals[k][i]));
+    *s = EOS;
+    for (i = 0; i < ARRAY_COUNT(sCaughtSeals[0]); i++)
+    {
+        u16 sp = sCaughtSeals[k][i];
+        if (sp == SPECIES_NONE || FlagGet(CaughtFlag(sp)))
+            continue;
+        if (n > 0)
+            s = StringAppend(s, n + 1 == total ? COMPOUND_STRING(" and ") : COMPOUND_STRING(", "));
+        s = StringAppend(s, GetSpeciesName(sp));
+        n++;
+    }
+}
+
 // The Kalos POKéMON (National Dex 650-721) the player has caught
 static u32 KalosCaught(void)
 {
@@ -303,6 +337,12 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return !FlagGet(FLAG_EXOTIC_PRISON_BOTTLE);
     case SEAL_STEAM:
         return !LeadIs(LEAD_STEAM);
+    case SEAL_CAUGHT:       // (other legendaries caught first: sCaughtSeals[sealArg])
+        for (i = 0; i < ARRAY_COUNT(sCaughtSeals[0]); i++)
+            left += sCaughtSeals[s->sealArg][i] != SPECIES_NONE && !FlagGet(CaughtFlag(sCaughtSeals[s->sealArg][i]));
+        return left;
+    case SEAL_KEY:          // (a keepsake found: sUnovaKeys[sealArg])
+        return !FlagGet(sUnovaKeys[s->sealArg].flag);
     case SEAL_DRAIN:        // (Yveltal: sealArg Kalos POKéMON caught)
         return KalosCaught() >= s->sealArg ? 0 : s->sealArg - KalosCaught();
     }
@@ -335,6 +375,10 @@ void ExoticSafari_BufferSeal(void)
         StringCopy(gStringVar1, sStakeColorNames[s->sealArg]);
     else if (s->seal == SEAL_ITEM || s->seal == SEAL_DRAGON)
         CopyItemName(sSealItems[s->sealArg][0], gStringVar1);
+    else if (s->seal == SEAL_CAUGHT)
+        BufferUncaught(s->sealArg);
+    else if (s->seal == SEAL_KEY)
+        StringCopy(gStringVar1, sUnovaKeys[s->sealArg].name);
     else if (s->seal == SEAL_FLUTE)
         StringCopy(gStringVar1, sRelics[s->sealArg].name);
     ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
@@ -640,4 +684,19 @@ void ExoticSafari_TrimFurfrou(void)
         return;
     SetMonData(mon, MON_DATA_SPECIES, &species);
     CalculateMonStats(mon);
+}
+
+// Special (one of Unova's keepsakes picked up): VAR_0x8004 = which (sUnovaKeys). STR_VAR_1 = its name
+void ExoticSafari_TakeKey(void)
+{
+    const struct ExoticSafariKey *key = &sUnovaKeys[gSpecialVar_0x8004 % ARRAY_COUNT(sUnovaKeys)];
+    FlagSet(key->flag);
+    StringCopy(gStringVar1, key->name);
+}
+
+// Special: VAR_RESULT = whether the legendary VAR_0x8004 (a species) has been caught
+void ExoticSafari_LegendCaught(void)
+{
+    u16 flag = CaughtFlag(gSpecialVar_0x8004);
+    gSpecialVar_Result = flag != 0 && FlagGet(flag);
 }

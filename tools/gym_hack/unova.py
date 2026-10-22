@@ -132,6 +132,37 @@ def cave():
     return [row[:] for row in g], lay["width"], lay["height"]
 
 
+GLOW_SLOT = 12                        # (the stones' own palette: it pulses - InitTilesetAnim_Chargestone)
+GLOW_STONES = (0x282, 0x283)          # (Rock Tunnel's boulders and pebbles on the floor)
+
+
+def cave_glow(out, remap):
+    """Chargestone's stones glow: the boulders' and pebbles' top layer in a palette of their own,
+    bright electric blue (its colors pulse)"""
+    import struct
+    import build_exotic_safari as B
+    import render_map
+    mt = bytearray((out / "metatiles.bin").read_bytes())
+    src = None
+    for m in GLOW_STONES:
+        if m not in remap:
+            continue
+        k = (remap[m] - 0x280) * 16
+        ents = list(struct.unpack_from("<8H", mt, k))
+        for i in range(4, 8):
+            if ents[i] & 0x3FF:
+                src = ents[i] >> 12
+                ents[i] = (ents[i] & 0x0FFF) | (GLOW_SLOT << 12)
+        struct.pack_into("<8H", mt, k, *ents)
+    (out / "metatiles.bin").write_bytes(bytes(mt))
+    assert src is not None and src < GLOW_SLOT
+    colors = render_map.load_pal(out / "palettes" / f"{src:02d}.pal")
+    def glow(c):
+        h, s, v = hsv(c)
+        return rgb(188 / 360, 0.5 + 0.4 * (1 - v), min(1, 0.45 + 0.65 * v))
+    B.write_pal(out / "palettes" / f"{GLOW_SLOT:02d}.pal", [colors[0][:3]] + [glow(c) for c in colors[1:]])
+
+
 # ---------------------------------------------------------------------------------------------
 # Relic Castle: Hoenn's Mirage Tower 1F, sand-choked
 # ---------------------------------------------------------------------------------------------
@@ -216,6 +247,7 @@ AREAS = {
     "CAVE": {
         "map": "ExoticSafari_UnovaChargestone", "build": cave, "tilesets": ("gTileset_General_Frlg", "gTileset_RockTunnel"),
         "convert_frlg": True, "convert": ("UnovaChargestone", "unova_chargestone"), "recolor": {p: cave_color for p in range(16)},
+        "tileset_edit": cave_glow, "tileset_callback": "InitTilesetAnim_Chargestone",
         "music": "MUS_RG_MT_MOON", "weather": "WEATHER_NONE", "type": "MAP_TYPE_UNDERGROUND",
         "links": {
             "BRIDGE": ("warp", [(38, 28)], (38, 29), ("BRIDGE", "CAVE")),
@@ -254,4 +286,59 @@ AREAS = {
     },
 }
 ROAMERS = ["THUNDURUS", "LANDORUS"]
+ROAMER_NEEDS = {"LANDORUS": "THUNDURUS"}       # (Landorus comes once Thundurus is caught)
 UNIQUE_ITEMS = set()
+
+# ---------------------------------------------------------------------------------------------
+# The puzzles
+# ---------------------------------------------------------------------------------------------
+# Legendaries that wait for others to be caught (sCaughtSeals: SEAL_CAUGHT's argument)
+CAUGHT_SEALS = [["TERRAKION", "VIRIZION"], ["TERRAKION", "VIRIZION", "COBALION"], ["RESHIRAM", "ZEKROM"]]
+# Keepsakes found about the zone (flags from FLAG_EXOTIC_UNOVA_KEY_FIRST): name, area, where
+KEYS = [("LIGHT STONE", "CASTLE", (3, 12)), ("DARK STONE", "RUINS", (26, 6)), ("LIBERTY PASS", "BRIDGE", (11, 9))]
+CONDITIONS = {
+    "COBALION": ("CAUGHT", 0),        # (Terrakion and Virizion caught: the Swords of Justice's leader)
+    "KELDEO": ("CAUGHT", 1),          # (all three Swords caught)
+    "KYUREM": ("CAUGHT", 2),          # (Reshiram and Zekrom caught)
+    "RESHIRAM": ("KEY", 0), "ZEKROM": ("KEY", 1), "VICTINI": ("KEY", 2),
+}
+CHASM_ELDER = (6, 23)                 # (the Giant Chasm's old man: the DNA Splicers)
+SHRINE_KEEPER = (32, 13)              # (Skyarrow's shrine keeper: the Reveal Glass)
+
+
+def extra(area):
+    def add(ctx):
+        name = ctx["name"]
+        for k, (kname, karea, (x, y)) in enumerate(KEYS):
+            if karea != area:
+                continue
+            if (x, y) not in ctx["reach"]:
+                print(f"WARNING {area}: the {kname} at {(x, y)} can't be reached")
+            label = f"{name}_EventScript_Key{k}"
+            o = ctx["obj"]("OBJ_EVENT_GFX_ITEM_BALL", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"0x{0x372 + k:03X}")
+            o["elevation"] = ctx["elev"](x, y)
+            ctx["objects"].append(o)
+            ctx["scripts"] += [f"{label}::", "\tlock", f"\tsetvar VAR_0x8004, {k}", "\tgoto ExoticSafari_EventScript_Key", ""]
+        for who, where, gfx, script in (("CHASM", CHASM_ELDER, "OBJ_EVENT_GFX_OLD_MAN_1", "ExoticSafari_EventScript_ChasmElder"),
+                                        ("BRIDGE", SHRINE_KEEPER, "OBJ_EVENT_GFX_OLD_WOMAN_FRLG", "ExoticSafari_EventScript_ShrineKeeper")):
+            if who != area:
+                continue
+            if where not in ctx["reach"]:
+                print(f"WARNING {area}: {script} at {where} can't be reached")
+            o = ctx["obj"](gfx, *where, script, "MOVEMENT_TYPE_FACE_DOWN")
+            o["elevation"] = ctx["elev"](*where)
+            ctx["objects"].append(o)
+    return add
+
+
+for _k in AREAS:
+    AREAS[_k]["extra"] = extra(_k)
+
+
+def header_lines(map_id):
+    lines = ["// Unova: legendaries that wait for others, and the keepsakes others answer to",
+             "static const u16 sCaughtSeals[][3] =", "{"]
+    lines += ["    {" + ", ".join(f"SPECIES_{s}" for s in seal + ["NONE"] * (3 - len(seal))) + "}," for seal in CAUGHT_SEALS]
+    lines += ["};", "struct ExoticSafariKey { u16 flag; const u8 *name; };", "static const struct ExoticSafariKey sUnovaKeys[] =", "{"]
+    lines += [f'    {{FLAG_EXOTIC_UNOVA_KEY_FIRST + {k}, COMPOUND_STRING("{n}")}},' for k, (n, _, _) in enumerate(KEYS)]
+    return lines + ["};"]

@@ -21,3 +21,13 @@ ExoticSafari_UnovaAbyssalRuins_EventScript_LegendKeldeo::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_KELDEO
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_UnovaAbyssalRuins_EventScript_SealKeldeo::
+	lockall
+	setvar VAR_0x8004, 33
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_UnovaAbyssalRuins_EventScript_Key1::
+	lock
+	setvar VAR_0x8004, 1
+	goto ExoticSafari_EventScript_Key

@@ -21,3 +21,8 @@ ExoticSafari_UnovaDragonspiral_EventScript_LegendReshiram::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_RESHIRAM
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_UnovaDragonspiral_EventScript_SealReshiram::
+	lockall
+	setvar VAR_0x8004, 30
+	goto ExoticSafari_EventScript_Seal

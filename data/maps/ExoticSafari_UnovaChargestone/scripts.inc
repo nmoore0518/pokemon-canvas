@@ -21,3 +21,8 @@ ExoticSafari_UnovaChargestone_EventScript_LegendZekrom::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_ZEKROM
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_UnovaChargestone_EventScript_SealZekrom::
+	lockall
+	setvar VAR_0x8004, 31
+	goto ExoticSafari_EventScript_Seal

@@ -29,6 +29,8 @@
 #define SEAL_BOTTLE   20    // (Hoopa: the Prison Bottle taken from its pedestal)
 #define SEAL_STEAM    21    // (Volcanion: a Fire- or Water-type lead, the other type behind it)
 #define SEAL_DRAIN    22    // (Yveltal: Kalos POKéMON caught)
+#define SEAL_CAUGHT   23    // (other legendaries caught first: Cobalion, Keldeo, Kyurem)
+#define SEAL_KEY      24    // (a keepsake found: Reshiram's Light Stone, Zekrom's Dark Stone, Victini's Liberty Pass)
 #define SEAL_RESULT_CAUGHT 0xFF
 #define SEAL_RESULT_AWAY 0xFE
 // Each static legendary's index (sExoticSafariStatics)

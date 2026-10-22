@@ -56,6 +56,8 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_BOTTLE, ExoticSafari_EventScript_SealBottle
 	case SEAL_STEAM, ExoticSafari_EventScript_SealSteam
 	case SEAL_DRAIN, ExoticSafari_EventScript_SealDrain
+	case SEAL_CAUGHT, ExoticSafari_EventScript_SealCaught
+	case SEAL_KEY, ExoticSafari_EventScript_SealKey
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -164,6 +166,76 @@ ExoticSafari_EventScript_SealSteam::
 ExoticSafari_EventScript_SealDrain::
 	msgbox ExoticSafari_Text_SealDrain
 	releaseall
+	end
+
+ExoticSafari_EventScript_SealCaught::
+	msgbox ExoticSafari_Text_SealCaught
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealKey::
+	msgbox ExoticSafari_Text_SealKey
+	releaseall
+	end
+
+@ One of Unova's keepsakes picked up (VAR_0x8004: which)
+ExoticSafari_EventScript_Key::
+	special ExoticSafari_TakeKey
+	removeobject VAR_LAST_TALKED
+	playfanfare MUS_RG_OBTAIN_KEY_ITEM
+	message ExoticSafari_Text_FoundKey
+	waitmessage
+	waitfanfare
+	msgbox ExoticSafari_Text_KeyKept
+	release
+	end
+
+@ The Giant Chasm's old man: the DNA Splicers, once Kyurem is caught
+ExoticSafari_EventScript_ChasmElder::
+	lock
+	faceplayer
+	goto_if_set FLAG_EXOTIC_GOT_DNA_SPLICERS, ExoticSafari_EventScript_ChasmElderAfter
+	setvar VAR_0x8004, SPECIES_KYUREM
+	special ExoticSafari_LegendCaught
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ChasmElderNotYet
+	msgbox ExoticSafari_Text_ChasmElderGive
+	giveitem ITEM_DNA_SPLICERS
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ChasmElderEnd
+	setflag FLAG_EXOTIC_GOT_DNA_SPLICERS
+ExoticSafari_EventScript_ChasmElderAfter::
+	msgbox ExoticSafari_Text_ChasmElderAfter
+ExoticSafari_EventScript_ChasmElderEnd::
+	release
+	end
+
+ExoticSafari_EventScript_ChasmElderNotYet::
+	msgbox ExoticSafari_Text_ChasmElderNotYet
+	release
+	end
+
+@ Skyarrow Bridge's shrine keeper: the Reveal Glass, once Thundurus and Landorus are caught
+ExoticSafari_EventScript_ShrineKeeper::
+	lock
+	faceplayer
+	goto_if_set FLAG_EXOTIC_GOT_REVEAL_GLASS, ExoticSafari_EventScript_ShrineKeeperAfter
+	setvar VAR_0x8004, SPECIES_THUNDURUS
+	special ExoticSafari_LegendCaught
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ShrineKeeperNotYet
+	setvar VAR_0x8004, SPECIES_LANDORUS
+	special ExoticSafari_LegendCaught
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ShrineKeeperNotYet
+	msgbox ExoticSafari_Text_ShrineKeeperGive
+	giveitem ITEM_REVEAL_GLASS
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ChasmElderEnd
+	setflag FLAG_EXOTIC_GOT_REVEAL_GLASS
+ExoticSafari_EventScript_ShrineKeeperAfter::
+	msgbox ExoticSafari_Text_ShrineKeeperAfter
+	release
+	end
+
+ExoticSafari_EventScript_ShrineKeeperNotYet::
+	msgbox ExoticSafari_Text_ShrineKeeperNotYet
+	release
 	end
 
 @ A Zygarde Cell picked up (VAR_0x8004: which)
@@ -856,3 +928,56 @@ ExoticSafari_Text_TrimPharaoh:
 	.string "PHARAOH$"
 ExoticSafari_Text_TrimNatural:
 	.string "NATURAL$"
+
+ExoticSafari_Text_SealCaught:
+	.string "Something stirs here, then stills…\p"
+	.string "It's waiting for\n"
+	.string "{STR_VAR_1}\l"
+	.string "to be caught first.$"
+
+ExoticSafari_Text_SealKey:
+	.string "A strange presence lingers here,\n"
+	.string "waiting…\p"
+	.string "It might answer to the\n"
+	.string "{STR_VAR_1}.$"
+
+ExoticSafari_Text_FoundKey:
+	.string "{PLAYER} found the {STR_VAR_1}!$"
+
+ExoticSafari_Text_KeyKept:
+	.string "{PLAYER} put the {STR_VAR_1} away\n"
+	.string "carefully. Something somewhere\l"
+	.string "seems to answer to it…$"
+
+ExoticSafari_Text_ChasmElderGive:
+	.string "You caught KYUREM? Then these are\n"
+	.string "yours. Long ago, it was one with\l"
+	.string "RESHIRAM and ZEKROM…$"
+
+ExoticSafari_Text_ChasmElderAfter:
+	.string "With the DNA SPLICERS, KYUREM can\n"
+	.string "join with RESHIRAM or ZEKROM again.\p"
+	.string "Both must be in your party.$"
+
+ExoticSafari_Text_ChasmElderNotYet:
+	.string "A dragon of ice sleeps in this\n"
+	.string "chasm. It's waiting for RESHIRAM\l"
+	.string "and ZEKROM, the halves of itself.\p"
+	.string "Catch it, and come back to me.$"
+
+ExoticSafari_Text_ShrineKeeperGive:
+	.string "THUNDURUS and LANDORUS, both\n"
+	.string "caught! Then take this.\p"
+	.string "The REVEAL GLASS shows their true\n"
+	.string "forms.$"
+
+ExoticSafari_Text_ShrineKeeperAfter:
+	.string "Use the REVEAL GLASS on THUNDURUS\n"
+	.string "or LANDORUS to change their forme.$"
+
+ExoticSafari_Text_ShrineKeeperNotYet:
+	.string "Storms roam these lands: THUNDURUS.\n"
+	.string "When it is caught, LANDORUS will\l"
+	.string "come to bless the fields.\p"
+	.string "Catch them both, and I'll show you\n"
+	.string "something.$"

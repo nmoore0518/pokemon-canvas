@@ -1484,7 +1484,7 @@ const struct Tileset gTileset_UnovaChargestone =
     .palettes = gTilesetPalettes_UnovaChargestone,
     .metatiles = gMetatiles_UnovaChargestone,
     .metatileAttributes = gMetatileAttributes_UnovaChargestone,
-    .callback = NULL,
+    .callback = InitTilesetAnim_Chargestone,
 };
 
 const struct Tileset gTileset_UnovaRelicCastle =

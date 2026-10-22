@@ -750,6 +750,8 @@ gSpecials::
 	def_special ExoticSafari_LegendForm
 	def_special ExoticSafari_IsFurfrou
 	def_special ExoticSafari_TrimFurfrou
+	def_special ExoticSafari_TakeKey
+	def_special ExoticSafari_LegendCaught
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk

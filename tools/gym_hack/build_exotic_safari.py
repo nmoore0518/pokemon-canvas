@@ -235,6 +235,17 @@ def build_tileset():
     return m
 
 
+def set_tileset_callback(name, callback):
+    """gTileset_<name>'s animation callback (headers.h), e.g. a palette that pulses"""
+    import re
+    path = ROOT / "src/data/tilesets/headers.h"
+    s = path.read_text()
+    start = s.index(f"const struct Tileset gTileset_{name} =")
+    end = s.index("};", start)
+    block = re.sub(r"\.callback = \w+", f".callback = {callback}", s[start:end])
+    path.write_text(s[:start] + block + s[end:])
+
+
 def register_tileset(name="ExoticSafari", dirname="exotic_safari_frlg"):
     """headers.h, graphics.h, metatiles.h: gTileset_<name> (a FireRed secondary tileset, like
     gTileset_SafariZoneBuilding)"""
@@ -641,6 +652,7 @@ def build_region(mod, zone_warp, out):
                                          behaviors, a.get("recolor"), a.get("tileset_edit"))
             if "post_convert" in a:                  # (changes in the converted tileset's metatiles)
                 a["post_convert"](g)
+            set_tileset_callback(a["convert"][0], a.get("tileset_callback", "NULL"))
         built[key] = {"g": g, "w": w, "h": h, "links": links, "beh": Behaviors(tilesets, "frlg")}
         # The border (beyond the map's edges): its most common wall (trees, rock), or as given
         from collections import Counter
@@ -996,6 +1008,8 @@ def main():
               "#define SEAL_BOTTLE   20    // (Hoopa: the Prison Bottle taken from its pedestal)",
               "#define SEAL_STEAM    21    // (Volcanion: a Fire- or Water-type lead, the other type behind it)",
               "#define SEAL_DRAIN    22    // (Yveltal: Kalos POKéMON caught)",
+              "#define SEAL_CAUGHT   23    // (other legendaries caught first: Cobalion, Keldeo, Kyurem)",
+              "#define SEAL_KEY      24    // (a keepsake found: Reshiram's Light Stone, Zekrom's Dark Stone, Victini's Liberty Pass)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]
