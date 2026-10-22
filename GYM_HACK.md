@@ -882,6 +882,17 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Kyogre (open sea), Jirachi (Sootopolis's island), Deoxys (by the lava) stand; Latias and
          Latios roam (flags 0x381-0x388). Groudon and Rayquaza are gym-only. Regigigas can now be
          caught.
+   - [x] Hoenn round 2 (Nick's review): the puzzles. The Regi chambers' inner walls (Emerald's cover
+         and Braille-wall metatiles, carried through the conversion on two unreachable cells:
+         `hoenn.wall_read`; `sRegiWalls`) are sealed on load until the Braille tablet beside the
+         Island Cave sees Wailord first and Relicanth last (Emerald's `CheckRelicanthWailord`, the
+         Sealed Chamber's rumble; 0x389); then each wall opens for its own Braille - Regirock's for
+         a lead that knows Rock Smash, Registeel's for one that knows Flash, Regice's after two
+         minutes without a step in front of it (`Task_Stillness`) (0x38A-0x38C). Latias and Latios
+         roam once the Soul Dew is found (a Pacifidlog raft; roamer needs can now be any flag);
+         Kyogre rises for a lead holding the Blue Orb (Sootopolis's lawn); Deoxys comes once the
+         Meteorite is found (Mt. Chimney's summit; it changes Deoxys's Forme); Jirachi wakes once
+         the zone's seven other legendaries are caught (seals 30-32; items 0x38D-0x38F).
    - [x] Area names: each Exotic Safari area pops up its own name (the place it's based on:
          `tools/gym_hack/safari_names.py`, shared with the guides; `ExoticSafari_GetAreaName`, used
          by the map name pop-up), every time the player walks into an area; the Safari Zone's

@@ -21,3 +21,8 @@ ExoticSafari_HoennAncientTomb_EventScript_LegendRegisteel::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_REGISTEEL
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_HoennAncientTomb_EventScript_RegiWall::
+	lockall
+	setvar VAR_0x8004, 2
+	goto ExoticSafari_EventScript_RegiWall

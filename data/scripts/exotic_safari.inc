@@ -63,6 +63,9 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_HP_EVS, ExoticSafari_EventScript_SealHpEvs
 	case SEAL_REGIS, ExoticSafari_EventScript_SealRegis
 	case SEAL_AZURE_FLUTE, ExoticSafari_EventScript_SealAzureFlute
+	case SEAL_METEORITE, ExoticSafari_EventScript_SealMeteorite
+	case SEAL_BLUE_ORB, ExoticSafari_EventScript_SealBlueOrb
+	case SEAL_WISH, ExoticSafari_EventScript_SealWish
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -205,6 +208,94 @@ ExoticSafari_EventScript_SealRegis::
 
 ExoticSafari_EventScript_SealAzureFlute::
 	msgbox ExoticSafari_Text_SealAzureFlute
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealMeteorite::
+	msgbox ExoticSafari_Text_SealMeteorite
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealBlueOrb::
+	goto_if_eq VAR_0x8005, TRUE, ExoticSafari_EventScript_SealBlueOrbFound
+	msgbox ExoticSafari_Text_SealBlueOrb
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealBlueOrbFound::
+	msgbox ExoticSafari_Text_SealBlueOrbFound
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealWish::
+	msgbox ExoticSafari_Text_SealWish
+	releaseall
+	end
+
+@ Hoenn: the Sealed Chamber's tablet (the rock by the Island Cave): Wailord first, Relicanth last
+@ in the party, and the three Regi chambers' inner walls can be opened
+ExoticSafari_EventScript_SealedTablet::
+	lockall
+	goto_if_set FLAG_EXOTIC_REGIS_UNSEALED, ExoticSafari_EventScript_TabletDone
+	msgbox ExoticSafari_Text_Tablet
+	specialvar VAR_RESULT, CheckRelicanthWailord
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ReleaseAll
+	msgbox ExoticSafari_Text_TabletAnswers
+	closemessage
+	playse SE_M_STRENGTH
+	special DoSealedChamberShakingEffect_Long
+	waitstate
+	setflag FLAG_EXOTIC_REGIS_UNSEALED
+	msgbox ExoticSafari_Text_TabletOpened
+	releaseall
+	end
+
+ExoticSafari_EventScript_TabletDone::
+	msgbox ExoticSafari_Text_TabletDone
+	releaseall
+	end
+
+@ Hoenn: a Regi chamber's inner wall (VAR_0x8004: 0 Desert Ruins, 1 Island Cave, 2 Ancient Tomb)
+ExoticSafari_EventScript_RegiWall::
+	special ExoticSafari_RegiWall
+	goto_if_eq VAR_RESULT, 2, ExoticSafari_EventScript_RegiWallOpen
+	goto_if_eq VAR_RESULT, 0, ExoticSafari_EventScript_RegiWallSealed
+	switch VAR_0x8004
+	case 0, ExoticSafari_EventScript_RegiWallRock
+	case 1, ExoticSafari_EventScript_RegiWallIce
+	msgbox ExoticSafari_Text_RegiWallSteel
+	specialvar VAR_RESULT, ExoticSafari_RegiLeadKnows
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ReleaseAll
+	msgbox ExoticSafari_Text_RegiWallFlash
+	goto ExoticSafari_EventScript_RegiWallOpens
+
+ExoticSafari_EventScript_RegiWallRock::
+	msgbox ExoticSafari_Text_RegiWallRock
+	specialvar VAR_RESULT, ExoticSafari_RegiLeadKnows
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ReleaseAll
+	msgbox ExoticSafari_Text_RegiWallRockSmash
+	goto ExoticSafari_EventScript_RegiWallOpens
+
+ExoticSafari_EventScript_RegiWallIce::
+	msgbox ExoticSafari_Text_RegiWallIce
+	special ExoticSafari_StartStillness
+	releaseall
+	end
+
+ExoticSafari_EventScript_RegiWallOpens::
+	closemessage
+	special ExoticSafari_OpenRegiWall
+	waitse
+	releaseall
+	end
+
+ExoticSafari_EventScript_RegiWallOpen::
+	msgbox ExoticSafari_Text_RegiWallOpen
+	releaseall
+	end
+
+ExoticSafari_EventScript_RegiWallSealed::
+	msgbox ExoticSafari_Text_RegiWallSealed
 	releaseall
 	end
 
@@ -1128,3 +1219,86 @@ ExoticSafari_Text_ShrineKeeperNotYet:
 	.string "come to bless the fields.\p"
 	.string "Catch them both, and I'll show you\n"
 	.string "something.$"
+
+ExoticSafari_Text_SealMeteorite:
+	.string "The ground here is scorched in a\n"
+	.string "strange pattern, as if something\l"
+	.string "fell from the sky…\p"
+	.string "Whatever it was is still somewhere\n"
+	.string "on the mountain.$"
+
+ExoticSafari_Text_SealBlueOrb:
+	.string "The sea here is deep and still.\n"
+	.string "Something vast sleeps below…\p"
+	.string "It might rise for the orb that\n"
+	.string "holds its power. Sootopolis may\l"
+	.string "keep it.$"
+
+ExoticSafari_Text_SealBlueOrbFound:
+	.string "The sea here is deep and still.\n"
+	.string "Something vast sleeps below…\p"
+	.string "It might rise for your lead POKéMON\n"
+	.string "if it held the BLUE ORB.$"
+
+ExoticSafari_Text_SealWish:
+	.string "Starlight glints on the grass here.\n"
+	.string "Something tiny sleeps, waiting to\l"
+	.string "grant a wish…\p"
+	.string "It may wake once the other\n"
+	.string "{STR_VAR_2} legendary POKéMON of this\l"
+	.string "zone are caught.$"
+
+ExoticSafari_Text_Tablet:
+	.string "Dots are carved deep into the\n"
+	.string "rock. It's BRAILLE. It reads…\p"
+	.string "“FIRST COMES WAILORD.\n"
+	.string "LAST COMES RELICANTH.\p"
+	.string "“THEN THE WALLS OF THE THREE\n"
+	.string "CHAMBERS SHALL OPEN.”$"
+
+ExoticSafari_Text_TabletAnswers:
+	.string "Your WAILORD and RELICANTH\n"
+	.string "seem to be reacting to the dots…$"
+
+ExoticSafari_Text_TabletOpened:
+	.string "There was a distant rumbling…\p"
+	.string "Somewhere, the walls of three\n"
+	.string "sealed chambers have loosened.$"
+
+ExoticSafari_Text_TabletDone:
+	.string "“FIRST COMES WAILORD.\n"
+	.string "LAST COMES RELICANTH.”\p"
+	.string "The tablet's work is done.$"
+
+ExoticSafari_Text_RegiWallSealed:
+	.string "Dots are carved into the wall.\n"
+	.string "It's BRAILLE. It reads…\p"
+	.string "“THIS CHAMBER IS SEALED. THE KEY IS\n"
+	.string "THE TABLET BY THE ISLAND CAVE.”$"
+
+ExoticSafari_Text_RegiWallRock:
+	.string "Dots are carved into the wall.\n"
+	.string "It's BRAILLE. It reads…\p"
+	.string "“SHOW THE POWER OF ROCK SMASH\n"
+	.string "BEFORE THIS WALL.”$"
+
+ExoticSafari_Text_RegiWallRockSmash:
+	.string "{STR_VAR_1} used ROCK SMASH!$"
+
+ExoticSafari_Text_RegiWallSteel:
+	.string "Dots are carved into the wall.\n"
+	.string "It's BRAILLE. It reads…\p"
+	.string "“LIGHT UP THE DARK WITH FLASH\n"
+	.string "BEFORE THIS WALL.”$"
+
+ExoticSafari_Text_RegiWallFlash:
+	.string "{STR_VAR_1} used FLASH!$"
+
+ExoticSafari_Text_RegiWallIce:
+	.string "Dots are carved into the wall.\n"
+	.string "It's BRAILLE. It reads…\p"
+	.string "“STAY HERE, STILL AND QUIET,\n"
+	.string "FOR TWO MINUTES.”$"
+
+ExoticSafari_Text_RegiWallOpen:
+	.string "There's a big hole in the wall.$"

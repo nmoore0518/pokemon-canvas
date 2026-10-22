@@ -753,6 +753,10 @@ gSpecials::
 	def_special ExoticSafari_TakeKey
 	def_special ExoticSafari_LegendCaught
 	def_special ExoticSafari_AllTypesMastered
+	def_special ExoticSafari_RegiWall
+	def_special ExoticSafari_RegiLeadKnows
+	def_special ExoticSafari_OpenRegiWall
+	def_special ExoticSafari_StartStillness
 	def_special ChooseRotomForAppliance, waitstate=1
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk

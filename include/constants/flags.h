@@ -2640,6 +2640,11 @@
 #define FLAG_EXOTIC_LEGEND_KYOGRE             0x386
 #define FLAG_EXOTIC_LEGEND_JIRACHI            0x387
 #define FLAG_EXOTIC_LEGEND_DEOXYS             0x388
+#define FLAG_EXOTIC_REGIS_UNSEALED            0x389   // (the Sealed Chamber's tablet: Wailord first, Relicanth last)
+#define FLAG_EXOTIC_REGI_WALL_FIRST           0x38A   // to 0x38C: the Desert Ruins', Island Cave's, Ancient Tomb's inner walls opened
+#define FLAG_EXOTIC_ITEM_SOUL_DEW             0x38D
+#define FLAG_EXOTIC_ITEM_BLUE_ORB             0x38E
+#define FLAG_EXOTIC_ITEM_METEORITE            0x38F
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

@@ -879,7 +879,7 @@ def build_zones(zone_warp):
     needs = out["roamer_needs"]
     for r, region in out["roamers"]:
         i = slot[region] = slot.get(region, -1) + 1
-        need = f"FLAG_EXOTIC_LEGEND_{needs[r]}" if r in needs else "0"
+        need = (needs[r] if needs[r].startswith("FLAG_") else f"FLAG_EXOTIC_LEGEND_{needs[r]}") if r in needs else "0"
         c.append(f"    {{SPECIES_{r}, FLAG_EXOTIC_LEGEND_{r}, FLAG_TEMP_{ROAMER_FLAG_BASE + i:X}, {need}, {region}}},")
     c += ["};", f"#define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_{ROAMER_FLAG_BASE:X})", "",
           "static const u16 sKioskSupplies[] = {" + ", ".join(f"ITEM_{i}" for i in KIOSK_SUPPLIES) + "};",
@@ -1144,6 +1144,9 @@ def main():
               "#define SEAL_HP_EVS   27    // (Azelf: a lead with this many HP EVs)",
               "#define SEAL_REGIS    28    // (Regigigas: Regirock, Regice and Registeel in the party)",
               "#define SEAL_AZURE_FLUTE 29 // (Arceus: the Azure Flute, from the Snowpoint elder)",
+              "#define SEAL_METEORITE 30   // (Deoxys: the Meteorite found on Mt. Chimney)",
+              "#define SEAL_BLUE_ORB 31    // (Kyogre: a lead holding the Blue Orb)",
+              "#define SEAL_WISH     32    // (Jirachi: the zone's other legendaries caught)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]

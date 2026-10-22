@@ -21,3 +21,8 @@ ExoticSafari_HoennDesertRuins_EventScript_LegendRegirock::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_REGIROCK
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_HoennDesertRuins_EventScript_RegiWall::
+	lockall
+	setvar VAR_0x8004, 0
+	goto ExoticSafari_EventScript_RegiWall

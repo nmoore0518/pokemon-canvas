@@ -261,15 +261,17 @@ PUZZLES = {
     "REGIGIGAS": "Wakes in Snowpoint City, west of the harbor steps, when Regirock, Regice and Registeel are all in your party.",
     "PHIONE": "Stands by the ponds in the Great Marsh's west.",
     "ARCEUS": "Master every gym type, then see the elder in Snowpoint City for the Azure Flute; Arceus then appears at the top of the Hall of Origin (Snowpoint City's cave leads up to it).",
-    "REGISTEEL": "At the top of the Ancient Tomb: surf to the mound in the pond south of Route 120's bridge (Fortree City's east), then go up through the tomb's inner door.",
-    "REGIROCK": "At the top of the Desert Ruins: the cave in the rock west of Mt. Chimney's summit, then up through the inner door.",
-    "REGICE": "At the top of the Island Cave: the cave in the cliff over Pacifidlog Town, then up through the inner door.",
-    "KYOGRE": "Floats in the open sea west of Pacifidlog Town. Surf to it.",
-    "JIRACHI": "On the little island in Sootopolis City's lake (Sky Pillar's cave, west of Pacifidlog, leads to the city). Surf to it.",
-    "DEOXYS": "At the summit of Mt. Chimney, on the lava lake's shore.",
+    "REGISTEEL": "The Regi chambers' inner walls are sealed until you read the Braille tablet on the rock beside the Island Cave (Pacifidlog's cliff) with Wailord first and Relicanth last in your party. Then, in the Ancient Tomb (surf to the mound in the pond south of Route 120's bridge), read the inner wall with a lead that knows Flash; Registeel is in the upper room.",
+    "REGIROCK": "The Regi chambers' inner walls are sealed until you read the Braille tablet on the rock beside the Island Cave (Pacifidlog's cliff) with Wailord first and Relicanth last in your party. Then, in the Desert Ruins (the cave in the rock west of Mt. Chimney's summit), read the inner wall with a lead that knows Rock Smash; Regirock is in the upper room.",
+    "REGICE": "The Regi chambers' inner walls are sealed until you read the Braille tablet on the rock beside the Island Cave (Pacifidlog's cliff) with Wailord first and Relicanth last in your party. Then, in the Island Cave, read the inner wall and stand still in front of it for two minutes; Regice is in the upper room.",
+    "KYOGRE": "Rises in the open sea west of Pacifidlog Town when your lead holds the Blue Orb (on Sootopolis City's south-west lawn). Surf to it.",
+    "JIRACHI": "Wakes on the little island in Sootopolis City's lake (Sky Pillar's cave, west of Pacifidlog, leads to the city) once Regirock, Regice, Registeel, Latias, Latios, Kyogre and Deoxys are all caught. Surf to it.",
+    "DEOXYS": "Find the Meteorite near Mt. Chimney's summit; then Deoxys appears on the lava lake's shore. Use the Meteorite on it to change its Forme.",
     "TYPE_NULL": "A gift from Hano Beach's caretaker once you've caught Rowlet, Litten and Popplio.",
 }
 ROAM_NOTES = {"CALYREX": " Starts roaming once Spectrier is caught.",
+              "LATIAS": " Starts roaming once the Soul Dew is found (on a raft in Pacifidlog Town).",
+              "LATIOS": " Starts roaming once the Soul Dew is found (on a raft in Pacifidlog Town).",
               "LANDORUS": " Starts roaming once Thundurus is caught. Once both are caught, the shrine keeper on Skyarrow Bridge gives the Reveal Glass."}
 
 

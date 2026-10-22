@@ -21,3 +21,12 @@ ExoticSafari_HoennMtChimney_EventScript_LegendDeoxys::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_DEOXYS
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_HoennMtChimney_EventScript_SealDeoxys::
+	lockall
+	setvar VAR_0x8004, 42
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_HoennMtChimney_EventScript_ItemMeteorite::
+	finditem ITEM_METEORITE
+	end

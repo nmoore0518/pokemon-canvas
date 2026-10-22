@@ -21,3 +21,12 @@ ExoticSafari_HoennSootopolis_EventScript_LegendJirachi::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_JIRACHI
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_HoennSootopolis_EventScript_SealJirachi::
+	lockall
+	setvar VAR_0x8004, 43
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_HoennSootopolis_EventScript_ItemBlueOrb::
+	finditem ITEM_BLUE_ORB
+	end

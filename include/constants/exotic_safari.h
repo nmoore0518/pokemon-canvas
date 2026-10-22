@@ -36,6 +36,9 @@
 #define SEAL_HP_EVS   27    // (Azelf: a lead with this many HP EVs)
 #define SEAL_REGIS    28    // (Regigigas: Regirock, Regice and Registeel in the party)
 #define SEAL_AZURE_FLUTE 29 // (Arceus: the Azure Flute, from the Snowpoint elder)
+#define SEAL_METEORITE 30   // (Deoxys: the Meteorite found on Mt. Chimney)
+#define SEAL_BLUE_ORB 31    // (Kyogre: a lead holding the Blue Orb)
+#define SEAL_WISH     32    // (Jirachi: the zone's other legendaries caught)
 #define SEAL_RESULT_CAUGHT 0xFF
 #define SEAL_RESULT_AWAY 0xFE
 // Each static legendary's index (sExoticSafariStatics)

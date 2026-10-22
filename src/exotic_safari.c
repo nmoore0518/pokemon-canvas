@@ -26,6 +26,10 @@
 #include "random.h"
 #include "shop.h"
 #include "sound.h"
+#include "main.h"
+#include "task.h"
+#include "party_menu.h"
+#include "constants/moves.h"
 #include "constants/exotic_safari.h"
 #include "constants/flags.h"
 #include "constants/items.h"
@@ -424,6 +428,14 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return RegisMissing();
     case SEAL_AZURE_FLUTE:  // (Arceus: the Azure Flute, from the Snowpoint elder)
         return !FlagGet(FLAG_EXOTIC_AZURE_FLUTE);
+    case SEAL_METEORITE:    // (Deoxys: the Meteorite found)
+        return !FlagGet(FLAG_EXOTIC_ITEM_METEORITE);
+    case SEAL_BLUE_ORB:     // (Kyogre: a lead holding the Blue Orb)
+        return !(Lead() && GetMonData(Lead(), MON_DATA_HELD_ITEM) == ITEM_BLUE_ORB);
+    case SEAL_WISH:         // (Jirachi: the zone's other legendaries caught)
+        for (i = 0; i < ARRAY_COUNT(sWishSeal); i++)
+            left += !FlagGet(CaughtFlag(sWishSeal[i]));
+        return left;
     }
     return 0;
 }
@@ -462,6 +474,8 @@ void ExoticSafari_BufferSeal(void)
         StringCopy(gStringVar1, sRelics[s->sealArg].name);
     else if (s->seal == SEAL_REGIS)
         BufferRegisMissing();
+    if (s->seal == SEAL_BLUE_ORB)            // (VAR_0x8005: the Blue Orb found yet)
+        gSpecialVar_0x8005 = FlagGet(FLAG_EXOTIC_ITEM_BLUE_ORB);
     ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
     if (s->seal == SEAL_LEVEL || s->seal == SEAL_HP_EVS)     // (the level or EVs it wants)
         ConvertIntToDecimalStringN(gStringVar2, s->sealArg, STR_CONV_MODE_LEFT_ALIGN, 3);
@@ -603,6 +617,8 @@ static void SetStone(u32 stone, bool32 lit, bool32 draw)
 }
 
 // Special (each area's ON_LOAD): the lamps and stones already lit
+static void SetRegiWall(u32 k, bool32 open, bool32 draw);
+
 void ExoticSafari_AreaOnLoad(void)
 {
     u32 i;
@@ -619,7 +635,103 @@ void ExoticSafari_AreaOnLoad(void)
         for (i = 0; i < ARRAY_COUNT(sStones); i++)
             SetStone(i, TRUE, FALSE);
     }
+    for (i = 0; i < ARRAY_COUNT(sRegiWalls); i++)
+    {
+        if (InMap(MAP_GROUP(sRegiWalls[i].map), MAP_NUM(sRegiWalls[i].map)) && !FlagGet(FLAG_EXOTIC_REGI_WALL_FIRST + i))
+            SetRegiWall(i, FALSE, FALSE);
+    }
 }
+
+// ---------------------------------------------------------------------------------------------
+// Hoenn: the Regi chambers' inner walls (Emerald's). Sealed until the tablet by the Island Cave
+// sees Wailord first and Relicanth last (FLAG_EXOTIC_REGIS_UNSEALED); then each opens for its own
+// Braille: Regirock's (0) a lead that knows Rock Smash, Regice's (1) two minutes standing still
+// before it, Registeel's (2) a lead that knows Flash
+// ---------------------------------------------------------------------------------------------
+static void SetRegiWall(u32 k, bool32 open, bool32 draw)
+{
+    const struct ExoticSafariRegiWall *w = &sRegiWalls[k];
+    u32 i;
+    for (i = 0; i < 6; i++)
+        MapGridSetMetatileEntryAt(REGI_WALL_X + i % 3 + MAP_OFFSET, REGI_WALL_Y + i / 3 + MAP_OFFSET,
+                                  open ? w->open[i] : (i < 3 ? w->cover : w->braille));
+    if (draw)
+        DrawWholeMapView();
+}
+
+// Special (the wall read): VAR_0x8004 = which. VAR_RESULT: 0 still sealed (the tablet), 1 its
+// puzzle to do, 2 open. STR_VAR_1: the lead's name
+void ExoticSafari_RegiWall(void)
+{
+    u32 k = gSpecialVar_0x8004 % ARRAY_COUNT(sRegiWalls);
+    if (FlagGet(FLAG_EXOTIC_REGI_WALL_FIRST + k))
+        gSpecialVar_Result = 2;
+    else
+        gSpecialVar_Result = FlagGet(FLAG_EXOTIC_REGIS_UNSEALED) ? 1 : 0;
+    gStringVar1[0] = EOS;
+    if (Lead())
+        GetMonNickname(Lead(), gStringVar1);
+}
+
+// Special: VAR_RESULT = the lead knows the move the wall asks for (VAR_0x8004: 0 Rock Smash, else Flash)
+void ExoticSafari_RegiLeadKnows(void)
+{
+    gSpecialVar_Result = Lead() && MonKnowsMove(Lead(), gSpecialVar_0x8004 == 0 ? MOVE_ROCK_SMASH : MOVE_FLASH);
+}
+
+// Special: VAR_0x8004's wall opens (with a bang)
+void ExoticSafari_OpenRegiWall(void)
+{
+    u32 k = gSpecialVar_0x8004 % ARRAY_COUNT(sRegiWalls);
+    FlagSet(FLAG_EXOTIC_REGI_WALL_FIRST + k);
+    SetRegiWall(k, TRUE, TRUE);
+    PlaySE(SE_BANG);
+}
+
+// Regice's: two minutes without a step, in front of its wall, after reading it. The task ends if
+// the player moves or leaves; the wall opens when the time is up (once nothing else is going on)
+#define STILLNESS_FRAMES (120 * 60)
+#define tX     data[0]
+#define tY     data[1]
+#define tMap   data[2]
+#define tTime  data[3]
+
+static void Task_Stillness(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    if (gSaveBlock1Ptr->pos.x != tX || gSaveBlock1Ptr->pos.y != tY
+        || (gSaveBlock1Ptr->location.mapGroup << 8 | gSaveBlock1Ptr->location.mapNum) != (u16)tMap
+        || FlagGet(FLAG_EXOTIC_REGI_WALL_FIRST + 1))
+    {
+        DestroyTask(taskId);
+        return;
+    }
+    if (tTime < STILLNESS_FRAMES)
+        tTime++;
+    else if (gMain.callback2 == CB2_Overworld && !ScriptContext_IsEnabled() && !ArePlayerFieldControlsLocked())
+    {
+        gSpecialVar_0x8004 = 1;
+        ExoticSafari_OpenRegiWall();
+        DestroyTask(taskId);
+    }
+}
+
+// Special (Regice's wall read): start counting
+void ExoticSafari_StartStillness(void)
+{
+    u8 taskId;
+    if (FuncIsActiveTask(Task_Stillness))
+        DestroyTask(FindTaskIdByFunc(Task_Stillness));
+    taskId = CreateTask(Task_Stillness, 80);
+    gTasks[taskId].tX = gSaveBlock1Ptr->pos.x;
+    gTasks[taskId].tY = gSaveBlock1Ptr->pos.y;
+    gTasks[taskId].tMap = gSaveBlock1Ptr->location.mapGroup << 8 | gSaveBlock1Ptr->location.mapNum;
+    gTasks[taskId].tTime = 0;
+}
+#undef tX
+#undef tY
+#undef tMap
+#undef tTime
 
 // Special (a big mushroom touched): VAR_0x8004 = which. VAR_RESULT: 0 already lit, 1 lit now
 // (STR_VAR_2: how many still dark), 2 lit now, the last one

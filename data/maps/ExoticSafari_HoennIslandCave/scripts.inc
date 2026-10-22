@@ -21,3 +21,8 @@ ExoticSafari_HoennIslandCave_EventScript_LegendRegice::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_REGICE
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_HoennIslandCave_EventScript_RegiWall::
+	lockall
+	setvar VAR_0x8004, 1
+	goto ExoticSafari_EventScript_RegiWall

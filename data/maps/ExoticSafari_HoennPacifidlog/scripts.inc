@@ -26,3 +26,12 @@ ExoticSafari_HoennPacifidlog_EventScript_LegendKyogre::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_KYOGRE
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_HoennPacifidlog_EventScript_SealKyogre::
+	lockall
+	setvar VAR_0x8004, 41
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_HoennPacifidlog_EventScript_ItemSoulDew::
+	finditem ITEM_SOUL_DEW
+	end

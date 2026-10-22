@@ -131,11 +131,57 @@ def lawn_behaviors():
 # The Regi chambers: Emerald's (two rooms: the way in below, the Regi's room above, a door
 # between), each in its own colors
 # ---------------------------------------------------------------------------------------------
+# The inner wall (7-9, 19-20): open in the layout; sealed on load until its puzzle is solved
+# (src/exotic_safari.c, sRegiWalls). Emerald's cover and Braille-wall metatiles aren't in the
+# layout, so they're put on two cells nobody can reach for the conversion, read back (as
+# converted) and the cells put back
+WALL_X, WALL_Y = 7, 19
+EM_COVER, EM_BRAILLE = 0x229, 0x235          # (METATILE_Cave_EntranceCover, _SealedChamberBraille_Mid)
+SPARE = [(2, 16), (3, 16)]
+REGI_WALLS = ["RUINS", "ICE", "TOMB"]        # (FLAG_EXOTIC_REGI_WALL_FIRST + this order)
+WALLS = {}                                   # area -> {"open": [6 entries], "cover", "braille"}
+
+
 def chamber(layout):
     def build():
         g, l = read_layout(layout)
-        return [row[:] for row in g], l["width"], l["height"]
+        g = [row[:] for row in g]
+        keep = g[WALL_Y][WALL_X] & ~0x3FF                # (collision and elevation of the wall)
+        for (x, y), m in zip(SPARE, (EM_COVER, EM_BRAILLE)):
+            g[y][x] = m | keep
+        return g, l["width"], l["height"]
     return build
+
+
+def wall_read(key):
+    def post(g):
+        WALLS[key] = {"open": [g[WALL_Y + i // 3][WALL_X + i % 3] for i in range(6)],
+                      "cover": g[SPARE[0][1]][SPARE[0][0]], "braille": g[SPARE[1][1]][SPARE[1][0]]}
+        for x, y in SPARE:
+            g[y][x] = g[y][1]
+    return post
+
+
+def wall_extra(key):
+    def add(ctx):
+        name, k = ctx["name"], REGI_WALLS.index(key)
+        label = f"{name}_EventScript_RegiWall"
+        for dx in range(3):
+            ctx["bgs"].append({"type": "sign", "x": WALL_X + dx, "y": WALL_Y + 1, "elevation": 0,
+                               "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH", "script": label})
+        ctx["scripts"] += [f"{label}::", "\tlockall", f"\tsetvar VAR_0x8004, {k}",
+                           "\tgoto ExoticSafari_EventScript_RegiWall", ""]
+    return add
+
+
+# The Sealed Chamber's tablet: the rock face beside the Island Cave's mouth (Pacifidlog's cliff)
+TABLET = (ICE_DOOR[0] + 2, ICE_DOOR[1])
+
+
+def ocean_extra(ctx):
+    ctx["bgs"].append({"type": "sign", "x": TABLET[0], "y": TABLET[1], "elevation": 0,
+                       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+                       "script": "ExoticSafari_EventScript_SealedTablet"})
 
 
 def tint(hue, sat, val, lift=0.0):
@@ -203,7 +249,8 @@ AREAS = {
                     ("SHARPEDO", 50, 54), ("CLAMPERL", 50, 54), ("WAILMER", 50, 54),
                     ("SHARPEDO", 52, 55), ("RELICANTH", 52, 55)],
         "statics": [("KYOGRE", (28, 26))],
-        "items": [],
+        "items": [("SOUL_DEW", (PAC_X + 5, 23))],
+        "extra": ocean_extra,
     },
     "VOLCANO": {
         "map": "ExoticSafari_HoennMtChimney", "build": volcano, "tilesets": ("gTileset_General", "gTileset_Lavaridge"),
@@ -216,7 +263,7 @@ AREAS = {
         "land": land("NUMEL", "SPOINK", "TORKOAL", "MAKUHITA", "ARON", "MEDITITE", "CAMERUPT", "GRUMPIG",
                      "HARIYAMA", "LAIRON", ("TORCHIC", 48, 50), ("MEDICHAM", 52, 55)),
         "statics": [("DEOXYS", (20, 15))],
-        "items": [],
+        "items": [("METEORITE", (31, 7))],
     },
     "CRATER": {
         "map": "ExoticSafari_HoennSootopolis", "build": crater, "tilesets": ("gTileset_General", "gTileset_Sootopolis"),
@@ -234,11 +281,12 @@ AREAS = {
                     ("HUNTAIL", 50, 54), ("GOREBYSS", 50, 54), ("SHARPEDO", 50, 54),
                     ("HUNTAIL", 52, 55), ("GOREBYSS", 52, 55)],
         "statics": [("JIRACHI", (30, 34))],
-        "items": [],
+        "items": [("BLUE_ORB", (8, 43))],
     },
     "TOMB": {
         "map": "ExoticSafari_HoennAncientTomb", "build": chamber("LAYOUT_ANCIENT_TOMB"),
         "tilesets": ("gTileset_General", "gTileset_Cave"), "version": "emerald",
+        "post_convert": wall_read("TOMB"), "extra": wall_extra("TOMB"),
         "convert": ("HoennTomb", "hoenn_tomb"), "recolor": {p: STEEL for p in range(16)},
         "music": "MUS_SEALED_CHAMBER", "weather": "WEATHER_NONE", "type": "MAP_TYPE_UNDERGROUND",
         "links": chamber_links("TOMB", "FOREST"),
@@ -250,6 +298,7 @@ AREAS = {
     "RUINS": {
         "map": "ExoticSafari_HoennDesertRuins", "build": chamber("LAYOUT_DESERT_RUINS"),
         "tilesets": ("gTileset_General", "gTileset_Cave"), "version": "emerald",
+        "post_convert": wall_read("RUINS"), "extra": wall_extra("RUINS"),
         "convert": ("HoennRuins", "hoenn_ruins"), "recolor": {p: SANDSTONE for p in range(16)},
         "music": "MUS_SEALED_CHAMBER", "weather": "WEATHER_NONE", "type": "MAP_TYPE_UNDERGROUND",
         "links": chamber_links("RUINS", "VOLCANO"),
@@ -261,6 +310,7 @@ AREAS = {
     "ICE": {
         "map": "ExoticSafari_HoennIslandCave", "build": chamber("LAYOUT_ISLAND_CAVE"),
         "tilesets": ("gTileset_General", "gTileset_Cave"), "version": "emerald",
+        "post_convert": wall_read("ICE"), "extra": wall_extra("ICE"),
         "convert": ("HoennIce", "hoenn_ice"), "recolor": {p: ICE for p in range(16)},
         "music": "MUS_SEALED_CHAMBER", "weather": "WEATHER_NONE", "type": "MAP_TYPE_UNDERGROUND",
         "links": chamber_links("ICE", "OCEAN"),
@@ -271,6 +321,28 @@ AREAS = {
     },
 }
 ROAMERS = ["LATIAS", "LATIOS"]
-CONDITIONS = {}
-UNIQUE_ITEMS = set()
+# The puzzles: the Latis roam once the Soul Dew is found (Pacifidlog's rafts); Kyogre for a lead
+# holding the Blue Orb (in Sootopolis); Deoxys once the Meteorite is found (Mt. Chimney's summit);
+# Jirachi once every other legendary of the zone is caught. The Regis: their chambers' inner walls
+# (Emerald's): sealed until the tablet by the Island Cave sees Wailord first and Relicanth last in
+# the party, then each opens for its own Braille: Regirock's for a lead that knows Rock Smash,
+# Registeel's for a lead that knows Flash, Regice's after two minutes standing still before it
+ROAMER_NEEDS = {"LATIAS": "FLAG_EXOTIC_ITEM_SOUL_DEW", "LATIOS": "FLAG_EXOTIC_ITEM_SOUL_DEW"}
+CONDITIONS = {"KYOGRE": ("BLUE_ORB", 0), "DEOXYS": ("METEORITE", 0), "JIRACHI": ("WISH", 0)}
+WISH = ["REGIROCK", "REGICE", "REGISTEEL", "LATIAS", "LATIOS", "KYOGRE", "DEOXYS"]
+UNIQUE_ITEMS = {"SOUL_DEW", "BLUE_ORB", "METEORITE"}
+
+
+def header_lines(map_id):
+    lines = ["// Hoenn: the Regi chambers' inner walls (7-9, 19-20: the open wall, then the cover and",
+             "// Braille-wall metatiles that seal it), and the legendaries Jirachi waits for",
+             "struct ExoticSafariRegiWall { u16 map; u16 cover, braille; u16 open[6]; };",
+             "static const struct ExoticSafariRegiWall sRegiWalls[] =", "{"]
+    for key in REGI_WALLS:
+        w = WALLS[key]
+        lines.append(f"    {{{map_id(AREAS[key]['map'])}, 0x{w['cover']:04X}, 0x{w['braille']:04X}, "
+                     "{" + ", ".join(f"0x{v:04X}" for v in w["open"]) + "}},")
+    lines += ["};", f"#define REGI_WALL_X {WALL_X}", f"#define REGI_WALL_Y {WALL_Y}",
+              "static const u16 sWishSeal[] = {" + ", ".join(f"SPECIES_{s}" for s in WISH) + "};"]
+    return lines
 

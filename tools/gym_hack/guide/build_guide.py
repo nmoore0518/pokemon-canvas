@@ -122,7 +122,7 @@ REGIONS = [
      "east (surf to the mound in the pond for the Ancient Tomb). West is the sea: Pacifidlog Town's floating huts, and "
      "Sky Pillar's islet, whose cave leads into Sootopolis City's crater; a cave in Pacifidlog's cliff is the Island "
      "Cave. East is Mt. Chimney, with the Desert Ruins in its summit's rock. Each Regi chamber has two rooms: its "
-     "Regi waits in the upper one. Latias and Latios roam."),
+     "Regi waits in the upper one, behind a Braille wall: see the legendaries below."),
 ]
 
 
