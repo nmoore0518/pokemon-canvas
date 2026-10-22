@@ -1,0 +1,601 @@
+#!/usr/bin/env python3
+"""Pokémon Canvas: the printable Pokédex (a PDF), made from the game's own data.
+
+    python3 tools/gym_hack/guide/build_dex.py [--test] [--out FILE]
+
+Everything comes from the source (after one `make firered`, so generated headers exist):
+species stats, types, abilities, evolutions and level-up moves (the preprocessed C data), front
+sprites (graphics/pokemon/*), wild Pokémon (src/data/wild_encounters.json, FireRed's tables and the
+Exotic Safari's), the starters (src/gym_hack.c), each type's gym legendary (src/gym_legend.c), the
+safari's legendaries and roamers (src/data/exotic_safari_areas.h), and gifts and one-off
+battles in the map scripts. So the guide can be rebuilt any time the game changes.
+
+--test: one page (the first few Pokémon and a legendary), to check the look.
+"""
+import argparse
+import json
+import re
+import subprocess
+import sys
+from collections import defaultdict, OrderedDict
+from pathlib import Path
+
+from PIL import Image
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "tools/gym_hack"))
+OUT_DIR = ROOT / "build/guide"
+SPRITES = OUT_DIR / "sprites"
+CPP = ["arm-none-eabi-gcc", "-E", "-P", "-w", "-iquote", "include", "-I", "include", "-I", "gflib", "-I", "src",
+       "-DMODERN=1", "-DTESTING=0", "-DFIRERED", "-std=gnu17", "-x", "c"]
+
+
+# ---------------------------------------------------------------------------------------------
+# Reading the game's data
+# ---------------------------------------------------------------------------------------------
+def preprocess(src):
+    out = OUT_DIR / (Path(src).stem + ".i")
+    if not out.exists() or out.stat().st_mtime < (ROOT / src).stat().st_mtime:
+        subprocess.run(CPP + [src, "-o", str(out)], cwd=ROOT, check=True)
+    return out.read_text(errors="replace")
+
+
+def blocks(text, key_re):
+    """`[KEY] = { ... },` blocks: key -> body (braces balanced)"""
+    out = OrderedDict()
+    for m in re.finditer(key_re, text):
+        i = text.index("{", m.end())
+        depth, j = 0, i
+        while True:
+            c = text[j]
+            if c == "{":
+                depth += 1
+            elif c == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        out.setdefault(m.group(1), text[i + 1:j])
+    return out
+
+
+def cstring(s):
+    """the first C string literal(s) in s, joined"""
+    parts = re.findall(r'"((?:[^"\\]|\\.)*)"', s)
+    return "".join(parts).replace("\\n", " ").replace('\\"', '"')
+
+
+def field(body, name):
+    m = re.search(r"\." + name + r"\s*=\s*(.*?),\s*\n\s*\.", body, re.S)
+    if not m:
+        m = re.search(r"\." + name + r"\s*=\s*(.*?)\s*,?\s*$", body, re.S)
+    return m.group(1).strip() if m else None
+
+
+def enum_values(path, prefix):
+    """NAME = value lines of an enum header"""
+    vals = {}
+    for m in re.finditer(r"\b(" + prefix + r"\w+)\s*=\s*(\d+)", (ROOT / path).read_text()):
+        vals.setdefault(m.group(1), int(m.group(2)))
+    return vals
+
+
+def national_dex():
+    names = re.findall(r"^\s+(NATIONAL_DEX_\w+),", (ROOT / "include/constants/pokedex.h").read_text(), re.M)
+    return {n: i for i, n in enumerate(names)}           # (NATIONAL_DEX_NONE is 0)
+
+
+def load():
+    poke = preprocess("src/pokemon.c")
+    moves_i = preprocess("src/move.c")
+    items_i = preprocess("src/item.c")
+    data = {}
+    data["moves"] = {k: cstring(field(b, "name") or "") for k, b in blocks(moves_i, r"\[(MOVE_\w+)\]\s*=\s*\n?\s*(?=\{)").items()}
+    data["move_types"] = {k: (field(b, "type") or "") for k, b in blocks(moves_i, r"\[(MOVE_\w+)\]\s*=\s*\n?\s*(?=\{)").items()}
+    data["abilities"] = {k: cstring(field(b, "name") or "") for k, b in blocks(poke, r"\[(ABILITY_\w+)\]\s*=\s*\n?\s*(?=\{)").items()}
+    data["items"] = {}
+    for k, b in blocks(items_i, r"\[(ITEM_\w+)\]\s*=\s*\n?\s*(?=\{)").items():
+        names = re.findall(r'COMPOUND_STRING\("((?:[^"\\]|\\.)*)"\)', field(b, "name") or "")
+        data["items"][k] = names[0] if names else k[5:].replace("_", " ").title()
+    data["learnsets"] = {}
+    for m in re.finditer(r"struct LevelUpMove (s\w+LevelUpLearnset)\[\] = \{(.*?)\};", poke, re.S):
+        data["learnsets"][m.group(1)] = [(int(l), mv) for mv, l in re.findall(r"\.move = (MOVE_\w+), \.level = (\d+)", m.group(2))]
+    data["gfx"] = {s: p for s, p in re.findall(r"(gMon(?:FrontPic|Palette)_\w+)\[\] = INCGFX_U\d+\(\"([^\"]+)\"", poke)}
+    species = blocks(poke, r"\[(SPECIES_\w+)\]\s*=\s*\n\s*(?=\{)")
+    data["species"] = species
+    return data
+
+
+# ---------------------------------------------------------------------------------------------
+# One Pokémon's facts
+# ---------------------------------------------------------------------------------------------
+TYPE_COLORS = {
+    "NORMAL": "#A8A77A", "FIRE": "#EE8130", "WATER": "#6390F0", "ELECTRIC": "#F7D02C", "GRASS": "#7AC74C",
+    "ICE": "#96D9D6", "FIGHTING": "#C22E28", "POISON": "#A33EA1", "GROUND": "#E2BF65", "FLYING": "#A98FF3",
+    "PSYCHIC": "#F95587", "BUG": "#A6B91A", "ROCK": "#B6A136", "GHOST": "#735797", "DRAGON": "#6F35FC",
+    "DARK": "#705746", "STEEL": "#B7B7CE", "FAIRY": "#D685AD", "STELLAR": "#40B5A5",
+}
+STAT_KEYS = [("baseHP", "HP"), ("baseAttack", "Atk"), ("baseDefense", "Def"), ("baseSpAttack", "SpA"),
+             ("baseSpDefense", "SpD"), ("baseSpeed", "Spe")]
+
+
+def ceval(expr):
+    """a constant C expression (numbers, comparisons, ?:) -> its value"""
+    e = expr.replace("&&", " and ").replace("||", " or ").replace("/", "//")
+    m = re.match(r"^\(?\s*([^?]+?)\s*\)?\s*\?\s*([^:]+?)\s*:\s*(.+)$", e)
+    if m:
+        return ceval(m.group(2)) if eval(m.group(1)) else ceval(m.group(3))
+    return eval(e)
+
+
+def parse_species(key, body, data):
+    def num(name, default=0):
+        v = field(body, name)
+        try:
+            return int(ceval(v)) if v else default
+        except Exception:
+            return default
+    types = re.findall(r"TYPE_(\w+)", field(body, "types") or "")
+    abil = re.findall(r"ABILITY_\w+", field(body, "abilities") or "")
+    evos = []
+    ev = field(body, "evolutions") or ""
+    for e in re.findall(r"\{(EVO_\w+), ([^,]+), (SPECIES_\w+)(.*?)\}(?=\s*,\s*[\{]|\s*,\s*\})", ev):
+        evos.append((e[0], e[1].strip(), e[2], e[3]))
+    return {
+        "key": key, "name": cstring(field(body, "speciesName") or "") or key[8:].title(),
+        "dex": field(body, "natDexNum"), "types": list(dict.fromkeys(types)),
+        "stats": [num(k) for k, _ in STAT_KEYS], "abilities": abil,
+        "category": cstring(field(body, "categoryName") or ""),
+        "description": cstring(field(body, "description") or ""),
+        "height": num("height"), "weight": num("weight"),
+        "front": field(body, "frontPic"), "palette": field(body, "palette"),
+        "learnset": data["learnsets"].get(field(body, "levelUpLearnset") or "", []),
+        "evos": evos, "mega": ".isMegaEvolution = 1" in body or ".isGigantamax = 1" in body
+        or ".isTotem = 1" in body or ".isPrimalReversion = 1" in body or ".isUltraBurst = 1" in body
+        or ".isTeraForm = 1" in body or ".isBattleOnly = 1" in body,
+    }
+
+
+def sprite(info, data):
+    """the front sprite's first frame as a PNG (transparent background); its path"""
+    SPRITES.mkdir(parents=True, exist_ok=True)
+    out = SPRITES / f"{info['key']}.png"
+    if out.exists():
+        return out
+    pic, pal = data["gfx"].get(info["front"]), data["gfx"].get(info["palette"])
+    if not pic or not pal or not (ROOT / pic).exists():
+        return None
+    import render_map
+    colors = render_map.load_pal(ROOT / pal)
+    rgba = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+    src = Image.open(ROOT / pic)
+    for y in range(64):
+        for x in range(64):
+            c = src.getpixel((x, y))
+            if isinstance(c, int) and c:
+                rgba.putpixel((x, y), tuple(colors[c][:3]) + (255,))
+    rgba.save(out)
+    return out
+
+
+# ---------------------------------------------------------------------------------------------
+# Where each Pokémon is found
+# ---------------------------------------------------------------------------------------------
+SAFARI_NAMES = {
+    "PaldeaMeadow": "South Province", "PaldeaForest": "Tagtree Thicket", "PaldeaDesert": "Asado Desert",
+    "PaldeaCrater": "Area Zero", "PaldeaCraterDepths": "Area Zero depths", "PaldeaLake": "Casseroya Lake",
+    "PaldeaSnowyMountain": "Glaseado Mountain", "PaldeaAcademy": "Naranja/Uva Academy",
+    "GalarMeadow": "Postwick countryside", "GalarLake": "Lake District", "GalarMine": "Galar Mine",
+    "GalarMineDepths": "Galar Mine B1F", "GalarStadium": "Wyndon Stadium", "GalarStadiumPitch": "Wyndon Stadium pitch",
+    "GalarCity": "Circhester", "GalarForest": "Glimwood Tangle",
+    "AlolaResort": "Hano Beach", "AlolaBeach": "Big Wave Beach", "AlolaOcean": "Seafolk Village",
+    "AlolaRuins": "Ruins of Conflict", "AlolaVolcano": "Wela Volcano Park", "AlolaLanakila": "Mount Lanakila",
+    "KalosCity": "Lumiose City", "KalosWoods": "Winding Woods", "KalosSnowyPath": "Mamoswine Road",
+    "KalosCave": "Glittering Cave", "KalosBadlands": "Lumiose Badlands", "KalosOcean": "Azure Bay",
+    "UnovaSkyarrow": "Skyarrow Bridge", "UnovaGiantChasm": "Giant Chasm", "UnovaDragonspiral": "Dragonspiral Tower",
+    "UnovaChargestone": "Chargestone Cave", "UnovaRelicCastle": "Relic Castle", "UnovaAbyssalRuins": "Abyssal Ruins",
+}
+REGION_OF_SAFARI = ["Paldea", "Galar", "Alola", "Kalos", "Unova"]     # (the roamers' region index)
+TYPE_NAMES = ["Normal", "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel", "Fire",
+              "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark", "Fairy"]
+
+# The safari legendaries: how to get each one (spoilers)
+PUZZLES = {
+    "OGERPON": "Find its three masks (Wellspring on Casseroya Lake's island, Hearthflame in the Asado Desert, Cornerstone in Area Zero); then it appears in South Province.",
+    "WO_CHIEN": "Pull the 4 purple stakes hidden around the Paldea zone; then it appears in Tagtree Thicket.",
+    "CHIEN_PAO": "Pull the 4 yellow stakes hidden around the Paldea zone; then it appears on Glaseado Mountain.",
+    "TING_LU": "Pull the 4 green stakes hidden around the Paldea zone; then it appears in the Asado Desert.",
+    "CHI_YU": "Pull the 4 blue stakes hidden around the Paldea zone; then it appears on Casseroya Lake's island.",
+    "TERAPAGOS": "Master every gym type (a mastery battle for each); then it appears in Area Zero's depths.",
+    "PECHARUNT": "Catch the Loyal Three (Okidogi, Munkidori, Fezandipiti); then it appears in Area Zero's depths.",
+    "REGIELEKI": "Step on the 7 stepping stones of the lightning bolt in Postwick's countryside, from the top of the bolt down.",
+    "REGIDRAGO": "Find the Dragon Fang (Galar Mine 1F), then come to Galar Mine B1F with a Dragon-type Pokémon in the lead.",
+    "KUBFU": "Beat the dojo master (Bea) in Wyndon Stadium's lobby; then it appears on the pitch.",
+    "ZACIAN": "Find the Rusted Sword in Glimwood Tangle; then it appears at its plinth in Circhester.",
+    "ZAMAZENTA": "Find the Rusted Shield in Galar Mine B1F; then it appears at its plinth in Circhester.",
+    "ZARUDE": "Light all 8 dark mushrooms in Glimwood Tangle (4 big, 4 giant) by touching them.",
+    "ENAMORUS": "Visit the pink glade in Glimwood Tangle with a Pokémon of maximum friendship in the lead.",
+    "MAGEARNA": "Find its 4 machine parts (Big Wave Beach, Ruins of Conflict, Wela Volcano Park, Mount Lanakila); then it appears at Hano Beach.",
+    "MELTAN": "Visit Hano Beach with a Steel-type Pokémon in the lead.",
+    "COSMOG": "Catch the four Tapus (they roam the Alola zone); then it appears at Big Wave Beach.",
+    "ZERAORA": "Appears in Seafolk Village only during a thunderstorm (one visit in four).",
+    "MARSHADOW": "Visit the Ruins of Conflict with a Fighting- or Ghost-type Pokémon in the lead.",
+    "SOLGALEO": "Find the Sun Flute in the Ruins of Conflict; then it appears in Wela Volcano Park.",
+    "LUNALA": "Find the Moon Flute in Seafolk Village; then it appears on Mount Lanakila.",
+    "NECROZMA": "Catch Solgaleo and Lunala; then it appears in Wela Volcano Park.",
+    "ZYGARDE": "Find Zygarde Cells around the Kalos zone (8 in all). With 3 it appears at the Prism Tower's door as its 10% Forme; with all 8 it's whole (50% Forme with Power Construct).",
+    "HOOPA": "Take the Prison Bottle from its pedestal in Glittering Cave; Hoopa comes through a ring. The bottle turns it Unbound.",
+    "YVELTAL": "Catch 10 different Kalos Pokémon; then it appears in the Lumiose Badlands.",
+    "VOLCANION": "Visit Azure Bay's island with a Fire- or Water-type in the lead and a Pokémon of the other type in the party.",
+    "TERRAKION": "Stands on Skyarrow Bridge's east meadow.",
+    "VIRIZION": "Stands on Skyarrow Bridge's west meadow.",
+    "COBALION": "Catch Terrakion and Virizion; then it appears in the Giant Chasm.",
+    "KYUREM": "Catch Reshiram and Zekrom; then it appears in the Giant Chasm. The old man there then gives the DNA Splicers.",
+    "RESHIRAM": "Find the Light Stone in Relic Castle; then it appears at the top of Dragonspiral Tower.",
+    "ZEKROM": "Find the Dark Stone in the Abyssal Ruins; then it appears in Chargestone Cave.",
+    "VICTINI": "Find the Liberty Pass on Skyarrow Bridge; then it appears in Relic Castle.",
+    "KELDEO": "Catch Terrakion, Virizion and Cobalion; then it appears in the Abyssal Ruins.",
+    "TYPE_NULL": "A gift from Hano Beach's caretaker once you've caught Rowlet, Litten and Popplio.",
+}
+ROAM_NOTES = {"CALYREX": " Starts roaming once Spectrier is caught.",
+              "LANDORUS": " Starts roaming once Thundurus is caught. Once both are caught, the shrine keeper on Skyarrow Bridge gives the Reveal Glass."}
+
+
+def area_names():
+    import export_wild_sheet as W
+    names = {}
+    for key, name, when in W.AREAS:
+        names["MAP_" + key] = (name, when)
+    return names
+
+
+def safari_name(map_const):
+    """MAP_EXOTIC_SAFARI_KALOS_CITY -> ('Kalos Safari', 'Lumiose City')"""
+    groups = json.loads((ROOT / "data/maps/map_groups.json").read_text())
+    for m in groups.get("gMapGroup_ExoticSafari", []):
+        cid = "MAP_" + re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", m).upper()
+        if cid == map_const:
+            rest = m.split("_", 1)[1]
+            region = re.match(r"[A-Z][a-z]+", rest).group(0)
+            return f"{region} Safari", SAFARI_NAMES.get(rest, rest)
+    return None
+
+
+def prettify_map(folder):
+    name = re.sub(r"_(Frlg|Johto)$", "", folder)
+    name = name.replace("_", " ")
+    return re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", name)
+
+
+def locations(data):
+    """species key -> list of (sort key, html line)"""
+    loc = defaultdict(list)
+    names = area_names()
+    wild = json.loads((ROOT / "src/data/wild_encounters.json").read_text())
+    group = wild["wild_encounter_groups"][0]
+    rates = {f["type"]: f["encounter_rates"] for f in group["fields"]}
+    rods = next(f for f in group["fields"] if f["type"] == "fishing_mons")["groups"]
+    for e in group["encounters"]:
+        if not e["base_label"].endswith("_FireRed"):
+            continue
+        safari = safari_name(e["map"]) if "EXOTIC_SAFARI" in e["map"] else None
+        if safari:
+            where, when, order = f"{safari[0]}: {safari[1]}", "post-game", 2
+        elif e["map"] in names:
+            (where, when), order = names[e["map"]], 1
+        else:
+            where, when, order = prettify_map(e["map"][4:].title().replace("_", "")), "", 1
+        for method, label in (("land_mons", "Grass/Cave"), ("water_mons", "Surf"), ("rock_smash_mons", "Rock Smash")):
+            mons = e.get(method, {}).get("mons", [])
+            per = defaultdict(lambda: [0, 99, 0])
+            for slot, mon in enumerate(mons[:len(rates[method])]):
+                p = per[mon["species"]]
+                p[0] += rates[method][slot]
+                p[1] = min(p[1], mon["min_level"])
+                p[2] = max(p[2], mon["max_level"])
+            for sp, (pct, lo, hi) in per.items():
+                lv = f"Lv {lo}" if lo == hi else f"Lv {lo}–{hi}"
+                loc[sp].append((order, where, f"{label} {pct}%, {lv}", when))
+        mons = e.get("fishing_mons", {}).get("mons", [])
+        for rod, slots in rods.items():
+            per = defaultdict(lambda: [0, 99, 0])
+            for slot in slots:
+                if slot < len(mons):
+                    mon = mons[slot]
+                    p = per[mon["species"]]
+                    p[0] += rates["fishing_mons"][slot]
+                    p[1] = min(p[1], mon["min_level"])
+                    p[2] = max(p[2], mon["max_level"])
+            total = sum(rates["fishing_mons"][s] for s in slots)
+            for sp, (pct, lo, hi) in per.items():
+                lv = f"Lv {lo}" if lo == hi else f"Lv {lo}–{hi}"
+                rodname = rod.replace("_", " ").title()
+                loc[sp].append((order, where, f"{rodname} {round(100 * pct / total)}%, {lv}", when))
+
+    # Starters, gym legendaries
+    for sp, kind in re.findall(r"\{ (SPECIES_\w+),\s+TYPE_\w+\s*\}, // (\w+)", (ROOT / "src/gym_hack.c").read_text()):
+        loc[sp].append((0, "Starter", f"Oak's lab: choose the {kind} type", ""))
+    for t, sp in re.findall(r"\[TYPE_(\w+)\]\s*=\s*(SPECIES_\w+),", (ROOT / "src/gym_legend.c").read_text()):
+        loc[sp].append((0, "Gym legendary", f"Appears in your gym when it's {t.title()} type (Lv 70). If it gets away, it hides in Cerulean Cave (1%).", ""))
+
+    # The safari's legendaries
+    areas_h = (ROOT / "src/data/exotic_safari_areas.h").read_text()
+    for mp, sp in re.findall(r"MAP_NUM\((MAP_EXOTIC_SAFARI_\w+)\), (SPECIES_\w+), FLAG_EXOTIC_LEGEND", areas_h):
+        s = safari_name(mp)
+        loc[sp].append((2, f"{s[0]}: {s[1]}", "Legendary (Lv 70). " + PUZZLES.get(sp[8:], ""), "post-game"))
+    for sp, need, region in re.findall(r"\{(SPECIES_\w+), FLAG_EXOTIC_LEGEND_\w+, FLAG_TEMP_\w+, (\w+), (\d)\}", areas_h):
+        loc[sp].append((2, f"{REGION_OF_SAFARI[int(region)]} Safari", "Roams: 1 in 8 chance in any area you enter (Lv 70)." + ROAM_NOTES.get(sp[8:], ""), "post-game"))
+    loc["SPECIES_TYPE_NULL"].append((2, "Alola Safari: Hano Beach", "Gift. " + PUZZLES["TYPE_NULL"], "post-game"))
+
+    # Gifts and one-off battles in Kanto's map scripts
+    for f in sorted((ROOT / "data/maps").glob("*/scripts.inc")):
+        folder = f.parent.name
+        if folder.startswith(("ExoticSafari", "Test")):
+            continue
+        text = f.read_text(errors="replace")
+        if not (folder.endswith("_Frlg") or folder.startswith("PalletTown")):
+            continue                                 # (Emerald's maps aren't in FireRed's world)
+        for kind, sp in re.findall(r"\b(givemon|setwildbattle)\s+(SPECIES_\w+)", text):
+            what = "Gift" if kind == "givemon" else "One-time battle"
+            where = prettify_map(folder)
+            loc[sp].append((1, where, what, ""))
+    return loc
+
+
+# ---------------------------------------------------------------------------------------------
+# Evolutions
+# ---------------------------------------------------------------------------------------------
+def evo_text(method, param, cond, data):
+    p = param
+    if method == "EVO_LEVEL":
+        t = f"Lv {p}" if p != "0" else "Level up"
+    elif method in ("EVO_ITEM", "EVO_ITEM_HOLD"):
+        t = data["items"].get(p, p.replace("ITEM_", "").replace("_", " ").title())
+    elif method.startswith("EVO_FRIENDSHIP"):
+        t = "High friendship"
+    elif method == "EVO_TRADE":
+        return None
+    else:
+        t = method[4:].replace("_", " ").title()
+    if "IF_GENDER, MON_FEMALE" in cond:
+        t += " (female)"
+    elif "IF_GENDER, MON_MALE" in cond:
+        t += " (male)"
+    if "IF_KNOWS_MOVE" in cond:
+        mv = re.search(r"IF_KNOWS_MOVE, (MOVE_\w+)", cond)
+        if mv:
+            t += f" knowing {data['moves'].get(mv.group(1), mv.group(1))}"
+    return t
+
+
+# ---------------------------------------------------------------------------------------------
+# The page
+# ---------------------------------------------------------------------------------------------
+CSS = """
+@page { size: Letter; margin: 0.3in; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'DejaVu Sans', Arial, sans-serif; color: #1d1d1f; }
+.page { width: 7.9in; height: 10.35in; display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: row dense;
+        grid-template-rows: repeat(3, 3.38in); gap: 0.1in; page-break-after: always; }
+.card { border: 1.5px solid #333; border-radius: 8px; padding: 6px 7px; overflow: hidden;
+        display: flex; flex-direction: column; font-size: 7.6pt; line-height: 1.28; }
+.desc { font-style: italic; color: #555; font-size: 6.9pt; margin-top: 2px; }
+.card.compact { font-size: 6.9pt; line-height: 1.2; }
+.card.compact .pic { width: 84px; height: 84px; }
+.card.compact .moves { font-size: 6.4pt; }
+.card.compact .desc { display: none; }
+.head { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #bbb; padding-bottom: 3px; }
+.num { font-weight: 700; color: #666; font-size: 8pt; }
+.name { font-weight: 800; font-size: 11pt; flex: 1; }
+.form { font-weight: 600; font-size: 8pt; color: #555; }
+.type { color: white; font-weight: 700; font-size: 6.8pt; padding: 1px 6px; border-radius: 8px;
+        text-transform: uppercase; letter-spacing: 0.3px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.top { display: flex; gap: 6px; margin-top: 3px; }
+.pic { width: 104px; height: 104px; image-rendering: pixelated; flex: none; }
+.meta { flex: 1; }
+.stats { display: grid; grid-template-columns: 22px 20px 1fr; gap: 0 3px; align-items: center; margin: 1px 0 2px; }
+.bar { height: 5px; border-radius: 3px; background: #4a90d9; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sv { text-align: right; font-weight: 700; }
+.label { font-weight: 700; color: #444; }
+.sec { margin-top: 3px; }
+.moves { margin-top: 1px; }
+.moves { font-size: 7pt; line-height: 1.32; }
+.mv { white-space: nowrap; }
+.lv { color: #777; font-size: 6pt; }
+.where { margin: 1px 0 0; padding-left: 10px; }
+.where li { margin: 0 0 1px; }
+.when { color: #777; }
+.missing { color: #a33; font-style: italic; }
+"""
+
+
+def esc(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def card(info, data, loc, prevo, family_line):
+    types = "".join(f'<span class="type" style="background:{TYPE_COLORS.get(t, "#888")}">{t.title()}</span>' for t in info["types"])
+    pic = sprite(info, data)
+    img = f'<img class="pic" src="{pic.as_uri()}">' if pic else '<div class="pic"></div>'
+    total = sum(info["stats"])
+    def color(v):
+        return "#e0533b" if v < 50 else "#f0a030" if v < 80 else "#e8d23a" if v < 100 else "#6cc04a" if v < 120 else "#2fa6a0"
+    stats = "".join(f'<span class="label">{lab}</span><span class="sv">{v}</span><div class="bar" style="width:{min(100, v / 1.6):.0f}%;background:{color(v)}"></div>'
+                    for (_, lab), v in zip(STAT_KEYS, info["stats"]))
+    abil = [data["abilities"].get(a, a) for a in info["abilities"]]
+    abil_txt = ", ".join(dict.fromkeys(a for a in abil[:2] if a and a != "-------" and a != "None"))
+    if len(abil) > 2 and abil[2] and abil[2] not in ("-------", "None") and abil[2] not in abil[:2]:
+        abil_txt += f" · <i>Hidden: {abil[2]}</i>"
+    moves = " · ".join(f'<span class="mv"><span class="lv">{"Evo" if l == 0 else l}</span> {esc(data["moves"].get(m, m))}</span>'
+                       for l, m in info["learnset"])
+    where = loc.get(info["key"], [])
+    lines = []
+    for order, place, how, when in sorted(where, key=lambda w: (w[0], w[1])):
+        when_txt = f' <span class="when">({when})</span>' if when and when not in ("Start", "post-game") else ""
+        lines.append(f"<li><b>{esc(place)}</b>: {esc(how)}{when_txt}</li>")
+    if prevo:
+        lines.append(f"<li>Evolve {esc(prevo)}</li>")
+    if not lines:
+        lines.append(f'<li class="missing">{missing_text(info)}</li>')
+    dex = info["dex_num"]
+    form = info.get("form")
+    return f"""<div data-key="{info['key']}" class="card{' tall' if info.get('tall') else ''}{' compact' if info.get('compact') else ''}">
+  <div class="head"><span class="num">#{dex:04d}</span><span class="name">{esc(info['name'])}{f' <span class="form">{esc(form)}</span>' if form else ''}</span>{types}</div>
+  <div class="top">{img}<div class="meta">
+    <div><span class="label">{esc(info['category'])} Pokémon</span> · {info['height'] / 10:g} m · {info['weight'] / 10:g} kg</div>
+    <div class="stats">{stats}</div>
+    <div><span class="label">Total</span> {total}</div>
+    <div class="sec"><span class="label">Abilities:</span> {abil_txt}</div>
+  </div></div>
+  <div class="desc">{esc(info['description'])}</div>
+  <div class="sec"><span class="label">Evolution:</span> {family_line}</div>
+  <div class="sec"><span class="label">Where to find</span><ul class="where">{''.join(lines)}</ul></div>
+  <div class="sec"><span class="label">Level-up moves</span><div class="moves">{moves}</div></div>
+</div>"""
+
+
+def missing_text(info):
+    n = info["dex_num"]
+    if 152 <= n <= 251:
+        return "Not in the game yet: coming with the Johto Safari Zone."
+    if 252 <= n <= 386:
+        return "Not in the game yet: coming with the Hoenn Safari Zone."
+    if 387 <= n <= 493:
+        return "Not in the game yet: coming with the Sinnoh Safari Zone."
+    return "Not obtainable yet."
+
+
+def family(info, by_key, data, parents):
+    """the evolution line, from its first stage: 'A → B (Lv 16) → C (Lv 32)'"""
+    root = info["key"]
+    seen = set()
+    while root in parents and root not in seen:
+        seen.add(root)
+        root = parents[root][0]
+    def walk(k):
+        sp = by_key.get(k)
+        if not sp:
+            return esc(k[8:].title())
+        label = f"<b>{esc(sp['name'])}</b>" if k == info["key"] else esc(sp["name"])
+        kids = [(t, txt) for t, txt in sp.get("children", [])]
+        if not kids:
+            return label
+        step = lambda t, txt: f'<span class="lv">({esc(txt)})</span> {walk(t)}'
+        if len(kids) == 1:
+            return f"{label} → {step(*kids[0])}"
+        return f"{label} → " + " / ".join(step(t, txt) for t, txt in kids)
+    line = walk(root)
+    return line if "→" in line else "Does not evolve"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--test", action="store_true")
+    ap.add_argument("--out", default=None)
+    args = ap.parse_args()
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    data = load()
+    dexnums = national_dex()
+    infos = OrderedDict()
+    for key, body in data["species"].items():
+        if key in ("SPECIES_NONE", "SPECIES_EGG"):
+            continue
+        info = parse_species(key, body, data)
+        if not info["dex"] or info["mega"]:
+            continue
+        info["dex_num"] = dexnums.get(info["dex"], 0)
+        if not info["dex_num"]:
+            continue
+        infos[key] = info
+    # evolution links
+    parents = {}
+    for k, sp in infos.items():
+        sp["children"] = []
+        for method, param, target, cond in sp["evos"]:
+            txt = evo_text(method, param, cond, data)
+            if txt is None or target not in infos:
+                continue
+            sp["children"].append((target, txt))
+            parents.setdefault(target, (k, txt))
+    loc = locations(data)
+    # which entries: every species' base form, plus other forms that can be found or evolved into
+    base_of = {}
+    for k, sp in infos.items():
+        base_of.setdefault(sp["dex_num"], k)
+    chosen = []
+    for k, sp in infos.items():
+        is_base = base_of[sp["dex_num"]] == k
+        if is_base or loc.get(k) or (k in parents and (loc.get(parents[k][0]) or base_of[infos[parents[k][0]]["dex_num"]] == parents[k][0] and False)):
+            if not is_base:
+                base_name = infos[base_of[sp["dex_num"]]]["name"]
+                sp["form"] = k[8:].replace(base_of[sp["dex_num"]][8:], "").strip("_").replace("_", " ").title() or None
+            chosen.append(k)
+    chosen.sort(key=lambda k: (infos[k]["dex_num"], 0 if base_of[infos[k]["dex_num"]] == k else 1))
+    if args.test:
+        chosen = ["SPECIES_BULBASAUR", "SPECIES_IVYSAUR", "SPECIES_VENUSAUR", "SPECIES_CHARMANDER", "SPECIES_CHARMELEON", "SPECIES_RESHIRAM"]
+    def render_cards(tall):
+        cards = []
+        for k in chosen:
+            sp = infos[k]
+            sp["tall"] = k in tall
+            sp["compact"] = k in compact and k not in tall
+            prevo = None
+            if k in parents:
+                pk, txt = parents[k]
+                prevo = f"{infos[pk]['name']} ({txt})"
+            cards.append((k, card(sp, data, loc, prevo, family(sp, infos, data, parents))))
+        # pages of 3 rows x 2 columns, filled in dex order; a tall card takes two rows of one
+        # column, so it may wait for the next free pair while the cards after it fill in
+        pages, queue = [], list(cards)
+        while queue:
+            free = {(r, c) for r in range(3) for c in range(2)}
+            cur, rest = [], []
+            for k, c in queue:
+                t = k in tall
+                spot = next(((r, col) for r in range(3) for col in range(2) if (r, col) in free
+                             and (not t or (r + 1, col) in free)), None)
+                if spot is None or (rest and not t and False):
+                    rest.append((k, c))
+                    continue
+                r, col = spot
+                free.discard(spot)
+                if t:
+                    free.discard((r + 1, col))
+                style = f'grid-row: {r + 1} / span {2 if t else 1}; grid-column: {col + 1};'
+                cur.append(c.replace('<div class="card', f'<div style="{style}" class="card', 1))
+                if not free:
+                    rest += queue[queue.index((k, c)) + 1:]
+                    break
+            pages.append(cur)
+            queue = rest
+        html = ("<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>"
+                + "".join(f'<div class="page">{"".join(p)}</div>' for p in pages) + "</body></html>")
+        return cards, pages, html
+
+    from playwright.sync_api import sync_playwright
+    hp = OUT_DIR / ("dex_test.html" if args.test else "dex.html")
+    out = Path(args.out) if args.out else OUT_DIR / ("dex_test.pdf" if args.test else "dex.pdf")
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page()
+        # cards whose text runs over: smaller print first (no dex text), then twice the room
+        tall, compact = set(), set()
+        for _ in range(3):
+            cards, pages, html = render_cards(tall)
+            hp.write_text(html)
+            pg.goto(hp.as_uri())
+            pg.emulate_media(media="print")
+            over = pg.evaluate("""() => Object.fromEntries([...document.querySelectorAll('.card')].map(c => [c.dataset.key, c.scrollHeight > c.clientHeight + 1]))""")
+            new = {k for k, o in over.items() if o}
+            if not new:
+                break
+            tall |= new & compact
+            compact |= new
+        pg.pdf(path=str(out), format="Letter", margin={"top": "0.3in", "bottom": "0.3in", "left": "0.3in", "right": "0.3in"},
+               print_background=True)
+        b.close()
+    print(out, len(cards), "entries,", len(pages), "pages")
+
+
+if __name__ == "__main__":
+    main()
