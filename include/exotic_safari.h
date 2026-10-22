@@ -25,5 +25,6 @@ void ExoticSafari_IsFurfrou(void);
 void ExoticSafari_TrimFurfrou(void);
 void ExoticSafari_TakeKey(void);
 void ExoticSafari_LegendCaught(void);
+unsigned short ExoticSafari_WildSpecies(unsigned short species);   // (the Ruins of Alph's Unown)
 
 #endif // GUARD_EXOTIC_SAFARI_H

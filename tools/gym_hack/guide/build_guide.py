@@ -127,7 +127,11 @@ REGIONS = [
      "west end leads to the Ruins of Alph, whose north gate opens into Ilex Forest; Route 29's gatehouse leads to the "
      "Lake of Rage, where the Red Gyarados (shiny, level 55) swims in the middle of the lake. The lake's south-west path goes "
      "to the Ice Path (slide across its ice), whose ladder drops into Dragon's Den; the den's shrine opens on the "
-     "Whirl Islands' deepest chamber. Raikou, Entei and Suicune roam."),
+     "Whirl Islands' deepest chamber. Raikou, Entei and Suicune roam once you've been in all six areas (the old man in "
+     "New Bark Town keeps count). The Ruins of Alph have four stone panels at their chambers' doors, each spelling a "
+     "word in Unown letters: ESCAPE (have an Escape Rope), WATER (a Water Stone), LIGHT (a lead that knows Flash) and "
+     "HO-OH (Ho-Oh in your party). Open all four and every one of the 28 Unown forms turns up in the ruins' grass. "
+     "The ruins' west half is reached through the little cave in its rocks."),
 ]
 
 

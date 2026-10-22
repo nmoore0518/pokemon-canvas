@@ -53,8 +53,8 @@ static const u8 sSpots_ExoticSafari_HoennDesertRuins[][3] = {{8, 3, 3}, {11, 3, 
 static const u8 sSpots_ExoticSafari_HoennIslandCave[][3] = {{4, 3, 3}, {6, 3, 3}, {8, 4, 3}, {12, 4, 3}, {3, 5, 3}, {4, 5, 3}, {11, 5, 3}, {12, 5, 3}, {3, 6, 3}, {6, 6, 3}, {8, 6, 3}, {13, 6, 3}, {3, 7, 3}, {7, 7, 3}, {6, 8, 3}, {7, 8, 3}, {9, 8, 3}, {11, 8, 3}, {12, 8, 3}, {4, 9, 3}, {8, 9, 3}, {9, 9, 3}, {12, 9, 3}, {4, 10, 3}, {5, 10, 3}, {8, 10, 3}, {5, 11, 3}, {6, 11, 3}, {4, 21, 3}, {8, 23, 3}, {12, 23, 3}, {7, 24, 3}, {9, 24, 3}, {10, 24, 3}, {3, 25, 3}, {4, 25, 3}, {5, 25, 3}, {3, 26, 3}, {5, 26, 3}, {12, 26, 3}, {13, 26, 3}, {3, 27, 3}, {7, 27, 3}, {12, 27, 3}, {7, 28, 3}, {10, 28, 3}, {5, 29, 3}, {10, 29, 3}};
 static const u8 sSpots_ExoticSafari_JohtoNewBark[][3] = {{55, 7, 3}, {52, 8, 3}, {50, 10, 3}, {53, 11, 3}, {44, 12, 3}, {45, 12, 3}, {53, 12, 3}, {43, 13, 3}, {44, 13, 3}, {50, 13, 3}, {51, 13, 3}, {20, 14, 3}, {21, 14, 3}, {23, 14, 3}, {43, 14, 3}, {25, 15, 3}, {45, 15, 3}, {47, 15, 3}, {11, 16, 3}, {15, 16, 3}, {17, 16, 3}, {42, 16, 3}, {42, 17, 3}, {43, 17, 3}, {44, 17, 3}, {45, 17, 3}, {54, 18, 3}, {58, 19, 3}, {48, 20, 3}, {53, 21, 3}, {13, 22, 3}, {58, 22, 3}, {60, 22, 3}, {8, 23, 3}, {13, 23, 3}, {11, 24, 3}, {53, 24, 3}, {54, 24, 3}, {55, 24, 3}, {4, 25, 3}, {7, 25, 3}, {8, 26, 3}, {54, 26, 3}, {55, 26, 3}, {56, 26, 3}, {61, 26, 3}, {56, 27, 3}, {60, 27, 3}};
 static const u8 sSpots_ExoticSafari_JohtoLakeOfRage[][3] = {};
-static const u8 sSpots_ExoticSafari_JohtoRuinsOfAlph[][3] = {{13, 9, 3}, {14, 9, 3}, {15, 9, 3}, {16, 9, 3}, {17, 9, 3}, {13, 10, 3}, {14, 10, 3}, {15, 10, 3}, {16, 10, 3}, {17, 10, 3}, {13, 11, 3}, {14, 11, 3}, {15, 11, 3}, {16, 11, 3}, {17, 11, 3}, {13, 12, 3}, {14, 12, 3}, {15, 12, 3}, {16, 12, 3}, {17, 12, 3}, {13, 13, 3}, {14, 13, 3}, {15, 13, 3}, {16, 13, 3}, {17, 13, 3}};
-static const u8 sSpots_ExoticSafari_JohtoIlexForest[][3] = {{57, 8, 3}, {60, 8, 3}, {52, 9, 3}, {36, 13, 3}, {38, 13, 3}, {40, 13, 3}, {64, 13, 3}, {28, 15, 3}, {29, 15, 3}, {64, 15, 3}, {17, 16, 3}, {24, 16, 3}, {31, 16, 3}, {64, 17, 3}, {23, 18, 3}, {63, 18, 3}, {52, 19, 3}, {64, 19, 3}, {39, 21, 3}, {63, 21, 3}, {36, 22, 3}, {26, 26, 3}, {25, 28, 3}, {49, 29, 3}, {21, 30, 3}, {9, 32, 3}, {72, 32, 3}, {72, 36, 3}, {50, 37, 3}, {58, 39, 3}, {73, 41, 3}, {74, 42, 3}, {20, 44, 3}, {22, 44, 3}, {44, 44, 3}, {54, 44, 3}, {41, 48, 3}, {18, 51, 3}, {34, 51, 3}, {35, 51, 3}, {37, 51, 3}, {41, 51, 3}, {42, 51, 3}, {18, 53, 3}, {19, 53, 3}, {19, 55, 3}, {18, 57, 3}, {17, 61, 3}};
+static const u8 sSpots_ExoticSafari_JohtoRuinsOfAlph[][3] = {{13, 9, 3}, {14, 9, 3}, {16, 9, 3}, {17, 9, 3}, {14, 10, 3}, {15, 10, 3}, {16, 10, 3}, {13, 11, 3}, {14, 11, 3}, {15, 11, 3}, {16, 11, 3}, {17, 11, 3}, {14, 12, 3}, {15, 12, 3}, {16, 12, 3}, {17, 12, 3}, {14, 13, 3}, {15, 13, 3}, {16, 13, 3}, {17, 13, 3}, {6, 27, 3}, {8, 27, 3}, {5, 28, 3}, {6, 28, 3}, {7, 28, 3}, {8, 28, 3}, {5, 29, 3}, {6, 29, 3}, {7, 29, 3}, {4, 30, 3}, {5, 30, 3}, {6, 30, 3}, {7, 30, 3}, {8, 30, 3}, {5, 31, 3}, {6, 31, 3}, {7, 31, 3}, {8, 31, 3}, {3, 32, 3}, {4, 32, 3}, {2, 33, 3}, {5, 33, 3}, {6, 33, 3}, {2, 34, 3}, {3, 34, 3}, {4, 34, 3}, {5, 34, 3}, {6, 34, 3}};
+static const u8 sSpots_ExoticSafari_JohtoIlexForest[][3] = {{60, 8, 3}, {61, 8, 3}, {36, 12, 3}, {41, 12, 3}, {63, 12, 3}, {57, 13, 3}, {63, 14, 3}, {17, 15, 3}, {20, 15, 3}, {25, 15, 3}, {29, 15, 3}, {17, 16, 3}, {28, 16, 3}, {36, 16, 3}, {50, 18, 3}, {48, 20, 3}, {42, 21, 3}, {64, 22, 3}, {61, 23, 3}, {62, 24, 3}, {63, 24, 3}, {31, 26, 3}, {57, 26, 3}, {58, 26, 3}, {54, 29, 3}, {22, 30, 3}, {9, 32, 3}, {31, 36, 3}, {53, 36, 3}, {72, 36, 3}, {71, 37, 3}, {24, 38, 3}, {29, 38, 3}, {44, 38, 3}, {47, 38, 3}, {58, 38, 3}, {62, 38, 3}, {72, 41, 3}, {74, 42, 3}, {27, 44, 3}, {31, 44, 3}, {64, 44, 3}, {53, 48, 3}, {19, 49, 3}, {40, 50, 3}, {18, 51, 3}, {41, 52, 3}, {17, 61, 3}};
 static const u8 sSpots_ExoticSafari_JohtoIcePath[][3] = {};
 static const u8 sSpots_ExoticSafari_JohtoDragonsDen[][3] = {{31, 6, 3}, {27, 7, 3}, {30, 7, 3}, {29, 8, 3}, {32, 8, 3}, {34, 8, 3}, {26, 10, 3}, {28, 10, 3}, {32, 10, 3}, {25, 11, 3}, {21, 12, 3}, {20, 13, 3}, {22, 13, 3}, {23, 13, 3}, {24, 13, 3}, {26, 13, 3}, {32, 13, 3}, {33, 13, 3}, {41, 13, 3}, {34, 14, 3}, {38, 14, 3}, {42, 14, 3}, {41, 16, 3}, {14, 19, 3}, {11, 20, 3}, {15, 20, 3}, {7, 27, 3}, {8, 27, 3}, {9, 27, 3}, {49, 29, 3}, {8, 30, 3}, {50, 30, 3}, {9, 31, 3}, {8, 32, 3}, {10, 32, 3}, {55, 32, 3}, {7, 33, 3}, {49, 33, 3}, {51, 33, 3}, {53, 33, 3}, {10, 36, 3}, {50, 36, 3}, {51, 36, 3}, {52, 36, 3}, {54, 46, 3}, {49, 49, 3}, {47, 50, 3}, {50, 50, 3}};
 
@@ -198,9 +198,9 @@ static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER
     {SPECIES_MANAPHY, FLAG_EXOTIC_LEGEND_MANAPHY, FLAG_TEMP_1B, 0, 5},
     {SPECIES_LATIAS, FLAG_EXOTIC_LEGEND_LATIAS, FLAG_TEMP_1B, FLAG_EXOTIC_ITEM_SOUL_DEW, 6},
     {SPECIES_LATIOS, FLAG_EXOTIC_LEGEND_LATIOS, FLAG_TEMP_1C, FLAG_EXOTIC_ITEM_SOUL_DEW, 6},
-    {SPECIES_RAIKOU, FLAG_EXOTIC_LEGEND_RAIKOU, FLAG_TEMP_1B, 0, 7},
-    {SPECIES_ENTEI, FLAG_EXOTIC_LEGEND_ENTEI, FLAG_TEMP_1C, 0, 7},
-    {SPECIES_SUICUNE, FLAG_EXOTIC_LEGEND_SUICUNE, FLAG_TEMP_1D, 0, 7},
+    {SPECIES_RAIKOU, FLAG_EXOTIC_LEGEND_RAIKOU, FLAG_TEMP_1B, FLAG_EXOTIC_BEASTS_FREE, 7},
+    {SPECIES_ENTEI, FLAG_EXOTIC_LEGEND_ENTEI, FLAG_TEMP_1C, FLAG_EXOTIC_BEASTS_FREE, 7},
+    {SPECIES_SUICUNE, FLAG_EXOTIC_LEGEND_SUICUNE, FLAG_TEMP_1D, FLAG_EXOTIC_BEASTS_FREE, 7},
 };
 #define EXOTIC_SAFARI_ROAMER_LOCALID(hideFlag) (1 + (hideFlag) - FLAG_TEMP_1B)
 
@@ -287,7 +287,7 @@ static const struct ExoticSafariStatic sExoticSafariStatics[] =
     {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ANCIENT_TOMB), SPECIES_REGISTEEL, FLAG_EXOTIC_LEGEND_REGISTEEL, FLAG_TEMP_11, SEAL_NONE, 0, 3},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_DESERT_RUINS), SPECIES_REGIROCK, FLAG_EXOTIC_LEGEND_REGIROCK, FLAG_TEMP_11, SEAL_NONE, 0, 3},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), MAP_NUM(MAP_EXOTIC_SAFARI_HOENN_ISLAND_CAVE), SPECIES_REGICE, FLAG_EXOTIC_LEGEND_REGICE, FLAG_TEMP_11, SEAL_NONE, 0, 3},
-    {MAP_GROUP(MAP_EXOTIC_SAFARI_JOHTO_ILEX_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_JOHTO_ILEX_FOREST), SPECIES_CELEBI, FLAG_EXOTIC_LEGEND_CELEBI, FLAG_TEMP_11, SEAL_NONE, 0, 4},
+    {MAP_GROUP(MAP_EXOTIC_SAFARI_JOHTO_ILEX_FOREST), MAP_NUM(MAP_EXOTIC_SAFARI_JOHTO_ILEX_FOREST), SPECIES_CELEBI, FLAG_EXOTIC_LEGEND_CELEBI, FLAG_TEMP_11, SEAL_GS_BALL, 0, 4},
     {MAP_GROUP(MAP_EXOTIC_SAFARI_JOHTO_WHIRL_ISLANDS), MAP_NUM(MAP_EXOTIC_SAFARI_JOHTO_WHIRL_ISLANDS), SPECIES_LUGIA, FLAG_EXOTIC_LEGEND_LUGIA, FLAG_TEMP_11, SEAL_NONE, 0, 1},
 };
 
@@ -353,3 +353,6 @@ static const struct ExoticSafariRegiWall sRegiWalls[] =
 #define REGI_WALL_X 7
 #define REGI_WALL_Y 19
 static const u16 sWishSeal[] = {SPECIES_REGIROCK, SPECIES_REGICE, SPECIES_REGISTEEL, SPECIES_LATIAS, SPECIES_LATIOS, SPECIES_KYOGRE, SPECIES_DEOXYS};
+// Johto: the areas whose visits free the beasts, and the Ruins of Alph (its Unown)
+static const u16 sJohtoVisitMaps[] = {MAP_EXOTIC_SAFARI_JOHTO_NEW_BARK, MAP_EXOTIC_SAFARI_JOHTO_LAKE_OF_RAGE, MAP_EXOTIC_SAFARI_JOHTO_RUINS_OF_ALPH, MAP_EXOTIC_SAFARI_JOHTO_ILEX_FOREST, MAP_EXOTIC_SAFARI_JOHTO_ICE_PATH, MAP_EXOTIC_SAFARI_JOHTO_DRAGONS_DEN};
+#define EXOTIC_SAFARI_UNOWN_MAP MAP_EXOTIC_SAFARI_JOHTO_RUINS_OF_ALPH

@@ -267,11 +267,14 @@ PUZZLES = {
     "KYOGRE": "Rises in the open sea west of Pacifidlog Town when your lead holds the Blue Orb (on Sootopolis City's south-west lawn). Surf to it.",
     "JIRACHI": "Wakes on the little island in Sootopolis City's lake (Sky Pillar's cave, west of Pacifidlog, leads to the city) once Regirock, Regice, Registeel, Latias, Latios, Kyogre and Deoxys are all caught. Surf to it.",
     "DEOXYS": "Find the Meteorite near Mt. Chimney's summit; then Deoxys appears on the lava lake's shore. Use the Meteorite on it to change its Forme.",
-    "LUGIA": "In the Whirl Islands' deepest chamber, on the island in its middle: the door of Dragon's Den's shrine leads there (Dragon's Den is down the ladder in the Ice Path).",
-    "CELEBI": "In front of the little shrine in Ilex Forest.",
+    "LUGIA": "Find the Silver Wing in the Ice Path (on the shelf by the ladder, past the ice); then the elder at Dragon's Den's shrine steps aside, and the shrine's door leads to the Whirl Islands' deepest chamber, where Lugia waits on the island in its middle.",
+    "CELEBI": "Find the GS Ball in the Ruins of Alph (its west part, through the little cave in the rocks); then Celebi appears in front of Ilex Forest's shrine.",
     "TYPE_NULL": "A gift from Hano Beach's caretaker once you've caught Rowlet, Litten and Popplio.",
 }
-ROAM_NOTES = {"CALYREX": " Starts roaming once Spectrier is caught.",
+BEAST_NOTE = (" Starts roaming once you've been in all six Johto areas (New Bark Town, the Lake of Rage, the "
+              "Ruins of Alph, Ilex Forest, the Ice Path, Dragon's Den); the old man in New Bark Town keeps count.")
+ROAM_NOTES = {"RAIKOU": BEAST_NOTE, "ENTEI": BEAST_NOTE, "SUICUNE": BEAST_NOTE,
+              "CALYREX": " Starts roaming once Spectrier is caught.",
               "LATIAS": " Starts roaming once the Soul Dew is found (on a raft in Pacifidlog Town).",
               "LATIOS": " Starts roaming once the Soul Dew is found (on a raft in Pacifidlog Town).",
               "LANDORUS": " Starts roaming once Thundurus is caught. Once both are caught, the shrine keeper on Skyarrow Bridge gives the Reveal Glass."}

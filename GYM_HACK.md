@@ -903,6 +903,17 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          CAVE (Dragon's Den) -> the shrine's door LUGIA (Whirl Islands' Lugia chamber, Lugia on its
          island). Gen 2 Pokémon wild (Unown A, L, P, H and ? in the ruins), the starters rare.
          Raikou, Entei and Suicune roam (flags 0x3D0-0x3D4). Ho-Oh is gym-only.
+   - [x] Johto round 2 (Nick's review): woods over Ilex Forest's south gatehouse (it led nowhere).
+         Raikou, Entei and Suicune roam once every one of the six areas has been visited (flags
+         0x4C0-0x4C6; an old man in New Bark Town keeps count). Lugia: the Dragon's Den elder bars
+         the shrine's door until the Silver Wing is found (the Ice Path; a keepsake, 0x4C7). Celebi:
+         comes to the Ilex shrine once the GS Ball is found (the Ruins of Alph's west half, 0x4C8;
+         seal 33). The ruins' west half (Union Cave's side in HGSS) is reached by its two cave mouths,
+         joined, and a gap in the lower plateau's cliff. The Unown: four stone panels at the
+         chambers' doors (ESCAPE: an Escape Rope; WATER: a Water Stone; LIGHT: a lead that knows
+         Flash; HO-OH: Ho-Oh in the party; 0x4C9-0x4CC); once all are open, every wild Unown there is
+         any of the 28 forms (`ExoticSafari_WildSpecies`, from `CreateWildMon`). The Red Gyarados
+         stays as it is. (0x0B0-0x0BF looked free but the game sets them: don't use them.)
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

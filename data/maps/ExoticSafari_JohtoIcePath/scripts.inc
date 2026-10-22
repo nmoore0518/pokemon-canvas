@@ -11,3 +11,12 @@ ExoticSafari_JohtoIcePath_OnTransition::
 ExoticSafari_JohtoIcePath_OnLoad::
 	special ExoticSafari_AreaOnLoad
 	end
+
+ExoticSafari_JohtoIcePath_EventScript_SilverWing::
+	lock
+	setflag FLAG_EXOTIC_SILVER_WING
+	bufferstring STR_VAR_1, ExoticSafari_JohtoIcePath_EventScript_SilverWing_Name
+	goto ExoticSafari_EventScript_JohtoKeepsake
+
+ExoticSafari_JohtoIcePath_EventScript_SilverWing_Name:
+	.string "SILVER WING$"

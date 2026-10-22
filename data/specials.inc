@@ -757,6 +757,8 @@ gSpecials::
 	def_special ExoticSafari_RegiLeadKnows
 	def_special ExoticSafari_OpenRegiWall
 	def_special ExoticSafari_StartStillness
+	def_special ExoticSafari_BeastSage
+	def_special ExoticSafari_UnownPanel
 	def_special ChooseRotomForAppliance, waitstate=1
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk

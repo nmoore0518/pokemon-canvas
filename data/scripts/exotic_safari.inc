@@ -66,6 +66,7 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_METEORITE, ExoticSafari_EventScript_SealMeteorite
 	case SEAL_BLUE_ORB, ExoticSafari_EventScript_SealBlueOrb
 	case SEAL_WISH, ExoticSafari_EventScript_SealWish
+	case SEAL_GS_BALL, ExoticSafari_EventScript_SealGsBall
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -296,6 +297,89 @@ ExoticSafari_EventScript_RegiWallOpen::
 
 ExoticSafari_EventScript_RegiWallSealed::
 	msgbox ExoticSafari_Text_RegiWallSealed
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealGsBall::
+	msgbox ExoticSafari_Text_SealGsBall
+	releaseall
+	end
+
+@ Johto: a keepsake picked up (its flag set; STR_VAR_1 its name)
+ExoticSafari_EventScript_JohtoKeepsake::
+	removeobject VAR_LAST_TALKED
+	playfanfare MUS_RG_OBTAIN_KEY_ITEM
+	message ExoticSafari_Text_FoundKey
+	waitmessage
+	waitfanfare
+	msgbox ExoticSafari_Text_KeyKept
+	release
+	end
+
+@ Johto: the old man in New Bark Town (the roaming beasts: every area visited)
+ExoticSafari_EventScript_BeastSage::
+	lock
+	faceplayer
+	special ExoticSafari_BeastSage
+	goto_if_eq VAR_RESULT, 6, ExoticSafari_EventScript_BeastSageDone
+	msgbox ExoticSafari_Text_BeastSage
+	release
+	end
+
+ExoticSafari_EventScript_BeastSageDone::
+	msgbox ExoticSafari_Text_BeastSageDone
+	release
+	end
+
+@ Johto: the Dragon's Den elder, at the shrine's door until the Silver Wing is found
+ExoticSafari_EventScript_DenElder::
+	lock
+	faceplayer
+	msgbox ExoticSafari_Text_DenElder
+	release
+	end
+
+@ Johto: a stone panel in the Ruins of Alph (VAR_0x8004: which)
+ExoticSafari_EventScript_UnownPanel::
+	special ExoticSafari_UnownPanel
+	goto_if_eq VAR_RESULT, 0, ExoticSafari_EventScript_UnownPanelOpen
+	switch VAR_0x8004
+	case 0, ExoticSafari_EventScript_UnownPanelEscape
+	case 1, ExoticSafari_EventScript_UnownPanelWater
+	case 2, ExoticSafari_EventScript_UnownPanelLight
+	msgbox ExoticSafari_Text_UnownPanelHoOh
+	goto ExoticSafari_EventScript_UnownPanelAnswer
+
+ExoticSafari_EventScript_UnownPanelEscape::
+	msgbox ExoticSafari_Text_UnownPanelEscape
+	goto ExoticSafari_EventScript_UnownPanelAnswer
+
+ExoticSafari_EventScript_UnownPanelWater::
+	msgbox ExoticSafari_Text_UnownPanelWater
+	goto ExoticSafari_EventScript_UnownPanelAnswer
+
+ExoticSafari_EventScript_UnownPanelLight::
+	msgbox ExoticSafari_Text_UnownPanelLight
+	goto ExoticSafari_EventScript_UnownPanelAnswer
+
+ExoticSafari_EventScript_UnownPanelAnswer::
+	goto_if_eq VAR_RESULT, 1, ExoticSafari_EventScript_ReleaseAll
+	closemessage
+	playse SE_M_STRENGTH
+	special DoSealedChamberShakingEffect_Short
+	waitstate
+	goto_if_eq VAR_RESULT, 3, ExoticSafari_EventScript_UnownPanelsAll
+	msgbox ExoticSafari_Text_UnownPanelOpens
+	releaseall
+	end
+
+ExoticSafari_EventScript_UnownPanelsAll::
+	msgbox ExoticSafari_Text_UnownPanelsAll
+	releaseall
+	end
+
+ExoticSafari_EventScript_UnownPanelOpen::
+	msgbox ExoticSafari_Text_UnownPanelOpen
 	releaseall
 	end
 
@@ -1333,3 +1417,66 @@ ExoticSafari_Text_RegiWallIce:
 
 ExoticSafari_Text_RegiWallOpen:
 	.string "There's a big hole in the wall.$"
+
+ExoticSafari_Text_SealGsBall:
+	.string "An old wooden shrine to the forest's\n"
+	.string "guardian…\p"
+	.string "There's a round hollow in it, the\n"
+	.string "shape of a POKé BALL with a gold\l"
+	.string "and silver shell. Somebody in the\l"
+	.string "RUINS OF ALPH may have seen one.$"
+
+ExoticSafari_Text_BeastSage:
+	.string "Three legendary beasts roam Johto,\n"
+	.string "fast as lightning, fire and wind.\p"
+	.string "They only show themselves to a\n"
+	.string "trainer who knows every corner of\l"
+	.string "this land.\p"
+	.string "You've been to {STR_VAR_1} of its {STR_VAR_2}\n"
+	.string "places so far.$"
+
+ExoticSafari_Text_BeastSageDone:
+	.string "You've been everywhere in Johto!\p"
+	.string "RAIKOU, ENTEI and SUICUNE are\n"
+	.string "running free now. Keep your eyes\l"
+	.string "open, wherever you go.$"
+
+ExoticSafari_Text_DenElder:
+	.string "This shrine guards the way to the\n"
+	.string "silver guardian of the sea.\p"
+	.string "Only one who carries its SILVER WING\n"
+	.string "may pass. They say it was lost in\l"
+	.string "the ICE PATH.$"
+
+ExoticSafari_Text_UnownPanelEscape:
+	.string "UNOWN letters are carved into the\n"
+	.string "stone panel. They spell…\p"
+	.string "ESCAPE.$"
+
+ExoticSafari_Text_UnownPanelWater:
+	.string "UNOWN letters are carved into the\n"
+	.string "stone panel. They spell…\p"
+	.string "WATER.$"
+
+ExoticSafari_Text_UnownPanelLight:
+	.string "UNOWN letters are carved into the\n"
+	.string "stone panel. They spell…\p"
+	.string "LIGHT.$"
+
+ExoticSafari_Text_UnownPanelHoOh:
+	.string "UNOWN letters are carved into the\n"
+	.string "stone panel. They spell…\p"
+	.string "HO-OH.$"
+
+ExoticSafari_Text_UnownPanelOpens:
+	.string "The panel slid open!\p"
+	.string "{STR_VAR_1} of the 4 panels are open.$"
+
+ExoticSafari_Text_UnownPanelsAll:
+	.string "The panel slid open!\p"
+	.string "The whole ruin rumbled… UNOWN of\n"
+	.string "every shape are drifting through the\l"
+	.string "RUINS OF ALPH now!$"
+
+ExoticSafari_Text_UnownPanelOpen:
+	.string "The stone panel stands open.$"

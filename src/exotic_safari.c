@@ -432,6 +432,8 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return !FlagGet(FLAG_EXOTIC_ITEM_METEORITE);
     case SEAL_BLUE_ORB:     // (Kyogre: a lead holding the Blue Orb)
         return !(Lead() && GetMonData(Lead(), MON_DATA_HELD_ITEM) == ITEM_BLUE_ORB);
+    case SEAL_GS_BALL:      // (Celebi: the GS Ball found)
+        return !FlagGet(FLAG_EXOTIC_GS_BALL);
     case SEAL_WISH:         // (Jirachi: the zone's other legendaries caught)
         for (i = 0; i < ARRAY_COUNT(sWishSeal); i++)
             left += !FlagGet(CaughtFlag(sWishSeal[i]));
@@ -520,6 +522,81 @@ void ExoticSafari_CountStakes(void)
     ConvertIntToDecimalStringN(gStringVar2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 2);
 }
 
+// ---------------------------------------------------------------------------------------------
+// Johto: the beasts (free once every area has been visited), the Ruins of Alph's Unown panels
+// ---------------------------------------------------------------------------------------------
+static u32 JohtoVisited(void)
+{
+    u32 i, n = 0;
+    for (i = 0; i < ARRAY_COUNT(sJohtoVisitMaps); i++)
+        n += FlagGet(FLAG_EXOTIC_JOHTO_VISIT_FIRST + i) != 0;
+    return n;
+}
+
+// Special (the old man in New Bark Town): VAR_RESULT = how many of the areas the player has been
+// in (STR_VAR_1), STR_VAR_2 = how many there are
+void ExoticSafari_BeastSage(void)
+{
+    gSpecialVar_Result = JohtoVisited();
+    ConvertIntToDecimalStringN(gStringVar1, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 1);
+    ConvertIntToDecimalStringN(gStringVar2, ARRAY_COUNT(sJohtoVisitMaps), STR_CONV_MODE_LEFT_ALIGN, 1);
+    if (gSpecialVar_Result == ARRAY_COUNT(sJohtoVisitMaps))
+        FlagSet(FLAG_EXOTIC_BEASTS_FREE);
+}
+
+#define UNOWN_PANELS 4
+static u32 UnownPanelsOpen(void)
+{
+    u32 i, n = 0;
+    for (i = 0; i < UNOWN_PANELS; i++)
+        n += FlagGet(FLAG_EXOTIC_UNOWN_PANEL_FIRST + i) != 0;
+    return n;
+}
+
+// Special (a chamber's stone panel, its words read): VAR_0x8004 = which (0 ESCAPE: an Escape Rope in
+// the bag, 1 WATER: a Water Stone, 2 LIGHT: a lead that knows Flash, 3 HO-OH: Ho-Oh in the party).
+// VAR_RESULT: 0 already open, 1 nothing answers it, 2 it opens, 3 it opens and it's the last.
+// STR_VAR_1: how many are open now
+void ExoticSafari_UnownPanel(void)
+{
+    u32 k = gSpecialVar_0x8004 % UNOWN_PANELS;
+    bool32 ok;
+    if (FlagGet(FLAG_EXOTIC_UNOWN_PANEL_FIRST + k))
+    {
+        gSpecialVar_Result = 0;
+        return;
+    }
+    switch (k)
+    {
+    case 0:  ok = CheckBagHasItem(ITEM_ESCAPE_ROPE, 1); break;
+    case 1:  ok = CheckBagHasItem(ITEM_WATER_STONE, 1); break;
+    case 2:  ok = Lead() && MonKnowsMove(Lead(), MOVE_FLASH); break;
+    default: ok = PartyHas(SPECIES_HO_OH); break;
+    }
+    if (!ok)
+    {
+        gSpecialVar_Result = 1;
+        return;
+    }
+    FlagSet(FLAG_EXOTIC_UNOWN_PANEL_FIRST + k);
+    ConvertIntToDecimalStringN(gStringVar1, UnownPanelsOpen(), STR_CONV_MODE_LEFT_ALIGN, 1);
+    gSpecialVar_Result = UnownPanelsOpen() == UNOWN_PANELS ? 3 : 2;
+}
+
+// A wild Pokémon about to be made: in the Ruins of Alph, once every panel is open, an Unown is any
+// of its 28 forms
+u16 ExoticSafari_WildSpecies(u16 species)
+{
+    u32 k;
+    bool32 unown = species == SPECIES_UNOWN || (species >= SPECIES_UNOWN_B && species <= SPECIES_UNOWN_QUESTION);
+    if (!unown || UnownPanelsOpen() < UNOWN_PANELS
+     || gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(EXOTIC_SAFARI_UNOWN_MAP)
+     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(EXOTIC_SAFARI_UNOWN_MAP))
+        return species;
+    k = Random() % 28;
+    return k == 0 ? SPECIES_UNOWN : SPECIES_UNOWN_B + k - 1;
+}
+
 // Special (each area's ON_TRANSITION): its static legendaries shown or not, the roamers placed
 void ExoticSafari_AreaOnTransition(void)
 {
@@ -541,6 +618,15 @@ void ExoticSafari_AreaOnTransition(void)
         if (FlagGet(s->caughtFlag) || SealLeft(s) != 0)
             FlagSet(s->hideFlag);
     }
+    // Johto: the areas the player has been in (all six free the beasts)
+    for (i = 0; i < ARRAY_COUNT(sJohtoVisitMaps); i++)
+    {
+        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(sJohtoVisitMaps[i])
+         && gSaveBlock1Ptr->location.mapNum == MAP_NUM(sJohtoVisitMaps[i]))
+            FlagSet(FLAG_EXOTIC_JOHTO_VISIT_FIRST + i);
+    }
+    if (JohtoVisited() == ARRAY_COUNT(sJohtoVisitMaps))
+        FlagSet(FLAG_EXOTIC_BEASTS_FREE);
     if (area == NULL)
         return;
     for (i = 0; i < EXOTIC_SAFARI_ROAMER_COUNT; i++)

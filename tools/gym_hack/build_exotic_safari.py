@@ -1196,6 +1196,7 @@ def main():
               "#define SEAL_METEORITE 30   // (Deoxys: the Meteorite found on Mt. Chimney)",
               "#define SEAL_BLUE_ORB 31    // (Kyogre: a lead holding the Blue Orb)",
               "#define SEAL_WISH     32    // (Jirachi: the zone's other legendaries caught)",
+              "#define SEAL_GS_BALL  33    // (Celebi: the GS Ball found)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]

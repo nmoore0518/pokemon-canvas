@@ -1218,19 +1218,19 @@
 #define FLAG_0x4BD               0x4BD
 #define FLAG_0x4BE               0x4BE
 #define FLAG_0x4BF               0x4BF
-#define FLAG_0x4C0               0x4C0
-#define FLAG_0x4C1               0x4C1
-#define FLAG_0x4C2               0x4C2
-#define FLAG_0x4C3               0x4C3
-#define FLAG_0x4C4               0x4C4
-#define FLAG_0x4C5               0x4C5
-#define FLAG_0x4C6               0x4C6
-#define FLAG_0x4C7               0x4C7
-#define FLAG_0x4C8               0x4C8
-#define FLAG_0x4C9               0x4C9
-#define FLAG_0x4CA               0x4CA
-#define FLAG_0x4CB               0x4CB
-#define FLAG_0x4CC               0x4CC
+#define FLAG_EXOTIC_JOHTO_VISIT_FIRST  0x4C0   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_JOHTO_VISIT_1      0x4C1   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_JOHTO_VISIT_2      0x4C2   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_JOHTO_VISIT_3      0x4C3   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_JOHTO_VISIT_4      0x4C4   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_JOHTO_VISIT_5      0x4C5   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_BEASTS_FREE        0x4C6   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_SILVER_WING        0x4C7   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_GS_BALL            0x4C8   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_UNOWN_PANEL_FIRST  0x4C9   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_UNOWN_PANEL_1      0x4CA   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_UNOWN_PANEL_2      0x4CB   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
+#define FLAG_EXOTIC_UNOWN_PANEL_3      0x4CC   // (the Johto zone: 0x0B0-0x0BF are set by the game itself)
 #define FLAG_0x4CD               0x4CD
 #define FLAG_0x4CE               0x4CE
 #define FLAG_0x4CF               0x4CF

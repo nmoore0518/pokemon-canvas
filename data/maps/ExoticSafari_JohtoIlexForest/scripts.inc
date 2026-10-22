@@ -21,3 +21,8 @@ ExoticSafari_JohtoIlexForest_EventScript_LegendCelebi::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_CELEBI
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_JohtoIlexForest_EventScript_SealCelebi::
+	lockall
+	setvar VAR_0x8004, 47
+	goto ExoticSafari_EventScript_Seal
