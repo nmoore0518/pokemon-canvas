@@ -1,4 +1,5 @@
 #include "global.h"
+#include "exotic_safari.h"
 #include "malloc.h"
 #include "apprentice.h"
 #include "battle.h"
@@ -4638,7 +4639,7 @@ enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode m
         return SPECIES_NONE;
     }
 
-    return targetSpecies;
+    return ExoticSafari_EvolvedForm(mon, targetSpecies);   // (Pokémon Canvas: Alcremie's creams)
 }
 
 bool8 IsMonPastEvolutionLevel(struct Pokemon *mon)

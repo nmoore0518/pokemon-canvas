@@ -63,6 +63,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ExoticSafari_SinnohHallOfOrigin_EventScript_SealArceus"
+    },
+    {
+      "type": "hidden_item",
+      "x": 15,
+      "y": 6,
+      "elevation": 3,
+      "item": "ITEM_ADAMANT_CRYSTAL",
+      "flag": "FLAG_EXOTIC_HIDDEN_ADAMANT_CRYSTAL",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

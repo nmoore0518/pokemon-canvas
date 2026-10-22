@@ -156,7 +156,7 @@ def keep_cells(area):
     a = AREAS[area]
     out = [p for _, (_, cells, arr, _) in a["links"].items() for p in (cells if isinstance(cells, list) else []) + [arr]]
     out += [p for n, ar, p in RELICS if ar == area] + ([CARETAKER] if area == "RESORT" else [])
-    return out + [p for _, p in a["statics"]] + [p for _, p in a["items"]]
+    return out + [p for _, p in a["statics"]] + [p for _, p in a["items"] if p]
 
 
 # ---------------------------------------------------------------------------------------------
@@ -489,14 +489,16 @@ AREAS = {
             "VOLCANO": ("edge", [(x, 19) for x in range(16, 60)], (40, 18), ("VOLCANO", "RESORT")),
         },
         "remove_holes": [(64, 13)],
-        "land": land("YUNGOOS", "PIKIPEK", "RATTATA_ALOLA", "MEOWTH_ALOLA", "ORICORIO_POM_POM", "CUTIEFLY",
-                     "GRIMER_ALOLA", "EXEGGUTOR_ALOLA", "RAICHU_ALOLA", "PERSIAN_ALOLA", ("ROWLET", 48, 50), ("PHEROMOSA", 55, 58)),
+        "land": land("YUNGOOS", "PIKIPEK", "RATTATA_ALOLA", "MEOWTH_ALOLA", "ORICORIO_POM_POM", "CUTIEFLY|COMFEY",
+                     "GRIMER_ALOLA", "EXEGGUTOR_ALOLA", "RAICHU_ALOLA", "MUDBRAY", ("ROWLET", 48, 50), ("PHEROMOSA", 55, 58)),
         "water": [SEA, ("PYUKUMUKU", 48, 52), ("MAREANIE", 48, 52), ("BRUXISH", 50, 54), ("DHELMISE", 52, 55)],
         "fishing": [("MAGIKARP", 45, 50), ("WISHIWASHI", 45, 50),
                     ("WISHIWASHI", 48, 52), ("MAREANIE", 48, 52), ("BRUXISH", 48, 52),
                     ("BRUXISH", 50, 54), ("WISHIWASHI", 50, 54), ("TOXAPEX", 50, 54), ("DHELMISE", 52, 55), ("GYARADOS", 52, 55)],
         "statics": [("MAGEARNA", (65, 14)), ("MELTAN", (10, 7))],
         "items": [],
+        # (Silvally's Memories, hidden about the zone: each where its type would be at home)
+        "hidden": [("FLYING_MEMORY", None), ("ELECTRIC_MEMORY", None), ("FAIRY_MEMORY", None)],
     },
     "BEACH": {
         "map": "ExoticSafari_AlolaBeach", "build": beach, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaBeach"),
@@ -512,6 +514,7 @@ AREAS = {
                     ("BRUXISH", 50, 54), ("TOXAPEX", 50, 54), ("WISHIWASHI", 50, 54), ("DHELMISE", 52, 55), ("POPPLIO", 48, 50)],
         "statics": [("COSMOG", (11, 21))],
         "items": [],
+        "hidden": [("GROUND_MEMORY", None), ("FIGHTING_MEMORY", None), ("BUG_MEMORY", None)],
     },
     "OCEAN": {
         "map": "ExoticSafari_AlolaOcean", "build": ocean, "tilesets": ("gTileset_General", "gTileset_Pacifidlog"),
@@ -531,6 +534,7 @@ AREAS = {
                     ("BRUXISH", 50, 54), ("DHELMISE", 50, 54), ("TOXAPEX", 50, 54), ("WAILORD", 52, 55), ("POIPOLE", 55, 58)],
         "statics": [("ZERAORA", (OCEAN_DX + 18, OCEAN_DY + 14 - 9))],
         "items": [],
+        "hidden": [("WATER_MEMORY", None), ("POISON_MEMORY", None)],
     },
     "RUINS": {
         "map": "ExoticSafari_AlolaRuins", "build": ruins, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaRuins"),
@@ -539,11 +543,12 @@ AREAS = {
             "OCEAN": ("edge", [R(47, y) for y in range(9, 13)], R(46, 10), ("OCEAN", "RUINS")),
         },
         "remove_holes": [R(24, 24)],
-        "land": land("FOMANTIS", "MORELULL", "GRUBBIN", "CHARJABUG", "DEWPIDER", "STUFFUL", "ORICORIO_SENSU", "MIMIKYU",
-                     "LURANTIS", "SHIINOTIC", ("KARTANA", 55, 58), ("XURKITREE", 55, 58)),
+        "land": land("FOMANTIS", "MORELULL", "GRUBBIN", "BOUNSWEET", "KOMALA", "STUFFUL", "ORICORIO_SENSU", "MIMIKYU",
+                     "LURANTIS", "ORANGURU|PASSIMIAN", ("KARTANA", 55, 58), ("XURKITREE", 55, 58)),
         "water": [("DEWPIDER", 48, 52), ("WISHIWASHI", 48, 52), ("ARAQUANID", 50, 54), ("BRUXISH", 50, 54), ("ARAQUANID", 52, 55)],
         "statics": [("MARSHADOW", R(24, 25))],
         "items": [("DUSK_STONE", R(6, 33))],
+        "hidden": [("GRASS_MEMORY", None), ("GHOST_MEMORY", None), ("PSYCHIC_MEMORY", None)],
     },
     "VOLCANO": {
         "map": "ExoticSafari_AlolaVolcano", "build": volcano, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaVolcano"),
@@ -556,14 +561,15 @@ AREAS = {
             "CAVE_DOWN": ("warp", [V(39, 19)], V(39, 20), ("VOLCANO", "CAVE_UP")),
         },
         "remove_holes": [V(29, 7), V(42, 39)],
-        "land": land("SALANDIT", "ROCKRUFF", "GEODUDE_ALOLA", "CUBONE", "ORICORIO", "MAROWAK_ALOLA", "GRAVELER_ALOLA",
-                     "TURTONATOR", "MINIOR", "SALAZZLE", ("LITTEN", 48, 50), ("BLACEPHALON", 55, 58)),
+        "land": land("SALANDIT", "ROCKRUFF", "GEODUDE_ALOLA", "CUBONE", "ORICORIO", "MAROWAK_ALOLA", "JANGMO_O",
+                     "TURTONATOR", "MINIOR", "TOGEDEMARU", ("LITTEN", 48, 50), ("BLACEPHALON", 55, 58)),
         "water": [SEA, ("MAREANIE", 48, 52), ("TENTACOOL", 48, 52), ("TOXAPEX", 50, 54), ("WAILMER", 50, 54)],
         "fishing": [("MAGIKARP", 45, 50), ("WISHIWASHI", 45, 50),
                     ("WISHIWASHI", 48, 52), ("MAREANIE", 48, 52), ("BRUXISH", 48, 52),
                     ("BRUXISH", 50, 54), ("TOXAPEX", 50, 54), ("WISHIWASHI", 50, 54), ("DHELMISE", 52, 55), ("GYARADOS", 52, 55)],
         "statics": [("SOLGALEO", V(29, 8)), ("NECROZMA", V(38, 11))],
-        "items": [("SUN_STONE", V(19, 10))],
+        "items": [("SUN_STONE", V(19, 10)), ("N_SOLARIZER", None)],
+        "hidden": [("FIRE_MEMORY", None), ("ROCK_MEMORY", None), ("DRAGON_MEMORY", None)],
     },
     "SNOW": {
         "map": "ExoticSafari_AlolaLanakila", "build": lanakila, "tilesets": ("gTileset_General_Frlg", "gTileset_AlolaLanakila"),
@@ -573,15 +579,16 @@ AREAS = {
                        ("RESORT", "SNOW")),
         },
         "remove_holes": [(7, 17), (14, 61)],
-        "land": land("VULPIX_ALOLA", "SANDSHREW_ALOLA", "CRABRAWLER", "SNORUNT", "VANILLISH", "CRABOMINABLE",
+        "land": land("VULPIX_ALOLA", "SANDSHREW_ALOLA", "CRABRAWLER", "SNORUNT", "DRAMPA", "CRABOMINABLE",
                      "SANDSLASH_ALOLA", "ABSOL", "SNEASEL", "FROSLASS", ("CELESTEELA", 55, 58), ("GUZZLORD", 55, 58)),
         "water": [SEA, ("MANTYKE", 48, 52), ("PYUKUMUKU", 48, 52), ("MANTINE", 50, 54), ("DHELMISE", 52, 55)],
         "statics": [("LUNALA", (11, 5))],
-        "items": [("MOON_STONE", (5, 9))],
+        "items": [("MOON_STONE", (5, 9)), ("N_LUNARIZER", None)],
+        "hidden": [("ICE_MEMORY", None), ("STEEL_MEMORY", None), ("DARK_MEMORY", None)],
     },
 }
 ROAMERS = ["TAPU_KOKO", "TAPU_LELE", "TAPU_BULU", "TAPU_FINI"]
-UNIQUE_ITEMS = set()
+UNIQUE_ITEMS = {"N_SOLARIZER", "N_LUNARIZER"}
 
 # What each static legendary waits for (src/exotic_safari.c; until then a hint where it will be)
 CONDITIONS = {

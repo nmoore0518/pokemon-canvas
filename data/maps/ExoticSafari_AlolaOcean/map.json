@@ -667,6 +667,26 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ExoticSafari_AlolaOcean_EventScript_SealZeraora"
+    },
+    {
+      "type": "hidden_item",
+      "x": 16,
+      "y": 22,
+      "elevation": 3,
+      "item": "ITEM_WATER_MEMORY",
+      "flag": "FLAG_EXOTIC_HIDDEN_WATER_MEMORY",
+      "quantity": 1,
+      "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 17,
+      "y": 12,
+      "elevation": 3,
+      "item": "ITEM_POISON_MEMORY",
+      "flag": "FLAG_EXOTIC_HIDDEN_POISON_MEMORY",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

@@ -51,6 +51,10 @@ ExoticSafari_AlolaVolcano_EventScript_ItemSunStone::
 	finditem ITEM_SUN_STONE
 	end
 
+ExoticSafari_AlolaVolcano_EventScript_ItemNSolarizer::
+	finditem ITEM_N_SOLARIZER
+	end
+
 ExoticSafari_AlolaVolcano_EventScript_Relic4::
 	lock
 	setvar VAR_0x8004, 4

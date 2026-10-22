@@ -336,6 +336,36 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ExoticSafari_AlolaBeach_EventScript_SealCosmog"
+    },
+    {
+      "type": "hidden_item",
+      "x": 9,
+      "y": 34,
+      "elevation": 3,
+      "item": "ITEM_GROUND_MEMORY",
+      "flag": "FLAG_EXOTIC_HIDDEN_GROUND_MEMORY",
+      "quantity": 1,
+      "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 14,
+      "y": 28,
+      "elevation": 3,
+      "item": "ITEM_FIGHTING_MEMORY",
+      "flag": "FLAG_EXOTIC_HIDDEN_FIGHTING_MEMORY",
+      "quantity": 1,
+      "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 11,
+      "y": 37,
+      "elevation": 3,
+      "item": "ITEM_BUG_MEMORY",
+      "flag": "FLAG_EXOTIC_HIDDEN_BUG_MEMORY",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

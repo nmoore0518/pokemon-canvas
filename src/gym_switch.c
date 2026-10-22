@@ -139,6 +139,7 @@ void GymSwitch_AfterWin(void)
     if (!GymChallenge_WasBoss())
         return;
     FlagSet(FLAG_GYM_TYPE_MASTERED + CurrentType());
+    // (and its plate hides in the gym from now on: src/form_items.c)
     if (save->switchTickets < 0xFF && CountTypes(FALSE) != 0)    // (no ticket once there's no new type)
         save->switchTickets++;
     if (save->switchesEarned < 0xFF)

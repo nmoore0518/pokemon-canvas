@@ -229,8 +229,8 @@ def safari_section():
                 continue
             png, legend, (w, h) = M.render(name, names, sprite_for, label)
             title = names.get(M.map_const(name), name)
-            wild = ", ".join(dict.fromkeys(pretty_species(s) for s, *_ in a.get("land", [])))
-            water = ", ".join(dict.fromkeys(pretty_species(s) for s, *_ in a.get("water", []) + a.get("fishing", [])))
+            wild = ", ".join(dict.fromkeys(pretty_species(n) for s, *_ in a.get("land", []) for n in s.split("|")))
+            water = ", ".join(dict.fromkeys(pretty_species(n) for s, *_ in a.get("water", []) + a.get("fishing", []) for n in s.split("|")))
             items = "".join(f'<li><span class="dot" style="background:rgb{color}">{n}</span> {esc(t)}</li>' for n, t, color in legend)
             if h > w * 0.8:                          # (tall maps: as tall as fits under the heading)
                 size = f"height:{min(7.0, h * 0.12):.2f}in;width:auto"

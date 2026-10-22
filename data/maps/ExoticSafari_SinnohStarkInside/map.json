@@ -55,5 +55,16 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "hidden_item",
+      "x": 19,
+      "y": 4,
+      "elevation": 3,
+      "item": "ITEM_GRISEOUS_CORE",
+      "flag": "FLAG_EXOTIC_HIDDEN_GRISEOUS_CORE",
+      "quantity": 1,
+      "underfoot": false
+    }
+  ]
 }

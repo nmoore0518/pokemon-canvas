@@ -620,6 +620,20 @@ def patch_snow(tilesets):
     (d / "metatile_attributes.bin").write_bytes(b)
 
 
+def pick_spot(g, beh, reach, taken, warps, seed):
+    """A spot for an item: open ground the player can reach, not in a corridor, away from the ways in
+    and from everything else there; one of the farthest from the ways in"""
+    def ground(p):
+        return p in reach and not (g[p[1]][p[0]] >> 10) & 3 and beh(g[p[1]][p[0]]) not in MB_SURFABLE
+    starts = [(w["x"], w["y"]) for w in warps]
+    cands = [p for p in sorted(reach) if ground(p)
+             and sum(ground((p[0] + dx, p[1] + dy)) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))) >= 3
+             and all(abs(p[0] - q[0]) + abs(p[1] - q[1]) > 3 for q in taken)]
+    assert cands, seed
+    far = sorted(cands, key=lambda p: -min([abs(p[0] - q[0]) + abs(p[1] - q[1]) for q in starts] or [0]))
+    return random.Random(seed).choice(far[:max(1, len(far) // 3)])
+
+
 def build_region(mod, zone_warp, out):
     """One region's zone (mod: tools/gym_hack/<region>.py): its areas' layouts, maps, scripts, wild
     Pokémon; adds its rows to `out` (the header's tables)"""
@@ -746,6 +760,18 @@ def build_region(mod, zone_warp, out):
             dump = Path(os.environ["SAFARI_REACH_DUMP"]) / f"{name}.json"
             dump.write_text(json.dumps({"w": b["w"], "h": b["h"], "reach": sorted(reach)}))
         bgs = []
+        # Items with no spot given: somewhere out of the way the player can reach (picked once, the
+        # same every build: seeded by the item)
+        taken = {p for _, p in a["statics"]} | {p for _, p in a["items"] + a.get("hidden", []) if p}
+        taken |= {(o["x"], o["y"]) for o in a.get("objects", [])}
+        for kind in ("items", "hidden"):
+            placed = []
+            for item, pos in a.get(kind, []):
+                if pos is None:
+                    pos = pick_spot(g, b["beh"], reach, taken, b["warps"], f"{key} {item}")
+                    taken.add(pos)
+                placed.append((item, pos))
+            a[kind] = placed
         for i, (species, (x, y)) in enumerate(a["statics"]):
             if (x, y) not in reach:
                 print(f"WARNING {key}: {species} at {(x, y)} can't be reached")
@@ -761,7 +787,9 @@ def build_region(mod, zone_warp, out):
                         f"\tsetvar VAR_0x8004, SPECIES_{species}",
                         "\tcall ExoticSafari_EventScript_LegendBattle",
                         "\tgoto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone",
-                        "\tremoveobject VAR_LAST_TALKED", f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
+                        "\tremoveobject VAR_LAST_TALKED"] + (
+                        [f"\tcall {getattr(mod, 'POST_CATCH')[species]}"] if species in getattr(mod, "POST_CATCH", {}) else []) + [
+                        f"\tsetflag FLAG_EXOTIC_LEGEND_{species}",
                         "\tgoto ExoticSafari_EventScript_Release", ""]
             seal, arg = getattr(mod, "CONDITIONS", {}).get(species, ("NONE", 0))
             if seal in ("ROAMERS", "GUARDIANS"):     # (the roamers of its own region)
@@ -785,6 +813,12 @@ def build_region(mod, zone_warp, out):
             if item not in getattr(mod, "UNIQUE_ITEMS", set()):
                 for sold in getattr(mod, "KIOSK_ALSO", {}).get(item, [item]):
                     out["finds"].append((sold, f"FLAG_EXOTIC_ITEM_{item}"))
+        for item, (x, y) in a.get("hidden", []):     # (hidden items: found by facing the spot and pressing A)
+            near = [(x + dx, y + dy) for dx, dy in ((0, 1), (0, -1), (1, 0), (-1, 0))]
+            if not any(q in reach for q in near) and (x, y) not in reach:
+                print(f"WARNING {key}: hidden {item} at {(x, y)} can't be reached")
+            bgs.append({"type": "hidden_item", "x": x, "y": y, "elevation": elev(x, y), "item": f"ITEM_{item}",
+                        "flag": f"FLAG_EXOTIC_HIDDEN_{item}", "quantity": 1, "underfoot": False})
         for c, color in enumerate(getattr(mod, "STAKE_COLORS", [])):
             for k, (area, (x, y)) in enumerate(stakes[color]):
                 if area != key:
@@ -829,8 +863,19 @@ def build_region(mod, zone_warp, out):
     for color in getattr(mod, "STAKE_COLORS", []):
         out["stake_colors"].append(color)
 
-    # Wild Pokémon
-    mons = lambda lst: [{"min_level": lo, "max_level": hi, "species": "SPECIES_" + s} for s, lo, hi in lst]
+    # Wild Pokémon. A slot can be shared ("A|B|C": the table has A; src/exotic_safari.c picks one of
+    # them each time: sSlotPools)
+    def mons(lst):
+        out = []
+        for s, lo, hi in lst:
+            names = s.split("|")
+            if len(names) > 1:
+                pool = (map_id(a["map"]), tuple(names))
+                if pool not in out_pools:
+                    out_pools.append(pool)
+            out.append({"min_level": lo, "max_level": hi, "species": "SPECIES_" + names[0]})
+        return out
+    out_pools = out.setdefault("pools", [])
     for a in areas.values():
         if not a.get("land"):
             continue
@@ -898,10 +943,18 @@ def build_zones(zone_warp):
     c += ["};", "", f"#define EXOTIC_SAFARI_STAKE_COLORS {len(out['stake_colors'])}",
           "#define EXOTIC_SAFARI_STAKES_PER_COLOR 4",
           f"#define EXOTIC_SAFARI_STAKE_FLAGS 0x{paldea.STAKE_FLAG_BASE:03X}",
+          "// Wild slots shared by several species (the table has the first)",
+          "struct ExoticSafariPool { u8 mapGroup, mapNum; u16 species[4]; };",
+          "static const struct ExoticSafariPool sSlotPools[] =", "{"] + [
+          f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), {{" + ", ".join(f"SPECIES_{s}" for s in names) + "}},"
+          for mid, names in out.get("pools", [])] + ["};",
           "static const u8 *const sStakeColorNames[] = {" + ", ".join(f'COMPOUND_STRING("{c}")' for c in out["stake_colors"]) + "};",
           "static const u16 sMaskFlags[] = {FLAG_EXOTIC_ITEM_WELLSPRING_MASK, FLAG_EXOTIC_ITEM_HEARTHFLAME_MASK, FLAG_EXOTIC_ITEM_CORNERSTONE_MASK};",
           ""] + out["header"]
     (ROOT / "src/data/exotic_safari_areas.h").write_text("\n".join(c) + "\n")
+    # (and for the guide, the dex and the audit: the shared slots)
+    (ROOT / "src/data/exotic_safari_pools.json").write_text(json.dumps(
+        [{"map": mid, "species": ["SPECIES_" + s for s in names]} for mid, names in out.get("pools", [])], indent=1) + "\n")
 
     # The roamers' and stakes' scripts (any area)
     rs = ["@ The roaming legendaries (made by tools/gym_hack/build_exotic_safari.py)"]
@@ -1197,6 +1250,7 @@ def main():
               "#define SEAL_BLUE_ORB 31    // (Kyogre: a lead holding the Blue Orb)",
               "#define SEAL_WISH     32    // (Jirachi: the zone's other legendaries caught)",
               "#define SEAL_GS_BALL  33    // (Celebi: the GS Ball found)",
+              "#define SEAL_REVISIT  34    // (the second Kubfu: every Galar area visited again)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]

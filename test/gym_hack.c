@@ -6,6 +6,9 @@
 #include "battle_main.h"
 #include "event_data.h"
 #include "gym_hack.h"
+#include "exotic_safari.h"
+#include "constants/flags.h"
+#include "constants/maps.h"
 #include "pokemon.h"
 #include "string_util.h"
 #include "battle_util.h"
@@ -2167,4 +2170,113 @@ TEST("GymHack: the Gym Charm makes Shiny Pokémon of the gym's type common, and 
     EXPECT_GE(typeShiny, 2);    // (about 10 expected)
     EXPECT_LE(otherShiny, 5);   // (under 1 expected)
     RemoveBagItem(ITEM_GYM_CHARM, 1);
+}
+
+// ---- Every Pokémon obtainable (v67) ----
+
+static u16 EvoWithItem(u16 species, u8 level, u32 personality, u16 item)
+{
+    struct Pokemon mon;
+    CreateMon(&mon, species, level, personality, OTID_STRUCT_PLAYER_ID);
+    return GetEvolutionTargetSpecies(&mon, item == ITEM_NONE ? EVO_MODE_NORMAL : EVO_MODE_ITEM_USE, item, NULL, NULL, CHECK_EVO);
+}
+
+TEST("GymHack: the cross-generation, trade and time-of-day evolutions all work here")
+{
+    EXPECT_EQ(EvoWithItem(SPECIES_MAGNETON, 40, 0, ITEM_THUNDER_STONE), SPECIES_MAGNEZONE);
+    EXPECT_EQ(EvoWithItem(SPECIES_EEVEE, 20, 0, ITEM_LEAF_STONE), SPECIES_LEAFEON);
+    EXPECT_EQ(EvoWithItem(SPECIES_EEVEE, 20, 0, ITEM_ICE_STONE), SPECIES_GLACEON);
+    EXPECT_EQ(EvoWithItem(SPECIES_YUNGOOS, 20, 0, ITEM_SUN_SHARD), SPECIES_GUMSHOOS);
+    EXPECT_EQ(EvoWithItem(SPECIES_RATTATA_ALOLA, 20, 0, ITEM_MOON_SHARD), SPECIES_RATICATE_ALOLA);
+    EXPECT_EQ(EvoWithItem(SPECIES_BOLDORE, 36, 0, ITEM_NONE), SPECIES_GIGALITH);
+    EXPECT_EQ(EvoWithItem(SPECIES_GURDURR, 36, 0, ITEM_NONE), SPECIES_CONKELDURR);
+    EXPECT_EQ(EvoWithItem(SPECIES_GRAVELER_ALOLA, 36, 0, ITEM_NONE), SPECIES_GOLEM_ALOLA);
+    EXPECT_EQ(EvoWithItem(SPECIES_KARRABLAST, 36, 0, ITEM_NONE), SPECIES_ESCAVALIER);
+    EXPECT_EQ(EvoWithItem(SPECIES_SHELMET, 36, 0, ITEM_NONE), SPECIES_ACCELGOR);
+    EXPECT_EQ(EvoWithItem(SPECIES_PUMPKABOO_SMALL, 36, 0, ITEM_NONE), SPECIES_GOURGEIST_SMALL);
+    EXPECT_EQ(EvoWithItem(SPECIES_PHANTUMP, 36, 0, ITEM_NONE), SPECIES_TREVENANT);
+    EXPECT_EQ(EvoWithItem(SPECIES_BOLDORE, 35, 0, ITEM_LINKING_CORD), SPECIES_GIGALITH);
+}
+
+TEST("GymHack: Alcremie's cream comes from the Milcery's personality")
+{
+    EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 0, ITEM_BERRY_SWEET), SPECIES_ALCREMIE_BERRY_VANILLA_CREAM);
+    EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 3 << 8, ITEM_BERRY_SWEET), SPECIES_ALCREMIE_BERRY_MINT_CREAM);
+    EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 8 << 8, ITEM_STRAWBERRY_SWEET), SPECIES_ALCREMIE_STRAWBERRY_RAINBOW_SWIRL);
+    EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 1 << 8, ITEM_STRAWBERRY_SWEET), SPECIES_ALCREMIE_STRAWBERRY_RUBY_CREAM);
+}
+
+TEST("GymHack: shared wild slots and random forms")
+{
+    u32 i, patrat = 0, purrloin = 0, other = 0, bugForms = 0;
+    u8 level = 50;
+    bool8 seen[20] = {0};
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_EXOTIC_SAFARI_UNOVA_SKYARROW);
+    for (i = 0; i < 400; i++)
+    {
+        u16 sp = ExoticSafari_WildSpecies(SPECIES_PATRAT, &level);
+        if (sp == SPECIES_PATRAT) patrat++;
+        else if (sp == SPECIES_PURRLOIN) purrloin++;
+        else other++;
+        sp = ExoticSafari_WildSpecies(SPECIES_SCATTERBUG_POLAR, &level);
+        if (sp == SPECIES_SCATTERBUG_ICY_SNOW) seen[0] = TRUE;
+        else if (sp >= SPECIES_SCATTERBUG_POLAR && sp <= SPECIES_SCATTERBUG_JUNGLE) seen[1 + sp - SPECIES_SCATTERBUG_POLAR] = TRUE;
+    }
+    for (i = 0; i < 20; i++)
+        bugForms += seen[i];
+    EXPECT_GT(patrat, 100);
+    EXPECT_GT(purrloin, 100);
+    EXPECT_EQ(other, 0);
+    EXPECT_EQ(bugForms, 18);
+    EXPECT_EQ(level, 50);
+}
+
+TEST("GymHack: wild Zygarde in Kalos once one is caught, its forms gated by the Cells")
+{
+    u32 i, n10 = 0, n50 = 0, pc = 0;
+    u8 level;
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_EXOTIC_SAFARI_KALOS_CITY);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_EXOTIC_SAFARI_KALOS_CITY);
+    for (i = 0; i < 1000; i++)
+    {
+        level = 50;
+        EXPECT_NE(ExoticSafari_WildSpecies(SPECIES_ESPURR, &level), SPECIES_ZYGARDE_10);
+    }
+    FlagSet(FLAG_EXOTIC_LEGEND_ZYGARDE);
+    for (i = 0; i < 3000; i++)
+    {
+        u16 sp;
+        level = 50;
+        sp = ExoticSafari_WildSpecies(SPECIES_ESPURR, &level);
+        if (sp == SPECIES_ZYGARDE_10) { n10++; EXPECT_EQ(level, 70); }
+        if (sp == SPECIES_ZYGARDE_50) n50++;
+        if (sp == SPECIES_ZYGARDE_50_POWER_CONSTRUCT || sp == SPECIES_ZYGARDE_10_POWER_CONSTRUCT) pc++;
+    }
+    EXPECT_GT(n10, 20);
+    EXPECT_EQ(n50, 0);
+    EXPECT_EQ(pc, 0);
+    for (i = 0; i < 8; i++)
+        FlagSet(FLAG_EXOTIC_CELL_FIRST + i);
+    for (i = 0; i < 3000; i++)
+    {
+        u16 sp;
+        level = 50;
+        sp = ExoticSafari_WildSpecies(SPECIES_ESPURR, &level);
+        if (sp == SPECIES_ZYGARDE_50) n50++;
+        if (sp == SPECIES_ZYGARDE_50_POWER_CONSTRUCT || sp == SPECIES_ZYGARDE_10_POWER_CONSTRUCT) pc++;
+    }
+    EXPECT_GT(n50, 10);
+    EXPECT_EQ(pc, 0);
+    for (i = 0; i < 4; i++)
+        FlagSet(FLAG_EXOTIC_CELL_MORE_FIRST + i);
+    for (i = 0; i < 3000; i++)
+    {
+        u16 sp;
+        level = 50;
+        sp = ExoticSafari_WildSpecies(SPECIES_ESPURR, &level);
+        if (sp == SPECIES_ZYGARDE_50_POWER_CONSTRUCT || sp == SPECIES_ZYGARDE_10_POWER_CONSTRUCT) pc++;
+    }
+    EXPECT_GT(pc, 10);
+    FlagClear(FLAG_EXOTIC_LEGEND_ZYGARDE);
 }

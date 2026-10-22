@@ -2645,6 +2645,40 @@
 #define FLAG_EXOTIC_ITEM_SOUL_DEW             0x38D
 #define FLAG_EXOTIC_ITEM_BLUE_ORB             0x38E
 #define FLAG_EXOTIC_ITEM_METEORITE            0x38F
+// Every Pokémon obtainable (v67): Zygarde's last Cells, Kubfu's return, the form items
+#define FLAG_EXOTIC_CELL_MORE_FIRST           0x390   // to 0x393 (4): Zygarde Cells 9-12
+#define FLAG_EXOTIC_GALAR_VISIT_FIRST         0x394   // to 0x39B (8): Galar areas visited since Kubfu was caught
+#define FLAG_EXOTIC_KUBFU_TWICE               0x39C   // (the second Kubfu caught)
+#define FLAG_GOT_BURN_DRIVE                   0x39D   // (Genesect's Drives, in Kanto once it's caught: their item balls)
+#define FLAG_GOT_CHILL_DRIVE                  0x39E
+#define FLAG_GOT_DOUSE_DRIVE                  0x39F
+#define FLAG_GOT_SHOCK_DRIVE                  0x3A0
+#define FLAG_EXOTIC_ITEM_N_SOLARIZER          0x3A1
+#define FLAG_EXOTIC_ITEM_N_LUNARIZER          0x3A2
+#define FLAG_EXOTIC_ITEM_REINS_OF_UNITY       0x3A3
+#define FLAG_GYM_PLATE_FOUND_FIRST            0x3A4   // (+ type, to 0x3A4 + NUMBER_OF_MON_TYPES - 1): Arceus's plates found in the gym
+// (hidden items: flags from FLAG_HIDDEN_ITEMS_START, 0x3E8, on)
+#define FLAG_EXOTIC_HIDDEN_BUG_MEMORY       0x4CD
+#define FLAG_EXOTIC_HIDDEN_DARK_MEMORY      0x4CE
+#define FLAG_EXOTIC_HIDDEN_DRAGON_MEMORY    0x4CF
+#define FLAG_EXOTIC_HIDDEN_ELECTRIC_MEMORY  0x4D0
+#define FLAG_EXOTIC_HIDDEN_FAIRY_MEMORY     0x4D1
+#define FLAG_EXOTIC_HIDDEN_FIGHTING_MEMORY  0x4D2
+#define FLAG_EXOTIC_HIDDEN_FIRE_MEMORY      0x4D3
+#define FLAG_EXOTIC_HIDDEN_FLYING_MEMORY    0x4D4
+#define FLAG_EXOTIC_HIDDEN_GHOST_MEMORY     0x4D5
+#define FLAG_EXOTIC_HIDDEN_GRASS_MEMORY     0x4D6
+#define FLAG_EXOTIC_HIDDEN_GROUND_MEMORY    0x4D7
+#define FLAG_EXOTIC_HIDDEN_ICE_MEMORY       0x4D8
+#define FLAG_EXOTIC_HIDDEN_POISON_MEMORY    0x4D9
+#define FLAG_EXOTIC_HIDDEN_PSYCHIC_MEMORY   0x4DA
+#define FLAG_EXOTIC_HIDDEN_ROCK_MEMORY      0x4DB
+#define FLAG_EXOTIC_HIDDEN_STEEL_MEMORY     0x4DC
+#define FLAG_EXOTIC_HIDDEN_WATER_MEMORY     0x4DD
+#define FLAG_EXOTIC_HIDDEN_ADAMANT_CRYSTAL  0x4DE
+#define FLAG_EXOTIC_HIDDEN_LUSTROUS_GLOBE   0x4DF
+#define FLAG_EXOTIC_HIDDEN_GRISEOUS_CORE    0x4E0
+#define FLAG_EXOTIC_HIDDEN_GRACIDEA         0x4E1
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

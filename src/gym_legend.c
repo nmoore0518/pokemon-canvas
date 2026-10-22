@@ -107,6 +107,12 @@ static bool32 IsFreeSpot(s32 x, s32 y, bool32 checkObjects)
     return !checkObjects || GetObjectEventIdByXY(mx, my) == OBJECT_EVENTS_COUNT;
 }
 
+// (src/form_items.c: where Arceus's plates hide)
+bool32 GymLegend_IsOpenFloor(s32 x, s32 y)
+{
+    return IsFreeSpot(x, y, FALSE);
+}
+
 // Where it stands: the leader's mark on the battle stage, or (no stage, or it's taken) the free
 // square nearest the middle of the room
 static void FindSpot(s32 *outX, s32 *outY, bool32 checkObjects)

@@ -55,3 +55,7 @@ ExoticSafari_GalarCity_EventScript_SealZamazenta::
 ExoticSafari_GalarCity_EventScript_ItemRazorClaw::
 	finditem ITEM_RAZOR_CLAW
 	end
+
+ExoticSafari_GalarCity_EventScript_ItemReinsOfUnity::
+	finditem ITEM_REINS_OF_UNITY
+	end

@@ -41,3 +41,8 @@ ExoticSafari_KalosBadlands_EventScript_Cell0::
 	lock
 	setvar VAR_0x8004, 6
 	goto ExoticSafari_EventScript_Cell
+
+ExoticSafari_KalosBadlands_EventScript_Cell1::
+	lock
+	setvar VAR_0x8004, 10
+	goto ExoticSafari_EventScript_Cell

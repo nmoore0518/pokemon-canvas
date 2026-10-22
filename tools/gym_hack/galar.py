@@ -735,7 +735,7 @@ AREAS.update({
         "land": land("SNOM", "DARUMAKA_GALAR", "MR_MIME_GALAR", "SNEASEL_HISUI", "EISCUE", "WYRDEER", "FROSMOTH",
                      "MR_RIME", "ARCTOZOLT", "ARCTOVISH", ("DARMANITAN_GALAR", 52, 55), ("AVALUGG_HISUI", 52, 55)),
         "statics": [("ZACIAN", (17, 30)), ("ZAMAZENTA", (21, 30))],
-        "items": [("RAZOR_CLAW", (6, 24))],
+        "items": [("RAZOR_CLAW", (6, 24)), ("REINS_OF_UNITY", None)],
     },
 })
 AREAS.update({
@@ -745,7 +745,7 @@ AREAS.update({
         "links": {
             "LAKE": ("edge", [(15, 39), (16, 39)], (15, 38), ("LAKE", "FOREST")),
         },
-        "land": land("IMPIDIMP", "HATENNA", "PONYTA_GALAR", "DOTTLER", "MILCERY", "SINISTEA", "RAPIDASH_GALAR", "MORGREM",
+        "land": land("IMPIDIMP", "HATENNA", "PONYTA_GALAR", "BLIPBUG", "MILCERY", "SINISTEA", "RAPIDASH_GALAR", "MORGREM",
                      "SINISTEA_ANTIQUE", "HATTREM", ("TYPHLOSION_HISUI", 52, 55), ("HATTERENE", 52, 55)),
         "statics": [("ZARUDE", (32, 3)), ("ENAMORUS", (10, 32))],
         "items": [("CHIPPED_POT", (35, 2)), ("STRAWBERRY_SWEET", (3, 7)), ("GALARICA_WREATH", (8, 28)),
@@ -764,7 +764,7 @@ CONDITIONS = {
 }
 # Found once, never sold (Kubfu's scrolls: one of each; the legendaries' relics); the Strawberry
 # Sweet sells all seven Sweets
-UNIQUE_ITEMS = {"SCROLL_OF_DARKNESS", "SCROLL_OF_WATERS", "RUSTED_SWORD", "RUSTED_SHIELD", "DRAGON_FANG"}
+UNIQUE_ITEMS = {"SCROLL_OF_DARKNESS", "SCROLL_OF_WATERS", "RUSTED_SWORD", "RUSTED_SHIELD", "DRAGON_FANG", "REINS_OF_UNITY"}
 KIOSK_ALSO = {"STRAWBERRY_SWEET": ["STRAWBERRY_SWEET", "BERRY_SWEET", "LOVE_SWEET", "STAR_SWEET", "CLOVER_SWEET",
                                    "FLOWER_SWEET", "RIBBON_SWEET"]}
 
@@ -813,9 +813,15 @@ def dojo_master(ctx):
     ctx["objects"].append(o)
 
 
+# Kubfu, once caught: another comes to the pitch when the player has been back to every area
+POST_CATCH = {"KUBFU": "ExoticSafari_EventScript_KubfuCaught"}
+
+
 def header_lines(map_id):
-    assert len(LAMPS) <= 8
+    assert len(LAMPS) <= 8 and len(AREAS) <= 8
     return [
+        "// Galar: the areas to visit again for a second Kubfu",
+        "static const u16 sGalarVisitMaps[] = {" + ", ".join(map_id(a["map"]) for a in AREAS.values()) + "};",
         "// Zarude's lamps: Glimwood's big mushrooms (top-left corners), dark until touched",
         f"#define EXOTIC_SAFARI_LAMP_MAP {map_id(AREAS['FOREST']['map'])}",
         f"#define EXOTIC_SAFARI_LAMP_BIG_LIT 0x{MUSHROOM_FIRST:03X}     // (2x2)",

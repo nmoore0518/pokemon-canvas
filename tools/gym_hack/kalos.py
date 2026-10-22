@@ -327,8 +327,9 @@ AREAS = {
             "DESERT": ("warp", [(cx(58), cy(27))], (cx(57), cy(27)), ("DESERT", "CITY")),                   # (the east gate)
         },
         # (the buildings' doors stay, leading nowhere: the city's homes are private)
-        "land": land("ESPURR", "FLABEBE", "FLABEBE_YELLOW", "FURFROU", "SPRITZEE", "SWIRLIX", "FLABEBE_ORANGE", "LITLEO",
-                     "FLABEBE_BLUE", "FLABEBE_WHITE", ("SCATTERBUG_ELEGANT", 48, 50), ("VIVILLON_MODERN", 50, 54)),
+        # (Flabébé, Scatterbug and Vivillon come in any of their colors and patterns: src/exotic_safari.c)
+        "land": land("ESPURR", "FLABEBE", "FLABEBE", "FURFROU", "SPRITZEE", "SWIRLIX", "KLEFKI", "LITLEO",
+                     "FLABEBE", "FLOETTE", ("SCATTERBUG", 48, 50), ("VIVILLON", 50, 54)),
         "statics": [("ZYGARDE", (TOWER[0] + 3, TOWER[1] + TOWER[3]))],
         "items": [("SACHET", (cx(17), cy(33))), ("WHIPPED_DREAM", (cx(50), cy(33)))],
     },
@@ -340,8 +341,8 @@ AREAS = {
             "CITY": ("edge", WOODS_BOTTOM, (WOODS_BOTTOM[1][0], WOODS_H - 2), ("CITY", "WOODS")),
             "SNOW": ("edge", WOODS_TOP, (WOODS_TOP[1][0], 1), ("SNOW", "WOODS")),
         },
-        "land": land("PHANTUMP", "PUMPKABOO_AVERAGE", "PUMPKABOO_SMALL", "PUMPKABOO_LARGE", "HONEDGE", "SPEWPA_GARDEN",
-                     "TREVENANT", "DOUBLADE", "PUMPKABOO_SUPER", "VIVILLON_JUNGLE", ("CHESPIN", 48, 50), ("GOURGEIST_SUPER", 52, 55)),
+        "land": land("PHANTUMP", "PUMPKABOO", "PUMPKABOO", "BUNNELBY", "HONEDGE", "SPEWPA",
+                     "TREVENANT", "DOUBLADE", "PUMPKABOO", "VIVILLON", ("CHESPIN", 48, 50), ("GOURGEIST", 52, 55)),
         "statics": [],
         "items": [],
     },
@@ -351,8 +352,8 @@ AREAS = {
         "links": {
             "WOODS": ("edge", [(0, y) for y in range(20)], (1, 9), ("WOODS", "SNOW")),
         },
-        "land": land("BERGMITE", "SNOVER", "PILOSWINE", "CRYOGONAL", "SCATTERBUG_POLAR", "VIVILLON_TUNDRA", "MAMOSWINE",
-                     "ABOMASNOW", "AVALUGG", "VIVILLON_ICY_SNOW", ("AMAURA", 48, 50), ("AURORUS", 52, 55)),
+        "land": land("BERGMITE", "SNOVER", "PILOSWINE", "CRYOGONAL", "SCATTERBUG", "VIVILLON", "MAMOSWINE",
+                     "ABOMASNOW", "AVALUGG", "VIVILLON", ("AMAURA", 48, 50), ("AURORUS", 52, 55)),
         "statics": [],
         "items": [("SHINY_STONE", (63, 2))],
     },
@@ -379,7 +380,7 @@ AREAS = {
                       ("OCEAN", "DESERT")),
         },
         "land": land("HELIOPTILE", "PANCHAM", "SKIDDO", "LITLEO", "FLETCHINDER", "DEDENNE", "HELIOLISK", "PANGORO",
-                     "GOGOAT", "PYROAR", ("FENNEKIN", 48, 50), ("VIVILLON_SANDSTORM", 50, 54)),
+                     "GOGOAT", "PYROAR", ("FENNEKIN", 48, 50), ("VIVILLON", 50, 54)),
         "statics": [("YVELTAL", (40, 4))],
         "items": [],
     },
@@ -389,8 +390,8 @@ AREAS = {
         "links": {
             "DESERT": ("edge", [(0, y) for y in range(20)], (1, 10), ("DESERT", "OCEAN")),
         },
-        "land": land("FLETCHLING", "WINGULL", "BINACLE", "SKRELP", "CLAUNCHER", "VIVILLON_MARINE", "PELIPPER", "SCATTERBUG_OCEAN",
-                     "VIVILLON_ARCHIPELAGO", "HAWLUCHA", ("FROAKIE", 48, 50), ("VIVILLON_OCEAN", 50, 54)),
+        "land": land("FLETCHLING", "WINGULL", "BINACLE", "SKRELP", "CLAUNCHER", "VIVILLON", "PELIPPER", "SCATTERBUG",
+                     "VIVILLON", "HAWLUCHA", ("FROAKIE", 48, 50), ("VIVILLON", 50, 54)),
         "water": [("CLAUNCHER", 48, 52), ("SKRELP", 48, 52), ("TENTACOOL", 48, 52), ("CLAWITZER", 50, 54), ("DRAGALGE", 52, 55)],
         "fishing": [("LUVDISC", 45, 50), ("CLAUNCHER", 45, 50),
                     ("CLAUNCHER", 48, 52), ("SKRELP", 48, 52), ("LUVDISC", 48, 52),
@@ -415,6 +416,21 @@ PRE_BATTLE = {"ZYGARDE": "ExoticSafari_EventScript_ZygardePre"}
 # Zygarde's Cells, about the zone (flags from FLAG_EXOTIC_CELL_FIRST): how many in each area, put
 # on out-of-the-way ground the player can reach (picked: far from the way in, never in a corridor)
 CELLS = {"CITY": 1, "WOODS": 2, "SNOW": 1, "CAVE": 2, "DESERT": 1, "OCEAN": 1}
+# ... and four more (v67: 8 Cells make the 50% Forme, all 12 the Power Construct one, whose 100% Complete
+# Forme comes out in battle): numbered after the first 8, so saves keep the ones already found
+MORE_CELLS = {"SNOW": 1, "CAVE": 1, "DESERT": 1, "OCEAN": 1}
+CELLS_FOR_50 = 8
+
+
+def cell_flag(i):
+    return f"0x{0x344 + i:03X}" if i < 8 else f"0x{0x390 + i - 8:03X}"
+
+
+def cell_numbers(area):
+    """The Cells in an area: their numbers (0-11), in the order their spots are picked"""
+    first = sum(CELLS[k] for k in list(CELLS)[:list(CELLS).index(area)])
+    more = sum(CELLS.values()) + sum(MORE_CELLS.get(k, 0) for k in list(CELLS)[:list(CELLS).index(area)])
+    return [first + k for k in range(CELLS[area])] + [more + k for k in range(MORE_CELLS.get(area, 0))]
 
 
 def _pick_spots(ctx, n, seed, taken):
@@ -440,13 +456,13 @@ def extra(area):
     def add(ctx):
         name = ctx["name"]
         taken = {(o["x"], o["y"]) for o in ctx["objects"]} | {PEDESTAL, (PEDESTAL[0], PEDESTAL[1] + 1), GROOMER}
-        first = sum(CELLS[k] for k in list(CELLS)[:list(CELLS).index(area)])
-        for k, (x, y) in enumerate(_pick_spots(ctx, CELLS[area], "cell " + area, taken)):
+        numbers = cell_numbers(area)
+        for k, (x, y) in enumerate(_pick_spots(ctx, len(numbers), "cell " + area, taken)):
             label = f"{name}_EventScript_Cell{k}"
-            o = ctx["obj"]("OBJ_EVENT_GFX_ZYGARDE_CELL", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", f"0x{0x344 + first + k:03X}")
+            o = ctx["obj"]("OBJ_EVENT_GFX_ZYGARDE_CELL", x, y, label, "MOVEMENT_TYPE_FACE_DOWN", cell_flag(numbers[k]))
             o["elevation"] = ctx["elev"](x, y)
             ctx["objects"].append(o)
-            ctx["scripts"] += [f"{label}::", "\tlock", f"\tsetvar VAR_0x8004, {first + k}", "\tgoto ExoticSafari_EventScript_Cell", ""]
+            ctx["scripts"] += [f"{label}::", "\tlock", f"\tsetvar VAR_0x8004, {numbers[k]}", "\tgoto ExoticSafari_EventScript_Cell", ""]
         if area == "CAVE":
             x, y = PEDESTAL
             if (x, y + 1) not in ctx["reach"]:
@@ -470,4 +486,5 @@ for _k in AREAS:
 
 
 def header_lines(map_id):
-    return ["// Kalos: Zygarde's Cells", f"#define EXOTIC_SAFARI_CELLS {sum(CELLS.values())}"]
+    return ["// Kalos: Zygarde's Cells", f"#define EXOTIC_SAFARI_CELLS {sum(CELLS.values()) + sum(MORE_CELLS.values())}",
+            f"#define EXOTIC_SAFARI_CELLS_FOR_50 {CELLS_FOR_50}"]

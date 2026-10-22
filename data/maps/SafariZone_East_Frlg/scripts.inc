@@ -25,3 +25,7 @@ SafariZone_East_Text_AreaSign::
 	.string "AREA 1\n"
 	.string "WEST: CENTER AREA$"
 
+@ Pokémon Canvas: one of Genesect's Drives, here once Genesect has been caught (src/form_items.c)
+SafariZone_East_EventScript_ItemBurnDrive::
+	finditem ITEM_BURN_DRIVE
+	end

@@ -258,6 +258,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ExoticSafari_SinnohLake_EventScript_SealMesprit"
+    },
+    {
+      "type": "hidden_item",
+      "x": 14,
+      "y": 19,
+      "elevation": 3,
+      "item": "ITEM_LUSTROUS_GLOBE",
+      "flag": "FLAG_EXOTIC_HIDDEN_LUSTROUS_GLOBE",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

@@ -1,0 +1,136 @@
+[
+ {
+  "map": "MAP_EXOTIC_SAFARI_ALOLA_RESORT",
+  "species": [
+   "SPECIES_CUTIEFLY",
+   "SPECIES_COMFEY"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_ALOLA_RUINS",
+  "species": [
+   "SPECIES_ORANGURU",
+   "SPECIES_PASSIMIAN"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_PATRAT",
+   "SPECIES_PURRLOIN"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_LILLIPUP",
+   "SPECIES_MINCCINO"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_SEWADDLE",
+   "SPECIES_VENIPEDE"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_COTTONEE",
+   "SPECIES_PETILIL"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_BLITZLE",
+   "SPECIES_BOUFFALANT"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_PANSAGE",
+   "SPECIES_PANSEAR",
+   "SPECIES_PANPOUR"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_GOTHITA",
+   "SPECIES_SOLOSIS"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_SKYARROW",
+  "species": [
+   "SPECIES_MUNNA",
+   "SPECIES_TRUBBISH"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM",
+  "species": [
+   "SPECIES_CUBCHOO",
+   "SPECIES_VANILLITE"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM",
+  "species": [
+   "SPECIES_KARRABLAST",
+   "SPECIES_SHELMET"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_GIANT_CHASM",
+  "species": [
+   "SPECIES_VANILLISH",
+   "SPECIES_BEARTIC"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL",
+  "species": [
+   "SPECIES_GOLETT",
+   "SPECIES_LITWICK"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL",
+  "species": [
+   "SPECIES_SAWK",
+   "SPECIES_THROH"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_DRAGONSPIRAL",
+  "species": [
+   "SPECIES_RUFFLET",
+   "SPECIES_VULLABY"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE",
+  "species": [
+   "SPECIES_ROGGENROLA",
+   "SPECIES_WOOBAT"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_CHARGESTONE",
+  "species": [
+   "SPECIES_HEATMOR",
+   "SPECIES_DURANT"
+  ]
+ },
+ {
+  "map": "MAP_EXOTIC_SAFARI_UNOVA_RELIC_CASTLE",
+  "species": [
+   "SPECIES_SIGILYPH",
+   "SPECIES_ELGYEM"
+  ]
+ }
+]

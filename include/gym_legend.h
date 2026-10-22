@@ -17,4 +17,6 @@ bool32 GymLegend_ChangeType(u32 from, u32 to);
 extern u8 gGymLegendCameraIn[];
 extern u8 gGymLegendCameraOut[];
 
+bool32 GymLegend_IsOpenFloor(s32 x, s32 y);
+
 #endif // GUARD_GYM_LEGEND_H

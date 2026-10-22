@@ -67,6 +67,7 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_BLUE_ORB, ExoticSafari_EventScript_SealBlueOrb
 	case SEAL_WISH, ExoticSafari_EventScript_SealWish
 	case SEAL_GS_BALL, ExoticSafari_EventScript_SealGsBall
+	case SEAL_REVISIT, ExoticSafari_EventScript_SealRevisit
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -106,6 +107,18 @@ ExoticSafari_EventScript_SealDojo::
 	msgbox ExoticSafari_Text_SealDojo
 	releaseall
 	end
+
+ExoticSafari_EventScript_SealRevisit::
+	msgbox ExoticSafari_Text_SealRevisit
+	releaseall
+	end
+
+@ Kubfu caught (before its caught flag is set): the second one? (the first, set already)
+ExoticSafari_EventScript_KubfuCaught::
+	goto_if_unset FLAG_EXOTIC_LEGEND_KUBFU, ExoticSafari_EventScript_Return
+	setflag FLAG_EXOTIC_KUBFU_TWICE
+ExoticSafari_EventScript_Return::
+	return
 
 ExoticSafari_EventScript_SealStones::
 	msgbox ExoticSafari_Text_SealStones
@@ -536,6 +549,8 @@ ExoticSafari_EventScript_Cell::
 
 ExoticSafari_EventScript_LastCell::
 	msgbox ExoticSafari_Text_LastCell
+	giveitem ITEM_ZYGARDE_CUBE
+	msgbox ExoticSafari_Text_ZygardeCube
 	release
 	end
 
@@ -826,7 +841,19 @@ ExoticSafari_EventScript_DojoMaster::
 	end
 
 ExoticSafari_EventScript_DojoAfter::
+	goto_if_set FLAG_EXOTIC_KUBFU_TWICE, ExoticSafari_EventScript_DojoBothCaught
+	goto_if_set FLAG_EXOTIC_LEGEND_KUBFU, ExoticSafari_EventScript_DojoSecond
 	msgbox ExoticSafari_Text_DojoAfter
+	release
+	end
+
+ExoticSafari_EventScript_DojoSecond::
+	msgbox ExoticSafari_Text_DojoSecond
+	release
+	end
+
+ExoticSafari_EventScript_DojoBothCaught::
+	msgbox ExoticSafari_Text_DojoBothCaught
 	release
 	end
 
@@ -1001,6 +1028,23 @@ ExoticSafari_Text_DojoAfter:
 	.string "KUBFU is waiting for you on the\n"
 	.string "pitch.$"
 
+ExoticSafari_Text_DojoSecond:
+	.string "That KUBFU of yours has a sibling,\n"
+	.string "you know. It trains all over GALAR.\p"
+	.string "Walk every part of GALAR again, and\n"
+	.string "it'll come to the pitch to find you.$"
+
+ExoticSafari_Text_DojoBothCaught:
+	.string "Two KUBFU, two paths. Train them\n"
+	.string "well!$"
+
+ExoticSafari_Text_SealRevisit:
+	.string "Small footprints lead off the pitch…\p"
+	.string "Another KUBFU is training out in\n"
+	.string "GALAR. It may come here once you've\l"
+	.string "been back to every area: {STR_VAR_2}\l"
+	.string "more to go.$"
+
 ExoticSafari_Text_DojoDecline:
 	.string "…Come back when you're ready.$"
 
@@ -1133,17 +1177,24 @@ ExoticSafari_Text_CellsLeft:
 
 ExoticSafari_Text_LastCell:
 	.string "That was the last of them!\n"
-	.string "Every ZYGARDE CELL has been found.$"
+	.string "Every ZYGARDE CELL has been found.\p"
+	.string "One last speck stays behind, glowing…\n"
+	.string "it hardens into a little cube!$"
+
+ExoticSafari_Text_ZygardeCube:
+	.string "The ZYGARDE CUBE changes ZYGARDE's\n"
+	.string "FORME. Try it from the bag!$"
 
 ExoticSafari_Text_ZygardePartial:
 	.string "ZYGARDE is only partly here: its\n"
-	.string "10% FORME, still missing {STR_VAR_2} CELLS.\p"
+	.string "{STR_VAR_1} FORME, still missing {STR_VAR_2} CELLS.\p"
 	.string "Find them all and it will be whole.\n"
 	.string "Battle it as it is?$"
 
 ExoticSafari_Text_ZygardeWhole:
 	.string "Every CELL has come together.\n"
-	.string "ZYGARDE stands whole!$"
+	.string "ZYGARDE stands whole, its full power\l"
+	.string "ready to come out!$"
 
 ExoticSafari_Text_ZygardeWait:
 	.string "ZYGARDE watches, waiting for the rest\n"
@@ -1261,7 +1312,10 @@ ExoticSafari_Text_ElderHint:
 	.string "I keep the flute for a trainer who\l"
 	.string "has mastered every type there is.\p"
 	.string "Master every type in your gym, then\n"
-	.string "come back and see me.$"
+	.string "come back and see me.\p"
+	.string "They say the first POKéMON's plates\n"
+	.string "come to rest wherever a type is truly\l"
+	.string "mastered… Keep an eye on the floor.$"
 
 ExoticSafari_Text_ElderFlute:
 	.string "You've mastered every type there is…\n"
@@ -1274,7 +1328,10 @@ ExoticSafari_Text_ReceivedAzureFlute:
 
 ExoticSafari_Text_ElderAfter:
 	.string "Climb to the HALL OF ORIGIN. The\n"
-	.string "first POKéMON will hear the flute.$"
+	.string "first POKéMON will hear the flute.\p"
+	.string "They say the first POKéMON's plates\n"
+	.string "come to rest wherever a type is truly\l"
+	.string "mastered… Keep an eye on the floor.$"
 
 ExoticSafari_Text_ApplianceAsk:
 	.string "It's an old {STR_VAR_3}.\n"

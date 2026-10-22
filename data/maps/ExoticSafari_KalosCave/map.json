@@ -60,6 +60,20 @@
     },
     {
       "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ZYGARDE_CELL",
+      "x": 44,
+      "y": 36,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_KalosCave_EventScript_Cell2",
+      "flag": "0x391"
+    },
+    {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PRISON_BOTTLE",
       "x": 34,
       "y": 20,

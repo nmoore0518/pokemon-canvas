@@ -523,6 +523,7 @@ AREAS = {
         "statics": [("UXIE", island_middle("VERITY")), ("AZELF", island_middle("ACUITY")),
                     ("MESPRIT", island_middle("VALOR"))],
         "items": [],
+        "hidden": [("LUSTROUS_GLOBE", None)],
     },
     "MEADOW": {
         "map": "ExoticSafari_SinnohMeadow", "build": meadow, "border_size": (3, 2),
@@ -539,6 +540,7 @@ AREAS = {
                   ("FLOATZEL", 52, 55)],
         "statics": [],
         "items": [],
+        "hidden": [("GRACIDEA", None)],
     },
     "MARSH": {
         "map": "ExoticSafari_SinnohMarsh", "build": marsh, "tilesets": ("gTileset_General", "gTileset_Lilycove"),
@@ -597,6 +599,7 @@ AREAS = {
                      "MAGMORTAR", "BRONZONG", ("INFERNAPE", 52, 55), ("GARCHOMP", 54, 56)),
         "statics": [("HEATRAN", (23, 3))],
         "items": [],
+        "hidden": [("GRISEOUS_CORE", None)],
     },
     "RUINS": {
         "map": "ExoticSafari_SinnohHallOfOrigin", "build": ruins, "tilesets": ("gTileset_General", "gTileset_Pacifidlog"),
@@ -609,6 +612,8 @@ AREAS = {
                      "PORYGON_Z", "SPIRITOMB", ("ROTOM", 50, 54), ("ELECTIVIRE", 52, 55)),
         "statics": [("ARCEUS", (13, 4))],
         "items": [],
+        # (the Origin Formes' relics, and Shaymin's Gracidea: hidden, found by pressing A at the spot)
+        "hidden": [("ADAMANT_CRYSTAL", None)],
     },
 }
 AREAS["ROTOM"] = {

@@ -25,6 +25,8 @@ void ExoticSafari_IsFurfrou(void);
 void ExoticSafari_TrimFurfrou(void);
 void ExoticSafari_TakeKey(void);
 void ExoticSafari_LegendCaught(void);
-unsigned short ExoticSafari_WildSpecies(unsigned short species);   // (the Ruins of Alph's Unown)
+unsigned short ExoticSafari_WildSpecies(unsigned short species, unsigned char *level);   // (shared slots, random forms, Unown, Zygarde)
+struct Pokemon;
+unsigned short ExoticSafari_EvolvedForm(struct Pokemon *mon, unsigned short target);   // (Alcremie's creams)
 
 #endif // GUARD_EXOTIC_SAFARI_H

@@ -24,6 +24,7 @@ ExoticSafari_GalarStadiumPitch_EventScript_LegendKubfu::
 	call ExoticSafari_EventScript_LegendBattle
 	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
 	removeobject VAR_LAST_TALKED
+	call ExoticSafari_EventScript_KubfuCaught
 	setflag FLAG_EXOTIC_LEGEND_KUBFU
 	goto ExoticSafari_EventScript_Release
 

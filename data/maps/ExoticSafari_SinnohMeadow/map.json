@@ -69,5 +69,16 @@
       "script": "ExoticSafari_SinnohMeadow_EventScript_ToLake"
     }
   ],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "hidden_item",
+      "x": 19,
+      "y": 38,
+      "elevation": 3,
+      "item": "ITEM_GRACIDEA",
+      "flag": "FLAG_EXOTIC_HIDDEN_GRACIDEA",
+      "quantity": 1,
+      "underfoot": false
+    }
+  ]
 }

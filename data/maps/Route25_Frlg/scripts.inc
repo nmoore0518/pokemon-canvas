@@ -128,3 +128,7 @@ Route25_Text_AreYouHereAlone::
 	.string "If you're out at CERULEAN's cape…\n"
 	.string "Well, it should be as a couple.$"
 
+@ Pokémon Canvas: one of Genesect's Drives, here once Genesect has been caught (src/form_items.c)
+Route25_EventScript_ItemDouseDrive::
+	finditem ITEM_DOUSE_DRIVE
+	end

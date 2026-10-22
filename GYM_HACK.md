@@ -919,6 +919,37 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          legendaries, starters, then evolutions and form changes with the items they can get), and
          what only comes from a one-time source. First run (v66): 1,137 of 1,571 entries
          obtainable; 179 are battle-only or totem forms; the rest are listed for Nick.
+   - [x] Every Pokémon obtainable (v67; the audit now finds every storable entry but the 29
+         event-only forms, and no one-time choices):
+         - Evolutions: Magnezone (Thunder Stone), Lickilicky (level up knowing Rollout), Leafeon
+           (Leaf Stone), Glaceon (Ice Stone), Sylveon (friendship + a Fairy move) unlocked one by
+           one (the Gen 4/6 cross-evolution switches stay off). Plain trade evolutions (Gigalith,
+           Conkeldurr, Alolan Golem, Trevenant, Gourgeist, Escavalier, Accelgor) also at Lv 36, and
+           the Linking Cord is sold at Celadon 4F. Gumshoos: Sun Shard; Alolan Raticate: Moon Shard.
+           Alcremie's cream is the Milcery's own, from its personality (`ExoticSafari_EvolvedForm`).
+         - Wild: a safari slot can be shared ("A|B|C" in a region's land/water tables: the table has
+           A, `ExoticSafari_WildSpecies` picks one; `sSlotPools`, and src/data/exotic_safari_pools.json
+           for the tools). Unova got its 22 missing lines (and Zorua, Stunfisk, Rufflet/Braviary in
+           their Unova forms), Kalos Bunnelby and Klefki, Alola 9, Galar Blipbug. Wild Scatterbug,
+           Spewpa, Vivillon (18 patterns), Flabébé's line (5 colors), Pumpkaboo/Gourgeist (4 sizes),
+           Deerling/Sawsbuck (4 seasons), Minior (7) and Dudunsparce (2) come in any form.
+         - Kubfu: once caught, visiting every Galar area again (0x394-0x39B) brings a second to the
+           pitch (0x39C; the seal sign counts the areas left, the dojo master tells of it).
+         - Zygarde: 12 Cells (4 more: 0x390-0x393). Its static is 10% with 3-7, 50% with 8-11,
+           50% Power Construct (Complete in battle) with all 12; the last Cell leaves the Zygarde
+           Cube. Once caught, 1 in 50 wild encounters in the Kalos zone is another Zygarde (Lv 70):
+           10% Forme, the 50% with 8 Cells, the Power Construct ones with 12.
+         - Form items: hidden items in the safaris (`"hidden"` in an area: bg hidden_item, flags from
+           0x4CD): Silvally's 17 Memories about Alola, each where its type is at home; the Adamant
+           Crystal (Hall of Origin), Lustrous Globe (lakes), Griseous Core (Stark Mountain) and
+           Gracidea (Floaroma meadow). Item balls: the N-Solarizer (Alola volcano), N-Lunarizer
+           (Lanakila), Reins of Unity (Freezington). Items given no spot are placed by `pick_spot`.
+           Genesect's Drives: item balls in Viridian Forest, the Safari Zone's east, Route 25 and
+           Route 12's grass, shown only once Genesect is in the Pokédex as caught
+           (`FormItems_ObjectWaits`, from `TrySpawnObjectEvents`; flags 0x39D-0x3A0). Arceus's
+           plates: each mastered type's plate rests on the gym floor (a spot hashed from the trainer
+           id, the nearest open floor if decorations cover it: `src/form_items.c`), found with A
+           (hidden-item script, flags 0x3A4 + type); only the Snowpoint elder hints at it.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops
@@ -956,9 +987,6 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          species, ~30 wild slots per map) and about 70 legendary encounters.
          The 18 gym legendaries (`gGymLegends`) stay gym-only: no safari has them, Koraidon and
          Miraidon included.
-   - [ ] Evolutions into later Pokémon (Magnezone, Sylveon...) turned on in the post-game only, so
-         the main game stays 386 (`P_GEN_x_CROSS_EVOS` gates the links); special evolution items
-         and conditions obtainable.
    - [ ] Space: about 4.4 MB of the 32 MB is free (October 2026). Ways to make room:
          - Delete the Sevii Islands (unreachable since the ferry change): ~0.5-0.8 MB (159 map
            layouts ~145 KB, 9 Sevii-only tilesets ~70 KB, their events, trainers, scripts, text).

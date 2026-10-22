@@ -43,6 +43,7 @@ CeladonCity_DepartmentStore_4F_Items::
 	.2byte ITEM_DEEP_SEA_TOOTH
 	.2byte ITEM_DEEP_SEA_SCALE
 	.2byte ITEM_PRISM_SCALE
+	.2byte ITEM_LINKING_CORD
 	.2byte ITEM_NONE
 	release
 	end

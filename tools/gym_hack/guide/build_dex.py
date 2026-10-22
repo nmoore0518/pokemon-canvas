@@ -229,7 +229,7 @@ PUZZLES = {
     "PECHARUNT": "Catch the Loyal Three (Okidogi, Munkidori, Fezandipiti); then it appears in Area Zero's depths.",
     "REGIELEKI": "Step on the 7 stepping stones of the lightning bolt in Postwick's countryside, from the top of the bolt down.",
     "REGIDRAGO": "Find the Dragon Fang (Galar Mine 1F), then come to Galar Mine B1F with a Dragon-type Pokémon in the lead.",
-    "KUBFU": "Beat the dojo master (Bea) in Wyndon Stadium's lobby; then it appears on the pitch.",
+    "KUBFU": "Beat the dojo master (Bea) in Wyndon Stadium's lobby; then it appears on the pitch. Once it's caught, a second Kubfu comes to the pitch after you've been back to every Galar area.",
     "ZACIAN": "Find the Rusted Sword in Glimwood Tangle; then it appears at its plinth in Circhester.",
     "ZAMAZENTA": "Find the Rusted Shield in Galar Mine B1F; then it appears at its plinth in Circhester.",
     "ZARUDE": "Light all 8 dark mushrooms in Glimwood Tangle (4 big, 4 giant) by touching them.",
@@ -242,7 +242,7 @@ PUZZLES = {
     "SOLGALEO": "Find the Sun Flute in the Ruins of Conflict; then it appears in Wela Volcano Park.",
     "LUNALA": "Find the Moon Flute in Seafolk Village; then it appears on Mount Lanakila.",
     "NECROZMA": "Catch Solgaleo and Lunala; then it appears in Wela Volcano Park.",
-    "ZYGARDE": "Find Zygarde Cells around the Kalos zone (8 in all). With 3 it appears at the Prism Tower's door as its 10% Forme; with all 8 it's whole (50% Forme with Power Construct).",
+    "ZYGARDE": "Find Zygarde Cells around the Kalos zone (12 in all). With 3 it appears at the Prism Tower's door as its 10% Forme; with 8, its 50% Forme; with all 12 it's whole (Power Construct: its 100% Complete Forme in battle), and the last Cell leaves the Zygarde Cube. Once one is caught, its other Formes turn up now and then in the Kalos zone's wild (the 50% with 8 Cells, Power Construct with all 12).",
     "HOOPA": "Take the Prison Bottle from its pedestal in Glittering Cave; Hoopa comes through a ring. The bottle turns it Unbound.",
     "YVELTAL": "Catch 10 different Kalos Pokémon; then it appears in the Lumiose Badlands.",
     "VOLCANION": "Visit Azure Bay's island with a Fire- or Water-type in the lead and a Pokémon of the other type in the party.",
@@ -347,6 +347,31 @@ def locations(data):
     group = wild["wild_encounter_groups"][0]
     rates = {f["type"]: f["encounter_rates"] for f in group["fields"]}
     rods = next(f for f in group["fields"] if f["type"] == "fishing_mons")["groups"]
+    # Slots shared by several species (the Exotic Safari: one or the other each time), and families
+    # whose wild Pokémon come in any of their forms (src/exotic_safari.c)
+    pools = {(pl["map"], pl["species"][0]): pl["species"]
+             for pl in json.loads((ROOT / "src/data/exotic_safari_pools.json").read_text())}
+    fam_src = (ROOT / "src/exotic_safari.c").read_text().split("sRandomFormFamilies")[0]
+    family = {}
+    for macro, stage in re.findall(r"\{(\w+)\((\w+)\)\}", fam_src):
+        body = re.search(r"#define " + macro + r"\(stage\)(.*?)SPECIES_NONE", fam_src, re.S)[1]
+        members = [f"SPECIES_{stage}_{x}" for x in re.findall(r"SPECIES_##stage##_(\w+)", body)]
+        for m in members:
+            family[m] = members
+    for lst in re.findall(r"static const u16 s\w+Forms\[\] = \{(SPECIES_[^}]*?)\};", fam_src, re.S):
+        members = [s for s in re.findall(r"SPECIES_\w+", lst) if s != "SPECIES_NONE"]
+        for m in members:
+            family[m] = members
+    alias = dict(re.findall(r"^\s+(SPECIES_\w+) = (SPECIES_\w+),", (ROOT / "include/constants/species.h").read_text(), re.M))
+    def canon(sp):
+        while sp in alias:
+            sp = alias[sp]
+        return sp
+    def shares(m, sp):
+        names = pools.get((m, sp), [sp])
+        return [(s, 1 / len(names)) for s in names]
+    def note(sp):
+        return " (any form)" if canon(sp) in family else ""
     for e in group["encounters"]:
         if not e["base_label"].endswith("_FireRed"):
             continue
@@ -365,28 +390,32 @@ def locations(data):
             mons = e.get(method, {}).get("mons", [])
             per = defaultdict(lambda: [0, 99, 0])
             for slot, mon in enumerate(mons[:len(rates[method])]):
-                p = per[mon["species"]]
-                p[0] += rates[method][slot]
-                p[1] = min(p[1], mon["min_level"])
-                p[2] = max(p[2], mon["max_level"])
+                for sp, share in shares(e["map"], mon["species"]):
+                    p = per[sp]
+                    p[0] += rates[method][slot] * share
+                    p[1] = min(p[1], mon["min_level"])
+                    p[2] = max(p[2], mon["max_level"])
             for sp, (pct, lo, hi) in per.items():
                 lv = f"Lv {lo}" if lo == hi else f"Lv {lo}–{hi}"
-                loc[sp].append((order, where, f"{label} {pct}%, {lv}", when))
+                for f in family.get(canon(sp), [sp]):
+                    loc[f].append((order, where, f"{label} {round(pct)}%, {lv}{note(sp)}", when))
         mons = e.get("fishing_mons", {}).get("mons", [])
         for rod, slots in rods.items():
             per = defaultdict(lambda: [0, 99, 0])
             for slot in slots:
                 if slot < len(mons):
                     mon = mons[slot]
-                    p = per[mon["species"]]
-                    p[0] += rates["fishing_mons"][slot]
-                    p[1] = min(p[1], mon["min_level"])
-                    p[2] = max(p[2], mon["max_level"])
+                    for sp, share in shares(e["map"], mon["species"]):
+                        p = per[sp]
+                        p[0] += rates["fishing_mons"][slot] * share
+                        p[1] = min(p[1], mon["min_level"])
+                        p[2] = max(p[2], mon["max_level"])
             total = sum(rates["fishing_mons"][s] for s in slots)
             for sp, (pct, lo, hi) in per.items():
                 lv = f"Lv {lo}" if lo == hi else f"Lv {lo}–{hi}"
                 rodname = rod.replace("_", " ").title()
-                loc[sp].append((order, where, f"{rodname} {round(100 * pct / total)}%, {lv}", when))
+                for f in family.get(canon(sp), [sp]):
+                    loc[f].append((order, where, f"{rodname} {round(100 * pct / total)}%, {lv}{note(sp)}", when))
 
     # Starters, gym legendaries
     for sp, kind in re.findall(r"\{ (SPECIES_\w+),\s+TYPE_\w+\s*\}, // (\w+)", (ROOT / "src/gym_hack.c").read_text()):

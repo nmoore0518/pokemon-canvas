@@ -40,6 +40,7 @@
 #define SEAL_BLUE_ORB 31    // (Kyogre: a lead holding the Blue Orb)
 #define SEAL_WISH     32    // (Jirachi: the zone's other legendaries caught)
 #define SEAL_GS_BALL  33    // (Celebi: the GS Ball found)
+#define SEAL_REVISIT  34    // (the second Kubfu: every Galar area visited again)
 #define SEAL_RESULT_CAUGHT 0xFF
 #define SEAL_RESULT_AWAY 0xFE
 // Each static legendary's index (sExoticSafariStatics)

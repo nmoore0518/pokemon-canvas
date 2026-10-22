@@ -36,3 +36,8 @@ ExoticSafari_KalosOcean_EventScript_Cell0::
 	lock
 	setvar VAR_0x8004, 7
 	goto ExoticSafari_EventScript_Cell
+
+ExoticSafari_KalosOcean_EventScript_Cell1::
+	lock
+	setvar VAR_0x8004, 11
+	goto ExoticSafari_EventScript_Cell

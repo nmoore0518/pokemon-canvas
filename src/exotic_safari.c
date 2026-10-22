@@ -308,13 +308,38 @@ static u32 StakesLeft(u32 color)
     return left;
 }
 
-// The Zygarde Cells found
+// The Zygarde Cells found (the first 8 from FLAG_EXOTIC_CELL_FIRST, the rest from
+// FLAG_EXOTIC_CELL_MORE_FIRST)
+static u16 CellFlag(u32 i)
+{
+    return i < 8 ? FLAG_EXOTIC_CELL_FIRST + i : FLAG_EXOTIC_CELL_MORE_FIRST + i - 8;
+}
+
 static u32 CellsFound(void)
 {
     u32 i, n = 0;
     for (i = 0; i < EXOTIC_SAFARI_CELLS; i++)
-        n += FlagGet(FLAG_EXOTIC_CELL_FIRST + i) != 0;
+        n += FlagGet(CellFlag(i)) != 0;
     return n;
+}
+
+// Galar: the areas the player has been back to since catching Kubfu (all of them: a second Kubfu
+// comes to the pitch)
+static u32 GalarVisited(void)
+{
+    u32 i, n = 0;
+    for (i = 0; i < ARRAY_COUNT(sGalarVisitMaps); i++)
+        n += FlagGet(FLAG_EXOTIC_GALAR_VISIT_FIRST + i) != 0;
+    return n;
+}
+
+// Whether a static legendary is caught (and so stays away). Kubfu: caught once, it comes back once
+// every Galar area has been visited again
+static bool32 StaticCaught(const struct ExoticSafariStatic *s)
+{
+    if (s->species == SPECIES_KUBFU && FlagGet(s->caughtFlag) && !FlagGet(FLAG_EXOTIC_KUBFU_TWICE))
+        return GalarVisited() < ARRAY_COUNT(sGalarVisitMaps);
+    return FlagGet(s->caughtFlag);
 }
 
 // A legendary's caught flag (sExoticSafariStatics or the roamers)
@@ -384,7 +409,9 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return left;
     case SEAL_FRIENDSHIP:
         return !LeadIs(LEAD_LOVING);
-    case SEAL_DOJO:
+    case SEAL_DOJO:         // (the second Kubfu: the Galar areas not visited again yet)
+        if (FlagGet(s->caughtFlag))
+            return ARRAY_COUNT(sGalarVisitMaps) - GalarVisited();
         return !FlagGet(FLAG_EXOTIC_DOJO_WON);
     case SEAL_STONES:
         return !FlagGet(FLAG_EXOTIC_STONES_LIT);
@@ -447,6 +474,8 @@ static u32 SealToTell(const struct ExoticSafariStatic *s)
 {
     if (s->seal == SEAL_DRAGON && FlagGet(sSealItems[s->sealArg][1]))
         return SEAL_DRAGON_LEAD;
+    if (s->seal == SEAL_DOJO && FlagGet(s->caughtFlag))
+        return SEAL_REVISIT;
     return s->seal;
 }
 
@@ -458,8 +487,8 @@ void ExoticSafari_BufferSeal(void)
 {
     const struct ExoticSafariStatic *s = &sExoticSafariStatics[gSpecialVar_0x8004 % ARRAY_COUNT(sExoticSafariStatics)];
     u32 left = SealLeft(s);
-    if (FlagGet(s->caughtFlag))
-        gSpecialVar_Result = SEAL_RESULT_CAUGHT;
+    if (FlagGet(s->caughtFlag) && (s->species != SPECIES_KUBFU || FlagGet(FLAG_EXOTIC_KUBFU_TWICE)))
+        gSpecialVar_Result = SEAL_RESULT_CAUGHT;     // (Kubfu, caught once: its seal tells of the second)
     else if (left == 0)
         gSpecialVar_Result = SEAL_RESULT_AWAY;
     else
@@ -502,7 +531,7 @@ void ExoticSafari_TryAppear(void)
     gSpecialVar_Result = FALSE;
     if (s->mapGroup != gSaveBlock1Ptr->location.mapGroup || s->mapNum != gSaveBlock1Ptr->location.mapNum)
         return;
-    if (FlagGet(s->caughtFlag) || SealLeft(s) != 0 || !FlagGet(s->hideFlag))
+    if (StaticCaught(s) || SealLeft(s) != 0 || !FlagGet(s->hideFlag))
         return;
     if ((VarGet(VAR_LEGENDS_GONE) >> (s->localId % 16)) & 1)
         return;
@@ -583,18 +612,156 @@ void ExoticSafari_UnownPanel(void)
     gSpecialVar_Result = UnownPanelsOpen() == UNOWN_PANELS ? 3 : 2;
 }
 
-// A wild Pokémon about to be made: in the Ruins of Alph, once every panel is open, an Unown is any
-// of its 28 forms
-u16 ExoticSafari_WildSpecies(u16 species)
+// ---------------------------------------------------------------------------------------------
+// WILD POKéMON: shared slots, random forms, Zygarde
+// ---------------------------------------------------------------------------------------------
+// Families whose wild Pokémon come in any of their forms (patterns, colors, sizes, seasons)
+#define VIVILLON_PATTERNS(stage) \
+    SPECIES_##stage##_ICY_SNOW, SPECIES_##stage##_POLAR, SPECIES_##stage##_TUNDRA, SPECIES_##stage##_CONTINENTAL, \
+    SPECIES_##stage##_GARDEN, SPECIES_##stage##_ELEGANT, SPECIES_##stage##_MEADOW, SPECIES_##stage##_MODERN, \
+    SPECIES_##stage##_MARINE, SPECIES_##stage##_ARCHIPELAGO, SPECIES_##stage##_HIGH_PLAINS, SPECIES_##stage##_SANDSTORM, \
+    SPECIES_##stage##_RIVER, SPECIES_##stage##_MONSOON, SPECIES_##stage##_SAVANNA, SPECIES_##stage##_SUN, \
+    SPECIES_##stage##_OCEAN, SPECIES_##stage##_JUNGLE, SPECIES_NONE
+static const u16 sScatterbugForms[] = {VIVILLON_PATTERNS(SCATTERBUG)};
+static const u16 sSpewpaForms[] = {VIVILLON_PATTERNS(SPEWPA)};
+static const u16 sVivillonForms[] = {VIVILLON_PATTERNS(VIVILLON)};
+#define FLOWER_COLORS(stage) SPECIES_##stage##_RED, SPECIES_##stage##_YELLOW, SPECIES_##stage##_ORANGE, SPECIES_##stage##_BLUE, SPECIES_##stage##_WHITE, SPECIES_NONE
+static const u16 sFlabebeForms[] = {FLOWER_COLORS(FLABEBE)};
+static const u16 sFloetteForms[] = {FLOWER_COLORS(FLOETTE)};
+static const u16 sFlorgesForms[] = {FLOWER_COLORS(FLORGES)};
+#define PUMPKIN_SIZES(stage) SPECIES_##stage##_AVERAGE, SPECIES_##stage##_SMALL, SPECIES_##stage##_LARGE, SPECIES_##stage##_SUPER, SPECIES_NONE
+static const u16 sPumpkabooForms[] = {PUMPKIN_SIZES(PUMPKABOO)};
+static const u16 sGourgeistForms[] = {PUMPKIN_SIZES(GOURGEIST)};
+#define SEASONS(stage) SPECIES_##stage##_SPRING, SPECIES_##stage##_SUMMER, SPECIES_##stage##_AUTUMN, SPECIES_##stage##_WINTER, SPECIES_NONE
+static const u16 sDeerlingForms[] = {SEASONS(DEERLING)};
+static const u16 sSawsbuckForms[] = {SEASONS(SAWSBUCK)};
+static const u16 sMiniorForms[] = {SPECIES_MINIOR_METEOR_RED, SPECIES_MINIOR_METEOR_ORANGE, SPECIES_MINIOR_METEOR_YELLOW,
+                                   SPECIES_MINIOR_METEOR_GREEN, SPECIES_MINIOR_METEOR_BLUE, SPECIES_MINIOR_METEOR_INDIGO,
+                                   SPECIES_MINIOR_METEOR_VIOLET, SPECIES_NONE};
+static const u16 sDudunsparceForms[] = {SPECIES_DUDUNSPARCE_TWO_SEGMENT, SPECIES_DUDUNSPARCE_THREE_SEGMENT, SPECIES_NONE};
+
+static const u16 *const sRandomFormFamilies[] =
+{
+    sScatterbugForms, sSpewpaForms, sVivillonForms, sFlabebeForms, sFloetteForms, sFlorgesForms,
+    sPumpkabooForms, sGourgeistForms, sDeerlingForms, sSawsbuckForms, sMiniorForms, sDudunsparceForms,
+};
+
+static u16 RandomForm(u16 species)
+{
+    u32 f, i, n;
+    for (f = 0; f < ARRAY_COUNT(sRandomFormFamilies); f++)
+    {
+        const u16 *forms = sRandomFormFamilies[f];
+        for (i = 0; forms[i] != SPECIES_NONE; i++)
+        {
+            if (forms[i] == species)
+            {
+                for (n = 0; forms[n] != SPECIES_NONE; n++)
+                    ;
+                return forms[Random() % n];
+            }
+        }
+    }
+    return species;
+}
+
+// A slot shared by several species (the area's table names the first: sSlotPools)
+static u16 PoolSpecies(u16 species)
+{
+    u32 i, n;
+    for (i = 0; i < ARRAY_COUNT(sSlotPools); i++)
+    {
+        const struct ExoticSafariPool *p = &sSlotPools[i];
+        if (p->mapGroup != gSaveBlock1Ptr->location.mapGroup || p->mapNum != gSaveBlock1Ptr->location.mapNum
+         || p->species[0] != species)
+            continue;
+        for (n = 1; n < ARRAY_COUNT(p->species) && p->species[n] != SPECIES_NONE; n++)
+            ;
+        return p->species[Random() % n];
+    }
+    return species;
+}
+
+// Zygarde, once the first is caught: now and then, anywhere in the Kalos zone, another of its forms
+// (10% Forme; 50% Forme once 8 Cells are found; the Power Construct ones - Complete Forme in battle -
+// once all of them are)
+#define ZYGARDE_WILD_ODDS 50
+
+static bool32 InZygardeRegion(void)
+{
+    const struct ExoticSafariArea *area = GetArea();
+    u32 i, j;
+    if (area == NULL)
+        return FALSE;
+    for (i = 0; i < ARRAY_COUNT(sExoticSafariStatics); i++)
+    {
+        if (sExoticSafariStatics[i].species != SPECIES_ZYGARDE)
+            continue;
+        for (j = 0; j < ARRAY_COUNT(sExoticSafariAreas); j++)
+        {
+            if (sExoticSafariAreas[j].mapGroup == sExoticSafariStatics[i].mapGroup
+             && sExoticSafariAreas[j].mapNum == sExoticSafariStatics[i].mapNum)
+                return sExoticSafariAreas[j].region == area->region;
+        }
+    }
+    return FALSE;
+}
+
+static u16 WildZygarde(void)
+{
+    u16 forms[4];
+    u32 n = 0;
+    forms[n++] = SPECIES_ZYGARDE_10_AURA_BREAK;
+    if (CellsFound() >= EXOTIC_SAFARI_CELLS_FOR_50)
+        forms[n++] = SPECIES_ZYGARDE_50;
+    if (CellsFound() >= EXOTIC_SAFARI_CELLS)
+    {
+        forms[n++] = SPECIES_ZYGARDE_10_POWER_CONSTRUCT;
+        forms[n++] = SPECIES_ZYGARDE_50_POWER_CONSTRUCT;
+    }
+    return forms[Random() % n];
+}
+
+// A wild Pokémon about to be made (src/wild_encounter.c): its slot's other species, any of its
+// forms; in the Ruins of Alph, once every panel is open, an Unown is any of its 28 forms
+u16 ExoticSafari_WildSpecies(u16 species, u8 *level)
 {
     u32 k;
     bool32 unown = species == SPECIES_UNOWN || (species >= SPECIES_UNOWN_B && species <= SPECIES_UNOWN_QUESTION);
+    if (FlagGet(FLAG_EXOTIC_LEGEND_ZYGARDE) && InZygardeRegion() && Random() % ZYGARDE_WILD_ODDS == 0)
+    {
+        *level = EXOTIC_SAFARI_LEGEND_LEVEL;
+        return WildZygarde();
+    }
+    species = RandomForm(PoolSpecies(species));
     if (!unown || UnownPanelsOpen() < UNOWN_PANELS
      || gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(EXOTIC_SAFARI_UNOWN_MAP)
      || gSaveBlock1Ptr->location.mapNum != MAP_NUM(EXOTIC_SAFARI_UNOWN_MAP))
         return species;
     k = Random() % 28;
     return k == 0 ? SPECIES_UNOWN : SPECIES_UNOWN_B + k - 1;
+}
+
+// An evolution about to happen (src/pokemon.c): Alcremie comes in any of its nine creams (which one
+// is the Milcery's own: from its personality), its sweet as given
+static const u16 sAlcremieVanilla[] = {SPECIES_ALCREMIE_STRAWBERRY_VANILLA_CREAM, SPECIES_ALCREMIE_BERRY_VANILLA_CREAM,
+    SPECIES_ALCREMIE_LOVE_VANILLA_CREAM, SPECIES_ALCREMIE_STAR_VANILLA_CREAM, SPECIES_ALCREMIE_CLOVER_VANILLA_CREAM,
+    SPECIES_ALCREMIE_FLOWER_VANILLA_CREAM, SPECIES_ALCREMIE_RIBBON_VANILLA_CREAM};
+static const u16 sAlcremieRuby[] = {SPECIES_ALCREMIE_STRAWBERRY_RUBY_CREAM, SPECIES_ALCREMIE_BERRY_RUBY_CREAM,
+    SPECIES_ALCREMIE_LOVE_RUBY_CREAM, SPECIES_ALCREMIE_STAR_RUBY_CREAM, SPECIES_ALCREMIE_CLOVER_RUBY_CREAM,
+    SPECIES_ALCREMIE_FLOWER_RUBY_CREAM, SPECIES_ALCREMIE_RIBBON_RUBY_CREAM};
+
+u16 ExoticSafari_EvolvedForm(struct Pokemon *mon, u16 target)
+{
+    u32 i, cream;
+    for (i = 0; i < ARRAY_COUNT(sAlcremieVanilla); i++)
+    {
+        if (target != sAlcremieVanilla[i])
+            continue;
+        cream = (GetMonData(mon, MON_DATA_PERSONALITY) >> 8) % 9;    // (vanilla, then ruby ... rainbow swirl)
+        return cream == 0 ? target : sAlcremieRuby[i] + cream - 1;
+    }
+    return target;
 }
 
 // Special (each area's ON_TRANSITION): its static legendaries shown or not, the roamers placed
@@ -615,8 +782,18 @@ void ExoticSafari_AreaOnTransition(void)
         const struct ExoticSafariStatic *s = &sExoticSafariStatics[i];
         if (s->mapGroup != gSaveBlock1Ptr->location.mapGroup || s->mapNum != gSaveBlock1Ptr->location.mapNum)
             continue;
-        if (FlagGet(s->caughtFlag) || SealLeft(s) != 0)
+        if (StaticCaught(s) || SealLeft(s) != 0)
             FlagSet(s->hideFlag);
+    }
+    // Galar: once Kubfu is caught, the areas the player goes back to (all: another Kubfu)
+    if (FlagGet(FLAG_EXOTIC_LEGEND_KUBFU) && !FlagGet(FLAG_EXOTIC_KUBFU_TWICE))
+    {
+        for (i = 0; i < ARRAY_COUNT(sGalarVisitMaps); i++)
+        {
+            if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(sGalarVisitMaps[i])
+             && gSaveBlock1Ptr->location.mapNum == MAP_NUM(sGalarVisitMaps[i]))
+                FlagSet(FLAG_EXOTIC_GALAR_VISIT_FIRST + i);
+        }
     }
     // Johto: the areas the player has been in (all six free the beasts)
     for (i = 0; i < ARRAY_COUNT(sJohtoVisitMaps); i++)
@@ -910,25 +1087,34 @@ void ExoticSafari_CountStarters(void)
 // STR_VAR_1 = how many found, STR_VAR_2 = how many left
 void ExoticSafari_TakeCell(void)
 {
-    FlagSet(FLAG_EXOTIC_CELL_FIRST + gSpecialVar_0x8004 % EXOTIC_SAFARI_CELLS);
+    FlagSet(CellFlag(gSpecialVar_0x8004 % EXOTIC_SAFARI_CELLS));
     gSpecialVar_Result = EXOTIC_SAFARI_CELLS - CellsFound();
     ConvertIntToDecimalStringN(gStringVar1, CellsFound(), STR_CONV_MODE_LEFT_ALIGN, 2);
     ConvertIntToDecimalStringN(gStringVar2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 2);
 }
 
-// Special (Zygarde, before its battle): VAR_RESULT = its Cells still out there; STR_VAR_2 = that
+// Special (Zygarde, before its battle): VAR_RESULT = its Cells still out there; STR_VAR_1 = the
+// Forme it's in ("10%", "50%"), STR_VAR_2 = the Cells left
 void ExoticSafari_CountCells(void)
 {
     gSpecialVar_Result = EXOTIC_SAFARI_CELLS - CellsFound();
+    StringCopy(gStringVar1, CellsFound() >= EXOTIC_SAFARI_CELLS_FOR_50 ? COMPOUND_STRING("50%") : COMPOUND_STRING("10%"));
     ConvertIntToDecimalStringN(gStringVar2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, 2);
 }
 
 // Special (a legendary's battle, VAR_0x8004 its species): the form it battles in. Zygarde: its 10%
-// Forme until all its Cells are found; then whole, with Power Construct (Complete Forme in battle)
+// Forme; its 50% Forme with 8 of its Cells found; with all of them, whole: Power Construct (its 100%
+// Complete Forme in battle)
 void ExoticSafari_LegendForm(void)
 {
-    if (gSpecialVar_0x8004 == SPECIES_ZYGARDE)
-        gSpecialVar_0x8004 = CellsFound() >= EXOTIC_SAFARI_CELLS ? SPECIES_ZYGARDE_50_POWER_CONSTRUCT : SPECIES_ZYGARDE_10;
+    if (gSpecialVar_0x8004 != SPECIES_ZYGARDE)
+        return;
+    if (CellsFound() >= EXOTIC_SAFARI_CELLS)
+        gSpecialVar_0x8004 = SPECIES_ZYGARDE_50_POWER_CONSTRUCT;
+    else if (CellsFound() >= EXOTIC_SAFARI_CELLS_FOR_50)
+        gSpecialVar_0x8004 = SPECIES_ZYGARDE_50;
+    else
+        gSpecialVar_0x8004 = SPECIES_ZYGARDE_10;
 }
 
 // The Furfrou groomer's trims, in her menu's order

@@ -170,3 +170,7 @@ ViridianForest_Text_LeavingViridianForest::
 	.string "LEAVING VIRIDIAN FOREST\n"
 	.string "PEWTER CITY AHEAD$"
 
+@ Pokémon Canvas: one of Genesect's Drives, here once Genesect has been caught (src/form_items.c)
+ViridianForest_EventScript_ItemShockDrive::
+	finditem ITEM_SHOCK_DRIVE
+	end

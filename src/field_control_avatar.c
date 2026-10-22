@@ -1,5 +1,6 @@
 #include "exotic_safari.h"
 #include "global.h"
+#include "form_items.h"
 #include "gym_decor.h"
 #include "battle_setup.h"
 #include "bike.h"
@@ -318,6 +319,10 @@ static const u8 *GetInteractionScript(struct MapPosition *position, u8 metatileB
         return script;
 
     script = GetInteractedBackgroundEventScript(position, metatileBehavior, direction);
+    if (script != NULL)
+        return script;
+
+    script = FormItems_GetPlateScript(position->x - MAP_OFFSET, position->y - MAP_OFFSET);   // (Pokémon Canvas: Arceus's plates)
     if (script != NULL)
         return script;
 

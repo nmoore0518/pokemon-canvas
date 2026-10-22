@@ -200,3 +200,8 @@ Route12_Text_GiaNotEnoughMons::
 	.string "GIA: I can't bear to battle\n"
 	.string "without my JES!\p"
 	.string "Don't you have one more POKéMON?$"
+
+@ Pokémon Canvas: one of Genesect's Drives, here once Genesect has been caught (src/form_items.c)
+Route12_EventScript_ItemChillDrive::
+	finditem ITEM_CHILL_DRIVE
+	end

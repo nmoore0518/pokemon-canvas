@@ -123,6 +123,7 @@ for f in ['gym_hack', 'gym_finale', 'gym_switch', 'gym_convention', 'gym_decor',
     p = R/f'data/scripts/{f}.inc'
     if p.exists(): grab(p.read_text())
 items.update(re.findall(r"ITEM_\w+", (R/'src/data/exotic_safari_areas.h').read_text()))
+items.update(re.findall(r"ITEM_\w+_PLATE", (R/'src/form_items.c').read_text()))   # (Arceus's plates, in the gym)
 items.discard('ITEM_NONE')
 
 # ---- sources ---------------------------------------------------------------------------
@@ -138,6 +139,22 @@ for g in wj['wild_encounter_groups']:
         for f in ('land_mons', 'water_mons', 'rock_smash_mons', 'fishing_mons'):
             for mon in e.get(f, {}).get('mons', []):
                 add(mon['species'], f"wild {e['map'][4:]}")
+# shared slots (src/data/exotic_safari_pools.json): every species of the slot
+for pool in json.loads((R/'src/data/exotic_safari_pools.json').read_text()):
+    if pool['map'] in reach_ids:
+        for sp in pool['species'][1:]: add(sp, f"wild {pool['map'][4:]} (shared slot)")
+# families whose wild Pokémon come in any form (src/exotic_safari.c, sRandomFormFamilies)
+fam_src = (R/'src/exotic_safari.c').read_text().split('sRandomFormFamilies')[0]
+FAMILIES = []
+for macro, stage in re.findall(r'\{(\w+)\((\w+)\)\}', fam_src):
+    body = re.search(r'#define ' + macro + r'\(stage\)(.*?)SPECIES_NONE', fam_src, re.S)[1]
+    FAMILIES.append([f'SPECIES_{stage}_{x}' for x in re.findall(r'SPECIES_##stage##_(\w+)', body)])
+for lst in re.findall(r'static const u16 s\w+Forms\[\] = \{(SPECIES_[^}]*?)\};', fam_src, re.S):
+    FAMILIES.append([s for s in re.findall(r'SPECIES_\w+', lst) if s != 'SPECIES_NONE'])
+wild_now = {sp for sp, hs in src_of.items() if any(h.startswith('wild') for h in hs)}
+for fam in FAMILIES:
+    if any(canon(s) in wild_now for s in fam):
+        for s in fam: add(s, 'wild (any of its forms)')
 # the Ruins of Alph's panels: every Unown form
 for sp in S:
     if sp == 'SPECIES_UNOWN' or sp.startswith('SPECIES_UNOWN_'):
@@ -167,9 +184,16 @@ for m in reach:
 # safari statics and roamers, gym legends, the Red Gyarados
 areas_h = (R/'src/data/exotic_safari_areas.h').read_text()
 for sp in re.findall(r'MAP_NUM\(MAP_EXOTIC_SAFARI_\w+\), (SPECIES_\w+), FLAG_EXOTIC_LEGEND', areas_h):
-    if sp == 'SPECIES_ZYGARDE':          # (ExoticSafari_LegendForm: 10% with 3-7 cells, 50% Power Construct with 8)
+    if sp == 'SPECIES_ZYGARDE':          # (ExoticSafari_LegendForm: 10% with 3-7 cells, 50% with 8-11, Power Construct with all 12)
         add('SPECIES_ZYGARDE_10_AURA_BREAK', 'safari legendary (static, 3-7 cells)')
-        add('SPECIES_ZYGARDE_50_POWER_CONSTRUCT', 'safari legendary (static, all 8 cells)')
+        add('SPECIES_ZYGARDE_50', 'safari legendary (static, 8-11 cells)')
+        add('SPECIES_ZYGARDE_50_POWER_CONSTRUCT', 'safari legendary (static, all 12 cells)')
+        # (and once one is caught, wild in the Kalos zone now and then: ExoticSafari_WildSpecies)
+        for f in ('10_AURA_BREAK', '50', '10_POWER_CONSTRUCT', '50_POWER_CONSTRUCT'):
+            add('SPECIES_ZYGARDE_' + f, 'wild Kalos zone (rare, once Zygarde is caught; cells gate the forms)')
+        continue
+    if sp == 'SPECIES_KUBFU':
+        add(sp, 'safari legendary (static; a second comes once every Galar area is visited again)')
         continue
     add(sp, 'safari legendary (static)')
 for sp in re.findall(r'\{(SPECIES_\w+), FLAG_EXOTIC_LEGEND_\w+, FLAG_TEMP', areas_h): add(sp, 'safari legendary (roams)')
@@ -204,6 +228,10 @@ def evo_ok(src, meth, param, conds):
         if n == 'IF_SPECIES_IN_PARTY' and a not in have: return f'{a} in party'
         if n not in OK_IF: return f'condition {n} {a}'
     return None
+ALCREMIE_CREAMS = {}
+for v in [s for s in S if s.startswith('SPECIES_ALCREMIE_') and s.endswith('_VANILLA_CREAM')]:
+    sweet = v[len('SPECIES_ALCREMIE_'):-len('_VANILLA_CREAM')]
+    ALCREMIE_CREAMS[v] = [s for s in S if s.startswith(f'SPECIES_ALCREMIE_{sweet}_') and not s.endswith('_GMAX')]
 def custom_forms():
     out = []
     if 'SPECIES_FURFROU_NATURAL' in have:
@@ -222,6 +250,8 @@ while changed:
             why = evo_ok(sp, meth, param, conds)
             if why is None:
                 have[tgt] = [f"evolve {d['name']} ({meth[4:].lower()} {param})"]; changed = True
+                for c in ALCREMIE_CREAMS.get(tgt, []):      # (ExoticSafari_EvolvedForm: any of the nine creams)
+                    if c not in have: have[c] = [f"evolve {d['name']} (its cream: from its personality)"]
             else:
                 blocked.setdefault(tgt, set()).add(f"from {d['name']}: {why}")
         for e in FCT.get(d['fct'], []):
@@ -277,7 +307,8 @@ def closure(seed):
             d = S[sp]
             for meth, param, tgt, conds in d['evos']:
                 tgt = canon(tgt)
-                if tgt not in h and tgt in S and evo_ok(sp, meth, param, conds) is None: h.add(tgt); ch = True
+                if tgt not in h and tgt in S and evo_ok(sp, meth, param, conds) is None:
+                    h.add(tgt); h.update(ALCREMIE_CREAMS.get(tgt, [])); ch = True
             for e in FCT.get(d['fct'], []):
                 if len(e) < 2: continue
                 meth, tgt = e[0], canon(e[1]); param = e[2] if len(e) > 2 else ''
@@ -343,8 +374,6 @@ bat=[s for s in S if s not in have and kind(s)=='battle']; tot=[s for s in S if 
 print(f'\nBATTLE-ONLY ({len(bat)}: megas, Gigantamax, primal, Zen Mode, etc.) and TOTEM ({len(tot)}) forms: not counted')
 print(f'\nTotal entries: {len(S)}; obtainable: {len(have)}; storable missing: {len(missing)}')
 
-print('\nONE-TIME CHOICES (one Pokémon, more than one form):')
-print('  Urshifu: one Kubfu, so Single Strike (Scroll of Darkness) or Rapid Strike (Scroll of Waters), not both')
-print('  Zygarde: one Zygarde, so 10% Forme (caught with 3-7 cells) or 50% Power Construct (all 8), not both')
+print('\nONE-TIME CHOICES: none (a second Kubfu comes to the pitch; Zygarde turns up wild in Kalos once caught, and the cube changes its forms)')
 print('\nONLY FROM ONE-TIME SOURCES (gifts, trades, the starter, statics that go for good):')
 for s in lockable: print(f"  {form(s)}: {'; '.join(src_of.get(s, have[s]))}")
