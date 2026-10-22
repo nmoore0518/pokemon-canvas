@@ -45,32 +45,44 @@ MOVES = {
 FACE = {"left": "MOVEMENT_TYPE_FACE_LEFT", "right": "MOVEMENT_TYPE_FACE_RIGHT",
         "up": "MOVEMENT_TYPE_FACE_UP", "down": "MOVEMENT_TYPE_FACE_DOWN"}
 
-# (name, class, map, (x, y), facing, line, team [(species, level)])
+# (name, class, map, (x, y), facing, line, team [(species, level) or (species, level, ability)])
+# Every town (and the Pallet hall) has at least one trainer whose whole team every attacking type can
+# hit: no Normal, Ghost, Flying, Ground, Steel, Dark or Fairy types and no immunity abilities (so Ghost,
+# Ground, Electric... teams can train too). check_immunities() enforces it.
 TRAINERS = [
     ("MORRIS", "Gentleman", "ViridianCity_House_Frlg", (9, 4), "left",
      "My CHANSEY love a good spar.\nThey're worth plenty of EXP, too.",
      [("Chansey", 20), ("Staryu", 18), ("Gloom", 18), ("Pidgeotto", 18), ("Audino", 22)]),
+    ("LYDIA", "Lady", "ViridianCity_House_Frlg", (1, 4), "right",
+     "Any POKéMON can hit mine, so\nbring whoever needs training!",
+     [("Ivysaur", 19), ("Wartortle", 19), ("Charmeleon", 19), ("Kadabra", 20), ("Machoke", 22)]),
     ("CLAIRE", "Lady", "PewterCity_House2_Frlg", (9, 4), "left",
      "Training a new team? I'd be\ndelighted to help.",
      [("Chansey", 26), ("Onix", 24), ("Clefairy", 24), ("Magnemite", 24), ("Audino", 27)]),
+    ("BERNARD", "Gentleman", "PewterCity_House2_Frlg", (1, 4), "right",
+     "No tricks, no immunities. Just\nan honest battle.",
+     [("Seadra", 24), ("Weepinbell", 24), ("Machoke", 25), ("Kadabra", 25), ("Magmar", 27)]),
     ("MARINA", "Beauty", "CeruleanCity_House3_Frlg", (9, 4), "left",
      "Every CHAMPION starts over\nsometime. Let's battle!",
      [("Chansey", 30), ("Seadra", 28), ("Butterfree", 28), ("Kadabra", 29), ("Audino", 31)]),
     ("EDMUND", "Gentleman", "CeruleanCity_House4_Frlg", (9, 4), "left",
      "I keep my team in shape by\nbattling young trainers.",
-     [("Chansey", 33), ("Electabuzz", 30), ("Ponyta", 30), ("Weepinbell", 31), ("Audino", 32)]),
+     [("Electabuzz", 30), ("Rapidash", 30, "Run Away"), ("Starmie", 31), ("Victreebel", 32), ("Hypno", 33)]),
     ("VIVIAN", "Lady", "VermilionCity_House1_Frlg", (9, 4), "left",
      "The sea air makes my POKéMON\nfeisty. Care to try them?",
      [("Chansey", 35), ("Raichu", 33), ("Dewgong", 33), ("Scyther", 34), ("Audino", 36)]),
     ("SERENA", "Beauty", "VermilionCity_House2_Frlg", (9, 4), "left",
      "A battle a day keeps a team\nsharp. Shall we?",
-     [("Chansey", 38), ("Arcanine", 35), ("Graveler", 35), ("Slowbro", 36), ("Audino", 37)]),
+     [("Dewgong", 35), ("Arcanine", 36, "Intimidate"), ("Slowbro", 36), ("Poliwrath", 37, "Damp"), ("Jynx", 38)]),
     ("WINSTON", "Gentleman", "LavenderTown_House2_Frlg", (9, 4), "left",
      "A quiet town needs a lively\nbattle now and then.",
      [("Chansey", 40), ("Haunter", 38), ("Hypno", 38), ("Nidoqueen", 39), ("Audino", 42)]),
+    ("EDITH", "Lady", "LavenderTown_House2_Frlg", (1, 4), "right",
+     "Even GHOST POKéMON can land\na hit on my team. Try it!",
+     [("Hypno", 39), ("Victreebel", 39), ("Magmar", 40), ("Cloyster", 40), ("Alakazam", 42)]),
     ("ROSALIND", "Lady", "CeladonCity_Hotel_Frlg", (11, 3), "down",
      "I'm staying in CELADON for the\nshopping, and the battles.",
-     [("Chansey", 44), ("Vileplume", 42), ("Ninetales", 42), ("Starmie", 43), ("Audino", 45)]),
+     [("Vileplume", 42), ("Starmie", 43), ("Magmar", 43), ("Machamp", 44), ("Exeggutor", 45)]),
     ("PERCIVAL", "Gentleman", "CeladonCity_Hotel_Frlg", (16, 5), "left",
      "The hotel lets me battle in the\nlobby. Splendid, isn't it?",
      [("Blissey", 47), ("Porygon2", 44), ("Jynx", 44), ("Rhydon", 45), ("Audino", 46)]),
@@ -79,20 +91,23 @@ TRAINERS = [
      [("Blissey", 50), ("Alakazam", 47), ("Machamp", 47), ("Magneton", 48), ("Audino", 49)]),
     ("GENEVIEVE", "Lady", "SaffronCity_House_Frlg", (1, 3), "right",
      "My sister and I take turns\ntraining visitors.",
-     [("Blissey", 52), ("Gyarados", 49), ("Mr. Mime", 49), ("Steelix", 50), ("Audino", 51)]),
+     [("Hariyama", 49), ("Ampharos", 49), ("Kingdra", 50), ("Exeggutor", 51), ("Starmie", 52)]),
     ("OPHELIA", "Beauty", "FuchsiaCity_House1_Frlg", (9, 4), "left",
      "I came for the SAFARI ZONE and\nstayed for the battles!",
      [("Blissey", 55), ("Venomoth", 52), ("Kangaskhan", 52), ("Lapras", 53), ("Audino", 54)]),
     ("AUGUSTUS", "Gentleman", "FuchsiaCity_House3_Frlg", (9, 4), "left",
      "Ho ho! A CHAMPION in my house?\nLet's see your new team!",
-     [("Blissey", 57), ("Tauros", 54), ("Exeggutor", 54), ("Scizor", 55), ("Audino", 56)]),
+     [("Venomoth", 54), ("Heracross", 54), ("Lapras", 55, "Shell Armor"), ("Tentacruel", 55), ("Blaziken", 57)]),
     ("BEATRIX", "Lady", "CinnabarIsland_PokemonLab_Lounge_Frlg", (12, 5), "left",
      "The LAB lets me raise my team\nhere. Want to battle them?",
      [("Blissey", 60), ("Arcanine", 57), ("Omastar", 57), ("Kabutops", 57), ("Electrode", 58), ("Audino", 61)]),
+    ("ALISTAIR", "Gentleman", "CinnabarIsland_PokemonLab_Lounge_Frlg", (2, 5), "right",
+     "The LAB's fossils came back\nstrong. Want to see?",
+     [("Omastar", 57), ("Kabutops", 57), ("Magmar", 58), ("Electrode", 58), ("Blaziken", 59), ("Alakazam", 61)]),
     # The Pallet Training Hall (the dojo layout): the sides, then the middle, then the master at the top
     ("HAROLD", "Gentleman", HALL, (1, 10), "right",
      "Welcome to the PALLET TRAINING\nHALL. I'm the first test!",
-     [("Blissey", 66), ("Dragonite", 63), ("Gengar", 63), ("Snorlax", 64), ("Audino", 65)]),
+     [("Blastoise", 63), ("Venusaur", 63), ("Blaziken", 64), ("Alakazam", 65), ("Machamp", 66)]),
     ("PENELOPE", "Lady", HALL, (11, 10), "left",
      "Only CHAMPIONS train here.\nShow me what you've got!",
      [("Blissey", 69), ("Lapras", 66), ("Tyranitar", 66), ("Espeon", 67), ("Audino", 68)]),
@@ -100,15 +115,85 @@ TRAINERS = [
      "Strong opponents mean lots of\nEXP. Ready?",
      [("Blissey", 72), ("Salamence", 69), ("Metagross", 69), ("Milotic", 70), ("Audino", 71)]),
     ("REGINALD", "Gentleman", HALL, (11, 8), "left",
-     "I raised all three of OAK's\nfavorite POKéMON. Come!",
-     [("Blissey", 75), ("Charizard", 72), ("Venusaur", 72), ("Blastoise", 72), ("Audino", 74)]),
+     "Every type can strike my team.\nCome, test yours!",
+     [("Kingdra", 72), ("Sceptile", 72), ("Ampharos", 73), ("Walrein", 74), ("Heracross", 75)]),
     ("ARABELLA", "Lady", HALL, (6, 7), "down",
      "Few make it this far. Let's\nmake it worth your while.",
-     [("Blissey", 78), ("Aerodactyl", 75), ("Machamp", 75), ("Kingdra", 76), ("Audino", 77)]),
+     [("Milotic", 75), ("Exeggutor", 76), ("Cloyster", 76), ("Starmie", 77), ("Hariyama", 77), ("Blaziken", 78)]),
     ("MATILDA", "Lady", HALL, (6, 4), "down",
      "I'm the HALL's master. My CHANSEY\nfamily has trained CHAMPIONS!",
      [("Blissey", 82), ("Chansey", 80), ("Snorlax", 78), ("Dragonite", 78), ("Audino", 80), ("Blissey", 80)]),
 ]
+
+ALL_TYPES = ["NORMAL", "FIGHTING", "FLYING", "POISON", "GROUND", "ROCK", "BUG", "GHOST", "STEEL", "FIRE", "WATER",
+             "GRASS", "ELECTRIC", "PSYCHIC", "ICE", "DRAGON", "DARK", "FAIRY"]
+# defending type -> attacking types it's immune to
+TYPE_IMMUNE = {"GHOST": {"NORMAL", "FIGHTING"}, "NORMAL": {"GHOST"}, "FLYING": {"GROUND"}, "GROUND": {"ELECTRIC"},
+               "STEEL": {"POISON"}, "DARK": {"PSYCHIC"}, "FAIRY": {"DRAGON"}}
+ABILITY_IMMUNE = {"LEVITATE": {"GROUND"}, "EARTH_EATER": {"GROUND"}, "FLASH_FIRE": {"FIRE"}, "WELL_BAKED_BODY": {"FIRE"},
+                  "VOLT_ABSORB": {"ELECTRIC"}, "LIGHTNING_ROD": {"ELECTRIC"}, "MOTOR_DRIVE": {"ELECTRIC"},
+                  "WATER_ABSORB": {"WATER"}, "STORM_DRAIN": {"WATER"}, "DRY_SKIN": {"WATER"}, "SAP_SIPPER": {"GRASS"},
+                  "WONDER_GUARD": set(ALL_TYPES)}
+
+
+def species_const(name):
+    return "SPECIES_" + re.sub(r"[^A-Z0-9]+", "_", name.upper().replace("'", "")).strip("_")
+
+
+def _pick(expr):
+    """a C list element, maybe a ternary on the config ('(8 >= 6) ? TYPE_FAIRY : TYPE_NORMAL')"""
+    expr = expr.strip()
+    if expr.startswith("(") and expr.endswith(")"):
+        expr = expr[1:-1]
+    if "?" in expr:
+        cond, rest = expr.split("?", 1)
+        yes, no = rest.split(":", 1)
+        return _pick(yes if eval(cond.replace("&&", " and ").replace("||", " or ")) else no)
+    return expr.strip().strip("()").strip()
+
+
+def species_data(si_text, const):
+    i = si_text.index(f"[{const}] =")
+    k = si_text.find("[SPECIES_", i + 5)
+    body = si_text[i:k if k != -1 else None]
+    types = [_pick(e) for e in re.search(r"\.types = \{(.*?)\}", body).group(1).split(",")]
+    abil = [_pick(e) for e in re.search(r"\.abilities = \{(.*?)\}", body).group(1).split(",")]
+    return [t.replace("TYPE_", "") for t in types], [a.replace("ABILITY_", "") for a in abil]
+
+
+def immunities(si_text, team):
+    """attacking types some Pokémon on the team is immune to"""
+    out = set()
+    for mon in team:
+        types, abil = species_data(si_text, species_const(mon[0]))
+        for t in types:
+            out |= TYPE_IMMUNE.get(t, set())
+        abilities = [mon[2].upper().replace(" ", "_")] if len(mon) > 2 else [a for a in abil[:2] if a != "NONE"]
+        for a in abilities:
+            out |= ABILITY_IMMUNE.get(a, set())
+    return out
+
+
+def area(mp):
+    return "Pallet Training Hall" if mp == HALL else mp.split("_")[0]
+
+
+def check_immunities():
+    """every area has a trainer every attacking type can hit; returns {trainer: immunities}"""
+    si = ROOT / "build/guide/species_info.i"
+    if not si.exists():
+        print("(skipping the immunity check: run tools/gym_hack/guide/build_dex.py once for build/guide/species_info.i)")
+        return {}
+    si_text = si.read_text()
+    found, by_area = {}, {}
+    for name, _c, mp, _p, _f, _l, team in TRAINERS:
+        found[name] = immunities(si_text, team)
+        by_area.setdefault(area(mp), []).append(found[name])
+    bad = [a for a, sets in by_area.items() if not any(not s for s in sets)]
+    if bad:
+        raise SystemExit("No trainer without immunities in: " + ", ".join(bad))
+    return found
+
 
 HALL_WARPS = [(5, 14), (6, 14), (7, 14)]
 HALL_ATTENDANT = (4, 13)
@@ -140,8 +225,8 @@ def write_party():
         c, pic, gender, music, _ = CLASSES[cls]
         out.append(f"\n=== {const(name)} ===\nName: {name}\nClass: {c}\nPic: {pic}\nGender: {gender}\n"
                    f"Music: {music}\nDouble Battle: No\nAI: Check Bad Move\n")
-        for species, level in team:
-            mon = f"\n{species}\nLevel: {level}\n{ivs(level)}\n"
+        for species, level, *ability in team:
+            mon = f"\n{species}\nLevel: {level}\n" + (f"Ability: {ability[0]}\n" if ability else "") + f"{ivs(level)}\n"
             for mv in MOVES.get(species, []):
                 mon += f"- {mv}\n"
             out.append(mon)
@@ -310,6 +395,7 @@ def write_hall():
 
 
 def main():
+    imm = check_immunities()
     write_party()
     write_opponents()
     write_scripts()
@@ -317,7 +403,10 @@ def main():
     write_hall()
     for name, cls, mp, pos, _f, _l, team in TRAINERS:
         c = CLASSES[cls]
-        print(f"{name:10} {cls:9} {mp:40} Lv {min(l for _, l in team)}-{max(l for _, l in team)}")
+        lv = [m[1] for m in team]
+        im = imm.get(name)
+        print(f"{name:10} {cls:9} {mp:40} Lv {min(lv)}-{max(lv)}  "
+              + ("hit by every type" if im == set() else "immune: " + ", ".join(sorted(im or []))))
 
 
 if __name__ == "__main__":

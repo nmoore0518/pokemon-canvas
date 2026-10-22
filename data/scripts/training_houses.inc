@@ -12,6 +12,17 @@ TrainingHouse_EventScript_Morris::
 	release
 	end
 
+TrainingHouse_EventScript_Lydia::
+	lock
+	faceplayer
+	msgbox TrainingHouse_Text_LydiaIntro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
+	cleartrainerflag TRAINER_TRAINING_LYDIA
+	trainerbattle_no_intro TRAINER_TRAINING_LYDIA, TrainingHouse_Text_Defeat
+	msgbox TrainingHouse_Text_After
+	release
+	end
+
 TrainingHouse_EventScript_Claire::
 	lock
 	faceplayer
@@ -19,6 +30,17 @@ TrainingHouse_EventScript_Claire::
 	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
 	cleartrainerflag TRAINER_TRAINING_CLAIRE
 	trainerbattle_no_intro TRAINER_TRAINING_CLAIRE, TrainingHouse_Text_Defeat
+	msgbox TrainingHouse_Text_After
+	release
+	end
+
+TrainingHouse_EventScript_Bernard::
+	lock
+	faceplayer
+	msgbox TrainingHouse_Text_BernardIntro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
+	cleartrainerflag TRAINER_TRAINING_BERNARD
+	trainerbattle_no_intro TRAINER_TRAINING_BERNARD, TrainingHouse_Text_Defeat
 	msgbox TrainingHouse_Text_After
 	release
 	end
@@ -74,6 +96,17 @@ TrainingHouse_EventScript_Winston::
 	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
 	cleartrainerflag TRAINER_TRAINING_WINSTON
 	trainerbattle_no_intro TRAINER_TRAINING_WINSTON, TrainingHouse_Text_Defeat
+	msgbox TrainingHouse_Text_After
+	release
+	end
+
+TrainingHouse_EventScript_Edith::
+	lock
+	faceplayer
+	msgbox TrainingHouse_Text_EdithIntro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
+	cleartrainerflag TRAINER_TRAINING_EDITH
+	trainerbattle_no_intro TRAINER_TRAINING_EDITH, TrainingHouse_Text_Defeat
 	msgbox TrainingHouse_Text_After
 	release
 	end
@@ -151,6 +184,17 @@ TrainingHouse_EventScript_Beatrix::
 	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
 	cleartrainerflag TRAINER_TRAINING_BEATRIX
 	trainerbattle_no_intro TRAINER_TRAINING_BEATRIX, TrainingHouse_Text_Defeat
+	msgbox TrainingHouse_Text_After
+	release
+	end
+
+TrainingHouse_EventScript_Alistair::
+	lock
+	faceplayer
+	msgbox TrainingHouse_Text_AlistairIntro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, TrainingHouse_EventScript_Declined
+	cleartrainerflag TRAINER_TRAINING_ALISTAIR
+	trainerbattle_no_intro TRAINER_TRAINING_ALISTAIR, TrainingHouse_Text_Defeat
 	msgbox TrainingHouse_Text_After
 	release
 	end
@@ -263,9 +307,19 @@ TrainingHouse_Text_MorrisIntro::
 	.string "They're worth plenty of EXP, too.\p"
 	.string "Want to battle?$"
 
+TrainingHouse_Text_LydiaIntro::
+	.string "Any POKéMON can hit mine, so\n"
+	.string "bring whoever needs training!\p"
+	.string "Want to battle?$"
+
 TrainingHouse_Text_ClaireIntro::
 	.string "Training a new team? I'd be\n"
 	.string "delighted to help.\p"
+	.string "Want to battle?$"
+
+TrainingHouse_Text_BernardIntro::
+	.string "No tricks, no immunities. Just\n"
+	.string "an honest battle.\p"
 	.string "Want to battle?$"
 
 TrainingHouse_Text_MarinaIntro::
@@ -291,6 +345,11 @@ TrainingHouse_Text_SerenaIntro::
 TrainingHouse_Text_WinstonIntro::
 	.string "A quiet town needs a lively\n"
 	.string "battle now and then.\p"
+	.string "Want to battle?$"
+
+TrainingHouse_Text_EdithIntro::
+	.string "Even GHOST POKéMON can land\n"
+	.string "a hit on my team. Try it!\p"
 	.string "Want to battle?$"
 
 TrainingHouse_Text_RosalindIntro::
@@ -328,6 +387,11 @@ TrainingHouse_Text_BeatrixIntro::
 	.string "here. Want to battle them?\p"
 	.string "Want to battle?$"
 
+TrainingHouse_Text_AlistairIntro::
+	.string "The LAB's fossils came back\n"
+	.string "strong. Want to see?\p"
+	.string "Want to battle?$"
+
 TrainingHouse_Text_HaroldIntro::
 	.string "Welcome to the PALLET TRAINING\n"
 	.string "HALL. I'm the first test!\p"
@@ -344,8 +408,8 @@ TrainingHouse_Text_IsabellaIntro::
 	.string "Want to battle?$"
 
 TrainingHouse_Text_ReginaldIntro::
-	.string "I raised all three of OAK's\n"
-	.string "favorite POKéMON. Come!\p"
+	.string "Every type can strike my team.\n"
+	.string "Come, test yours!\p"
 	.string "Want to battle?$"
 
 TrainingHouse_Text_ArabellaIntro::

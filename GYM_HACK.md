@@ -147,12 +147,16 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   The wild planner (`planning/wild-pokemon-planner.xlsx`) covers Kanto and Sevii only; Johto's
   tables come from `import_johto.py` and the Exotic Safari's from `build_exotic_safari.py`.
 - **Post-game training houses** (`tools/gym_hack/build_training_houses.py`): after the first Hall
-  of Fame (`FLAG_HIDE_POSTGAME_GOSSIPERS`), 14 trainers in houses in every town but Pallet (Viridian
-  Lv 18-22 rising to Cinnabar Lv 57-61) and 6 in the **Pallet Training Hall** (Lv 63-82: a new
+  of Fame (`FLAG_HIDE_POSTGAME_GOSSIPERS`), 18 trainers, two in every town but Pallet (Viridian
+  Lv 18-22 rising to Cinnabar Lv 57-61), and 6 in the **Pallet Training Hall** (Lv 63-82: a new
   house in the clearing east of Oak's lab, the Saffron dojo's layout, with a nurse who heals).
   Each asks before battling and can be fought any number of times (their trainer flag is cleared
-  first); no type rule. Teams: Chansey/Blissey/Audino (plain attacking moves, no Soft-Boiled) plus
-  a mix of types; Lady/Gentleman/Beauty classes, so they pay well.
+  first); no type rule. Most teams: Chansey/Blissey/Audino (plain attacking moves, no Soft-Boiled)
+  plus a mix of types. Every town (and the hall, three of six) also has a trainer whose whole team
+  every attacking type can hit: no Normal, Ghost, Flying, Ground, Steel, Dark or Fairy types and no
+  immunity abilities (Levitate, Flash Fire, Water Absorb...; abilities are set where a species has
+  one in slot 1 or 2). The script checks this from the species data and refuses to write otherwise.
+  Lady/Gentleman/Beauty classes, so they pay well.
 - **Lucky Egg**: at the Chansey statue in Pallet Town (the statue's script gives it; a hidden item
   on the same tile, after the statue's signs, is there for the Itemfinder). **Amulet Coin**: an
   item ball on Pokémon Mansion 3F (besides Oak's aide's on Route 16).

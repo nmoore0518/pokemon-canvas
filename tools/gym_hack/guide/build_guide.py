@@ -509,15 +509,16 @@ def training_section():
     import build_training_houses as T
     rows = []
     for name, cls, mp, _pos, _f, _line, team in T.TRAINERS:
-        lv = f"{min(l for _, l in team)}-{max(l for _, l in team)}"
-        mons = ", ".join(f"{sp} {l}" for sp, l in team)
+        lv = f"{min(m[1] for m in team)}-{max(m[1] for m in team)}"
+        mons = ", ".join(f"{m[0]} {m[1]}" for m in team)
         rows.append(f"<tr><td>{esc(PLACE_NAMES.get(mp, mp))}</td><td>{cls} {name.title()}</td><td>{lv}</td><td>{esc(mons)}</td></tr>")
     return ("<p>After your first Hall of Fame, trainers move into houses around Kanto to help you raise a new team (say, after "
             "changing your gym's type). Talk to one and say YES to battle; they battle again as often as you like. They have no "
-            "type rule, so bring anyone. Their teams are built around Chansey, Blissey and Audino, which give a lot of EXP, and "
-            "they're Ladies, Gentlemen and Beauties, so they pay well (hold the Amulet Coin for double). The levels rise "
+            "type rule, so bring anyone. Most teams are built around Chansey, Blissey and Audino, which give a lot of EXP; "
+            "every town also has a trainer whose whole team can be hit by every type (no Normal, Ghost, Flying, Ground, Steel, "
+            "Dark or Fairy Pokémon, no Levitate or Flash Fire), so a Ghost or Ground team can train too. They're Ladies, Gentlemen and Beauties, so they pay well (hold the Amulet Coin for double). The levels rise "
             "through the towns in story order.</p><p>The top tier is the <b>Pallet Training Hall</b>, the house in the clearing "
-            "east of Oak's lab: six trainers at levels 63-82, and a nurse by the door who heals your team.</p>"
+            "east of Oak's lab: six trainers at levels 63-82 (three of them with no immunities), and a nurse by the door who heals your team.</p>"
             "<table class='grid'><tr><th>Where</th><th>Trainer</th><th>Levels</th><th>Team</th></tr>" + "".join(rows) + "</table>")
 
 

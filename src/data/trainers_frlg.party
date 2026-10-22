@@ -13837,6 +13837,35 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Disarming Voice
 - Take Down
 
+=== TRAINER_TRAINING_LYDIA ===
+Name: LYDIA
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Ivysaur
+Level: 19
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Wartortle
+Level: 19
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Charmeleon
+Level: 19
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Kadabra
+Level: 20
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Machoke
+Level: 22
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
 === TRAINER_TRAINING_CLAIRE ===
 Name: CLAIRE
 Class: Lady Frlg
@@ -13873,6 +13902,35 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Double Slap
 - Disarming Voice
 - Take Down
+
+=== TRAINER_TRAINING_BERNARD ===
+Name: BERNARD
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Seadra
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Weepinbell
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Machoke
+Level: 25
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Kadabra
+Level: 25
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Magmar
+Level: 27
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_TRAINING_MARINA ===
 Name: MARINA
@@ -13920,33 +13978,26 @@ Music: Serious
 Double Battle: No
 AI: Check Bad Move
 
-Chansey
-Level: 33
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Pound
-- Double Slap
-- Growl
-- Tail Whip
-
 Electabuzz
 Level: 30
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-Ponyta
+Rapidash
 Level: 30
+Ability: Run Away
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-Weepinbell
+Starmie
 Level: 31
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-Audino
+Victreebel
 Level: 32
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
+
+Hypno
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_TRAINING_VIVIAN ===
 Name: VIVIAN
@@ -13994,33 +14045,27 @@ Music: Cute
 Double Battle: No
 AI: Check Bad Move
 
-Chansey
-Level: 38
+Dewgong
+Level: 35
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Pound
-- Double Slap
-- Growl
-- Tail Whip
 
 Arcanine
-Level: 35
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-Graveler
-Level: 35
+Level: 36
+Ability: Intimidate
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Slowbro
 Level: 36
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
-Audino
+Poliwrath
 Level: 37
+Ability: Damp
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
+
+Jynx
+Level: 38
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_TRAINING_WINSTON ===
 Name: WINSTON
@@ -14059,6 +14104,35 @@ IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 - Disarming Voice
 - Take Down
 
+=== TRAINER_TRAINING_EDITH ===
+Name: EDITH
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Hypno
+Level: 39
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Victreebel
+Level: 39
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Magmar
+Level: 40
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Cloyster
+Level: 40
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Alakazam
+Level: 42
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
 === TRAINER_TRAINING_ROSALIND ===
 Name: ROSALIND
 Class: Lady Frlg
@@ -14068,19 +14142,7 @@ Music: Cute
 Double Battle: No
 AI: Check Bad Move
 
-Chansey
-Level: 44
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Pound
-- Double Slap
-- Growl
-- Tail Whip
-
 Vileplume
-Level: 42
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-
-Ninetales
 Level: 42
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
@@ -14088,13 +14150,17 @@ Starmie
 Level: 43
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Audino
+Magmar
+Level: 43
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Machamp
+Level: 44
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Exeggutor
 Level: 45
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
 
 === TRAINER_TRAINING_PERCIVAL ===
 Name: PERCIVAL
@@ -14179,33 +14245,25 @@ Music: Cute
 Double Battle: No
 AI: Check Bad Move
 
-Blissey
-Level: 52
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Pound
-- Double-Edge
-- Growl
-- Tail Whip
-
-Gyarados
+Hariyama
 Level: 49
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Mr. Mime
+Ampharos
 Level: 49
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Steelix
+Kingdra
 Level: 50
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Audino
+Exeggutor
 Level: 51
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
+
+Starmie
+Level: 52
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
 === TRAINER_TRAINING_OPHELIA ===
 Name: OPHELIA
@@ -14253,33 +14311,26 @@ Music: Serious
 Double Battle: No
 AI: Check Bad Move
 
-Blissey
-Level: 57
-IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Pound
-- Double-Edge
-- Growl
-- Tail Whip
-
-Tauros
+Venomoth
 Level: 54
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Exeggutor
+Heracross
 Level: 54
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Scizor
+Lapras
+Level: 55
+Ability: Shell Armor
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Tentacruel
 Level: 55
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 
-Audino
-Level: 56
+Blaziken
+Level: 57
 IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
 
 === TRAINER_TRAINING_BEATRIX ===
 Name: BEATRIX
@@ -14322,6 +14373,39 @@ IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
 - Disarming Voice
 - Take Down
 
+=== TRAINER_TRAINING_ALISTAIR ===
+Name: ALISTAIR
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Omastar
+Level: 57
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Kabutops
+Level: 57
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Magmar
+Level: 58
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Electrode
+Level: 58
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Blaziken
+Level: 59
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Alakazam
+Level: 61
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
 === TRAINER_TRAINING_HAROLD ===
 Name: HAROLD
 Class: Gentleman Frlg
@@ -14331,33 +14415,25 @@ Music: Serious
 Double Battle: No
 AI: Check Bad Move
 
-Blissey
-Level: 66
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-- Pound
-- Double-Edge
-- Growl
-- Tail Whip
-
-Dragonite
+Blastoise
 Level: 63
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Gengar
+Venusaur
 Level: 63
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Snorlax
+Blaziken
 Level: 64
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Audino
+Alakazam
 Level: 65
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
+
+Machamp
+Level: 66
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
 === TRAINER_TRAINING_PENELOPE ===
 Name: PENELOPE
@@ -14442,33 +14518,25 @@ Music: Serious
 Double Battle: No
 AI: Check Bad Move
 
-Blissey
-Level: 75
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-- Pound
-- Double-Edge
-- Growl
-- Tail Whip
-
-Charizard
+Kingdra
 Level: 72
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Venusaur
+Sceptile
 Level: 72
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Blastoise
-Level: 72
+Ampharos
+Level: 73
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Audino
+Walrein
 Level: 74
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
+
+Heracross
+Level: 75
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
 === TRAINER_TRAINING_ARABELLA ===
 Name: ARABELLA
@@ -14479,33 +14547,29 @@ Music: Cute
 Double Battle: No
 AI: Check Bad Move
 
-Blissey
-Level: 78
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-- Pound
-- Double-Edge
-- Growl
-- Tail Whip
-
-Aerodactyl
+Milotic
 Level: 75
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Machamp
-Level: 75
-IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-
-Kingdra
+Exeggutor
 Level: 76
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
-Audino
+Cloyster
+Level: 76
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Starmie
 Level: 77
 IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
-- Pound
-- Double Slap
-- Disarming Voice
-- Take Down
+
+Hariyama
+Level: 77
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Blaziken
+Level: 78
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
 
 === TRAINER_TRAINING_MATILDA ===
 Name: MATILDA
