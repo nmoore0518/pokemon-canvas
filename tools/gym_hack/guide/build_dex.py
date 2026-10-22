@@ -525,11 +525,7 @@ def card(info, data, loc, prevo, family_line):
         abil_txt += f" · <i>Hidden: {abil[2]}</i>"
     moves = " · ".join(f'<span class="mv"><span class="lv">{"Evo" if l == 0 else l}</span> {esc(data["moves"].get(m, m))}</span>'
                        for l, m in info["learnset"])
-    where = merge_floors(loc.get(info["key"], []))
-    lines = []
-    for order, place, how, when in sorted(where, key=lambda w: (w[0], w[1])):
-        when_txt = f' <span class="when">({when})</span>' if when and when not in ("Start", "post-game") else ""
-        lines.append(f"<li><b>{esc(place)}</b>: {esc(how)}{when_txt}</li>")
+    lines = by_method(loc.get(info["key"], []))
     if prevo:
         lines.append(f"<li>Evolve {esc(prevo)}</li>")
     if not lines:
@@ -549,6 +545,83 @@ def card(info, data, loc, prevo, family_line):
   <div class="sec"><span class="label">Where to find</span><ul class="where">{''.join(lines)}</ul></div>
   <div class="sec"><span class="label">Level-up moves</span><div class="moves">{moves}</div></div>
 </div>"""
+
+
+WILD = re.compile(r"^(Grass/Cave|Surf|Rock Smash|Old Rod|Good Rod|Super Rod) (\d+)%, Lv (\d+)(?:–(\d+))?$")
+FLOOR = re.compile(r"\s+(B?\d+F|\d+R|Room \d+|Entrance|Back|\(stairs\)|Summit Path|Ruby Path)$")
+METHOD_LABEL = {"Grass/Cave": "Grass/Cave", "Surf": "Surf", "Rock Smash": "Rock Smash",
+                "Old Rod": "Fishing (Old Rod)", "Good Rod": "Fishing (Good Rod)", "Super Rod": "Fishing (Super Rod)"}
+
+
+def place_list(places, most=8):
+    """['Route 11', 'Route 12', 'Mt. Moon', 'Johto: Route 34', 'Johto: Ilex Forest']
+    -> 'Routes 11, 12, Mt. Moon, Johto: Route 34, Ilex Forest' (at most `most` names, then 'and N more')"""
+    groups = OrderedDict()                 # prefix ('' or 'Johto') -> [routes], [places]
+    for p in places:
+        pre, _, name = p.rpartition(": ")
+        g = groups.setdefault(pre, ([], []))
+        m = re.fullmatch(r"Route (\d+)(?: North| South)?", name)
+        if m:
+            if int(m.group(1)) not in g[0]:
+                g[0].append(int(m.group(1)))
+        elif name not in g[1]:
+            g[1].append(name)
+    parts, count = [], 0
+    for pre, (routes, names) in groups.items():
+        items = []
+        if routes:
+            routes.sort()
+            items.append(f"Route{'s' if len(routes) > 1 else ''} {', '.join(map(str, routes))}")
+            count += len(routes)
+        items += names
+        count += len(names)
+        parts.append((pre + ": " if pre else "") + ", ".join(items))
+    text = "; ".join(parts)
+    total = len(places)
+    words = text.split(", ")
+    if len(words) > most:
+        text = ", ".join(words[:most]) + f" and {len(words) - most} more"
+    return text
+
+
+def by_method(where):
+    """the wild ones grouped by how they're caught, one line each (main game, then post-game); the
+    rest (gifts, starters, legendaries...) a line each"""
+    lines, groups = [], OrderedDict()
+    for order, place, how, when in sorted(where, key=lambda w: (w[0], w[1])):
+        m = WILD.match(how)
+        if not m:
+            when_txt = f' <span class="when">({when})</span>' if when and when not in ("Start", "post-game") else ""
+            lines.append((order, f"<li><b>{esc(place)}</b>: {esc(how)}{when_txt}</li>"))
+            continue
+        base = place
+        while FLOOR.search(base):
+            base = FLOOR.sub("", base)
+        post = order >= 2 or when == "post-game"
+        g = groups.setdefault((post, m.group(1)), {"places": [], "lv": [], "pct": [], "when": []})
+        if base not in g["places"]:
+            g["places"].append(base)
+        g["pct"].append(int(m.group(2)))
+        g["lv"] += [int(m.group(3)), int(m.group(4) or m.group(3))]
+        g["when"].append(when)
+    out = []
+    for (post, method), g in sorted(groups.items(), key=lambda kv: (kv[0][0], list(METHOD_LABEL).index(kv[0][1]))):
+        lo, hi = min(g["lv"]), max(g["lv"])
+        lv = f"Lv {lo}" if lo == hi else f"Lv {lo}–{hi}"
+        bits = [lv]
+        if len(g["places"]) == 1:
+            plo, phi = min(g["pct"]), max(g["pct"])
+            bits.append(f"{plo}%" if plo == phi else f"{plo}–{phi}%")
+            when = next((w for w in g["when"] if w and w not in ("Start", "post-game")), "")
+            if when:
+                bits.append(when)
+        label = METHOD_LABEL[method] + (" (post-game)" if post else "")
+        out.append(f'<li><b>{label}</b>: {esc(place_list(g["places"]))} <span class="when">({esc(", ".join(bits))})</span></li>')
+    main = [l for o, l in lines if o < 2]
+    late = [l for o, l in lines if o >= 2]
+    wild_main = [l for l in out if "(post-game)" not in l]
+    wild_post = [l for l in out if "(post-game)" in l]
+    return main + wild_main + late + wild_post
 
 
 def merge_floors(where):

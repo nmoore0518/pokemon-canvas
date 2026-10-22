@@ -38,14 +38,16 @@ def main(si_path, xlsx):
         mon = tables[label][field]["mons"][int(idx)]
         where = f"row {r} ({area}, {method}, slot {slot})"
         name = str(name).strip() if name is not None else ""
-        if name not in by_name:
+        # (Pokémon past #386 are shown by their constant's name, as the exporter writes them)
+        kept = mon["species"][8:].replace("_", " ").title() == name
+        if name not in by_name and not kept:
             errors.append(f"{where}: unknown Pokémon {name!r}")
             continue
         if not all(isinstance(v, (int, float)) and int(v) == v and 1 <= v <= 100 for v in (lo, hi)) or lo > hi:
             errors.append(f"{where}: bad levels {lo!r}-{hi!r}")
             continue
         # Keep the original constant when the name is unchanged (e.g. Unown letter forms)
-        species = mon["species"] if name_of.get(mon["species"]) == name else by_name[name]
+        species = mon["species"] if kept or name_of.get(mon["species"]) == name else by_name[name]
         new = {"min_level": int(lo), "max_level": int(hi), "species": species}
         if new != mon:
             changes += 1

@@ -318,6 +318,11 @@ PokemonMansion_3F_EventScript_ItemIron::
 	finditem ITEM_IRON
 	end
 
+@ Gym Trainer hack
+PokemonMansion_3F_EventScript_ItemAmuletCoin::
+	finditem ITEM_AMULET_COIN
+	end
+
 PokemonMansion_B1F_EventScript_ItemTM14::
 	finditem ITEM_TM14
 	end

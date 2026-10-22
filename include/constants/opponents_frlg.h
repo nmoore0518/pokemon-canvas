@@ -628,12 +628,32 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER        622
 #define TRAINER_CUE_BALL_PAXTON                    623
 #define TRAINER_GYM_CHALLENGER                     624 // Gym Trainer hack: built at run time (src/gym_challenge.c)
+#define TRAINER_TRAINING_MORRIS                    625
+#define TRAINER_TRAINING_CLAIRE                    626
+#define TRAINER_TRAINING_MARINA                    627
+#define TRAINER_TRAINING_EDMUND                    628
+#define TRAINER_TRAINING_VIVIAN                    629
+#define TRAINER_TRAINING_SERENA                    630
+#define TRAINER_TRAINING_WINSTON                   631
+#define TRAINER_TRAINING_ROSALIND                  632
+#define TRAINER_TRAINING_PERCIVAL                  633
+#define TRAINER_TRAINING_CELESTE                   634
+#define TRAINER_TRAINING_GENEVIEVE                 635
+#define TRAINER_TRAINING_OPHELIA                   636
+#define TRAINER_TRAINING_AUGUSTUS                  637
+#define TRAINER_TRAINING_BEATRIX                   638
+#define TRAINER_TRAINING_HAROLD                    639
+#define TRAINER_TRAINING_PENELOPE                  640
+#define TRAINER_TRAINING_ISABELLA                  641
+#define TRAINER_TRAINING_REGINALD                  642
+#define TRAINER_TRAINING_ARABELLA                  643
+#define TRAINER_TRAINING_MATILDA                   644
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT_FRLG can be increased but will take up additional saveblock space
 
-#define TRAINERS_COUNT_FRLG                      625
+#define TRAINERS_COUNT_FRLG                      645
 #define MAX_TRAINERS_COUNT_FRLG                  768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_FRLG_H

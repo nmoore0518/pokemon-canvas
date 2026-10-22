@@ -320,7 +320,24 @@ PalletTown_EventScript_GymDoorOpen::
 	end
 
 PalletTown_EventScript_ChanseyStatue::
+	goto_if_unset FLAG_HIDDEN_ITEM_PALLET_TOWN_LUCKY_EGG, PalletTown_EventScript_ChanseyStatueEgg
 	msgbox PalletTown_Text_ChanseyStatue, MSGBOX_SIGN
+	end
+
+@ Gym Trainer hack: a Lucky Egg left at the statue's base (also a hidden item there, for the Itemfinder)
+PalletTown_EventScript_ChanseyStatueEgg::
+	lockall
+	msgbox PalletTown_Text_ChanseyStatue
+	msgbox PalletTown_Text_ChanseyStatueEgg
+	giveitem ITEM_LUCKY_EGG
+	goto_if_eq VAR_RESULT, FALSE, PalletTown_EventScript_ChanseyStatueEggEnd
+	setflag FLAG_HIDDEN_ITEM_PALLET_TOWN_LUCKY_EGG
+PalletTown_EventScript_ChanseyStatueEggEnd::
+	releaseall
+	end
+
+PalletTown_EventScript_TrainingHallSign::
+	msgbox PalletTown_Text_TrainingHallSign, MSGBOX_SIGN
 	end
 
 PalletTown_EventScript_TownSign::
@@ -415,6 +432,14 @@ PalletTown_Text_GymDoorLocked::
 	.string "The doors are locked tight.\p"
 	.string "A note is taped to the glass:\n"
 	.string "“Opening soon! - PROF. OAK”$"
+
+PalletTown_Text_ChanseyStatueEgg::
+	.string "Something is tucked under the\n"
+	.string "statue's plaque…$"
+
+PalletTown_Text_TrainingHallSign::
+	.string "PALLET TRAINING HALL\n"
+	.string "Open to CHAMPIONS. Battle for EXP!$"
 
 PalletTown_Text_ChanseyStatue::
 	.string "A statue of CHANSEY.\p"

@@ -868,6 +868,7 @@ gStdScripts_End::
 	.include "data/maps/PalletTown_PokemonCenter_2F_Frlg/scripts.inc"
 	.include "data/maps/PalletTown_Mart_Frlg/scripts.inc"
 	.include "data/maps/PalletTown_Gym_Frlg/scripts.inc"
+	.include "data/maps/PalletTown_TrainingHall_Frlg/scripts.inc"
 	.include "data/maps/ViridianCity_House_Frlg/scripts.inc"
 	.include "data/maps/ViridianCity_Gym_Frlg/scripts.inc"
 	.include "data/maps/ViridianCity_School_Frlg/scripts.inc"
@@ -1081,6 +1082,7 @@ gStdScripts_End::
 	.include "data/scripts/new_game.inc"
 	.include "data/scripts/hall_of_fame.inc"
 	.include "data/scripts/hall_of_fame_frlg.inc"
+	.include "data/scripts/training_houses.inc"
 
 	.include "data/scripts/config.inc"
 	.include "data/scripts/debug.inc"

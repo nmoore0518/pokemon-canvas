@@ -13799,3 +13799,759 @@ AI: Check Bad Move
 
 Pikachu
 Level: 5
+
+=== TRAINER_TRAINING_MORRIS ===
+Name: MORRIS
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 20
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Staryu
+Level: 18
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Gloom
+Level: 18
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Pidgeotto
+Level: 18
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 22
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_CLAIRE ===
+Name: CLAIRE
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 26
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Onix
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Clefairy
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Magnemite
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 27
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_MARINA ===
+Name: MARINA
+Class: Beauty Frlg
+Pic: Beauty Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 30
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Seadra
+Level: 28
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Butterfree
+Level: 28
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Kadabra
+Level: 29
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 31
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_EDMUND ===
+Name: EDMUND
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Electabuzz
+Level: 30
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Ponyta
+Level: 30
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Weepinbell
+Level: 31
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 32
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_VIVIAN ===
+Name: VIVIAN
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 35
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Raichu
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Dewgong
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Scyther
+Level: 34
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 36
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_SERENA ===
+Name: SERENA
+Class: Beauty Frlg
+Pic: Beauty Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 38
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Arcanine
+Level: 35
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Graveler
+Level: 35
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Slowbro
+Level: 36
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 37
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_WINSTON ===
+Name: WINSTON
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 40
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Haunter
+Level: 38
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Hypno
+Level: 38
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Nidoqueen
+Level: 39
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Audino
+Level: 42
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_ROSALIND ===
+Name: ROSALIND
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Chansey
+Level: 44
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Vileplume
+Level: 42
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Ninetales
+Level: 42
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Starmie
+Level: 43
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 45
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_PERCIVAL ===
+Name: PERCIVAL
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 47
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Porygon2
+Level: 44
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Jynx
+Level: 44
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Rhydon
+Level: 45
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 46
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_CELESTE ===
+Name: CELESTE
+Class: Beauty Frlg
+Pic: Beauty Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 50
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Alakazam
+Level: 47
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Machamp
+Level: 47
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Magneton
+Level: 48
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 49
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_GENEVIEVE ===
+Name: GENEVIEVE
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 52
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Gyarados
+Level: 49
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Mr. Mime
+Level: 49
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Steelix
+Level: 50
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 51
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_OPHELIA ===
+Name: OPHELIA
+Class: Beauty Frlg
+Pic: Beauty Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 55
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Venomoth
+Level: 52
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Kangaskhan
+Level: 52
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Lapras
+Level: 53
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 54
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_AUGUSTUS ===
+Name: AUGUSTUS
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 57
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Tauros
+Level: 54
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Exeggutor
+Level: 54
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Scizor
+Level: 55
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 56
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_BEATRIX ===
+Name: BEATRIX
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 60
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Arcanine
+Level: 57
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Omastar
+Level: 57
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Kabutops
+Level: 57
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Electrode
+Level: 58
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+
+Audino
+Level: 61
+IVs: 10 HP / 10 Atk / 10 Def / 10 SpA / 10 SpD / 10 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_HAROLD ===
+Name: HAROLD
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 66
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Dragonite
+Level: 63
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Gengar
+Level: 63
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Snorlax
+Level: 64
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Audino
+Level: 65
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_PENELOPE ===
+Name: PENELOPE
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 69
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Lapras
+Level: 66
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Tyranitar
+Level: 66
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Espeon
+Level: 67
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Audino
+Level: 68
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_ISABELLA ===
+Name: ISABELLA
+Class: Beauty Frlg
+Pic: Beauty Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 72
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Salamence
+Level: 69
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Metagross
+Level: 69
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Milotic
+Level: 70
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Audino
+Level: 71
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_REGINALD ===
+Name: REGINALD
+Class: Gentleman Frlg
+Pic: Gentleman Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 75
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Charizard
+Level: 72
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Venusaur
+Level: 72
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Blastoise
+Level: 72
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Audino
+Level: 74
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_ARABELLA ===
+Name: ARABELLA
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 78
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Aerodactyl
+Level: 75
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Machamp
+Level: 75
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Kingdra
+Level: 76
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Audino
+Level: 77
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+=== TRAINER_TRAINING_MATILDA ===
+Name: MATILDA
+Class: Lady Frlg
+Pic: Lady Frlg
+Gender: Female
+Music: Cute
+Double Battle: No
+AI: Check Bad Move
+
+Blissey
+Level: 82
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip
+
+Chansey
+Level: 80
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Growl
+- Tail Whip
+
+Snorlax
+Level: 78
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Dragonite
+Level: 78
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+
+Audino
+Level: 80
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double Slap
+- Disarming Voice
+- Take Down
+
+Blissey
+Level: 80
+IVs: 20 HP / 20 Atk / 20 Def / 20 SpA / 20 SpD / 20 Spe
+- Pound
+- Double-Edge
+- Growl
+- Tail Whip

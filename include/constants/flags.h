@@ -2345,6 +2345,7 @@
 #define FLAG_HIDDEN_ITEM_SEVEN_ISLAND_SEVAULT_CANYON_ENTRANCE_RAWST_BERRY  0
 #define FLAG_HIDDEN_ITEM_VIRIDIAN_CITY_GYM_MACHO_BRACE                     0
 #define FLAG_HIDDEN_ITEM_SSANNE_EXTERIOR_LAVA_COOKIE                       0
+#define FLAG_HIDDEN_ITEM_PALLET_TOWN_LUCKY_EGG                             0
 
 #define FLAG_DEFEATED_BROCK           0
 #define FLAG_DEFEATED_MISTY           0
@@ -2618,6 +2619,8 @@
 #define FLAG_EXOTIC_GOT_DNA_SPLICERS          0x370
 #define FLAG_EXOTIC_GOT_REVEAL_GLASS          0x371
 #define FLAG_EXOTIC_UNOVA_KEY_FIRST           0x372   // to 0x374: the Light Stone, Dark Stone, Liberty Pass
+// Kanto extras: the Amulet Coin's item ball in the Pokemon Mansion
+#define FLAG_HIDE_POKEMON_MANSION_3F_AMULET_COIN  0x375
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

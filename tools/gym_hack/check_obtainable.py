@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import export_wild_sheet as ex  # noqa: E402
 
 ROOT = ex.ROOT
+SEVII = re.compile(r"MAP_((ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN)_ISLAND|MT_EMBER|BIRTH_ISLAND|NAVEL_ROCK|TRAINER_TOWER)")
 SHOP = ROOT / "data/maps/CeladonCity_DepartmentStore_4F_Frlg/scripts.inc"
 
 # Evolution conditions a single-player FireRed game can meet
@@ -49,7 +50,9 @@ def main(si_path):
     data = json.loads((ROOT / "src/data/wild_encounters.json").read_text())
     wild = set()
     for e in data["wild_encounter_groups"][0]["encounters"]:
-        if not e["base_label"].endswith("_FireRed"):
+        # Sevii Islands are unreachable in this hack; Johto (which replaces them) is post-game
+        if (not e["base_label"].endswith("_FireRed") or SEVII.match(e.get("map", ""))
+                or "_Johto_" in e["base_label"]):
             continue
         for field in ("land_mons", "water_mons", "rock_smash_mons", "fishing_mons"):
             for m in e.get(field, {}).get("mons", []):

@@ -153,7 +153,10 @@ def main(si_path, out):
     fish_groups = next(f for f in grp["fields"] if f["type"] == "fishing_mons")["groups"]
     slot_rod = {i: ROD_NAMES[r] for r, idx in fish_groups.items() for i in idx}
 
-    tables = [e for e in grp["encounters"] if e["base_label"].endswith("_FireRed")]
+    # (Johto's tables come from import_johto.py and the Exotic Safari's from build_exotic_safari.py,
+    # not this planner)
+    tables = [e for e in grp["encounters"] if e["base_label"].endswith("_FireRed")
+              and "_Johto_" not in e["base_label"] and "ExoticSafari" not in e["base_label"]]
     seen_labels = defaultdict(int)
     rows = []  # one per slot
     for e in tables:
@@ -170,7 +173,8 @@ def main(si_path, out):
                 rows.append({
                     "order": order, "map": e["map"], "label": e["base_label"], "area": name, "when": when,
                     "field": field, "method": method, "slot": i + 1, "rate": rates[field][i],
-                    "species": info[m["species"]]["name"], "min": m["min_level"], "max": m["max_level"],
+                    "species": info[m["species"]]["name"] if m["species"] in info
+                               else m["species"][8:].replace("_", " ").title(), "min": m["min_level"], "max": m["max_level"],
                 })
     field_order = {"land_mons": 0, "water_mons": 1, "rock_smash_mons": 2, "fishing_mons": 3}
     rows.sort(key=lambda r: (r["order"], field_order[r["field"]], r["slot"]))

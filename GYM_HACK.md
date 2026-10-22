@@ -41,6 +41,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   `RIVAL_TEAM_CERULEAN_WATER`). Change species, levels, held items (`Squirtle @ Oran Berry`),
   or add moves on lines starting with `- `. Without moves, a Pokémon uses its normal level-up moves.
 - Every other trainer: `src/data/trainers_frlg.party`, same format.
+- The post-game training trainers: `tools/gym_hack/build_training_houses.py` (the `TRAINERS` list:
+  name, class, house, spot, team). Edit it and run it; it rewrites their party entries, ids,
+  scripts and map objects.
 
 ## Design decisions
 
@@ -136,7 +139,23 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Latias, Latios, Kyogre, Groudon, Rayquaza, Jirachi, Deoxys) are no longer in Kanto's wild
   tables (their slots went to the table's neighbouring Pokémon); they go in the Exotic Safari
   (Ho-Oh, Groudon and Rayquaza stay gym-only). Kanto's legendaries stay where they are.
-  `check_obtainable.py` checks the other 370 can be caught before the post-game.
+  `check_obtainable.py` checks the other 370 can be caught before the post-game (Kanto only: the
+  unreachable Sevii Islands and post-game Johto don't count).
+- **Sevii-only Pokémon moved to Kanto**: Lunatone and Solrock (Mt. Moon 1F, Lv 10, 4% each),
+  Spinda (Route 3, Lv 6, 4%), Trapinch (Diglett's Cave, Lv 20, 5%), Ponyta (Route 7, Lv 20, 5%),
+  Yanma (Route 13, Lv 25, 5%), Slugma (Pokémon Mansion 2F, Lv 28, 4%), Skarmory (Route 23, Lv 40, 4%).
+  The wild planner (`planning/wild-pokemon-planner.xlsx`) covers Kanto and Sevii only; Johto's
+  tables come from `import_johto.py` and the Exotic Safari's from `build_exotic_safari.py`.
+- **Post-game training houses** (`tools/gym_hack/build_training_houses.py`): after the first Hall
+  of Fame (`FLAG_HIDE_POSTGAME_GOSSIPERS`), 14 trainers in houses in every town but Pallet (Viridian
+  Lv 18-22 rising to Cinnabar Lv 57-61) and 6 in the **Pallet Training Hall** (Lv 63-82: a new
+  house in the clearing east of Oak's lab, the Saffron dojo's layout, with a nurse who heals).
+  Each asks before battling and can be fought any number of times (their trainer flag is cleared
+  first); no type rule. Teams: Chansey/Blissey/Audino (plain attacking moves, no Soft-Boiled) plus
+  a mix of types; Lady/Gentleman/Beauty classes, so they pay well.
+- **Lucky Egg**: at the Chansey statue in Pallet Town (the statue's script gives it; a hidden item
+  on the same tile, after the statue's signs, is there for the Itemfinder). **Amulet Coin**: an
+  item ball on Pokémon Mansion 3F (besides Oak's aide's on Route 16).
 - **Story**: in the starter scene, Oak explains that the POKéMON LEAGUE is adding a ninth gym in
   Pallet Town (so many trainers reach the League that the Elite Four never get a day off), and he has
   picked the player and the rival as candidates. League rules say a Gym Leader uses one primary type,

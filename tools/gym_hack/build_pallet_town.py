@@ -488,7 +488,15 @@ grass(48, 6, 56, 11)
 PC_DOOR = pokemon_center(50, 6)
 grass(49, 14, 56, 19)
 MART_DOOR = mart(51, 15)
-tree_rect(48, 22, 56, 30)
+# The post-game training hall (its trainers: tools/gym_hack/build_training_houses.py), in a clearing
+# of the woods east of the lab
+grass(48, 22, 53, 29)
+HALL_DOOR = house(49, 22, "red")
+HALL_SIGN = (48, 26)
+put(*HALL_SIGN, 0x003)
+flowers(52, 27, 53, 28)
+tree_rect(54, 22, 56, 30)
+tree_rect(48, 30, 52, 30)
 
 # Lake, cliffs and the sea
 grass(2, 33, 57, 37)
@@ -678,6 +686,7 @@ WARPS = [
     (PC_DOOR, "MAP_PALLET_TOWN_POKEMON_CENTER_1F", 0),
     (MART_DOOR, "MAP_PALLET_TOWN_MART", 0),
     (GYM_DOOR, "MAP_PALLET_TOWN_GYM", 0),
+    (HALL_DOOR, "MAP_PALLET_TOWN_TRAINING_HALL", 1),   # (the middle warp: the doormat)
 ]
 
 OAK_START = (21, 13)          # where Oak appears before walking up to the player
@@ -734,9 +743,14 @@ def write_map_json():
         sign(TOWN_SIGN, "PalletTown_EventScript_TownSign"),
         sign(TIPS_SIGN, "PalletTown_EventScript_TrainerTips"),
         sign(GYM_SIGN, "PalletTown_EventScript_GymSign"),
+        sign(HALL_SIGN, "PalletTown_EventScript_TrainingHallSign"),
         sign(GYM_DOOR, "PalletTown_EventScript_GymDoorLocked"),
         sign((STATUE[0], STATUE[1]), "PalletTown_EventScript_ChanseyStatue"),
         sign((STATUE[0] + 1, STATUE[1]), "PalletTown_EventScript_ChanseyStatue"),
+        # the Lucky Egg at the statue's base: listed after the statue's signs, so pressing A reads the
+        # statue (whose script hands the egg over) and the hidden item is only there for the Itemfinder
+        {"type": "hidden_item", "x": STATUE[0], "y": STATUE[1], "elevation": 0, "item": "ITEM_LUCKY_EGG",
+         "flag": "FLAG_HIDDEN_ITEM_PALLET_TOWN_LUCKY_EGG", "quantity": 1, "underfoot": False},
     ]
     path.write_text(json.dumps(m, indent=2) + "\n")
 

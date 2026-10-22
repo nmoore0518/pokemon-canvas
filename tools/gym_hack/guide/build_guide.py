@@ -326,6 +326,13 @@ ITEMS = """
 Sabrina's, Cilantro after Blaine's, and the Gold Bottle Cap and Multivitamin after the Elite Four. Every Gym Leader also gives
 a Silver Bottle Cap with their TM; Erika adds Cilantro and Koga an Ability Capsule; your rival gives a Gold Bottle Cap at the
 Pokémon Tower, and Giovanni a Multivitamin at Silph Co.</p>
+<h3>EXP and money</h3>
+<ul>
+<li><b>Lucky Egg</b> (held: 1.5x EXP): at the base of the Chansey statue in Pallet Town, west of the Pokémon Center.
+Check the statue.</li>
+<li><b>Amulet Coin</b> (held: double prize money): an item ball in the Pokémon Mansion, 3F, in the room with the
+machines. Oak's aide in the Route 16 gate gives another once you've caught 40 kinds of Pokémon.</li>
+</ul>
 <h3>Your mentor's type items</h3>
 <p>Each type has two one-of-a-kind held items, brought by your mentor (the Gym Leader or Elite Four member of your type, or
 the closest fit). Neither is ever used up, and they can't be stolen or knocked off.</p>
@@ -487,6 +494,33 @@ puzzle pieces, and green are the ways out.</p>
 """
 
 
+PLACE_NAMES = {
+    "ViridianCity_House_Frlg": "Viridian City, house", "PewterCity_House2_Frlg": "Pewter City, house",
+    "CeruleanCity_House3_Frlg": "Cerulean City, house", "CeruleanCity_House4_Frlg": "Cerulean City, house",
+    "VermilionCity_House1_Frlg": "Vermilion City, house", "VermilionCity_House2_Frlg": "Vermilion City, house",
+    "LavenderTown_House2_Frlg": "Lavender Town, house", "CeladonCity_Hotel_Frlg": "Celadon City, hotel",
+    "SaffronCity_House_Frlg": "Saffron City, house", "FuchsiaCity_House1_Frlg": "Fuchsia City, house",
+    "FuchsiaCity_House3_Frlg": "Fuchsia City, house", "CinnabarIsland_PokemonLab_Lounge_Frlg": "Cinnabar Lab, lounge",
+    "PalletTown_TrainingHall_Frlg": "Pallet Town, Training Hall",
+}
+
+
+def training_section():
+    import build_training_houses as T
+    rows = []
+    for name, cls, mp, _pos, _f, _line, team in T.TRAINERS:
+        lv = f"{min(l for _, l in team)}-{max(l for _, l in team)}"
+        mons = ", ".join(f"{sp} {l}" for sp, l in team)
+        rows.append(f"<tr><td>{esc(PLACE_NAMES.get(mp, mp))}</td><td>{cls} {name.title()}</td><td>{lv}</td><td>{esc(mons)}</td></tr>")
+    return ("<p>After your first Hall of Fame, trainers move into houses around Kanto to help you raise a new team (say, after "
+            "changing your gym's type). Talk to one and say YES to battle; they battle again as often as you like. They have no "
+            "type rule, so bring anyone. Their teams are built around Chansey, Blissey and Audino, which give a lot of EXP, and "
+            "they're Ladies, Gentlemen and Beauties, so they pay well (hold the Amulet Coin for double). The levels rise "
+            "through the towns in story order.</p><p>The top tier is the <b>Pallet Training Hall</b>, the house in the clearing "
+            "east of Oak's lab: six trainers at levels 63-82, and a nurse by the door who heals your team.</p>"
+            "<table class='grid'><tr><th>Where</th><th>Trainer</th><th>Levels</th><th>Team</th></tr>" + "".join(rows) + "</table>")
+
+
 def build(out):
     parts = ['<div class="cover"><h1>Pokémon Canvas</h1><div class="sub">Player\'s Guide</div>'
              '<p style="margin-top:30px;color:#777">The story, your gym, the Gym Leader Convention and the Exotic Pokémon Safari'
@@ -494,7 +528,7 @@ def build(out):
     parts.append(chapter("Contents", """<div class="toc"><ol>
 <li><a href="#about">About the game</a></li><li><a href="#types">Choosing your type</a></li>
 <li><a href="#walk">Walkthrough</a></li><li><a href="#gym">Running your gym</a></li>
-<li><a href="#items">Items</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
+<li><a href="#items">Items</a></li><li><a href="#training">Training houses</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
 <li><a href="#safari">The Exotic Pokémon Safari</a></li></ol></div>""", newpage=False))
     parts.append(chapter("1. About the game", INTRO + RULES + DIFFERENCES, newpage=False, anchor="about"))
     parts.append(chapter("2. Choosing your type", "<p>Oak lists the types from the strongest possible team (the six best "
@@ -504,8 +538,9 @@ def build(out):
     parts.append(chapter("3. Walkthrough", WALKTHROUGH, anchor="walk"))
     parts.append(chapter("4. Running your gym", GYM, anchor="gym"))
     parts.append(chapter("5. Items", ITEMS, anchor="items"))
-    parts.append(chapter("6. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
-    parts.append(chapter("7. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
+    parts.append(chapter("6. Training houses", training_section(), anchor="training"))
+    parts.append(chapter("7. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
+    parts.append(chapter("8. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
     parts.append(safari_section())
     html = "<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>" + "".join(parts) + "</body></html>"
     hp = OUT_DIR / "guide.html"

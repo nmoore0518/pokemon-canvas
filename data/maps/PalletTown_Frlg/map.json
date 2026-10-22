@@ -129,6 +129,13 @@
       "elevation": 0,
       "dest_map": "MAP_PALLET_TOWN_GYM",
       "dest_warp_id": "0"
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "elevation": 0,
+      "dest_map": "MAP_PALLET_TOWN_TRAINING_HALL",
+      "dest_warp_id": "1"
     }
   ],
   "coord_events": [
@@ -227,6 +234,14 @@
     },
     {
       "type": "sign",
+      "x": 48,
+      "y": 26,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "PalletTown_EventScript_TrainingHallSign"
+    },
+    {
+      "type": "sign",
       "x": 20,
       "y": 21,
       "elevation": 0,
@@ -248,6 +263,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "PalletTown_EventScript_ChanseyStatue"
+    },
+    {
+      "type": "hidden_item",
+      "x": 42,
+      "y": 6,
+      "elevation": 0,
+      "item": "ITEM_LUCKY_EGG",
+      "flag": "FLAG_HIDDEN_ITEM_PALLET_TOWN_LUCKY_EGG",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }
