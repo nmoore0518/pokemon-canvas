@@ -2630,6 +2630,7 @@
 #define FLAG_EXOTIC_LEGEND_PHIONE             0x37D
 #define FLAG_EXOTIC_LEGEND_MANAPHY            0x37E
 #define FLAG_EXOTIC_LEGEND_ARCEUS             0x37F
+#define FLAG_EXOTIC_AZURE_FLUTE               0x380   // (from the Snowpoint elder, once every gym type is mastered)
 #define FLAG_EXOTIC_ITEM_SACHET               0x350
 #define FLAG_EXOTIC_ITEM_WHIPPED_DREAM        0x351
 #define FLAG_EXOTIC_ITEM_SHINY_STONE          0x352

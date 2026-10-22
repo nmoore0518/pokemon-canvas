@@ -8148,6 +8148,49 @@ static void Task_ChoosePartyMon(u8 taskId)
     }
 }
 
+// Gym Trainer hack (the Exotic Safari's Rotom room, special): an appliance - VAR_0x8006: 0 the
+// microwave, 1 the washer, 2 the fridge, 3 the fan, 4 the mower - takes the Rotom the player picks,
+// just as the Rotom Catalog would (its form, its move, a move to forget if it knows four); picked
+// for the appliance it's in already, the Rotom comes back out
+static const u16 sApplianceForms[] = {SPECIES_ROTOM_HEAT, SPECIES_ROTOM_WASH, SPECIES_ROTOM_FROST, SPECIES_ROTOM_FAN, SPECIES_ROTOM_MOW};
+static const u16 sApplianceMoves[] = {ROTOM_HEAT_MOVE, ROTOM_WASH_MOVE, ROTOM_FROST_MOVE, ROTOM_FAN_MOVE, ROTOM_MOW_MOVE};
+
+static void ItemUseCB_RotomAppliance(u8 taskId, TaskFunc task)
+{
+    u32 k = gSpecialVar_0x8006 % ARRAY_COUNT(sApplianceForms);
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gPartyMenu.slotId];
+    gSpecialVar_ItemId = ITEM_ROTOM_CATALOG;
+    if (GetMonData(mon, MON_DATA_SPECIES) == sApplianceForms[k])
+    {
+        gSpecialVar_Result = 0;                 // (the catalog's light bulb: plain Rotom)
+        gSpecialVar_0x8000 = ROTOM_BASE_MOVE;
+    }
+    else
+    {
+        gSpecialVar_Result = k + 1;             // (the catalog's order: oven, washer, fridge, fan, mower)
+        gSpecialVar_0x8000 = sApplianceMoves[k];
+    }
+    TryMultichoiceFormChange(taskId);
+}
+
+static void Task_ChooseRotomForAppliance(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        gItemUseCB = ItemUseCB_RotomAppliance;
+        InitPartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_USE_ITEM, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, BufferMonSelection);
+        DestroyTask(taskId);
+    }
+}
+
+void ChooseRotomForAppliance(void)
+{
+    LockPlayerFieldControls();
+    FadeScreen(FADE_TO_BLACK, 0);
+    CreateTask(Task_ChooseRotomForAppliance, 10);
+}
+
 void ChooseMonForMoveRelearner(void)
 {
     gRelearnMode = RELEARN_MODE_SCRIPT;

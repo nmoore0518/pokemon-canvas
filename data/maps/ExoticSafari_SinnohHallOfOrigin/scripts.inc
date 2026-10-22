@@ -21,3 +21,8 @@ ExoticSafari_SinnohHallOfOrigin_EventScript_LegendArceus::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_ARCEUS
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_SinnohHallOfOrigin_EventScript_SealArceus::
+	lockall
+	setvar VAR_0x8004, 40
+	goto ExoticSafari_EventScript_Seal

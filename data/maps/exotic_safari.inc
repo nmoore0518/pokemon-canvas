@@ -43,3 +43,4 @@
 	.include "data/maps/ExoticSafari_SinnohStarkMountain/scripts.inc"
 	.include "data/maps/ExoticSafari_SinnohStarkInside/scripts.inc"
 	.include "data/maps/ExoticSafari_SinnohHallOfOrigin/scripts.inc"
+	.include "data/maps/ExoticSafari_SinnohRotomRoom/scripts.inc"

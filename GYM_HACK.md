@@ -847,6 +847,27 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          the islands, Phione (marsh), Regigigas (city), Heatran (inside), Arceus (hall) stand;
          Manaphy roams (flags 0x378-0x37F). Dialga, Palkia, Giratina, Cresselia, Darkrai and
          Shaymin are gym-only.
+   - [x] Sinnoh round 2 (Nick's review): Floaroma Meadow redrawn bigger (66x44): six great flower
+         fields in stripes, diagonals and patches, paths between, a pond, a few pines. Its flowers
+         are drawn for it (`sinnoh.add_flowers`: one palette of six petal colors - red, yellow,
+         pink, purple, white, blue - two tiles a color) and are wild-Pokémon tiles themselves
+         (MB_INDOOR_ENCOUNTER: no grass overlay); no tall grass. Puzzles (seals 25-29): Uxie for a
+         lead of level 70+, Mesprit for a lead holding a berry, Azelf for a lead with 252 HP EVs;
+         Regigigas for Regirock, Regice and Registeel in the party (as in Platinum; they'll come
+         with the Hoenn zone); Arceus for the Azure Flute (flag 0x380), which the Snowpoint elder
+         gives once every gym type is mastered (a hint before). Rotom's Room (a Snowpoint house):
+         a microwave, washer, fridge, fan and mower (object sprites in `exotic_safari_art.py`); each
+         opens the party menu and changes the Rotom picked as the Rotom Catalog does - its form,
+         its move with the forget-a-move prompt - or lets it back out (`ChooseRotomForAppliance`).
+   - [x] No getting stuck, everything reachable: `unstick` (build_exotic_safari.py) opens a ledge
+         wherever one would leave the player unable to get back to where they came in, and
+         `tools/gym_hack/check_safari_reach.py` (run after every build) walks every zone from the
+         hall's doors through every way out and lists any legendary, item or way out that can't
+         be reached, or any spot with no way out. It found real ones, now fixed: Galar City's way
+         in from the lake was a walled-in corner (now its open south edge), Galar Lake's river to
+         the mine was blocked by a boulder, Skyarrow Bridge's cave mouth stood on a beach cut off
+         by sea rocks, and Chargestone's and Paldea's crater's ladders onward were in halves of
+         their caves the way in doesn't reach (moved to ladders that are).
    - [x] Area names: each Exotic Safari area pops up its own name (the place it's based on:
          `tools/gym_hack/safari_names.py`, shared with the guides; `ExoticSafari_GetAreaName`, used
          by the map name pop-up), every time the player walks into an area; the Safari Zone's

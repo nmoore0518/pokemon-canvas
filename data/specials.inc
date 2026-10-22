@@ -752,6 +752,8 @@ gSpecials::
 	def_special ExoticSafari_TrimFurfrou
 	def_special ExoticSafari_TakeKey
 	def_special ExoticSafari_LegendCaught
+	def_special ExoticSafari_AllTypesMastered
+	def_special ChooseRotomForAppliance, waitstate=1
 	def_special GymChallenge_BufferLastResult
 	def_special GymChallenge_PlanPlayerWalk
 	def_special GymChallenge_PlanChallengerWalk

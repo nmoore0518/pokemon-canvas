@@ -3,6 +3,7 @@
 
 // Pokémon Canvas: the Exotic Pokémon Safari's hall doors (src/exotic_safari.c)
 void ExoticSafari_OnLoad(void);
+void ExoticSafari_AllTypesMastered(void);
 const unsigned char *ExoticSafari_GetAreaName(void);   // (unsigned char: u8, this header comes before global.h in places)
 void ExoticSafari_OnStep(void);
 void ExoticSafari_AreaOnTransition(void);

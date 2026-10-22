@@ -58,6 +58,11 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_DRAIN, ExoticSafari_EventScript_SealDrain
 	case SEAL_CAUGHT, ExoticSafari_EventScript_SealCaught
 	case SEAL_KEY, ExoticSafari_EventScript_SealKey
+	case SEAL_LEVEL, ExoticSafari_EventScript_SealLevel
+	case SEAL_BERRY, ExoticSafari_EventScript_SealBerry
+	case SEAL_HP_EVS, ExoticSafari_EventScript_SealHpEvs
+	case SEAL_REGIS, ExoticSafari_EventScript_SealRegis
+	case SEAL_AZURE_FLUTE, ExoticSafari_EventScript_SealAzureFlute
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end
@@ -176,6 +181,78 @@ ExoticSafari_EventScript_SealCaught::
 ExoticSafari_EventScript_SealKey::
 	msgbox ExoticSafari_Text_SealKey
 	releaseall
+	end
+
+ExoticSafari_EventScript_SealLevel::
+	msgbox ExoticSafari_Text_SealLevel
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealBerry::
+	msgbox ExoticSafari_Text_SealBerry
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealHpEvs::
+	msgbox ExoticSafari_Text_SealHpEvs
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealRegis::
+	msgbox ExoticSafari_Text_SealRegis
+	releaseall
+	end
+
+ExoticSafari_EventScript_SealAzureFlute::
+	msgbox ExoticSafari_Text_SealAzureFlute
+	releaseall
+	end
+
+@ Sinnoh: the Snowpoint elder. Once every gym type is mastered he gives the Azure Flute (Arceus,
+@ at the top of the Hall of Origin, answers it); before that, a hint
+ExoticSafari_EventScript_SnowpointElder::
+	lock
+	faceplayer
+	goto_if_set FLAG_EXOTIC_AZURE_FLUTE, ExoticSafari_EventScript_ElderAfter
+	special ExoticSafari_AllTypesMastered
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_EventScript_ElderHint
+	msgbox ExoticSafari_Text_ElderFlute
+	playfanfare MUS_RG_OBTAIN_KEY_ITEM
+	message ExoticSafari_Text_ReceivedAzureFlute
+	waitmessage
+	waitfanfare
+	setflag FLAG_EXOTIC_AZURE_FLUTE
+	msgbox ExoticSafari_Text_ElderAfter
+	release
+	end
+
+ExoticSafari_EventScript_ElderHint::
+	msgbox ExoticSafari_Text_ElderHint
+	release
+	end
+
+ExoticSafari_EventScript_ElderAfter::
+	msgbox ExoticSafari_Text_ElderAfter
+	release
+	end
+
+@ Sinnoh: Rotom's room in Snowpoint. Each appliance (VAR_0x8006: which) takes a Rotom in, or lets
+@ it back out
+ExoticSafari_EventScript_Appliance::
+	lock
+	msgbox ExoticSafari_Text_ApplianceAsk, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ExoticSafari_EventScript_ReleaseOnly
+	special ChooseRotomForAppliance
+	setvar VAR_ITEM_ID, ITEM_NONE
+	release
+	end
+
+ExoticSafari_EventScript_ReleaseOnly::
+	release
+	end
+
+ExoticSafari_EventScript_RotomRoomGuide::
+	msgbox ExoticSafari_Text_RotomRoomGuide, MSGBOX_NPC
 	end
 
 @ One of Unova's keepsakes picked up (VAR_0x8004: which)
@@ -934,6 +1011,76 @@ ExoticSafari_Text_SealCaught:
 	.string "It's waiting for\n"
 	.string "{STR_VAR_1}\l"
 	.string "to be caught first.$"
+
+ExoticSafari_Text_SealLevel:
+	.string "The island is quiet, and the lake\n"
+	.string "still as glass…\p"
+	.string "Whatever lives here might come out\n"
+	.string "for a POKéMON of great knowledge:\l"
+	.string "level {STR_VAR_2} or higher, in the lead.$"
+
+ExoticSafari_Text_SealBerry:
+	.string "Ripples spread across the lake,\n"
+	.string "though there's no wind…\p"
+	.string "Whatever lives here might come out\n"
+	.string "for a POKéMON in the lead that has\l"
+	.string "a BERRY to share.$"
+
+ExoticSafari_Text_SealHpEvs:
+	.string "The water churns around the island,\n"
+	.string "restless…\p"
+	.string "Whatever lives here might come out\n"
+	.string "for a POKéMON of great willpower:\l"
+	.string "{STR_VAR_2} HP EVs, in the lead.$"
+
+ExoticSafari_Text_SealRegis:
+	.string "An enormous shape is carved into the\n"
+	.string "ice: a giant, asleep…\p"
+	.string "It might wake for the ones it made.\n"
+	.string "Bring {STR_VAR_1} in\l"
+	.string "your party.$"
+
+ExoticSafari_Text_SealAzureFlute:
+	.string "The air hums with a power older than\n"
+	.string "anything…\p"
+	.string "Something here is waiting for a\n"
+	.string "melody. The elder of Snowpoint City\l"
+	.string "may know more.$"
+
+ExoticSafari_Text_ElderHint:
+	.string "Up above the city stands the HALL OF\n"
+	.string "ORIGIN, where the first POKéMON is\l"
+	.string "said to rest.\p"
+	.string "It answers only the AZURE FLUTE, and\n"
+	.string "I keep the flute for a trainer who\l"
+	.string "has mastered every type there is.\p"
+	.string "Master every type in your gym, then\n"
+	.string "come back and see me.$"
+
+ExoticSafari_Text_ElderFlute:
+	.string "You've mastered every type there is…\n"
+	.string "I can see it in your eyes.\p"
+	.string "Then this flute is yours.$"
+
+ExoticSafari_Text_ReceivedAzureFlute:
+	.string "{PLAYER} received the\n"
+	.string "AZURE FLUTE!$"
+
+ExoticSafari_Text_ElderAfter:
+	.string "Climb to the HALL OF ORIGIN. The\n"
+	.string "first POKéMON will hear the flute.$"
+
+ExoticSafari_Text_ApplianceAsk:
+	.string "It's an old {STR_VAR_3}.\n"
+	.string "Its motor looks like it would fit a\l"
+	.string "ROTOM…\p"
+	.string "Let a ROTOM try it?$"
+
+ExoticSafari_Text_RotomRoomGuide:
+	.string "My family's old appliances! Their\n"
+	.string "motors still hum…\p"
+	.string "A ROTOM loves to slip into a motor.\n"
+	.string "Let yours try any of them!$"
 
 ExoticSafari_Text_SealKey:
 	.string "A strange presence lingers here,\n"

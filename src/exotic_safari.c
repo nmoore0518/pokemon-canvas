@@ -121,11 +121,11 @@ void ExoticSafari_OnStep(void)
 const u8 *ExoticSafari_GetAreaName(void)
 {
     u32 i;
-    for (i = 0; i < ARRAY_COUNT(sExoticSafariAreas); i++)
+    for (i = 0; i < ARRAY_COUNT(sExoticSafariNames); i++)
     {
-        if (sExoticSafariAreas[i].mapGroup == gSaveBlock1Ptr->location.mapGroup
-         && sExoticSafariAreas[i].mapNum == gSaveBlock1Ptr->location.mapNum)
-            return sExoticSafariAreas[i].name;
+        if (sExoticSafariNames[i].mapGroup == gSaveBlock1Ptr->location.mapGroup
+         && sExoticSafariNames[i].mapNum == gSaveBlock1Ptr->location.mapNum)
+            return sExoticSafariNames[i].name;
     }
     return NULL;
 }
@@ -231,6 +231,61 @@ static bool32 LeadIs(u32 what)
     if (what == LEAD_STEEL)         // (Meltan)
         return GetSpeciesType(species, 0) == TYPE_STEEL || GetSpeciesType(species, 1) == TYPE_STEEL;
     return GetSpeciesType(species, 0) == TYPE_DRAGON || GetSpeciesType(species, 1) == TYPE_DRAGON;
+}
+
+// Sinnoh: what the lead POKéMON needs for the lake trio (Uxie: a level; Mesprit: a held berry;
+// Azelf: HP EVs), and the party Regigigas waits for (Regirock, Regice and Registeel)
+static struct Pokemon *Lead(void)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    if (GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(mon, MON_DATA_IS_EGG))
+        return NULL;
+    return mon;
+}
+
+static bool32 PartyHas(u32 species)
+{
+    u32 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][i];
+        if (!GetMonData(mon, MON_DATA_IS_EGG) && GetMonData(mon, MON_DATA_SPECIES) == species)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static const u16 sRegis[] = {SPECIES_REGIROCK, SPECIES_REGICE, SPECIES_REGISTEEL};
+
+static u32 RegisMissing(void)
+{
+    u32 i, left = 0;
+    for (i = 0; i < ARRAY_COUNT(sRegis); i++)
+        left += !PartyHas(sRegis[i]);
+    return left;
+}
+
+// STR_VAR_1: the Regis not in the party ("A", "A and B", "A, B and C")
+static void BufferRegisMissing(void)
+{
+    u32 i, n = 0, total = RegisMissing();
+    u8 *s = gStringVar1;
+    *s = EOS;
+    for (i = 0; i < ARRAY_COUNT(sRegis); i++)
+    {
+        if (PartyHas(sRegis[i]))
+            continue;
+        if (n > 0)
+            s = StringAppend(s, n + 1 == total ? COMPOUND_STRING(" and ") : COMPOUND_STRING(", "));
+        s = StringAppend(s, GetSpeciesName(sRegis[i]));
+        n++;
+    }
+}
+
+// Special (the Snowpoint elder): VAR_RESULT = whether every gym type has been mastered
+void ExoticSafari_AllTypesMastered(void)
+{
+    gSpecialVar_Result = GymSwitch_AllTypesMastered();
 }
 
 static u32 CountFlagsLeft(const u16 *flags, u32 count)
@@ -359,6 +414,16 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return !FlagGet(sUnovaKeys[s->sealArg].flag);
     case SEAL_DRAIN:        // (Yveltal: sealArg Kalos POKéMON caught)
         return KalosCaught() >= s->sealArg ? 0 : s->sealArg - KalosCaught();
+    case SEAL_LEVEL:        // (Uxie: a lead of at least level sealArg)
+        return !(Lead() && GetMonData(Lead(), MON_DATA_LEVEL) >= s->sealArg);
+    case SEAL_BERRY:        // (Mesprit: a lead holding a berry)
+        return !(Lead() && GetItemPocket(GetMonData(Lead(), MON_DATA_HELD_ITEM)) == POCKET_BERRIES);
+    case SEAL_HP_EVS:       // (Azelf: a lead with sealArg HP EVs)
+        return !(Lead() && GetMonData(Lead(), MON_DATA_HP_EV) >= s->sealArg);
+    case SEAL_REGIS:        // (Regigigas: Regirock, Regice and Registeel in the party)
+        return RegisMissing();
+    case SEAL_AZURE_FLUTE:  // (Arceus: the Azure Flute, from the Snowpoint elder)
+        return !FlagGet(FLAG_EXOTIC_AZURE_FLUTE);
     }
     return 0;
 }
@@ -395,7 +460,11 @@ void ExoticSafari_BufferSeal(void)
         StringCopy(gStringVar1, sUnovaKeys[s->sealArg].name);
     else if (s->seal == SEAL_FLUTE)
         StringCopy(gStringVar1, sRelics[s->sealArg].name);
+    else if (s->seal == SEAL_REGIS)
+        BufferRegisMissing();
     ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
+    if (s->seal == SEAL_LEVEL || s->seal == SEAL_HP_EVS)     // (the level or EVs it wants)
+        ConvertIntToDecimalStringN(gStringVar2, s->sealArg, STR_CONV_MODE_LEFT_ALIGN, 3);
 }
 
 // The statics that ran from a battle this visit (bit per local id: they stay away until the

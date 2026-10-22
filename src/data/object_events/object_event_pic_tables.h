@@ -2830,6 +2830,26 @@ static const struct SpriteFrameImage sPicTable_PrisonBottle[] = {
     overworld_frame(gObjectEventPic_PrisonBottle, 2, 4, 0),
 };
 
+static const struct SpriteFrameImage sPicTable_ApplianceMicrowave[] = {
+    overworld_frame(gObjectEventPic_ApplianceMicrowave, 2, 2, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ApplianceWasher[] = {
+    overworld_frame(gObjectEventPic_ApplianceWasher, 2, 2, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ApplianceFridge[] = {
+    overworld_frame(gObjectEventPic_ApplianceFridge, 2, 4, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ApplianceFan[] = {
+    overworld_frame(gObjectEventPic_ApplianceFan, 2, 2, 0),
+};
+
+static const struct SpriteFrameImage sPicTable_ApplianceMower[] = {
+    overworld_frame(gObjectEventPic_ApplianceMower, 2, 2, 0),
+};
+
 
 static const struct SpriteFrameImage sPicTable_PlayerDiver[] = {
     overworld_frame(gObjectEventPic_PlayerDiver, 4, 4, 0),

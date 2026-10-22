@@ -77,6 +77,8 @@ def bridge():
                 g[SHRINE_AT[1] + j][SHRINE_AT[0] + i] = v
     x, y = CAVE_MOUTH
     g[y][x] = blk(0x0A9, 0, (g[y + 1][x] >> 12) & 0xF)   # (a cave's mouth, as on Route 4; at the beach's level)
+    for rx, ry in ((32, 15), (33, 15), (32, 16), (33, 16)):  # (the rock off the beach's corner: open water,
+        g[ry][rx] = g[15][34]                                #  so the beach under the cliff can be surfed to)
     return g, lay["width"], lay["height"]
 
 
@@ -251,9 +253,11 @@ AREAS = {
         "music": "MUS_RG_MT_MOON", "weather": "WEATHER_NONE", "type": "MAP_TYPE_UNDERGROUND",
         "links": {
             "BRIDGE": ("warp", [(38, 28)], (38, 29), ("BRIDGE", "CAVE")),
-            "CASTLE": ("warp", [(2, 3)], (2, 4), ("CASTLE", "CAVE")),
+            # (Rock Tunnel's halves don't meet: the ladder up to the castle is the one in the half
+            # the bridge's cave leads into)
+            "CASTLE": ("warp", [(33, 3)], (33, 4), ("CASTLE", "CAVE")),
         },
-        "remove_warps": [(33, 3), (27, 12)],
+        "remove_warps": [(2, 3), (27, 12)],
         "land": land("JOLTIK", "FERROSEED", "TYNAMO", "KLINK", "BOLDORE", "ROGGENROLA", "WOOBAT", "DRILBUR",
                      "GALVANTULA", "FERROTHORN", ("EELEKTRIK", 50, 54), ("KLANG", 50, 54)),
         "statics": [("ZEKROM", (24, 20))],

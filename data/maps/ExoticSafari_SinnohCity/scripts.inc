@@ -21,3 +21,8 @@ ExoticSafari_SinnohCity_EventScript_LegendRegigigas::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_REGIGIGAS
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_SinnohCity_EventScript_SealRegigigas::
+	lockall
+	setvar VAR_0x8004, 38
+	goto ExoticSafari_EventScript_Seal

@@ -11212,9 +11212,9 @@
     {
       "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_MEADOW",
       "name": "ExoticSafari_SinnohMeadow_Layout",
-      "width": 60,
-      "height": 20,
-      "border_width": 2,
+      "width": 66,
+      "height": 44,
+      "border_width": 3,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
       "secondary_tileset": "gTileset_SinnohMeadow",
@@ -11285,6 +11285,19 @@
       "secondary_tileset": "gTileset_SinnohOrigin",
       "border_filepath": "data/layouts/ExoticSafari_SinnohHallOfOrigin/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_SinnohHallOfOrigin/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_EXOTIC_SAFARI_SINNOH_ROTOM_ROOM",
+      "name": "ExoticSafari_SinnohRotomRoom_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_GenericBuilding2",
+      "border_filepath": "data/layouts/ExoticSafari_SinnohRotomRoom/border.bin",
+      "blockdata_filepath": "data/layouts/ExoticSafari_SinnohRotomRoom/map.bin",
       "layout_version": "frlg"
     }
   ]

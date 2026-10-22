@@ -17,5 +17,5 @@ SAFARI_NAMES = {
     "UnovaChargestone": "Chargestone Cave", "UnovaRelicCastle": "Relic Castle", "UnovaAbyssalRuins": "Abyssal Ruins",
     "SinnohLake": "The Three Lakes", "SinnohMeadow": "Floaroma Meadow", "SinnohMarsh": "Great Marsh",
     "SinnohCity": "Snowpoint City", "SinnohStarkMountain": "Stark Mountain", "SinnohStarkInside": "Stark Mountain",
-    "SinnohHallOfOrigin": "Hall of Origin",
+    "SinnohHallOfOrigin": "Hall of Origin", "SinnohRotomRoom": "Rotom's Room",
 }

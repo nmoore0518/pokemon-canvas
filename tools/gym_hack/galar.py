@@ -163,6 +163,9 @@ def lake():
     paste(g, [r[:] for r in g], 32, 28, 8, 10, 0, 28)      # (trees over the Safari Zone's building)
     for y in range(28, 38):                                 # (its first column was the pond's edge)
         g[y][0] = g[y][2]
+    for x in (32, 33):                                      # (the boulder in the river: open water,
+        g[5][x] = g[5][34]                                  # so the river leads to the mine)
+        g[6][x] = g[6][34]
     return g, 40, 38
 
 
@@ -719,7 +722,8 @@ AREAS.update({
         "map": "ExoticSafari_GalarCity", "build": city, "tilesets": ("gTileset_GalarSnowGeneral", "gTileset_GalarSnowCity"),
         "music": "MUS_RG_LAVENDER", "weather": "WEATHER_SNOW", "type": "MAP_TYPE_CITY",
         "links": {
-            "LAKE": ("edge", [(x, 36) for x in range(5, 9)], (6, 35), ("LAKE", "CITY")),
+            # (the city's open south edge: its west corner is walled off from the rest)
+            "LAKE": ("edge", [(x, 36) for x in range(20, 34)], (26, 35), ("LAKE", "CITY")),
             "STADIUM": ("edge", [(18, 0), (19, 0), (20, 0)], (19, 1), ("STADIUM", "CITY")),
         },
         "land": land("SNOM", "DARUMAKA_GALAR", "MR_MIME_GALAR", "SNEASEL_HISUI", "EISCUE", "WYRDEER", "FROSMOTH",

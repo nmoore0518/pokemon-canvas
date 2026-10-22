@@ -835,5 +835,10 @@ const u16 gObjectEventPic_VelvetRope[] = INCGFX_U16("graphics/object_events/pics
 const u16 gObjectEventPic_ZygardeCell[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/zygarde_cell.png", ".4bpp");
 const u32 gObjectEventPic_PlayerDiver[] = INCGFX_U32("graphics/object_events/pics/people/diver/underwater.png", ".4bpp", "-mwidth 4 -mheight 4");
 const u16 gObjectEventPic_PrisonBottle[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/prison_bottle.png", ".4bpp");
+const u16 gObjectEventPic_ApplianceMicrowave[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/rotom_microwave.png", ".4bpp");
+const u16 gObjectEventPic_ApplianceWasher[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/rotom_washer.png", ".4bpp");
+const u16 gObjectEventPic_ApplianceFridge[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/rotom_fridge.png", ".4bpp");
+const u16 gObjectEventPic_ApplianceFan[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/rotom_fan.png", ".4bpp");
+const u16 gObjectEventPic_ApplianceMower[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/rotom_mower.png", ".4bpp");
 const u16 gObjectEventPal_ExoticSafari[] = INCGFX_U16("graphics/object_events/pics/misc/exotic/velvet_rope.png", ".gbapal");
 // END Convention

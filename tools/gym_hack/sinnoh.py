@@ -166,18 +166,184 @@ def lake():
 
 
 # ---------------------------------------------------------------------------------------------
-# Floaroma Meadow: Hoenn's Route 117 (its Day Care's house gone: woods)
+# Floaroma Meadow: drawn - fields of flowers in six colors, in stripes and patches, paths between
+# them, a pond and a few pines. The flowers are this zone's own tiles (one palette of six petal
+# colors), and wild Pokémon live in them (no tall grass)
 # ---------------------------------------------------------------------------------------------
+MEADOW_W, MEADOW_H = 66, 44
+FLOWER_COLORS = {   # letter: (light, dark) petals
+    "r": ((240, 80, 80), (184, 40, 56)),
+    "y": ((248, 216, 72), (208, 152, 24)),
+    "p": ((248, 160, 208), (216, 96, 160)),
+    "v": ((184, 128, 240), (128, 72, 200)),
+    "w": ((248, 248, 248), (192, 192, 216)),
+    "b": ((112, 168, 248), (56, 104, 216)),
+}
+FLOWER_CELLS = {}          # (x, y) -> color letter (filled by meadow(), used after the conversion)
+FLOWER_IDS = {}            # color letter -> [metatile ids] (made by add_flowers)
+FLOWER_SRC = 0x005         # (the source metatile the flower cells hold until then: FireRed's
+                           #  general tileset's plain ground, distinct from the paths' 0x008-0x011)
+
+
+def meadow_fields():
+    """(x0, y0, x1, y1, pattern): six great fields between the paths; pattern(x, y) -> color"""
+    cols = "rypvwb"
+
+    def rows(order, k=2):
+        return lambda x, y: order[(y // k) % len(order)]
+
+    def stripes(order, k=2):
+        return lambda x, y: order[(x // k) % len(order)]
+
+    def diag(order, k=3):
+        return lambda x, y: order[((x + y) // k) % len(order)]
+
+    def patch(order):
+        return lambda x, y: order[((x // 5) + 2 * (y // 4)) % len(order)]
+    return [
+        (4, 5, 23, 20, rows("rywp")),
+        (26, 5, 43, 20, diag("pvbw")),
+        (46, 5, 61, 19, stripes("yrpv", 3)),
+        (4, 23, 23, 37, patch(cols)),
+        (26, 23, 43, 37, rows("bwvpry")),
+        (46, 23, 61, 37, diag("rypw", 2)),
+    ]
+
+
+MEADOW_POND = (34, 30, 6.6, 3.1)
+MEADOW_PATHS = [   # (x0, y0, x1, y1): ground between the fields
+    (4, 21, 62, 22),       # east-west, to the Three Lakes
+    (46, 20, 62, 20),      # (the way out is 3 wide)
+    (24, 5, 25, 37),       # north-south
+    (44, 5, 45, 37),
+]
+MEADOW_PINES = [(6, 9), (36, 9), (54, 27), (9, 29)]     # (3x3 clumps; odd rows)
+
+
 def meadow():
-    g, l = read_layout("LAYOUT_ROUTE117")
-    g = [row[:] for row in g]
-    grass, fence = g[6][50], g[5][56]
-    for y in range(2, 5):                    # (the Day Care: grass; its sign and door: fence)
-        for x in range(50, 54):
-            g[y][x] = grass
-    for x in range(49, 54):
-        g[5][x] = fence
-    return g, l["width"], l["height"]
+    W, H = MEADOW_W, MEADOW_H
+    inner = [["."] * (W - 6) for _ in range(H - 9)]
+
+    def put(x, y, c):
+        if 3 <= x <= W - 4 and 4 <= y <= H - 6:
+            inner[y - 4][x - 3] = c
+    FLOWER_CELLS.clear()
+    for x0, y0, x1, y1, pat in meadow_fields():
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                put(x, y, "f")
+                FLOWER_CELLS[(x, y)] = pat(x, y)
+    for x0, y0, x1, y1 in MEADOW_PATHS:
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                put(x, y, ".")
+                FLOWER_CELLS.pop((x, y), None)
+    for x0, y0 in MEADOW_PINES:
+        for y in range(y0, y0 + 3):
+            for x in range(x0, x0 + 3):
+                put(x, y, "T")
+                FLOWER_CELLS.pop((x, y), None)
+    inner = ["".join(r) for r in inner]
+    rows = framed(inner, W, H, openings=[(63, 20, 65, 22)])      # east: the Three Lakes
+    g = draw(rows)
+    for (x, y) in FLOWER_CELLS:
+        g[y][x] = blk(FLOWER_SRC, 0)
+    # the pond
+    cx, cy, rx, ry = MEADOW_POND
+    water = {(x, y) for y in range(int(cy - ry) - 1, int(cy + ry) + 2) for x in range(int(cx - rx) - 1, int(cx + rx) + 2)
+             if ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1}
+    paint_water(g, water)
+    for c in water | {(x, y + 1) for x, y in water}:
+        FLOWER_CELLS.pop(c, None)
+    return g, W, H
+
+
+FLOWER_ART = [   # two 8x8 tiles of blossoms: P light petal, p dark petal, C middle, l dark leaf, . leaves
+    [".PP.l.P.",
+     "PCCP.PCP",
+     "PCCPl.p.",
+     ".pp.PP.l",
+     "l.lPCCP.",
+     ".P.PCCPl",
+     "PCP.pp..",
+     ".p.l..lP"],
+    ["l.P..PP.",
+     ".PCP.CCP",
+     "..p.PCCP",
+     "PP.l.pp.",
+     "CCP.P.l.",
+     "CCPPCP.P",
+     "pp..p.lP",
+     "..l..PP."],
+]
+
+
+def add_flowers(out, remap):
+    """The flower tiles: one new palette (the meadow's ground, a leaf green, the flowers' middle
+    and six petal colors), two tiles per color (mirrored into a metatile), whose wild Pokémon
+    live in them"""
+    import struct
+    import build_exotic_safari as B
+    import render_map
+    from PIL import Image
+    pals = out / "palettes"
+    slot = next(i for i in range(7, 13) if all(c[:3] == (0, 0, 0) for c in render_map.load_pal(pals / f"{i:02d}.pal")))
+    leaves = (88, 176, 96)
+    colors = [leaves, leaves, (48, 128, 72), (248, 232, 136)]
+    index = {}
+    for k, (light, dark) in FLOWER_COLORS.items():
+        index[k] = (len(colors), len(colors) + 1)
+        colors += [light, dark]
+    B.write_pal(pals / f"{slot:02d}.pal", colors)
+    img = Image.open(out / "tiles.png")
+    n = (img.height // 8) * 16
+    used = len({(x, y) for x in range(0, img.width, 8) for y in range(0, img.height, 8)})
+    # (the image's last row may have unused tiles: count the real ones from the metatiles)
+    mt = bytearray((out / "metatiles.bin").read_bytes())
+    attrs = bytearray((out / "metatile_attributes.bin").read_bytes())
+    entries = [struct.unpack_from("<8H", mt, i) for i in range(0, len(mt), 16)]
+    n = max([(e & 0x3FF) - 640 + 1 for es in entries for e in es if e & 0x3FF >= 640] + [0])
+    new_tiles = []
+    for k in FLOWER_COLORS:
+        P, p = index[k]
+        for art in FLOWER_ART:
+            tile = Image.new("P", (8, 8))
+            for y, row in enumerate(art):
+                for x, ch in enumerate(row):
+                    tile.putpixel((x, y), {".": 1, "l": 2, "C": 3, "P": P, "p": p}[ch])
+            new_tiles.append(tile)
+    total = n + len(new_tiles)
+    big = Image.new("P", (128, ((total + 15) // 16) * 8))
+    big.putpalette(img.getpalette())
+    big.paste(img.crop((0, 0, 128, min(img.height, ((n + 15) // 16) * 8))), (0, 0))
+    for i, t in enumerate(new_tiles):
+        big.paste(t, (((n + i) % 16) * 8, ((n + i) // 16) * 8))
+    big.save(out / "tiles.png")
+    ground_attr = struct.unpack_from("<I", attrs, (remap[0x008] - 0x280) * 4)[0]
+    attr = (ground_attr & ~0x1FF) | B.MB["MB_INDOOR_ENCOUNTER"]
+    FLOWER_IDS.clear()
+    count = len(entries)
+    for c, k in enumerate(FLOWER_COLORS):
+        a, b = n + 2 * c, n + 2 * c + 1
+        ids = []
+        for first, second in ((a, b), (b, a)):           # (two metatiles a color, for variety)
+            t1, t2 = 640 + first, 640 + second
+            bottom = [t1 | (slot << 12), t2 | (slot << 12), t2 | 0x400 | (slot << 12), t1 | 0x400 | (slot << 12)]
+            mt += struct.pack("<8H", *(bottom + [0, 0, 0, 0]))
+            attrs += struct.pack("<I", attr)
+            ids.append(0x280 + count)
+            count += 1
+        FLOWER_IDS[k] = ids
+    assert count <= 384 and total <= 384, (count, total)
+    (out / "metatiles.bin").write_bytes(bytes(mt))
+    (out / "metatile_attributes.bin").write_bytes(bytes(attrs))
+
+
+def flowers_in(g):
+    """after the conversion: each flower cell its color's tile"""
+    for (x, y), k in FLOWER_CELLS.items():
+        ids = FLOWER_IDS[k]
+        g[y][x] = (g[y][x] & ~0x3FF) | ids[(x + 2 * y) % 2]
 
 
 # ---------------------------------------------------------------------------------------------
@@ -233,6 +399,59 @@ def snow_color(r, g, b):
 
 
 # ---------------------------------------------------------------------------------------------
+# Rotom's room: a Snowpoint house (FireRed's house interior, its table gone) full of old
+# appliances whose motors a Rotom can slip into
+# ---------------------------------------------------------------------------------------------
+APPLIANCES = [   # (object, where, name) - in ExoticSafari_RotomForm's order
+    ("OBJ_EVENT_GFX_ROTOM_MICROWAVE", (4, 2), "MICROWAVE OVEN"),
+    ("OBJ_EVENT_GFX_ROTOM_WASHER", (6, 2), "WASHING MACHINE"),
+    ("OBJ_EVENT_GFX_ROTOM_FRIDGE", (2, 2), "REFRIGERATOR"),
+    ("OBJ_EVENT_GFX_ROTOM_FAN", (8, 2), "ELECTRIC FAN"),
+    ("OBJ_EVENT_GFX_ROTOM_MOWER", (9, 5), "LAWN MOWER"),
+]
+ROTOM_GUIDE = (6, 5)
+
+
+def rotom_room():
+    g, l = read_layout("LAYOUT_HOUSE3_FRLG")
+    g = [row[:] for row in g]
+    floor = g[6][5]
+    for y in range(3, 6):                       # (the table and its chairs: floor)
+        for x in range(3, 8):
+            g[y][x] = floor
+    return g, l["width"], l["height"]
+
+
+def rotom_extra(ctx):
+    name = ctx["name"]
+    for k, (gfx, (x, y), label) in enumerate(APPLIANCES):
+        script = f"{name}_EventScript_Appliance{k}"
+        o = ctx["obj"](gfx, x, y, script, "MOVEMENT_TYPE_FACE_DOWN")
+        o["elevation"] = ctx["elev"](x, y)
+        ctx["objects"].append(o)
+        ctx["scripts"] += [f"{script}::", f"\tsetvar VAR_0x8006, {k}",
+                           f"\tbufferstring STR_VAR_3, {name}_Text_Appliance{k}",
+                           "\tgoto ExoticSafari_EventScript_Appliance", "",
+                           f"{name}_Text_Appliance{k}:", f'\t.string "{label}$"', ""]
+    o = ctx["obj"]("OBJ_EVENT_GFX_OLD_WOMAN_FRLG", *ROTOM_GUIDE, "ExoticSafari_EventScript_RotomRoomGuide",
+                   "MOVEMENT_TYPE_FACE_DOWN")
+    o["elevation"] = ctx["elev"](*ROTOM_GUIDE)
+    ctx["objects"].append(o)
+
+
+SNOWPOINT_ELDER = (16, 22)
+
+
+def city_extra(ctx):
+    x, y = SNOWPOINT_ELDER
+    if (x, y) not in ctx["reach"]:
+        print(f"WARNING CITY: the elder at {(x, y)} can't be reached")
+    o = ctx["obj"]("OBJ_EVENT_GFX_OLD_MAN_1", x, y, "ExoticSafari_EventScript_SnowpointElder", "MOVEMENT_TYPE_FACE_DOWN")
+    o["elevation"] = ctx["elev"](x, y)
+    ctx["objects"].append(o)
+
+
+# ---------------------------------------------------------------------------------------------
 # Stark Mountain: Hoenn's Jagged Pass (outside) and Fiery Path (inside), dark basalt and ash
 # ---------------------------------------------------------------------------------------------
 def basalt_color(r, g, b):
@@ -278,7 +497,6 @@ def ruins():
 # ---------------------------------------------------------------------------------------------
 # The areas
 # ---------------------------------------------------------------------------------------------
-_MEADOW_EAST = edge_cells("LAYOUT_ROUTE117", "right")
 _MARSH_TOP = [c for c in edge_cells("LAYOUT_SAFARI_ZONE_SOUTHWEST", "top") if 7 <= c[0] <= 10]
 
 AREAS = {
@@ -307,11 +525,13 @@ AREAS = {
         "items": [],
     },
     "MEADOW": {
-        "map": "ExoticSafari_SinnohMeadow", "build": meadow, "tilesets": ("gTileset_General", "gTileset_Mauville"),
-        "version": "emerald", "convert": ("SinnohMeadow", "sinnoh_meadow"),
+        "map": "ExoticSafari_SinnohMeadow", "build": meadow, "border_size": (3, 2),
+        "tilesets": ("gTileset_General_Frlg", "gTileset_ViridianForest"),
+        "convert_frlg": True, "convert": ("SinnohMeadow", "sinnoh_meadow"),
+        "tileset_edit": add_flowers, "post_convert": flowers_in,
         "music": "MUS_RG_ROUTE3", "weather": "WEATHER_SUNNY", "type": "MAP_TYPE_ROUTE",
         "links": {
-            "LAKE": ("edge", _MEADOW_EAST, inward(_MEADOW_EAST, "right"), ("LAKE", "MEADOW")),
+            "LAKE": ("edge", [(65, 20), (65, 21), (65, 22)], (64, 21), ("LAKE", "MEADOW")),
         },
         "land": land("BUDEW", "COMBEE", "CHERUBI", "PACHIRISU", "BURMY_PLANT", "CHATOT", "DRIFLOON", "MUNCHLAX",
                      "CHERRIM", "MOTHIM", ("TURTWIG", 48, 50), ("ROSERADE", 52, 55)),
@@ -341,7 +561,9 @@ AREAS = {
         "links": {
             "LAKE": ("warp", [(10, 28)], (10, 27), ("LAKE", "CITY")),          # (the harbor's steps)
             "RUINS": ("warp", [(38, 12)], (38, 13), ("RUINS", "CITY")),        # (Icefall Cave's mouth)
+            "ROTOM": ("warp", [(25, 14)], (25, 15), ("ROTOM", "CITY")),        # (Rotom's room)
         },
+        "extra": city_extra,
         "land": land("SNOVER", "GLAMEOW", "BRONZOR", "ABOMASNOW", "SNOVER", "PURUGLY", "WEAVILE", "MAMOSWINE",
                      "FROSLASS", "BURMY_TRASH", ("RIOLU", 48, 50), ("GLACEON", 50, 54)),
         "water": [("MANTYKE", 48, 52), ("FINNEON", 48, 52), ("BUIZEL", 48, 52), ("LUMINEON", 50, 54),
@@ -389,5 +611,21 @@ AREAS = {
         "items": [],
     },
 }
+AREAS["ROTOM"] = {
+    "map": "ExoticSafari_SinnohRotomRoom", "build": rotom_room, "tilesets": ("gTileset_BuildingFrlg", "gTileset_GenericBuilding2"),
+    "music": "MUS_RG_SEVII_123", "weather": "WEATHER_NONE", "type": "MAP_TYPE_INDOOR", "show_name": False,
+    "links": {
+        "CITY": ("warp", [(4, 7)], (4, 6), ("CITY", "ROTOM")),
+    },
+    "statics": [], "items": [], "extra": rotom_extra,
+}
 ROAMERS = ["MANAPHY"]
+# The puzzles (src/exotic_safari.c's seals): the lake trio for what the lead has (Uxie: level 70;
+# Mesprit: a held berry; Azelf: 252 HP EVs), Regigigas for Regirock, Regice and Registeel in the
+# party (as in Platinum), Arceus for the Azure Flute (the Snowpoint elder gives it once every gym
+# type is mastered)
+CONDITIONS = {
+    "UXIE": ("LEVEL", 70), "MESPRIT": ("BERRY", 0), "AZELF": ("HP_EVS", 252),
+    "REGIGIGAS": ("REGIS", 0), "ARCEUS": ("AZURE_FLUTE", 0),
+}
 UNIQUE_ITEMS = set()

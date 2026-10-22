@@ -447,9 +447,11 @@ AREAS = {
         "music": "MUS_RG_ROCKET_HIDEOUT", "weather": "WEATHER_NONE", "type": "MAP_TYPE_UNDERGROUND",
         "links": {
             "DESERT": ("warp", [(33, 21)], (33, 20), ("DESERT", "CRATER")),
-            "DEPTHS": ("warp", [(1, 7)], (2, 7), ("DEPTHS", "CRATER")),
+            # (the ladder down: one in the part the desert's door leads into - Cerulean Cave's
+            # corner with its own ladder is walled off)
+            "DEPTHS": ("warp", [(5, 15)], (5, 16), ("DEPTHS", "CRATER")),
         },
-        "remove_warps": [(34, 2), (10, 2), (5, 15), (30, 10), (24, 11), (2, 4)],
+        "remove_warps": [(34, 2), (10, 2), (1, 7), (30, 10), (24, 11), (2, 4)],
         "land": land("GREAT_TUSK", "SCREAM_TAIL", "BRUTE_BONNET", "FLUTTER_MANE", "SLITHER_WING", "SANDY_SHOCKS",
                      ("ROARING_MOON", 52, 55), "GLIMMET", ("WALKING_WAKE", 52, 55), ("GOUGING_FIRE", 52, 55),
                      ("RAGING_BOLT", 55, 58), ("GLIMMORA", 52, 55)),

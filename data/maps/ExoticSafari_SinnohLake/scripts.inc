@@ -42,6 +42,11 @@ ExoticSafari_SinnohLake_EventScript_LegendUxie::
 	setflag FLAG_EXOTIC_LEGEND_UXIE
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_SinnohLake_EventScript_SealUxie::
+	lockall
+	setvar VAR_0x8004, 34
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_SinnohLake_EventScript_LegendAzelf::
 	lock
 	faceplayer
@@ -52,6 +57,11 @@ ExoticSafari_SinnohLake_EventScript_LegendAzelf::
 	setflag FLAG_EXOTIC_LEGEND_AZELF
 	goto ExoticSafari_EventScript_Release
 
+ExoticSafari_SinnohLake_EventScript_SealAzelf::
+	lockall
+	setvar VAR_0x8004, 35
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_SinnohLake_EventScript_LegendMesprit::
 	lock
 	faceplayer
@@ -61,3 +71,8 @@ ExoticSafari_SinnohLake_EventScript_LegendMesprit::
 	removeobject VAR_LAST_TALKED
 	setflag FLAG_EXOTIC_LEGEND_MESPRIT
 	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_SinnohLake_EventScript_SealMesprit::
+	lockall
+	setvar VAR_0x8004, 36
+	goto ExoticSafari_EventScript_Seal

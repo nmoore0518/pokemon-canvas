@@ -138,6 +138,117 @@ PEDESTAL = [
 ]
 
 
+# Rotom's room (Snowpoint City): the five appliances. W white, o outline, M/m blue (glass), B brass,
+# R red, g/G green, w/l wood
+MICROWAVE = [
+    "................",
+    "................",
+    "................",
+    "................",
+    ".oooooooooooooo.",
+    ".oWWWWWWWWWWWWo.",
+    ".oWooooooooWWWo.",
+    ".oWoMMMMMMoWBWo.",
+    ".oWoMmMMMMoWWWo.",
+    ".oWoMMmMMMoWBWo.",
+    ".oWoMMMMMMoWWWo.",
+    ".oWooooooooWBWo.",
+    ".oWWWWWWWWWWWWo.",
+    ".oooooooooooooo.",
+    "..oo........oo..",
+    "................",
+]
+WASHER = [
+    "................",
+    ".oooooooooooooo.",
+    ".oWWWWWWWWBWBWo.",
+    ".oWWWWWWWWWWWWo.",
+    ".oooooooooooooo.",
+    ".oWWWWooooWWWWo.",
+    ".oWWWoMMMMoWWWo.",
+    ".oWWoMmMMMMoWWo.",
+    ".oWWoMMmMMMoWWo.",
+    ".oWWoMMMMMMoWWo.",
+    ".oWWoMMMMMMoWWo.",
+    ".oWWWoMMMMoWWWo.",
+    ".oWWWWooooWWWWo.",
+    ".oWWWWWWWWWWWWo.",
+    ".oooooooooooooo.",
+    "................",
+]
+FRIDGE = [
+    "................",
+    "................",
+    "..oooooooooooo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oooooooooooo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWBWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oWWWWWWWWWWo..",
+    "..oooooooooooo..",
+    "...oo......oo...",
+    "................",
+    "................",
+]
+FAN = [
+    "................",
+    ".....oooooo.....",
+    "...oo.o..o.oo...",
+    "..o.MMo..oMM.o..",
+    "..oMmMMooMMmMo..",
+    ".o..MMMooMMM..o.",
+    ".oo..MoBBoM..oo.",
+    ".o.ooooBBoooo.o.",
+    ".o..MMoBBoMM..o.",
+    "..oMMMMooMMMMo..",
+    "..o.MmMooMmM.o..",
+    "...oo.o..o.oo...",
+    ".....oooooo.....",
+    ".......oo.......",
+    ".....oWWWWo.....",
+    ".....oooooo.....",
+]
+MOWER = [
+    "................",
+    "................",
+    "..o.............",
+    "..oo............",
+    "...oo...........",
+    "....oo..........",
+    ".....oo.........",
+    "......oooooooo..",
+    ".....oRRRRRRRRo.",
+    "....oRRRRWWRRRo.",
+    "....oRRRRRRRRRo.",
+    "...oooooooooooo.",
+    "..oo.oo....oo.o.",
+    ".oBBo........oBo",
+    "gGooGgGgGgGgGooG",
+    "GgGgGgGgGgGgGgGg",
+]
+APPLIANCES = {"microwave": MICROWAVE, "washer": WASHER, "fridge": FRIDGE, "fan": FAN, "mower": MOWER}
+
+
 def draw(rows, mapping):
     img = Image.new("P", (len(rows[0]), len(rows)))
     flat = [c for rgb in PALETTE for c in rgb]
@@ -156,6 +267,8 @@ def main():
     draw(ROPE, base).save(OUT / "velvet_rope.png")
     draw(CELL, dict(base, g=9, G=10, R=14)).save(OUT / "zygarde_cell.png")
     draw(PEDESTAL, dict(base, P=5, p=5, Y=8, y=7)).save(OUT / "prison_bottle.png")
+    for name, rows in APPLIANCES.items():
+        draw(rows, dict(base, M=11, m=12, R=14, g=9, G=10)).save(OUT / f"rotom_{name}.png")
 
 
 if __name__ == "__main__":

@@ -131,7 +131,7 @@
   ],
   "warp_events": [
     {
-      "x": 6,
+      "x": 26,
       "y": 35,
       "elevation": 0,
       "dest_map": "MAP_EXOTIC_SAFARI_GALAR_LAKE",
@@ -148,7 +148,7 @@
   "coord_events": [
     {
       "type": "trigger",
-      "x": 5,
+      "x": 20,
       "y": 36,
       "elevation": 0,
       "var": "VAR_TEMP_1",
@@ -157,7 +157,7 @@
     },
     {
       "type": "trigger",
-      "x": 6,
+      "x": 21,
       "y": 36,
       "elevation": 0,
       "var": "VAR_TEMP_1",
@@ -166,7 +166,7 @@
     },
     {
       "type": "trigger",
-      "x": 7,
+      "x": 22,
       "y": 36,
       "elevation": 0,
       "var": "VAR_TEMP_1",
@@ -175,7 +175,97 @@
     },
     {
       "type": "trigger",
-      "x": 8,
+      "x": 23,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 24,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 25,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 26,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 27,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 28,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 29,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 30,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 31,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 32,
+      "y": 36,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "ExoticSafari_GalarCity_EventScript_ToLake"
+    },
+    {
+      "type": "trigger",
+      "x": 33,
       "y": 36,
       "elevation": 0,
       "var": "VAR_TEMP_1",

@@ -660,6 +660,8 @@ def build_region(mod, zone_warp, out):
             if "post_convert" in a:                  # (changes in the converted tileset's metatiles)
                 a["post_convert"](g)
             set_tileset_callback(a["convert"][0], a.get("tileset_callback", "NULL"))
+        for x, y in unstick(g, w, h, Behaviors(tilesets, "frlg"), links, f"{region} {key}"):
+            print(f"  {region} {key}: opened the ledge at {(x, y)} (no getting stuck)")
         built[key] = {"g": g, "w": w, "h": h, "links": links, "beh": Behaviors(tilesets, "frlg")}
         # The border (beyond the map's edges): its most common wall (trees, rock), or as given
         from collections import Counter
@@ -730,7 +732,7 @@ def build_region(mod, zone_warp, out):
             scripts += [f"{label}::", f"\twarpsilent {dm}, {di}", "\twaitstate", "\tend", ""]
         # Objects: the roamers' slots (local ids 1-3), the legendaries, the items
         objects = []
-        for i, r in enumerate(mod.ROAMERS):
+        for i, r in enumerate(mod.ROAMERS if a.get("land") else []):   # (not in rooms without wild Pokémon)
             o = obj(f"OBJ_EVENT_GFX_SPECIES({r})", 0, 0, f"ExoticSafari_EventScript_Roamer{camel(r)}",
                     "MOVEMENT_TYPE_WANDER_AROUND", f"FLAG_TEMP_{ROAMER_FLAG_BASE + i:X}")
             o["movement_range_x"] = o["movement_range_y"] = 2
@@ -801,14 +803,16 @@ def build_region(mod, zone_warp, out):
             objects.append(dict(obj(o["gfx"], o["x"], o["y"], o.get("script", "0"), o.get("movement", "MOVEMENT_TYPE_FACE_DOWN")),
                                 elevation=elev(o["x"], o["y"])))
         write_map(name, map_id(name), "LAYOUT_" + map_id(name)[4:], a["music"], "MAPSEC_KANTO_SAFARI_ZONE",
-                  a["type"], objects, warps, bgs, True, coords=coords, weather=a["weather"])   # (its name pops up)
+                  a["type"], objects, warps, bgs, a.get("show_name", True), coords=coords, weather=a["weather"])   # (its name pops up)
         (ROOT / "data/maps" / name / "scripts.inc").write_text("\n".join(scripts))
         # Where the roamers can turn up: land encounter spots the player can reach
         spots = sorted(p for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE
                        and p not in {(x, y) for _, (x, y) in a["statics"] + a["items"]})
         random.Random(key).shuffle(spots)
         spots = sorted(spots[:ROAMER_SPOTS], key=lambda p: (p[1], p[0]))
-        out["areas"].append((name, out["region_index"], [(x, y, elev(x, y)) for x, y in spots]))
+        out.setdefault("all_maps", []).append(name)
+        if a.get("land"):                    # (rooms without wild Pokémon: not an area for roamers)
+            out["areas"].append((name, out["region_index"], [(x, y, elev(x, y)) for x, y in spots]))
         water = sum(1 for p in reach if b["beh"](g[p[1]][p[0]]) in MB_SURFABLE)
         land_n = sum(1 for p in reach if b["beh"](g[p[1]][p[0]]) in MB_ENCOUNTERS - MB_SURFABLE)
         out["report"].append(f"  {region:6} {key:8} {name:34} {w}x{h}  {land_n} wild-Pokémon tiles, {water} water")
@@ -824,6 +828,8 @@ def build_region(mod, zone_warp, out):
     # Wild Pokémon
     mons = lambda lst: [{"min_level": lo, "max_level": hi, "species": "SPECIES_" + s} for s, lo, hi in lst]
     for a in areas.values():
+        if not a.get("land"):
+            continue
         e = {"map": map_id(a["map"]), "base_label": "gExoticSafari_" + a["map"].split("_", 1)[1] + "_FireRed",
              "land_mons": {"encounter_rate": a.get("encounter_rate", ENCOUNTER_RATES[a["type"]]), "mons": mons(a["land"])}}
         if a.get("water"):
@@ -850,7 +856,7 @@ def build_zones(zone_warp):
 
     # The header for src/exotic_safari.c: the areas (and their roamer spots), the roamers, the kiosk
     c = ["// The Exotic Pokémon Safari's areas (made by tools/gym_hack/build_exotic_safari.py)",
-         "struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; const u8 *name; };",
+         "struct ExoticSafariArea { u8 mapGroup, mapNum; u8 region; u8 spotCount; const u8 (*spots)[3]; };",
          "struct ExoticSafariRoamer { u16 species, caughtFlag, hideFlag, needFlag; u8 region; };",
          "struct ExoticSafariFind { u16 item, flag; };", ""]
     for name, region, spots in out["areas"]:
@@ -858,9 +864,13 @@ def build_zones(zone_warp):
     c += ["", "static const struct ExoticSafariArea sExoticSafariAreas[] =", "{"]
     for name, region, spots in out["areas"]:
         mid = map_id(name)
-        title = safari_names.SAFARI_NAMES[name.split("_", 1)[1]].upper()
-        c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), {region}, ARRAY_COUNT(sSpots_{name}), sSpots_{name}, "
-                 f'COMPOUND_STRING("{title}")}},')
+        c.append(f"    {{MAP_GROUP({mid}), MAP_NUM({mid}), {region}, ARRAY_COUNT(sSpots_{name}), sSpots_{name}}},")
+    c += ["};", "", "// Every zone map's name (rooms too: ExoticSafari_GetAreaName)",
+          "struct ExoticSafariName { u8 mapGroup, mapNum; const u8 *name; };",
+          "static const struct ExoticSafariName sExoticSafariNames[] =", "{"]
+    for name in out["all_maps"]:
+        mid = map_id(name)
+        c.append(f'    {{MAP_GROUP({mid}), MAP_NUM({mid}), COMPOUND_STRING("{safari_names.SAFARI_NAMES[name.split("_", 1)[1]].upper()}")}},')
     c += ["};", "", f"#define EXOTIC_SAFARI_ROAMER_COUNT {len(out['roamers'])}",
           "static const struct ExoticSafariRoamer sExoticSafariRoamers[EXOTIC_SAFARI_ROAMER_COUNT] =", "{"]
     slot = {}
@@ -911,6 +921,111 @@ def build_zones(zone_warp):
 
     print("exotic safari areas:\n" + "\n".join(out["report"]))
     return maps
+
+
+def unstick(g, w, h, beh, links, where=""):
+    """Ledges only go one way: wherever one would leave the player somewhere they can't get back
+    to every way out, open a gap in it (one tile of the ledge becomes the floor below it), as few
+    ledges as it takes. Returns the opened cells."""
+    jumps = {MB["MB_JUMP_EAST"]: (1, 0), MB["MB_JUMP_WEST"]: (-1, 0), MB["MB_JUMP_NORTH"]: (0, -1), MB["MB_JUMP_SOUTH"]: (0, 1)}
+    exits = [set(cells) for _, cells, _, _ in links.values()]
+    starts = set().union(*exits) if exits else set()
+
+    def moves(x, y):
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            if not (0 <= nx < w and 0 <= ny < h):
+                continue
+            j = jumps.get(beh(g[ny][nx]))
+            if j is None:
+                if not (g[ny][nx] >> 10) & 3 or (nx, ny) in starts:
+                    yield nx, ny
+            elif j == (dx, dy) and 0 <= nx + dx < w and 0 <= ny + dy < h and not (g[ny + dy][nx + dx] >> 10) & 3:
+                yield nx + dx, ny + dy
+
+    def forward(srcs):
+        seen, todo = set(), list(srcs)
+        while todo:
+            c = todo.pop()
+            if c in seen:
+                continue
+            seen.add(c)
+            todo.extend(moves(*c))
+        return seen
+
+    def stuck():
+        """cells the player can get to from a way in but not back to it (to backtrack)"""
+        bad = set()
+        for ex in exits:
+            reach = forward(ex)
+            back = {c: [] for c in reach}
+            for c in reach:
+                for n in moves(*c):
+                    if n in back:
+                        back[n].append(c)
+            ok, todo = set(), list(ex)
+            while todo:
+                c = todo.pop()
+                if c in ok:
+                    continue
+                ok.add(c)
+                todo.extend(back.get(c, []))
+            bad |= reach - ok
+        return bad
+
+    # the ledges, in runs (a line of the same jump direction)
+    ledge = {(x, y): jumps[beh(g[y][x])] for y in range(h) for x in range(w) if beh(g[y][x]) in jumps}
+    runs, done = [], set()
+    for c, d in ledge.items():
+        if c in done:
+            continue
+        step = (1, 0) if d[1] else (0, 1)                 # (a ledge runs across its jump)
+        run, todo = [], [c]
+        while todo:
+            x, y = todo.pop()
+            if (x, y) in done or ledge.get((x, y)) != d:
+                continue
+            done.add((x, y))
+            run.append((x, y))
+            todo += [(x + step[0], y + step[1]), (x - step[0], y - step[1])]
+        runs.append(sorted(run))
+    # every way out can be got to from every other (but ways back to the same area)
+    targets = [t for _, _, _, t in links.values()]
+    for a_i, a_ex in enumerate(exits):
+        reach = forward(a_ex)
+        for b_i, b_ex in enumerate(exits):
+            if targets[a_i][0] != targets[b_i][0] and not reach & b_ex and os.environ.get("SAFARI_STUCK_DEBUG"):
+                print(f"WARNING {where}: the way to {targets[b_i][0]} can't be reached from the way to {targets[a_i][0]}")
+    opened = []
+    bad = stuck()
+    while bad:
+        best = None
+        for run in runs:
+            for cell in (run[len(run) // 2], run[0], run[-1]):
+                x, y = cell
+                dx, dy = ledge[cell]
+                if not (0 <= x + dx < w and 0 <= y + dy < h):
+                    continue
+                old = g[y][x]
+                g[y][x] = g[y + dy][x + dx]                   # (the floor below the ledge)
+                n = len(stuck())
+                g[y][x] = old
+                if best is None or n < best[0]:
+                    best = (n, cell, run)
+        if best is None or best[0] >= len(bad):
+            print(f"WARNING {where}: {len(bad)} cells can't get back to every way out, e.g. {sorted(bad)[:4]}")
+            if os.environ.get("SAFARI_STUCK_DEBUG"):
+                reach = forward(starts)
+                for lk, (_, cells, _, _) in links.items():
+                    print("   ", lk, cells[:3], "reachable:", any(c in reach for c in cells))
+            break
+        n, (x, y), run = best
+        dx, dy = ledge[(x, y)]
+        g[y][x] = g[y + dy][x + dx]
+        opened.append((x, y))
+        runs.remove(run)
+        bad = stuck()
+    return opened
 
 
 def reachable(b):
@@ -1022,6 +1137,11 @@ def main():
               "#define SEAL_DRAIN    22    // (Yveltal: Kalos POKéMON caught)",
               "#define SEAL_CAUGHT   23    // (other legendaries caught first: Cobalion, Keldeo, Kyurem)",
               "#define SEAL_KEY      24    // (a keepsake found: Reshiram's Light Stone, Zekrom's Dark Stone, Victini's Liberty Pass)",
+              "#define SEAL_LEVEL    25    // (Uxie: a lead of at least this level)",
+              "#define SEAL_BERRY    26    // (Mesprit: a lead holding a berry)",
+              "#define SEAL_HP_EVS   27    // (Azelf: a lead with this many HP EVs)",
+              "#define SEAL_REGIS    28    // (Regigigas: Regirock, Regice and Registeel in the party)",
+              "#define SEAL_AZURE_FLUTE 29 // (Arceus: the Azure Flute, from the Snowpoint elder)",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]
@@ -1059,6 +1179,8 @@ def main():
     hj["warp_events"] = warps
     hall_json.write_text(json.dumps(hj, indent=2) + "\n")
     print(f"exotic safari: hall {HALL_W}x{HALL_H}, {len(zone_maps)} zone maps, Fuchsia warp {fuchsia_warp}")
+    import subprocess                        # (everything reachable from the hall, no getting stuck)
+    subprocess.run([sys.executable, str(ROOT / "tools/gym_hack/check_safari_reach.py")])
 
 
 if __name__ == "__main__":

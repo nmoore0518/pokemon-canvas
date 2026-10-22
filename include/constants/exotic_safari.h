@@ -31,6 +31,11 @@
 #define SEAL_DRAIN    22    // (Yveltal: Kalos POKéMON caught)
 #define SEAL_CAUGHT   23    // (other legendaries caught first: Cobalion, Keldeo, Kyurem)
 #define SEAL_KEY      24    // (a keepsake found: Reshiram's Light Stone, Zekrom's Dark Stone, Victini's Liberty Pass)
+#define SEAL_LEVEL    25    // (Uxie: a lead of at least this level)
+#define SEAL_BERRY    26    // (Mesprit: a lead holding a berry)
+#define SEAL_HP_EVS   27    // (Azelf: a lead with this many HP EVs)
+#define SEAL_REGIS    28    // (Regigigas: Regirock, Regice and Registeel in the party)
+#define SEAL_AZURE_FLUTE 29 // (Arceus: the Azure Flute, from the Snowpoint elder)
 #define SEAL_RESULT_CAUGHT 0xFF
 #define SEAL_RESULT_AWAY 0xFE
 // Each static legendary's index (sExoticSafariStatics)

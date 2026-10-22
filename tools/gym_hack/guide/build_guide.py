@@ -115,7 +115,9 @@ REGIONS = [
     ("Unova", "unova", "Skyarrow Bridge is the hub: a long bridge between grasslands, with a cave in its cliff and an old "
      "shrine on its beach whose stairs go down to ruins under the sea."),
     ("Sinnoh", "sinnoh", "The Three Lakes are the hub: Lake Verity, Lake Valor and Lake Acuity in the pinewoods, an island "
-     "in each. Snowpoint City's cave climbs to the Hall of Origin, and Stark Mountain has a cave of its own."),
+     "in each. Floaroma Meadow's flower fields lie west, the Great Marsh south. Snowpoint City's cave climbs to the Hall of "
+     "Origin, and one of its houses is Rotom's Room: five old appliances a Rotom can slip into (its form and move, as with "
+     "the Rotom Catalog; again to come back out). Stark Mountain has a cave of its own."),
 ]
 
 
@@ -155,7 +157,8 @@ def make_labeler():
         return {"DojoMaster": "Dojo master (Bea)", "Caretaker": "Caretaker (Type: Null)",
                 "Groomer": "Furfrou groomer", "PrisonBottle": "Prison Bottle",
                 "ChasmElder": "Old man (DNA Splicers)", "ShrineKeeper": "Shrine keeper (Reveal Glass)",
-                "Kiosk": "Safari kiosk"}.get(s)
+                "Kiosk": "Safari kiosk", "SnowpointElder": "Elder (Azure Flute)",
+                "Appliance": "Appliance (Rotom forms)", "RotomRoomGuide": None}.get(s)
     return label
 
 
