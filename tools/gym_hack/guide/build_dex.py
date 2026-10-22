@@ -262,9 +262,18 @@ def safari_name(map_const):
 
 
 def prettify_map(folder):
+    """CeruleanCave_B1F_Frlg -> Cerulean Cave B1F; Route12 -> Route 12; SilphCo_7F -> Silph Co. 7F"""
     name = re.sub(r"_(Frlg|Johto)$", "", folder)
-    name = name.replace("_", " ")
-    return re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", name)
+    parts = []
+    for part in name.split("_"):
+        if re.fullmatch(r"B?\d+F|\d+R", part):
+            parts.append(part)
+        else:
+            parts.append(re.sub(r"(?<=[a-z])(?=[A-Z0-9])", " ", part))
+    out = " ".join(parts)
+    for a, b in (("Silph Co", "Silph Co."), ("Pokemon", "Pokémon"), ("Ss Anne", "S.S. Anne"), ("Mt ", "Mt. ")):
+        out = out.replace(a, b)
+    return out
 
 
 def locations(data):
@@ -357,10 +366,31 @@ def evo_text(method, param, cond, data):
         return None
     else:
         t = method[4:].replace("_", " ").title()
+    reg = re.search(r"IF_REGION, REGION_(\w+)", cond)
+    if reg and reg.group(1) != "KANTO":
+        return None                                  # (only in another region: not here)
+    tm = re.search(r"IF_(NOT_)?TIME, TIME_(\w+)", cond)
+    if tm:
+        t += f", {'not ' if tm.group(1) else ''}{tm.group(2).lower()}"
+    if "IF_MIN_FRIENDSHIP" in cond:
+        t = "High friendship" if t == "Level up" else t + ", high friendship"
+    hold = re.search(r"IF_HOLD_ITEM, (ITEM_\w+)", cond)
+    if hold:
+        t += f" holding {data['items'].get(hold.group(1), hold.group(1))}"
+    if "IF_ATK_GT_DEF" in cond:
+        t += ", Atk > Def"
+    elif "IF_ATK_LT_DEF" in cond:
+        t += ", Atk < Def"
+    elif "IF_ATK_EQ_DEF" in cond:
+        t += ", Atk = Def"
+    if "IF_AMPED_NATURE" in cond:
+        t += ", Amped nature"
+    elif "IF_LOW_KEY_NATURE" in cond:
+        t += ", Low Key nature"
     if "IF_GENDER, MON_FEMALE" in cond:
-        t += " (female)"
+        t += ", female"
     elif "IF_GENDER, MON_MALE" in cond:
-        t += " (male)"
+        t += ", male"
     if "IF_KNOWS_MOVE" in cond:
         mv = re.search(r"IF_KNOWS_MOVE, (MOVE_\w+)", cond)
         if mv:
@@ -428,7 +458,7 @@ def card(info, data, loc, prevo, family_line):
         abil_txt += f" · <i>Hidden: {abil[2]}</i>"
     moves = " · ".join(f'<span class="mv"><span class="lv">{"Evo" if l == 0 else l}</span> {esc(data["moves"].get(m, m))}</span>'
                        for l, m in info["learnset"])
-    where = loc.get(info["key"], [])
+    where = merge_floors(loc.get(info["key"], []))
     lines = []
     for order, place, how, when in sorted(where, key=lambda w: (w[0], w[1])):
         when_txt = f' <span class="when">({when})</span>' if when and when not in ("Start", "post-game") else ""
@@ -454,6 +484,41 @@ def card(info, data, loc, prevo, family_line):
 </div>"""
 
 
+def merge_floors(where):
+    """one line per cave or building, not per floor: 'Seafoam Islands (1F, B1F, B2F): Grass/Cave 5–24%, Lv 22–30'"""
+    rx = re.compile(r"^(.*?) (\d+)%, Lv (\d+)(?:–(\d+))?$")
+    suf = re.compile(r"\s+(B?\d+F|\d+R|Room \d+|Entrance|Back|\(stairs\))$")
+    groups, out = OrderedDict(), []
+    for order, place, how, when in where:
+        m = rx.match(how)
+        base, tail = place, []
+        while suf.search(base):
+            tail.insert(0, suf.search(base).group(1))
+            base = suf.sub("", base)
+        if not m or not tail:
+            out.append((order, place, how, when))
+            continue
+        key = (order, base, m.group(1), when)
+        g = groups.setdefault(key, {"parts": [], "pct": [], "lv": []})
+        g["parts"].append(" ".join(tail))
+        g["pct"].append(int(m.group(2)))
+        g["lv"] += [int(m.group(3)), int(m.group(4) or m.group(3))]
+    for (order, base, method, when), g in groups.items():
+        parts = list(dict.fromkeys(g["parts"]))
+        if len(parts) == 1:
+            place = f"{base} {parts[0]}"
+        elif len(parts) <= 4:
+            place = f"{base} ({', '.join(parts)})"
+        else:
+            place = f"{base} ({len(parts)} areas)"
+        lo, hi = min(g["pct"]), max(g["pct"])
+        pct = f"{lo}%" if lo == hi else f"{lo}–{hi}%"
+        llo, lhi = min(g["lv"]), max(g["lv"])
+        lv = f"Lv {llo}" if llo == lhi else f"Lv {llo}–{lhi}"
+        out.append((order, place, f"{method} {pct}, {lv}", when))
+    return out
+
+
 def missing_text(info):
     n = info["dex_num"]
     if 152 <= n <= 251:
@@ -476,7 +541,8 @@ def family(info, by_key, data, parents):
         sp = by_key.get(k)
         if not sp:
             return esc(k[8:].title())
-        label = f"<b>{esc(sp['name'])}</b>" if k == info["key"] else esc(sp["name"])
+        nm = sp["name"] + (f" ({sp['form']})" if sp.get("form") else "")
+        label = f"<b>{esc(nm)}</b>" if k == info["key"] else esc(nm)
         kids = [(t, txt) for t, txt in sp.get("children", [])]
         if not kids:
             return label
@@ -518,6 +584,18 @@ def main():
             sp["children"].append((target, txt))
             parents.setdefault(target, (k, txt))
     loc = locations(data)
+    # (the data's names for a species can be aliases: SPECIES_TORNADUS is SPECIES_TORNADUS_INCARNATE)
+    nums = {}
+    for name, val in re.findall(r"\b(SPECIES_\w+)\s*=\s*(\w+)", (ROOT / "include/constants/species.h").read_text()):
+        nums[name] = int(val) if val.isdigit() else nums.get(val)
+    canon = {}
+    for k in infos:
+        if nums.get(k) is not None:
+            canon.setdefault(nums[k], k)
+    merged = defaultdict(list)
+    for k, v in loc.items():
+        merged[canon.get(nums.get(k), k)] += v
+    loc = merged
     # which entries: every species' base form, plus other forms that can be found or evolved into
     base_of = {}
     for k, sp in infos.items():
@@ -526,10 +604,26 @@ def main():
     for k, sp in infos.items():
         is_base = base_of[sp["dex_num"]] == k
         if is_base or loc.get(k) or (k in parents and (loc.get(parents[k][0]) or base_of[infos[parents[k][0]]["dex_num"]] == parents[k][0] and False)):
-            if not is_base:
-                base_name = infos[base_of[sp["dex_num"]]]["name"]
-                sp["form"] = k[8:].replace(base_of[sp["dex_num"]][8:], "").strip("_").replace("_", " ").title() or None
             chosen.append(k)
+    # form names: what the constant adds to the species' own name (SPECIES_DEERLING_WINTER: Winter)
+    REGIONAL = {"ALOLA": "Alolan Form", "GALAR": "Galarian Form", "HISUI": "Hisuian Form", "PALDEA": "Paldean Form",
+                "F": "Female", "M": "Male"}
+    per_dex = defaultdict(int)
+    for k in chosen:
+        per_dex[infos[k]["dex_num"]] += 1
+    for k in chosen:
+        sp = infos[k]
+        root = sp["dex"][len("NATIONAL_DEX_"):]
+        suffix = k[8:][len(root):].strip("_") if k[8:].startswith(root) else ""
+        if not suffix:
+            sp["form"] = None
+            continue
+        words = suffix.split("_")
+        if words[0] in REGIONAL:
+            label = REGIONAL[words[0]] + (" (" + " ".join(w.title() for w in words[1:]) + ")" if words[1:] else "")
+        else:
+            label = " ".join(REGIONAL.get(w, w.title()) for w in words)
+        sp["form"] = label if (per_dex[sp["dex_num"]] > 1 or k != base_of[sp["dex_num"]]) else label
     chosen.sort(key=lambda k: (infos[k]["dex_num"], 0 if base_of[infos[k]["dex_num"]] == k else 1))
     if args.test:
         chosen = ["SPECIES_BULBASAUR", "SPECIES_IVYSAUR", "SPECIES_VENUSAUR", "SPECIES_CHARMANDER", "SPECIES_CHARMELEON", "SPECIES_RESHIRAM"]
@@ -544,30 +638,29 @@ def main():
                 pk, txt = parents[k]
                 prevo = f"{infos[pk]['name']} ({txt})"
             cards.append((k, card(sp, data, loc, prevo, family(sp, infos, data, parents))))
-        # pages of 3 rows x 2 columns, filled in dex order; a tall card takes two rows of one
-        # column, so it may wait for the next free pair while the cards after it fill in
-        pages, queue = [], list(cards)
-        while queue:
-            free = {(r, c) for r in range(3) for c in range(2)}
-            cur, rest = [], []
-            for k, c in queue:
-                t = k in tall
-                spot = next(((r, col) for r in range(3) for col in range(2) if (r, col) in free
-                             and (not t or (r + 1, col) in free)), None)
-                if spot is None or (rest and not t and False):
-                    rest.append((k, c))
-                    continue
-                r, col = spot
-                free.discard(spot)
-                if t:
-                    free.discard((r + 1, col))
-                style = f'grid-row: {r + 1} / span {2 if t else 1}; grid-column: {col + 1};'
-                cur.append(c.replace('<div class="card', f'<div style="{style}" class="card', 1))
-                if not free:
-                    rest += queue[queue.index((k, c)) + 1:]
+        # pages of 3 rows x 2 columns, filled in dex order, left to right and top to bottom; a tall
+        # card takes two rows of one column (if it can't fit where it's next, it moves on and the
+        # spot stays empty: the order never changes)
+        cells = [(r, c) for r in range(3) for c in range(2)]
+        pages, cur, free, at = [], [], set(cells), 0
+        for k, c in cards:
+            t = k in tall
+            while True:
+                spot = next((i for i in range(at, 6) if cells[i] in free
+                             and (not t or (cells[i][0] + 1, cells[i][1]) in free)), None)
+                if spot is not None:
                     break
+                pages.append(cur)
+                cur, free, at = [], set(cells), 0
+            r, col = cells[spot]
+            free.discard((r, col))
+            if t:
+                free.discard((r + 1, col))
+            at = spot + 1
+            style = f'grid-row: {r + 1} / span {2 if t else 1}; grid-column: {col + 1};'
+            cur.append(c.replace('<div data-key=', f'<div style="{style}" data-key=', 1))
+        if cur:
             pages.append(cur)
-            queue = rest
         html = ("<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>"
                 + "".join(f'<div class="page">{"".join(p)}</div>' for p in pages) + "</body></html>")
         return cards, pages, html
