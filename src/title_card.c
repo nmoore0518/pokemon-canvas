@@ -25,7 +25,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-#define CARD_FRAMES     150     // (on screen this long unless A or B moves on sooner)
+#define CARD_FRAMES     300     // (on screen this long unless A or B moves on sooner)
 #define PIC_X           178
 #define PIC_Y           68
 #define PIC_SLIDE_FROM  320
