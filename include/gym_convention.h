@@ -14,4 +14,6 @@ void Convention_PushHalls(void);
 void Convention_BufferProgress(void);
 void Convention_WarpToHall(void);
 
+void Convention_ShowTitleCard(void);
+
 #endif // GUARD_GYM_CONVENTION_H

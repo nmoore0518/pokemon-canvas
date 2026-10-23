@@ -950,6 +950,12 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            plates: each mastered type's plate rests on the gym floor (a spot hashed from the trainer
            id, the nearest open floor if decorations cover it: `src/form_items.c`), found with A
            (hidden-item script, flags 0x3A4 + type); only the Snowpoint elder hints at it.
+   - [x] Title cards (v68): before each Gym Leader Convention battle, a full-screen card
+         (`src/title_card.c`, `TitleCard_Show`, reusable for later events): the event and hall at
+         the top, the trainer's picture 1.6x sliding in, their name doubled in size across a band
+         in the hall's color, then their title, region and games. A/B or 2.5 s moves on. The lines:
+         `tools/gym_hack/convention_cards.py` -> src/data/gym_convention_cards.h
+         (`Convention_ShowTitleCard`, from `Convention_EventScript_Battle`).
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

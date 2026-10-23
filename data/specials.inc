@@ -679,6 +679,7 @@ gSpecials::
 	def_special Johto_DebugFlyMap
 	def_special Convention_SetupTrainer
 	def_special Convention_RecordWin
+	def_special Convention_ShowTitleCard
 	def_special Convention_PushHalls
 	def_special Convention_BufferProgress
 	def_special Convention_WarpToHall

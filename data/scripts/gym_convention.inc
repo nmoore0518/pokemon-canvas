@@ -47,6 +47,9 @@ Convention_EventScript_Trainer::
 	msgbox gGymChallengeIntroText
 	closemessage
 Convention_EventScript_Battle::
+	fadescreen FADE_TO_BLACK
+	special Convention_ShowTitleCard
+	waitstate
 	cleartrainerflag TRAINER_GYM_CHALLENGER
 	setflag FLAG_GYM_CHALLENGE_BATTLE
 	trainerbattle_no_intro TRAINER_GYM_CHALLENGER, gGymChallengeDefeatText

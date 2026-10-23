@@ -20,6 +20,8 @@
 #include "overworld.h"
 #include "script_menu.h"
 #include "string_util.h"
+#include "title_card.h"
+#include "constants/rgb.h"
 #include "constants/characters.h"
 #include "constants/event_objects.h"
 #include "constants/flags.h"
@@ -53,6 +55,7 @@ struct ConventionHall
 #include "data/gym_convention.h"
 #include "data/gym_convention_sprites.h"
 #include "data/gym_convention_halls.h"
+#include "data/gym_convention_cards.h"
 
 STATIC_ASSERT(CONVENTION_TRAINER_COUNT <= 8 * sizeof(((struct GymChallengeSave *)0)->conventionBeaten), ConventionBitsFit);
 
@@ -100,6 +103,21 @@ static const u16 sHallTrophies[CONVENTION_HALL_COUNT] =
     [CONVENTION_HALL_STEEL] = GYM_DECOR_TROPHY_STEEL,
     [CONVENTION_HALL_FAIRY] = GYM_DECOR_TROPHY_FAIRY,
     [CONVENTION_HALL_CHAMPIONS] = GYM_DECOR_TROPHY_CHAMPIONS,
+};
+
+// The halls' colors (the title card's band)
+static const u16 sHallColors[CONVENTION_HALL_COUNT] =
+{
+    [CONVENTION_HALL_NORMAL] = RGB(20, 19, 14),   [CONVENTION_HALL_FIRE] = RGB(29, 12, 4),
+    [CONVENTION_HALL_WATER] = RGB(7, 14, 29),     [CONVENTION_HALL_GRASS] = RGB(9, 22, 8),
+    [CONVENTION_HALL_ELECTRIC] = RGB(28, 22, 2),  [CONVENTION_HALL_ICE] = RGB(12, 24, 27),
+    [CONVENTION_HALL_FIGHTING] = RGB(23, 6, 5),   [CONVENTION_HALL_POISON] = RGB(19, 8, 21),
+    [CONVENTION_HALL_GROUND] = RGB(25, 18, 8),    [CONVENTION_HALL_FLYING] = RGB(15, 16, 29),
+    [CONVENTION_HALL_PSYCHIC] = RGB(29, 9, 15),   [CONVENTION_HALL_BUG] = RGB(17, 21, 3),
+    [CONVENTION_HALL_ROCK] = RGB(20, 17, 9),      [CONVENTION_HALL_GHOST] = RGB(12, 9, 19),
+    [CONVENTION_HALL_DRAGON] = RGB(11, 7, 29),    [CONVENTION_HALL_DARK] = RGB(10, 8, 7),
+    [CONVENTION_HALL_STEEL] = RGB(15, 17, 20),    [CONVENTION_HALL_FAIRY] = RGB(28, 14, 22),
+    [CONVENTION_HALL_CHAMPIONS] = RGB(27, 21, 6),
 };
 
 #define CONVENTION_MAGIC 0x4C47   // "GL"
@@ -260,4 +278,19 @@ void Convention_WarpToHall(void)
     SetWarpDestination(h->mapGroup, h->mapNum, h->warpId, -1, -1);
     DoWarp();
     ResetInitialPlayerAvatarState();
+}
+
+// Special (before a convention battle; the script has faded to black, then waitstates):
+// VAR_0x8004 = trainer. Their title card: who they are in the Pokémon world
+static EWRAM_DATA u8 sCardHeader[48] = {0};
+
+void Convention_ShowTitleCard(void)
+{
+    u32 index = gSpecialVar_0x8004 < CONVENTION_TRAINER_COUNT ? gSpecialVar_0x8004 : 0;
+    u32 hall = sConventionTrainers[index].hall;
+    u8 *end = StringCopy(sCardHeader, COMPOUND_STRING("GYM LEADER CONVENTION  ·  "));
+    end = StringAppend(end, sHallNames[hall]);
+    StringAppend(end, COMPOUND_STRING(" HALL"));
+    TitleCard_Show(sConventionPics[index], sHallColors[hall], sCardHeader, TrainerName(index),
+                   sConventionCards[index][0], sConventionCards[index][1], sConventionCards[index][2]);
 }
