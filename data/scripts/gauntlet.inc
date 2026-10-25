@@ -275,7 +275,7 @@ Gauntlet_EventScript_Withdraw::
 	bufferspeciesname STR_VAR_1, VAR_0x8005
 	msgbox Gauntlet_Text_WithdrawConfirm, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Gauntlet_EventScript_Withdraw
-	givemon VAR_0x8005, 100, shinyMode=SHINY_MODE_ALWAYS
+	givemon VAR_0x8005, 70, shinyMode=SHINY_MODE_ALWAYS
 	goto_if_eq VAR_RESULT, MON_CANT_GIVE, Gauntlet_EventScript_NoRoom
 	copyvar VAR_0x8006, VAR_RESULT
 	special Gauntlet_UseWithdraw

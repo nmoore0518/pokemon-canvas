@@ -980,7 +980,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          walking sprite and the Palm Pilot by `bill_ow.py`); the Deoxys battle music. Lose and he
          waits. Win and he fades away, leaving his Palm Pilot (GAUNTLET_SIMULATOR):
          - WITHDRAW (VAR_GAUNTLET_WITHDRAWS 0x40F4, one per finished run): any Pokémon, shiny, level
-           100 - a list of all 1392 species and forms one could keep (`build_withdraw.py` ->
+           70 - a list of all 1392 species and forms one could keep (`build_withdraw.py` ->
            src/data/gauntlet_withdraw.h: National Dex order; L/R a page, START the next
            generation) with the shiny picture beside it (`Gauntlet_ChooseWithdraw`);
          - the battle simulator: the whole Gauntlet again from the first challenger, with Bill as
