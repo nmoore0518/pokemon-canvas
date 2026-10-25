@@ -53,6 +53,7 @@ EventScript_BillGivesPalmPilot::
 	giveitem ITEM_PALM_PILOT
 	goto_if_eq VAR_RESULT, FALSE, EventScript_PalmPilotReturn
 	msgbox Text_BillPalmPilotHowTo
+	msgbox Text_BillPalmPilotSecret
 EventScript_PalmPilotReturn::
 	return
 
@@ -113,6 +114,14 @@ Text_BillPalmPilot::
 Text_BillPalmPilotHowTo::
 	.string "BILL: Use it from your BAG, or\n"
 	.string "register it to the SELECT Button.$"
+
+Text_BillPalmPilotSecret::
+	.string "BILL: Oh, and if anyone asks…\n"
+	.string "I've only been working on the PC.\p"
+	.string "Some of my other experiments are,\n"
+	.string "uh… not exactly approved.\p"
+	.string "Nothing to worry about! Probably.\n"
+	.string "Heh heh…$"
 
 Text_HealPadInnovator::
 	.string "See that glowing pad on the floor?\n"
