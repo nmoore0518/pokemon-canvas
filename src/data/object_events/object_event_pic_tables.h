@@ -2964,4 +2964,12 @@ static const struct SpriteFrameImage sPicTable_GauntletHoodedFigure[] = {
     overworld_ascending_frames(gObjectEventPic_GauntletHoodedFigure, 2, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_GauntletBill[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletBill, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletPalmPilot[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletPalmPilot, 2, 4),
+};
+
 // END Gauntlet

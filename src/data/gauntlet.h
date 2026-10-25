@@ -6226,6 +6226,87 @@ static const struct TrainerMon sGauntletParty_turo[] = {
     },
 };
 
+static const struct TrainerMon sGauntletParty_bill[] = {
+    {
+        .species = SPECIES_MEWTWO,
+        .lvl = 100,
+        .heldItem = ITEM_LIFE_ORB,
+        .moves = {MOVE_PSYSTRIKE, MOVE_AURA_SPHERE, MOVE_ICE_BEAM, MOVE_NASTY_PLOT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .isShiny = TRUE,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_LUGIA,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_AEROBLAST, MOVE_CALM_MIND, MOVE_ROOST, MOVE_EARTH_POWER},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .isShiny = TRUE,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_HO_OH,
+        .lvl = 100,
+        .heldItem = ITEM_HEAVY_DUTY_BOOTS,
+        .moves = {MOVE_SACRED_FIRE, MOVE_BRAVE_BIRD, MOVE_EARTHQUAKE, MOVE_RECOVER},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .isShiny = TRUE,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_GIRATINA_ORIGIN,
+        .lvl = 100,
+        .heldItem = ITEM_GRISEOUS_CORE,
+        .moves = {MOVE_SHADOW_FORCE, MOVE_DRAGON_CLAW, MOVE_EARTHQUAKE, MOVE_SHADOW_SNEAK},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .isShiny = TRUE,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_RAYQUAZA,
+        .lvl = 100,
+        .heldItem = ITEM_LIFE_ORB,
+        .moves = {MOVE_DRAGON_ASCENT, MOVE_EXTREME_SPEED, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .isShiny = TRUE,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_CLEFABILL,
+        .lvl = 100,
+        .heldItem = ITEM_LIFE_ORB,
+        .ability = ABILITY_MAGIC_GUARD,
+        .moves = {MOVE_MOONBLAST, MOVE_SHADOW_BALL, MOVE_NASTY_PLOT, MOVE_MOONLIGHT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+};
+
 #define GAUNTLET_COUNT 83
 #define GAUNTLET_REGION_COUNT 9
 
@@ -6241,7 +6322,7 @@ static const u8 *const sGauntletRegions[GAUNTLET_REGION_COUNT] = {
     COMPOUND_STRING("PALDEA"),
 };
 
-static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
+static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT + 1] = {
     { // 0
         .name = COMPOUND_STRING("PROF. OAK"),
         .battleName = COMPOUND_STRING("PROF. OAK"),
@@ -7569,5 +7650,22 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .defeat = COMPOUND_STRING("...Fascinating. The data did not\npredict this."),
         .after = COMPOUND_STRING("The future is built by people\nlike you. I can rest easy."),
         .win = COMPOUND_STRING("Exactly as calculated. A future\nwithout error."),
+    },
+    // (the last: Bill, who hired the hooded figure... and was it all along)
+    { // 83
+        .name = COMPOUND_STRING("BILL"),
+        .battleName = COMPOUND_STRING("BILL"),
+        .trainerClass = TRAINER_CLASS_POKEMANIAC,
+        .female = FALSE,
+        .region = 0,
+        .pic = TRAINER_PIC_GAUNTLET_BILL,
+        .gfx = OBJ_EVENT_GFX_GAUNTLET_BILL,
+        .party = sGauntletParty_bill,
+        .title = COMPOUND_STRING("THE ONE WHO HIRED YOU"),
+        .games = COMPOUND_STRING("RED/BLUE"),
+        .intro = COMPOUND_STRING("Please. Don't hold back. Not\neven a little."),
+        .defeat = COMPOUND_STRING("...Thank you."),
+        .after = COMPOUND_STRING("It's... quiet now. It doesn't\nhurt."),
+        .win = COMPOUND_STRING("No... You have to be stronger\nthan this. Please."),
     },
 };

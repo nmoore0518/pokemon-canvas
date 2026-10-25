@@ -6,6 +6,9 @@
 #include "battle_main.h"
 #include "event_data.h"
 #include "gym_hack.h"
+#include "gauntlet.h"
+#include "constants/event_objects.h"
+#include "constants/pokedex.h"
 #include "exotic_safari.h"
 #include "constants/flags.h"
 #include "constants/maps.h"
@@ -2279,4 +2282,44 @@ TEST("GymHack: wild Zygarde in Kalos once one is caught, its forms gated by the 
     }
     EXPECT_GT(pc, 10);
     FlagClear(FLAG_EXOTIC_LEGEND_ZYGARDE);
+}
+
+TEST("GymHack: CLEFABILL is Fairy/Ghost, 800 in all, and not in the Pokedex")
+{
+    const struct SpeciesInfo *s = &gSpeciesInfo[SPECIES_CLEFABILL];
+    u32 type1 = s->types[0], type2 = s->types[1], natDex = s->natDexNum;
+    u32 total = s->baseHP + s->baseAttack + s->baseDefense + s->baseSpeed + s->baseSpAttack + s->baseSpDefense;
+    EXPECT_EQ(type1, TYPE_FAIRY);
+    EXPECT_EQ(type2, TYPE_GHOST);
+    EXPECT_EQ(total, 800);
+    EXPECT_EQ(natDex, NATIONAL_DEX_NONE);
+}
+
+TEST("GymHack: beating Bill in the simulator earns a WITHDRAW and starts it over")
+{
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR);
+    VarSet(VAR_GAUNTLET_WITHDRAWS, 0);
+    VarSet(VAR_GAUNTLET_NEXT, 0);
+    Gauntlet_RecordWin();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 1);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 0);
+    VarSet(VAR_GAUNTLET_NEXT, 999);     // (Bill: the last)
+    Gauntlet_RecordWin();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 0);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 1);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_STATE), GAUNTLET_SIMULATOR);
+}
+
+TEST("GymHack: beating the real Bill leaves his Palm Pilot and one WITHDRAW")
+{
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ALL_BEATEN);
+    VarSet(VAR_GAUNTLET_WITHDRAWS, 0);
+    FlagSet(FLAG_GAUNTLET_BILL_REVEALED);
+    Gauntlet_BillDefeated();
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_STATE), GAUNTLET_SIMULATOR);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 0);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 1);
+    EXPECT_EQ(VarGet(VAR_OBJ_GFX_ID_D), OBJ_EVENT_GFX_GAUNTLET_PALM_PILOT);
 }

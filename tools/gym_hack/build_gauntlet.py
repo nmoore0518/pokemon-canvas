@@ -22,7 +22,7 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).parent))
 import import_convention_sprites as conv  # noqa: E402
 from build_convention import const_name, known, move_categories, wrap  # noqa: E402
-from gauntlet_roster import ROSTER  # noqa: E402
+from gauntlet_roster import BILL, ROSTER  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 EXT = Path("/home/claude/ext")
@@ -108,7 +108,8 @@ def class_for(key, t):
         return "TRAINER_CLASS_PKMN_PROF_FRLG"
     return {"noland": "TRAINER_CLASS_FACTORY_HEAD", "greta": "TRAINER_CLASS_ARENA_TYCOON", "tucker": "TRAINER_CLASS_DOME_ACE",
             "lucy": "TRAINER_CLASS_PIKE_QUEEN", "brandon": "TRAINER_CLASS_PYRAMID_KING",
-            "spenser": "TRAINER_CLASS_PALACE_MAVEN", "anabel": "TRAINER_CLASS_SALON_MAIDEN"}.get(key, "TRAINER_CLASS_PKMN_TRAINER_1")
+            "spenser": "TRAINER_CLASS_PALACE_MAVEN", "anabel": "TRAINER_CLASS_SALON_MAIDEN",
+            "bill": "TRAINER_CLASS_POKEMANIAC"}.get(key, "TRAINER_CLASS_PKMN_TRAINER_1")
 
 
 def legendaries():
@@ -145,11 +146,20 @@ def import_sprites():
             new_ows.append(key)
         else:
             ows[key] = t["ow"]
-    # The hooded figure (tools/gym_hack/gauntlet_art.py)
+    # The hooded figure (tools/gym_hack/gauntlet_art.py); Bill, as he is now, and his Palm Pilot
+    # (bill_ow.py); his picture (bill_art.py: CLEFABILL's front)
+    import bill_art
+    import bill_ow
     import gauntlet_art
-    im, _ = conv.as_4bpp(conv.nine_frames(gauntlet_art.sheet()))
-    im.save(OW_DIR / "hooded_figure.png")
-    new_ows.append("hooded_figure")
+    for key, sheet in (("hooded_figure", gauntlet_art.sheet()), ("bill", bill_ow.sheet()),
+                       ("palm_pilot", bill_ow.pilot())):
+        im, _ = conv.as_4bpp(conv.nine_frames(sheet))
+        im.save(OW_DIR / f"{key}.png")
+        new_ows.append(key)
+    pic = bill_art.indexed(bill_art.front(0))
+    pic.save(PIC_DIR / "bill.png")
+    conv.write_jasc(PAL_DIR / "bill.pal", [v for c in bill_art.COLORS for v in c])
+    new_pics.append("bill")
     write_sprite_tables(new_pics, new_ows)
     return pics, ows
 
@@ -265,6 +275,47 @@ def evs(kinds):
     return "TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0)", "NATURE_TIMID" if spec > phys + 1 else "NATURE_MODEST"
 
 
+ABILITIES = None
+
+
+def party(key, t, species, moves, items, cats, legends, errors):
+    """A team's TrainerMons: "[Shiny ]Species @ Item {Ability}: Move / Move / Move / Move" """
+    global ABILITIES
+    if ABILITIES is None:
+        ABILITIES = known("include/constants/abilities.h", "ABILITY")
+    mons, nlegend = [], 0
+    for line in t["team"]:
+        m = re.match(r"^(Shiny\s+)?(.*?)(?:\s*@\s*(.*?))?(?:\s*\{(.*?)\})?:\s*(.*)$", line)
+        shiny, sp, item, ability = bool(m.group(1)), m.group(2).strip(), (m.group(3) or "").strip(), m.group(4)
+        mv = [x.strip() for x in m.group(5).split("/")]
+        sc = const_name("SPECIES", sp)
+        if sc not in species:
+            errors.append(f"{key}: species {sp} ({sc})")
+        nlegend += sc in legends
+        ic = const_name("ITEM", item) if item else "ITEM_NONE"
+        if item and ic not in items:
+            errors.append(f"{key}: item {item} ({ic})")
+        ac = ""
+        if ability:
+            ac = const_name("ABILITY", ability)
+            if ac not in ABILITIES:
+                errors.append(f"{key}: ability {ability} ({ac})")
+            ac = f"        .ability = {ac},\n"
+        mcs = []
+        for x in mv:
+            mc = const_name("MOVE", x)
+            if mc not in moves:
+                errors.append(f"{key}: move {x} ({mc})")
+            mcs.append(mc)
+        ev, nature = evs([cats.get(c, "STATUS") for c in mcs])
+        mons.append(f"    {{\n        .species = {sc},\n        .lvl = 100,\n        .heldItem = {ic},\n{ac}"
+                    f"        .moves = {{{', '.join(mcs)}}},\n        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),\n"
+                    f"        .ev = {ev},\n        .nature = {nature},\n        .gender = TRAINER_MON_RANDOM_GENDER,\n"
+                    + ("        .isShiny = TRUE,\n" if shiny else "")
+                    + "        .ball = POKEBALL_COUNT,\n        .friendship = MAX_FRIENDSHIP,\n    },\n")
+    return mons, nlegend
+
+
 def main():
     species = known("include/constants/species.h", "SPECIES")
     moves = known("include/constants/moves.h", "MOVE")
@@ -279,35 +330,15 @@ def main():
         pics, ows = import_sprites()
     parties, entries = [], []
     order = sorted(ROSTER, key=lambda k: REGIONS.index(ROSTER[k]["region"]))   # (stable: roster order within a region)
-    for idx, key in enumerate(order):
-        t = ROSTER[key]
+    pics["bill"], ows["bill"] = "TRAINER_PIC_GAUNTLET_BILL", "OBJ_EVENT_GFX_GAUNTLET_BILL"
+    for idx, key in enumerate(order + ["bill"]):
+        t = ROSTER[key] if key != "bill" else BILL
         if t["region"] not in REGIONS:
             errors.append(f"{key}: region {t['region']}")
         if len(t["team"]) != 6:
             errors.append(f"{key}: team of {len(t['team'])}")
-        mons, nlegend = [], 0
-        for line in t["team"]:
-            m = re.match(r"^(.*?)(?:\s*@\s*(.*?))?:\s*(.*)$", line)
-            sp, item, mv = m.group(1).strip(), (m.group(2) or "").strip(), [x.strip() for x in m.group(3).split("/")]
-            sc = const_name("SPECIES", sp)
-            if sc not in species:
-                errors.append(f"{key}: species {sp} ({sc})")
-            nlegend += sc in legends
-            ic = const_name("ITEM", item) if item else "ITEM_NONE"
-            if item and ic not in items:
-                errors.append(f"{key}: item {item} ({ic})")
-            mcs = []
-            for x in mv:
-                mc = const_name("MOVE", x)
-                if mc not in moves:
-                    errors.append(f"{key}: move {x} ({mc})")
-                mcs.append(mc)
-            ev, nature = evs([cats.get(c, "STATUS") for c in mcs])
-            mons.append(f"    {{\n        .species = {sc},\n        .lvl = 100,\n        .heldItem = {ic},\n"
-                        f"        .moves = {{{', '.join(mcs)}}},\n        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),\n"
-                        f"        .ev = {ev},\n        .nature = {nature},\n        .gender = TRAINER_MON_RANDOM_GENDER,\n"
-                        f"        .ball = POKEBALL_COUNT,\n        .friendship = MAX_FRIENDSHIP,\n    }},\n")
-        if nlegend > 2:
+        mons, nlegend = party(key, t, species, moves, items, cats, legends, errors)
+        if nlegend > 2 and key != "bill":
             errors.append(f"{key}: {nlegend} legendaries")
         parties.append(f"static const struct TrainerMon sGauntletParty_{key}[] = {{\n" + "".join(mons) + "};\n\n")
         intro, defeat, after, win = (wrap(x) for x in t["lines"])
@@ -334,7 +365,8 @@ def main():
         "// challengers, in the order they come\n\n" + "".join(parties)
         + f"#define GAUNTLET_COUNT {len(order)}\n#define GAUNTLET_REGION_COUNT {len(REGIONS)}\n\n"
         + "static const u8 *const sGauntletRegions[GAUNTLET_REGION_COUNT] = {\n" + regions + "};\n\n"
-        + "static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {\n" + "".join(entries) + "};\n")
+        + "static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT + 1] = {\n" + "".join(entries[:-1])
+        + "    // (the last: Bill, who hired the hooded figure... and was it all along)\n" + entries[-1] + "};\n")
     print(f"gauntlet: {len(order)} challengers")
 
 

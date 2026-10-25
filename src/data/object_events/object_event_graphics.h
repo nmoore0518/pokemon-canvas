@@ -894,4 +894,8 @@ const u16 gObjectEventPic_GauntletPenny[] = INCGFX_U16("graphics/object_events/p
 const u16 gObjectEventPal_GauntletPenny[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/penny.png", ".gbapal");
 const u16 gObjectEventPic_GauntletHoodedFigure[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/hooded_figure.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPal_GauntletHoodedFigure[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/hooded_figure.png", ".gbapal");
+const u16 gObjectEventPic_GauntletBill[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/bill.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u16 gObjectEventPal_GauntletBill[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/bill.png", ".gbapal");
+const u16 gObjectEventPic_GauntletPalmPilot[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/palm_pilot.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u16 gObjectEventPal_GauntletPalmPilot[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/palm_pilot.png", ".gbapal");
 // END Gauntlet

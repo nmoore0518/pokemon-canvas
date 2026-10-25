@@ -10,5 +10,11 @@ void Gauntlet_RecordWin(void);
 void Gauntlet_BufferProgress(void);
 void Gauntlet_PushRegions(void);
 void Gauntlet_PushRegionNames(void);
+void Gauntlet_SetFigureGfx(void);
+void Gauntlet_BillDefeated(void);
+void Gauntlet_RevealBill(void);
+bool32 Gauntlet_IsBillBattle(void);
+void Gauntlet_ChooseWithdraw(void);
+void Gauntlet_UseWithdraw(void);
 
 #endif // GUARD_GAUNTLET_H

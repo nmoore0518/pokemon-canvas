@@ -919,6 +919,8 @@ const u32 gTrainerFrontPic_GauntletSada[] = INCGFX_U32("graphics/trainers/front_
 const u16 gTrainerPalette_GauntletSada[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/sada.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletTuro[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/turo.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletTuro[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/turo.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletBill[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/bill.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletBill[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/bill.pal", ".gbapal");
 // END Gauntlet gfx
 const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
 {
@@ -2229,6 +2231,10 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_GAUNTLET_TURO] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletTuro, gTrainerPalette_GauntletTuro),
+    },
+    [TRAINER_PIC_GAUNTLET_BILL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletBill, gTrainerPalette_GauntletBill),
     },
 // END Gauntlet table
 };

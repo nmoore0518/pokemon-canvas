@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gauntlet.h"
 #include "exotic_safari.h"
 #include "malloc.h"
 #include "apprentice.h"
@@ -5150,6 +5151,9 @@ u16 GetBattleBGM(void)
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
         enum TrainerClassID trainerClass;
+
+        if (Gauntlet_IsBillBattle())    // Gym Trainer hack: the Gauntlet's last (src/gauntlet.c)
+            return MUS_RG_VS_DEOXYS;
 
         if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
             trainerClass = GetFrontierOpponentClass(TRAINER_BATTLE_PARAM.opponentA);

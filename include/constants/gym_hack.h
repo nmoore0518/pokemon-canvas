@@ -56,7 +56,8 @@
 #define GAUNTLET_NONE           0
 #define GAUNTLET_ARRIVING       1   // (the hooded figure's scene plays as the player comes into the gym)
 #define GAUNTLET_ACTIVE         2
-#define GAUNTLET_ALL_BEATEN     3
+#define GAUNTLET_ALL_BEATEN     3   // (every challenger beaten: the one who hired the figure is next)
+#define GAUNTLET_SIMULATOR      4   // (Bill beaten: his Palm Pilot runs it all again, as a simulation)
 
 #define JOHTO_NOT_INVITED       0
 #define JOHTO_INVITE_WAITING    1   // (after the gym's handed over: the mentor brings it next visit)

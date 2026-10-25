@@ -970,6 +970,21 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] Five more challengers no sprite set had (v71; 83 in all): Volo, Prof. Sycamore, Carmine,
          Prof. Sada and Prof. Turo, their pictures repainted from PokéRogue class pictures by
          `gauntlet_custom.py` (tools/gym_hack/art/, read as "art:<file>").
+   - [x] The Gauntlet, part 2 (v72): Bill. After the last challenger (GAUNTLET_ALL_BEATEN) the figure
+         asks if you're ready to meet who hired them - the hood comes off (FLAG_GAUNTLET_BILL_REVEALED
+         0x3C3; the figure object's look is VAR_OBJ_GFX_ID_D, `Gauntlet_SetFigureGfx`): Bill, his Cell
+         Separation System run backwards on himself and a Clefable. He wants it ended. His team:
+         shiny Mewtwo, Lugia, Ho-Oh, Giratina-Origin, Rayquaza and himself - CLEFABILL (a species of
+         its own, SPECIES_CLEFABILL: Fairy/Ghost, 150/80/130/170/150/120 = 800, Magic Guard + Life Orb;
+         not in the Pokédex, not obtainable, never shiny in his hands; art by `bill_art.py`, his
+         walking sprite and the Palm Pilot by `bill_ow.py`); the Deoxys battle music. Lose and he
+         waits. Win and he fades away, leaving his Palm Pilot (GAUNTLET_SIMULATOR):
+         - WITHDRAW (VAR_GAUNTLET_WITHDRAWS 0x40F4, one per finished run): any Pokémon, shiny, level
+           100 - a list of all 1392 species and forms one could keep (`build_withdraw.py` ->
+           src/data/gauntlet_withdraw.h: National Dex order; L/R a page, START the next
+           generation) with the shiny picture beside it (`Gauntlet_ChooseWithdraw`);
+         - the battle simulator: the whole Gauntlet again from the first challenger, with Bill as
+           the 84th; clearing it earns another WITHDRAW. Records: this run's progress by region.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

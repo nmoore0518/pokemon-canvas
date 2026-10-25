@@ -259,7 +259,7 @@
     {
       "local_id": "LOCALID_PALLET_GYM_FIGURE",
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_GAUNTLET_HOODED_FIGURE",
+      "graphics_id": "OBJ_EVENT_GFX_VAR_D",
       "x": 10,
       "y": 24,
       "elevation": 3,

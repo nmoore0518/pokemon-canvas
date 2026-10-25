@@ -27681,6 +27681,16 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #endif //OW_POKEMON_OBJECT_EVENTS
 #endif //P_FAMILY_PECHARUNT
 
+// Gym Trainer hack: Bill's hybrid (tools/gym_hack/bill_art.py)
+    const u32 gMonFrontPic_Clefabill[] = INCGFX_U32("graphics/pokemon/clefabill/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Clefabill[] = INCGFX_U16("graphics/pokemon/clefabill/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Clefabill[] = INCGFX_U32("graphics/pokemon/clefabill/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Clefabill[] = INCGFX_U16("graphics/pokemon/clefabill/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Clefabill[] = INCGFX_U8("graphics/pokemon/clefabill/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Clefabill[] = INCGFX_U8("graphics/pokemon/clefabill/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+
     const u32 gMonFrontPic_Egg[] = INCGFX_U32("graphics/pokemon/egg/anim_front.png", ".4bpp.smol");
     const u16 gMonPalette_Egg[] = INCGFX_U16("graphics/pokemon/egg/normal.pal", ".gbapal");
     const u8 gMonIcon_Egg[] = INCGFX_U8("graphics/pokemon/egg/icon.png", ".4bpp");

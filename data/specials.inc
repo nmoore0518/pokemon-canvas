@@ -688,6 +688,11 @@ gSpecials::
 	def_special Gauntlet_BufferProgress
 	def_special Gauntlet_PushRegions
 	def_special Gauntlet_PushRegionNames
+	def_special Gauntlet_SetFigureGfx
+	def_special Gauntlet_BillDefeated
+	def_special Gauntlet_RevealBill
+	def_special Gauntlet_ChooseWithdraw
+	def_special Gauntlet_UseWithdraw
 	def_special Convention_PushHalls
 	def_special Convention_BufferProgress
 	def_special Convention_WarpToHall
