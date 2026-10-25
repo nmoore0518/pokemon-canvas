@@ -874,7 +874,7 @@ ROSTER["sycamore"]["battle"] = "SYCAMORE"
 # The last: Bill, who hired the hooded figure - and was the figure. His Cell Separation System run
 # backwards on himself and a Clefable; he set the whole Gauntlet up to find someone strong enough to
 # end it. Five shiny legendaries from his records, and himself (CLEFABILL: Fairy/Ghost, 800).
-BILL = T("BILL", "THE ONE WHO HIRED YOU", "KANTO", "RED/BLUE", False, "art", "OBJ_EVENT_GFX_GAUNTLET_BILL", [
+BILL = T("BILL", "POKéMANIAC", "KANTO", "RED/BLUE", False, "art", "OBJ_EVENT_GFX_GAUNTLET_BILL", [
     "Shiny Mewtwo @ Life Orb: Psystrike / Aura Sphere / Ice Beam / Nasty Plot",
     "Shiny Lugia @ Leftovers: Aeroblast / Calm Mind / Roost / Earth Power",
     "Shiny Ho-Oh @ Heavy-Duty Boots: Sacred Fire / Brave Bird / Earthquake / Recover",
