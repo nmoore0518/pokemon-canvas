@@ -29,7 +29,8 @@ EXT = Path("/home/claude/ext")
 SOURCES = {"rogue": EXT / "pokeemerald-rogue/graphics/trainers/front_pics",
            "hns": EXT / "pokehns-expansion/graphics/trainers/front_pics",
            "smogon": EXT / "smogon_sprites",
-           "pr": EXT / "pokerogue_assets/images/trainer"}
+           "pr": EXT / "pokerogue_assets/images/trainer",
+           "art": ROOT / "tools/gym_hack/art"}         # (gauntlet_custom.py's repaints)
 PIC_DIR = ROOT / "graphics/trainers/front_pics/gauntlet"
 PAL_DIR = ROOT / "graphics/trainers/palettes/gauntlet"
 OW_DIR = ROOT / "graphics/object_events/pics/people/gauntlet"

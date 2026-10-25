@@ -7,6 +7,7 @@ Each: key -> dict(
   female - for the battle's pronouns,
   pic    - TRAINER_PIC_*, or "rogue:<path>" (Emerald Rogue), "hns:<path>" (HnS),
            "smogon:<path>" (smogon/sprites trainers), "pr:<name>" (PokéRogue's trainer sheets),
+           "art:<file>" (our own repaints: gauntlet_custom.py),
   ow     - OBJ_EVENT_GFX_* (walking into the gym), or "rogue:<path>" to import one,
   team   - six "Species @ Item: Move / Move / Move / Move" (level 100; no more than two legendaries),
   lines  - (intro, defeat, after, win) - before, the line when beaten, after, and when they win)
@@ -428,6 +429,16 @@ ROSTER = {
     "Ohoho! Wonderful!", "You remind me of me, back in the day. Don't tell anyone.",
     "Ohoho! Still got it!")),
 # ---------------------------------------------------------------- Unova
+"volo": T("VOLO", "GINKGO GUILD MERCHANT", "SINNOH", "LEGENDS: ARCEUS", False, "art:volo.png", "OBJ_EVENT_GFX_CAMPER", [
+    "Spiritomb @ Leftovers: Shadow Ball / Dark Pulse / Will-O-Wisp / Calm Mind",
+    "Arcanine-Hisui @ Choice Band: Head Smash / Flare Blitz / Extreme Speed / Close Combat",
+    "Garchomp @ Rocky Helmet: Earthquake / Dragon Claw / Stone Edge / Swords Dance",
+    "Togekiss @ Leftovers: Air Slash / Dazzling Gleam / Nasty Plot / Roost",
+    "Lucario @ Life Orb: Aura Sphere / Flash Cannon / Vacuum Wave / Nasty Plot",
+    "Giratina-Origin @ Griseous Core: Shadow Force / Dragon Claw / Earthquake / Shadow Sneak",
+], ("Oh, hello! Just a humble merchant. ...I'd so love to see what a master of every type is really made of.",
+    "Ah... Ahh, so this is the power that rivals a god's.", "No hard feelings! Do drop by the Ginkgo Guild sometime. Heh heh.",
+    "All that strength, and still not enough. How disappointing.")),
 "bianca": T("BIANCA", "JUNIPER'S ASSISTANT", "UNOVA", "BLACK/WHITE", True, "rogue:rival/bianca.png", "rogue:rogue/npc/rival/bianca.png", [
     "Emboar @ Choice Band: Flare Blitz / Superpower / Wild Charge / Head Smash",
     "Musharna @ Leftovers: Psychic / Moonblast / Calm Mind / Moonlight",
@@ -630,6 +641,16 @@ ROSTER = {
     "...Thank you. That was a good battle.", "The war is long over. Let us both remember that.",
     "Even an old king can still win.")),
 # ---------------------------------------------------------------- Alola
+"sycamore": T("PROF. SYCAMORE", "KALOS POKéMON PROFESSOR", "KALOS", "X/Y", False, "art:sycamore.png", "OBJ_EVENT_GFX_COOLTRAINER_M", [
+    "Venusaur @ Venusaurite: Giga Drain / Sludge Bomb / Earth Power / Synthesis",
+    "Charizard @ Heavy-Duty Boots: Flamethrower / Air Slash / Focus Blast / Roost",
+    "Blastoise @ Leftovers: Scald / Ice Beam / Rapid Spin / Shell Smash",
+    "Chesnaught @ Leftovers: Body Press / Wood Hammer / Spiky Shield / Leech Seed",
+    "Delphox @ Life Orb: Fire Blast / Psychic / Grass Knot / Nasty Plot",
+    "Greninja @ Choice Specs: Hydro Pump / Dark Pulse / Ice Beam / U-turn",
+], ("Bonjour! The Pokemon of Kalos and I have studied Mega Evolution for years. Let us see your bond in action!",
+    "Magnifique! What a battle!", "Your Pokemon trust you completely. There's no greater discovery than that.",
+    "Ah, the bond between my Pokemon and me shines brightest today, it seems!")),
 "hau": T("HAU", "ALOLA RIVAL", "ALOLA", "SUN/MOON", False, "rogue:rival/hau.png", "rogue:rogue/npc/rival/hau.png", [
     "Primarina @ Choice Specs: Moonblast / Hydro Pump / Psychic / Energy Ball",
     "Raichu-Alola @ Life Orb: Thunderbolt / Psychic / Focus Blast / Nasty Plot",
@@ -802,6 +823,16 @@ ROSTER = {
 ], ("I don't back down. Not from bullies, not from champions, not from you.",
     "...You hit hard.", "Respect. Come train with us sometime.",
     "Strength and spirit!")),
+"carmine": T("CARMINE", "KITAKAMI'S OWN", "PALDEA", "THE TEAL MASK", True, "art:carmine.png", "OBJ_EVENT_GFX_COOLTRAINER_F", [
+    "Ogerpon-Wellspring @ Wellspring Mask: Ivy Cudgel / Horn Leech / Play Rough / Swords Dance",
+    "Sinistcha @ Leftovers: Matcha Gotcha / Shadow Ball / Strength Sap / Calm Mind",
+    "Ninjask @ Focus Sash: X-Scissor / Aerial Ace / Swords Dance / Baton Pass",
+    "Mawile @ Mawilite: Play Rough / Iron Head / Sucker Punch / Swords Dance",
+    "Morpeko @ Choice Band: Aura Wheel / Knock Off / Psychic Fangs / Protect",
+    "Dipplin @ Eviolite: Dragon Pulse / Giga Drain / Recover / Dragon Tail",
+], ("So you're the hotshot everyone's so worked up about? Ha! Me and my Pokemon are gonna knock you flat!",
+    "Ugh! Seriously?!", "...Fine. You're good. Like, really good. Don't let it go to your head!",
+    "Ha! Told ya! Bow down to Kitakami's finest!")),
 "kieran": T("KIERAN", "BLUEBERRY CHAMPION", "PALDEA", "SCARLET/VIOLET", False, "pr:kieran", "OBJ_EVENT_GFX_YOUNGSTER", [
     "Kingambit @ Leftovers: Kowtow Cleave / Iron Head / Sucker Punch / Swords Dance",
     "Incineroar @ Assault Vest: Flare Blitz / Knock Off / U-turn / Fake Out",
@@ -812,9 +843,30 @@ ROSTER = {
 ], ("I've gotten stronger. Strong enough that you can't look down on me anymore.",
     "...Again. I lost again.", "Thanks. I mean it. I'll keep getting stronger. The right way.",
     "I won! I actually won!")),
+"sada": T("PROF. SADA", "PALDEA POKéMON PROFESSOR", "PALDEA", "SCARLET", True, "art:sada.png", "OBJ_EVENT_GFX_WOMAN_5", [
+    "Slither Wing @ Booster Energy: First Impression / Close Combat / Leech Life / U-turn",
+    "Scream Tail @ Leftovers: Dazzling Gleam / Psychic / Wish / Thunder Wave",
+    "Brute Bonnet @ Booster Energy: Seed Bomb / Crunch / Sucker Punch / Spore",
+    "Flutter Mane @ Choice Specs: Moonblast / Shadow Ball / Mystical Fire / Power Gem",
+    "Roaring Moon @ Booster Energy: Acrobatics / Knock Off / Earthquake / Dragon Dance",
+    "Koraidon @ Life Orb: Collision Course / Flare Blitz / Outrage / Swords Dance",
+], ("It is time. Show me if you're strong enough to change the past... or if the past will consume you.",
+    "...Remarkable. You have surpassed even my research.", "I have only one wish left. Look after them, won't you?",
+    "The ancient world has no place for the weak.")),
+"turo": T("PROF. TURO", "PALDEA POKéMON PROFESSOR", "PALDEA", "VIOLET", False, "art:turo.png", "OBJ_EVENT_GFX_SCIENTIST", [
+    "Iron Moth @ Booster Energy: Fiery Dance / Sludge Wave / Energy Ball / Discharge",
+    "Iron Bundle @ Choice Specs: Freeze-Dry / Hydro Pump / Ice Beam / Flip Turn",
+    "Iron Hands @ Assault Vest: Drain Punch / Wild Charge / Ice Punch / Fake Out",
+    "Iron Jugulis @ Booster Energy: Dark Pulse / Hurricane / Earth Power / Taunt",
+    "Iron Valiant @ Booster Energy: Moonblast / Close Combat / Spirit Break / Swords Dance",
+    "Miraidon @ Choice Specs: Electro Drift / Draco Meteor / Volt Switch / Overheat",
+], ("Calculations complete. Probability of your victory: low. Let us test the hypothesis.",
+    "...Fascinating. The data did not predict this.", "The future is built by people like you. I can rest easy.",
+    "Exactly as calculated. A future without error.")),
 }
 
 # (the battle's name must fit in 10 letters)
 ROSTER["jessie_james"]["battle"] = "JESSIE"
 
 ORDER = list(ROSTER)
+ROSTER["sycamore"]["battle"] = "SYCAMORE"

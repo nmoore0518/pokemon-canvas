@@ -3001,6 +3001,81 @@ static const struct TrainerMon sGauntletParty_argenta[] = {
     },
 };
 
+static const struct TrainerMon sGauntletParty_volo[] = {
+    {
+        .species = SPECIES_SPIRITOMB,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_SHADOW_BALL, MOVE_DARK_PULSE, MOVE_WILL_O_WISP, MOVE_CALM_MIND},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_ARCANINE_HISUI,
+        .lvl = 100,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = {MOVE_HEAD_SMASH, MOVE_FLARE_BLITZ, MOVE_EXTREME_SPEED, MOVE_CLOSE_COMBAT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_GARCHOMP,
+        .lvl = 100,
+        .heldItem = ITEM_ROCKY_HELMET,
+        .moves = {MOVE_EARTHQUAKE, MOVE_DRAGON_CLAW, MOVE_STONE_EDGE, MOVE_SWORDS_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_TOGEKISS,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_AIR_SLASH, MOVE_DAZZLING_GLEAM, MOVE_NASTY_PLOT, MOVE_ROOST},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_LUCARIO,
+        .lvl = 100,
+        .heldItem = ITEM_LIFE_ORB,
+        .moves = {MOVE_AURA_SPHERE, MOVE_FLASH_CANNON, MOVE_VACUUM_WAVE, MOVE_NASTY_PLOT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_GIRATINA_ORIGIN,
+        .lvl = 100,
+        .heldItem = ITEM_GRISEOUS_CORE,
+        .moves = {MOVE_SHADOW_FORCE, MOVE_DRAGON_CLAW, MOVE_EARTHQUAKE, MOVE_SHADOW_SNEAK},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+};
+
 static const struct TrainerMon sGauntletParty_bianca[] = {
     {
         .species = SPECIES_EMBOAR,
@@ -4501,6 +4576,81 @@ static const struct TrainerMon sGauntletParty_az[] = {
     },
 };
 
+static const struct TrainerMon sGauntletParty_sycamore[] = {
+    {
+        .species = SPECIES_VENUSAUR,
+        .lvl = 100,
+        .heldItem = ITEM_VENUSAURITE,
+        .moves = {MOVE_GIGA_DRAIN, MOVE_SLUDGE_BOMB, MOVE_EARTH_POWER, MOVE_SYNTHESIS},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_CHARIZARD,
+        .lvl = 100,
+        .heldItem = ITEM_HEAVY_DUTY_BOOTS,
+        .moves = {MOVE_FLAMETHROWER, MOVE_AIR_SLASH, MOVE_FOCUS_BLAST, MOVE_ROOST},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_BLASTOISE,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_SCALD, MOVE_ICE_BEAM, MOVE_RAPID_SPIN, MOVE_SHELL_SMASH},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_MODEST,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_CHESNAUGHT,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_BODY_PRESS, MOVE_WOOD_HAMMER, MOVE_SPIKY_SHIELD, MOVE_LEECH_SEED},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_DELPHOX,
+        .lvl = 100,
+        .heldItem = ITEM_LIFE_ORB,
+        .moves = {MOVE_FIRE_BLAST, MOVE_PSYCHIC, MOVE_GRASS_KNOT, MOVE_NASTY_PLOT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_GRENINJA,
+        .lvl = 100,
+        .heldItem = ITEM_CHOICE_SPECS,
+        .moves = {MOVE_HYDRO_PUMP, MOVE_DARK_PULSE, MOVE_ICE_BEAM, MOVE_U_TURN},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+};
+
 static const struct TrainerMon sGauntletParty_hau[] = {
     {
         .species = SPECIES_PRIMARINA,
@@ -5776,6 +5926,81 @@ static const struct TrainerMon sGauntletParty_eri[] = {
     },
 };
 
+static const struct TrainerMon sGauntletParty_carmine[] = {
+    {
+        .species = SPECIES_OGERPON_WELLSPRING,
+        .lvl = 100,
+        .heldItem = ITEM_WELLSPRING_MASK,
+        .moves = {MOVE_IVY_CUDGEL, MOVE_HORN_LEECH, MOVE_PLAY_ROUGH, MOVE_SWORDS_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_SINISTCHA,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_MATCHA_GOTCHA, MOVE_SHADOW_BALL, MOVE_STRENGTH_SAP, MOVE_CALM_MIND},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_NINJASK,
+        .lvl = 100,
+        .heldItem = ITEM_FOCUS_SASH,
+        .moves = {MOVE_X_SCISSOR, MOVE_AERIAL_ACE, MOVE_SWORDS_DANCE, MOVE_BATON_PASS},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_MAWILE,
+        .lvl = 100,
+        .heldItem = ITEM_MAWILITE,
+        .moves = {MOVE_PLAY_ROUGH, MOVE_IRON_HEAD, MOVE_SUCKER_PUNCH, MOVE_SWORDS_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_MORPEKO,
+        .lvl = 100,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = {MOVE_AURA_WHEEL, MOVE_KNOCK_OFF, MOVE_PSYCHIC_FANGS, MOVE_PROTECT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_DIPPLIN,
+        .lvl = 100,
+        .heldItem = ITEM_EVIOLITE,
+        .moves = {MOVE_DRAGON_PULSE, MOVE_GIGA_DRAIN, MOVE_RECOVER, MOVE_DRAGON_TAIL},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_MODEST,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+};
+
 static const struct TrainerMon sGauntletParty_kieran[] = {
     {
         .species = SPECIES_KINGAMBIT,
@@ -5851,7 +6076,157 @@ static const struct TrainerMon sGauntletParty_kieran[] = {
     },
 };
 
-#define GAUNTLET_COUNT 78
+static const struct TrainerMon sGauntletParty_sada[] = {
+    {
+        .species = SPECIES_SLITHER_WING,
+        .lvl = 100,
+        .heldItem = ITEM_BOOSTER_ENERGY,
+        .moves = {MOVE_FIRST_IMPRESSION, MOVE_CLOSE_COMBAT, MOVE_LEECH_LIFE, MOVE_U_TURN},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_SCREAM_TAIL,
+        .lvl = 100,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_DAZZLING_GLEAM, MOVE_PSYCHIC, MOVE_WISH, MOVE_THUNDER_WAVE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_BRUTE_BONNET,
+        .lvl = 100,
+        .heldItem = ITEM_BOOSTER_ENERGY,
+        .moves = {MOVE_SEED_BOMB, MOVE_CRUNCH, MOVE_SUCKER_PUNCH, MOVE_SPORE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_FLUTTER_MANE,
+        .lvl = 100,
+        .heldItem = ITEM_CHOICE_SPECS,
+        .moves = {MOVE_MOONBLAST, MOVE_SHADOW_BALL, MOVE_MYSTICAL_FIRE, MOVE_POWER_GEM},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_ROARING_MOON,
+        .lvl = 100,
+        .heldItem = ITEM_BOOSTER_ENERGY,
+        .moves = {MOVE_ACROBATICS, MOVE_KNOCK_OFF, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_KORAIDON,
+        .lvl = 100,
+        .heldItem = ITEM_LIFE_ORB,
+        .moves = {MOVE_COLLISION_COURSE, MOVE_FLARE_BLITZ, MOVE_OUTRAGE, MOVE_SWORDS_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+};
+
+static const struct TrainerMon sGauntletParty_turo[] = {
+    {
+        .species = SPECIES_IRON_MOTH,
+        .lvl = 100,
+        .heldItem = ITEM_BOOSTER_ENERGY,
+        .moves = {MOVE_FIERY_DANCE, MOVE_SLUDGE_WAVE, MOVE_ENERGY_BALL, MOVE_DISCHARGE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_IRON_BUNDLE,
+        .lvl = 100,
+        .heldItem = ITEM_CHOICE_SPECS,
+        .moves = {MOVE_FREEZE_DRY, MOVE_HYDRO_PUMP, MOVE_ICE_BEAM, MOVE_FLIP_TURN},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_IRON_HANDS,
+        .lvl = 100,
+        .heldItem = ITEM_ASSAULT_VEST,
+        .moves = {MOVE_DRAIN_PUNCH, MOVE_WILD_CHARGE, MOVE_ICE_PUNCH, MOVE_FAKE_OUT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_JOLLY,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_IRON_JUGULIS,
+        .lvl = 100,
+        .heldItem = ITEM_BOOSTER_ENERGY,
+        .moves = {MOVE_DARK_PULSE, MOVE_HURRICANE, MOVE_EARTH_POWER, MOVE_TAUNT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_IRON_VALIANT,
+        .lvl = 100,
+        .heldItem = ITEM_BOOSTER_ENERGY,
+        .moves = {MOVE_MOONBLAST, MOVE_CLOSE_COMBAT, MOVE_SPIRIT_BREAK, MOVE_SWORDS_DANCE},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
+        .nature = NATURE_ADAMANT,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+    {
+        .species = SPECIES_MIRAIDON,
+        .lvl = 100,
+        .heldItem = ITEM_CHOICE_SPECS,
+        .moves = {MOVE_ELECTRO_DRIFT, MOVE_DRACO_METEOR, MOVE_VOLT_SWITCH, MOVE_OVERHEAT},
+        .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
+        .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
+        .nature = NATURE_TIMID,
+        .gender = TRAINER_MON_RANDOM_GENDER,
+        .ball = POKEBALL_COUNT,
+        .friendship = MAX_FRIENDSHIP,
+    },
+};
+
+#define GAUNTLET_COUNT 83
 #define GAUNTLET_REGION_COUNT 9
 
 static const u8 *const sGauntletRegions[GAUNTLET_REGION_COUNT] = {
@@ -6508,6 +6883,22 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .win = COMPOUND_STRING("Ohoho! Still got it!"),
     },
     { // 40
+        .name = COMPOUND_STRING("VOLO"),
+        .battleName = COMPOUND_STRING("VOLO"),
+        .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
+        .female = FALSE,
+        .region = 3,
+        .pic = TRAINER_PIC_GAUNTLET_VOLO,
+        .gfx = OBJ_EVENT_GFX_CAMPER,
+        .party = sGauntletParty_volo,
+        .title = COMPOUND_STRING("GINKGO GUILD MERCHANT"),
+        .games = COMPOUND_STRING("LEGENDS: ARCEUS"),
+        .intro = COMPOUND_STRING("Oh, hello! Just a humble\nmerchant. ...I'd so love to see\pwhat a master of every type is\nreally made of."),
+        .defeat = COMPOUND_STRING("Ah... Ahh, so this is the power\nthat rivals a god's."),
+        .after = COMPOUND_STRING("No hard feelings! Do drop by the\nGinkgo Guild sometime. Heh heh."),
+        .win = COMPOUND_STRING("All that strength, and still not\nenough. How disappointing."),
+    },
+    { // 41
         .name = COMPOUND_STRING("BIANCA"),
         .battleName = COMPOUND_STRING("BIANCA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6523,7 +6914,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Thanks! That was the best\nresearch ever!"),
         .win = COMPOUND_STRING("I did it! Ohmygosh, I did it!"),
     },
-    { // 41
+    { // 42
         .name = COMPOUND_STRING("N"),
         .battleName = COMPOUND_STRING("N"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6539,7 +6930,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Thank you. I understand people a\nlittle better now."),
         .win = COMPOUND_STRING("The truth... is mine today."),
     },
-    { // 42
+    { // 43
         .name = COMPOUND_STRING("GHETSIS"),
         .battleName = COMPOUND_STRING("GHETSIS"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6555,7 +6946,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I am the perfect ruler! The\nPERFECT..."),
         .win = COMPOUND_STRING("Despair is your only option!"),
     },
-    { // 43
+    { // 44
         .name = COMPOUND_STRING("COLRESS"),
         .battleName = COMPOUND_STRING("COLRESS"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6571,7 +6962,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("My research has a new subject.\nYou!"),
         .win = COMPOUND_STRING("As the data predicted."),
     },
-    { // 44
+    { // 45
         .name = COMPOUND_STRING("ZINZOLIN"),
         .battleName = COMPOUND_STRING("ZINZOLIN"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6587,7 +6978,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Very well. I'll return to the\ncold, where I belong."),
         .win = COMPOUND_STRING("Ice-cold victory!"),
     },
-    { // 45
+    { // 46
         .name = COMPOUND_STRING("INGO"),
         .battleName = COMPOUND_STRING("INGO"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6603,7 +6994,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("This train's final stop... is\nyour victory."),
         .win = COMPOUND_STRING("Next stop: victory!"),
     },
-    { // 46
+    { // 47
         .name = COMPOUND_STRING("EMMET"),
         .battleName = COMPOUND_STRING("EMMET"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6619,7 +7010,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("My brother Ingo would have loved\nthis. I'll tell him."),
         .win = COMPOUND_STRING("Next stop... I win!"),
     },
-    { // 47
+    { // 48
         .name = COMPOUND_STRING("BENGA"),
         .battleName = COMPOUND_STRING("BENGA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6635,7 +7026,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I'm telling Gramps all about\nyou!"),
         .win = COMPOUND_STRING("Yeah! Gramps would be proud!"),
     },
-    { // 48
+    { // 49
         .name = COMPOUND_STRING("SERENA"),
         .battleName = COMPOUND_STRING("SERENA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6651,7 +7042,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I'll catch up. I always do,\neventually."),
         .win = COMPOUND_STRING("Finally! I did it!"),
     },
-    { // 49
+    { // 50
         .name = COMPOUND_STRING("CALEM"),
         .battleName = COMPOUND_STRING("CALEM"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6667,7 +7058,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I won't stop climbing. Expect me\nagain."),
         .win = COMPOUND_STRING("That's one comparison I won."),
     },
-    { // 50
+    { // 51
         .name = COMPOUND_STRING("SHAUNA"),
         .battleName = COMPOUND_STRING("SHAUNA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6683,7 +7074,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Okay, the battle was way better\nthan cake. Probably."),
         .win = COMPOUND_STRING("Yay! Cake time!"),
     },
-    { // 51
+    { // 52
         .name = COMPOUND_STRING("TIERNO"),
         .battleName = COMPOUND_STRING("TIERNO"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6699,7 +7090,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Let's make a dance crew.\nSeriously."),
         .win = COMPOUND_STRING("And... pose!"),
     },
-    { // 52
+    { // 53
         .name = COMPOUND_STRING("TREVOR"),
         .battleName = COMPOUND_STRING("TREVOR"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6715,7 +7106,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I'll update the Pokédex. Entry:\nyou. Danger level: maximum."),
         .win = COMPOUND_STRING("The 3%! It happened!"),
     },
-    { // 53
+    { // 54
         .name = COMPOUND_STRING("LYSANDRE"),
         .battleName = COMPOUND_STRING("LYSANDRE"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6731,7 +7122,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Perhaps beauty lies in the\nstruggle itself."),
         .win = COMPOUND_STRING("Only the chosen remain."),
     },
-    { // 54
+    { // 55
         .name = COMPOUND_STRING("ALIANA"),
         .battleName = COMPOUND_STRING("ALIANA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6747,7 +7138,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Your victory was... annoyingly\nfashionable."),
         .win = COMPOUND_STRING("Stylish!"),
     },
-    { // 55
+    { // 56
         .name = COMPOUND_STRING("CELOSIA"),
         .battleName = COMPOUND_STRING("CELOSIA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6763,7 +7154,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("At least the battle was worth\nsomething."),
         .win = COMPOUND_STRING("Payday!"),
     },
-    { // 56
+    { // 57
         .name = COMPOUND_STRING("BRYONY"),
         .battleName = COMPOUND_STRING("BRYONY"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6779,7 +7170,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Next time I'll calculate better."),
         .win = COMPOUND_STRING("Exactly as planned."),
     },
-    { // 57
+    { // 58
         .name = COMPOUND_STRING("MABLE"),
         .battleName = COMPOUND_STRING("MABLE"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6795,7 +7186,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I'll put this to good use.\nHonest, good use."),
         .win = COMPOUND_STRING("Experiment successful."),
     },
-    { // 58
+    { // 59
         .name = COMPOUND_STRING("XEROSIC"),
         .battleName = COMPOUND_STRING("XEROSIC"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6811,7 +7202,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Fascinating. I'll need more test\nsubjects like you."),
         .win = COMPOUND_STRING("Hypothesis confirmed!"),
     },
-    { // 59
+    { // 60
         .name = COMPOUND_STRING("AZ"),
         .battleName = COMPOUND_STRING("AZ"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6827,7 +7218,23 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("The war is long over. Let us\nboth remember that."),
         .win = COMPOUND_STRING("Even an old king can still win."),
     },
-    { // 60
+    { // 61
+        .name = COMPOUND_STRING("PROF. SYCAMORE"),
+        .battleName = COMPOUND_STRING("SYCAMORE"),
+        .trainerClass = TRAINER_CLASS_PKMN_PROF_FRLG,
+        .female = FALSE,
+        .region = 5,
+        .pic = TRAINER_PIC_GAUNTLET_SYCAMORE,
+        .gfx = OBJ_EVENT_GFX_COOLTRAINER_M,
+        .party = sGauntletParty_sycamore,
+        .title = COMPOUND_STRING("KALOS POKéMON PROFESSOR"),
+        .games = COMPOUND_STRING("X/Y"),
+        .intro = COMPOUND_STRING("Bonjour! The Pokemon of Kalos\nand I have studied Mega\pEvolution for years. Let us see\nyour bond in action!"),
+        .defeat = COMPOUND_STRING("Magnifique! What a battle!"),
+        .after = COMPOUND_STRING("Your Pokemon trust you\ncompletely. There's no greater\pdiscovery than that."),
+        .win = COMPOUND_STRING("Ah, the bond between my Pokemon\nand me shines brightest today,\pit seems!"),
+    },
+    { // 62
         .name = COMPOUND_STRING("HAU"),
         .battleName = COMPOUND_STRING("HAU"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6843,7 +7250,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Malasadas are on me. You earned\n'em!"),
         .win = COMPOUND_STRING("Yeah! Malasada time!"),
     },
-    { // 61
+    { // 63
         .name = COMPOUND_STRING("GLADION"),
         .battleName = COMPOUND_STRING("GLADION"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6859,7 +7266,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Next time, I'll be stronger.\nSilvally and I both."),
         .win = COMPOUND_STRING("Hmph. That's how it's done."),
     },
-    { // 62
+    { // 64
         .name = COMPOUND_STRING("LUSAMINE"),
         .battleName = COMPOUND_STRING("LUSAMINE"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6875,7 +7282,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Perhaps love should not be a\ncage. Perhaps."),
         .win = COMPOUND_STRING("Mine. All mine."),
     },
-    { // 63
+    { // 65
         .name = COMPOUND_STRING("FABA"),
         .battleName = COMPOUND_STRING("FABA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6891,7 +7298,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("This never happened. Understood?"),
         .win = COMPOUND_STRING("Genius prevails!"),
     },
-    { // 64
+    { // 66
         .name = COMPOUND_STRING("GUZMA"),
         .battleName = COMPOUND_STRING("GUZMA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6907,7 +7314,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Destruction in human form, they\ncall me. Turns out that's you."),
         .win = COMPOUND_STRING("Hah! Big bad Guzma wins!"),
     },
-    { // 65
+    { // 67
         .name = COMPOUND_STRING("PLUMERIA"),
         .battleName = COMPOUND_STRING("PLUMERIA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6923,7 +7330,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Don't let it go to your head."),
         .win = COMPOUND_STRING("That's how big sis handles\nthings."),
     },
-    { // 66
+    { // 68
         .name = COMPOUND_STRING("HOP"),
         .battleName = COMPOUND_STRING("HOP"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6939,7 +7346,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Mate, you'd make one heck of a\nChampion. Just saying!"),
         .win = COMPOUND_STRING("Yes! Wait till Lee hears!"),
     },
-    { // 67
+    { // 69
         .name = COMPOUND_STRING("ROSE"),
         .battleName = COMPOUND_STRING("ROSE"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6955,7 +7362,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Do keep it up. The world needs\nbright lights like yours."),
         .win = COMPOUND_STRING("A thousand years of energy,\nsecured!"),
     },
-    { // 68
+    { // 70
         .name = COMPOUND_STRING("OLEANA"),
         .battleName = COMPOUND_STRING("OLEANA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6971,7 +7378,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("I'll reschedule. You, however,\ncannot be rescheduled."),
         .win = COMPOUND_STRING("Right on schedule."),
     },
-    { // 69
+    { // 71
         .name = COMPOUND_STRING("MUSTARD"),
         .battleName = COMPOUND_STRING("MUSTARD"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -6987,7 +7394,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Honey will want to hear all\nabout this. Come by the dojo!"),
         .win = COMPOUND_STRING("Hohoho! Still got it!"),
     },
-    { // 70
+    { // 72
         .name = COMPOUND_STRING("ARVEN"),
         .battleName = COMPOUND_STRING("ARVEN"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7003,7 +7410,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Eat the sandwich anyway.\nMabosstiff insisted."),
         .win = COMPOUND_STRING("Mabosstiff's the best, right\nbuddy?"),
     },
-    { // 71
+    { // 73
         .name = COMPOUND_STRING("PENNY"),
         .battleName = COMPOUND_STRING("PENNY"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7019,7 +7426,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Thanks for the battle. That\nwas... actually fun."),
         .win = COMPOUND_STRING("Test passed. You failed."),
     },
-    { // 72
+    { // 74
         .name = COMPOUND_STRING("GIACOMO"),
         .battleName = COMPOUND_STRING("GIACOMO"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7035,7 +7442,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("That was a sick set. Respect."),
         .win = COMPOUND_STRING("And the crowd goes wild!"),
     },
-    { // 73
+    { // 75
         .name = COMPOUND_STRING("MELA"),
         .battleName = COMPOUND_STRING("MELA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7051,7 +7458,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Fine. You earned it. Don't make\nit weird."),
         .win = COMPOUND_STRING("That's how Team Star does it!"),
     },
-    { // 74
+    { // 76
         .name = COMPOUND_STRING("ATTICUS"),
         .battleName = COMPOUND_STRING("ATTICUS"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7067,7 +7474,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Thy strength deserves a sonnet.\nI shall write one."),
         .win = COMPOUND_STRING("Poison prevails, as poetry\nforetold!"),
     },
-    { // 75
+    { // 77
         .name = COMPOUND_STRING("ORTEGA"),
         .battleName = COMPOUND_STRING("ORTEGA"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7083,7 +7490,7 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("...Okay. You're pretty cool.\nDon't tell anyone I said that."),
         .win = COMPOUND_STRING("Ha! Take THAT!"),
     },
-    { // 76
+    { // 78
         .name = COMPOUND_STRING("ERI"),
         .battleName = COMPOUND_STRING("ERI"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7099,7 +7506,23 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .after = COMPOUND_STRING("Respect. Come train with us\nsometime."),
         .win = COMPOUND_STRING("Strength and spirit!"),
     },
-    { // 77
+    { // 79
+        .name = COMPOUND_STRING("CARMINE"),
+        .battleName = COMPOUND_STRING("CARMINE"),
+        .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
+        .female = TRUE,
+        .region = 8,
+        .pic = TRAINER_PIC_GAUNTLET_CARMINE,
+        .gfx = OBJ_EVENT_GFX_COOLTRAINER_F,
+        .party = sGauntletParty_carmine,
+        .title = COMPOUND_STRING("KITAKAMI'S OWN"),
+        .games = COMPOUND_STRING("THE TEAL MASK"),
+        .intro = COMPOUND_STRING("So you're the hotshot everyone's\nso worked up about? Ha! Me and\pmy Pokemon are gonna knock you\nflat!"),
+        .defeat = COMPOUND_STRING("Ugh! Seriously?!"),
+        .after = COMPOUND_STRING("...Fine. You're good. Like,\nreally good. Don't let it go to\pyour head!"),
+        .win = COMPOUND_STRING("Ha! Told ya! Bow down to\nKitakami's finest!"),
+    },
+    { // 80
         .name = COMPOUND_STRING("KIERAN"),
         .battleName = COMPOUND_STRING("KIERAN"),
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -7114,5 +7537,37 @@ static const struct GauntletTrainer sGauntletTrainers[GAUNTLET_COUNT] = {
         .defeat = COMPOUND_STRING("...Again. I lost again."),
         .after = COMPOUND_STRING("Thanks. I mean it. I'll keep\ngetting stronger. The right way."),
         .win = COMPOUND_STRING("I won! I actually won!"),
+    },
+    { // 81
+        .name = COMPOUND_STRING("PROF. SADA"),
+        .battleName = COMPOUND_STRING("PROF. SADA"),
+        .trainerClass = TRAINER_CLASS_PKMN_PROF_FRLG,
+        .female = TRUE,
+        .region = 8,
+        .pic = TRAINER_PIC_GAUNTLET_SADA,
+        .gfx = OBJ_EVENT_GFX_WOMAN_5,
+        .party = sGauntletParty_sada,
+        .title = COMPOUND_STRING("PALDEA POKéMON PROFESSOR"),
+        .games = COMPOUND_STRING("SCARLET"),
+        .intro = COMPOUND_STRING("It is time. Show me if you're\nstrong enough to change the\ppast... or if the past will\nconsume you."),
+        .defeat = COMPOUND_STRING("...Remarkable. You have\nsurpassed even my research."),
+        .after = COMPOUND_STRING("I have only one wish left. Look\nafter them, won't you?"),
+        .win = COMPOUND_STRING("The ancient world has no place\nfor the weak."),
+    },
+    { // 82
+        .name = COMPOUND_STRING("PROF. TURO"),
+        .battleName = COMPOUND_STRING("PROF. TURO"),
+        .trainerClass = TRAINER_CLASS_PKMN_PROF_FRLG,
+        .female = FALSE,
+        .region = 8,
+        .pic = TRAINER_PIC_GAUNTLET_TURO,
+        .gfx = OBJ_EVENT_GFX_SCIENTIST,
+        .party = sGauntletParty_turo,
+        .title = COMPOUND_STRING("PALDEA POKéMON PROFESSOR"),
+        .games = COMPOUND_STRING("VIOLET"),
+        .intro = COMPOUND_STRING("Calculations complete.\nProbability of your victory:\plow. Let us test the hypothesis."),
+        .defeat = COMPOUND_STRING("...Fascinating. The data did not\npredict this."),
+        .after = COMPOUND_STRING("The future is built by people\nlike you. I can rest easy."),
+        .win = COMPOUND_STRING("Exactly as calculated. A future\nwithout error."),
     },
 };

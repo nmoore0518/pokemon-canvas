@@ -967,6 +967,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          beaten/total, a page per region (names beaten, ??? for the rest). Sprites: Emerald Rogue,
          HnS, smogon/sprites and PokéRogue (scaled into 64x64, 15 colors) by `build_gauntlet.py`.
          Part 2 (Bill) picks up at GAUNTLET_ALL_BEATEN.
+   - [x] Five more challengers no sprite set had (v71; 83 in all): Volo, Prof. Sycamore, Carmine,
+         Prof. Sada and Prof. Turo, their pictures repainted from PokéRogue class pictures by
+         `gauntlet_custom.py` (tools/gym_hack/art/, read as "art:<file>").
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

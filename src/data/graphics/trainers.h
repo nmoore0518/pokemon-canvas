@@ -833,6 +833,8 @@ const u32 gTrainerFrontPic_GauntletDarach[] = INCGFX_U32("graphics/trainers/fron
 const u16 gTrainerPalette_GauntletDarach[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/darach.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletArgenta[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/argenta.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletArgenta[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/argenta.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletVolo[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/volo.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletVolo[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/volo.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletBianca[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/bianca.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletBianca[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/bianca.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletN[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/n.png", ".4bpp.smol");
@@ -873,6 +875,8 @@ const u32 gTrainerFrontPic_GauntletXerosic[] = INCGFX_U32("graphics/trainers/fro
 const u16 gTrainerPalette_GauntletXerosic[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/xerosic.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletAz[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/az.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletAz[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/az.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletSycamore[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/sycamore.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletSycamore[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/sycamore.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletHau[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/hau.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletHau[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/hau.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletGladion[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/gladion.png", ".4bpp.smol");
@@ -907,8 +911,14 @@ const u32 gTrainerFrontPic_GauntletOrtega[] = INCGFX_U32("graphics/trainers/fron
 const u16 gTrainerPalette_GauntletOrtega[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/ortega.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletEri[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/eri.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletEri[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/eri.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletCarmine[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/carmine.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletCarmine[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/carmine.pal", ".gbapal");
 const u32 gTrainerFrontPic_GauntletKieran[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/kieran.png", ".4bpp.smol");
 const u16 gTrainerPalette_GauntletKieran[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/kieran.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletSada[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/sada.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletSada[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/sada.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletTuro[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/turo.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletTuro[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/turo.pal", ".gbapal");
 // END Gauntlet gfx
 const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
 {
@@ -2048,6 +2058,10 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletArgenta, gTrainerPalette_GauntletArgenta),
     },
+    [TRAINER_PIC_GAUNTLET_VOLO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletVolo, gTrainerPalette_GauntletVolo),
+    },
     [TRAINER_PIC_GAUNTLET_BIANCA] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletBianca, gTrainerPalette_GauntletBianca),
@@ -2128,6 +2142,10 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletAz, gTrainerPalette_GauntletAz),
     },
+    [TRAINER_PIC_GAUNTLET_SYCAMORE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletSycamore, gTrainerPalette_GauntletSycamore),
+    },
     [TRAINER_PIC_GAUNTLET_HAU] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletHau, gTrainerPalette_GauntletHau),
@@ -2196,9 +2214,21 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletEri, gTrainerPalette_GauntletEri),
     },
+    [TRAINER_PIC_GAUNTLET_CARMINE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletCarmine, gTrainerPalette_GauntletCarmine),
+    },
     [TRAINER_PIC_GAUNTLET_KIERAN] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletKieran, gTrainerPalette_GauntletKieran),
+    },
+    [TRAINER_PIC_GAUNTLET_SADA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletSada, gTrainerPalette_GauntletSada),
+    },
+    [TRAINER_PIC_GAUNTLET_TURO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletTuro, gTrainerPalette_GauntletTuro),
     },
 // END Gauntlet table
 };
