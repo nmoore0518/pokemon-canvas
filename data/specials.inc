@@ -681,6 +681,7 @@ gSpecials::
 	def_special Convention_RecordWin
 	def_special Convention_ShowTitleCard
 	def_special Gauntlet_OnTransition
+	def_special Gauntlet_OnLoad
 	def_special Gauntlet_SetupNext
 	def_special Gauntlet_ShowTitleCard
 	def_special Gauntlet_RecordWin

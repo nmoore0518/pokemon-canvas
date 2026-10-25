@@ -14,6 +14,10 @@
 #include "gym_challenge.h"
 #include "gym_convention.h"
 #include "gym_switch.h"
+#include "gym_legend.h"
+#include "event_object_movement.h"
+#include "overworld.h"
+#include "constants/map_event_ids.h"
 #include "list_menu.h"
 #include "malloc.h"
 #include "script_menu.h"
@@ -86,6 +90,30 @@ void Gauntlet_OnTransition(void)
         FlagClear(FLAG_HIDE_GAUNTLET_FIGURE);
     else
         FlagSet(FLAG_HIDE_GAUNTLET_FIGURE);
+}
+
+// Map script (the gym's ON_LOAD, after the decorations are drawn): the figure stands on open floor
+// near the door (the player decorates the gym, so its spot can change)
+void Gauntlet_OnLoad(void)
+{
+    s32 r, dx, dy, cx = 9, cy = 24;
+    for (r = 0; r < 12; r++)
+    {
+        for (dy = -r; dy <= r; dy++)
+        {
+            for (dx = -r; dx <= r; dx++)
+            {
+                s32 x = cx + dx, y = cy + dy;
+                if ((abs(dx) != r && abs(dy) != r) || (x >= 11 && x <= 13 && y >= 23))
+                    continue;           // (not on the way in from the door)
+                if (GymLegend_IsOpenFloor(x, y))
+                {
+                    SetObjEventTemplateCoords(LOCALID_PALLET_GYM_FIGURE, x, y);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // Special: the next challenger set up (their team, lines, walking sprite in VAR_OBJ_GFX_ID_0).

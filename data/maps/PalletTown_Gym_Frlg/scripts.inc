@@ -8,6 +8,7 @@ PalletTown_Gym_Frlg_MapScripts::
 PalletTown_Gym_OnLoad::
 	special GymDecor_DrawRoom
 	special GymLegend_OnLoad
+	special Gauntlet_OnLoad
 	end
 
 @ Who's in the gym: no challenger until the aide sends one in; the aide except during Oak's first

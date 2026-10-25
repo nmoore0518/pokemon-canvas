@@ -3,6 +3,7 @@
 
 // Pokémon Canvas: the Gauntlet (src/gauntlet.c)
 void Gauntlet_OnTransition(void);
+void Gauntlet_OnLoad(void);
 void Gauntlet_SetupNext(void);
 void Gauntlet_ShowTitleCard(void);
 void Gauntlet_RecordWin(void);
