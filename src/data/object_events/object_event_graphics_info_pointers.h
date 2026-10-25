@@ -513,6 +513,34 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApplianceMo
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PlayerDiver;
 // END Convention externs
 
+// BEGIN Gauntlet externs (tools/gym_hack/build_gauntlet.py)
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletSilver;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletArcher;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletAriana;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletProton;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletPetrel;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletBarry;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletCyrus;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletBianca;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletN;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletGhetsis;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletColress;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletShauna;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletTierno;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletTrevor;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletLysandre;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletAliana;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletCelosia;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletBryony;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletMable;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletHau;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletGladion;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletHop;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletArven;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletPenny;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletHoodedFigure;
+// END Gauntlet externs
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
     [OBJ_EVENT_GFX_BRENDAN_MACH_BIKE] =        &gObjectEventGraphicsInfo_BrendanMachBike,
@@ -1014,6 +1042,33 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_ROTOM_FRIDGE] = &gObjectEventGraphicsInfo_ApplianceFridge,
     [OBJ_EVENT_GFX_ROTOM_FAN] = &gObjectEventGraphicsInfo_ApplianceFan,
     [OBJ_EVENT_GFX_ROTOM_MOWER] = &gObjectEventGraphicsInfo_ApplianceMower,
+// BEGIN Gauntlet (tools/gym_hack/build_gauntlet.py)
+    [OBJ_EVENT_GFX_GAUNTLET_SILVER] = &gObjectEventGraphicsInfo_GauntletSilver,
+    [OBJ_EVENT_GFX_GAUNTLET_ARCHER] = &gObjectEventGraphicsInfo_GauntletArcher,
+    [OBJ_EVENT_GFX_GAUNTLET_ARIANA] = &gObjectEventGraphicsInfo_GauntletAriana,
+    [OBJ_EVENT_GFX_GAUNTLET_PROTON] = &gObjectEventGraphicsInfo_GauntletProton,
+    [OBJ_EVENT_GFX_GAUNTLET_PETREL] = &gObjectEventGraphicsInfo_GauntletPetrel,
+    [OBJ_EVENT_GFX_GAUNTLET_BARRY] = &gObjectEventGraphicsInfo_GauntletBarry,
+    [OBJ_EVENT_GFX_GAUNTLET_CYRUS] = &gObjectEventGraphicsInfo_GauntletCyrus,
+    [OBJ_EVENT_GFX_GAUNTLET_BIANCA] = &gObjectEventGraphicsInfo_GauntletBianca,
+    [OBJ_EVENT_GFX_GAUNTLET_N] = &gObjectEventGraphicsInfo_GauntletN,
+    [OBJ_EVENT_GFX_GAUNTLET_GHETSIS] = &gObjectEventGraphicsInfo_GauntletGhetsis,
+    [OBJ_EVENT_GFX_GAUNTLET_COLRESS] = &gObjectEventGraphicsInfo_GauntletColress,
+    [OBJ_EVENT_GFX_GAUNTLET_SHAUNA] = &gObjectEventGraphicsInfo_GauntletShauna,
+    [OBJ_EVENT_GFX_GAUNTLET_TIERNO] = &gObjectEventGraphicsInfo_GauntletTierno,
+    [OBJ_EVENT_GFX_GAUNTLET_TREVOR] = &gObjectEventGraphicsInfo_GauntletTrevor,
+    [OBJ_EVENT_GFX_GAUNTLET_LYSANDRE] = &gObjectEventGraphicsInfo_GauntletLysandre,
+    [OBJ_EVENT_GFX_GAUNTLET_ALIANA] = &gObjectEventGraphicsInfo_GauntletAliana,
+    [OBJ_EVENT_GFX_GAUNTLET_CELOSIA] = &gObjectEventGraphicsInfo_GauntletCelosia,
+    [OBJ_EVENT_GFX_GAUNTLET_BRYONY] = &gObjectEventGraphicsInfo_GauntletBryony,
+    [OBJ_EVENT_GFX_GAUNTLET_MABLE] = &gObjectEventGraphicsInfo_GauntletMable,
+    [OBJ_EVENT_GFX_GAUNTLET_HAU] = &gObjectEventGraphicsInfo_GauntletHau,
+    [OBJ_EVENT_GFX_GAUNTLET_GLADION] = &gObjectEventGraphicsInfo_GauntletGladion,
+    [OBJ_EVENT_GFX_GAUNTLET_HOP] = &gObjectEventGraphicsInfo_GauntletHop,
+    [OBJ_EVENT_GFX_GAUNTLET_ARVEN] = &gObjectEventGraphicsInfo_GauntletArven,
+    [OBJ_EVENT_GFX_GAUNTLET_PENNY] = &gObjectEventGraphicsInfo_GauntletPenny,
+    [OBJ_EVENT_GFX_GAUNTLET_HOODED_FIGURE] = &gObjectEventGraphicsInfo_GauntletHoodedFigure,
+// END Gauntlet
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {

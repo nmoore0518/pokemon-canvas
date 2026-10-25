@@ -778,6 +778,138 @@ const u32 gTrainerFrontPic_ConvNemona[] = INCGFX_U32("graphics/trainers/front_pi
 const u16 gTrainerPalette_ConvNemona[] = INCGFX_U16("graphics/trainers/palettes/convention/nemona.pal", ".gbapal");
 // END Convention gfx
 
+// BEGIN Gauntlet gfx (tools/gym_hack/build_gauntlet.py)
+const u32 gTrainerFrontPic_GauntletJessieJames[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/jessie_james.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletJessieJames[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/jessie_james.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletSilver[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/silver.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletSilver[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/silver.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletLyra[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/lyra.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletLyra[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/lyra.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletEthan[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/ethan.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletEthan[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/ethan.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletEusine[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/eusine.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletEusine[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/eusine.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletArcher[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/archer.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletArcher[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/archer.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletAriana[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/ariana.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletAriana[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/ariana.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletProton[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/proton.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletProton[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/proton.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletPetrel[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/petrel.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletPetrel[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/petrel.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletZinnia[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/zinnia.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletZinnia[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/zinnia.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletTabitha[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/tabitha.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletTabitha[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/tabitha.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletCourtney[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/courtney.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletCourtney[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/courtney.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletMatt[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/matt.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletMatt[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/matt.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletShelly[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/shelly.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletShelly[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/shelly.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletBarry[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/barry.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletBarry[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/barry.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletDawn[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/dawn.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletDawn[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/dawn.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletLucas[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/lucas.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletLucas[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/lucas.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletRiley[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/riley.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletRiley[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/riley.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletCyrus[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/cyrus.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletCyrus[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/cyrus.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletMars[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/mars.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletMars[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/mars.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletJupiter[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/jupiter.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletJupiter[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/jupiter.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletSaturn[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/saturn.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletSaturn[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/saturn.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletPalmer[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/palmer.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletPalmer[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/palmer.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletThorton[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/thorton.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletThorton[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/thorton.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletDahlia[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/dahlia.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletDahlia[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/dahlia.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletDarach[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/darach.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletDarach[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/darach.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletArgenta[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/argenta.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletArgenta[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/argenta.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletBianca[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/bianca.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletBianca[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/bianca.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletN[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/n.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletN[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/n.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletGhetsis[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/ghetsis.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletGhetsis[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/ghetsis.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletColress[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/colress.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletColress[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/colress.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletZinzolin[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/zinzolin.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletZinzolin[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/zinzolin.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletIngo[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/ingo.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletIngo[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/ingo.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletEmmet[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/emmet.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletEmmet[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/emmet.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletBenga[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/benga.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletBenga[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/benga.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletSerena[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/serena.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletSerena[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/serena.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletCalem[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/calem.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletCalem[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/calem.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletShauna[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/shauna.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletShauna[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/shauna.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletTierno[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/tierno.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletTierno[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/tierno.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletTrevor[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/trevor.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletTrevor[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/trevor.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletLysandre[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/lysandre.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletLysandre[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/lysandre.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletAliana[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/aliana.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletAliana[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/aliana.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletCelosia[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/celosia.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletCelosia[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/celosia.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletBryony[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/bryony.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletBryony[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/bryony.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletMable[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/mable.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletMable[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/mable.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletXerosic[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/xerosic.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletXerosic[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/xerosic.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletAz[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/az.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletAz[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/az.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletHau[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/hau.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletHau[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/hau.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletGladion[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/gladion.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletGladion[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/gladion.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletLusamine[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/lusamine.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletLusamine[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/lusamine.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletFaba[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/faba.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletFaba[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/faba.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletGuzma[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/guzma.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletGuzma[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/guzma.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletPlumeria[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/plumeria.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletPlumeria[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/plumeria.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletHop[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/hop.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletHop[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/hop.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletRose[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/rose.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletRose[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/rose.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletOleana[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/oleana.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletOleana[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/oleana.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletMustard[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/mustard.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletMustard[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/mustard.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletArven[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/arven.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletArven[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/arven.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletPenny[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/penny.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletPenny[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/penny.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletGiacomo[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/giacomo.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletGiacomo[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/giacomo.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletMela[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/mela.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletMela[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/mela.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletAtticus[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/atticus.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletAtticus[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/atticus.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletOrtega[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/ortega.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletOrtega[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/ortega.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletEri[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/eri.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletEri[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/eri.pal", ".gbapal");
+const u32 gTrainerFrontPic_GauntletKieran[] = INCGFX_U32("graphics/trainers/front_pics/gauntlet/kieran.png", ".4bpp.smol");
+const u16 gTrainerPalette_GauntletKieran[] = INCGFX_U16("graphics/trainers/palettes/gauntlet/kieran.pal", ".gbapal");
+// END Gauntlet gfx
 const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
 {
     [TRAINER_PIC_NONE] =
@@ -1807,4 +1939,266 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_ConvNemona, gTrainerPalette_ConvNemona),
     },
 // END Convention
+// BEGIN Gauntlet table (tools/gym_hack/build_gauntlet.py)
+    [TRAINER_PIC_GAUNTLET_JESSIE_JAMES] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletJessieJames, gTrainerPalette_GauntletJessieJames),
+    },
+    [TRAINER_PIC_GAUNTLET_SILVER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletSilver, gTrainerPalette_GauntletSilver),
+    },
+    [TRAINER_PIC_GAUNTLET_LYRA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletLyra, gTrainerPalette_GauntletLyra),
+    },
+    [TRAINER_PIC_GAUNTLET_ETHAN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletEthan, gTrainerPalette_GauntletEthan),
+    },
+    [TRAINER_PIC_GAUNTLET_EUSINE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletEusine, gTrainerPalette_GauntletEusine),
+    },
+    [TRAINER_PIC_GAUNTLET_ARCHER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletArcher, gTrainerPalette_GauntletArcher),
+    },
+    [TRAINER_PIC_GAUNTLET_ARIANA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletAriana, gTrainerPalette_GauntletAriana),
+    },
+    [TRAINER_PIC_GAUNTLET_PROTON] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletProton, gTrainerPalette_GauntletProton),
+    },
+    [TRAINER_PIC_GAUNTLET_PETREL] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletPetrel, gTrainerPalette_GauntletPetrel),
+    },
+    [TRAINER_PIC_GAUNTLET_ZINNIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletZinnia, gTrainerPalette_GauntletZinnia),
+    },
+    [TRAINER_PIC_GAUNTLET_TABITHA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletTabitha, gTrainerPalette_GauntletTabitha),
+    },
+    [TRAINER_PIC_GAUNTLET_COURTNEY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletCourtney, gTrainerPalette_GauntletCourtney),
+    },
+    [TRAINER_PIC_GAUNTLET_MATT] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletMatt, gTrainerPalette_GauntletMatt),
+    },
+    [TRAINER_PIC_GAUNTLET_SHELLY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletShelly, gTrainerPalette_GauntletShelly),
+    },
+    [TRAINER_PIC_GAUNTLET_BARRY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletBarry, gTrainerPalette_GauntletBarry),
+    },
+    [TRAINER_PIC_GAUNTLET_DAWN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletDawn, gTrainerPalette_GauntletDawn),
+    },
+    [TRAINER_PIC_GAUNTLET_LUCAS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletLucas, gTrainerPalette_GauntletLucas),
+    },
+    [TRAINER_PIC_GAUNTLET_RILEY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletRiley, gTrainerPalette_GauntletRiley),
+    },
+    [TRAINER_PIC_GAUNTLET_CYRUS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletCyrus, gTrainerPalette_GauntletCyrus),
+    },
+    [TRAINER_PIC_GAUNTLET_MARS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletMars, gTrainerPalette_GauntletMars),
+    },
+    [TRAINER_PIC_GAUNTLET_JUPITER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletJupiter, gTrainerPalette_GauntletJupiter),
+    },
+    [TRAINER_PIC_GAUNTLET_SATURN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletSaturn, gTrainerPalette_GauntletSaturn),
+    },
+    [TRAINER_PIC_GAUNTLET_PALMER] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletPalmer, gTrainerPalette_GauntletPalmer),
+    },
+    [TRAINER_PIC_GAUNTLET_THORTON] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletThorton, gTrainerPalette_GauntletThorton),
+    },
+    [TRAINER_PIC_GAUNTLET_DAHLIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletDahlia, gTrainerPalette_GauntletDahlia),
+    },
+    [TRAINER_PIC_GAUNTLET_DARACH] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletDarach, gTrainerPalette_GauntletDarach),
+    },
+    [TRAINER_PIC_GAUNTLET_ARGENTA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletArgenta, gTrainerPalette_GauntletArgenta),
+    },
+    [TRAINER_PIC_GAUNTLET_BIANCA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletBianca, gTrainerPalette_GauntletBianca),
+    },
+    [TRAINER_PIC_GAUNTLET_N] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletN, gTrainerPalette_GauntletN),
+    },
+    [TRAINER_PIC_GAUNTLET_GHETSIS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletGhetsis, gTrainerPalette_GauntletGhetsis),
+    },
+    [TRAINER_PIC_GAUNTLET_COLRESS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletColress, gTrainerPalette_GauntletColress),
+    },
+    [TRAINER_PIC_GAUNTLET_ZINZOLIN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletZinzolin, gTrainerPalette_GauntletZinzolin),
+    },
+    [TRAINER_PIC_GAUNTLET_INGO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletIngo, gTrainerPalette_GauntletIngo),
+    },
+    [TRAINER_PIC_GAUNTLET_EMMET] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletEmmet, gTrainerPalette_GauntletEmmet),
+    },
+    [TRAINER_PIC_GAUNTLET_BENGA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletBenga, gTrainerPalette_GauntletBenga),
+    },
+    [TRAINER_PIC_GAUNTLET_SERENA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletSerena, gTrainerPalette_GauntletSerena),
+    },
+    [TRAINER_PIC_GAUNTLET_CALEM] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletCalem, gTrainerPalette_GauntletCalem),
+    },
+    [TRAINER_PIC_GAUNTLET_SHAUNA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletShauna, gTrainerPalette_GauntletShauna),
+    },
+    [TRAINER_PIC_GAUNTLET_TIERNO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletTierno, gTrainerPalette_GauntletTierno),
+    },
+    [TRAINER_PIC_GAUNTLET_TREVOR] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletTrevor, gTrainerPalette_GauntletTrevor),
+    },
+    [TRAINER_PIC_GAUNTLET_LYSANDRE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletLysandre, gTrainerPalette_GauntletLysandre),
+    },
+    [TRAINER_PIC_GAUNTLET_ALIANA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletAliana, gTrainerPalette_GauntletAliana),
+    },
+    [TRAINER_PIC_GAUNTLET_CELOSIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletCelosia, gTrainerPalette_GauntletCelosia),
+    },
+    [TRAINER_PIC_GAUNTLET_BRYONY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletBryony, gTrainerPalette_GauntletBryony),
+    },
+    [TRAINER_PIC_GAUNTLET_MABLE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletMable, gTrainerPalette_GauntletMable),
+    },
+    [TRAINER_PIC_GAUNTLET_XEROSIC] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletXerosic, gTrainerPalette_GauntletXerosic),
+    },
+    [TRAINER_PIC_GAUNTLET_AZ] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletAz, gTrainerPalette_GauntletAz),
+    },
+    [TRAINER_PIC_GAUNTLET_HAU] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletHau, gTrainerPalette_GauntletHau),
+    },
+    [TRAINER_PIC_GAUNTLET_GLADION] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletGladion, gTrainerPalette_GauntletGladion),
+    },
+    [TRAINER_PIC_GAUNTLET_LUSAMINE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletLusamine, gTrainerPalette_GauntletLusamine),
+    },
+    [TRAINER_PIC_GAUNTLET_FABA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletFaba, gTrainerPalette_GauntletFaba),
+    },
+    [TRAINER_PIC_GAUNTLET_GUZMA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletGuzma, gTrainerPalette_GauntletGuzma),
+    },
+    [TRAINER_PIC_GAUNTLET_PLUMERIA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletPlumeria, gTrainerPalette_GauntletPlumeria),
+    },
+    [TRAINER_PIC_GAUNTLET_HOP] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletHop, gTrainerPalette_GauntletHop),
+    },
+    [TRAINER_PIC_GAUNTLET_ROSE] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletRose, gTrainerPalette_GauntletRose),
+    },
+    [TRAINER_PIC_GAUNTLET_OLEANA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletOleana, gTrainerPalette_GauntletOleana),
+    },
+    [TRAINER_PIC_GAUNTLET_MUSTARD] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletMustard, gTrainerPalette_GauntletMustard),
+    },
+    [TRAINER_PIC_GAUNTLET_ARVEN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletArven, gTrainerPalette_GauntletArven),
+    },
+    [TRAINER_PIC_GAUNTLET_PENNY] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletPenny, gTrainerPalette_GauntletPenny),
+    },
+    [TRAINER_PIC_GAUNTLET_GIACOMO] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletGiacomo, gTrainerPalette_GauntletGiacomo),
+    },
+    [TRAINER_PIC_GAUNTLET_MELA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletMela, gTrainerPalette_GauntletMela),
+    },
+    [TRAINER_PIC_GAUNTLET_ATTICUS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletAtticus, gTrainerPalette_GauntletAtticus),
+    },
+    [TRAINER_PIC_GAUNTLET_ORTEGA] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletOrtega, gTrainerPalette_GauntletOrtega),
+    },
+    [TRAINER_PIC_GAUNTLET_ERI] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletEri, gTrainerPalette_GauntletEri),
+    },
+    [TRAINER_PIC_GAUNTLET_KIERAN] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_GauntletKieran, gTrainerPalette_GauntletKieran),
+    },
+// END Gauntlet table
 };

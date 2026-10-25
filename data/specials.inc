@@ -680,6 +680,13 @@ gSpecials::
 	def_special Convention_SetupTrainer
 	def_special Convention_RecordWin
 	def_special Convention_ShowTitleCard
+	def_special Gauntlet_OnTransition
+	def_special Gauntlet_SetupNext
+	def_special Gauntlet_ShowTitleCard
+	def_special Gauntlet_RecordWin
+	def_special Gauntlet_BufferProgress
+	def_special Gauntlet_PushRegions
+	def_special Gauntlet_PushRegionNames
 	def_special Convention_PushHalls
 	def_special Convention_BufferProgress
 	def_special Convention_WarpToHall

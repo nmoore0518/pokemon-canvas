@@ -920,6 +920,17 @@ void GymChallenge_SetupFixed(u32 trainerClass, u32 pic, bool32 female, const u8 
     sKind = GYM_CHALLENGER_FAMOUS;
 }
 
+// A Gauntlet challenger (src/gauntlet.c): a set team, the hardest AI, their own lines
+void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const u8 *name,
+                                const struct TrainerMon *party, u32 partySize,
+                                const u8 *intro, const u8 *defeat, const u8 *after, const u8 *win)
+{
+    GymChallenge_SetupFixed(trainerClass, pic, female, name, party, partySize);
+    sChallenger.encounterMusic = female ? TRAINER_ENCOUNTER_MUSIC_FEMALE : TRAINER_ENCOUNTER_MUSIC_MALE;
+    sChallenger.aiFlags = AI_FLAG_SMART_TRAINER | AI_FLAG_PREDICTION;
+    SetTexts(intro, defeat, after, win);
+}
+
 // Special: after a practice battle
 void GymChallenge_EndPractice(void)
 {

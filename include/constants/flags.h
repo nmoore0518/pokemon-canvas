@@ -2656,6 +2656,7 @@
 #define FLAG_EXOTIC_ITEM_N_SOLARIZER          0x3A1
 #define FLAG_EXOTIC_ITEM_N_LUNARIZER          0x3A2
 #define FLAG_EXOTIC_ITEM_REINS_OF_UNITY       0x3A3
+#define FLAG_HIDE_GAUNTLET_FIGURE             0x3C0   // (the hooded figure by the gym's door)
 #define FLAG_GYM_PLATE_FOUND_FIRST            0x3A4   // (+ type, to 0x3A4 + NUMBER_OF_MON_TYPES - 1): Arceus's plates found in the gym
 // (hidden items: flags from FLAG_HIDDEN_ITEMS_START, 0x3E8, on)
 #define FLAG_EXOTIC_HIDDEN_BUG_MEMORY       0x4CD

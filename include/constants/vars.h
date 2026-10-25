@@ -330,6 +330,9 @@
 // The player's chosen specialty type (a TYPE_* constant). 0 (TYPE_NONE) until a starter is picked.
 // 0x40F7 is unused by both the Emerald and FireRed scripts.
 #define VAR_PLAYER_TYPE                                  0x40F7
+// The Gauntlet (src/gauntlet.c): GAUNTLET_* (include/constants/gym_hack.h), and the next challenger
+#define VAR_GAUNTLET_STATE                               0x40F5
+#define VAR_GAUNTLET_NEXT                                0x40F6
 // The rival's specialty type (TYPE_*), set at the same time as VAR_PLAYER_TYPE.
 #define VAR_RIVAL_TYPE                                   0x40F8
 // The Pallet Town Gym scenes: 0 = not yet, 1 = Oak is about to show the gym, 2 = nothing to play,

@@ -956,6 +956,17 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          in the hall's color, then their title, region and games. A/B or 5 s moves on. The lines:
          `tools/gym_hack/convention_cards.py` -> src/data/gym_convention_cards.h
          (`Convention_ShowTitleCard`, from `Convention_EventScript_Battle`).
+   - [x] The Gauntlet, part 1 (v70): after the convention's every hall and every type mastered, a
+         hooded figure (`OBJ_EVENT_GFX_GAUNTLET_HOODED_FIGURE`, drawn by `gauntlet_art.py`) turns
+         up in the gym (VAR_GAUNTLET_STATE 0x40F5, scene from the gym's ON_FRAME table; figure local
+         id 17, FLAG_HIDE_GAUNTLET_FIGURE 0x3C0) claiming the Gym Leaders hired them. 78
+         challengers (rivals, villains, Frontier Brains, professors... `gauntlet_roster.py`), region
+         by region, level 100, full IVs/EVs, the smartest AI with prediction, no more than two
+         legendaries a team; any Pokémon may battle. VAR_GAUNTLET_NEXT (0x40F6) is the next one: a
+         loss changes nothing. Each gets a title card; after a win, continue or rest. The clipboard:
+         beaten/total, a page per region (names beaten, ??? for the rest). Sprites: Emerald Rogue,
+         HnS, smogon/sprites and PokéRogue (scaled into 64x64, 15 colors) by `build_gauntlet.py`.
+         Part 2 (Bill) picks up at GAUNTLET_ALL_BEATEN.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

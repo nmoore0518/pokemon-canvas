@@ -1077,6 +1077,7 @@ gStdScripts_End::
 	.include "data/scripts/gym_switch.inc"
 	.include "data/scripts/johto.inc"
 	.include "data/scripts/gym_convention.inc"
+	.include "data/scripts/gauntlet.inc"
 	.include "data/maps/johto.inc"
 	.include "data/maps/exotic_safari.inc"
 	.include "data/scripts/new_game.inc"

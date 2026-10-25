@@ -2863,3 +2863,105 @@ static const struct SpriteFrameImage sPicTable_PlayerDiver[] = {
     overworld_frame(gObjectEventPic_PlayerDiver, 4, 4, 2),
 };
 
+// BEGIN Gauntlet (tools/gym_hack/build_gauntlet.py)
+static const struct SpriteFrameImage sPicTable_GauntletSilver[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletSilver, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletArcher[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletArcher, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletAriana[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletAriana, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletProton[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletProton, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletPetrel[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletPetrel, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletBarry[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletBarry, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletCyrus[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletCyrus, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletBianca[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletBianca, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletN[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletN, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletGhetsis[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletGhetsis, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletColress[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletColress, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletShauna[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletShauna, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletTierno[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletTierno, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletTrevor[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletTrevor, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletLysandre[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletLysandre, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletAliana[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletAliana, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletCelosia[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletCelosia, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletBryony[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletBryony, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletMable[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletMable, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletHau[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletHau, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletGladion[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletGladion, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletHop[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletHop, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletArven[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletArven, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletPenny[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletPenny, 2, 4),
+};
+
+static const struct SpriteFrameImage sPicTable_GauntletHoodedFigure[] = {
+    overworld_ascending_frames(gObjectEventPic_GauntletHoodedFigure, 2, 4),
+};
+
+// END Gauntlet
