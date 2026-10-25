@@ -1,4 +1,5 @@
 #include "global.h"
+#include "mastery_hall.h"
 #include "clock.h"
 #include "new_game.h"
 #include "gym_decor.h"
@@ -200,6 +201,7 @@ void NewGameInitData(void)
     gPartiesCount[B_TRAINER_PLAYER] = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
+    MasteryHall_Clear();   // Gym Trainer hack
     DeactivateAllRoamers();
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     ClearBag();

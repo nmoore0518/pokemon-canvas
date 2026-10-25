@@ -12,8 +12,19 @@
 static void ReshowPCMenuAfterHallOfFamePC(void);
 static void Task_WaitForPaletteFade(u8);
 
+extern bool8 gHofPCMasteryMode;
+
+// Gym Trainer hack: the Type Mastery Hall of Fame, in the Hall of Fame's screen (src/mastery_hall.c)
+void AccessMasteryHallPC(void)
+{
+    gHofPCMasteryMode = TRUE;
+    SetMainCallback2(CB2_InitHofPC);
+    LockPlayerFieldControls();
+}
+
 void AccessHallOfFamePC(void)
 {
+    gHofPCMasteryMode = FALSE;
     if (IS_FRLG)
         SetMainCallback2(CB2_InitHofPC);
     else

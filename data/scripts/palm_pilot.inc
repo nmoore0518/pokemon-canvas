@@ -14,6 +14,7 @@ EventScript_PalmPilotMenu::
 	case 0, EventScript_PalmPilotStorage
 	case 1, EventScript_PalmPilotPlayersPC
 	case 2, EventScript_PalmPilotHallOfFame
+	case 4, EventScript_PalmPilotMasteryHall
 	goto EventScript_PalmPilotOff
 	end
 
@@ -32,6 +33,11 @@ EventScript_PalmPilotPlayersPC::
 	special PlayerPC
 	goto EventScript_PalmPilotMenu
 	end
+
+EventScript_PalmPilotMasteryHall::
+	playse SE_PC_LOGIN
+	special AccessMasteryHallPC
+	goto EventScript_PalmPilotMenu
 
 EventScript_PalmPilotHallOfFame::
 	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_PalmPilotOff

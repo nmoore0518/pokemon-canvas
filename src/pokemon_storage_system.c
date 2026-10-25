@@ -1702,6 +1702,7 @@ void ResetPokemonStorageSystem(void)
 {
     u16 boxId, boxPosition;
 
+    gPokemonStoragePtr->layout = STORAGE_LAYOUT_BOXES_LAST;
     SetCurrentBox(0);
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
@@ -1720,6 +1721,36 @@ void ResetPokemonStorageSystem(void)
     ResetWaldaWallpaper();
 }
 
+
+// Gym Trainer hack: a save from before the extra boxes (14, the boxes first) is rearranged as it
+// loads: its boxes, names, wallpapers and fusions where they go now, the new boxes empty
+void PokemonStorage_UpgradeLayout(void)
+{
+    struct PokemonStorage *storage = gPokemonStoragePtr;
+    struct PokemonStorageV1 *old;
+    u32 boxId;
+
+    if (storage->layout == STORAGE_LAYOUT_BOXES_LAST)
+        return;
+    old = Alloc(sizeof(*old));
+    if (old == NULL)
+        return;
+    memcpy(old, storage, sizeof(*old));
+    memset(storage, 0, sizeof(*storage));
+    storage->currentBox = old->currentBox < VANILLA_BOXES_COUNT ? old->currentBox : 0;
+    storage->layout = STORAGE_LAYOUT_BOXES_LAST;
+    memcpy(storage->boxes, old->boxes, sizeof(old->boxes));
+    memcpy(storage->boxNames, old->boxNames, sizeof(old->boxNames));
+    memcpy(storage->boxWallpapers, old->boxWallpapers, sizeof(old->boxWallpapers));
+    memcpy(storage->fusions, old->fusions, sizeof(old->fusions));
+    for (boxId = VANILLA_BOXES_COUNT; boxId < TOTAL_BOXES_COUNT; boxId++)
+    {
+        u8 *dest = StringCopy(storage->boxNames[boxId], gText_Box);
+        ConvertIntToDecimalStringN(dest, boxId + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
+        storage->boxWallpapers[boxId] = boxId % (MAX_DEFAULT_WALLPAPER + 1);
+    }
+    Free(old);
+}
 
 //------------------------------------------------------------------------------
 //  SECTION: Choose Box menu

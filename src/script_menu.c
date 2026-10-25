@@ -1,4 +1,5 @@
 #include "global.h"
+#include "mastery_hall.h"
 #include "main.h"
 #include "event_data.h"
 #include "field_effect.h"
@@ -490,6 +491,8 @@ static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreB
 #define tIgnoreBPress   data[4]
 #define tDoWrap         data[5]
 #define tWindowId       data[6]
+static EWRAM_DATA u8 sPCMenuIds[5] = {0};   // (Gym Trainer hack: CreatePCMultichoice)
+
 #define tMultichoiceId  data[7]
 
 static void InitMultichoiceCheckWrap(bool8 ignoreBPress, u8 count, u8 windowId, u8 multichoiceId)
@@ -609,6 +612,8 @@ static void Task_HandleMultichoiceInput(u8 taskId)
                 else
                 {
                     gSpecialVar_Result = selection;
+                    if (tMultichoiceId == MULTI_PC && selection < (s32)ARRAY_COUNT(sPCMenuIds))
+                        gSpecialVar_Result = sPCMenuIds[selection];   // (Gym Trainer hack)
                 }
                 ClearToTransparentAndRemoveWindow(tWindowId);
                 DestroyTask(taskId);
@@ -737,43 +742,47 @@ bool16 ScriptMenu_CreatePCMultichoice(void)
     }
 }
 
+// Gym Trainer hack: the PC's menu can have TYPE MASTERY too (src/mastery_hall.c); what's chosen is
+// given as the same number whatever's shown (sPCMenuIds: 0 storage, 1 player's PC, 2 Hall of
+// Fame, 3 log off, 4 Type Mastery)
 static void CreatePCMultichoice(void)
 {
     u8 x = 8;
     u32 pixelWidth = 0;
     u8 width;
-    u8 numChoices;
+    u8 numChoices = 2;
     u8 windowId;
     int i;
+    bool32 hof = FlagGet(FLAG_SYS_GAME_CLEAR), mastery = MasteryHall_Count() != 0;
 
     for (i = 0; i < ARRAY_COUNT(sPCNameStrings); i++)
     {
         pixelWidth = DisplayTextAndGetWidth(sPCNameStrings[i], pixelWidth);
     }
-
-    if (FlagGet(FLAG_SYS_GAME_CLEAR))
-    {
+    if (hof)
         pixelWidth = DisplayTextAndGetWidth(gText_HallOfFame, pixelWidth);
-    }
+    if (mastery)
+        pixelWidth = DisplayTextAndGetWidth(COMPOUND_STRING("TYPE MASTERY"), pixelWidth);
 
     width = ConvertPixelWidthToTileWidth(pixelWidth);
-
-    // Include Hall of Fame option if player is champion
-    if (FlagGet(FLAG_SYS_GAME_CLEAR))
+    sPCMenuIds[0] = 0;
+    sPCMenuIds[1] = 1;
+    numChoices = 2 + hof + mastery + 1;
+    windowId = CreateWindowFromRect(0, 0, width, numChoices * 2);
+    SetStandardWindowBorderStyle(windowId, FALSE);
+    i = 2;
+    if (hof)
     {
-        numChoices = 4;
-        windowId = CreateWindowFromRect(0, 0, width, 8);
-        SetStandardWindowBorderStyle(windowId, FALSE);
-        AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_HallOfFame, x, 33, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_LogOff, x, 49, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_HallOfFame, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+        sPCMenuIds[i++] = 2;
     }
-    else
+    if (mastery)
     {
-        numChoices = 3;
-        windowId = CreateWindowFromRect(0, 0, width, 6);
-        SetStandardWindowBorderStyle(windowId, FALSE);
-        AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_LogOff, x, 33, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, COMPOUND_STRING("TYPE MASTERY"), x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+        sPCMenuIds[i++] = 4;
     }
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_LogOff, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+    sPCMenuIds[i++] = 3;
 
     // Change PC name if player has met Lanette
     if (FlagGet(FLAG_SYS_PC_LANETTE))

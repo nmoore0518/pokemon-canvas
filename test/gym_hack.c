@@ -7,6 +7,7 @@
 #include "event_data.h"
 #include "gym_hack.h"
 #include "gauntlet.h"
+#include "mastery_hall.h"
 #include "constants/event_objects.h"
 #include "constants/pokedex.h"
 #include "exotic_safari.h"
@@ -2322,4 +2323,23 @@ TEST("GymHack: beating the real Bill leaves his Palm Pilot and one WITHDRAW")
     EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 0);
     EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 1);
     EXPECT_EQ(VarGet(VAR_OBJ_GFX_ID_D), OBJ_EVENT_GFX_GAUNTLET_PALM_PILOT);
+}
+
+TEST("GymHack: the Type Mastery Hall of Fame keeps a type's longest streak and its team")
+{
+    MasteryHall_Clear();
+    ZeroPlayerPartyMons();
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_CHARMANDER, 30, 0, OTID_STRUCT_PRESET(0));
+    CalculatePlayerPartyCount();
+    MasteryHall_RecordWin(TYPE_FIRE, 20);
+    EXPECT_EQ(gMasteryHall.records[TYPE_FIRE].streak, 20);
+    EXPECT_EQ(gMasteryHall.records[TYPE_FIRE].count, 1);
+    EXPECT_EQ((u32)gMasteryHall.records[TYPE_FIRE].mon[0].species, SPECIES_CHARMANDER);
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_VULPIX, 30, 0, OTID_STRUCT_PRESET(0));
+    MasteryHall_RecordWin(TYPE_FIRE, 15);     // (a shorter streak: the record stays)
+    EXPECT_EQ((u32)gMasteryHall.records[TYPE_FIRE].mon[0].species, SPECIES_CHARMANDER);
+    MasteryHall_RecordWin(TYPE_FIRE, 21);     // (longer: the team now replaces it)
+    EXPECT_EQ(gMasteryHall.records[TYPE_FIRE].streak, 21);
+    EXPECT_EQ((u32)gMasteryHall.records[TYPE_FIRE].mon[0].species, SPECIES_VULPIX);
+    EXPECT_EQ(MasteryHall_Count(), 1);
 }

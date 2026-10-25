@@ -985,6 +985,19 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            generation) with the shiny picture beside it (`Gauntlet_ChooseWithdraw`);
          - the battle simulator: the whole Gauntlet again from the first challenger, with Bill as
            the 84th; clearing it earns another WITHDRAW. Records: this run's progress by region.
+   - [x] More PC boxes and the Type Mastery Hall of Fame (v76). The save's Trainer Hill and recorded
+         battle sectors (30, 31: Emerald-only) are ours now (`SaveExtraSectors`/`LoadExtraSectors`
+         in src/save.c, written after every full save; the special-sector functions refuse them):
+         - 16 boxes (TOTAL_BOXES_COUNT; 14 before). The PC's storage now puts its boxes last
+           (`layout` = STORAGE_LAYOUT_BOXES_LAST) and runs past its 9 sectors into sector 31. A save
+           from before (layout 0) is rearranged as it loads (`PokemonStorage_UpgradeLayout`).
+           Sector 31 has no backup copy (like the Hall of Fame's): the 15th and 16th boxes' last
+           Pokémon are the only thing at risk if the power goes out mid-save.
+         - Type Mastery Hall of Fame (src/mastery_hall.c, sector 30): for each mastered type, the
+           team of its longest streak (after every win of a mastered type, if the streak beats the
+           record, the party replaces it). "TYPE MASTERY" on the PC's menu (and the Palm Pilot's)
+           once there's one; shown in the Hall of Fame's screen, titled "<TYPE> · STREAK <n>".
+           The Elite Four's Hall of Fame (sectors 28-29) is untouched.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

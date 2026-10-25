@@ -20,7 +20,15 @@ EventScript_AccessPC::
 	case 1, EventScript_AccessPlayersPC
 	case 2, EventScript_AccessHallOfFame
 	case 3, EventScript_TurnOffPC
+	case 4, EventScript_AccessMasteryHall
 	case MULTI_B_PRESSED, EventScript_TurnOffPC
+	end
+
+@ Gym Trainer hack: the Type Mastery Hall of Fame (src/mastery_hall.c)
+EventScript_AccessMasteryHall::
+	playse SE_PC_LOGIN
+	special AccessMasteryHallPC
+	goto EventScript_AccessPC
 	end
 
 EventScript_AccessPlayersPC::

@@ -1,4 +1,6 @@
 #include "global.h"
+#include "mastery_hall.h"
+#include "pokemon_storage_system.h"
 #include "agb_flash.h"
 #include "gba/flash_internal.h"
 #include "fieldmap.h"
@@ -31,8 +33,8 @@ static void CopyFromSaveBlock3(u32, struct SaveSector *);
  * Sectors 0 - 13:      Save Slot 1
  * Sectors 14 - 27:     Save Slot 2
  * Sectors 28 - 29:     Hall of Fame
- * Sector 30:           Trainer Hill
- * Sector 31:           Recorded Battle
+ * Sector 30:           Trainer Hill  (Gym Trainer hack: the Type Mastery Hall of Fame)
+ * Sector 31:           Recorded Battle  (Gym Trainer hack: the end of the PC's boxes)
  *
  * There are two save slots for saving the player's game data. We alternate between
  * them each time the game is saved, so that if the current save slot is corrupt,
@@ -80,7 +82,13 @@ struct
 STATIC_ASSERT(sizeof(struct SaveBlock3) <= SAVE_BLOCK_3_CHUNK_SIZE * NUM_SECTORS_PER_SLOT, SaveBlock3FreeSpace);
 STATIC_ASSERT(sizeof(struct SaveBlock2) <= SECTOR_DATA_SIZE, SaveBlock2FreeSpace);
 STATIC_ASSERT(sizeof(struct SaveBlock1) <= SECTOR_DATA_SIZE * (SECTOR_ID_SAVEBLOCK1_END - SECTOR_ID_SAVEBLOCK1_START + 1), SaveBlock1FreeSpace);
-STATIC_ASSERT(sizeof(struct PokemonStorage) <= SECTOR_DATA_SIZE * (SECTOR_ID_PKMN_STORAGE_END - SECTOR_ID_PKMN_STORAGE_START + 1), PokemonStorageFreeSpace);
+// Gym Trainer hack: the PC's storage runs past its 9 sectors into sector 31 (SECTOR_ID_EXTRA_STORAGE),
+// and the Type Mastery Hall of Fame has sector 30 (SECTOR_ID_MASTERY_HALL)
+#define STORAGE_IN_SLOT_SIZE (SECTOR_DATA_SIZE * (SECTOR_ID_PKMN_STORAGE_END - SECTOR_ID_PKMN_STORAGE_START + 1))
+#define STORAGE_EXTRA_SIZE   (sizeof(struct PokemonStorage) - STORAGE_IN_SLOT_SIZE)
+STATIC_ASSERT(sizeof(struct PokemonStorage) > STORAGE_IN_SLOT_SIZE, PokemonStorageExtraSector);
+STATIC_ASSERT(STORAGE_EXTRA_SIZE <= SECTOR_DATA_SIZE, PokemonStorageFreeSpace);
+STATIC_ASSERT(sizeof(struct MasteryHall) <= SECTOR_DATA_SIZE, MasteryHallFreeSpace);
 
 COMMON_DATA u16 gLastWrittenSector = 0;
 COMMON_DATA u32 gLastSaveCounter = 0;
@@ -710,6 +718,32 @@ static void UpdateSaveAddresses(void)
     }
 }
 
+// Gym Trainer hack: the sectors after the Hall of Fame - the end of the PC's boxes, and the Type
+// Mastery Hall of Fame - written after every full save
+static void SaveExtraSectors(void)
+{
+    HandleWriteSectorNBytes(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE);
+    HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall));
+}
+
+// ...and read back after a load. A save from before them: its PC is rearranged (the boxes come last
+// now: PokemonStorage_UpgradeLayout), and the Type Mastery Hall of Fame starts empty.
+static void LoadExtraSectors(u8 status)
+{
+    if (status == SAVE_STATUS_EMPTY)     // (SAVE_STATUS_ERROR: one slot's bad, the other loaded)
+    {
+        MasteryHall_Clear();
+        return;
+    }
+    if (gPokemonStoragePtr->layout != STORAGE_LAYOUT_BOXES_LAST)
+        PokemonStorage_UpgradeLayout();
+    else if (TryLoadSaveSector(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE) != SAVE_STATUS_OK)
+        memset((u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, 0, STORAGE_EXTRA_SIZE);
+    if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall)) != SAVE_STATUS_OK)
+        MasteryHall_Clear();
+    MasteryHall_Validate();
+}
+
 u8 HandleSavingData(u8 saveType)
 {
     u8 i;
@@ -732,6 +766,7 @@ u8 HandleSavingData(u8 saveType)
         // Write the full save slot first
         CopyPartyAndObjectsToSave();
         WriteSaveSectorOrSlot(FULL_SAVE_SLOT, gRamSaveSectorLocations);
+        SaveExtraSectors();
 
         // Save the Hall of Fame
         if (gHoFSaveBuffer != NULL)
@@ -745,6 +780,7 @@ u8 HandleSavingData(u8 saveType)
     default:
         CopyPartyAndObjectsToSave();
         WriteSaveSectorOrSlot(FULL_SAVE_SLOT, gRamSaveSectorLocations);
+        SaveExtraSectors();
         break;
     case SAVE_LINK:
     case SAVE_EREADER: // Dummied, now duplicate of SAVE_LINK
@@ -764,6 +800,7 @@ u8 HandleSavingData(u8 saveType)
         // Overwrite save slot
         CopyPartyAndObjectsToSave();
         WriteSaveSectorOrSlot(FULL_SAVE_SLOT, gRamSaveSectorLocations);
+        SaveExtraSectors();
         break;
     }
     gTrainerHillVBlankCounter = backupVar;
@@ -828,6 +865,7 @@ bool8 LinkFullSave_ReplaceLastSector(void)
 bool8 LinkFullSave_SetLastSectorSignature(void)
 {
     CopySectorSignatureByte(NUM_SECTORS_PER_SLOT, gRamSaveSectorLocations);
+    SaveExtraSectors();
     if (gDamagedSaveSectors)
         DoSaveFailedScreen(SAVE_NORMAL);
     return FALSE;
@@ -892,6 +930,7 @@ u8 LoadGameSave(u8 saveType)
     case SAVE_NORMAL:
     default:
         status = TryLoadSaveSlot(FULL_SAVE_SLOT, gRamSaveSectorLocations);
+        LoadExtraSectors(status);
         CopyPartyAndObjectsFromSave();
         gSaveFileStatus = status;
         gGameContinueCallback = NULL;
@@ -945,8 +984,8 @@ u32 TryReadSpecialSaveSector(u8 sector, u8 *dst)
     s32 size;
     u8 *savData;
 
-    if (sector != SECTOR_ID_TRAINER_HILL && sector != SECTOR_ID_RECORDED_BATTLE)
-        return SAVE_STATUS_ERROR;
+    // Gym Trainer hack: these sectors are the PC's and the Type Mastery Hall of Fame's now
+    return SAVE_STATUS_ERROR;
 
     ReadFlash(sector, 0, (u8 *)&gSaveDataBuffer, SECTOR_SIZE);
     if (*(u32 *)(&gSaveDataBuffer.data[0]) != SPECIAL_SECTOR_SENTINEL)
@@ -968,8 +1007,8 @@ u32 TryWriteSpecialSaveSector(u8 sector, u8 *src)
     u8 *savData;
     void *savDataBuffer;
 
-    if (sector != SECTOR_ID_TRAINER_HILL && sector != SECTOR_ID_RECORDED_BATTLE)
-        return SAVE_STATUS_ERROR;
+    // Gym Trainer hack: these sectors are the PC's and the Type Mastery Hall of Fame's now
+    return SAVE_STATUS_ERROR;
 
     savDataBuffer = &gSaveDataBuffer;
     *(u32 *)(savDataBuffer) = SPECIAL_SECTOR_SENTINEL;

@@ -27,6 +27,10 @@
 #define SECTOR_ID_HOF_2              29
 #define SECTOR_ID_TRAINER_HILL       30
 #define SECTOR_ID_RECORDED_BATTLE    31
+// Gym Trainer hack: no Trainer Hill or recorded battles here - their sectors hold the Type Mastery
+// Hall of Fame and the end of the PC's boxes (src/save.c SaveExtraSectors)
+#define SECTOR_ID_MASTERY_HALL       SECTOR_ID_TRAINER_HILL
+#define SECTOR_ID_EXTRA_STORAGE      SECTOR_ID_RECORDED_BATTLE
 #define SECTORS_COUNT                32
 
 #define NUM_HOF_SECTORS 2

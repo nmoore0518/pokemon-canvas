@@ -1,4 +1,6 @@
 #include "global.h"
+#include "mastery_hall.h"
+#include "gym_switch.h"
 #include "bg.h"
 #include "credits_frlg.h"
 #include "data.h"
@@ -45,6 +47,10 @@ struct HofGfx
 };
 
 static EWRAM_DATA u32 sSelectedPaletteIndices = 0;
+// Gym Trainer hack: the same screen shows the Type Mastery Hall of Fame (src/mastery_hall.c): one
+// team per type mastered, in type order, titled with the type and its streak
+EWRAM_DATA bool8 gHofPCMasteryMode = FALSE;
+static EWRAM_DATA u8 sMasteryTypes[NUMBER_OF_MON_TYPES] = {0};
 static EWRAM_DATA struct HallofFameTeam * sHofMonPtr = NULL;
 static EWRAM_DATA struct HofGfx * sHofGfxPtr = NULL;
 
@@ -757,9 +763,38 @@ void CB2_InitHofPC(void)
     }
 }
 
+// (the Type Mastery Hall of Fame: its teams, last type first - the screen starts at the end and
+// goes back with A - so it reads in type order)
+static bool32 CopyMasteryTeams(u8 taskId)
+{
+    u32 type, n = 0;
+    struct HallofFameTeam *teams = gHoFSaveBuffer;
+    memset(gHoFSaveBuffer, 0, SECTOR_SIZE * NUM_HOF_SECTORS);
+    for (type = NUMBER_OF_MON_TYPES; type-- > 0;)
+    {
+        const struct MasteryRecord *rec = &gMasteryHall.records[type];
+        if (rec->streak == 0 || rec->count == 0)
+            continue;
+        memcpy(teams[n].mon, rec->mon, sizeof(rec->mon));
+        sMasteryTypes[n++] = type;
+    }
+    if (n == 0)
+        return FALSE;
+    gTasks[taskId].data[0] = n - 1;
+    return TRUE;
+}
+
 static void Task_HofPC_CopySaveData(u8 taskId)
 {
     HofPCTopBar_AddWindow(0, 30, 0, 0x0C, 0x226);
+    if (gHofPCMasteryMode)
+    {
+        if (CopyMasteryTeams(taskId))
+            gTasks[taskId].func = Task_HofPC_DrawSpritesPrintText;
+        else
+            gTasks[taskId].func = Task_HofPC_PrintDataIsCorrupted;
+        return;
+    }
     if (LoadGameSave(SAVE_HALL_OF_FAME) != SAVE_STATUS_OK)
     {
         gTasks[taskId].func = Task_HofPC_PrintDataIsCorrupted;
@@ -839,8 +874,19 @@ static void Task_HofPC_DrawSpritesPrintText(u8 taskId)
 
     BlendPalettes(0xFFFF0000, 0xC, HALL_OF_FAME_BG_PAL);
 
-    ConvertIntToDecimalStringN(gStringVar1, gTasks[taskId].data[1], STR_CONV_MODE_LEFT_ALIGN, 3);
-    StringExpandPlaceholders(gStringVar4, gText_HOFNumber);
+    if (gHofPCMasteryMode)
+    {
+        u32 type = sMasteryTypes[gTasks[taskId].data[0]];
+        u8 *end;
+        GymSwitch_BufferTypeName(gStringVar4, type);
+        end = StringAppend(gStringVar4, COMPOUND_STRING(" · STREAK "));
+        ConvertIntToDecimalStringN(end, gMasteryHall.records[type].streak, STR_CONV_MODE_LEFT_ALIGN, 5);
+    }
+    else
+    {
+        ConvertIntToDecimalStringN(gStringVar1, gTasks[taskId].data[1], STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringExpandPlaceholders(gStringVar4, gText_HOFNumber);
+    }
 
     if (gTasks[taskId].data[0] <= 0)
         HofPCTopBar_PrintPair(gStringVar4, gText_PickCancel, 0, 0, TRUE);
@@ -955,6 +1001,7 @@ static void Task_HofPC_HandleExit(u8 taskId)
         ResetBgsAndClearDma3BusyFlags(FALSE);
         DestroyTask(taskId);
         FreeAllHoFMem();
+        gHofPCMasteryMode = FALSE;
 
         ReturnFromHallOfFamePC();
     }
@@ -964,7 +1011,8 @@ static void Task_HofPC_PrintDataIsCorrupted(u8 taskId)
 {
     HofPCTopBar_Print(gText_AButtonExit, 8, TRUE);
     DrawDialogueFrame(0, 0);
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gText_HOFCorrupted, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gHofPCMasteryMode ? COMPOUND_STRING("No type has been mastered yet.") : gText_HOFCorrupted,
+                                 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
     CopyWindowToVram(0, COPYWIN_FULL);
     gTasks[taskId].func = Task_HofPC_ExitOnButtonPress;
 }

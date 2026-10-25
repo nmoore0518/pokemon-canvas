@@ -14,6 +14,7 @@
 #include "gym_challenge.h"
 #include "gym_hack.h"
 #include "gym_legend.h"
+#include "mastery_hall.h"
 #include "battle_main.h"
 #include "list_menu.h"
 #include "malloc.h"
@@ -132,7 +133,17 @@ void GymSwitch_BufferTypeName(u8 *dst, u32 type)
 
 // Special, after a win: was it the mastery battle? Then a new type is earned (and Oak comes when
 // the streak ends). VAR_RESULT = TRUE then; STR_VAR_1 = the gym's type.
+static void AfterWin(void);
+
 void GymSwitch_AfterWin(void)
+{
+    AfterWin();
+    // (the Type Mastery Hall of Fame: a mastered type's longest streak keeps its team)
+    if (IsMastered(CurrentType()))
+        MasteryHall_RecordWin(CurrentType(), GymChallenge_GetSave()->streak);
+}
+
+static void AfterWin(void)
 {
     struct GymChallengeSave *save = Save();
     gSpecialVar_Result = FALSE;
