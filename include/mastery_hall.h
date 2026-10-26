@@ -31,11 +31,27 @@ struct ArchiveData
     u8 shiny[ARCHIVE_BYTES];
 };
 
-// Flash sector 30 (src/save.c): the Type Mastery Hall of Fame, then the archive
+// The Leader Academy's TEAM BUILDER (src/team_builder.c): up to 8 teams, species and moves (a
+// move is 10 bits: the low 8 in moveLo, the high 2 of each of the 4 packed into moveHi)
+#define BUILT_TEAMS 8
+struct BuiltTeam
+{
+    u16 species[PARTY_SIZE];
+    u8 moveLo[PARTY_SIZE][MAX_MON_MOVES];
+    u8 moveHi[PARTY_SIZE];
+};
+struct TeamBuilderData
+{
+    u32 magic;
+    struct BuiltTeam teams[BUILT_TEAMS];
+};
+
+// Flash sector 30 (src/save.c): the Type Mastery Hall of Fame, the archive, the built teams
 struct ExtraSaveData
 {
     struct MasteryHall mastery;
     struct ArchiveData archive;
+    struct TeamBuilderData teams;
 };
 
 extern struct ExtraSaveData gExtraSave;

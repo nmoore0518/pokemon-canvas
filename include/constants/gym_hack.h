@@ -59,6 +59,13 @@
 #define GAUNTLET_ALL_BEATEN     3   // (every challenger beaten: the one who hired the figure is next)
 #define GAUNTLET_SIMULATOR      4   // (Bill beaten: his Palm Pilot runs it all again, as a simulation)
 
+// The Leader Academy (north of Route 11; src/leader_academy.c): VAR_ACADEMY_STATE
+#define ACADEMY_NONE            0
+#define ACADEMY_INVITE          1   // (3 badges: the mentor catches up with the player on Route 11)
+#define ACADEMY_ESCORT          2   // (at the gap in the trees, with the mentor)
+#define ACADEMY_WELCOME         3   // (on the campus: the headmaster's welcome plays)
+#define ACADEMY_ADMITTED        4
+
 #define JOHTO_NOT_INVITED       0
 #define JOHTO_INVITE_WAITING    1   // (after the gym's handed over: the mentor brings it next visit)
 #define JOHTO_INVITED           2   // (the ferry from Vermilion sails to Olivine)

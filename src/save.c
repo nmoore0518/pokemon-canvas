@@ -1,6 +1,7 @@
 #include "global.h"
 #include "mastery_hall.h"
 #include "archive.h"
+#include "team_builder.h"
 #include "pokemon_storage_system.h"
 #include "agb_flash.h"
 #include "gba/flash_internal.h"
@@ -735,6 +736,7 @@ static void LoadExtraSectors(u8 status)
     {
         MasteryHall_Clear();
         Archive_Clear();
+        TeamBuilder_Clear();
         return;
     }
     if (gPokemonStoragePtr->layout != STORAGE_LAYOUT_BOXES_LAST)
@@ -743,14 +745,20 @@ static void LoadExtraSectors(u8 status)
         memset((u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, 0, STORAGE_EXTRA_SIZE);
     // (sector 30: the Type Mastery Hall of Fame and BILL'S ARCHIVE - or, from before the archive,
     // the Hall alone)
+    // (and, from before the team builder, the two without it)
     if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave)) != SAVE_STATUS_OK)
     {
-        Archive_Clear();
-        if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall)) != SAVE_STATUS_OK)
-            MasteryHall_Clear();
+        TeamBuilder_Clear();
+        if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, offsetof(struct ExtraSaveData, teams)) != SAVE_STATUS_OK)
+        {
+            Archive_Clear();
+            if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall)) != SAVE_STATUS_OK)
+                MasteryHall_Clear();
+        }
     }
     MasteryHall_Validate();
     Archive_Validate();
+    TeamBuilder_Validate();
 }
 
 u8 HandleSavingData(u8 saveType)

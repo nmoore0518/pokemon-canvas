@@ -1,5 +1,17 @@
 Route11_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Route11_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, Route11_OnFrame
 	.byte 0
+
+@ Gym Trainer hack: the Leader Academy's invitation (data/scripts/leader_academy.inc)
+Route11_OnTransition::
+	call Academy_EventScript_Route11Transition
+	end
+
+Route11_OnFrame::
+	map_script_2 VAR_ACADEMY_STATE, ACADEMY_INVITE, Academy_EventScript_Invite
+	map_script_2 VAR_ACADEMY_STATE, ACADEMY_ESCORT, Academy_EventScript_Escort
+	.2byte 0
 
 Route11_EventScript_DiglettsCaveSign::
 	msgbox Route11_Text_DiglettsCave, MSGBOX_SIGN

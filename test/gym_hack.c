@@ -9,6 +9,9 @@
 #include "gauntlet.h"
 #include "mastery_hall.h"
 #include "archive.h"
+#include "leader_academy.h"
+#include "team_builder.h"
+#include "gym_challenge.h"
 #include "constants/event_objects.h"
 #include "constants/pokedex.h"
 #include "exotic_safari.h"
@@ -2356,4 +2359,67 @@ TEST("GymHack: BILL'S ARCHIVE keeps one of each, and only what has a slot")
     Archive_Store(SPECIES_MEWTWO, TRUE);
     EXPECT(Archive_Has(SPECIES_MEWTWO));
     EXPECT(!Archive_Has(SPECIES_MEW));
+}
+
+TEST("GymHack: the Leader Academy's rentals put the player's party back")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_PIKACHU, 12, 0, OTID_STRUCT_PRESET(0));
+    gPartiesCount[B_TRAINER_PLAYER] = 1;
+    Academy_RentalBegin();
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 0);
+    for (u32 i = 0; i < 3; i++)
+    {
+        gSpecialVar_0x8004 = i;
+        Academy_TakeRental();
+    }
+    EXPECT_EQ(gSpecialVar_Result, 3);
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 3);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_LEVEL), 100);
+    EXPECT_NE(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIKACHU);
+    Academy_RentalEnd();
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 1);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIKACHU);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_LEVEL), 12);
+}
+
+TEST("GymHack: the Leader Academy's candidates and Battle Points")
+{
+    const struct Trainer *t;
+    ZeroPlayerPartyMons();
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_PIKACHU, 30, 0, OTID_STRUCT_PRESET(0));
+    gPartiesCount[B_TRAINER_PLAYER] = 1;
+    gSpecialVar_0x8004 = 6;     // (Briony: expert)
+    Academy_SetupCandidate();
+    EXPECT_EQ(gSpecialVar_0x8005, 4);
+    t = GymChallenge_GetTrainer(TRAINER_GYM_CHALLENGER);
+    u32 size = t->partySize;
+    EXPECT_GE(size, 3);
+    EXPECT_EQ(t->party[0].lvl, 33);
+    EXPECT_EQ(t->trainerClass, TRAINER_CLASS_CANDIDATE);
+
+    gSaveBlock2Ptr->frontier.battlePoints = 10;
+    gSpecialVar_0x8006 = 12;
+    Academy_SpendBP();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    EXPECT_EQ(gSaveBlock2Ptr->frontier.battlePoints, 10);
+    gSpecialVar_0x8006 = 6;
+    Academy_SpendBP();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    EXPECT_EQ(gSaveBlock2Ptr->frontier.battlePoints, 4);
+    gSpecialVar_0x8004 = 3;
+    Academy_AddBP();
+    EXPECT_EQ(gSaveBlock2Ptr->frontier.battlePoints, 7);
+}
+
+TEST("GymHack: the TEAM BUILDER's saved teams start empty")
+{
+    gExtraSave.teams.magic = 0;
+    gExtraSave.teams.teams[3].species[2] = SPECIES_PIKACHU;
+    TeamBuilder_Validate();
+    EXPECT_EQ(gExtraSave.teams.teams[3].species[2], SPECIES_NONE);
+    gExtraSave.teams.teams[3].species[2] = SPECIES_PIKACHU;
+    TeamBuilder_Validate();
+    EXPECT_EQ(gExtraSave.teams.teams[3].species[2], SPECIES_PIKACHU);
 }

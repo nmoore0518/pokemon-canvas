@@ -1080,6 +1080,7 @@ gStdScripts_End::
 	.include "data/scripts/gauntlet.inc"
 	.include "data/maps/johto.inc"
 	.include "data/maps/exotic_safari.inc"
+	.include "data/maps/leader_academy.inc"
 	.include "data/scripts/new_game.inc"
 	.include "data/scripts/hall_of_fame.inc"
 	.include "data/scripts/hall_of_fame_frlg.inc"

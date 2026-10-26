@@ -335,6 +335,8 @@
 #define VAR_GAUNTLET_NEXT                                0x40F6
 // ...and how many WITHDRAWs from Bill's Palm Pilot are waiting (one per finished run)
 #define VAR_GAUNTLET_WITHDRAWS                           0x40F4
+// The Leader Academy: ACADEMY_* (include/constants/gym_hack.h). 0x40E5 is unused by the FireRed scripts.
+#define VAR_ACADEMY_STATE                                0x40E5
 // The rival's specialty type (TYPE_*), set at the same time as VAR_PLAYER_TYPE.
 #define VAR_RIVAL_TYPE                                   0x40F8
 // The Pallet Town Gym scenes: 0 = not yet, 1 = Oak is about to show the gym, 2 = nothing to play,

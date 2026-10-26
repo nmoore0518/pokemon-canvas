@@ -695,6 +695,23 @@ gSpecials::
 	def_special Gauntlet_UseWithdraw
 	def_special AccessMasteryHallPC, waitstate=1
 	def_special AccessArchivePC, waitstate=1
+	def_special Academy_BufferBP
+	def_special Academy_AddBP
+	def_special Academy_PushExchange
+	def_special Academy_BufferExchangeItem
+	def_special Academy_SpendBP
+	def_special Academy_PrepareMentor
+	def_special Academy_InvitationDue
+	def_special Academy_SetupCandidate
+	def_special Academy_RentalBegin
+	def_special Academy_RentalEnd
+	def_special Academy_PushRentals
+	def_special Academy_BufferRental
+	def_special Academy_TakeRental
+	def_special Academy_SetupHallBattle
+	def_special Academy_HallWin
+	def_special Academy_SetupTeacher
+	def_special Academy_OpenTeamBuilder, waitstate=1
 	def_special Convention_PushHalls
 	def_special Convention_BufferProgress
 	def_special Convention_WarpToHall

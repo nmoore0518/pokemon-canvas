@@ -931,6 +931,13 @@ void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const 
     SetTexts(intro, defeat, after, win);
 }
 
+// The Leader Academy (src/leader_academy.c): after SetupGauntlet, a practice battle at a set skill
+void GymChallenge_SetPracticeAI(u64 aiFlags)
+{
+    sChallenger.aiFlags = aiFlags;
+    gGymPracticeBattle = TRUE;
+}
+
 // Special: after a practice battle
 void GymChallenge_EndPractice(void)
 {

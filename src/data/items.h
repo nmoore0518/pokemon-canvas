@@ -14959,7 +14959,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         .name = ITEM_NAME("Booster Energy"),
         .pluralName = ITEM_PLURAL_NAME("Booster Energies"),
-        .price = 0,
+        .price = 50000,   // Gym Trainer hack: sold at the Leader Academy's Exchange
         .holdEffect = HOLD_EFFECT_BOOSTER_ENERGY,
         .description = COMPOUND_STRING(
             "Ups the strength\n"

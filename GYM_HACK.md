@@ -634,6 +634,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/gym_convention.c`, `data/scripts/gym_convention.inc` | The Gym Leader Convention: receptionist, hall battles, wins, trophies |
 | `tools/gym_hack/convention_roster.py`, `convention_teams.py`, `build_convention.py` | Its trainers: who's in which hall, teams and lines -> `src/data/gym_convention.h` |
 | `tools/gym_hack/import_convention_sprites.py`, `convention_halls.py`, `check_convention.py` | Their sprites (Emerald Rogue), the halls (HnS gyms), the species check |
+| `src/leader_academy.c`, `src/team_builder.c`, `data/scripts/leader_academy.inc` | The Leader Academy: BP, shops, candidates, instructors, rentals, the team builder |
+| `tools/gym_hack/build_academy.py`, `build_academy_data.py`, `academy_text.py` | Its maps (campus, Route 11's gap), battle data (`src/data/academy.h`) and lines |
 | `.github/workflows/build-rom.yml` | Automatic ROM builds |
 
 ## Building locally
@@ -1011,6 +1013,59 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          (stored, boxed or in the party). L/R a page, START the next generation, A take out. Kept by
          species number (two bits each, `struct ArchiveData`) after the Type Mastery Hall of Fame in
          flash sector 30 (`gExtraSave`).
+   - [x] The LEADER ACADEMY (v78, first cut; `src/leader_academy.c`, `data/scripts/leader_academy.inc`,
+         maps from `tools/gym_hack/build_academy.py`, lines from `academy_text.py`, battle data from
+         `build_academy_data.py` -> `src/data/academy.h`). A school for Gym Leader candidates of every
+         region, through a gap in Route 11's northern trees (x 38-39; gate guards stand in it until
+         the player is admitted). Everything is singles.
+         - Admission (`VAR_ACADEMY_STATE`, 0x40E5): with the third badge, walking onto Route 11 has the
+           mentor call out (Prof. Oak if there's no mentor), bring the player to the gap and talk the
+           guards round; on the campus the headmaster, WISTERIA, walks down to welcome them (the hall,
+           the Battle Hall and BP, the Exchange - money too -, the candidates, the Pokémon Center),
+           then the mentor leaves. Staff are named for flowers (the professors are trees).
+         - The campus is generated (44x40, General + Saffron tilesets: trees, cobbles, lawns, and
+           buildings stamped from Saffron's - Silph Co.'s tower for the main hall, the Pokémon Center,
+           a mart for the SUPPLY shop, the dojo for the BATTLE HALL, a house for the EXCHANGE, two
+           apartment blocks as dorms). Its interiors reuse FireRed's (Silph Co. 1F, Pokémon Center,
+           Mart, Dojo): a first cut. The name pop-up says LEADER ACADEMY. The Pokémon Center sets the
+           respawn to Vermilion's.
+         - BP: the frontier's `battlePoints`. Earned by beating candidates (1-4 by skill), the
+           instructors' demonstrations (3) and Battle Hall streaks (1 + streak/3 a win, +5 at 7).
+         - The EXCHANGE: two counters side by side, the same competitive items (Choice items, Life Orb,
+           Focus Sash, Assault Vest, Booster Energy, Heavy-Duty Boots, weather rocks...) for money
+           (a mart) or BP (32 for a Choice item, 4 for a berry). The BP counter also has Bottle Caps,
+           the Ability Capsule and Patch, Cilantro, the Multivitamin and eight mints. Signs, the
+           headmaster and the clerks all say money works too. The SUPPLY shop (money): caps, ability
+           items, Cilantro, Multivitamin, ten mints, vitamins, power items, the Macho Brace, the EV
+           berries.
+         - Candidates (8, `CANDIDATES`): Koji (Johto, Fighting, rookie), Maren (Hoenn, Water), Elias
+           (Sinnoh, Ground), Nadia (Unova, Electric, advanced), Rene (Kalos, Fairy, advanced), Keola
+           (Alola, Fire, rookie), Briony (Galar, Dragon, expert), Teo (Paldea, Steel). Each talks about
+           their region and their gym dream, then offers a practice battle, any number of times: the
+           player's own team against theirs (base forms evolved for the level: the player's average
+           -4/-2/+1/+3 by skill; 3-6 Pokémon; items and smarter AI higher up). No money, no white-out;
+           both sides healed after.
+         - The instructors (in the main hall): LARKSPUR speed and priority, CAMELLIA setup and win
+           conditions, FOXGLOVE hazards, VERBENA pivoting, MARIGOLD weather and terrain, HYACINTH
+           reading the opponent, YARROW EVs/natures/items, TANSY team building. A four-box singles
+           lecture (the first time, straight away; again on request), and a demonstration battle:
+           their 3 level-100 sets that show the lesson against 3 rentals the player picks.
+         - The BATTLE HALL: rentals (40 level-100 sets, `RENTALS`): pick 3 of 6 offered (each shown
+           with its item and moves), then battles against candidates with 3 rentals each, AI getting
+           smarter with the streak; keep going or stop after each win. The player's party is copied
+           aside (EWRAM) and put back after, won, lost or backed out; the whole run is one locked
+           script, so the game can't be saved with rentals in the party.
+         - The TEAM BUILDER (Tansy; `src/team_builder.c`): 8 teams, kept in flash sector 30 after the
+           archive (`struct TeamBuilderData`; a move is 10 bits to fit). A slot: choose a type, then
+           one of its Pokémon from a grid of icons (a ball by those the player has: party, box or
+           archive), then up to 4 of the moves it can learn (level, TM/tutor, egg). The edit screen
+           shows the team's worst weaknesses and the types it can't hit for 2x; START, the full chart:
+           for each of the 18 types, how many are weak, how many resist or are immune, and the best
+           hit the team's attacks have. The screen says the limit (8) and that teams are kept when the
+           game is saved.
+         - Not yet: the interiors are FireRed's, not new; the battle hall has no streak record; the
+           team builder doesn't load a team into the party (it's a planner); abilities (Levitate...)
+           aren't in the chart; doubles everywhere is a later, game-wide project.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

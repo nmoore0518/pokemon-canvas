@@ -76,7 +76,8 @@
     "gMapGroup_IndoorSixIslandRoute_Frlg",
     "gMapGroup_IndoorSevenIslandRoute_Frlg",
     "gMapGroup_Johto",
-    "gMapGroup_ExoticSafari"
+    "gMapGroup_ExoticSafari",
+    "gMapGroup_LeaderAcademy"
   ],
   "gMapGroup_TownsAndRoutes": [
     "PetalburgCity",
@@ -1338,5 +1339,13 @@
     "ExoticSafari_JohtoIcePath",
     "ExoticSafari_JohtoDragonsDen",
     "ExoticSafari_JohtoWhirlIslands"
+  ],
+  "gMapGroup_LeaderAcademy": [
+    "LeaderAcademy_Campus",
+    "LeaderAcademy_Hall",
+    "LeaderAcademy_PokemonCenter",
+    "LeaderAcademy_Supply",
+    "LeaderAcademy_BattleHall",
+    "LeaderAcademy_Exchange"
   ]
 }

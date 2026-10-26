@@ -11481,6 +11481,19 @@
       "border_filepath": "data/layouts/ExoticSafari_JohtoWhirlIslands/border.bin",
       "blockdata_filepath": "data/layouts/ExoticSafari_JohtoWhirlIslands/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_LEADER_ACADEMY_CAMPUS",
+      "name": "LeaderAcademy_Campus_Layout",
+      "width": 44,
+      "height": 40,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_SaffronCity",
+      "border_filepath": "data/layouts/LeaderAcademy_Campus/border.bin",
+      "blockdata_filepath": "data/layouts/LeaderAcademy_Campus/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

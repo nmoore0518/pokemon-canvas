@@ -1,0 +1,90 @@
+{
+  "id": "MAP_LEADER_ACADEMY_BATTLE_HALL",
+  "name": "LeaderAcademy_BattleHall",
+  "layout": "LAYOUT_SAFFRON_CITY_DOJO",
+  "music": "MUS_RG_PEWTER",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_ROUTE_11",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_INDOOR",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": null,
+  "object_events": [
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_M",
+      "x": 6,
+      "y": 5,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Academy_EventScript_RentalClerk",
+      "flag": "0",
+      "local_id": "LOCALID_ACADEMY_RENTAL_CLERK"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_F",
+      "x": 1,
+      "y": 8,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Academy_EventScript_Briony",
+      "flag": "0",
+      "local_id": "LOCALID_ACADEMY_CANDIDATE_BRIONY"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_M",
+      "x": 11,
+      "y": 8,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Academy_EventScript_Teo",
+      "flag": "0",
+      "local_id": "LOCALID_ACADEMY_CANDIDATE_TEO"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 5,
+      "y": 14,
+      "elevation": 0,
+      "dest_map": "MAP_LEADER_ACADEMY_CAMPUS",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 6,
+      "y": 14,
+      "elevation": 0,
+      "dest_map": "MAP_LEADER_ACADEMY_CAMPUS",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 7,
+      "y": 14,
+      "elevation": 0,
+      "dest_map": "MAP_LEADER_ACADEMY_CAMPUS",
+      "dest_warp_id": "3"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": []
+}
