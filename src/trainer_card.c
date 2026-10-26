@@ -1081,10 +1081,8 @@ static void PrintMoneyOnCard(void)
 
 static u16 GetCaughtMonsCount(void)
 {
-    if (IsNationalPokedexEnabled())
-        return GetNationalPokedexCount(FLAG_GET_CAUGHT);
-    else
-        return GetRegionalPokedexCount(FLAG_GET_CAUGHT);
+    // Pokémon Canvas: every species counts, Kanto or not (the starter may be from anywhere)
+    return GetNationalPokedexCount(FLAG_GET_CAUGHT);
 }
 
 static void PrintPokedexOnCard(void)

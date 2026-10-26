@@ -2935,3 +2935,20 @@ TEST("GymHack: Eternamax is the pitch's alone")
     EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_ETERNATUS);
     EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HP), GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_MAX_HP));
 }
+
+// ---- The Pokédex count ----
+#include "pokedex.h"
+#include "menu.h"
+#include "string_util.h"
+
+TEST("GymHack: the save menu counts a starter from outside Kanto")
+{
+    u8 str[16], expected[16];
+    ResetPokedex();
+    GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_RALTS), FLAG_SET_SEEN);
+    GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_RALTS), FLAG_SET_CAUGHT);
+    BufferSaveMenuText(SAVE_MENU_CAUGHT, str, 0);
+    ConvertIntToDecimalStringN(expected, 1, STR_CONV_MODE_LEFT_ALIGN, 4);
+    // (the colour codes come first)
+    EXPECT_EQ(StringCompare(str + StringLength(str) - StringLength(expected), expected), 0);
+}
