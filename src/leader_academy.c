@@ -423,3 +423,316 @@ void Academy_SetupTeacher(void)
                         COMPOUND_STRING("Excellent! You were\nlistening after all."));
     StringCopy(gStringVar1, t->name);
 }
+
+// ---------------------------------------------------------------------------
+// The Mega Evolution room (behind the headmaster's desk; open once she's given the player the Mega
+// Bracelet, after their eighth badge). Its keeper, Primrose, lends the stone for one Pokémon: that
+// Pokémon alone, holding it, against her three (level 55-60, her Mega last). Win and the stone is
+// the player's. Her team is made for each stone (the same every time): Pokémon the player's one
+// is at least even with - nothing that hits it super effectively, nothing it can't hit at least
+// normally with its own types - and her moves leave out anything super effective on it.
+// ---------------------------------------------------------------------------
+#include "battle_util.h"
+#include "dex_forms.h"
+#include "party_menu.h"
+#include "move.h"
+#include "constants/moves.h"
+
+#define MEGA_TEAM 3
+
+static EWRAM_DATA u16 sTrialStones[2] = {0};
+
+// The stones (or none) that Mega Evolve `species`, and what each makes it
+static u32 GetMegaStones(u32 species, u16 *stones, u16 *megas)
+{
+    const struct FormChange *fc = GetSpeciesFormChanges(species);
+    u32 n = 0;
+    for (; fc != NULL && fc->method != FORM_CHANGE_TERMINATOR && n < 2; fc++)
+    {
+        if (fc->method == FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM)
+        {
+            stones[n] = fc->param1;
+            if (megas)
+                megas[n] = fc->targetSpecies;
+            n++;
+        }
+    }
+    return n;
+}
+
+static uq4_12_t TypeOn(u32 atk, u32 species)
+{
+    u32 t1 = GetSpeciesType(species, 0), t2 = GetSpeciesType(species, 1);
+    uq4_12_t mod = GetTypeModifier(atk, t1);
+    if (t2 != t1)
+        mod = uq4_12_multiply(mod, GetTypeModifier(atk, t2));
+    return mod;
+}
+
+// Whether `opp` is a fair foe for `me` (and its Mega form): none of opp's types hits either form
+// super effectively, and one of the Mega's types hits opp at least normally
+static bool32 FairFoe(u32 opp, u32 me, u32 meMega)
+{
+    u32 k, t;
+    uq4_12_t best = 0;
+    for (k = 0; k < 2; k++)
+    {
+        t = GetSpeciesType(opp, k);
+        if (TypeOn(t, me) > UQ_4_12(1.0) || TypeOn(t, meMega) > UQ_4_12(1.0))
+            return FALSE;
+    }
+    for (k = 0; k < 2; k++)
+    {
+        uq4_12_t m = TypeOn(GetSpeciesType(meMega, k), opp);
+        if (m > best)
+            best = m;
+    }
+    return best >= UQ_4_12(1.0);
+}
+
+static bool32 IsFullyEvolved(u32 species)
+{
+    const struct Evolution *evo = GetSpeciesEvolutions(species);
+    return evo == NULL || evo[0].method == EVOLUTIONS_END;
+}
+
+static bool32 IsSpecial(u32 species)
+{
+    const struct SpeciesInfo *s = &gSpeciesInfo[species];
+    return s->isRestrictedLegendary || s->isSubLegendary || s->isMythical || s->isUltraBeast || s->isParadox;
+}
+
+static u32 BaseTotal(u32 species)
+{
+    const struct SpeciesInfo *s = &gSpeciesInfo[species];
+    return s->baseHP + s->baseAttack + s->baseDefense + s->baseSpeed + s->baseSpAttack + s->baseSpDefense;
+}
+
+static u32 TrialRandom(u32 *seed)
+{
+    *seed = *seed * 1103515245 + 12345;
+    return (*seed >> 16) & 0x7FFF;
+}
+
+// Up to 4 moves it learns by `level`: its strongest attacks that don't hit `me`/`meMega` super
+// effectively (its own types first), then a status move
+static void PickMoves(struct TrainerMon *m, u32 me, u32 meMega)
+{
+    const struct LevelUpMove *lvl = GetSpeciesLevelUpLearnset(m->species);
+    u16 best[3] = {0}, status = MOVE_NONE;
+    u32 score[3] = {0}, i, k;
+    for (i = 0; lvl != NULL && lvl[i].move != LEVEL_UP_MOVE_END && i < 200; i++)
+    {
+        u32 move = lvl[i].move, s, type;
+        if (lvl[i].level > m->lvl || move == MOVE_NONE)
+            continue;
+        if (GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS)
+        {
+            status = move;
+            continue;
+        }
+        type = GetMoveType(move);
+        if (GetMovePower(move) == 0 || GetMovePower(move) > 130 || IsExplosionMove(move)
+         || GetMoveEffect(move) == EFFECT_OHKO
+         || TypeOn(type, me) > UQ_4_12(1.0) || TypeOn(type, meMega) > UQ_4_12(1.0))
+            continue;
+        s = GetMovePower(move) * ((type == GetSpeciesType(m->species, 0) || type == GetSpeciesType(m->species, 1)) ? 3 : 2);
+        for (k = 0; k < 3; k++)
+        {
+            if (best[k] == move)
+                break;
+            if (s > score[k])
+            {
+                u32 j;
+                for (j = 2; j > k; j--)
+                {
+                    best[j] = best[j - 1];
+                    score[j] = score[j - 1];
+                }
+                best[k] = move;
+                score[k] = s;
+                break;
+            }
+        }
+    }
+    memset(m->moves, 0, sizeof(m->moves));
+    for (k = 0, i = 0; k < 3; k++)
+        if (best[k] != MOVE_NONE)
+            m->moves[i++] = best[k];
+    if (status != MOVE_NONE)
+        m->moves[i++] = status;
+    if (i == 0)
+        m->moves[0] = MOVE_TACKLE;
+}
+
+static void InitTrialMon(struct TrainerMon *m, u32 species, u32 level, u32 *seed)
+{
+    memset(m, 0, sizeof(*m));
+    m->species = species;
+    m->lvl = level;
+    m->iv = TRAINER_PARTY_IVS(20, 20, 20, 20, 20, 20);
+    m->nature = TrialRandom(seed) % NUM_NATURES;
+    m->gender = TRAINER_MON_RANDOM_GENDER;
+    m->ball = POKEBALL_COUNT;
+    m->friendship = MAX_FRIENDSHIP;
+}
+
+// Builds Primrose's three for the player's `me` with `stone` (always the same for that stone)
+static void BuildMegaTrialTeam(u32 me, u32 stone)
+{
+    u16 stones[2], megas[2], candidates[64];
+    u32 meMega = me, n, i, k, seed = stone * 2654435761u + 7, count = 0, picked[MEGA_TEAM];
+
+    n = GetMegaStones(me, stones, megas);
+    for (i = 0; i < n; i++)
+        if (stones[i] == stone)
+            meMega = megas[i];
+
+    // Her Mega (last): another Pokémon's, a fair foe in both its forms
+    for (i = 0; i < DEX_FORM_COUNT && count < ARRAY_COUNT(candidates); i++)
+    {
+        u32 s = gDexFormSpecies[i];
+        if (s == me || s != GET_BASE_SPECIES_ID(s) || IsSpecial(s) || !IsFullyEvolved(s) || GetMegaStones(s, stones, megas) == 0)
+            continue;
+        if (GET_BASE_SPECIES_ID(s) == GET_BASE_SPECIES_ID(me))
+            continue;
+        if (FairFoe(s, me, meMega) && FairFoe(megas[0], me, meMega))
+            candidates[count++] = i;
+    }
+    if (count == 0)                         // (nothing fits: any Mega that's no worse than even)
+    {
+        for (i = 0; i < DEX_FORM_COUNT && count < ARRAY_COUNT(candidates); i++)
+        {
+            u32 s = gDexFormSpecies[i];
+            if (s != me && !IsSpecial(s) && IsFullyEvolved(s) && GetMegaStones(s, stones, megas) > 0
+             && TypeOn(GetSpeciesType(s, 0), me) <= UQ_4_12(1.0))
+                candidates[count++] = i;
+        }
+    }
+    picked[MEGA_TEAM - 1] = gDexFormSpecies[candidates[TrialRandom(&seed) % max(count, 1u)]];
+
+    // The other two: fully evolved, not legendary, middling to strong, fair foes, all different (base
+    // forms only: species with many forms - Alcremie, Vivillon - would come up far too often)
+    for (k = 0; k < MEGA_TEAM - 1; k++)
+    {
+        u32 tries;
+        for (tries = 0; tries < 4000; tries++)
+        {
+            u32 s = gDexFormSpecies[TrialRandom(&seed) % DEX_FORM_COUNT];
+            u32 bst = BaseTotal(s), j;
+            bool32 dup = FALSE;
+            if (s == me || s != GET_BASE_SPECIES_ID(s) || IsSpecial(s) || !IsFullyEvolved(s) || bst < 430 || bst > 560
+             || gSpeciesInfo[s].isMegaEvolution || !FairFoe(s, me, meMega))
+                continue;
+            for (j = 0; j < k; j++)
+                dup |= picked[j] == s;
+            if (dup || s == picked[MEGA_TEAM - 1])
+                continue;
+            picked[k] = s;
+            break;
+        }
+        if (tries == 4000)
+            picked[k] = SPECIES_SNORLAX;
+    }
+    for (k = 0; k < MEGA_TEAM; k++)
+    {
+        InitTrialMon(&sAcademyParty[k], picked[k], k == MEGA_TEAM - 1 ? 60 : 55 + TrialRandom(&seed) % 5, &seed);
+        PickMoves(&sAcademyParty[k], me, meMega);
+    }
+    GetMegaStones(picked[MEGA_TEAM - 1], stones, NULL);
+    sAcademyParty[MEGA_TEAM - 1].heldItem = stones[0];
+}
+
+static bool32 HasItemAnywhere(u32 item)
+{
+    u32 i;
+    if (CheckBagHasItem(item, 1))
+        return TRUE;
+    for (i = 0; i < PARTY_SIZE; i++)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM) == item)
+            return TRUE;
+    return FALSE;
+}
+
+// Special: VAR_0x8004 = a party slot. VAR_RESULT: 0 it can't Mega Evolve (MEGA_TRIAL_DRAGON_ASCENT if
+// it's Rayquaza: no stone needed), 1 or 2 stones (STR_VAR_1/2 their names; VAR_0x8005/6 the items),
+// MEGA_TRIAL_HAS_ALL if the player has them all already. STR_VAR_3 = the Pokémon's name.
+void Academy_MegaTrialCheck(void)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][min(gSpecialVar_0x8004, PARTY_SIZE - 1)];
+    u32 species = GetMonData(mon, MON_DATA_SPECIES), n, i, missing = 0;
+    u16 stones[2] = {0};
+    GetMonNickname(mon, gStringVar3);
+    gSpecialVar_Result = 0;
+    if (GetMonData(mon, MON_DATA_IS_EGG) || species == SPECIES_NONE)
+        return;
+    if (GET_BASE_SPECIES_ID(species) == SPECIES_RAYQUAZA)
+    {
+        gSpecialVar_Result = MEGA_TRIAL_DRAGON_ASCENT;
+        return;
+    }
+    n = GetMegaStones(species, stones, NULL);
+    sTrialStones[0] = stones[0];
+    sTrialStones[1] = stones[1];
+    for (i = 0; i < n; i++)
+    {
+        CopyItemName(stones[i], i == 0 ? gStringVar1 : gStringVar2);
+        missing += !HasItemAnywhere(stones[i]);
+    }
+    gSpecialVar_0x8005 = stones[0];
+    gSpecialVar_0x8006 = stones[1];
+    gSpecialVar_Result = (n > 0 && missing == 0) ? MEGA_TRIAL_HAS_ALL : n;
+}
+
+// Special: VAR_0x8004 = the party slot, VAR_0x8005 = the stone chosen. The player's party steps
+// aside: that one Pokémon, holding the stone, is all they have. Primrose's team is set up.
+// STR_VAR_1 = the stone's name
+void Academy_MegaTrialBegin(void)
+{
+    u32 slot = min(gSpecialVar_0x8004, PARTY_SIZE - 1), stone = gSpecialVar_0x8005;
+    struct Pokemon mon = gParties[B_TRAINER_PLAYER][slot];
+    u32 species = GetMonData(&mon, MON_DATA_SPECIES);
+
+    if (!sRenting)
+    {
+        memcpy(sSavedParty, gParties[B_TRAINER_PLAYER], sizeof(sSavedParty));
+        sSavedPartyCount = gPartiesCount[B_TRAINER_PLAYER];
+        sRenting = TRUE;
+    }
+    ZeroPlayerPartyMons();
+    gParties[B_TRAINER_PLAYER][0] = mon;
+    SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HELD_ITEM, &stone);
+    HealPokemon(&gParties[B_TRAINER_PLAYER][0]);
+    gPartiesCount[B_TRAINER_PLAYER] = 1;
+
+    BuildMegaTrialTeam(species, stone);
+    GymChallenge_SetupGauntlet(TRAINER_CLASS_INSTRUCTOR, TRAINER_PIC_LADY_FRLG, TRUE, COMPOUND_STRING("PRIMROSE"),
+                               sAcademyParty, MEGA_TEAM,
+                               COMPOUND_STRING("Show me the bond that stone\nis waiting to see!"),
+                               COMPOUND_STRING("It has chosen you both."),
+                               COMPOUND_STRING("It has chosen you both."),
+                               COMPOUND_STRING("Not yet. The stone waits\nfor you."));
+    GymChallenge_SetPracticeAI(AI_FLAG_SMART_TRAINER);
+    CopyItemName(stone, gStringVar1);
+}
+
+// Special: VAR_0x8004 = which of the two stones (0 or 1) -> VAR_0x8005; VAR_RESULT = whether the
+// player has it already
+void Academy_MegaTrialPickStone(void)
+{
+    gSpecialVar_0x8005 = sTrialStones[min(gSpecialVar_0x8004, 1)];
+    gSpecialVar_Result = HasItemAnywhere(gSpecialVar_0x8005);
+}
+
+// (tests: Primrose's team for a Pokémon and stone)
+const struct TrainerMon *Academy_MegaTrialTeam(u32 species, u32 stone)
+{
+    BuildMegaTrialTeam(species, stone);
+    return sAcademyParty;
+}
+
+// (tests: is `opp` a fair foe for `me`/`meMega`)
+bool32 Academy_MegaTrialFair(u32 opp, u32 me, u32 meMega)
+{
+    return FairFoe(opp, me, meMega);
+}

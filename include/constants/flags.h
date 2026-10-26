@@ -2664,6 +2664,7 @@
 #define FLAG_HIDE_ACADEMY_MENTOR              0x3C5   // (the mentor, on Route 11 and the campus: set outside the scene)
 #define FLAG_HIDE_ACADEMY_WELCOME             0x3C6   // (the headmaster at the campus gate: set outside the welcome)
 #define FLAG_ACADEMY_LECTURE_FIRST            0x3C7   // (to 0x3CE: each lecture heard once)
+#define FLAG_GOT_MEGA_BRACELET                0x3CF   // (from the Academy's headmaster after the 8th badge: Mega Evolution, the Mega room)
 #define FLAG_GYM_PLATE_FOUND_FIRST            0x3A4   // (+ type, to 0x3A4 + NUMBER_OF_MON_TYPES - 1): Arceus's plates found in the gym
 // (hidden items: flags from FLAG_HIDDEN_ITEMS_START, 0x3E8, on)
 #define FLAG_EXOTIC_HIDDEN_BUG_MEMORY       0x4CD

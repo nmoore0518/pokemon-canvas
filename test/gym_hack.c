@@ -2424,3 +2424,56 @@ TEST("GymHack: the TEAM BUILDER's saved teams start empty")
     TeamBuilder_Validate();
     EXPECT_EQ(gExtraSave.teams.teams[3].species[2], SPECIES_PIKACHU);
 }
+
+// Primrose's Mega trials: for every stone, three Pokémon at 55-60, her Mega last holding its stone,
+// none of them with a type or move that hits the player's Pokémon (or its Mega) super effectively
+TEST("GymHack: Mega trial teams are fair to the Pokemon taking the trial")
+{
+    u32 species, checked = 0;
+    for (species = 1; species < NUM_SPECIES; species++)
+    {
+        const struct FormChange *fc;
+        if (!IsSpeciesEnabled(species))
+            continue;
+        fc = GetSpeciesFormChanges(species);
+        if (gSpeciesInfo[species].isMegaEvolution || fc == NULL)
+            continue;
+        for (; fc->method != FORM_CHANGE_TERMINATOR; fc++)
+        {
+            const struct TrainerMon *team;
+            u32 k, m, mega = fc->targetSpecies, stone = fc->param1;
+            if (fc->method != FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM)
+                continue;
+            team = Academy_MegaTrialTeam(species, stone);
+            checked++;
+            EXPECT_EQ(team[2].lvl, 60);
+            EXPECT_NE(team[2].heldItem, ITEM_NONE);
+            for (k = 0; k < 3; k++)
+            {
+                u32 lvl = team[k].lvl;
+                EXPECT_GE(lvl, 55);
+                EXPECT_LE(lvl, 60);
+                EXPECT_NE(team[k].species, species);
+                for (m = 0; m < MAX_MON_MOVES; m++)
+                {
+                    u32 move = team[k].moves[m], type;
+                    uq4_12_t a, b;
+                    if (move == MOVE_NONE || GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS)
+                        continue;
+                    type = GetMoveType(move);
+                    a = GetTypeModifier(type, GetSpeciesType(mega, 0));
+                    if (GetSpeciesType(mega, 1) != GetSpeciesType(mega, 0))
+                        a = uq4_12_multiply(a, GetTypeModifier(type, GetSpeciesType(mega, 1)));
+                    b = GetTypeModifier(type, GetSpeciesType(species, 0));
+                    if (GetSpeciesType(species, 1) != GetSpeciesType(species, 0))
+                        b = uq4_12_multiply(b, GetTypeModifier(type, GetSpeciesType(species, 1)));
+                    EXPECT_LE(a, UQ_4_12(1.0));
+                    EXPECT_LE(b, UQ_4_12(1.0));
+                }
+            }
+            EXPECT(Academy_MegaTrialFair(team[0].species, species, mega));
+            EXPECT(Academy_MegaTrialFair(team[1].species, species, mega));
+        }
+    }
+    EXPECT_GE(checked, 90);
+}

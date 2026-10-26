@@ -711,6 +711,9 @@ gSpecials::
 	def_special Academy_SetupHallBattle
 	def_special Academy_HallWin
 	def_special Academy_SetupTeacher
+	def_special Academy_MegaTrialCheck
+	def_special Academy_MegaTrialBegin
+	def_special Academy_MegaTrialPickStone
 	def_special Academy_OpenTeamBuilder, waitstate=1
 	def_special Convention_PushHalls
 	def_special Convention_BufferProgress

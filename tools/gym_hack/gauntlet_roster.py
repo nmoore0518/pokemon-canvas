@@ -54,12 +54,12 @@ ROSTER = {
     "Magnezone @ Choice Specs: Thunderbolt / Flash Cannon / Volt Switch / Body Press",
     "Gengar @ Life Orb: Shadow Ball / Sludge Wave / Focus Blast / Nasty Plot",
     "Alakazam @ Focus Sash: Psychic / Shadow Ball / Focus Blast / Nasty Plot",
-    "Feraligatr @ Life Orb: Liquidation / Ice Punch / Crunch / Dragon Dance",
+    "Feraligatr @ Feraligite: Liquidation / Ice Punch / Crunch / Dragon Dance",
 ], ("Tch. I don't care who's paying. I came to see if you're really as strong as they say.",
     "...Fine. You're strong.", "I've been learning to trust my POKéMON. Looks like you never had to learn that.",
     "Strength is all that matters. Remember that.")),
 "lyra": T("LYRA", "ELM'S ASSISTANT", "JOHTO", "HEARTGOLD/SOULSILVER", True, "rogue:lyra_front_pic.png", "OBJ_EVENT_GFX_LASS", [
-    "Meganium @ Leftovers: Giga Drain / Earth Power / Leech Seed / Synthesis",
+    "Meganium @ Meganiumite: Giga Drain / Earth Power / Leech Seed / Synthesis",
     "Marill @ Choice Band: Aqua Jet / Play Rough / Liquidation / Superpower",
     "Togekiss @ Leftovers: Air Slash / Dazzling Gleam / Nasty Plot / Roost",
     "Ampharos @ Life Orb: Thunderbolt / Dragon Pulse / Focus Blast / Volt Switch",
@@ -72,7 +72,7 @@ ROSTER = {
     "Typhlosion @ Choice Scarf: Eruption / Fire Blast / Focus Blast / Extrasensory",
     "Ursaring @ Flame Orb: Facade / Close Combat / Crunch / Swords Dance",
     "Lugia @ Leftovers: Aeroblast / Psychic / Calm Mind / Roost",
-    "Heracross @ Flame Orb: Close Combat / Megahorn / Facade / Knock Off",
+    "Heracross @ Heracronite: Close Combat / Megahorn / Facade / Knock Off",
     "Kingdra @ Life Orb: Draco Meteor / Surf / Hurricane / Rain Dance",
     "Pikachu @ Light Ball: Volt Tackle / Iron Tail / Extreme Speed / Knock Off",
 ], ("The guy in the hood said there's a trainer who mastered every type. I had to see it!",
@@ -130,7 +130,7 @@ ROSTER = {
     "Fooled you!")),
 # ---------------------------------------------------------------- Hoenn
 "may": T("MAY", "HOENN RIVAL", "HOENN", "RUBY/SAPPHIRE", True, "TRAINER_PIC_MAY", "OBJ_EVENT_GFX_RIVAL_MAY_NORMAL", [
-    "Blaziken @ Life Orb: Flare Blitz / Close Combat / Thunder Punch / Swords Dance",
+    "Blaziken @ Blazikenite: Flare Blitz / Close Combat / Thunder Punch / Swords Dance",
     "Swampert @ Leftovers: Earthquake / Waterfall / Ice Beam / Stealth Rock",
     "Sceptile @ Choice Specs: Leaf Storm / Dragon Pulse / Focus Blast / Earth Power",
     "Latias @ Soul Dew: Draco Meteor / Psychic / Calm Mind / Recover",
@@ -140,7 +140,7 @@ ROSTER = {
     "Wow! The data says you're just... really good!", "I'll write this up for Dad. Title: 'Unbeatable?'",
     "Ha! I'll tell Dad about this one!")),
 "brendan": T("BRENDAN", "HOENN RIVAL", "HOENN", "RUBY/SAPPHIRE", False, "TRAINER_PIC_BRENDAN", "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL", [
-    "Sceptile @ Life Orb: Leaf Blade / Earthquake / Dragon Claw / Swords Dance",
+    "Sceptile @ Sceptilite: Leaf Blade / Earthquake / Dragon Claw / Swords Dance",
     "Swampert @ Leftovers: Earthquake / Waterfall / Ice Punch / Stealth Rock",
     "Blaziken @ Choice Band: Flare Blitz / Close Combat / Brave Bird / Knock Off",
     "Latios @ Soul Dew: Draco Meteor / Psychic / Calm Mind / Recover",
@@ -150,7 +150,7 @@ ROSTER = {
     "Hah... you've got me beat.", "I'll be back with a better team. That's a promise.",
     "Not bad for a researcher's kid, huh?")),
 "wally": T("WALLY", "HOENN'S RISING STAR", "HOENN", "RUBY/SAPPHIRE", False, "TRAINER_PIC_WALLY", "OBJ_EVENT_GFX_WALLY", [
-    "Gallade @ Life Orb: Sacred Sword / Psycho Cut / Shadow Sneak / Swords Dance",
+    "Gallade @ Galladite: Sacred Sword / Psycho Cut / Shadow Sneak / Swords Dance",
     "Altaria @ Leftovers: Dragon Dance / Earthquake / Fire Blast / Roost",
     "Delcatty @ Silk Scarf: Double-Edge / Wild Charge / Fake Out / Sucker Punch",
     "Roserade @ Life Orb: Leaf Storm / Sludge Bomb / Shadow Ball / Spikes",
@@ -160,7 +160,7 @@ ROSTER = {
     "I still have so far to go...", "Thank you. Battling you makes me want to keep climbing.",
     "I did it! Did you see, Gallade?")),
 "zinnia": T("ZINNIA", "THE LOREKEEPER", "HOENN", "OMEGA RUBY/ALPHA SAPPHIRE", True, "smogon:" + ORAS + "Zinnia.png", "OBJ_EVENT_GFX_COOLTRAINER_F", [
-    "Salamence @ Life Orb: Draco Meteor / Fire Blast / Earthquake / Roost",
+    "Salamence @ Salamencite: Draco Meteor / Fire Blast / Earthquake / Roost",
     "Goodra @ Assault Vest: Draco Meteor / Fire Blast / Sludge Bomb / Thunderbolt",
     "Tyranitar @ Leftovers: Stone Edge / Crunch / Earthquake / Dragon Dance",
     "Altaria @ Leftovers: Dragon Dance / Earthquake / Fire Blast / Roost",
@@ -170,7 +170,7 @@ ROSTER = {
     "Hah! The sky really is yours today.", "Aster would've liked you. Little Whismur too.",
     "Shine on, Rayquaza!")),
 "maxie": T("MAXIE", "TEAM MAGMA LEADER", "HOENN", "RUBY/SAPPHIRE", False, "TRAINER_PIC_MAGMA_LEADER_MAXIE", "OBJ_EVENT_GFX_MAXIE", [
-    "Camerupt @ Leftovers: Earth Power / Fire Blast / Stealth Rock / Will-O-Wisp",
+    "Camerupt @ Cameruptite: Earth Power / Fire Blast / Stealth Rock / Will-O-Wisp",
     "Weezing @ Black Sludge: Sludge Bomb / Will-O-Wisp / Fire Blast / Pain Split",
     "Crobat @ Leftovers: Brave Bird / Cross Poison / U-turn / Roost",
     "Mightyena @ Life Orb: Crunch / Sucker Punch / Play Rough / Fire Fang",
@@ -200,7 +200,7 @@ ROSTER = {
     "Ahahaha... Error. Error.", "I want to see you... again. And again.",
     "Fun... Ahahaha!")),
 "archie": T("ARCHIE", "TEAM AQUA LEADER", "HOENN", "RUBY/SAPPHIRE", False, "TRAINER_PIC_AQUA_LEADER_ARCHIE", "OBJ_EVENT_GFX_ARCHIE", [
-    "Sharpedo @ Life Orb: Waterfall / Crunch / Close Combat / Protect",
+    "Sharpedo @ Sharpedonite: Waterfall / Crunch / Close Combat / Protect",
     "Crawdaunt @ Life Orb: Crabhammer / Knock Off / Aqua Jet / Swords Dance",
     "Muk @ Black Sludge: Gunk Shot / Drain Punch / Knock Off / Shadow Sneak",
     "Mightyena @ Choice Band: Crunch / Sucker Punch / Play Rough / Fire Fang",
@@ -311,7 +311,7 @@ ROSTER = {
 "dawn": T("DAWN", "ROWAN'S ASSISTANT", "SINNOH", "DIAMOND/PEARL", True, "rogue:dawn_front_pic.png", "OBJ_EVENT_GFX_LASS", [
     "Piplup @ Eviolite: Scald / Ice Beam / Stealth Rock / Roost",
     "Togekiss @ Leftovers: Air Slash / Dazzling Gleam / Nasty Plot / Roost",
-    "Lopunny @ Life Orb: Return / High Jump Kick / Fake Out / Ice Punch",
+    "Lopunny @ Lopunnite: Return / High Jump Kick / Fake Out / Ice Punch",
     "Mamoswine @ Life Orb: Earthquake / Icicle Crash / Ice Shard / Knock Off",
     "Pachirisu @ Leftovers: Super Fang / Nuzzle / U-turn / Protect",
     "Empoleon @ Choice Specs: Hydro Pump / Flash Cannon / Ice Beam / Grass Knot",
@@ -329,7 +329,7 @@ ROSTER = {
     "Your team's entries are... incredible.", "I'll keep researching. You keep battling.",
     "Data collected!")),
 "riley": T("RILEY", "AURA GUARDIAN", "SINNOH", "DIAMOND/PEARL", False, "pr:riley", "OBJ_EVENT_GFX_COOLTRAINER_M", [
-    "Lucario @ Life Orb: Close Combat / Meteor Mash / Extreme Speed / Swords Dance",
+    "Lucario @ Lucarionite: Close Combat / Meteor Mash / Extreme Speed / Swords Dance",
     "Steelix @ Leftovers: Heavy Slam / Earthquake / Stealth Rock / Roar",
     "Metagross @ Life Orb: Meteor Mash / Zen Headbutt / Earthquake / Bullet Punch",
     "Weavile @ Choice Band: Knock Off / Ice Shard / Triple Axel / Low Kick",
@@ -521,7 +521,7 @@ ROSTER = {
     "Yeah! Gramps would be proud!")),
 # ---------------------------------------------------------------- Kalos
 "serena": T("SERENA", "KALOS RIVAL", "KALOS", "X/Y", True, "rogue:serena_front_pic.png", "OBJ_EVENT_GFX_COOLTRAINER_F", [
-    "Delphox @ Choice Specs: Fire Blast / Psyshock / Shadow Ball / Dazzling Gleam",
+    "Delphox @ Delphoxite: Fire Blast / Psyshock / Shadow Ball / Dazzling Gleam",
     "Absol @ Life Orb: Knock Off / Sucker Punch / Swords Dance / Play Rough",
     "Clefable @ Leftovers: Moonblast / Flamethrower / Soft-Boiled / Calm Mind",
     "Meowstic @ Light Clay: Reflect / Light Screen / Psychic / Thunder Wave",
@@ -532,7 +532,7 @@ ROSTER = {
     "Finally! I did it!")),
 "calem": T("CALEM", "KALOS RIVAL", "KALOS", "X/Y", False, "rogue:calem_front_pic.png", "OBJ_EVENT_GFX_COOLTRAINER_M", [
     "Chesnaught @ Leftovers: Body Press / Wood Hammer / Spiky Shield / Spikes",
-    "Greninja @ Life Orb: Hydro Pump / Dark Pulse / Ice Beam / Gunk Shot",
+    "Greninja @ Greninjite: Hydro Pump / Dark Pulse / Ice Beam / Gunk Shot",
     "Absol @ Life Orb: Knock Off / Sucker Punch / Swords Dance / Play Rough",
     "Altaria @ Leftovers: Dragon Dance / Earthquake / Fire Blast / Roost",
     "Talonflame @ Heavy-Duty Boots: Brave Bird / Flare Blitz / U-turn / Swords Dance",
@@ -571,7 +571,7 @@ ROSTER = {
     "As statistics predicted...", "I'll update the Pokédex. Entry: you. Danger level: maximum.",
     "The 3%! It happened!")),
 "lysandre": T("LYSANDRE", "TEAM FLARE BOSS", "KALOS", "X/Y", False, "rogue:team/flare_lysandre_front_pic.png", "rogue:rogue/npc/team/flare_lysander.png", [
-    "Gyarados @ Leftovers: Waterfall / Earthquake / Dragon Dance / Ice Fang",
+    "Gyarados @ Gyaradosite: Waterfall / Earthquake / Dragon Dance / Ice Fang",
     "Pyroar @ Choice Specs: Fire Blast / Hyper Voice / Dark Pulse / Will-O-Wisp",
     "Honchkrow @ Black Glasses: Sucker Punch / Brave Bird / Superpower / Heat Wave",
     "Mienshao @ Life Orb: High Jump Kick / U-turn / Knock Off / Fake Out",
@@ -692,7 +692,7 @@ ROSTER = {
     "Unthinkable! I am a GENIUS!", "This never happened. Understood?",
     "Genius prevails!")),
 "guzma": T("GUZMA", "TEAM SKULL BOSS", "ALOLA", "SUN/MOON", False, "pr:guzma", "OBJ_EVENT_GFX_COOLTRAINER_M", [
-    "Golisopod @ Leftovers: First Impression / Liquidation / Leech Life / Knock Off",
+    "Golisopod @ Golisopite: First Impression / Liquidation / Leech Life / Knock Off",
     "Masquerain @ Focus Sash: Quiver Dance / Bug Buzz / Hurricane / Sticky Web",
     "Pinsir @ Life Orb: X-Scissor / Close Combat / Earthquake / Swords Dance",
     "Scizor @ Choice Band: Bullet Punch / U-turn / Knock Off / Superpower",
@@ -756,7 +756,7 @@ ROSTER = {
 "arven": T("ARVEN", "PATH OF LEGENDS", "PALDEA", "SCARLET/VIOLET", False, "rogue:rival/arven.png", "rogue:rogue/npc/rival/arven.png", [
     "Mabosstiff @ Leftovers: Crunch / Play Rough / Psychic Fangs / Wild Charge",
     "Garganacl @ Leftovers: Salt Cure / Recover / Body Press / Iron Defense",
-    "Scovillain @ Life Orb: Flamethrower / Energy Ball / Crunch / Leech Seed",
+    "Scovillain @ Scovillainite: Flamethrower / Energy Ball / Crunch / Leech Seed",
     "Toedscruel @ Focus Sash: Spore / Earth Power / Giga Drain / Rapid Spin",
     "Cloyster @ King's Rock: Shell Smash / Icicle Spear / Rock Blast / Hydro Pump",
     "Greedent @ Leftovers: Body Slam / Swords Dance / Earthquake / Seed Bomb",

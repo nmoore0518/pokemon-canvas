@@ -65,6 +65,11 @@
 #define ACADEMY_ESCORT          2   // (at the gap in the trees, with the mentor)
 #define ACADEMY_WELCOME         3   // (on the campus: the headmaster's welcome plays)
 #define ACADEMY_ADMITTED        4
+#define ACADEMY_BRACELET_CALL   5   // (8 badges: the headmaster calls the player over as they come into the hall)
+#define ACADEMY_BRACELET_GIVE   6   // (at her desk: the Mega Bracelet)
+// Academy_MegaTrialCheck's VAR_RESULT, besides 0-2 stones
+#define MEGA_TRIAL_HAS_ALL      3
+#define MEGA_TRIAL_DRAGON_ASCENT 4
 
 #define JOHTO_NOT_INVITED       0
 #define JOHTO_INVITE_WAITING    1   // (after the gym's handed over: the mentor brings it next visit)

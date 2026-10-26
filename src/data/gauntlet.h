@@ -215,7 +215,7 @@ static const struct TrainerMon sGauntletParty_silver[] = {
     {
         .species = SPECIES_FERALIGATR,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_FERALIGITE,
         .moves = {MOVE_LIQUIDATION, MOVE_ICE_PUNCH, MOVE_CRUNCH, MOVE_DRAGON_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -230,7 +230,7 @@ static const struct TrainerMon sGauntletParty_lyra[] = {
     {
         .species = SPECIES_MEGANIUM,
         .lvl = 100,
-        .heldItem = ITEM_LEFTOVERS,
+        .heldItem = ITEM_MEGANIUMITE,
         .moves = {MOVE_GIGA_DRAIN, MOVE_EARTH_POWER, MOVE_LEECH_SEED, MOVE_SYNTHESIS},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
@@ -341,7 +341,7 @@ static const struct TrainerMon sGauntletParty_ethan[] = {
     {
         .species = SPECIES_HERACROSS,
         .lvl = 100,
-        .heldItem = ITEM_FLAME_ORB,
+        .heldItem = ITEM_HERACRONITE,
         .moves = {MOVE_CLOSE_COMBAT, MOVE_MEGAHORN, MOVE_FACADE, MOVE_KNOCK_OFF},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -755,7 +755,7 @@ static const struct TrainerMon sGauntletParty_may[] = {
     {
         .species = SPECIES_BLAZIKEN,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_BLAZIKENITE,
         .moves = {MOVE_FLARE_BLITZ, MOVE_CLOSE_COMBAT, MOVE_THUNDER_PUNCH, MOVE_SWORDS_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -830,7 +830,7 @@ static const struct TrainerMon sGauntletParty_brendan[] = {
     {
         .species = SPECIES_SCEPTILE,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_SCEPTILITE,
         .moves = {MOVE_LEAF_BLADE, MOVE_EARTHQUAKE, MOVE_DRAGON_CLAW, MOVE_SWORDS_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -905,7 +905,7 @@ static const struct TrainerMon sGauntletParty_wally[] = {
     {
         .species = SPECIES_GALLADE,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_GALLADITE,
         .moves = {MOVE_SACRED_SWORD, MOVE_PSYCHO_CUT, MOVE_SHADOW_SNEAK, MOVE_SWORDS_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -980,7 +980,7 @@ static const struct TrainerMon sGauntletParty_zinnia[] = {
     {
         .species = SPECIES_SALAMENCE,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_SALAMENCITE,
         .moves = {MOVE_DRACO_METEOR, MOVE_FIRE_BLAST, MOVE_EARTHQUAKE, MOVE_ROOST},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
@@ -1055,7 +1055,7 @@ static const struct TrainerMon sGauntletParty_maxie[] = {
     {
         .species = SPECIES_CAMERUPT,
         .lvl = 100,
-        .heldItem = ITEM_LEFTOVERS,
+        .heldItem = ITEM_CAMERUPTITE,
         .moves = {MOVE_EARTH_POWER, MOVE_FIRE_BLAST, MOVE_STEALTH_ROCK, MOVE_WILL_O_WISP},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
@@ -1280,7 +1280,7 @@ static const struct TrainerMon sGauntletParty_archie[] = {
     {
         .species = SPECIES_SHARPEDO,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_SHARPEDONITE,
         .moves = {MOVE_WATERFALL, MOVE_CRUNCH, MOVE_CLOSE_COMBAT, MOVE_PROTECT},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -2129,7 +2129,7 @@ static const struct TrainerMon sGauntletParty_dawn[] = {
     {
         .species = SPECIES_LOPUNNY,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_LOPUNNITE,
         .moves = {MOVE_RETURN, MOVE_HIGH_JUMP_KICK, MOVE_FAKE_OUT, MOVE_ICE_PUNCH},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -2255,7 +2255,7 @@ static const struct TrainerMon sGauntletParty_riley[] = {
     {
         .species = SPECIES_LUCARIO,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_LUCARIONITE,
         .moves = {MOVE_CLOSE_COMBAT, MOVE_METEOR_MASH, MOVE_EXTREME_SPEED, MOVE_SWORDS_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -3680,7 +3680,7 @@ static const struct TrainerMon sGauntletParty_serena[] = {
     {
         .species = SPECIES_DELPHOX,
         .lvl = 100,
-        .heldItem = ITEM_CHOICE_SPECS,
+        .heldItem = ITEM_DELPHOXITE,
         .moves = {MOVE_FIRE_BLAST, MOVE_PSYSHOCK, MOVE_SHADOW_BALL, MOVE_DAZZLING_GLEAM},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
@@ -3767,7 +3767,7 @@ static const struct TrainerMon sGauntletParty_calem[] = {
     {
         .species = SPECIES_GRENINJA,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_GRENINJITE,
         .moves = {MOVE_HYDRO_PUMP, MOVE_DARK_PULSE, MOVE_ICE_BEAM, MOVE_GUNK_SHOT},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
@@ -4055,7 +4055,7 @@ static const struct TrainerMon sGauntletParty_lysandre[] = {
     {
         .species = SPECIES_GYARADOS,
         .lvl = 100,
-        .heldItem = ITEM_LEFTOVERS,
+        .heldItem = ITEM_GYARADOSITE,
         .moves = {MOVE_WATERFALL, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE, MOVE_ICE_FANG},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -4955,7 +4955,7 @@ static const struct TrainerMon sGauntletParty_guzma[] = {
     {
         .species = SPECIES_GOLISOPOD,
         .lvl = 100,
-        .heldItem = ITEM_LEFTOVERS,
+        .heldItem = ITEM_GOLISOPITE,
         .moves = {MOVE_FIRST_IMPRESSION, MOVE_LIQUIDATION, MOVE_LEECH_LIFE, MOVE_KNOCK_OFF},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -5429,7 +5429,7 @@ static const struct TrainerMon sGauntletParty_arven[] = {
     {
         .species = SPECIES_SCOVILLAIN,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_SCOVILLAINITE,
         .moves = {MOVE_FLAMETHROWER, MOVE_ENERGY_BALL, MOVE_CRUNCH, MOVE_LEECH_SEED},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),

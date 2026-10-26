@@ -711,7 +711,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          - Pecharunt: the Loyal Three caught
          - Terapagos: every gym type mastered (`FLAG_GYM_TYPE_MASTERED` + type, set by the mastery
            battle; the gym's last type now has a mastery battle too, and Oak's visit after it hints
-           at the crater). Arceus (later) will wait for the same.
+           at the crater). Arceus (Sinnoh) waits for the same.
          Okidogi, Munkidori and Fezandipiti ROAM: each time the player enters an area, each uncaught
          one is there with a 1 in 8 chance, wandering a random reachable grass/sand/cave spot away
          from the player (`ExoticSafari_AreaOnTransition`, the spots from the builder); battled and
@@ -1037,6 +1037,24 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            (Viridian's classroom layout; A: Larkspur and Camellia, B: Foxglove and Verbena, C:
            Marigold and Hyacinth, D: Yarrow and Tansy). The other interiors are still FireRed's.
            The name pop-up says LEADER ACADEMY. The Pokémon Center sets the respawn to Vermilion's.
+         - MEGA EVOLUTION (v82): after the 8th badge, entering the main hall has the headmaster
+           call the player to her desk and hand over the MEGA BRACELET (`ITEM_MEGA_RING` renamed;
+           `FLAG_GOT_MEGA_BRACELET`). The guard at door M then steps aside: PRIMROSE's room
+           (`LeaderAcademy_MegaRoom`). Her line: a Mega Stone is a witness and only answers a bond
+           it has seen proven, so you earn one by winning a battle with that Pokémon alone.
+           The trial: pick a party Pokémon (two stones like Charizard X/Y: pick one); she lends the
+           stone, the rest of the party is set aside (rental backup), and it fights her 3 Pokémon
+           alone. Win to keep the stone; lose and try again any time. Her teams are generated per
+           stone (`BuildMegaTrialTeam`, `src/leader_academy.c`, seeded by the stone so they never
+           change): levels 55-59 plus a level-60 Mega last; every foe is a fully evolved base form,
+           non-legendary, BST 430-560 for the first two, with no type super effective on the
+           player's Pokémon in either form, and the Mega's STAB at least neutral on them; moves are
+           level-up damaging moves (no OHKO/explosions, nothing super effective) plus one status
+           move. Fixed levels on purpose: over-levelling is the way through. Rayquaza needs no
+           stone (Dragon Ascent); primal orbs work as normal. A test checks every stone's team.
+         - Megas in other teams: 57 Gym Leader Convention trainers hold a Mega Stone (Norman,
+           Misty, Clay and Shauntal added), and 16 Gauntlet trainers (Maxie, Archie, Zinnia, Wally,
+           Lysandre, Serena, Calem, Silver, Lyra, Ethan, Dawn, Riley, Guzma, Arven, Brendan, May).
          - BP: the frontier's `battlePoints`. Earned by beating candidates (1-4 by skill), the
            instructors' demonstrations (3) and Battle Hall streaks (1 + streak/3 a win, +5 at 7).
          - The EXCHANGE: two counters side by side, the same competitive items (Choice items, Life Orb,
@@ -1106,14 +1124,14 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] The Gym Charm (key item, from the mentor with the convention invitation; Oak hands it
          over for older saves): 1 in 250 Pokémon of the gym's current type (primary type) are
          Shiny (`GYM_CHARM_SHINY_ODDS`, `src/pokemon.c`). It follows the gym when it changes type.
-   - [ ] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
+   - [x] A safari zone per region (Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea) where the
          Pokémon past the first 386 can be caught, with puzzles opening sub-areas with legendaries.
          All species through Gen 9 are already in the ROM (the convention and challengers use them)
          and the National Dex already counts 1025; the work is maps, encounter tables (~640
          species, ~30 wild slots per map) and about 70 legendary encounters.
          The 18 gym legendaries (`gGymLegends`) stay gym-only: no safari has them, Koraidon and
          Miraidon included.
-   - [ ] Space: about 4.4 MB of the 32 MB is free (October 2026). Ways to make room:
+   - [ ] Space: about 3.5 MB of the 32 MB is free (late October 2026). Ways to make room:
          - Delete the Sevii Islands (unreachable since the ferry change): ~0.5-0.8 MB (159 map
            layouts ~145 KB, 9 Sevii-only tilesets ~70 KB, their events, trainers, scripts, text).
            Needs care: the trainer table, story flags, Celio and the Ruby/Sapphire quest, and the

@@ -174,6 +174,57 @@ Academy_Text_Student3::
 Academy_Text_TeamBuilderSoon::
 	.string "The TEAM BUILDER is still being\nset up. Check back later!$"
 
+Academy_Text_BraceletCall::
+	.string "WISTERIA: {PLAYER}! A moment, if\nyou please. Come up to my desk.$"
+
+Academy_Text_Bracelet1::
+	.string "WISTERIA: Eight BADGES. Every\nGYM in KANTO. I'd say you've\plearned all a lecture hall can\nteach you.\pBut there's one more thing a GYM\nLEADER should know. Have you\pheard of MEGA EVOLUTION?$"
+
+Academy_Text_Bracelet2::
+	.string "When the bond between a trainer\nand a POKéMON runs deep enough,\pa MEGA STONE and a KEY STONE\ntogether let it change, for one\pbattle, into something far\nstronger.\pThis is my own MEGA BRACELET.\nIts KEY STONE has waited a long\ptime for a trainer worth it.\nTake it.$"
+
+Academy_Text_Bracelet3::
+	.string "The door behind me leads to the\nMEGA EVOLUTION room. PRIMROSE\pkeeps the ACADEMY's MEGA STONES\nthere.\pShe doesn't simply hand them\nout, mind you. A stone has to\pchoose you. She'll explain.$"
+
+Academy_Text_MegaDoorGuard::
+	.string "The MEGA EVOLUTION room is only\nfor trainers who carry a KEY\pSTONE.\pThe headmaster decides who's\nready. Collect all eight of\pKANTO's BADGES, and maybe she'll\ndecide it's you!$"
+
+Academy_Text_MegaKeeperIntro::
+	.string "PRIMROSE: Welcome. I'm PRIMROSE,\nkeeper of the ACADEMY's MEGA\pSTONES.\pA MEGA STONE isn't a tool, you\nsee. It's a witness. It only\panswers to a bond it has seen\nproven with its own eyes.\pSo I lend it to you. Your\nPOKéMON carries it into battle\pagainst my three, with nobody\nelse to lean on.\pWin, and the stone has chosen\nyou both: it's yours. Lose, and\pit comes back to me, and we wait\nuntil you're ready. No shame in\pthat.$"
+
+Academy_Text_MegaKeeperAsk::
+	.string "PRIMROSE: Which POKéMON will\ncarry a stone?$"
+
+Academy_Text_MegaNoStone::
+	.string "PRIMROSE: {STR_VAR_3} doesn't\nMega Evolve. There's no stone\pwaiting for it, I'm afraid.$"
+
+Academy_Text_MegaDragonAscent::
+	.string "PRIMROSE: RAYQUAZA? It needs no\nstone at all.\pIf it knows DRAGON ASCENT, your\nbracelet is all it takes.$"
+
+Academy_Text_MegaHasAll::
+	.string "PRIMROSE: {STR_VAR_3}'s stone\nhas already chosen you. Go and\puse it well!$"
+
+Academy_Text_MegaWhich::
+	.string "PRIMROSE: Two stones answer to\n{STR_VAR_3}. Which one?$"
+
+Academy_Text_MegaHasThis::
+	.string "PRIMROSE: That one's already\nyours. Perhaps the other?$"
+
+Academy_Text_MegaConfirm::
+	.string "PRIMROSE: {STR_VAR_3} alone,\nholding the {STR_VAR_1}, against\pmy three. Ready?$"
+
+Academy_Text_MegaLater::
+	.string "PRIMROSE: The stones will wait.\nThey're good at it.$"
+
+Academy_Text_MegaWon::
+	.string "PRIMROSE: There. Did you feel\nit? The stone has chosen you\pboth.\pThe {STR_VAR_1} is yours to\nkeep.$"
+
+Academy_Text_MegaLost::
+	.string "PRIMROSE: Not this time. The\n{STR_VAR_1} comes back to me.\pTrain, think it over, and come\nback. It'll be here.$"
+
+Academy_Text_MegaPartyBack::
+	.string "Your other POKéMON are back with\nyou.$"
+
 Academy_Text_OptBP::
 	.string "BATTLE POINTS$"
 

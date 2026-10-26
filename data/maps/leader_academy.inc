@@ -10,3 +10,4 @@
 	.include "data/maps/LeaderAcademy_LectureB/scripts.inc"
 	.include "data/maps/LeaderAcademy_LectureC/scripts.inc"
 	.include "data/maps/LeaderAcademy_LectureD/scripts.inc"
+	.include "data/maps/LeaderAcademy_MegaRoom/scripts.inc"

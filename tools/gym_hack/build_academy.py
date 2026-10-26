@@ -205,8 +205,8 @@ def build_campus():
 # The main hall: a library
 # ---------------------------------------------------------------------------------------------
 HW, HH = 25, 17
-HALL_DOORS = {"A": 3, "B": 8, "C": 16, "D": 21}          # x of each lecture hall's door
-HALL_WINDOWS = (6, 12, 18)
+HALL_DOORS = {"A": 3, "B": 8, "C": 16, "D": 21, "M": 12}  # x of each lecture hall's door; M: the Mega room's
+HALL_WINDOWS = (6, 18)
 HALL_MAT = (11, 12, 13)
 
 
@@ -241,8 +241,7 @@ def build_hall():
                 piece, walk = doors[k], True
         if x in HALL_WINDOWS:
             piece = window
-        if x in (HALL_DOORS["A"] - 1, HALL_DOORS["A"] + 1, HALL_DOORS["B"] - 1, HALL_DOORS["B"] + 1,
-                 HALL_DOORS["C"] - 1, HALL_DOORS["C"] + 1, HALL_DOORS["D"] - 1, HALL_DOORS["D"] + 1):
+        if any(x in (dx - 1, dx + 1) for dx in HALL_DOORS.values()):
             piece = wall
         put(x, 0, piece[0][0])
         put(x, 1, piece[1][0], 0 if walk else 1)
@@ -315,6 +314,8 @@ HALL_PEOPLE = [
     ("READER_1", "OBJ_EVENT_GFX_LASS_FRLG", 9, 9, "Academy_EventScript_Reader1", "MOVEMENT_TYPE_FACE_UP"),
     ("READER_2", "OBJ_EVENT_GFX_SCIENTIST", 16, 13, "Academy_EventScript_Reader2", "MOVEMENT_TYPE_FACE_UP"),
 ]
+MEGA_DOOR_GUARD = ("MEGA_DOOR_GUARD", "OBJ_EVENT_GFX_COOLTRAINER_F", 12, 2, "Academy_EventScript_MegaDoorGuard",
+                   "MOVEMENT_TYPE_FACE_DOWN", "FLAG_GOT_MEGA_BRACELET")
 # The lecture halls: (letter, two instructors)
 LECTURES = {
     "A": [("TEACHER_LARKSPUR", "OBJ_EVENT_GFX_GENTLEMAN_FRLG", "Larkspur"), ("TEACHER_CAMELLIA", "OBJ_EVENT_GFX_BEAUTY_FRLG", "Camellia")],
@@ -333,6 +334,8 @@ MAPS = {
     "LeaderAcademy_Exchange": ("LAYOUT_MART_FRLG", "MUS_RG_POKE_CENTER", [(3, 7), (4, 7), (5, 7)], "exchange"),
 }
 LECTURE_MAPS = {k: f"LeaderAcademy_Lecture{k}" for k in LECTURES}
+MEGA_ROOM = "LeaderAcademy_MegaRoom"
+DOOR_MAPS = dict(LECTURE_MAPS, M=MEGA_ROOM)
 INTERIOR_PEOPLE = {
     "LeaderAcademy_Hall": HALL_PEOPLE,
     "LeaderAcademy_PokemonCenter": [
@@ -384,9 +387,12 @@ def write_campus(g, doors):
     for i, m in enumerate(order):
         layout, music, back, _ = MAPS[m]
         ws = [warp(x, y, mid(CAMPUS), i) for (x, y) in back]
-        if m == "LeaderAcademy_Hall":       # (and the lecture halls' doors: warps 3-6)
-            ws += [warp(x, 1, mid(LECTURE_MAPS[k]), 0) for k, x in HALL_DOORS.items()]
+        if m == "LeaderAcademy_Hall":       # (and the lecture halls' doors: warps 3-6; the Mega room's: 7)
+            ws += [warp(x, 1, mid(DOOR_MAPS[k]), 0) for k, x in HALL_DOORS.items()]
         people = [lobj("LOCALID_ACADEMY_" + p[0], p[1], p[2], p[3], p[4], p[5]) for p in INTERIOR_PEOPLE.get(m, [])]
+        if m == "LeaderAcademy_Hall":
+            g_ = MEGA_DOOR_GUARD
+            people.append(lobj("LOCALID_ACADEMY_" + g_[0], g_[1], g_[2], g_[3], g_[4], g_[5], g_[6]))
         write_map(m, mid(m), layout, music, "MAPSEC_ROUTE_11", "MAP_TYPE_INDOOR", people, ws, [], False)
     for n, (k, m) in enumerate(LECTURE_MAPS.items()):
         ws = [warp(x, 7, mid("LeaderAcademy_Hall"), 3 + n) for x in (3, 4, 5)]
@@ -397,6 +403,10 @@ def write_campus(g, doors):
                        f"Academy_EventScript_Lecture{k}Student", "MOVEMENT_TYPE_FACE_UP")]
         write_map(m, mid(m), "LAYOUT_VIRIDIAN_CITY_SCHOOL", "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11", "MAP_TYPE_INDOOR",
                   people, ws, [], False)
+    ws = [warp(x, 7, mid("LeaderAcademy_Hall"), 7) for x in (3, 4, 5)]
+    people = [lobj("LOCALID_ACADEMY_MEGA_KEEPER", "OBJ_EVENT_GFX_WOMAN_1_FRLG", 4, 2, "Academy_EventScript_MegaKeeper")]
+    write_map(MEGA_ROOM, mid(MEGA_ROOM), "LAYOUT_VIRIDIAN_CITY_SCHOOL", "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11",
+              "MAP_TYPE_INDOOR", people, ws, [], False)
 
 
 def write_hall_layout(g):
@@ -436,7 +446,7 @@ def write_route11():
 def write_group():
     gp = ROOT / "data/maps/map_groups.json"
     groups = json.loads(gp.read_text())
-    names = [CAMPUS] + list(MAPS) + list(LECTURE_MAPS.values())
+    names = [CAMPUS] + list(MAPS) + list(LECTURE_MAPS.values()) + [MEGA_ROOM]
     if "gMapGroup_LeaderAcademy" not in groups["group_order"]:
         groups["group_order"].append("gMapGroup_LeaderAcademy")
     groups["gMapGroup_LeaderAcademy"] = names

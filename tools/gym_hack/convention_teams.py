@@ -17,7 +17,7 @@ TEAMS = {
     "Miltank @ Leftovers: Body Slam / Earthquake / Milk Drink / Rollout",
 ],
 "norman": [
-    "Kangaskhan @ Silk Scarf: Double-Edge / Earthquake / Sucker Punch / Fake Out",
+    "Kangaskhan @ Kangaskhanite: Double-Edge / Earthquake / Sucker Punch / Fake Out",
     "Blissey @ Leftovers: Seismic Toss / Soft-Boiled / Toxic / Ice Beam",
     "Ursaring @ Flame Orb: Facade / Close Combat / Crunch / Protect",
     "Linoone @ Life Orb: Extreme Speed / Belly Drum / Shadow Claw / Seed Bomb",
@@ -120,7 +120,7 @@ TEAMS = {
     "Vaporeon @ Leftovers: Scald / Ice Beam / Wish / Protect",
     "Politoed @ Damp Rock: Scald / Ice Beam / Hypnosis / Encore",
     "Gyarados @ Lum Berry: Waterfall / Crunch / Earthquake / Dragon Dance",
-    "Starmie @ Life Orb: Hydro Pump / Psychic / Thunderbolt / Ice Beam",
+    "Starmie @ Starminite: Hydro Pump / Psychic / Thunderbolt / Ice Beam",
 ],
 "juan": [
     "Whiscash @ Leftovers: Earthquake / Waterfall / Stone Edge / Dragon Dance",
@@ -470,7 +470,7 @@ TEAMS = {
     "Gigalith @ Leftovers: Stone Edge / Earthquake / Explosion / Stealth Rock",
     "Seismitoad @ Leftovers: Earth Power / Hydro Pump / Sludge Bomb / Stealth Rock",
     "Krookodile @ Choice Scarf: Earthquake / Knock Off / Stone Edge / Close Combat",
-    "Excadrill @ Life Orb: Earthquake / Iron Head / Rock Slide / Swords Dance",
+    "Excadrill @ Excadrite: Earthquake / Iron Head / Rock Slide / Swords Dance",
 ],
 "hapu": [
     "Dugtrio-Alola @ Focus Sash: Earthquake / Iron Head / Stone Edge / Sucker Punch",
@@ -747,7 +747,7 @@ TEAMS = {
     "Drifblim @ Sitrus Berry: Shadow Ball / Air Slash / Calm Mind / Will-O-Wisp",
     "Golurk @ Life Orb: Earthquake / Poltergeist / Ice Punch / Rock Polish",
     "Banette @ Life Orb: Shadow Claw / Gunk Shot / Knock Off / Shadow Sneak",
-    "Chandelure @ Choice Specs: Fire Blast / Shadow Ball / Energy Ball / Trick",
+    "Chandelure @ Chandelurite: Fire Blast / Shadow Ball / Energy Ball / Trick",
 ],
 # ----------------------------------------------------------------------------- DRAGON
 "clair": [

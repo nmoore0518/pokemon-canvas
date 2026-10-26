@@ -18,5 +18,11 @@ void Academy_TakeRental(void);
 void Academy_SetupHallBattle(void);
 void Academy_HallWin(void);
 void Academy_SetupTeacher(void);
+void Academy_MegaTrialCheck(void);
+void Academy_MegaTrialBegin(void);
+void Academy_MegaTrialPickStone(void);
+struct TrainerMon;
+const struct TrainerMon *Academy_MegaTrialTeam(u32 species, u32 stone);
+bool32 Academy_MegaTrialFair(u32 opp, u32 me, u32 meMega);
 
 #endif // GUARD_LEADER_ACADEMY_H

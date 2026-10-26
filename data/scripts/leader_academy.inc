@@ -593,4 +593,120 @@ Academy_ExchangeItems::
 	.2byte ITEM_SITRUS_BERRY
 	.2byte ITEM_NONE
 
+
+@ ---------------------------------------------------------------------------
+@ Mega Evolution: the headmaster's bracelet (after the 8th badge), Primrose's trials
+@ ---------------------------------------------------------------------------
+Academy_EventScript_HallTransition::
+	goto_if_ne VAR_ACADEMY_STATE, ACADEMY_ADMITTED, Common_EventScript_NopReturn
+	goto_if_unset FLAG_BADGE08_GET, Common_EventScript_NopReturn
+	goto_if_set FLAG_GOT_MEGA_BRACELET, Common_EventScript_NopReturn
+	setvar VAR_ACADEMY_STATE, ACADEMY_BRACELET_CALL
+	return
+
+Academy_EventScript_BraceletCall::
+	lockall
+	playse SE_PIN
+	applymovement LOCALID_ACADEMY_HEADMASTER, Common_Movement_ExclamationMark
+	waitmovement 0
+	msgbox Academy_Text_BraceletCall
+	closemessage
+	fadescreen FADE_TO_BLACK
+	setvar VAR_ACADEMY_STATE, ACADEMY_BRACELET_GIVE
+	warpsilent MAP_LEADER_ACADEMY_HALL, 12, 5
+	waitstate
+	releaseall
+	end
+
+Academy_EventScript_BraceletGive::
+	lockall
+	applymovement LOCALID_PLAYER, Common_Movement_FaceUp
+	waitmovement 0
+	msgbox Academy_Text_Bracelet1
+	msgbox Academy_Text_Bracelet2
+	giveitem ITEM_MEGA_RING
+	setflag FLAG_GOT_MEGA_BRACELET
+	setvar VAR_ACADEMY_STATE, ACADEMY_ADMITTED
+	msgbox Academy_Text_Bracelet3
+	closemessage
+	removeobject LOCALID_ACADEMY_MEGA_DOOR_GUARD
+	releaseall
+	end
+
+Academy_EventScript_MegaDoorGuard::
+	msgbox Academy_Text_MegaDoorGuard, MSGBOX_NPC
+	end
+
+Academy_EventScript_MegaKeeper::
+	lock
+	faceplayer
+	msgbox Academy_Text_MegaKeeperIntro
+Academy_EventScript_MegaKeeperAsk::
+	msgbox Academy_Text_MegaKeeperAsk
+	special ChoosePartyMon
+	goto_if_ge VAR_0x8004, PARTY_SIZE, Academy_EventScript_MegaLater
+	copyvar VAR_0x8008, VAR_0x8004
+	special Academy_MegaTrialCheck
+	switch VAR_RESULT
+	case 0, Academy_EventScript_MegaNoStone
+	case MEGA_TRIAL_DRAGON_ASCENT, Academy_EventScript_MegaDragonAscent
+	case MEGA_TRIAL_HAS_ALL, Academy_EventScript_MegaHasAll
+	case 2, Academy_EventScript_MegaWhich
+	setvar VAR_0x8004, 0
+	goto Academy_EventScript_MegaPicked
+
+Academy_EventScript_MegaWhich::
+	message Academy_Text_MegaWhich
+	waitmessage
+	dynmultichoice 0, 0, FALSE, 2, 0, DYN_MULTICHOICE_CB_NONE, gStringVar1, gStringVar2
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, Academy_EventScript_MegaLater
+	copyvar VAR_0x8004, VAR_RESULT
+Academy_EventScript_MegaPicked::
+	special Academy_MegaTrialPickStone
+	goto_if_eq VAR_RESULT, TRUE, Academy_EventScript_MegaHasThis
+	copyvar VAR_0x8009, VAR_0x8005
+	bufferitemname STR_VAR_1, VAR_0x8009
+	msgbox Academy_Text_MegaConfirm, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Academy_EventScript_MegaLater
+	copyvar VAR_0x8004, VAR_0x8008
+	copyvar VAR_0x8005, VAR_0x8009
+	special Academy_MegaTrialBegin
+	msgbox gGymChallengeIntroText
+	closemessage
+	call Academy_EventScript_Battle
+	copyvar VAR_0x8008, VAR_RESULT
+	special Academy_RentalEnd
+	bufferitemname STR_VAR_1, VAR_0x8009
+	goto_if_ne VAR_0x8008, B_OUTCOME_WON, Academy_EventScript_MegaLost
+	msgbox Academy_Text_MegaWon
+	giveitem VAR_0x8009
+	msgbox Academy_Text_MegaPartyBack
+	release
+	end
+
+Academy_EventScript_MegaLost::
+	msgbox Academy_Text_MegaLost
+	msgbox Academy_Text_MegaPartyBack
+	release
+	end
+
+Academy_EventScript_MegaNoStone::
+	msgbox Academy_Text_MegaNoStone
+	goto Academy_EventScript_MegaKeeperAsk
+Academy_EventScript_MegaDragonAscent::
+	msgbox Academy_Text_MegaDragonAscent
+	release
+	end
+Academy_EventScript_MegaHasAll::
+	msgbox Academy_Text_MegaHasAll
+	release
+	end
+Academy_EventScript_MegaHasThis::
+	msgbox Academy_Text_MegaHasThis
+	goto Academy_EventScript_MegaWhich
+Academy_EventScript_MegaLater::
+	msgbox Academy_Text_MegaLater
+	release
+	end
+
 	.include "data/scripts/leader_academy_text.inc"

@@ -248,6 +248,45 @@ T["Student3"] = "A GOLD BOTTLE CAP maxes every stat at once. The candidates go c
 T["TeamBuilderSoon"] = "The TEAM BUILDER is still being set up. Check back later!"
 
 
+# ---------------------------------------------------------------- Mega Evolution (after the 8th badge)
+T["BraceletCall"] = "WISTERIA: {PLAYER}! A moment, if you please. Come up to my desk."
+T["Bracelet1"] = """WISTERIA: Eight BADGES. Every GYM in KANTO. I'd say you've learned all a lecture hall can teach you.
+
+But there's one more thing a GYM LEADER should know. Have you heard of MEGA EVOLUTION?"""
+T["Bracelet2"] = """When the bond between a trainer and a POKéMON runs deep enough, a MEGA STONE and a KEY STONE together let it change, for one battle, into something far stronger.
+
+This is my own MEGA BRACELET. Its KEY STONE has waited a long time for a trainer worth it. Take it."""
+T["Bracelet3"] = """The door behind me leads to the MEGA EVOLUTION room. PRIMROSE keeps the ACADEMY's MEGA STONES there.
+
+She doesn't simply hand them out, mind you. A stone has to choose you. She'll explain."""
+T["MegaDoorGuard"] = """The MEGA EVOLUTION room is only for trainers who carry a KEY STONE.
+
+The headmaster decides who's ready. Collect all eight of KANTO's BADGES, and maybe she'll decide it's you!"""
+T["MegaKeeperIntro"] = """PRIMROSE: Welcome. I'm PRIMROSE, keeper of the ACADEMY's MEGA STONES.
+
+A MEGA STONE isn't a tool, you see. It's a witness. It only answers to a bond it has seen proven with its own eyes.
+
+So I lend it to you. Your POKéMON carries it into battle against my three, with nobody else to lean on.
+
+Win, and the stone has chosen you both: it's yours. Lose, and it comes back to me, and we wait until you're ready. No shame in that."""
+T["MegaKeeperAsk"] = "PRIMROSE: Which POKéMON will carry a stone?"
+T["MegaNoStone"] = "PRIMROSE: {STR_VAR_3} doesn't Mega Evolve. There's no stone waiting for it, I'm afraid."
+T["MegaDragonAscent"] = """PRIMROSE: RAYQUAZA? It needs no stone at all.
+
+If it knows DRAGON ASCENT, your bracelet is all it takes."""
+T["MegaHasAll"] = "PRIMROSE: {STR_VAR_3}'s stone has already chosen you. Go and use it well!"
+T["MegaWhich"] = "PRIMROSE: Two stones answer to {STR_VAR_3}. Which one?"
+T["MegaHasThis"] = "PRIMROSE: That one's already yours. Perhaps the other?"
+T["MegaConfirm"] = "PRIMROSE: {STR_VAR_3} alone, holding the {STR_VAR_1}, against my three. Ready?"
+T["MegaLater"] = "PRIMROSE: The stones will wait. They're good at it."
+T["MegaWon"] = """PRIMROSE: There. Did you feel it? The stone has chosen you both.
+
+The {STR_VAR_1} is yours to keep."""
+T["MegaLost"] = """PRIMROSE: Not this time. The {STR_VAR_1} comes back to me.
+
+Train, think it over, and come back. It'll be here."""
+T["MegaPartyBack"] = "Your other POKéMON are back with you."
+
 # ---------------------------------------------------------------- menu options
 for k, v in {"OptBP": "BATTLE POINTS", "OptHall": "BATTLE HALL", "OptCandidates": "CANDIDATES",
              "OptTeachers": "INSTRUCTORS", "OptBye": "THAT'S ALL", "OptDemo": "DEMO BATTLE",

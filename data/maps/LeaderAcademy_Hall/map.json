@@ -75,6 +75,21 @@
       "script": "Academy_EventScript_Reader2",
       "flag": "0",
       "local_id": "LOCALID_ACADEMY_READER_2"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_COOLTRAINER_F",
+      "x": 12,
+      "y": 2,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Academy_EventScript_MegaDoorGuard",
+      "flag": "FLAG_GOT_MEGA_BRACELET",
+      "local_id": "LOCALID_ACADEMY_MEGA_DOOR_GUARD"
     }
   ],
   "warp_events": [
@@ -125,6 +140,13 @@
       "y": 1,
       "elevation": 0,
       "dest_map": "MAP_LEADER_ACADEMY_LECTURE_D",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "elevation": 0,
+      "dest_map": "MAP_LEADER_ACADEMY_MEGA_ROOM",
       "dest_warp_id": "0"
     }
   ],

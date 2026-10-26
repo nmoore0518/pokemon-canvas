@@ -74,7 +74,7 @@ static const struct TrainerMon sConventionParty_norman[] = {
     {
         .species = SPECIES_KANGASKHAN,
         .lvl = 75,
-        .heldItem = ITEM_SILK_SCARF,
+        .heldItem = ITEM_KANGASKHANITE,
         .moves = {MOVE_DOUBLE_EDGE, MOVE_EARTHQUAKE, MOVE_SUCKER_PUNCH, MOVE_FAKE_OUT},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .nature = NATURE_ADAMANT,
@@ -957,7 +957,7 @@ static const struct TrainerMon sConventionParty_misty[] = {
     {
         .species = SPECIES_STARMIE,
         .lvl = 76,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_STARMINITE,
         .moves = {MOVE_HYDRO_PUMP, MOVE_PSYCHIC, MOVE_THUNDERBOLT, MOVE_ICE_BEAM},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .nature = NATURE_MODEST,
@@ -3924,7 +3924,7 @@ static const struct TrainerMon sConventionParty_clay[] = {
     {
         .species = SPECIES_EXCADRILL,
         .lvl = 76,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_EXCADRITE,
         .moves = {MOVE_EARTHQUAKE, MOVE_IRON_HEAD, MOVE_ROCK_SLIDE, MOVE_SWORDS_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .nature = NATURE_ADAMANT,
@@ -6270,7 +6270,7 @@ static const struct TrainerMon sConventionParty_shauntal[] = {
     {
         .species = SPECIES_CHANDELURE,
         .lvl = 79,
-        .heldItem = ITEM_CHOICE_SPECS,
+        .heldItem = ITEM_CHANDELURITE,
         .moves = {MOVE_FIRE_BLAST, MOVE_SHADOW_BALL, MOVE_ENERGY_BALL, MOVE_TRICK},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .nature = NATURE_MODEST,
