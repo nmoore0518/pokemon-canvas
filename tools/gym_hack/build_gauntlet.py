@@ -147,7 +147,7 @@ def import_sprites():
         else:
             ows[key] = t["ow"]
     # The hooded figure (tools/gym_hack/gauntlet_art.py); Bill, as he is now, and his Palm Pilot
-    # (bill_ow.py); his picture (bill_art.py: CLEFABILL's front)
+    # (bill_ow.py); his picture (bill_art.py: CLEFFABILL's front)
     import bill_art
     import bill_ow
     import gauntlet_art

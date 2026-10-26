@@ -1,11 +1,11 @@
-"""Bill's hybrid, CLEFABILL (Gym Trainer hack, the Gauntlet's finale): half man, half Clefable.
+"""Bill's hybrid, CLEFFABILL (Gym Trainer hack, the Gauntlet's finale): half man, half Clefable.
 Painted from shapes (regions), shaded light-to-dark from the top left and outlined automatically,
 then the details drawn by hand: Clefable's ears out of Bill's hair, spectral wings, the Clefable arm,
 tail and leg, his shirt torn over a Clefable belly, a stitched seam, one eye glowing and the other
 black and hanging out of its socket, ectoplasm for feet.
 
     python3 tools/gym_hack/bill_art.py <dir>     (front.png, back.png, icon.png, normal.pal, shiny.pal)
-Used by build_gauntlet.py (graphics/pokemon/clefabill/).
+Used by build_gauntlet.py (graphics/pokemon/cleffabill/).
 """
 import colorsys
 import math
@@ -301,4 +301,4 @@ def write_all(out, icon_pal_path):
 
 if __name__ == "__main__":
     root = Path(__file__).resolve().parents[2]
-    write_all(sys.argv[1] if len(sys.argv) > 1 else "clefabill", root / "graphics/pokemon/icon_palettes/pal2.pal")
+    write_all(sys.argv[1] if len(sys.argv) > 1 else "cleffabill", root / "graphics/pokemon/icon_palettes/pal2.pal")

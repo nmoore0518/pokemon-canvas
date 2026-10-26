@@ -2296,9 +2296,9 @@ TEST("GymHack: wild Zygarde in Kalos once one is caught, its forms gated by the 
     FlagClear(FLAG_EXOTIC_LEGEND_ZYGARDE);
 }
 
-TEST("GymHack: CLEFABILL is Fairy/Ghost, 800 in all, and not in the Pokedex")
+TEST("GymHack: CLEFFABILL is Fairy/Ghost, 800 in all, and not in the Pokedex")
 {
-    const struct SpeciesInfo *s = &gSpeciesInfo[SPECIES_CLEFABILL];
+    const struct SpeciesInfo *s = &gSpeciesInfo[SPECIES_CLEFFABILL];
     u32 type1 = s->types[0], type2 = s->types[1], natDex = s->natDexNum;
     u32 total = s->baseHP + s->baseAttack + s->baseDefense + s->baseSpeed + s->baseSpAttack + s->baseSpDefense;
     EXPECT_EQ(type1, TYPE_FAIRY);
@@ -2552,7 +2552,7 @@ TEST("GymHack: BILL'S ARCHIVE keeps one of each, and only what has a slot")
     Archive_Clear();
     EXPECT(Archive_IsSlot(SPECIES_PIKACHU));
     EXPECT(Archive_IsSlot(SPECIES_VULPIX_ALOLA));
-    EXPECT(!Archive_IsSlot(SPECIES_CLEFABILL));
+    EXPECT(!Archive_IsSlot(SPECIES_CLEFFABILL));
     EXPECT(!Archive_IsSlot(SPECIES_CHARIZARD_MEGA_X));
     EXPECT(!Archive_Has(SPECIES_MEWTWO));
     Archive_Store(SPECIES_MEWTWO, TRUE);

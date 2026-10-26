@@ -27682,13 +27682,13 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #endif //P_FAMILY_PECHARUNT
 
 // Gym Trainer hack: Bill's hybrid (tools/gym_hack/bill_art.py)
-    const u32 gMonFrontPic_Clefabill[] = INCGFX_U32("graphics/pokemon/clefabill/anim_front.png", ".4bpp.smol");
-    const u16 gMonPalette_Clefabill[] = INCGFX_U16("graphics/pokemon/clefabill/normal.pal", ".gbapal");
-    const u32 gMonBackPic_Clefabill[] = INCGFX_U32("graphics/pokemon/clefabill/back.png", ".4bpp.smol");
-    const u16 gMonShinyPalette_Clefabill[] = INCGFX_U16("graphics/pokemon/clefabill/shiny.pal", ".gbapal");
-    const u8 gMonIcon_Clefabill[] = INCGFX_U8("graphics/pokemon/clefabill/icon.png", ".4bpp");
+    const u32 gMonFrontPic_Cleffabill[] = INCGFX_U32("graphics/pokemon/cleffabill/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Cleffabill[] = INCGFX_U16("graphics/pokemon/cleffabill/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Cleffabill[] = INCGFX_U32("graphics/pokemon/cleffabill/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Cleffabill[] = INCGFX_U16("graphics/pokemon/cleffabill/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Cleffabill[] = INCGFX_U8("graphics/pokemon/cleffabill/icon.png", ".4bpp");
 #if P_FOOTPRINTS
-    const u8 gMonFootprint_Clefabill[] = INCGFX_U8("graphics/pokemon/clefabill/footprint.png", ".1bpp");
+    const u8 gMonFootprint_Cleffabill[] = INCGFX_U8("graphics/pokemon/cleffabill/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
 
     const u32 gMonFrontPic_Egg[] = INCGFX_U32("graphics/pokemon/egg/anim_front.png", ".4bpp.smol");

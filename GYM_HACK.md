@@ -977,9 +977,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] The Gauntlet, part 2 (v72): Bill. After the last challenger (GAUNTLET_ALL_BEATEN) the figure
          asks if you're ready to meet who hired them - the hood comes off (FLAG_GAUNTLET_BILL_REVEALED
          0x3C3; the figure object's look is VAR_OBJ_GFX_ID_D, `Gauntlet_SetFigureGfx`): Bill, his Cell
-         Separation System run backwards on himself made him a Clefable (CLEFABILL: why the hood). He wants it ended. His team:
-         shiny Mewtwo, Lugia, Ho-Oh, Giratina-Origin, Rayquaza and himself - CLEFABILL (a species of
-         its own, SPECIES_CLEFABILL: Fairy/Ghost, 150/80/130/170/150/120 = 800, Magic Guard + Life Orb;
+         Separation System run backwards on himself to become a Clefable went wrong: a monstrous half-thing, CLEFFABILL (why the hood). He wants it ended. His team:
+         shiny Mewtwo, Lugia, Ho-Oh, Giratina-Origin, Rayquaza and himself - CLEFFABILL (a species of
+         its own, SPECIES_CLEFFABILL: Fairy/Ghost, 150/80/130/170/150/120 = 800, Magic Guard + Life Orb;
          not in the Pokédex, not obtainable, never shiny in his hands; art by `bill_art.py`, his
          walking sprite and the Palm Pilot by `bill_ow.py`); the Deoxys battle music. Lose and he
          waits. Win and he fades away, leaving his Palm Pilot (GAUNTLET_SIMULATOR):
@@ -1210,7 +1210,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            tournaments (same rules, his records). A title there isn't the WITHDRAW yet: then comes
            Bill's simulation (his real team; TOURNEY_BILL, "Face BILL" from the Palm Pilot until
            he's beaten, any number of tries), and beating him earns it (`Tourney_SimBillWon`).
-         - Bill's reveal says it plainly: the machine made him the Clefable; the hood hides it.
+         - Bill's reveal is an experiment gone wrong: he tried to become a Clefable, the machine
+           wouldn't stop, and he came out a hideous, powerful half-thing (CLEFFABILL, renamed from
+           Clefabill in v88) that is slowly eating what's left of him; the hood hides it.
          - The TOURNAMENT Hall of Fame (PC and Palm Pilot, "TOURNAMENT", in the Hall of Fame's
            screen): the first title's team, kept for good, and the three most recent, each with
            the title's number and whom the final was against; the count of titles is kept too.

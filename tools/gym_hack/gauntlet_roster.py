@@ -889,15 +889,15 @@ for _tier, _keys in TIERS.items():
         ROSTER[_k]["tier"] = _tier
 
 # The last: Bill, who hired the hooded figure - and was the figure. His Cell Separation System run
-# backwards on himself turned him into a Clefable (hidden under the hood); he set the whole Gauntlet up to find someone strong enough to
-# end it. Five shiny legendaries from his records, and himself (CLEFABILL: Fairy/Ghost, 800).
+# backwards on himself to become a Clefable went wrong: a hideous half-thing (hidden under the hood); he set the whole Gauntlet up to find someone strong enough to
+# end it. Five shiny legendaries from his records, and himself (CLEFFABILL: Fairy/Ghost, 800).
 BILL = T("BILL", "POKéMANIAC", "KANTO", "RED/BLUE", False, "art", "OBJ_EVENT_GFX_GAUNTLET_BILL", [
     "Shiny Mewtwo @ Life Orb: Psystrike / Aura Sphere / Ice Beam / Nasty Plot",
     "Shiny Lugia @ Leftovers: Aeroblast / Calm Mind / Roost / Earth Power",
     "Shiny Ho-Oh @ Heavy-Duty Boots: Sacred Fire / Brave Bird / Earthquake / Recover",
     "Shiny Giratina-Origin @ Griseous Core: Shadow Force / Dragon Claw / Earthquake / Shadow Sneak",
     "Shiny Rayquaza @ Rayquazite: Dragon Ascent / Extreme Speed / Earthquake / Dragon Dance",
-    "Clefabill @ Life Orb {Magic Guard}: Moonblast / Shadow Ball / Nasty Plot / Moonlight",
+    "Cleffabill @ Life Orb {Magic Guard}: Moonblast / Shadow Ball / Nasty Plot / Moonlight",
 ], ("Please. Don't hold back. Not even a little.",
     "...Thank you.", "It's... quiet now. It doesn't hurt.",
     "No... You have to be stronger than this. Please."))

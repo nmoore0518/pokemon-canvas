@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Every species and form the player could keep (Gym Trainer hack): not the battle-only ones
-(megas, Gigantamax, primal, Zen Mode and the like), not totems, not CLEFABILL - in National Dex
+(megas, Gigantamax, primal, Zen Mode and the like), not totems, not CLEFFABILL - in National Dex
 order, each form after its species. What Bill's Palm Pilot can WITHDRAW (the Gauntlet's finale)
 and the slots of BILL'S ARCHIVE (the living dex, src/archive.c).
 
@@ -31,7 +31,7 @@ def preprocess(header, *extra):
         return out.read_text()
 
 
-EXCLUDE = {"SPECIES_CLEFABILL"}
+EXCLUDE = {"SPECIES_CLEFFABILL"}
 LABEL = {   # forms whose constant doesn't say it well
     "SPECIES_PIKACHU_PHD": "Pikachu Ph.D.",
     "SPECIES_PIKACHU_ORIGINAL": "Pikachu Orig. Cap",

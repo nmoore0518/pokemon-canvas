@@ -5,8 +5,9 @@
 // Once the player has cleared every hall of the Gym Leader Convention and mastered every gym type,
 // a hooded figure turns up at the gym: a bookie, running the book on an underground tournament of
 // the strongest trainers in the world, 128 of them, and the player's in it. Win it, and the one
-// who put it on shows himself: Bill. His Cell Separation System, run backwards on himself, made
-// him a Clefable - CLEFABILL (Fairy/Ghost), hidden under the hood - in pain he can't end himself;
+// who put it on shows himself: Bill. He ran his Cell Separation System backwards on himself to
+// become a Clefable; it went wrong and left a hideous, powerful half-thing - CLEFFABILL
+// (Fairy/Ghost), hidden under the hood - in pain he can't end himself;
 // he put on the whole tournament to find someone strong enough. His team: five shiny legendaries and himself. Beaten,
 // he fades away and leaves his Palm Pilot (the same object, VAR_OBJ_GFX_ID_D): one WITHDRAW of any
 // Pokémon, shiny, then his battle simulator runs new tournaments: win one, then beat his

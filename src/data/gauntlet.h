@@ -6293,7 +6293,7 @@ static const struct TrainerMon sGauntletParty_bill[] = {
         .friendship = MAX_FRIENDSHIP,
     },
     {
-        .species = SPECIES_CLEFABILL,
+        .species = SPECIES_CLEFFABILL,
         .lvl = 100,
         .heldItem = ITEM_LIFE_ORB,
         .ability = ABILITY_MAGIC_GUARD,

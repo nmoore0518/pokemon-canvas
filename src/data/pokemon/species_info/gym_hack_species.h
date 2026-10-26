@@ -2,7 +2,7 @@
 
     // Bill, gone wrong: his Cell Separation experiment with a Clefable, run backwards (the Gauntlet's
     // finale, src/gauntlet.c; art by tools/gym_hack/bill_art.py). Not in the Pokédex, not obtainable.
-    [SPECIES_CLEFABILL] =
+    [SPECIES_CLEFFABILL] =
     {
         .baseHP        = 150,
         .baseAttack    = 80,
@@ -21,7 +21,7 @@
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
         .abilities = { ABILITY_UNAWARE, ABILITY_MAGIC_GUARD, ABILITY_CURSED_BODY },
         .bodyColor = BODY_COLOR_PINK,
-        .speciesName = _("Clefabill"),
+        .speciesName = _("Cleffabill"),
         .cryId = CRY_CLEFABLE,
         .natDexNum = NATIONAL_DEX_NONE,
         .categoryName = _("Mistake"),
@@ -36,7 +36,7 @@
         .pokemonOffset = 0,
         .trainerScale = 256,
         .trainerOffset = 0,
-        .frontPic = gMonFrontPic_Clefabill,
+        .frontPic = gMonFrontPic_Cleffabill,
         .frontPicSize = MON_COORDS_SIZE(64, 64),
         .frontPicYOffset = 0,
         .frontAnimFrames = ANIM_FRAMES(
@@ -46,17 +46,17 @@
             ANIMCMD_FRAME(1, 24),
         ),
         .frontAnimId = ANIM_SHAKE_GLOW_PURPLE_SLOW,
-        .backPic = gMonBackPic_Clefabill,
+        .backPic = gMonBackPic_Cleffabill,
         .backPicSize = MON_COORDS_SIZE(64, 64),
         .backPicYOffset = 0,
         .backAnimId = BACK_ANIM_SHAKE_GLOW_BLUE,
-        .palette = gMonPalette_Clefabill,
-        .shinyPalette = gMonShinyPalette_Clefabill,
-        .iconSprite = gMonIcon_Clefabill,
+        .palette = gMonPalette_Cleffabill,
+        .shinyPalette = gMonShinyPalette_Cleffabill,
+        .iconSprite = gMonIcon_Cleffabill,
         .iconPalIndex = 2,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(0, 9, SHADOW_SIZE_M)
-        FOOTPRINT(Clefabill)
+        FOOTPRINT(Cleffabill)
         .levelUpLearnset = sClefableLevelUpLearnset,
         .teachableLearnset = sClefableTeachableLearnset,
         .isFrontierBanned = TRUE,
