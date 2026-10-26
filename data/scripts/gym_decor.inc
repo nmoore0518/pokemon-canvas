@@ -47,6 +47,7 @@ GymDecor_EventScript_BuyLoop::
 	special GymDecor_TryBuy
 	goto_if_eq VAR_RESULT, 1, GymDecor_EventScript_NotEnoughMoney
 	goto_if_eq VAR_RESULT, 2, GymDecor_EventScript_StorageFull
+	goto_if_eq VAR_RESULT, 3, GymDecor_EventScript_AlreadyHave
 	updatemoneybox
 	special GymDecor_BufferDecorInfo
 	playse SE_SHOP
@@ -61,6 +62,11 @@ GymDecor_EventScript_NotEnoughMoney::
 
 GymDecor_EventScript_StorageFull::
 	msgbox GymDecor_Text_StorageFull, MSGBOX_DEFAULT
+	goto GymDecor_EventScript_BuyLoop
+	end
+
+GymDecor_EventScript_AlreadyHave::
+	msgbox GymDecor_Text_AlreadyHave, MSGBOX_DEFAULT
 	goto GymDecor_EventScript_BuyLoop
 	end
 
@@ -84,10 +90,28 @@ GymDecor_EventScript_Decorate::
 	dynmultistack 15, 0, FALSE, 5, FALSE, 0, DYN_MULTICHOICE_CB_GYM_DECOR_OWNED
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_Decorate
 	copyvar VAR_0x8004, VAR_RESULT
+	special GymDecor_GetKind   @ (GYM_DECOR_KIND_*: 3 a floor, 4 a wall style)
+	goto_if_eq VAR_RESULT, 4, GymDecor_EventScript_SetWallStyle
+	goto_if_eq VAR_RESULT, 3, GymDecor_EventScript_HowToPaint
 	msgbox GymDecor_Text_HowToDecorate, MSGBOX_DEFAULT
+GymDecor_EventScript_StartEditing::
 	closemessage
 	releaseall   @ before the HUD opens: releaseall clears the message box area, where the HUD goes
 	special GymDecor_StartEditing
+	end
+
+GymDecor_EventScript_HowToPaint::
+	msgbox GymDecor_Text_HowToPaint, MSGBOX_DEFAULT
+	goto GymDecor_EventScript_StartEditing
+	end
+
+@ A wall style: all the GYM's walls, at once
+GymDecor_EventScript_SetWallStyle::
+	special GymDecor_ApplyWallStyle
+	special GymDecor_BufferDecorInfo
+	playse SE_CLICK
+	msgbox GymDecor_Text_WallsChanged, MSGBOX_DEFAULT
+	goto GymDecor_EventScript_PCMenu
 	end
 
 GymDecor_EventScript_NothingOwned::
@@ -159,11 +183,30 @@ GymDecor_Text_WhichToPlace::
 
 GymDecor_Text_HowToDecorate::
 	.string "Walk anywhere in the GYM. The\n"
-	.string "decoration appears in front of you.\p"
-	.string "A: place it.\n"
+	.string "decoration appears in front of you,\l"
+	.string "in red where it can't go.\p"
+	.string "A: place it. START: turn it.\n"
 	.string "SELECT: put away the one in front.\p"
 	.string "L and R: switch decorations.\n"
 	.string "B: finish decorating.$"
+
+GymDecor_Text_HowToPaint::
+	.string "Walk anywhere in the GYM. A paints\n"
+	.string "the square in front of you.\p"
+	.string "Hold A down as you walk to paint\n"
+	.string "every square you face.\p"
+	.string "SELECT: fill the whole area of\n"
+	.string "floor in front with it.\p"
+	.string "L and R: switch to a decoration\n"
+	.string "or another floor. B: finish.$"
+
+GymDecor_Text_WallsChanged::
+	.string "The GYM's walls are now\n"
+	.string "{STR_VAR_1}!$"
+
+GymDecor_Text_AlreadyHave::
+	.string "You already have that one. It\n"
+	.string "can be used as much as you like!$"
 
 GymDecor_Text_NothingOwned::
 	.string "There aren't any decorations in\n"

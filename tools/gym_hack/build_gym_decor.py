@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Gym decorations: the catalog, and the gym's own tileset that draws them.
+"""Gym decorations: the catalog, and the art the game puts the gym's room together from.
 
-Usage: python3 tools/gym_hack/build_gym_decor.py [catalog.png]
+Usage: python3 tools/gym_hack/build_gym_decor.py   (build_pallet_gym.py runs it)
 
 Writes:
-  data/tilesets/secondary/pallet_gym/   the Pallet Town Gym's tileset: the Viridian Gym tileset
-                                        plus one block for every decoration piece, drawn over the
-                                        gym floor (furniture comes from the indoor tileset)
+  data/tilesets/secondary/pallet_gym/   the Pallet Town Gym's tileset as the map tools see it (the
+                                        empty room; the game puts the real one together itself,
+                                        src/gym_room.c)
   include/constants/gym_decor.h         GYM_DECOR_* ids
-  src/data/gym_decor.h                  the catalog (names, prices, unlocks, blocks)
-and, with an argument, a picture of every decoration with its name and price.
+  src/data/gym_decor.h                  the art bank, every square's possible look, the floors,
+                                        wall styles and pool edges, and the catalog (names,
+                                        prices, unlocks, and each piece's looks every way round)
 
 To add a decoration, add an entry to DECORATIONS below and run build_pallet_gym.py (which runs
 this script first). Keep the order of existing entries:
@@ -70,12 +71,12 @@ DECORATIONS = [
     dict(key="GREEN_RUG", name="GREEN RUG", price=1500, unlock=None,
          desc="A soft green rug. 3x3.",
          cells=[["rug:43", "rug:44", "rug:46"], ["rug:53", "rug:45", "rug:56"], ["rug:5B", "rug:5C", "rug:5E"]]),
-    dict(key="GYM_WALL", name="GYM WALL", price=300, unlock=None,
-         desc="A section of GYM wall.", cells=[["g:29B"], ["g:2A3"]]),
+    dict(key="GYM_WALL", name="GYM WALL", price=300, unlock=None, kind="WALL",
+         desc="Joins up with the walls beside it.", cells=[["g:29B"]]),
     dict(key="GYM_STATUE", name="GYM STATUE", price=5000, unlock=None,
          desc="Every GYM needs one.", cells=[["g:2A1~"], ["g:2A9"]]),
     # --- Unlocked by beating Gym Leaders --------------------------------------
-    dict(key="POOL_WATER", name="POOL WATER", price=800, unlock=BADGE[2], keep=True,
+    dict(key="POOL_WATER", name="POOL WATER", price=800, unlock=BADGE[2], keep=True, kind="WATER",
          desc="MISTY's pool water. SURF on it!", cells=[["x:CeruleanGym:291:water"]]),
     dict(key="TRASH_CAN", name="TRASH CAN", price=1200, unlock=BADGE[3],
          desc="Just like LT. SURGE's.", cells=[["x:VermilionGym:2B8"]]),
@@ -241,6 +242,42 @@ for _hall in ("NORMAL", "FIRE", "WATER", "GRASS", "ELECTRIC", "ICE", "FIGHTING",
 DECORATIONS.append(dict(key="TROPHY_GRAND", name="GRAND TROPHY", price=0, unlock="FLAG_CONVENTION_TROPHY_GRAND",
                         desc="Every hall of the CONVENTION won!", art="convention_trophy_grand",
                         category="GYM_DECOR_CAT_TROPHIES"))
+
+# --- Floors (painted on, square by square) and wall styles (the whole gym's walls): bought once
+# (tools/gym_hack/gym_room_art.py draws them). The first of each comes with the gym.
+import gym_room_art as _RA  # noqa: E402
+for _i, (_k, _n, _p, _u, _d, _x) in enumerate(_RA.FLOORS):
+    DECORATIONS.append(dict(key=f"FLOOR_{_k}", name=_n, price=_p, unlock=_u, desc=_d, kind="FLOOR", style=_i,
+                            category="GYM_DECOR_CAT_FLOORS"))
+for _i, (_k, _n, _p, _u, _d) in enumerate(_RA.WALLS):
+    DECORATIONS.append(dict(key=f"WALLS_{_k}", name=_n, price=_p, unlock=_u, desc=_d, kind="WALL_STYLE", style=_i,
+                            category="GYM_DECOR_CAT_WALLS"))
+
+# --- The ways each piece can be turned (START, while decorating): its sides and back
+# (tools/gym_hack/decor_art_turned.py). The chairs turn into each other.
+import decor_art_turned as _TA  # noqa: E402
+decor_art.PIECES.update(_TA.PIECES)
+
+
+def _turn_spec(t):
+    if t == "mirror":
+        return ("mirror", 0)
+    if isinstance(t, tuple):
+        return ("mirror-art", t[1])
+    return t
+
+
+for _d in DECORATIONS:
+    _turns = _TA.TURNS.get(_d["key"]) or _TA.TURNS.get(_d.get("art"))
+    if _turns and _d.get("kind", "PIECE") == "PIECE":
+        _d["facings"] = {i + 1: _turn_spec(t) for i, t in enumerate(_turns)}
+for _d in DECORATIONS:
+    if _d["key"] == "CHAIR_LEFT":       # (faces right): then its back, facing left, its front
+        _d["facings"] = {1: "chair_back", 2: [["f:4E~"]], 3: "chair_front"}
+        _d["flat"] = True
+    elif _d["key"] == "CHAIR_RIGHT":
+        _d["facings"] = {1: "chair_front", 2: [["f:4B~"]], 3: "chair_back"}
+        _d["flat"] = True
 
 # Fixed pieces of the gym itself (not for sale)
 FIXED = {
@@ -539,156 +576,312 @@ def count_used_tiles(img):
 
 
 # ---------------------------------------------------------------------------
-# Decorations drawn in code (decor_art.py). There's no room left for their tiles in the gym's
-# tileset, so they go in video memory the gym never uses: tiles of the indoor tileset that no gym
-# block uses, and unused gym tiles. The game copies them there whenever the gym's tileset loads
-# (GymDecor_PatchTilesetGfx in src/gym_decor.c). Their blocks go in unused gym tileset blocks.
+# The gym's looks: everything the room can show, as "looks" (a square's two layers of tiles) over
+# an art bank of 8x8 tiles. The game doesn't keep any of this in the gym's tileset: when the room
+# is drawn (src/gym_room.c) it puts each square together - its floor, and what's on it - in the
+# gym tileset's 384 blocks (kept in RAM), and copies the art those use into free video memory.
+#
+# A tile reference (u32): bits 0-11 the art bank tile (0: blank), 12 h-flip, 13 v-flip,
+# 14-17 the palette, 18 FIXED: bits 0-9 are a video memory tile that's always there (the indoor
+# tileset's furniture, the badge).
 # ---------------------------------------------------------------------------
 DYN_PALETTES = (8, 9, 10)     # the shared decoration palettes (decor_art.PALETTES)
+REF_HFLIP, REF_VFLIP, REF_FIXED = 1 << 12, 1 << 13, 1 << 18
+LOOK_FLOOR_UNDER, LOOK_SOLID, LOOK_WATER = 1, 2, 4
+BADGE_VRAM = 0x3E0            # the player's badge: 16 tiles here (src/gym_badge.c)
+DOOR_VRAM = 0x3F0             # (doors animate here: kept out of the free pool)
+LAYER_ATTR_SHIFT = 29
 
 
-class DynArt:
-    """Hands out the free video memory tiles and blocks to the code-drawn decorations."""
-    def __init__(self, ts, free_tiles, free_mts):
-        self.ts, self.free_tiles, self.free_mts = ts, list(free_tiles), list(free_mts)
-        self.tiles = []          # (vram tile, 64 color indices), in the order they were given out
-        self.index = {}
-        self.blocks = {}
+class ArtBank:
+    def __init__(self):
+        self.tiles = [tuple([0] * 64)]       # 0: blank
+        self.index = {self.tiles[0]: 0}
 
-    def tile_entry(self, slot, px):
+    def ref(self, px, pal):
+        px = tuple(px)
         if not any(px):
-            return 0                         # tile 0 is blank
+            return 0
         rows = [px[i * 8:(i + 1) * 8] for i in range(8)]
         variants = {
             0: px,
-            0x400: [c for r in rows for c in r[::-1]],
-            0x800: [c for r in rows[::-1] for c in r],
-            0xC00: [c for r in rows[::-1] for c in r[::-1]],
+            REF_HFLIP: tuple(c for r in rows for c in r[::-1]),
+            REF_VFLIP: tuple(c for r in rows[::-1] for c in r),
+            REF_HFLIP | REF_VFLIP: tuple(c for r in rows[::-1] for c in r[::-1]),
         }
         for flip, v in variants.items():
-            if tuple(v) in self.index:
-                return self.index[tuple(v)] | flip | (slot << 12)
-        if not self.free_tiles:
-            raise SystemExit("out of free video memory tiles for code-drawn decorations")
-        t = self.free_tiles.pop(0)
-        self.tiles.append((t, px))
-        self.index[tuple(px)] = t
-        return t | (slot << 12)
+            if v in self.index:
+                return self.index[v] | flip | (pal << 14)
+        self.index[px] = len(self.tiles)
+        self.tiles.append(px)
+        return (len(self.tiles) - 1) | (pal << 14)
 
-    def block(self, entries, attr):
-        key = (tuple(entries), attr)          # (identical blocks are shared: the trophies' cups)
-        if key in self.blocks:
-            return self.blocks[key]
-        if not self.free_mts:
-            raise SystemExit("out of free gym tileset blocks for code-drawn decorations")
-        m = self.free_mts.pop(0)
-        while len(self.ts.mt) <= m - 0x280:
-            self.ts.mt.append([0] * 8)
-            self.ts.attr.append(0)
-        self.ts.mt[m - 0x280] = list(entries)
-        self.ts.attr[m - 0x280] = attr
-        self.blocks[key] = m
-        return m
 
-    def decoration(self, d):
-        """Returns the decoration's rows of cells (metatile, collides, edit-mode metatile)."""
-        canvas = decor_art.PIECES[d["art"]]()
-        tiles8, _ = decor_art.to_tiles(canvas)
-        flat, trainer = d.get("flat", False), d.get("trainer", False)
-        rows = []
-        for cy in range(canvas.ch):
-            row = []
-            for cx in range(canvas.cw):
-                ents = [self.tile_entry(*tiles8[(cx * 2 + tx, cy * 2 + ty)]) for ty in range(2) for tx in range(2)]
-                behind = not flat and not trainer and canvas.ch > 1 and cy == 0
-                m = self.block(FLOOR_TILES + ents, with_layer(MB_NORMAL, LAYER_NORMAL if behind else LAYER_COVERED))
-                if trainer:
-                    # Plain floor (a person stands there); the icon only while decorating
-                    row.append((FLOOR, True, m))
-                else:
-                    row.append((m, not (flat or behind), None))
-            rows.append(row)
-        return rows
+def fixed_ref(entry):
+    """A map tile entry (tile, flips, palette) for a tile that's always in video memory"""
+    return (entry & 0x3FF) | REF_FIXED | (REF_HFLIP if entry & 0x400 else 0) | (REF_VFLIP if entry & 0x800 else 0) | ((entry >> 12) << 14)
 
-    def uploads(self):
-        """(first vram tile, count) runs, in the order of self.tiles."""
-        runs = []
-        for t, _ in self.tiles:
-            if runs and runs[-1][0] + runs[-1][1] == t:
-                runs[-1][1] += 1
+
+def canvas_refs(canvas):
+    """{(tx, ty): ref} for every 8x8 tile of a decor_art canvas"""
+    tiles8, _ = decor_art.to_tiles(canvas)
+    return {k: BANK.ref(px, slot) for k, (slot, px) in tiles8.items()}
+
+
+BANK = ArtBank()
+
+
+class Looks:
+    def __init__(self):
+        self.list = []
+        self.index = {}
+
+    def add(self, refs, attr, flags):
+        key = (tuple(refs), attr, flags)
+        if key not in self.index:
+            self.index[key] = len(self.list)
+            self.list.append(key)
+        return self.index[key]
+
+
+LOOKS = Looks()
+
+
+def tile_pixels(ts, tile):
+    """The 64 color indices of a tile in the (virtual) gym tileset image"""
+    img = ts.tiles_img[0]
+    i = tile - 0x280
+    x, y = (i % 16) * 8, (i // 16) * 8
+    return list(img.crop((x, y, x + 8, y + 8)).getdata())
+
+
+def entry_ref(ts, e):
+    tile = e & 0x3FF
+    if tile < 0x280:
+        return fixed_ref(e) if tile else 0
+    start = BADGE_TILES.get("start")
+    if start is not None and start <= tile < start + 16:
+        # the player's badge: in video memory at BADGE_VRAM (src/gym_badge.c)
+        return fixed_ref((e & ~0x3FF) | (BADGE_VRAM + tile - start))
+    pal = e >> 12
+    r = BANK.ref(tile_pixels(ts, tile), pal)
+    if r == 0:
+        return 0
+    return r ^ (REF_HFLIP if e & 0x400 else 0) ^ (REF_VFLIP if e & 0x800 else 0)
+
+
+def metatile_look(ts, m, collides, water=False):
+    """A look from a metatile of the (virtual) gym tileset or the indoor tileset"""
+    ents, attr = (PRIM_MT[m], PRIM_ATTR[m]) if m < 0x280 else (ts.mt[m - 0x280], ts.attr[m - 0x280])
+    floor_under = list(ents[:4]) == list(FLOOR_TILES)
+    refs = ([0, 0, 0, 0] if floor_under else [entry_ref(ts, e) for e in ents[:4]]) + [entry_ref(ts, e) for e in ents[4:]]
+    flags = (LOOK_FLOOR_UNDER if floor_under else 0) | (LOOK_SOLID if collides else 0) | (LOOK_WATER if water else 0)
+    return LOOKS.add(refs, attr, flags)
+
+
+def art_cell_looks(canvas, flat, trainer=False):
+    """Rows of (look, edit look) for a decor_art canvas, over the floor"""
+    refs = canvas_refs(canvas)
+    rows = []
+    for cy in range(canvas.ch):
+        row = []
+        for cx in range(canvas.cw):
+            top = [refs[(cx * 2 + tx, cy * 2 + ty)] for ty in range(2) for tx in range(2)]
+            behind = not flat and not trainer and canvas.ch > 1 and cy == 0
+            layer = LAYER_NORMAL_TYPE if behind else LAYER_COVERED
+            look = LOOKS.add([0, 0, 0, 0] + top, with_layer(MB_NORMAL, layer), LOOK_FLOOR_UNDER | (0 if (flat or behind) else LOOK_SOLID))
+            if trainer:
+                plain = LOOKS.add([0] * 8, with_layer(MB_NORMAL, LAYER_COVERED), LOOK_FLOOR_UNDER | LOOK_SOLID)
+                row.append((plain, look))
             else:
-                runs.append([t, 1])
-        return runs
+                row.append((look, None))
+        rows.append(row)
+    return rows
 
 
-def free_space(ts, catalog, keep):
-    """Video memory tiles and tileset blocks the gym never uses."""
-    used_mt = set(keep)
-    for d, rows in catalog:
-        for row in rows:
-            for m, _, e in row:
-                used_mt.add(m)
-                if isinstance(e, int):
-                    used_mt.add(e)
-    used_tiles = {0}
-    for m in used_mt:
-        ents = PRIM_MT[m] if m < 0x280 else ts.mt[m - 0x280]
-        used_tiles.update(e & 0x3FF for e in ents)
-    used_tiles.update(range(BADGE_TILES["start"], BADGE_TILES["start"] + 16))
-    free_tiles = [t for t in range(1, 1024) if t not in used_tiles]
-    free_mts = [m for m in range(0x281, 0x280 + 384) if m not in used_mt]
-    return free_tiles, free_mts
+LAYER_NORMAL_TYPE = LAYER_NORMAL      # (METATILE_LAYER_TYPE_NORMAL: the top layer over people)
 
 
-# Gym blocks build_pallet_gym.py puts on the map (keep them out of the free pool)
-MAP_METATILES = [0x281, 0x282, 0x291, 0x2D3, 0x299, 0x2AA, 0x2AB, 0x2AC, 0x2B2, 0x2B3, 0x2B4, 0x2A1, 0x2A9, 0x008]
+def spec_looks(ts, d):
+    """Rows of (look, edit look) for a decoration made of cell specs"""
+    rows = []
+    for row in d["cells"]:
+        out = []
+        for spec in row:
+            m, collides, edit = ts.cell(spec, d.get("keep", False))
+            look = metatile_look(ts, m, collides, edit == "water")
+            out.append((look, metatile_look(ts, edit, collides) if isinstance(edit, int) else None))
+        rows.append(out)
+    return rows
+
+
+def facing_looks(ts, d, facing):
+    """A decoration's looks for one facing (0 down/front, 1 left, 2 up/back, 3 right), or None"""
+    if facing == 0:
+        if "art" in d:
+            return art_cell_looks(decor_art.PIECES[d["art"]](), d.get("flat", False), d.get("trainer", False))
+        return spec_looks(ts, d)
+    alt = d.get("facings", {}).get(facing)
+    if alt is None:
+        return None
+    if isinstance(alt, tuple) and alt[0] == "mirror":
+        src = facing_looks(ts, d, alt[1])
+        return mirror_rows(src)
+    if isinstance(alt, tuple) and alt[0] == "mirror-art":
+        return mirror_rows(art_cell_looks(decor_art.PIECES[alt[1]](), d.get("flat", False)))
+    if isinstance(alt, str):
+        return art_cell_looks(decor_art.PIECES[alt](), d.get("flat", False))
+    return spec_looks(ts, dict(d, cells=alt))
+
+
+def mirror_rows(rows):
+    """The same looks, flipped left to right"""
+    out = []
+    for row in rows:
+        new = []
+        for look, edit in reversed(row):
+            new.append((mirror_look(look), mirror_look(edit) if edit is not None else None))
+        out.append(new)
+    return out
+
+
+def mirror_look(look):
+    refs, attr, flags = LOOKS.list[look]
+    def m(r):
+        return r ^ REF_HFLIP if r else 0
+    refs = [m(refs[1]), m(refs[0]), m(refs[3]), m(refs[2]), m(refs[5]), m(refs[4]), m(refs[7]), m(refs[6])]
+    return LOOKS.add(refs, attr, flags)
+
+
+def quarter_refs(canvas):
+    """The top left 8x8 tile of a canvas, as a ref"""
+    return canvas_refs(canvas)[(0, 0)]
 
 
 def build():
     from PIL import Image
+    import gym_room_art as RA
+    global BANK, LOOKS
+    BANK, LOOKS = ArtBank(), Looks()
+    _ART_CACHE.clear()
+    BADGE_TILES.clear()
+
+    # The gym's own tileset (only what the empty room's map needs, for the map tools; the game
+    # puts the room together itself)
     if DST.exists():
         shutil.rmtree(DST)
     shutil.copytree(SRC, DST)
     tiles = Image.open(SRC / "tiles.png")
-    tiles_img = [tiles, count_used_tiles(tiles)]
-    MARKER_TILES[:] = make_marker_tiles(tiles_img)
-    _ART_CACHE.clear()
-    BADGE_TILES.clear()
+    base_img = [tiles.copy(), count_used_tiles(tiles)]
+    base = Tileset(base_img)
+    fixed = {k: base.cell(v, False)[0] for k, v in FIXED.items()}
+    from PIL import Image as _I
+    badge_pal = _I.open(ROOT / "graphics/gym_badges/normal.png").getpalette()[:48]
+    base.pals[BADGE_PAL] = [tuple(badge_pal[i:i + 3]) for i in range(0, 48, 3)]
+    for slot in DYN_PALETTES:
+        base.pals[slot] = [(255, 0, 255)] + [c for _, c in decor_art.PALETTES[slot]]
+    base_img[0].save(DST / "tiles.png")
+    base.write_palettes()
+    (DST / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in base.mt))
+    (DST / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in base.attr))
 
-    ts = Tileset(tiles_img)
+    # Everything the room can show, from a virtual tileset with no size limit
+    vimg = [tiles.copy(), count_used_tiles(tiles)]
+    ts = Tileset(vimg)
+    MARKER_TILES[:] = make_marker_tiles(vimg)
     catalog = []
     for d in DECORATIONS:
-        if "art" not in d:
-            catalog.append((d, [[ts.cell(c, d.get("keep", False)) for c in row] for row in d["cells"]]))
-    fixed = {k: ts.cell(v, False)[0] for k, v in FIXED.items()}
-    keep = set(MAP_METATILES) | set(fixed.values())
-    layout = ROOT / "data/layouts/PalletTown_Gym_Frlg/map.bin"
-    if layout.exists():
-        data = layout.read_bytes()
-        keep |= {struct.unpack_from("<H", data, i)[0] & 0x3FF for i in range(0, len(data), 2)}
-    dyn = DynArt(ts, *free_space(ts, catalog, keep))
-    static = dict((d["key"], rows) for d, rows in catalog)
-    catalog = [(d, static[d["key"]] if "art" not in d else dyn.decoration(d)) for d in DECORATIONS]
-    from PIL import Image
-    badge_pal = Image.open(ROOT / "graphics/gym_badges/normal.png").getpalette()[:48]
-    ts.pals[BADGE_PAL] = [tuple(badge_pal[i:i + 3]) for i in range(0, 48, 3)]
-    for slot in DYN_PALETTES:
-        ts.pals[slot] = [(255, 0, 255)] + [c for _, c in decor_art.PALETTES[slot]]
-    tiles_img[0].save(DST / "tiles.png")
-    ts.write_palettes()
-    if tiles_img[1] > 384:
-        raise SystemExit(f"the gym tileset has {tiles_img[1]} tiles; the limit is 384")
-    if len(ts.mt) > 384:
-        raise SystemExit(f"the gym tileset has {len(ts.mt)} blocks; the limit is 384")
-    (DST / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in ts.mt))
-    (DST / "metatile_attributes.bin").write_bytes(b"".join(struct.pack("<I", a) for a in ts.attr))
-    write_c(catalog, BADGE_TILES["start"], dyn)
-    print(f"code-drawn decorations: {len(dyn.tiles)} tiles in {len(dyn.uploads())} runs; "
-          f"{len(dyn.free_tiles)} tiles and {len(dyn.free_mts)} blocks still free")
-    return ts, catalog, fixed
+        kind = d.get("kind", "PIECE")
+        facings = []
+        if kind == "PIECE":
+            for f in range(4):
+                rows = facing_looks(ts, d, f)
+                if rows is None:
+                    break
+                facings.append(rows)
+        catalog.append((d, facings))
+
+    # Floors: 4 looks each (2x2 pattern), bottom layer only
+    def floor_looks(canvas, flags):
+        refs = canvas_refs(canvas)
+        out = []
+        for cy in range(2):
+            for cx in range(2):
+                bottom = [refs[(cx * 2 + tx, cy * 2 + ty)] for ty in range(2) for tx in range(2)]
+                out.append(LOOKS.add(bottom + [0] * 4, with_layer(MB_NORMAL, LAYER_COVERED), flags))
+        return out
+    floors = []
+    for key, name, price, unlock, desc, extra in RA.FLOORS:
+        flags = LOOK_SOLID if extra == "LAVA" else 0
+        if key == "GYM":
+            gym = metatile_look(ts, FLOOR, False)
+            refs, attr, _ = LOOKS.list[gym]
+            look = LOOKS.add([entry_ref(ts, e) for e in GYM_MT[FLOOR - 0x280][:4]] + [0] * 4, with_layer(MB_NORMAL, LAYER_COVERED), 0)
+            floors.append([look] * 4)
+        else:
+            floors.append(floor_looks(RA.floor_canvas(key), flags))
+    shadow = canvas_refs(RA.shadow_canvas())
+    shadow_look = LOOKS.add([0] * 4 + [shadow[(tx, ty)] for ty in range(2) for tx in range(2)],
+                            with_layer(MB_NORMAL, LAYER_COVERED), LOOK_FLOOR_UNDER)
+
+    # Wall styles: the top face's quarter (per case, top left; flipped for the others) and the
+    # front face (4 variants: no ends, left end, right end, both)
+    walls = []
+    for key, name, price, unlock, desc in RA.WALLS:
+        quarters = [quarter_refs(RA.wall_top_quarter(key, case)) for case in RA.QUARTER_CASES]
+        faces = []
+        for lc, rc in ((False, False), (True, False), (False, True), (True, True)):
+            refs = canvas_refs(RA.wall_face(key, lc, rc))
+            faces.append([refs[(tx, ty)] for ty in range(2) for tx in range(2)])
+        walls.append((quarters, faces))
+    water = [quarter_refs(RA.water_quarter(case)) for case in RA.QUARTER_CASES]
+    water_attr = with_layer(GYM_ATTR[0x291 - 0x280] & 0x1FF if False else 0, LAYER_COVERED)
+    cer_attrs = read_attrs(rm.tileset_dir("gTileset_CeruleanGym") / "metatile_attributes.bin")
+    water_behavior = cer_attrs[0x291 - 0x280] & 0x1FF
+
+    # The empty room: a look for each fixed square, or a code (floor, the back wall)
+    room = []
+    from build_pallet_gym import W as RW, H as RH, MAT, MAT_TILES, BELOW_MAT, STATUES, STATUE_TOP, STATUE_BOTTOM, VOID, PC
+    for y in range(RH):
+        row = []
+        for x in range(RW):
+            row.append(None)
+        room.append(row)
+    def put(x, y, m, solid):
+        room[y][x] = metatile_look(ts, m, solid)
+    for x in range(RW):
+        room[RH - 1][x] = metatile_look(ts, VOID, True)
+    for x, m, below in zip(MAT, MAT_TILES, BELOW_MAT):
+        put(x, RH - 2, m, False)
+        put(x, RH - 1, below, True)
+    for x in STATUES:
+        put(x, RH - 4, STATUE_TOP, False)
+        put(x, RH - 3, STATUE_BOTTOM, True)
+    put(PC[0], PC[1] + 1, fixed["PC_BOTTOM"], True)
+    for x in range(RW):
+        room[0][x] = "GYM_BASE_WALL_TOP"
+        room[1][x] = "GYM_BASE_WALL_FACE"
+        room[2][x] = "GYM_BASE_FLOOR_SHADOW"
+    # (the original back wall, for the gym's own wall style)
+    orig_top = [metatile_look(ts, 0x2D3 if x == RW // 2 else 0x291, True) for x in range(RW)]
+    orig_face = metatile_look(ts, 0x299, True)
+    orig_shadow = metatile_look(ts, 0x282, False)
+
+    # The badge pedestal's badge: fixed video memory tiles
+    write_c(catalog, floors, shadow_look, walls, water, water_behavior, room, orig_top, orig_face, orig_shadow, ts)
+    print(f"gym art: {len(BANK.tiles)} tiles, {len(LOOKS.list)} looks")
+    return base, catalog, fixed
 
 
-def write_c(catalog, badge_tile_start, dyn):
+def free_vram(fixed_tiles):
+    """Video memory tiles the room's art can use: everything but the fixed ones, the badge and
+    the door animation's"""
+    used = set(fixed_tiles) | {0} | set(range(BADGE_VRAM, BADGE_VRAM + 16)) | set(range(DOOR_VRAM, 0x400))
+    return [t for t in range(1, 0x400) if t not in used]
+
+
+def write_c(catalog, floors, shadow_look, walls, water, water_behavior, room, orig_top, orig_face, orig_shadow, ts):
+    import gym_room_art as RA
     ids = "\n".join(f"    GYM_DECOR_{d['key']}," for d, _ in catalog)
     (ROOT / "include/constants/gym_decor.h").write_text(f"""// Generated by tools/gym_hack/build_gym_decor.py. Don't edit by hand.
 #ifndef GUARD_CONSTANTS_GYM_DECOR_H
@@ -701,28 +894,85 @@ enum GymDecorId
     GYM_DECOR_COUNT
 }};
 
-// The player's badge in the gym tileset: 16 tiles from this one (in the secondary tileset), in
-// this palette slot. src/gym_badge.c swaps in the player's own badge.
-#define GYM_BADGE_TILE_START {badge_tile_start}
+// The player's badge: 16 tiles of video memory from this one, in this palette slot. src/gym_badge.c
+// puts the player's own badge there.
+#define GYM_BADGE_TILE_START {BADGE_VRAM}
 #define GYM_BADGE_PALETTE    {BADGE_PAL}
+
+#define GYM_FLOOR_COUNT {len(RA.FLOORS)}
+#define GYM_WALL_STYLE_COUNT {len(RA.WALLS)}
 
 #endif // GUARD_CONSTANTS_GYM_DECOR_H
 """)
-
-    def flags(c, e):
-        return (" | GYM_DECOR_SOLID" if c else "") + (" | GYM_DECOR_WATER" if e == "water" else "")
-
-    parts = ["// Generated by tools/gym_hack/build_gym_decor.py from its DECORATIONS list. Don't edit by hand.\n"]
-    for d, rows in catalog:
-        blocks = ", ".join(f"0x{m:03X}{flags(c, e)}" for row in rows for m, c, e in row)
-        parts.append(f"static const u16 sGymDecorBlocks_{d['key']}[] = {{ {blocks} }};\n")
-        if any(isinstance(e, int) for row in rows for _, _, e in row):
-            edits = ", ".join(f"0x{(e if isinstance(e, int) else m):03X}" for row in rows for m, _, e in row)
-            parts.append(f"static const u16 sGymDecorEditBlocks_{d['key']}[] = {{ {edits} }};\n")
+    fixed_tiles = set()
+    for refs, _, _ in LOOKS.list:
+        for r in refs:
+            if r & REF_FIXED:
+                fixed_tiles.add(r & 0x3FF)
+    parts = ["// Generated by tools/gym_hack/build_gym_decor.py. Don't edit by hand.\n\n"]
+    # The art bank
+    words = []
+    for px in BANK.tiles:
+        data = bytes((px[i] | (px[i + 1] << 4)) for i in range(0, 64, 2))
+        words += [struct.unpack_from("<I", data, k)[0] for k in range(0, 32, 4)]
+    parts.append(f"#define GYM_ART_COUNT {len(BANK.tiles)}\n")
+    parts.append("static const u32 sGymArtTiles[GYM_ART_COUNT * 8] =\n{\n")
+    for k in range(0, len(words), 8):
+        parts.append("    " + ", ".join(f"0x{x:08X}" for x in words[k:k + 8]) + ",\n")
+    parts.append("};\n\n")
+    # The looks
+    parts.append(f"#define GYM_LOOK_COUNT {len(LOOKS.list)}\n")
+    parts.append("static const struct GymLook sGymLooks[GYM_LOOK_COUNT] =\n{\n")
+    for refs, attr, flags in LOOKS.list:
+        parts.append("    {{" + ", ".join(f"0x{r:05X}" for r in refs) + f"}}, 0x{attr:08X}, {flags}}},\n")
+    parts.append("};\n\n")
+    # Free video memory
+    pool = free_vram(fixed_tiles)
+    parts.append(f"#define GYM_VRAM_POOL_COUNT {len(pool)}\n")
+    parts.append("static const u16 sGymVramPool[GYM_VRAM_POOL_COUNT] =\n{\n")
+    for k in range(0, len(pool), 16):
+        parts.append("    " + ", ".join(str(t) for t in pool[k:k + 16]) + ",\n")
+    parts.append("};\n\n")
+    # The badge pedestal's badge tiles are fixed refs to BADGE_VRAM
+    # Floors, walls, water
+    parts.append("static const u16 sGymFloorLooks[GYM_FLOOR_COUNT][4] =\n{\n")
+    for f in floors:
+        parts.append("    {" + ", ".join(str(l) for l in f) + "},\n")
+    parts.append("};\n")
+    parts.append(f"#define GYM_LOOK_SHADOW {shadow_look}\n\n")
+    parts.append("static const struct GymWallStyle sGymWallStyles[GYM_WALL_STYLE_COUNT] =\n{\n")
+    for quarters, faces in walls:
+        parts.append("    {\n        .top = {" + ", ".join(f"0x{r:05X}" for r in quarters) + "},\n        .face = {"
+                     + ", ".join("{" + ", ".join(f"0x{r:05X}" for r in f) + "}" for f in faces) + "},\n    },\n")
+    parts.append("};\n")
+    parts.append("static const u32 sGymWaterQuarters[5] = {" + ", ".join(f"0x{r:05X}" for r in water) + "};\n")
+    parts.append(f"#define GYM_WATER_BEHAVIOR 0x{water_behavior:X}\n\n")
+    # The empty room
+    parts.append("// The empty room: a look for each fixed square; GYM_BASE_FLOOR where the floor is\n")
+    parts.append("static const u16 sGymRoomBase[GYM_ROOM_HEIGHT][GYM_ROOM_WIDTH] =\n{\n")
+    for row in room:
+        parts.append("    {" + ", ".join("GYM_BASE_FLOOR" if v is None else str(v) for v in row) + "},\n")
+    parts.append("};\n")
+    parts.append("static const u16 sGymOriginalWallTop[GYM_ROOM_WIDTH] = {" + ", ".join(str(v) for v in orig_top) + "};\n")
+    parts.append(f"#define GYM_LOOK_ORIGINAL_WALL_FACE {orig_face}\n#define GYM_LOOK_ORIGINAL_WALL_SHADOW {orig_shadow}\n\n")
+    # The decorations
+    flags_kind = {"PIECE": "GYM_DECOR_KIND_PIECE", "WALL": "GYM_DECOR_KIND_WALL", "WATER": "GYM_DECOR_KIND_WATER",
+                  "FLOOR": "GYM_DECOR_KIND_FLOOR", "WALL_STYLE": "GYM_DECOR_KIND_WALL_STYLE"}
+    for d, facings in catalog:
+        for f, rows in enumerate(facings):
+            parts.append(f"static const u16 sGymDecorLooks_{d['key']}_{f}[] = {{ " + ", ".join(str(l) for row in rows for l, _ in row) + " };\n")
+            if any(e is not None for row in rows for _, e in row):
+                parts.append(f"static const u16 sGymDecorEditLooks_{d['key']}_{f}[] = {{ "
+                             + ", ".join(str(e if e is not None else l) for row in rows for l, e in row) + " };\n")
     parts.append("\nconst struct GymDecor gGymDecor[GYM_DECOR_COUNT] =\n{\n")
-    for d, rows in catalog:
-        has_edit = any(isinstance(e, int) for row in rows for _, _, e in row)
+    for d, facings in catalog:
         unlock = d["unlock"] or "0"
+        fac = []
+        for f, rows in enumerate(facings):
+            edit = f"sGymDecorEditLooks_{d['key']}_{f}" if any(e is not None for row in rows for _, e in row) else "NULL"
+            fac.append(f"{{{len(rows[0])}, {len(rows)}, sGymDecorLooks_{d['key']}_{f}, {edit}}}")
+        if not fac:
+            fac = ["{1, 1, NULL, NULL}"]
         parts.append(f"""    [GYM_DECOR_{d['key']}] =
     {{
         .name = COMPOUND_STRING("{d['name']}"),
@@ -730,71 +980,17 @@ enum GymDecorId
         .price = {d['price']},
         .unlockFlag = {unlock},
         .category = {d.get('category', 'GYM_DECOR_CAT_GENERAL')},
-        .width = {len(rows[0])},
-        .height = {len(rows)},
-        .blocks = sGymDecorBlocks_{d['key']},
-        .editBlocks = {f"sGymDecorEditBlocks_{d['key']}" if has_edit else "NULL"},
+        .kind = {flags_kind[d.get('kind', 'PIECE')]},
+        .style = {d.get('style', 0)},
+        .numFacings = {len(fac)},
+        .facings = {{{", ".join(fac)}}},
     }},
 """)
     parts.append("};\n")
-    # The code-drawn decorations' tiles, copied to video memory in these runs
-    words = []
-    for _, px in dyn.tiles:
-        data = bytes((px[i] | (px[i + 1] << 4)) for i in range(0, 64, 2))
-        words += [struct.unpack_from("<I", data, k)[0] for k in range(0, 32, 4)]
-    parts.append("\n// Tiles of the decorations drawn in code (tools/gym_hack/decor_art.py). They're copied to\n"
-                 "// video memory the gym doesn't otherwise use: {first tile, number of tiles}, in order.\n")
-    parts.append("static const u32 sGymDecorArtTiles[] =\n{\n")
-    for k in range(0, len(words), 8):
-        parts.append("    " + ", ".join(f"0x{x:08X}" for x in words[k:k + 8]) + ",\n")
-    parts.append("};\n")
-    parts.append("static const u16 sGymDecorArtRuns[][2] =\n{\n" + "".join(f"    {{{a}, {n}}},\n" for a, n in dyn.uploads()) + "};\n")
     (ROOT / "src/data/gym_decor.h").write_text("".join(parts))
 
 
-def preview(catalog, out):
-    from PIL import Image, ImageDraw
-    prim = rm.Tileset(rm.tileset_dir("gTileset_BuildingFrlg"))
-    sec = rm.Tileset(DST)
-    cell_w, cell_h = 120, 144
-    cols = 6
-    img = Image.new("RGB", (cols * cell_w, ((len(catalog) + cols - 1) // cols) * cell_h), (40, 40, 48))
-    d = ImageDraw.Draw(img)
-    for k, (dec, rows) in enumerate(catalog):
-        ox, oy = (k % cols) * cell_w, (k // cols) * cell_h
-        w, h = len(rows[0]), len(rows)
-        tile = Image.new("RGB", ((w + 2) * 16, (h + 2) * 16))
-        for y in range(h + 2):
-            for x in range(w + 2):
-                rm.draw_metatile(tile, x * 16, y * 16, FLOOR, prim, sec)
-        if "art" in dec:
-            # Code-drawn: its tiles live in video memory, not the tileset
-            art = decor_art.render(decor_art.PIECES[dec["art"]]())
-            floor = tile.crop((0, 0, art.width, art.height))
-            mask = Image.new("L", art.size, 0)
-            canvas = decor_art.PIECES[dec["art"]]()
-            for yy in range(canvas.h):
-                for xx in range(canvas.w):
-                    if canvas.px[yy][xx] is not None:
-                        mask.putpixel((xx, yy), 255)
-            floor.paste(art, (0, 0), mask)
-            tile.paste(floor, (16, 16))
-        else:
-            for y, row in enumerate(rows):
-                for x, (m, c, e) in enumerate(row):
-                    rm.draw_metatile(tile, (x + 1) * 16, (y + 1) * 16, e if isinstance(e, int) else m, prim, sec)
-        img.paste(tile, (ox + 4, oy + 4))
-        d.text((ox + 4, oy + cell_h - 26), dec["name"][:19], fill=(255, 255, 255))
-        cat = dec.get("category", "")
-        lock = f"  {cat.split('TYPE_')[-1][:-1]}" if "TYPE(" in cat else ("" if not dec["unlock"] else f"  badge {dec['unlock'][11]}")
-        d.text((ox + 4, oy + cell_h - 14), f"${dec['price']}{lock}", fill=(255, 220, 120))
-    img = img.resize((img.width * 2, img.height * 2), Image.NEAREST)
-    img.save(out)
-
-
 if __name__ == "__main__":
-    ts, catalog, fixed = build()
-    print(f"{len(catalog)} decorations, {len(ts.mt)} of 384 gym blocks used")
+    base, catalog, fixed = build()
+    print(f"{len(catalog)} decorations")
     print("fixed:", {k: hex(v) for k, v in fixed.items()})
-    if len(sys.argv) > 1:
-        preview(catalog, sys.argv[1])

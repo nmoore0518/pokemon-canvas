@@ -174,27 +174,61 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   DECORATIONS lists everything unlocked so far with its price, how many you have and a short
   description; bought pieces go to the gym's storage. DECORATE starts edit mode: walk anywhere in
   the gym (you can walk through things while decorating) and the selected piece is shown in front
-  of you. A places it, SELECT puts away the one in front, L/R switch pieces, B finishes. Nothing can
-  go on the walls, the doormat, the statues or the PC, and if you've boxed yourself in when you
-  finish, you're put back at the PC. Invisible walls are shown while decorating. The help box
-  sits at the bottom of the screen.
+  of you, whole, tinted red where it can't go (`ShowRedOverlay`: see-through sprites), with the
+  kept-clear area (entrance, statues, PC) shaded. A places it, START turns it, SELECT puts away
+  the one in front, L/R switch pieces, B finishes. Nothing can go on the walls, the doormat, the
+  statues or the PC, or on a wall's front face (except another wall), and if you've boxed yourself
+  in when you finish, you're put back at the PC. Invisible walls are shown while decorating. The
+  help box sits at the bottom of the screen.
+  - **Turning** (START): 51 pieces have drawn sides and backs (`tools/gym_hack/decor_art_turned.py`:
+    `TURNS` lists each piece's views in order: a drawing, the front flipped, or a drawing flipped
+    for the other side). A turned piece takes its turned shape (the couch is 3x2 from the front,
+    2x3 from the side). Round and symmetric things (plants, barrels, trophies...) don't turn. The
+    two chairs turn into each other. The way a piece faces is saved in bits 0-1 of its placement's
+    `room` byte (old saves: 0, the front).
+  - **Walls and pool water join up**: a GYM WALL is one square; its top joins the walls (and the
+    back wall) around it, and its front face is drawn on the square below its bottom edge (solid,
+    and only another wall can go there). POOL WATER's edges join the same way, so a pool of any
+    shape has a rim only round its outside. Older saves' 1x2 walls become one square plus its face.
+  - **Floors** (FLOORS category, each bought once): GYM TILES (the gym's own, free), WOODEN, STONE,
+    RED CARPET, SAND (badge 1), METAL GRATING (badge 3), GRASS (badge 4), STEEL (badge 6), LAVA
+    (badge 7: nobody can walk on it, and it can't go in the kept-clear area), ICE (after the
+    Champion). Pick one in DECORATE (or switch to it with L/R): A paints the square in front, holding
+    A paints every square you face as you walk, and SELECT fills the whole area of the floor in
+    front. Floors go under decorations (flat ones and the gaps round others show it). Each square's
+    floor is saved (4 bits each).
+  - **Wall styles** (WALLS category, each bought once): GYM, BRICK, WOODEN, STONE (badge 1), HEDGE
+    (badge 4), STEEL (badge 6). Choosing one in DECORATE makes it the style of every wall: the back
+    wall and the walls you place. Floor and wall art: `tools/gym_hack/gym_room_art.py`.
   - Catalog: `DECORATIONS` in `tools/gym_hack/build_gym_decor.py` (name, price, unlock flag,
     description, and the blocks that draw it). Run `python3 tools/gym_hack/build_pallet_gym.py`
-    after changing it. New entries go at the end (saves store decorations by position).
-    `python3 tools/gym_hack/build_gym_decor.py catalog.png` draws every piece with its price.
+    after changing it (then `git checkout data/maps/PalletTown_Gym_Frlg/map.json
+    data/layouts/layouts.json`: it rewrites them without the later objects). New entries go at the
+    end (saves store decorations by position).
   - Unlocks: an entry's `unlock` is a flag, usually a badge (`FLAG_BADGE02_GET` = Misty's water).
     It's just a flag, so any trainer's defeat flag works too.
-  - Pieces are blocks in the gym's own tileset (`data/tilesets/secondary/pallet_gym`, a copy of the
-    Viridian Gym tileset plus the decorations): furniture from the indoor tileset drawn over the gym
-    floor, Viridian gym pieces (spinners, stop tiles, walls, statues) as they are, and pieces imported
-    from other gyms (Cerulean water, the Vermilion trash can) with their tiles and palettes.
-    Spinners and water keep their behavior, so they work like the real gyms' versions.
-  - Save data: what you own and where it's placed live where Emerald keeps secret bases
-    (`gSaveBlock1Ptr->secretBases`, 3,200 bytes that FireRed never uses). `src/gym_decor.c` marks
-    it with a magic number and clears it on a new game or an older save. Record mixing never
-    touches it.
+  - **How the room is drawn** (`src/gym_room.c`): the gym's tileset can't hold every decoration
+    on every floor, so the room is put together as it's drawn. Each square's look (its floor, a
+    decoration in the way it faces, a wall or water joined to its neighbors, a wall's face) becomes
+    one of the gym tileset's 384 blocks, which are kept in RAM (`gGymRoomMetatiles`: the tileset's
+    `metatiles` point there), and the art it uses is copied into free video memory (915 tiles).
+    Identical squares share a block, art already in video memory is reused, and when either runs
+    low the room is put together afresh with only what's in it. The art bank (1,556 tiles), the
+    looks and the catalog are generated into `src/data/gym_decor.h`. Art goes into video memory
+    straight away while decorating; when the gym loads, after the tileset's own (queued) copy is
+    done (`GymRoom_TilesetAnim`, the gym tileset's animation callback). A piece that would need
+    more than there's room for in one room is refused. A room with every decoration in the game
+    placed (128 pieces) still fits.
+  - Furniture comes from the indoor tileset, Viridian gym pieces (spinners, stop tiles, statues)
+    as they are, and pieces from other gyms (Cerulean water, the Vermilion trash can) redrawn in
+    the shared palettes. Spinners and water keep their behavior.
+  - Save data: what you own, where it's placed, each square's floor and the wall style live where
+    Emerald keeps secret bases (`gSaveBlock1Ptr->secretBases`, 3,200 bytes that FireRed never
+    uses; `struct GymDecorSaveData`, 2,860 bytes, then the gym challenge's records).
+    `src/gym_decor.c` marks it with a magic number and clears it on a new game or an older save.
+    Record mixing never touches it.
   - Shop and storage are split into categories: GENERAL, TRAINERS and one per type (only the
-    categories with something in them are listed).
+    categories with something in them are listed), and FLOORS and WALLS.
   - **Type decorations** (`TYPE_DECORATIONS` in `build_gym_decor.py`, art drawn in code in
     `tools/gym_hack/decor_art.py`): 5 per type, 90 in all, from 1x1 to 3x3, ¥800-¥12,000
     (e.g. Electric: TESLA COIL, GENERATOR, GIANT BATTERY, NEON SIGN, PLASMA BALL; Fire:
@@ -210,17 +244,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     only trainer you must beat in Viridian Forest) · Grass: Erika · Ice: Giovanni (Viridian Gym) ·
     Steel: Giovanni (Rocket Hideout). Trainer battles count through their trainer flags, so older
     saves past those battles already have them.
-  - How the art fits: the gym tileset has no room for ~800 more tiles, so code-drawn pieces live
-    in video memory the gym never uses (indoor-tileset tiles no gym block uses, plus spare gym
-    tiles). The builder finds those spots and the game copies the art there whenever the gym's
-    tileset loads (`GymDecor_PatchTilesetGfx`, hooked in `src/fieldmap.c` next to the badge). All
-    of it is always loaded, so any mix can be placed. Their blocks use the gym tileset's spare
-    blocks. Colors: three shared 15-color palettes (gym slots 8-10, `decor_art.PALETTES`); each 8x8
-    tile uses one, and the Cerulean water and Vermilion trash can were redrawn in them.
-  - Capacity: up to 256 kinds of decoration (255 of each in storage, 114 kinds so far), and 650
-    placed pieces (more than the room's ~500 free squares).
-    Space left for more code-drawn art: 12 video memory tiles and 41 gym blocks (the builder
-    prints this). Adding much more art would need loading only the placed pieces.
+  - Capacity: up to 256 kinds of decoration (255 of each in storage, 168 kinds so far, floors and
+    wall styles included), and 560 placed pieces (more than the room's ~500 free squares).
 - **Practice trainers** (TRAINERS in the gym PC: ROOKIE ¥5,000, SKILLED ¥10,000, EXPERT ¥20,000).
   Buy as many as you like (storage holds 255 of each, like every decoration); up to 11 can be
   placed at once, any mix of ranks. That's the GBA's limit: it shows at most 16 people at once and
@@ -615,6 +640,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |
 | `src/gym_decor.c`, `include/gym_decor.h`, `data/scripts/gym_decor.inc` | Gym PC, decoration shop, edit mode, save data, type unlocks, practice trainer spots |
 | `tools/gym_hack/decor_art.py` | Pixel art for the type decorations and trainer icons (`python3 tools/gym_hack/decor_art.py sheet.png`) |
+| `tools/gym_hack/decor_art_turned.py` | Sides and backs of the pieces that turn (`python3 tools/gym_hack/decor_art_turned.py sheet.png`) |
+| `tools/gym_hack/gym_room_art.py` | Floors, wall styles and pool edges |
+| `src/gym_room.c`, `include/gym_room.h` | Puts the gym's room together: blocks in RAM, art in video memory, floors, joined walls and water |
 | `data/scripts/gym_practice.inc` | Practice trainer battles |
 | `src/gym_candidate.c`, `data/scripts/gym_candidate.inc` | Candidacy: approvals, Guest Leader battles, mentors and their gifts, Oak's asides, trainers who join |
 | `tools/gym_hack/type_item_art.py`, `test/battle/gym_hack/type_items.c` | The mentors' type items (and the Palm Pilot icon): icons and battle tests |

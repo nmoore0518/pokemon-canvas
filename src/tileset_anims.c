@@ -6,6 +6,7 @@
 #include "task.h"
 #include "battle_transition.h"
 #include "fieldmap.h"
+#include "gym_room.h"
 
 static EWRAM_DATA struct {
     const u16 *src;
@@ -678,6 +679,15 @@ void InitTilesetAnim_Petalburg(void)
     sSecondaryTilesetAnimCounter = 0;
     sSecondaryTilesetAnimCounterMax = sPrimaryTilesetAnimCounterMax;
     sSecondaryTilesetAnimCallback = NULL;
+}
+
+// Pokémon Canvas: the gym's room art goes into video memory once the tileset's copy is done
+// (src/gym_room.c)
+void InitTilesetAnim_PalletGym(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = 256;
+    sSecondaryTilesetAnimCallback = GymRoom_TilesetAnim;
 }
 
 void InitTilesetAnim_Rustboro(void)

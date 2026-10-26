@@ -751,6 +751,8 @@ gSpecials::
 	def_special GymDecor_BufferDecorInfo
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing
+	def_special GymDecor_GetKind
+	def_special GymDecor_ApplyWallStyle
 	def_special StatItems_CheckMon
 	def_special StatItems_PushIvList
 	def_special StatItems_PushAbilityList

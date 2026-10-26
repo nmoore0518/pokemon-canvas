@@ -1097,9 +1097,9 @@ const struct Tileset gTileset_PalletGym =
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_PalletGym,
     .palettes = gTilesetPalettes_PalletGym,
-    .metatiles = gMetatiles_PalletGym,
-    .metatileAttributes = gMetatileAttributes_PalletGym,
-    .callback = NULL,
+    .metatiles = gGymRoomMetatiles,                                  // (put together by src/gym_room.c)
+    .metatileAttributes = (const u16 *)gGymRoomMetatileAttrs,
+    .callback = InitTilesetAnim_PalletGym,
 };
 
 const struct Tileset gTileset_HoennBuilding =

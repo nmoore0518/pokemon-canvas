@@ -157,12 +157,31 @@ enum GymDecorId
     GYM_DECOR_TROPHY_FAIRY,
     GYM_DECOR_TROPHY_CHAMPIONS,
     GYM_DECOR_TROPHY_GRAND,
+    GYM_DECOR_FLOOR_GYM,
+    GYM_DECOR_FLOOR_WOOD,
+    GYM_DECOR_FLOOR_STONE,
+    GYM_DECOR_FLOOR_CARPET,
+    GYM_DECOR_FLOOR_SAND,
+    GYM_DECOR_FLOOR_GRATING,
+    GYM_DECOR_FLOOR_GRASS,
+    GYM_DECOR_FLOOR_STEEL,
+    GYM_DECOR_FLOOR_LAVA,
+    GYM_DECOR_FLOOR_ICE,
+    GYM_DECOR_WALLS_GYM,
+    GYM_DECOR_WALLS_BRICK,
+    GYM_DECOR_WALLS_WOOD,
+    GYM_DECOR_WALLS_STONE,
+    GYM_DECOR_WALLS_HEDGE,
+    GYM_DECOR_WALLS_STEEL,
     GYM_DECOR_COUNT
 };
 
-// The player's badge in the gym tileset: 16 tiles from this one (in the secondary tileset), in
-// this palette slot. src/gym_badge.c swaps in the player's own badge.
-#define GYM_BADGE_TILE_START 799
+// The player's badge: 16 tiles of video memory from this one, in this palette slot. src/gym_badge.c
+// puts the player's own badge there.
+#define GYM_BADGE_TILE_START 992
 #define GYM_BADGE_PALETTE    11
+
+#define GYM_FLOOR_COUNT 10
+#define GYM_WALL_STYLE_COUNT 6
 
 #endif // GUARD_CONSTANTS_GYM_DECOR_H

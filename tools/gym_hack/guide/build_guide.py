@@ -469,10 +469,24 @@ Multivitamin or a Master Ball. Whoever ends your streak earns your badge, and th
 
 <h3>Decorating</h3>
 <p>The PC left of the entrance: <b>BUY DECORATIONS</b> lists everything unlocked so far; <b>DECORATE</b> lets you walk the gym
-(through things) and place the piece shown in front of you: A places, SELECT puts away, L/R switch pieces, B finishes. There
-are general pieces, pieces from the Kanto gyms (Viridian's spinners and stop tiles, Cerulean's water, Vermilion's trash cans,
-which keep working), and 5 decorations for every type. A type's pieces go on sale after a key battle (table below), and all of
-them once the gym is yours. "New GYM decorations available!" tells you when something unlocks.</p>
+(through things) and place the piece shown in front of you: A places, <b>START turns it</b>, SELECT puts away the one in
+front, L/R switch pieces, B finishes. A piece turns red where it can't go, and the area by the door, statues and PC is shaded
+(nothing goes there). There are general pieces, pieces from the Kanto gyms (Viridian's spinners and stop tiles, Cerulean's
+water, Vermilion's trash cans, which keep working), and 5 decorations for every type. A type's pieces go on sale after a key
+battle (table below), and all of them once the gym is yours. "New GYM decorations available!" tells you when something
+unlocks.</p>
+<ul>
+<li><b>Turning</b>: most furniture can be turned to face any way, and changes shape to match (a couch is 3 wide from the front
+and 3 long from the side). Round things look the same every way, so they don't turn.</li>
+<li><b>Walls and pools join up</b>: GYM WALLs are one square each and join into one wall (with its front face showing on the
+square below, where only another wall can go). POOL WATER joins the same way: any shape of pool gets a rim only round its
+outside. You can SURF in it.</li>
+<li><b>Floors</b> (bought once, then use them anywhere): wood, stone, red carpet, sand, metal grating, grass, steel, ice and
+<b>lava</b> (nobody can walk on it: it works like a wall, for fire gyms). Pick a floor in DECORATE (or switch to it with L/R): A paints the
+square in front, hold A to keep painting as you walk, and SELECT fills the whole patch of floor in front of you.</li>
+<li><b>Wall styles</b> (bought once): brick, wood, stone, hedge or steel. Choosing one in DECORATE changes every wall in the
+gym, the back wall included.</li>
+</ul>
 <h3>Practice trainers</h3>
 <p>Under TRAINERS in the PC: Rookie (¥5,000), Skilled (¥10,000) and Expert (¥20,000) trainers; up to 11 placed at once. Each
 has a fresh random team of your type for practice battles (no prize, no whiteout, healed after). Some trainers on the road
