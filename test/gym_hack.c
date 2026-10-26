@@ -612,8 +612,16 @@ TEST("GymHack: decor: nothing goes on the walls, the entrance or the PC")
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 5, 0));                         // back wall
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_PC_FRONT_X, GYM_PC_FRONT_Y - 1)); // entrance area
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, -1, 5));
-    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_ROOM_WIDTH - 1, GYM_EDIT_Y1));  // 2 tall: sticks out
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_ROOM_WIDTH - 1, GYM_EDIT_Y1 - 1));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_EDIT_X1, GYM_EDIT_Y1));  // 2 tall: sticks out
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_EDIT_X1, GYM_EDIT_Y1 - 1));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 0, 5));                      // the side walls
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_ROOM_WIDTH - 1, 5));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 1, 5));                       // right up against them
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_ROOM_WIDTH - 2, 5));
+    EXPECT_EQ(GYM_EDIT_Y1, GYM_ROOM_HEIGHT - 2);                                      // the bottom row
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 2, GYM_EDIT_Y1 - 1));
+    EXPECT(!GymRoom_IsPaintable(0, 10));
+    EXPECT(GymRoom_IsPaintable(2, GYM_ROOM_HEIGHT - 2));
 }
 
 TEST("GymHack: decor: a turned piece takes up its turned shape")
@@ -1550,7 +1558,7 @@ TEST("GymHack: every type has at least five decorations")
 
 TEST("GymHack: practice trainers: any number can be bought, 11 placed at once")
 {
-    u32 i, x = 0, y = 4;
+    u32 i, x = 1, y = 4;
     GymDecor_ClearAll();
     SetMoney(&gSaveBlock1Ptr->money, 999999);
     for (i = 0; i < 14; i++)
@@ -1567,7 +1575,7 @@ TEST("GymHack: practice trainers: any number can be bought, 11 placed at once")
         x += 2;
         if (x > 20)
         {
-            x = 0;
+            x = 1;
             y += 2;
         }
     }

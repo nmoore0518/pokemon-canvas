@@ -862,6 +862,8 @@ def build():
         room[0][x] = "GYM_BASE_WALL_TOP"
         room[1][x] = "GYM_BASE_WALL_FACE"
         room[2][x] = "GYM_BASE_FLOOR_SHADOW"
+    for y in range(1, RH - 1):             # the side walls, down to the bottom row
+        room[y][0] = room[y][RW - 1] = "GYM_BASE_WALL_TOP"
     # (the original back wall, for the gym's own wall style)
     orig_top = [metatile_look(ts, 0x2D3 if x == RW // 2 else 0x291, True) for x in range(RW)]
     orig_face = metatile_look(ts, 0x299, True)

@@ -361,14 +361,38 @@ bool32 GymDecor_RemoveAt(s32 x, s32 y)
     return TRUE;
 }
 
+// Pieces placed where nothing can go any more (older saves had no side walls) go back to storage
+static void PutAwayMisplaced(void)
+{
+    struct GymDecorSaveData *save = GetSave();
+    s32 i, x, y, w, h;
+    if (save->numPlaced > GYM_DECOR_MAX_PLACED)
+        save->numPlaced = 0;
+    for (i = save->numPlaced - 1; i >= 0; i--)
+    {
+        const struct GymDecorPlacement *p = &save->placed[i];
+        bool32 ok = p->id < GYM_DECOR_COUNT;
+        if (ok)
+        {
+            Footprint(p->id, GYM_PLACEMENT_FACING(p), &w, &h);
+            for (y = p->y; y < p->y + h && ok; y++)
+                for (x = p->x; x < p->x + w && ok; x++)
+                    ok = InEditArea(x, y);
+        }
+        if (!ok)
+        {
+            memmove(&save->placed[i], &save->placed[i + 1], (save->numPlaced - i - 1) * sizeof(save->placed[0]));
+            save->numPlaced--;
+        }
+    }
+}
+
 // Map script (ON_LOAD): the room, with everything the player has placed and painted
 void GymDecor_DrawRoom(void)
 {
-    struct GymDecorSaveData *save = GetSave();
     sEditing = FALSE;
     sHudWindowId = WINDOW_NONE;
-    if (save->numPlaced > GYM_DECOR_MAX_PLACED)
-        save->numPlaced = 0;
+    PutAwayMisplaced();
     GymRoom_Load();
 }
 
@@ -771,6 +795,7 @@ void GymDecor_SetupTrainers(void)
 {
     u32 slot, decor, instance;
     s32 x, y;
+    PutAwayMisplaced();
     for (slot = 0; slot < GYM_PRACTICE_SLOTS; slot++)
     {
         if (GymDecor_GetTrainerSlot(slot, &decor, &instance, &x, &y))
@@ -1064,7 +1089,7 @@ static void GetTargetRect(s32 *x, s32 *y, u32 id, u32 facing)
 // Floors can go anywhere in the room with a floor, but lava stays out of the kept-clear area
 static bool32 CanPaintSquare(s32 x, s32 y)
 {
-    return GymRoom_IsPaintable(x, y) && y < GYM_ROOM_HEIGHT - 2;
+    return GymRoom_IsPaintable(x, y) && y < GYM_ROOM_HEIGHT - 1;
 }
 
 static bool32 CanPaintLavaSquare(s32 x, s32 y)
@@ -1308,7 +1333,7 @@ bool32 GymDecor_HandleEditInput(struct FieldInput *input)
         case DIR_EAST:  px++; break;
         default: break;
         }
-        if (px < 0 || px >= GYM_ROOM_WIDTH || py < GYM_EDIT_Y0 || py > GYM_ROOM_HEIGHT - 2
+        if (px < GYM_EDIT_X0 || px > GYM_EDIT_X1 || py < GYM_EDIT_Y0 || py > GYM_ROOM_HEIGHT - 2
          || (py == GYM_ROOM_HEIGHT - 2 && px >= GYM_MAT_X0 && px <= GYM_MAT_X1))
             input->dpadDirection = DIR_NONE;
     }

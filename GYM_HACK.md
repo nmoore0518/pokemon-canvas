@@ -174,7 +174,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   DECORATIONS lists everything unlocked so far with its price, how many you have and a short
   description; bought pieces go to the gym's storage. DECORATE starts edit mode: walk anywhere in
   the gym (you can walk through things while decorating) and the selected piece is shown in front
-  of you, whole, tinted red where it can't go (`ShowRedOverlay`: see-through sprites), with the
+  of you, whole, tinted red where it can't go (anywhere between the side walls, from the back wall
+  down to the bottom row) (`ShowRedOverlay`: see-through sprites), with the
   kept-clear area (entrance, statues, PC) shaded. A places it, START turns it, SELECT puts away
   the one in front, L/R switch pieces, B finishes. Nothing can go on the walls, the doormat, the
   statues or the PC, or on a wall's front face (except another wall), and if you've boxed yourself
@@ -199,7 +200,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     floor is saved (4 bits each).
   - **Wall styles** (WALLS category, each bought once): GYM, BRICK, WOODEN, STONE (badge 1), HEDGE
     (badge 4), STEEL (badge 6). Choosing one in DECORATE makes it the style of every wall: the back
-    wall and the walls you place. Floor and wall art: `tools/gym_hack/gym_room_art.py`.
+    wall, the side walls (no wall along the bottom, as in the other gyms) and the walls you place,
+    which join up with them. Pieces an older save had in the side columns go back to storage. Floor and wall art: `tools/gym_hack/gym_room_art.py`.
   - Catalog: `DECORATIONS` in `tools/gym_hack/build_gym_decor.py` (name, price, unlock flag,
     description, and the blocks that draw it). Run `python3 tools/gym_hack/build_pallet_gym.py`
     after changing it (then `git checkout data/maps/PalletTown_Gym_Frlg/map.json

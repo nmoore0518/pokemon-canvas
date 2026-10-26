@@ -5,10 +5,10 @@
 #define GYM_ROOM_WIDTH   25
 #define GYM_ROOM_HEIGHT  28
 // Decorations may go inside this rectangle (inclusive)...
-#define GYM_EDIT_X0 0
+#define GYM_EDIT_X0 1
 #define GYM_EDIT_Y0 2
-#define GYM_EDIT_X1 24
-#define GYM_EDIT_Y1 25
+#define GYM_EDIT_X1 23
+#define GYM_EDIT_Y1 26
 // ...but not inside this one (the entrance, statues and PC)
 #define GYM_RESERVED_X0 7
 #define GYM_RESERVED_Y0 22

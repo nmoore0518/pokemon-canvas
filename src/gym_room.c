@@ -373,7 +373,7 @@ static void ComposeCell(const struct RoomMap *map, s32 x, s32 y, u32 *metatile, 
     if (base == GYM_BASE_WALL_TOP || (map->kind[i] == CELL_WALL && GymRoom_IsPaintable(x, y)))
     {
         // A wall's top face, joined to the walls around it
-        if (base == GYM_BASE_WALL_TOP && wallStyle == 0)
+        if (base == GYM_BASE_WALL_TOP && wallStyle == 0 && y == 0)
         {
             LookTiles(map, x, y, sGymOriginalWallTop[x], tiles);
             attr = sGymLooks[sGymOriginalWallTop[x]].attr;
@@ -383,8 +383,6 @@ static void ComposeCell(const struct RoomMap *map, s32 x, s32 y, u32 *metatile, 
             bool32 u = JoinsAbove(map, x, y), d = IsWall(map, x, y + 1);
             bool32 l = IsWall(map, x - 1, y), r = IsWall(map, x + 1, y);
             FloorTiles(map, x, y, tiles);
-            if (base == GYM_BASE_WALL_TOP)
-                tiles[0] = tiles[1] = tiles[2] = tiles[3] = 0;
             tiles[4] = RefEntry(ws->top[QuarterCase(u, l, IsWall(map, x - 1, y - 1) || (u && l && base == GYM_BASE_WALL_TOP))], 0);
             tiles[5] = RefEntry(ws->top[QuarterCase(u, r, IsWall(map, x + 1, y - 1) || (u && r && base == GYM_BASE_WALL_TOP))], HFLIP);
             tiles[6] = RefEntry(ws->top[QuarterCase(d, l, IsWall(map, x - 1, y + 1))], VFLIP);

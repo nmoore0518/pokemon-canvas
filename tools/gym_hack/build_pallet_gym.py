@@ -37,8 +37,9 @@ VOID = 0x008
 # The gym PC (decoration shop and decorating), left of the entrance
 PC = (8, H - 4)          # the block above the PC (plain floor); the PC is below it, used from the front
 PC_FRONT = (PC[0], PC[1] + 2)
-# Decorations can go anywhere on the floor except the entrance area (statues, mat, PC)
-EDIT_AREA = (0, 2, W - 1, H - 3)            # x0, y0, x1, y1
+# Decorations can go anywhere on the floor (between the side walls, down to the bottom row) except
+# the entrance area (statues, mat, PC)
+EDIT_AREA = (1, 2, W - 2, H - 2)            # x0, y0, x1, y1
 RESERVED = (PC[0] - 1, H - 6, STATUES[1] + 2, H - 1)
 
 # Where the player stands when Oak brings everyone in, and where Oak and the rival stand
@@ -65,6 +66,8 @@ def build():
         grid[1][x] = block(WALL_FACE, 1, 0)
         grid[2][x] = block(FLOOR_SHADOW, 0, 3)
         grid[H - 1][x] = block(VOID, 1, 0)
+    for y in range(1, H - 1):              # the side walls (no wall along the bottom, as in other gyms)
+        grid[y][0] = grid[y][W - 1] = block(WALL_TOP, 1, 0)
     for x, m, below in zip(MAT, MAT_TILES, BELOW_MAT):
         grid[H - 2][x] = block(m, 0, 3)
         grid[H - 1][x] = block(below, 1, 0)
