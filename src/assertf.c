@@ -1,6 +1,7 @@
 #include <alloca.h>
 #include <stdarg.h>
 #include "global.h"
+#include "playtest.h"
 #include "bg.h"
 #include "main.h"
 #include "malloc.h"
@@ -445,6 +446,21 @@ void AssertfCrashScreen(const void *return1, const char *fmt, ...)
 {
     va_list va;
     va_start(va, fmt);
+    if (PLAYTEST)   // (automated playtests: recorded, not shown; include/playtest.h)
+    {
+        va_list copy;
+        const char *file;
+        int line;
+        va_copy(copy, va);
+        file = va_arg(copy, const char *);
+        line = va_arg(copy, int);
+        va_end(copy);
+        if (Playtest_Assert(return1, file, line))
+        {
+            va_end(va);
+            return;
+        }
+    }
     CrashScreen(MODE_ASSERTF, return1, __builtin_return_address(0), fmt, va);
     va_end(va);
 }

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "playtest.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_arena.h"
@@ -2009,6 +2010,14 @@ static void PlayerHandleChooseAction(enum BattlerId battler)
 {
     s32 i;
 
+    if (Playtest_Active())
+    {
+        // (automated playtests: always fight; Playtest_ChooseMove picks the move)
+        BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_USE_MOVE, 0);
+        BtlController_Complete(battler);
+        return;
+    }
+
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
     BattleTv_ClearExplosionFaintCause();
     BattlePutTextOnWindow(gText_BattleMenu, B_WIN_ACTION_MENU);
@@ -2112,6 +2121,14 @@ void PlayerHandleChooseMove(enum BattlerId battler)
     {
         struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
 
+        if (Playtest_Active())
+        {
+            // (automated playtests: the autopilot's move, at its target)
+            u32 target, slot = Playtest_ChooseMove(battler, &target);
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_EXEC_SCRIPT, slot | (target << 8));
+            BtlController_Complete(battler);
+            return;
+        }
         InitMoveSelectionsVarsAndStrings(battler);
         gBattleStruct->gimmick.playerSelect = FALSE;
         TryToAddMoveInfoWindow();
@@ -2165,6 +2182,14 @@ static void PlayerHandleChoosePokemon(enum BattlerId battler)
 
     memcpy(gBattleStruct->battlerPartyOrders[battler], gBattlePartyCurrentOrder, sizeof(gBattlePartyCurrentOrder));
 
+    if (Playtest_Active())
+    {
+        // (automated playtests: the autopilot's next Pokémon)
+        u32 slot = Playtest_ChooseSwitchIn(battler);
+        BtlController_EmitChosenMonReturnValue(battler, B_COMM_TO_ENGINE, slot, gBattlePartyCurrentOrder);
+        BtlController_Complete(battler);
+        return;
+    }
     if (gBattleTypeFlags & BATTLE_TYPE_ARENA && gBattleResources->bufferA[battler][1] != PARTY_ACTION_CANT_SWITCH
         && gBattleResources->bufferA[battler][1] != PARTY_ACTION_CHOOSE_FAINTED_MON
         && gBattleResources->bufferA[battler][1] != PARTY_ACTION_SEND_MON_TO_BOX)

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "playtest.h"
 #include "malloc.h"
 #include "battle.h"
 #include "battle_message.h"
@@ -935,6 +936,24 @@ static void Task_EvolutionScene(u8 taskId)
             // This Yes/No is used for both the initial "delete move?" prompt
             // and for the "stop learning move?" prompt
             // What Yes/No do next is determined by tLearnMoveYesState / tLearnMoveNoState
+            if (Playtest_Active() && gTasks[taskId].tLearnMoveYesState == MVSTATE_SHOW_MOVE_SELECT)
+            {
+                // (automated playtests: the autopilot picks the move to forget, or keeps them all)
+                u32 slot = Playtest_MoveToForget(mon, gMoveToLearn);
+                HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
+                if (slot >= MAX_MON_MOVES)
+                {
+                    gTasks[taskId].tLearnMoveState = MVSTATE_CANCEL;
+                }
+                else
+                {
+                    PREPARE_MOVE_BUFFER(gBattleTextBuff2, GetMonData(mon, MON_DATA_MOVE1 + slot))
+                    RemoveMonPPBonus(mon, slot);
+                    SetMonMoveSlot(mon, gMoveToLearn, slot);
+                    gTasks[taskId].tLearnMoveState = MVSTATE_FORGET_MSG_1;
+                }
+                break;
+            }
             if (JOY_NEW(DPAD_UP) && sEvoCursorPos != 0)
             {
                 // Moved onto YES

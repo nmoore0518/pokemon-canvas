@@ -1,4 +1,5 @@
 #include "global.h"
+#include "playtest.h"
 #include "event_mons.h"
 #include "overworld.h"
 #include "battle_pyramid.h"
@@ -1889,6 +1890,7 @@ void CB2_OverworldBasic(void)
 void CB2_Overworld(void)
 {
     bool32 fading = (gPaletteFade.active != 0);
+    Playtest_Update();   // Pokémon Canvas: automated playtests (include/playtest.h)
     if (fading)
         SetVBlankCallback(NULL);
     OverworldBasic();

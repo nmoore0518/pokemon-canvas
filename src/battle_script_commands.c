@@ -1,4 +1,5 @@
 #include "global.h"
+#include "playtest.h"
 #include "regions.h"
 #include "gym_challenge.h"
 #include "battle.h"
@@ -2157,7 +2158,7 @@ static void Cmd_getexp(void)
     {
     case 0: // check if should receive exp at all
         if (IsOnPlayerSide(gBattlerFainted)
-            || IsAiVsAiBattle()
+            || (IsAiVsAiBattle() && !Playtest_Active())   // (automated playtests earn EXP)
             || !BattleTypeAllowsExp())
         {
             gBattleScripting.getexpState = 6; // goto last case
@@ -3839,6 +3840,28 @@ static void Cmd_yesnoboxlearnmove(void)
         BattleCreateYesNoCursorAt(0);
         break;
     case 1:
+        if (Playtest_Active())
+        {
+            // (automated playtests: the autopilot picks the move to forget, or keeps them all)
+            struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gBattleStruct->expGetterMonId];
+            u32 movePosition = Playtest_MoveToForget(mon, gMoveToLearn);
+            HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
+            if (movePosition >= MAX_MON_MOVES)
+            {
+                gBattleScripting.learnMoveState = 5;
+                break;
+            }
+            gBattlescriptCurrInstr = cmd->forgotMovePtr;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff2, GetMonData(mon, MON_DATA_MOVE1 + movePosition))
+            RemoveMonPPBonus(mon, movePosition);
+            SetMonMoveSlot(mon, gMoveToLearn, movePosition);
+            if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId && MOVE_IS_PERMANENT(0, movePosition))
+            {
+                RemoveBattleMonPPBonus(&gBattleMons[0], movePosition);
+                SetBattleMonMoveSlot(&gBattleMons[0], gMoveToLearn, movePosition);
+            }
+            break;
+        }
         if (JOY_NEW(DPAD_UP) && gBattleCommunication[CURSOR_POSITION] != 0)
         {
             PlaySE(SE_SELECT);

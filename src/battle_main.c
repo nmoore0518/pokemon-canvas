@@ -1,4 +1,5 @@
 #include "global.h"
+#include "playtest.h"
 #include "regions.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -476,6 +477,7 @@ const u8 *const gStatusConditionStringsTable[][2] =
 
 void CB2_InitBattle(void)
 {
+    Playtest_BattleStart();   // Pokémon Canvas: automated playtests (include/playtest.h)
     if (!gTestRunnerEnabled)
         MoveSaveBlocks_ResetHeap();
     AllocateBattleResources();
@@ -3424,6 +3426,8 @@ static void TryDoEventsBeforeFirstTurn(void)
 {
     s32 i;
 
+    Playtest_FirstTurn();   // Pokémon Canvas: automated playtests (include/playtest.h)
+
     if (gBattleControllerExecFlags)
         return;
 
@@ -5431,6 +5435,7 @@ static void WaitForEvoSceneToFinish(void)
 
 static void ReturnFromBattleToOverworld(void)
 {
+    Playtest_BattleEnd();   // Pokémon Canvas: automated playtests (include/playtest.h)
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK))
     {
         CalculatePlayerPartyCount();
