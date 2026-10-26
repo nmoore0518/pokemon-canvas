@@ -651,7 +651,11 @@ def build_region(mod, zone_warp, out):
             for yy in (y - 1, y):             # (ladders are two tiles tall)
                 g[yy][x] = floor
         for x, y in a.get("remove_holes", []):     # (one tile: holes, doors)
-            g[y][x] = floor_near(g, x, y, beh0)
+            l, r = g[y][x - 1] if x > 0 else None, g[y][x + 1] if x + 1 < w else None
+            if l is not None and l == r and (l >> 10) & 3:   # (a cave's mouth in a rock face: the face, closed)
+                g[y][x] = l
+            else:
+                g[y][x] = floor_near(g, x, y, beh0)
         if "post" in a:
             a["post"](g, w, h)
         behaviors = dict(a.get("behaviors", {}))

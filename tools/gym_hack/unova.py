@@ -77,8 +77,10 @@ def bridge():
                 g[SHRINE_AT[1] + j][SHRINE_AT[0] + i] = v
     x, y = CAVE_MOUTH
     g[y][x] = blk(0x0A9, 0, (g[y + 1][x] >> 12) & 0xF)   # (a cave's mouth, as on Route 4; at the beach's level)
-    for rx, ry in ((32, 15), (33, 15), (32, 16), (33, 16)):  # (the rock off the beach's corner: open water,
+    for rx, ry in ((33, 15), (33, 16)):                    # (the rock off the beach's corner: open water,
         g[ry][rx] = g[15][34]                                #  so the beach under the cliff can be surfed to)
+    for ry in (15, 16):                                      # (its left half sat on the shore: the shore, as
+        g[ry][32] = g[17][32]                                #  below it, carries on up to the beach)
     return g, lay["width"], lay["height"]
 
 

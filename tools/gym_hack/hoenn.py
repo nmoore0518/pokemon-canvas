@@ -54,32 +54,27 @@ def forest():
 
 
 # ---------------------------------------------------------------------------------------------
-# Pacifidlog Town, and Route 131 to its west (Sky Pillar's islet in it, as in Emerald once Sky
-# Pillar is open). A second cave (Sky Pillar's cave mouth and its beach, copied) in the cliff over
-# Pacifidlog. The town's floating logs: plain floor (their sinking is an Emerald field effect)
+# Pacifidlog Town, and Route 131 to its east (as in Emerald, so the two meet as they were drawn to;
+# Sky Pillar's islet in it, as once Sky Pillar is open). A second cave (Sky Pillar's cave mouth and
+# its beach, copied) in the cliff over Pacifidlog. The town's floating logs: plain floor (their
+# sinking is an Emerald field effect)
 # ---------------------------------------------------------------------------------------------
 OCEAN_W, OCEAN_H = 80, 40
-PAC_X = 60
+PAC_X, ROUTE_X = 0, 20
 ICE_DOOR = (PAC_X + 9, 8)
 SAND = 0x124
-SEAM_W, SEAM_SRC = 5, 28
-SKY_DOOR = (36, 6)
+SKY_SRC = (36, 6)                       # (Sky Pillar's door, on Route 131)
+SKY_DOOR = (ROUTE_X + SKY_SRC[0], SKY_SRC[1])
 
 
 def ocean():
     route, _ = read_layout("LAYOUT_ROUTE131_SKY_PILLAR")
     pac, _ = read_layout("LAYOUT_PACIFIDLOG_TOWN")
-    g = [route[y][:] + pac[y][:] for y in range(OCEAN_H)]
-    # Pacifidlog's cliff given a west end (Sky Pillar islet's own west slope), not cut off by the sea
-    for y in range(10):
-        for dx in range(SEAM_W):
-            g[y][PAC_X - SEAM_W + dx] = route[y][SEAM_SRC + dx]
-    for y in (3, 4):
-        g[y][PAC_X - SEAM_W] = g[y][PAC_X - SEAM_W - 1]      # (half a sea rock: sea)
+    g = [pac[y][:] + route[y][:] for y in range(OCEAN_H)]
     # the cave: Sky Pillar's (its rock face and door, the beach under it) into Pacifidlog's cliff
     for dy in range(5):
         for dx in range(7):
-            g[ICE_DOOR[1] - 1 + dy][ICE_DOOR[0] - 3 + dx] = route[SKY_DOOR[1] - 1 + dy][SKY_DOOR[0] - 3 + dx]
+            g[ICE_DOOR[1] - 1 + dy][ICE_DOOR[0] - 3 + dx] = route[SKY_SRC[1] - 1 + dy][SKY_SRC[0] - 3 + dx]
     AREAS["OCEAN"]["behaviors"] = {**pacifidlog_logs(), SAND: "MB_INDOOR_ENCOUNTER"}   # (wild Pokémon on the beaches)
     return g, OCEAN_W, OCEAN_H
 
@@ -248,7 +243,7 @@ AREAS = {
                     ("CARVANHA", 48, 52), ("LUVDISC", 48, 52), ("WAILMER", 48, 52),
                     ("SHARPEDO", 50, 54), ("CLAMPERL", 50, 54), ("WAILMER", 50, 54),
                     ("SHARPEDO", 52, 55), ("RELICANTH", 52, 55)],
-        "statics": [("KYOGRE", (28, 26))],
+        "statics": [("KYOGRE", (ROUTE_X + 28, 26))],
         "items": [("SOUL_DEW", (PAC_X + 5, 23))],
         "extra": ocean_extra,
     },

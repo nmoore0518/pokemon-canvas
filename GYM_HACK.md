@@ -1171,6 +1171,17 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          species, ~30 wild slots per map) and about 70 legendary encounters.
          The 18 gym legendaries (`gGymLegends`) stay gym-only: no safari has them, Koraidon and
          Miraidon included.
+   - [x] Map seams (v85): `tools/gym_hack/check_seams.py [out_dir]` finds tiles in the hack's own maps
+         (the Exotic Safari, Pallet Town, the Academy) that meet a neighbor the way no FireRed, Emerald or
+         HnS map ever has, and whose edges clash more than that tile's best original fit (a sea rock's
+         ring cut off by sand, bushes standing in the sea); with out_dir, a marked-up picture of each
+         map. Tiles are compared by their drawing, so copied, converted and recolored tilesets still
+         match. First run: about 140 spots; most are fine as they are (a tree top over grass, a
+         building on a lawn). Fixed: the Alola resort's beaches (`paint_beach` clears both kinds of
+         sea rock; bushes only on the island's inside, never at the water), Skyarrow's beach corner,
+         Pacifidlog and Route 131 joined the way Emerald joins them (the town west of the route: no
+         cut rocks or cliff at the seam), and a cave mouth removed from a rock face is closed with
+         the face, not floor (`remove_holes`).
    - [ ] Space: about 3.5 MB of the 32 MB is free (late October 2026). Ways to make room:
          - Delete the Sevii Islands (unreachable since the ferry change): ~0.5-0.8 MB (159 map
            layouts ~145 KB, 9 Sevii-only tilesets ~70 KB, their events, trainers, scripts, text).

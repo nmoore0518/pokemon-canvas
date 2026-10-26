@@ -1336,8 +1336,8 @@
     },
     {
       "type": "hidden_item",
-      "x": 31,
-      "y": 3,
+      "x": 30,
+      "y": 15,
       "elevation": 3,
       "item": "ITEM_ELECTRIC_MEMORY",
       "flag": "FLAG_EXOTIC_HIDDEN_ELECTRIC_MEMORY",
@@ -1346,8 +1346,8 @@
     },
     {
       "type": "hidden_item",
-      "x": 14,
-      "y": 8,
+      "x": 25,
+      "y": 9,
       "elevation": 3,
       "item": "ITEM_FAIRY_MEMORY",
       "flag": "FLAG_EXOTIC_HIDDEN_FAIRY_MEMORY",

@@ -170,6 +170,7 @@ SHORE = {0x10C: (1, 0, 0, 1), 0x10D: (1, 0, 0, 0), 0x10E: (1, 0, 1, 0), 0x114: (
          0x125: None, 0x126: None, 0x12D: None, 0x12E: None}            # (sand and its edges on water)
 OPEN_SEA = 0x12B
 SEA_ROCK = (0x110, 0x111, 0x118, 0x119)                                 # (a rock in the sea, 2x2)
+SEA_ROCK_2 = (0x1CB, 0x1CC, 0x1D3, 0x1D4)                               # (another, by the shore's shallows)
 
 
 def paint_beach(g, x0, y0, x1, y1):
@@ -178,15 +179,15 @@ def paint_beach(g, x0, y0, x1, y1):
     h, w = len(g), len(g[0])
     for y in range(max(0, y0 - 2), min(h, y1 + 3)):           # (sea rocks in the way: open sea)
         for x in range(max(0, x0 - 2), min(w, x1 + 3)):
-            if g[y][x] & 0x3FF == SEA_ROCK[0] and any(x0 - 1 <= x + a <= x1 + 1 and y0 - 1 <= y + b <= y1 + 1
-                                                       for a in (0, 1) for b in (0, 1)):
+            if g[y][x] & 0x3FF in (SEA_ROCK[0], SEA_ROCK_2[0]) and any(x0 - 1 <= x + a <= x1 + 1 and y0 - 1 <= y + b <= y1 + 1
+                                                                        for a in (0, 1) for b in (0, 1)):
                 for a in (0, 1):
                     for b in (0, 1):
                         g[y + b][x + a] = OPEN_SEA | (1 << 12)
     for y in range(y0, y1 + 1):
         for x in range(x0, x1 + 1):
             g[y][x] = 0x115 | (3 << 12)
-    sea = lambda x, y: not (0 <= x < w and 0 <= y < h) or g[y][x] & 0x3FF in (OPEN_SEA,) + SEA_ROCK
+    sea = lambda x, y: not (0 <= x < w and 0 <= y < h) or g[y][x] & 0x3FF in (OPEN_SEA,) + SEA_ROCK + SEA_ROCK_2
     for y in range(max(0, y0 - 2), min(h, y1 + 3)):
         for x in range(max(0, x0 - 2), min(w, x1 + 3)):
             if g[y][x] & 0x3FF not in SHORE:
@@ -208,7 +209,10 @@ def resort():
         for y in range(y0, y1 + 1):
             for x in range(x0, x1 + 1):
                 v = g[y][x]
-                if not (v >> 10) & 3 and beh(v) not in B.MB_SURFABLE and (x, y) != (39, 9):
+                # (the island's inside only: its shore stays sand, so no bush stands in the water)
+                if (not (v >> 10) & 3 and beh(v) not in B.MB_SURFABLE and (x, y) != (39, 9)
+                        and all(beh(g[y + b][x + a]) not in B.MB_SURFABLE for a in (-1, 0, 1) for b in (-1, 0, 1))
+                        and v & 0x3FF not in SHORE.keys() - {0x115}):
                     g[y][x] = TALL
     paint_beach(g, 21, 13, 50, 16)                          # (a long beach along the island's south)
     paint_beach(g, 46, 3, 50, 12)                           # (and round its east end)
