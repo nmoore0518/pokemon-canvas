@@ -9,6 +9,7 @@
 // Scripts: data/scripts/gym_convention.inc. The halls: tools/gym_hack/convention_halls.py.
 #include "global.h"
 #include "gym_convention.h"
+#include "tournament.h"
 #include "gym_challenge.h"
 #include "data.h"
 #include "pokeball.h"
@@ -181,6 +182,50 @@ s32 Convention_SetupByName(const u8 *name)
         return index;
     }
     return -1;
+}
+
+u32 Convention_EntrantCount(void)
+{
+    return CONVENTION_TRAINER_COUNT;
+}
+
+// (src/tournament.c) A convention trainer as a tournament entrant: champions are the top tier,
+// the Elite Four the next, Gym Leaders (and Trial Captains) the one after
+void Convention_GetEntrant(u32 index, struct TourneyEntrant *out)
+{
+    const struct ConventionTrainer *t = &sConventionTrainers[index < CONVENTION_TRAINER_COUNT ? index : 0];
+    if (index >= CONVENTION_TRAINER_COUNT)
+        index = 0;
+    out->name = out->battleName = TrainerName(index);
+    out->title = sConventionCards[index][0];
+    out->region = sConventionCards[index][1];
+    out->games = sConventionCards[index][2];
+    out->intro = t->intro;
+    out->defeat = t->defeat;
+    out->after = t->after;
+    out->party = t->party;
+    out->pic = sConventionPics[index];
+    out->gfx = sConventionGfx[index];
+    out->color = sHallColors[t->hall];
+    out->trainerClass = t->trainerClass;
+    out->female = t->female;
+    switch (t->trainerClass)
+    {
+    case TRAINER_CLASS_CHAMPION_FRLG:
+        out->tier = 0;
+        out->win = COMPOUND_STRING("That's why they call me CHAMPION.\nCome back stronger!");
+        break;
+    case TRAINER_CLASS_ELITE_FOUR_FRLG:
+        out->tier = 1;
+        out->win = COMPOUND_STRING("The ELITE FOUR doesn't fall that\neasily. Good battle, though.");
+        break;
+    default:
+        out->tier = 2;
+        out->win = COMPOUND_STRING("That's a tournament for you!\nBetter luck next time.");
+        break;
+    }
+    for (out->partySize = 0; out->partySize < PARTY_SIZE && t->party[out->partySize].species != SPECIES_NONE; out->partySize++)
+        ;
 }
 
 // Special: VAR_0x8004 = trainer. Sets up their battle and lines; STR_VAR_1 = their name.

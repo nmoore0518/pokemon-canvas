@@ -52,12 +52,20 @@
 #define GYM_LEGEND_PENDING       5   // the gym's new type was chosen away from it: it arrives next visit
 
 // VAR_JOHTO_STATE (src/johto.c)
-// The Gauntlet (src/gauntlet.c): VAR_GAUNTLET_STATE
+// The tournament (src/tournament.c; its story and Bill: src/gauntlet.c): VAR_GAUNTLET_STATE
 #define GAUNTLET_NONE           0
-#define GAUNTLET_ARRIVING       1   // (the hooded figure's scene plays as the player comes into the gym)
-#define GAUNTLET_ACTIVE         2
-#define GAUNTLET_ALL_BEATEN     3   // (every challenger beaten: the one who hired the figure is next)
-#define GAUNTLET_SIMULATOR      4   // (Bill beaten: his Palm Pilot runs it all again, as a simulation)
+#define GAUNTLET_ARRIVING       1   // (the hooded bookie's scene plays as the player comes into the gym)
+#define GAUNTLET_ACTIVE         2   // (the tournament's open: not won yet)
+#define GAUNTLET_ALL_BEATEN     3   // (won: the one who put it on is next)
+#define GAUNTLET_SIMULATOR      4   // (Bill beaten: his Palm Pilot runs new tournaments, as simulations)
+
+// A tournament run's status (gTourneySave.run.status)
+#define TOURNEY_NONE            0
+#define TOURNEY_ACTIVE          1
+#define TOURNEY_LOST            2
+#define TOURNEY_WON             3
+#define TOURNEY_FORFEIT         4
+#define TOURNEY_ROUNDS          7   // (128 entrants)
 
 // The Leader Academy (north of Route 11; src/leader_academy.c): VAR_ACADEMY_STATE
 #define ACADEMY_NONE            0

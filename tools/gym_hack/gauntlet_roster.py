@@ -1,6 +1,6 @@
 """The Gauntlet's challengers (Gym Trainer hack): the strongest trainers of the Pokémon world who aren't
 Gym Leaders, Elite Four or Champions (those are at the convention), called in one after another by
-the hooded figure. In the order they come, region by region. Read by build_gauntlet.py.
+the hooded figure (now: the tournament's entrants, with the convention's). In the order they come, region by region. Read by build_gauntlet.py.
 
 Each: key -> dict(
   name   - as shown (caps), title / region / games - their title card,
@@ -870,6 +870,23 @@ ROSTER["jessie_james"]["battle"] = "JESSIE"
 
 ORDER = list(ROSTER)
 ROSTER["sycamore"]["battle"] = "SYCAMORE"
+
+# The tournament's seeding (src/tournament.c): 0 the legends, 1 the strong (rivals, Frontier Brains,
+# bosses), 2 everyone else, 3 the admins and sidekicks. (The convention's champions are 0, its Elite
+# Four 1, its Gym Leaders 2.) Unlisted: 2.
+TIERS = {
+    0: ["oak", "zinnia", "cyrus", "ghetsis", "n", "lysandre", "az", "lusamine", "volo", "mustard", "palmer", "kieran"],
+    1: ["silver", "ethan", "may", "brendan", "wally", "maxie", "archie", "noland", "greta", "tucker", "lucy", "brandon",
+        "spenser", "anabel", "barry", "dawn", "lucas", "riley", "thorton", "dahlia", "darach", "argenta", "colress",
+        "ingo", "emmet", "benga", "serena", "calem", "sycamore", "hau", "gladion", "guzma", "hop", "rose", "arven",
+        "penny", "carmine", "sada", "turo"],
+    3: ["jessie_james", "archer", "ariana", "proton", "petrel", "tabitha", "courtney", "matt", "shelly", "mars",
+        "jupiter", "saturn", "zinzolin", "aliana", "celosia", "bryony", "mable", "xerosic", "faba", "plumeria",
+        "oleana", "giacomo", "mela", "atticus", "ortega", "eri", "shauna", "tierno", "trevor"],
+}
+for _tier, _keys in TIERS.items():
+    for _k in _keys:
+        ROSTER[_k]["tier"] = _tier
 
 # The last: Bill, who hired the hooded figure - and was the figure. His Cell Separation System run
 # backwards on himself and a Clefable; he set the whole Gauntlet up to find someone strong enough to

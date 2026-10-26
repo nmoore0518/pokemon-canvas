@@ -1,5 +1,6 @@
 #include "global.h"
 #include "mastery_hall.h"
+#include "tournament.h"
 #include "gym_switch.h"
 #include "bg.h"
 #include "credits_frlg.h"
@@ -49,7 +50,8 @@ struct HofGfx
 static EWRAM_DATA u32 sSelectedPaletteIndices = 0;
 // Gym Trainer hack: the same screen shows the Type Mastery Hall of Fame (src/mastery_hall.c): one
 // team per type mastered, in type order, titled with the type and its streak
-EWRAM_DATA bool8 gHofPCMasteryMode = FALSE;
+EWRAM_DATA u8 gHofPCMasteryMode = FALSE;     // (2: the tournament's Hall of Fame, src/tournament.c)
+static EWRAM_DATA u8 sTourneyRecords[TOURNEY_HALL_RECORDS] = {0};
 static EWRAM_DATA u8 sMasteryTypes[NUMBER_OF_MON_TYPES] = {0};
 static EWRAM_DATA struct HallofFameTeam * sHofMonPtr = NULL;
 static EWRAM_DATA struct HofGfx * sHofGfxPtr = NULL;
@@ -784,9 +786,49 @@ static bool32 CopyMasteryTeams(u8 taskId)
     return TRUE;
 }
 
+// (the tournament's: the first title first - the screen starts at the end, the latest)
+static bool32 CopyTourneyTeams(u8 taskId)
+{
+    u32 i, j, n = 0;
+    struct HallofFameTeam *teams = gHoFSaveBuffer;
+    memset(gHoFSaveBuffer, 0, SECTOR_SIZE * NUM_HOF_SECTORS);
+    for (i = 0; i < TOURNEY_HALL_RECORDS; i++)
+    {
+        const struct TourneyHallRecord *rec = &gTourneySave.hall[i];
+        if (rec->title == 0 || rec->count == 0)
+            continue;
+        for (j = 0; j < PARTY_SIZE; j++)
+        {
+            struct HallofFameMon *dst = &teams[n].mon[j];
+            const struct TourneyHallMon *src = &rec->mon[j];
+            if (j >= rec->count)
+                break;
+            dst->species = src->species;
+            dst->isShiny = src->isShiny;
+            dst->personality = src->personality;
+            dst->tid = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);    // (not kept: the player's)
+            dst->lvl = src->lvl;
+            memcpy(dst->nickname, src->nickname, POKEMON_NAME_LENGTH);
+        }
+        sTourneyRecords[n++] = i;
+    }
+    if (n == 0)
+        return FALSE;
+    gTasks[taskId].data[0] = n - 1;
+    return TRUE;
+}
+
 static void Task_HofPC_CopySaveData(u8 taskId)
 {
     HofPCTopBar_AddWindow(0, 30, 0, 0x0C, 0x226);
+    if (gHofPCMasteryMode == 2)
+    {
+        if (CopyTourneyTeams(taskId))
+            gTasks[taskId].func = Task_HofPC_DrawSpritesPrintText;
+        else
+            gTasks[taskId].func = Task_HofPC_PrintDataIsCorrupted;
+        return;
+    }
     if (gHofPCMasteryMode)
     {
         if (CopyMasteryTeams(taskId))
@@ -874,7 +916,15 @@ static void Task_HofPC_DrawSpritesPrintText(u8 taskId)
 
     BlendPalettes(0xFFFF0000, 0xC, HALL_OF_FAME_BG_PAL);
 
-    if (gHofPCMasteryMode)
+    if (gHofPCMasteryMode == 2)
+    {
+        const struct TourneyHallRecord *rec = &gTourneySave.hall[sTourneyRecords[gTasks[taskId].data[0]]];
+        u8 *end = StringCopy(gStringVar4, COMPOUND_STRING("TITLE "));
+        end = ConvertIntToDecimalStringN(end, rec->title, STR_CONV_MODE_LEFT_ALIGN, 5);
+        end = StringAppend(end, COMPOUND_STRING(" · FINAL vs. "));
+        StringAppend(end, Tourney_ShortName(rec->finalist));
+    }
+    else if (gHofPCMasteryMode)
     {
         u32 type = sMasteryTypes[gTasks[taskId].data[0]];
         u8 *end;
@@ -1011,7 +1061,8 @@ static void Task_HofPC_PrintDataIsCorrupted(u8 taskId)
 {
     HofPCTopBar_Print(gText_AButtonExit, 8, TRUE);
     DrawDialogueFrame(0, 0);
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gHofPCMasteryMode ? COMPOUND_STRING("No type has been mastered yet.") : gText_HOFCorrupted,
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gHofPCMasteryMode == 2 ? COMPOUND_STRING("No tournament has been won yet.")
+                                 : gHofPCMasteryMode ? COMPOUND_STRING("No type has been mastered yet.") : gText_HOFCorrupted,
                                  0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
     CopyWindowToVram(0, COPYWIN_FULL);
     gTasks[taskId].func = Task_HofPC_ExitOnButtonPress;

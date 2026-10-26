@@ -235,10 +235,10 @@ EventMons_Text_VivillonWild::
 	.string "Its kind's been seen fluttering\naround this zone too, now and\pthen. Keep an eye out!$"
 
 EventMons_Text_BondNotYet::
-	.string "There's a story of a GRENINJA\nwhose bond with its trainer let\pit take their shape in battle.\pI'm looking for a trainer like\nthat. Someone who could beat\pevery KALOS trainer of renown…$"
+	.string "There's a story of a GRENINJA\nwhose bond with its trainer let\pit take their shape in battle.\pI'm looking for a trainer like\nthat. Someone who could take on\pKALOS's best in that big\nunderground tournament, and win…$"
 
 EventMons_Text_BondGive::
-	.string "You beat every KALOS trainer in\nthat GAUNTLET! I saw it all.\pThis FROAKIE was born on the\nbeach where that GRENINJA lived.\pRaise it, and bond with it!$"
+	.string "You beat KALOS's best in that\ntournament! I saw it all.\pThis FROAKIE was born on the\nbeach where that GRENINJA lived.\pRaise it, and bond with it!$"
 
 EventMons_Text_BondAfter::
 	.string "When your bond is strong enough,\nyour GRENINJA will show you\psomething amazing.$"
@@ -247,7 +247,7 @@ EventMons_Text_AzStranger::
 	.string "A very tall man is staring out\nover the badlands. He doesn't\pseem to notice you.$"
 
 EventMons_Text_AzIntro::
-	.string "AZ: …You. The one who beat me.\pI am looking for a flower. A\nFLOETTE. I lost her three\pthousand years ago.$"
+	.string "AZ: …You. I saw you in that\ntournament.\pI am looking for a flower. A\nFLOETTE. I lost her three\pthousand years ago.$"
 
 EventMons_Text_AzStory::
 	.string "AZ: That FLOETTE of yours… She\nlooks so much like mine.\pI was a king. When my FLOETTE\nwas taken by war, I built a\pmachine to bring her back, and\nthen I turned it on the world in\pmy grief.\pShe left me. She could not\nforgive what I had done. I have\pwalked ever since.\pThe legends of this land,\nXERNEAS, YVELTAL, ZYGARDE… If a\ptrainer were trusted by all\nthree, perhaps she would trust\pthem too.$"

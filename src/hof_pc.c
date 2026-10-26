@@ -12,12 +12,20 @@
 static void ReshowPCMenuAfterHallOfFamePC(void);
 static void Task_WaitForPaletteFade(u8);
 
-extern bool8 gHofPCMasteryMode;
+extern u8 gHofPCMasteryMode;
 
 // Gym Trainer hack: the Type Mastery Hall of Fame, in the Hall of Fame's screen (src/mastery_hall.c)
 void AccessMasteryHallPC(void)
 {
     gHofPCMasteryMode = TRUE;
+    SetMainCallback2(CB2_InitHofPC);
+    LockPlayerFieldControls();
+}
+
+// Pokémon Canvas: the tournament's Hall of Fame, the same way (src/tournament.c)
+void AccessTourneyHallPC(void)
+{
+    gHofPCMasteryMode = 2;
     SetMainCallback2(CB2_InitHofPC);
     LockPlayerFieldControls();
 }

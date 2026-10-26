@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tournament.h"
 #include "mastery_hall.h"
 #include "archive.h"
 #include "team_builder.h"
@@ -722,9 +723,26 @@ static void UpdateSaveAddresses(void)
 
 // Gym Trainer hack: the sectors after the Hall of Fame - the end of the PC's boxes, and the Type
 // Mastery Hall of Fame - written after every full save
+// (sector 31's data after the storage: the tournament, src/tournament.c. The sector's checksum is
+// still the storage's alone, so older saves load as before; the tournament has its own.)
+#define TOURNEY_SAVE_OFFSET ((STORAGE_EXTRA_SIZE + 3) & ~3)
+STATIC_ASSERT(TOURNEY_SAVE_OFFSET + sizeof(struct TourneySave) <= SECTOR_DATA_SIZE, TourneySaveFreeSpace);
+
 static void SaveExtraSectors(void)
 {
-    HandleWriteSectorNBytes(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE);
+    struct SaveSector *sector = &gSaveDataBuffer;
+    u32 i;
+    const u8 *storage = (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE;
+
+    Tourney_SealSave();
+    for (i = 0; i < SECTOR_SIZE; i++)
+        ((u8 *)sector)[i] = 0;
+    sector->signature = SECTOR_SIGNATURE;
+    for (i = 0; i < STORAGE_EXTRA_SIZE; i++)
+        sector->data[i] = storage[i];
+    memcpy(&sector->data[TOURNEY_SAVE_OFFSET], &gTourneySave, sizeof(gTourneySave));
+    sector->id = CalculateChecksum((void *)storage, STORAGE_EXTRA_SIZE);
+    TryWriteSector(SECTOR_ID_EXTRA_STORAGE, sector->data);
     HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave));
 }
 
@@ -737,12 +755,16 @@ static void LoadExtraSectors(u8 status)
         MasteryHall_Clear();
         Archive_Clear();
         TeamBuilder_Clear();
+        Tourney_ClearSave();
         return;
     }
     if (gPokemonStoragePtr->layout != STORAGE_LAYOUT_BOXES_LAST)
         PokemonStorage_UpgradeLayout();
     else if (TryLoadSaveSector(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE) != SAVE_STATUS_OK)
         memset((u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, 0, STORAGE_EXTRA_SIZE);
+    // (the sector's still in the buffer: the tournament after the storage)
+    memcpy(&gTourneySave, &gSaveDataBuffer.data[TOURNEY_SAVE_OFFSET], sizeof(gTourneySave));
+    Tourney_ValidateSave();
     // (sector 30: the Type Mastery Hall of Fame and BILL'S ARCHIVE - or, from before the archive,
     // the Hall alone)
     // (and, from before the team builder, the two without it)

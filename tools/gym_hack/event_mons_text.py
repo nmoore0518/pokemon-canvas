@@ -141,15 +141,15 @@ T["VivillonWild"] = "Its kind's been seen fluttering around this zone too, now a
 # ---------------------------------------------------------------- 6. Bond Phenomenon
 T["BondNotYet"] = """There's a story of a GRENINJA whose bond with its trainer let it take their shape in battle.
 
-I'm looking for a trainer like that. Someone who could beat every KALOS trainer of renown…"""
-T["BondGive"] = """You beat every KALOS trainer in that GAUNTLET! I saw it all.
+I'm looking for a trainer like that. Someone who could take on KALOS's best in that big underground tournament, and win…"""
+T["BondGive"] = """You beat KALOS's best in that tournament! I saw it all.
 
 This FROAKIE was born on the beach where that GRENINJA lived. Raise it, and bond with it!"""
 T["BondAfter"] = "When your bond is strong enough, your GRENINJA will show you something amazing."
 
 # ---------------------------------------------------------------- 7. the Eternal Flower (AZ)
 T["AzStranger"] = "A very tall man is staring out over the badlands. He doesn't seem to notice you."
-T["AzIntro"] = """AZ: …You. The one who beat me.
+T["AzIntro"] = """AZ: …You. I saw you in that tournament.
 
 I am looking for a flower. A FLOETTE. I lost her three thousand years ago."""
 T["AzStory"] = """AZ: That FLOETTE of yours… She looks so much like mine.

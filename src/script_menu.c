@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tournament.h"
 #include "mastery_hall.h"
 #include "main.h"
 #include "event_data.h"
@@ -491,7 +492,7 @@ static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreB
 #define tIgnoreBPress   data[4]
 #define tDoWrap         data[5]
 #define tWindowId       data[6]
-static EWRAM_DATA u8 sPCMenuIds[6] = {0};   // (Gym Trainer hack: CreatePCMultichoice)
+static EWRAM_DATA u8 sPCMenuIds[7] = {0};   // (Gym Trainer hack: CreatePCMultichoice)
 
 #define tMultichoiceId  data[7]
 
@@ -744,7 +745,7 @@ bool16 ScriptMenu_CreatePCMultichoice(void)
 
 // Gym Trainer hack: the PC's menu can have TYPE MASTERY too (src/mastery_hall.c); what's chosen is
 // given as the same number whatever's shown (sPCMenuIds: 0 storage, 1 player's PC, 2 Hall of
-// Fame, 3 log off, 4 Type Mastery, 5 BILL'S ARCHIVE)
+// Fame, 3 log off, 4 Type Mastery, 5 BILL'S ARCHIVE, 6 the tournament's Hall of Fame)
 static void CreatePCMultichoice(void)
 {
     u8 x = 8;
@@ -754,7 +755,9 @@ static void CreatePCMultichoice(void)
     u8 windowId;
     int i;
     bool32 archive = FlagGet(FLAG_SYS_PC_LANETTE), hof = FlagGet(FLAG_SYS_GAME_CLEAR), mastery = MasteryHall_Count() != 0;
+    bool32 tourney = Tourney_HallCount() != 0;
     const u8 *const archiveText = COMPOUND_STRING("BILL'S ARCHIVE"), *const masteryText = COMPOUND_STRING("TYPE MASTERY");
+    const u8 *const tourneyText = COMPOUND_STRING("TOURNAMENT");
 
     for (i = 0; i < ARRAY_COUNT(sPCNameStrings); i++)
         pixelWidth = DisplayTextAndGetWidth(sPCNameStrings[i], pixelWidth);
@@ -764,9 +767,11 @@ static void CreatePCMultichoice(void)
         pixelWidth = DisplayTextAndGetWidth(gText_HallOfFame, pixelWidth);
     if (mastery)
         pixelWidth = DisplayTextAndGetWidth(masteryText, pixelWidth);
+    if (tourney)
+        pixelWidth = DisplayTextAndGetWidth(tourneyText, pixelWidth);
 
     width = ConvertPixelWidthToTileWidth(pixelWidth);
-    numChoices = 3 + archive + hof + mastery;
+    numChoices = 3 + archive + hof + mastery + tourney;
     windowId = CreateWindowFromRect(0, 0, width, numChoices * 2);
     SetStandardWindowBorderStyle(windowId, FALSE);
 
@@ -801,6 +806,11 @@ static void CreatePCMultichoice(void)
     {
         AddTextPrinterParameterized(windowId, FONT_NORMAL, masteryText, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
         sPCMenuIds[i++] = 4;
+    }
+    if (tourney)
+    {
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, tourneyText, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+        sPCMenuIds[i++] = 6;
     }
     AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_LogOff, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
     sPCMenuIds[i++] = 3;

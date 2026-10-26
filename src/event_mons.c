@@ -28,6 +28,7 @@
 #include "data.h"
 #include "event_data.h"
 #include "gauntlet.h"
+#include "tournament.h"
 #include "gym_challenge.h"
 #include "gym_decor.h"
 #include "gym_switch.h"
@@ -377,20 +378,18 @@ u32 EventMons_WildVivillonPattern(u32 species)
 }
 
 // ---------------------------------------------------------------------------------------------
-// 6, 7. The Gauntlet's Kalos challengers; AZ and the Eternal Flower
+// 6, 7. The tournament's Kalos trainers; AZ and the Eternal Flower
 // ---------------------------------------------------------------------------------------------
-#define GAUNTLET_REGION_KALOS 5
-
-// Special: VAR_RESULT = whether the Gauntlet's Kalos challengers have all been beaten
+// Special: VAR_RESULT = whether a Kalos trainer has been beaten in the tournament (or it's been won)
 void EventMons_KalosGauntletBeaten(void)
 {
-    gSpecialVar_Result = Gauntlet_RegionBeaten(GAUNTLET_REGION_KALOS);
+    gSpecialVar_Result = Tourney_KalosBeaten();
 }
 
-// Special: VAR_RESULT = whether the Gauntlet's AZ has been beaten
+// Special: VAR_RESULT = whether AZ has been beaten in the tournament (or it's been won)
 void EventMons_AzBeaten(void)
 {
-    gSpecialVar_Result = Gauntlet_TrainerBeaten(COMPOUND_STRING("AZ"));
+    gSpecialVar_Result = Tourney_AzBeaten();
 }
 
 // Special: VAR_RESULT = whether a Floette (any color, not the Eternal Flower) is in the party

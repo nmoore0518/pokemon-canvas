@@ -11,6 +11,7 @@
 // decorations) and shown on the gym statue. Scripts: data/scripts/gym_challenge.inc.
 #include "global.h"
 #include "gym_challenge.h"
+#include "gauntlet.h"
 #include "data.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -437,6 +438,7 @@ static void InitMon(struct TrainerMon *mon, u32 species, u32 level, u32 iv)
 
 static void SetupTrainer(u32 trainerClass, u32 pic, bool32 female, const u8 *name, u32 partySize)
 {
+    Gauntlet_ClearBillUp();     // (whoever this is, it isn't Bill: his battle music is for him)
     memset(&sChallenger, 0, sizeof(sChallenger));
     sChallenger.aiFlags = AI_FLAG_SMART_TRAINER;
     sChallenger.party = sChallengerMons;
@@ -929,6 +931,14 @@ void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const 
     sChallenger.encounterMusic = female ? TRAINER_ENCOUNTER_MUSIC_FEMALE : TRAINER_ENCOUNTER_MUSIC_MALE;
     sChallenger.aiFlags = AI_FLAG_SMART_TRAINER | AI_FLAG_PREDICTION;
     SetTexts(intro, defeat, after, win);
+}
+
+// The tournament (src/tournament.c): after SetupGauntlet, everyone at one level
+void GymChallenge_SetChallengerLevel(u32 level)
+{
+    u32 i;
+    for (i = 0; i < sChallenger.partySize; i++)
+        sChallengerMons[i].lvl = level;
 }
 
 // The Leader Academy (src/leader_academy.c): after SetupGauntlet, a practice battle at a set skill

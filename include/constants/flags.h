@@ -2703,7 +2703,7 @@
 #define FLAG_EXOTIC_LEGEND_PICHU_SPIKY_EARED  0x4E6   // (the Ilex shrine, Celebi along)
 #define FLAG_EVENT_FANCY_SCATTERBUG           0x4E7   // (the Vivillon collector: 6 patterns shown)
 #define FLAG_EVENT_POKEBALL_SCATTERBUG        0x4E8   // (... all 18)
-#define FLAG_EVENT_BATTLE_BOND_FROAKIE        0x4E9   // (after the Gauntlet's Kalos challengers)
+#define FLAG_EVENT_BATTLE_BOND_FROAKIE        0x4E9   // (after a Kalos trainer is beaten in the tournament)
 #define FLAG_EVENT_AZ_FLOETTE_SHOWN           0x4EA   // (AZ has seen a Floette and told his story)
 #define FLAG_EVENT_ETERNAL_FLOETTE            0x4EB
 #define FLAG_EVENT_OWN_TEMPO_ROCKRUFF         0x4EC   // (the Alola zone's Rockruff trainer beaten)
@@ -2712,6 +2712,8 @@
 #define FLAG_EXOTIC_LEGEND_ZARUDE_DADA        0x4F2   // (Glimwood's glade, Celebi along, Zarude caught)
 #define FLAG_EXOTIC_LEGEND_ETERNATUS_ETERNAMAX 0x4F3  // (the Darkest Day, on the pitch)
 // (0x4F4: Pallet Town's Lucky Egg, constants/flags_frlg.h)
+#define FLAG_TOURNEY_BEAT_KALOS               0x4F5   // (the tournament, src/tournament.c: a Kalos trainer beaten)
+#define FLAG_TOURNEY_BEAT_AZ                  0x4F6   // (... AZ beaten)
 
 
 #if TESTING

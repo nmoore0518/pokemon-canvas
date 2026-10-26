@@ -7,6 +7,7 @@
 #include "event_data.h"
 #include "gym_hack.h"
 #include "gauntlet.h"
+#include "tournament.h"
 #include "mastery_hall.h"
 #include "archive.h"
 #include "leader_academy.h"
@@ -2306,21 +2307,207 @@ TEST("GymHack: CLEFABILL is Fairy/Ghost, 800 in all, and not in the Pokedex")
     EXPECT_EQ(natDex, NATIONAL_DEX_NONE);
 }
 
-TEST("GymHack: beating Bill in the simulator earns a WITHDRAW and starts it over")
+static void GiveTourneyTeam(void)
 {
-    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR);
-    VarSet(VAR_GAUNTLET_WITHDRAWS, 0);
-    VarSet(VAR_GAUNTLET_NEXT, 0);
-    Gauntlet_RecordWin();
-    EXPECT_EQ(gSpecialVar_Result, FALSE);
-    EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 1);
-    EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 0);
-    VarSet(VAR_GAUNTLET_NEXT, 999);     // (Bill: the last)
-    Gauntlet_RecordWin();
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARIZARD, 100;
+        givemon SPECIES_BLASTOISE, 100;
+        givemon SPECIES_VENUSAUR, 100;
+    );
+}
+
+TEST("GymHack: a tournament draws 127 different trainers and the player, seeded by tier")
+{
+    u8 (*tree)[TOURNEY_SIZE] = AllocZeroed((TOURNEY_ROUNDS + 1) * TOURNEY_SIZE);
+    u32 run, i, j, players;
+    Tourney_ClearSave();
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    GiveTourneyTeam();
+    EXPECT_EQ(Tourney_PoolSize(), 83 + 127);
+    for (run = 0; run < 5; run++)
+    {
+        struct TourneyEntrant top;
+        Tourney_Begin();
+        Tourney_BuildTree(tree);
+        players = 0;
+        for (i = 0; i < TOURNEY_SIZE; i++)
+        {
+            struct TourneyEntrant a, b;
+            players += tree[0][i] == TOURNEY_PLAYER;
+            EXPECT(tree[0][i] != TOURNEY_PENDING);
+            if (tree[0][i] == TOURNEY_PLAYER)
+                continue;
+            Tourney_GetEntrant(tree[0][i], &a);
+            for (j = i + 1; j < TOURNEY_SIZE; j++)
+            {
+                if (tree[0][j] == TOURNEY_PLAYER)
+                    continue;
+                Tourney_GetEntrant(tree[0][j], &b);
+                EXPECT_NE(StringCompare(a.name, b.name), 0);
+            }
+        }
+        EXPECT_EQ(players, 1);
+        // (seed 1 is in the first slot, seed 2 at the top of the bottom half: both from the top tier)
+        Tourney_GetEntrant(tree[0][0], &top);
+        EXPECT_EQ(top.tier, 0);
+        Tourney_GetEntrant(tree[0][TOURNEY_SIZE / 2], &top);
+        EXPECT_EQ(top.tier, 0);
+        // (only the first round's undecided, until the player plays theirs)
+        EXPECT_EQ(tree[1][0], TOURNEY_PENDING);
+    }
+    Free(tree);
+}
+
+TEST("GymHack: once the player's out, the tournament plays out to a champion")
+{
+    u8 (*tree)[TOURNEY_SIZE] = AllocZeroed((TOURNEY_ROUNDS + 1) * TOURNEY_SIZE);
+    u32 r, m, slot;
+    Tourney_ClearSave();
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    GiveTourneyTeam();
+    Tourney_Begin();
+    gTourneySave.run.wins = 2;
+    Tourney_RecordLoss();
+    EXPECT_EQ(gTourneySave.run.status, TOURNEY_LOST);
+    Tourney_BuildTree(tree);
+    slot = Tourney_PlayerSlot((const u8 (*)[TOURNEY_SIZE])tree);
+    EXPECT_EQ(tree[1][slot >> 1], TOURNEY_PLAYER);
+    EXPECT_EQ(tree[2][slot >> 2], TOURNEY_PLAYER);
+    EXPECT_NE(tree[3][slot >> 3], TOURNEY_PLAYER);
+    for (r = 0; r < TOURNEY_ROUNDS; r++)
+    {
+        for (m = 0; m < (TOURNEY_SIZE >> (r + 1)); m++)
+        {
+            u32 w = tree[r + 1][m];
+            EXPECT(w == tree[r][2 * m] || w == tree[r][2 * m + 1]);
+        }
+    }
+    EXPECT_NE(tree[TOURNEY_ROUNDS][0], TOURNEY_PENDING);
+    EXPECT_NE(tree[TOURNEY_ROUNDS][0], TOURNEY_PLAYER);
+    Free(tree);
+}
+
+TEST("GymHack: the tournament's opponents are at level 100, and the team is locked in")
+{
+    const struct Trainer *t;
+    u32 i;
+    Tourney_ClearSave();
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    GiveTourneyTeam();
+    Tourney_Begin();
+    for (i = 0; i < TOURNEY_ROUNDS; i++)
+    {
+        Tourney_SetupNext();
+        t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        EXPECT_GE((u32)t->partySize, 3);
+        EXPECT_EQ(t->party[0].lvl, MAX_LEVEL);
+        EXPECT_EQ(t->party[t->partySize - 1].lvl, MAX_LEVEL);
+        gTourneySave.run.wins++;
+    }
+    gTourneySave.run.wins = 0;
+    Tourney_CheckTeam();
     EXPECT_EQ(gSpecialVar_Result, TRUE);
-    EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 0);
-    EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 1);
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_PIKACHU, 100;);
+    Tourney_CheckTeam();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    GiveTourneyTeam();      // (the same species, but not the same Pokémon)
+    Tourney_CheckTeam();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+}
+
+TEST("GymHack: winning the tournament: the Hall of Fame, then Bill; in the simulator, a WITHDRAW")
+{
+    u32 i, n;
+    Tourney_ClearSave();
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    VarSet(VAR_GAUNTLET_WITHDRAWS, 0);
+    GiveTourneyTeam();
+    Tourney_Begin();
+    for (i = 0; i < TOURNEY_ROUNDS; i++)
+    {
+        Tourney_SetupNext();
+        Tourney_RecordWin();
+        EXPECT_EQ(gSpecialVar_Result, i == TOURNEY_ROUNDS - 1);
+    }
+    EXPECT_EQ(gTourneySave.run.status, TOURNEY_WON);
+    EXPECT_EQ(gTourneySave.titles, 1);
+    EXPECT_EQ(VarGet(VAR_GAUNTLET_STATE), GAUNTLET_ALL_BEATEN);
+    EXPECT_EQ(Tourney_HallCount(), 1);
+    EXPECT_EQ(gTourneySave.hall[0].count, 3);
+    EXPECT(gTourneySave.hall[0].mon[0].species == SPECIES_CHARIZARD);
+    Tourney_BufferChampion();
+    EXPECT_EQ(StringCompare(gStringVar1, gSaveBlock2Ptr->playerName), 0);
+
+    // (the simulator: a WITHDRAW for each title; the Hall keeps the first and the latest)
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR);
+    for (n = 2; n <= 6; n++)
+    {
+        Tourney_Begin();
+        EXPECT_EQ(gTourneySave.run.sim, TRUE);
+        for (i = 0; i < TOURNEY_ROUNDS; i++)
+        {
+            Tourney_SetupNext();
+            Tourney_RecordWin();
+        }
+        EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), n - 1);
+    }
     EXPECT_EQ(VarGet(VAR_GAUNTLET_STATE), GAUNTLET_SIMULATOR);
+    EXPECT_EQ(gTourneySave.titles, 6);
+    EXPECT_EQ(Tourney_HallCount(), TOURNEY_HALL_RECORDS);
+    EXPECT_EQ(gTourneySave.hall[0].title, 1);
+    EXPECT_EQ(gTourneySave.hall[TOURNEY_HALL_RECORDS - 1].title, 6);
+    EXPECT_EQ(gTourneySave.hall[1].title, 4);
+}
+
+TEST("GymHack: the tournament's save is checked, and a forfeit ends the run")
+{
+    Tourney_ClearSave();
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    GiveTourneyTeam();
+    Tourney_Begin();
+    gTourneySave.titles = 3;
+    Tourney_SealSave();
+    Tourney_ValidateSave();
+    EXPECT_EQ(gTourneySave.titles, 3);
+    EXPECT_EQ(gTourneySave.run.status, TOURNEY_ACTIVE);
+    Tourney_Forfeit();
+    Tourney_GetStatus();
+    EXPECT_EQ(gSpecialVar_Result, TOURNEY_FORFEIT);
+    gTourneySave.titles = 4;    // (changed after sealing: as if the data were damaged)
+    Tourney_ValidateSave();
+    EXPECT_EQ(gTourneySave.titles, 0);
+    EXPECT_EQ(gTourneySave.run.status, TOURNEY_NONE);
+}
+
+TEST("GymHack: Bill's battle music is for Bill alone")
+{
+    Tourney_ClearSave();
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    GiveTourneyTeam();
+    FlagSet(FLAG_GYM_CHALLENGE_BATTLE);
+    Gauntlet_SetupBill();
+    EXPECT_EQ(Gauntlet_IsBillBattle(), TRUE);
+    Tourney_Begin();
+    Tourney_SetupNext();
+    EXPECT_EQ(Gauntlet_IsBillBattle(), FALSE);
+    FlagClear(FLAG_GYM_CHALLENGE_BATTLE);
+}
+
+TEST("GymHack: the Bond Phenomenon and AZ wait for a Kalos win in the tournament")
+{
+    FlagClear(FLAG_TOURNEY_BEAT_KALOS);
+    FlagClear(FLAG_TOURNEY_BEAT_AZ);
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ACTIVE);
+    EXPECT_EQ(Tourney_KalosBeaten(), FALSE);
+    EXPECT_EQ(Tourney_AzBeaten(), FALSE);
+    FlagSet(FLAG_TOURNEY_BEAT_KALOS);
+    EXPECT_EQ(Tourney_KalosBeaten(), TRUE);
+    EXPECT_EQ(Tourney_AzBeaten(), FALSE);
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ALL_BEATEN);
+    EXPECT_EQ(Tourney_AzBeaten(), TRUE);
+    FlagClear(FLAG_TOURNEY_BEAT_KALOS);
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_NONE);
 }
 
 TEST("GymHack: beating the real Bill leaves his Palm Pilot and one WITHDRAW")
@@ -2330,7 +2517,6 @@ TEST("GymHack: beating the real Bill leaves his Palm Pilot and one WITHDRAW")
     FlagSet(FLAG_GAUNTLET_BILL_REVEALED);
     Gauntlet_BillDefeated();
     EXPECT_EQ(VarGet(VAR_GAUNTLET_STATE), GAUNTLET_SIMULATOR);
-    EXPECT_EQ(VarGet(VAR_GAUNTLET_NEXT), 0);
     EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), 1);
     EXPECT_EQ(VarGet(VAR_OBJ_GFX_ID_D), OBJ_EVENT_GFX_GAUNTLET_PALM_PILOT);
 }

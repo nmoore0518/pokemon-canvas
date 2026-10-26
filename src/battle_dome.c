@@ -1753,6 +1753,27 @@ static const u8 sTourneyTreeLineSectionArrayCounts[DOME_TOURNAMENT_TRAINERS_COUN
     {ARRAY_COUNT(sLineSectionTrainer16Round1), ARRAY_COUNT(sLineSectionTrainer16Round2), ARRAY_COUNT(sLineSectionTrainer16Semifinal), ARRAY_COUNT(sLineSectionTrainer16Final)},
 };
 
+// Pokémon Canvas: the tournament's board (src/tournament_board.c) draws on the same tree. A
+// trainer's line, lit as far as `rounds` wins (1-4); `slot` is their place down the tree (0-7 the
+// left side top to bottom, 8-15 the right), neighbors meeting first. A lit line's tiles are see-
+// through where the line is (the Dome shows its glow through them): BG2 gets `glowTile` under each
+void DomeTree_DrawLine(u32 slot, u32 rounds, u16 glowTile)
+{
+    u32 id, i;
+    const struct TourneyTreeLineSection *section;
+    if (slot >= DOME_TOURNAMENT_TRAINERS_COUNT || rounds == 0)
+        return;
+    if (rounds > DOME_ROUNDS_COUNT)
+        rounds = DOME_ROUNDS_COUNT;
+    id = sTourneyTreeTrainerIds[slot];
+    section = sTourneyTreeLineSections[id][rounds - 1];
+    for (i = 0; i < sTourneyTreeLineSectionArrayCounts[id][rounds - 1]; i++)
+    {
+        CopyToBgTilemapBufferRect(1, &section[i].tile, section[i].x, section[i].y, 1, 1);
+        CopyToBgTilemapBufferRect(2, &glowTile, section[i].x, section[i].y, 1, 1);
+    }
+}
+
 void CallBattleDomeFunction(void)
 {
     sBattleDomeFunctions[gSpecialVar_0x8004]();

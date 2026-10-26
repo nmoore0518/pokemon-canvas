@@ -351,7 +351,7 @@ def main():
         entries.append(f"    {{ // {idx}\n        .name = COMPOUND_STRING(\"{t['name']}\"),\n"
                        f"        .battleName = COMPOUND_STRING(\"{battle}\"),\n"
                        f"        .trainerClass = {class_for(key, t)},\n        .female = {'TRUE' if t['female'] else 'FALSE'},\n"
-                       f"        .region = {REGIONS.index(t['region'])},\n        .pic = {pics[key]},\n        .gfx = {ows[key]},\n"
+                       f"        .region = {REGIONS.index(t['region'])},\n        .tier = {t.get('tier', 2)},\n        .pic = {pics[key]},\n        .gfx = {ows[key]},\n"
                        f"        .party = sGauntletParty_{key},\n"
                        f"        .title = COMPOUND_STRING(\"{t['title']}\"),\n        .games = COMPOUND_STRING(\"{t['games']}\"),\n"
                        f'        .intro = COMPOUND_STRING("{intro}"),\n        .defeat = COMPOUND_STRING("{defeat}"),\n'

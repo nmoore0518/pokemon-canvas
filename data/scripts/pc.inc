@@ -22,6 +22,7 @@ EventScript_AccessPC::
 	case 3, EventScript_TurnOffPC
 	case 4, EventScript_AccessMasteryHall
 	case 5, EventScript_AccessArchive
+	case 6, EventScript_AccessTourneyHall
 	case MULTI_B_PRESSED, EventScript_TurnOffPC
 	end
 
@@ -29,6 +30,13 @@ EventScript_AccessPC::
 EventScript_AccessArchive::
 	playse SE_PC_LOGIN
 	special AccessArchivePC
+	goto EventScript_AccessPC
+	end
+
+@ Pokémon Canvas: the tournament's Hall of Fame (src/tournament.c)
+EventScript_AccessTourneyHall::
+	playse SE_PC_LOGIN
+	special AccessTourneyHallPC
 	goto EventScript_AccessPC
 	end
 

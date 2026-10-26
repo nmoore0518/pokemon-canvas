@@ -1074,9 +1074,9 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            4. Spiky-eared Pichu (Lv 5): a static beside the safari's Ilex shrine, for a party with Celebi.
            5. Vivillon collector (Kalos city): 6 patterns shown -> Fancy Scatterbug, all 18 -> Poké Ball
               Scatterbug (`VAR_EVENT_VIVILLON_LO/HI`); each then turns up wild in Kalos, 1 in 19.
-           6. Battle Bond (Kalos ocean): a Froakie once the Gauntlet's Kalos challengers are beaten; its
+           6. Battle Bond (Kalos ocean): a Froakie once a Kalos trainer's beaten in the tournament; its
               line ends in Greninja's Battle Bond form (`MON_DATA_BATTLE_BOND`, FireRed's unused shadow bit).
-           7. AZ (Kalos badlands, once beaten in the Gauntlet): shown a Floette, then with Xerneas,
+           7. AZ (Kalos badlands, once beaten in the tournament, or it's been won): shown a Floette, then with Xerneas,
               Yveltal and Zygarde caught, the Eternal Flower Floette (its Mega: Primrose's Floettite).
            8. Tala (Alola resort): her Lycanroc pack (Lv 58-60); win for an Own Tempo Rockruff.
            9. The artisan (Alola resort): Magearna caught and her 4 paint pots (one each in the Beach,
@@ -1182,6 +1182,45 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          Pacifidlog and Route 131 joined the way Emerald joins them (the town west of the route: no
          cut rocks or cliff at the seam), and a cave mouth removed from a rock face is closed with
          the face, not floor (`remove_holes`).
+   - [x] The tournament (v86), in place of the Gauntlet's one-after-another run (src/tournament.c,
+         its board src/tournament_board.c; the story, Bill and the Palm Pilot stay in src/gauntlet.c
+         and data/scripts/gauntlet.inc). The hooded figure is now a bookie running an underground
+         tournament: 128 entrants, single elimination, seven wins for the title. Each one draws 127
+         from the Gauntlet's 83 challengers and the convention's 127 trainers (no one twice: the
+         convention's Larry, Lance and Iris are in two halls), plus the player. Seeding: by tier
+         (`tier` in `gauntlet_roster.py`'s TIERS; the convention's champions 0, Elite Four 1, leaders
+         2), at random within a tier, placed the standard way (seed 1 meets 128; the top two only in
+         the final); the player is unseeded among tier 2. Only the seed is saved: the draw and every
+         match without the player follow from it (`Tourney_BuildTree`; the stronger tier wins
+         more often: weights 9/6/4/3), a round at a time once the player has played theirs.
+         - Everyone at level 100 (`GymChallenge_SetChallengerLevel`; the convention's teams are
+           75ish otherwise), hardest AI. The team is locked in when the player signs up (the
+           personalities: the same Pokémon, no more, no fewer; any order); healed between rounds;
+           prize money is the usual trainer battle's by class (a Leader/Elite Four/Champion pays
+           ¥10,000 at level 100). A loss ends the run; the rest plays out, and the board shows how.
+           A run can be forfeited. Sign up again for a new draw.
+         - The board (the Battle Dome's tree, 16 names a page): blocks A-H (each sixteenth's first
+           four rounds) and the final 16 (to the champion, named in its title once it's over); L/R
+           turns the page. Lit lines: orange, the player's blue (BG2 under the tree's see-through
+           lit tiles: `DomeTree_DrawLine` in src/battle_dome.c). From the bookie's menu, between
+           rounds, after a loss, and "the last results".
+         - The first title: the bookie says the one who put it on wants to meet the player; then
+           Bill as before (he put on the tournament to find the strongest trainer; losing to him
+           just means try again). After him, the Palm Pilot's battle simulator runs new
+           tournaments (same rules, his records): a WITHDRAW for each title. (Bill isn't in the
+           simulator's runs.)
+         - The TOURNAMENT Hall of Fame (PC and Palm Pilot, "TOURNAMENT", in the Hall of Fame's
+           screen): the first title's team, kept for good, and the three most recent, each with
+           the title's number and whom the final was against; the count of titles is kept too.
+           Saved after the PC's storage in flash sector 31 (`struct TourneySave`, its own
+           checksum; the sector's checksum is still the storage's, so older saves load as before).
+         - The Bond Phenomenon and AZ's quests now wait for a Kalos trainer (AZ) beaten in a
+           tournament, or a title (FLAG_TOURNEY_BEAT_KALOS 0x4F5, FLAG_TOURNEY_BEAT_AZ 0x4F6).
+         - Found and fixed on the way: after Bill's last battle the game hung on the next warp
+           (`fadeoutbgm` then `fadedefaultbgm` waits forever for a faded song to stop); the gym's
+           music now just starts again (`Overworld_PlaySpecialMapMusic`).
+         - Saves from the middle of an old Gauntlet run start the tournament fresh (VAR_GAUNTLET_NEXT
+           is unused now); saves past it (Bill waiting, or the Palm Pilot) carry on.
    - [ ] Space: about 3.5 MB of the 32 MB is free (late October 2026). Ways to make room:
          - Delete the Sevii Islands (unreachable since the ferry change): ~0.5-0.8 MB (159 map
            layouts ~145 KB, 9 Sevii-only tilesets ~70 KB, their events, trainers, scripts, text).

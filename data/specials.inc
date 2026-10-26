@@ -682,18 +682,25 @@ gSpecials::
 	def_special Convention_ShowTitleCard
 	def_special Gauntlet_OnTransition
 	def_special Gauntlet_OnLoad
-	def_special Gauntlet_SetupNext
-	def_special Gauntlet_ShowTitleCard
-	def_special Gauntlet_RecordWin
-	def_special Gauntlet_BufferProgress
-	def_special Gauntlet_PushRegions
-	def_special Gauntlet_PushRegionNames
+	def_special Gauntlet_SetupBill
+	def_special Gauntlet_ShowBillCard
+	def_special Tourney_Begin
+	def_special Tourney_GetStatus
+	def_special Tourney_CheckTeam
+	def_special Tourney_SetupNext
+	def_special Tourney_ShowTitleCard
+	def_special Tourney_RecordWin
+	def_special Tourney_RecordLoss
+	def_special Tourney_Forfeit
+	def_special Tourney_BufferChampion
+	def_special Tourney_ShowBoard, waitstate=1
 	def_special Gauntlet_SetFigureGfx
 	def_special Gauntlet_BillDefeated
 	def_special Gauntlet_RevealBill
 	def_special Gauntlet_ChooseWithdraw
 	def_special Gauntlet_UseWithdraw
 	def_special AccessMasteryHallPC, waitstate=1
+	def_special AccessTourneyHallPC, waitstate=1
 	def_special AccessArchivePC, waitstate=1
 	def_special Academy_BufferBP
 	def_special Academy_AddBP
