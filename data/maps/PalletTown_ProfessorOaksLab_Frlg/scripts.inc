@@ -663,6 +663,7 @@ PalletTown_ProfessorOaksLab_EventScript_ReceiveDexScene::
 	call EventScript_RestorePrevTextColor
 	setflag FLAG_SYS_POKEDEX_GET
 	special SetUnlockedPokedexFlags
+	special EnableNationalPokedex   @ Pokémon Canvas: the National Pokédex from the start (starters and wild Pokémon come from every region)
 	setvar VAR_MAP_SCENE_POKEMON_CENTER_TEALA, 1
 	msgbox PalletTown_ProfessorOaksLab_Text_OakCatchMonsForDataTakeThese
 	giveitem_msg PalletTown_ProfessorOaksLab_Text_ReceivedFivePokeBalls, ITEM_POKE_BALL, 5
@@ -912,6 +913,8 @@ PalletTown_ProfessorOaksLab_Movement_VerticalPacing:
 	step_end
 
 PalletTown_ProfessorOaksLab_EventScript_TryStartNationalDexScene::
+	specialvar VAR_RESULT, IsNationalPokedexEnabled   @ Pokémon Canvas: it always is (no upgrade scene)
+	goto_if_eq VAR_RESULT, TRUE, PalletTown_ProfessorOaksLab_EventScript_RatePokedex
 	call PokedexRating_EventScript_RateInPerson
 	closemessage
 	goto_if_lt VAR_0x8009, 60, PalletTown_ProfessorOaksLab_EventScript_DontStartNationalDexScene

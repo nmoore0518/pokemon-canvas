@@ -366,7 +366,8 @@ damage.</li>
 instead. (Abilities like Levitate still block.)</li>
 </ul>
 <h3>The Move Extractor</h3>
-<p>Only three exist, all from the Team Rocket grunt on Nugget Bridge. Used from the bag in battle after a foe has used a move,
+<p>The Team Rocket grunt on Nugget Bridge gives you three. After that they're ultra rare prizes: about 1 gym challenge win in
+150, and 1 tournament match won in 100 (not in Bill's simulator). Used from the bag in battle after a foe has used a move,
 it lets one of your Pokémon learn that move, and the move takes your Pokémon's primary type (a new same-type move). The foe
 can't use it again that battle.</p>
 <ol>
@@ -465,10 +466,11 @@ rival, Giovanni and Oak, their real teams levelled to match.</li>
 </ul>
 <p>Each win pays ¥2,000 plus ¥200 per win in the streak (doubled for famous challengers and townsfolk) and an item; famous
 challengers, every 10th win and the odd lucky win give something rare: a Gold Bottle Cap, Ability Capsule, Cilantro,
-Multivitamin or a Master Ball. Whoever ends your streak earns your badge, and the statue lists them.</p>
+Multivitamin or a Master Ball. Very rarely (about 1 win in 150) it's a <b>Move Extractor</b>. Whoever ends your streak earns your badge, and the statue lists them.</p>
 
 <h3>Decorating</h3>
-<p>The PC left of the entrance: <b>BUY DECORATIONS</b> lists everything unlocked so far; <b>DECORATE</b> lets you walk the gym
+<p>The PC left of the entrance: <b>BUY DECORATIONS</b> lists everything unlocked so far (choose how many: up/down one at a
+time, left/right ten); <b>DECORATE</b> lets you walk the gym
 (through things) and place the piece shown in front of you: A places, <b>START turns it</b>, SELECT puts away the one in
 front, L/R switch pieces, B finishes. A piece turns red where it can't go, and the area by the door, statues and PC is shaded
 (nothing goes there). There are general pieces, pieces from the Kanto gyms (Viridian's spinners and stop tiles, Cerulean's

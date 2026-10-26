@@ -66,6 +66,11 @@
 #define TOURNEY_WON             3
 #define TOURNEY_FORFEIT         4
 #define TOURNEY_BILL            5   // (a simulator title: Bill's simulation is next, for the WITHDRAW)
+
+// The odds of a MOVE EXTRACTOR for a gym challenge win, and for a tournament match won (not in
+// Bill's simulator): 1 in this many
+#define GYM_CHALLENGE_EXTRACTOR_ODDS 150
+#define TOURNEY_EXTRACTOR_ODDS       100
 #define TOURNEY_ROUNDS          7   // (128 entrants)
 
 // The Leader Academy (north of Route 11; src/leader_academy.c): VAR_ACADEMY_STATE

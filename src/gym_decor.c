@@ -44,6 +44,8 @@
 #include "constants/rgb.h"
 #include "gpu_regs.h"
 #include "sprite.h"
+#include "task.h"
+#include "international_string_util.h"
 
 #define ROOM_GYM 0
 #define DECOR_NONE 0xFF
@@ -176,6 +178,9 @@ static u32 CountUnlockedDecor(void)
 bool32 GymDecor_CheckNewUnlocks(void)
 {
     u32 n;
+    // (Pokémon Canvas: the National Pokédex comes with the Pokédex; older saves get it here)
+    if (FlagGet(FLAG_SYS_POKEDEX_GET) && !IsNationalPokedexEnabled())
+        EnableNationalPokedex();
     if (!FlagGet(FLAG_PALLET_GYM_OPEN))
         return FALSE;
     n = CountUnlockedDecor();
@@ -512,15 +517,125 @@ void GymDecor_PushOwnedList(void)
     gSpecialVar_Result = n;
 }
 
-// VAR_0x8004 = decoration -> STR_VAR_1 = its name, STR_VAR_2 = its price
+// How many to buy (VAR_0x8009; 0 counts as 1)
+static u32 BuyQuantity(void)
+{
+    return gSpecialVar_0x8009 ? gSpecialVar_0x8009 : 1;
+}
+
+// VAR_0x8004 = decoration, VAR_0x8009 = how many -> STR_VAR_1 = its name, STR_VAR_2 = the price
+// for them all, STR_VAR_3 = " ×N" (or nothing, for one)
 void GymDecor_BufferDecorInfo(void)
 {
-    u32 id = gSpecialVar_0x8004;
+    u32 id = gSpecialVar_0x8004, n = BuyQuantity();
+    u8 *end;
     if (id >= GYM_DECOR_COUNT)
         return;
     StringCopy(gStringVar1, gGymDecor[id].name);
-    ConvertIntToDecimalStringN(gStringVar2, gGymDecor[id].price, STR_CONV_MODE_LEFT_ALIGN, 6);
+    ConvertIntToDecimalStringN(gStringVar2, gGymDecor[id].price * n, STR_CONV_MODE_LEFT_ALIGN, 7);
+    gStringVar3[0] = EOS;
+    if (n > 1)
+    {
+        end = StringCopy(gStringVar3, COMPOUND_STRING(" ×"));
+        ConvertIntToDecimalStringN(end, n, STR_CONV_MODE_LEFT_ALIGN, 3);
+    }
 }
+
+// ---- How many to buy: a little window, UP/DOWN 1 at a time, LEFT/RIGHT 10 ----
+#define tQuantity data[0]
+#define tMax      data[1]
+#define tWindow   data[2]
+
+static void PrintQuantity(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    u8 *str = Alloc(32), *end;
+    FillWindowPixelBuffer(tWindow, PIXEL_FILL(1));
+    end = StringCopy(str, COMPOUND_STRING("×"));
+    ConvertIntToDecimalStringN(end, tQuantity, STR_CONV_MODE_LEADING_ZEROS, 2);
+    AddTextPrinterParameterized(tWindow, FONT_NORMAL, str, 4, 1, TEXT_SKIP_DRAW, NULL);
+    ConvertIntToDecimalStringN(gStringVar1, gGymDecor[gSpecialVar_0x8004].price * tQuantity, STR_CONV_MODE_LEFT_ALIGN, 7);
+    StringExpandPlaceholders(str, gText_PokedollarVar1);
+    AddTextPrinterParameterized(tWindow, FONT_NORMAL, str, GetStringRightAlignXOffset(FONT_NORMAL, str, 11 * 8) - 2, 1, TEXT_SKIP_DRAW, NULL);
+    CopyWindowToVram(tWindow, COPYWIN_FULL);
+    Free(str);
+}
+
+static void Task_QuantityOfOne(u8 taskId)
+{
+    gSpecialVar_Result = 1;
+    DestroyTask(taskId);
+    ScriptContext_Enable();
+}
+
+static void Task_ChooseQuantity(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    s32 n = tQuantity;
+    if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        gSpecialVar_Result = JOY_NEW(A_BUTTON) ? tQuantity : 0;
+        ClearStdWindowAndFrameToTransparent(tWindow, TRUE);
+        RemoveWindow(tWindow);
+        DestroyTask(taskId);
+        ScriptContext_Enable();
+        return;
+    }
+    if (JOY_REPEAT(DPAD_UP))
+        n = n >= tMax ? 1 : n + 1;
+    else if (JOY_REPEAT(DPAD_DOWN))
+        n = n <= 1 ? tMax : n - 1;
+    else if (JOY_REPEAT(DPAD_RIGHT))
+        n = min(n + 10, (s32)tMax);
+    else if (JOY_REPEAT(DPAD_LEFT))
+        n = max(n - 10, 1);
+    if (n != tQuantity)
+    {
+        PlaySE(SE_SELECT);
+        tQuantity = n;
+        PrintQuantity(taskId);
+    }
+}
+
+// Special (then waitstate): VAR_0x8004 = decoration -> VAR_RESULT = how many to buy (0: never
+// mind). As many as the money and storage allow, 99 at most; with room for just one (or none:
+// buying then says why), that's the answer, with no window. (A task answers and lets the script
+// go on, in both cases.)
+void GymDecor_ChooseQuantity(void)
+{
+    u32 id = gSpecialVar_0x8004, max, owned;
+    u8 taskId;
+    s16 *data;
+    struct WindowTemplate template;
+    if (id >= GYM_DECOR_COUNT || gGymDecor[id].price == 0)
+    {
+        CreateTask(Task_QuantityOfOne, 80);
+        return;
+    }
+    owned = GetSave()->owned[id];
+    max = GetMoney(&gSaveBlock1Ptr->money) / gGymDecor[id].price;
+    max = min(max, 255 - owned);
+    max = min(max, 99u);
+    if (max <= 1)
+    {
+        CreateTask(Task_QuantityOfOne, 80);
+        return;
+    }
+    taskId = CreateTask(Task_ChooseQuantity, 80);
+    data = gTasks[taskId].data;
+    tQuantity = 1;
+    tMax = max;
+    template = CreateWindowTemplate(0, 18, 11, 11, 2, 15, 0x125);
+    tWindow = AddWindow(&template);
+    SetStandardWindowBorderStyle(tWindow, FALSE);
+    PutWindowTilemap(tWindow);
+    PrintQuantity(taskId);
+}
+
+#undef tQuantity
+#undef tMax
+#undef tWindow
 
 // A decoration won (a convention trophy): one more in storage
 void GymDecor_Give(u32 id)
@@ -530,29 +645,30 @@ void GymDecor_Give(u32 id)
         save->owned[id]++;
 }
 
-// VAR_0x8004 = decoration. VAR_RESULT: 0 bought, 1 not enough money, 2 storage full, 3 a floor
+// VAR_0x8004 = decoration, VAR_0x8009 = how many (0 counts as 1). VAR_RESULT: 0 bought, 1 not
+// enough money, 2 storage full, 3 a floor
 // or wall style already owned
 void GymDecor_TryBuy(void)
 {
-    u32 id = gSpecialVar_0x8004;
+    u32 id = gSpecialVar_0x8004, n = IsStyle(id < GYM_DECOR_COUNT ? id : 0) ? 1 : BuyQuantity();
     struct GymDecorSaveData *save = GetSave();
     if (id < GYM_DECOR_COUNT && IsStyle(id) && GymDecor_CountOwned(id))
     {
         gSpecialVar_Result = 3;
         return;
     }
-    if (id >= GYM_DECOR_COUNT || save->owned[id] == 0xFF || gGymDecor[id].price == 0)
+    if (id >= GYM_DECOR_COUNT || save->owned[id] + n > 0xFF || gGymDecor[id].price == 0)
     {
         gSpecialVar_Result = 2;
         return;
     }
-    if (!IsEnoughMoney(&gSaveBlock1Ptr->money, gGymDecor[id].price))
+    if (!IsEnoughMoney(&gSaveBlock1Ptr->money, gGymDecor[id].price * n))
     {
         gSpecialVar_Result = 1;
         return;
     }
-    RemoveMoney(&gSaveBlock1Ptr->money, gGymDecor[id].price);
-    save->owned[id]++;
+    RemoveMoney(&gSaveBlock1Ptr->money, gGymDecor[id].price * n);
+    save->owned[id] += n;
     gSpecialVar_Result = 0;
 }
 

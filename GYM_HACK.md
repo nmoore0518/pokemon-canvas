@@ -172,7 +172,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   The gym inside is drawn by `tools/gym_hack/build_pallet_gym.py` (25x28, Viridian Gym tiles).
 - **Gym decorations**: the gym has a PC left of the entrance (`data/scripts/gym_decor.inc`). BUY
   DECORATIONS lists everything unlocked so far with its price, how many you have and a short
-  description; bought pieces go to the gym's storage. DECORATE starts edit mode: walk anywhere in
+  description; you choose how many (UP/DOWN one at a time, LEFT/RIGHT ten, up to 99; floors and
+  wall styles are bought once), and they go to the gym's storage. DECORATE starts edit mode: walk anywhere in
   the gym (you can walk through things while decorating) and the selected piece is shown in front
   of you, whole, tinted red where it can't go (anywhere between the side walls, from the back wall
   down to the bottom row) (`ShowRedOverlay`: see-through sprites), with the
@@ -309,7 +310,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Each win pays 2,000 + 200 per win in the streak (doubled for famous and townsfolk; capped
     at 40) and an item: Rare Candy, Nugget, vitamins, Full Restore, PP Up, Silver Bottle Cap...
     Famous challengers, every 10th win and 1 win in 16 give something rare (Gold Bottle Cap,
-    Ability Capsule, Cilantro, Multivitamin or a Master Ball).
+    Ability Capsule, Cilantro, Multivitamin or a Master Ball), and 1 win in 150 a MOVE EXTRACTOR.
   - Saved (in the secret base space after the decorations): current streak (kept if you stop),
     best streak, wins and losses, and the last 20 challengers who beat the player, shown on the
     gym statue. The Pallet Town sign names the player as leader.
@@ -343,7 +344,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Winning: Oak apologizes and hands over the gym (`FLAG_PALLET_GYM_AWARDED`, which opens the
     gym challenges and the badge pedestal), the League makes the player's badge official, and Oak
     introduces his aide and explains the challenge system before leaving.
-  - The National Pokédex scene outside the house waits until the gym is the player's.
+  - There's no National Pokédex scene: the Pokédex is the National one from the moment Oak gives
+    it (starters and wild Pokémon come from every region), and the save menu, continue screen and
+    trainer card count every species caught. Older saves are switched over on their next step
+    (`GymDecor_CheckNewUnlocks`).
 - **The candidacy** (`src/gym_candidate.c`, `data/scripts/gym_candidate.inc`): in Oak's first gym
   scene he explains the League's rule: a new Gym Leader needs the approval of all eight Gym
   Leaders and the Elite Four. The League's front door (Indigo Plateau) turns the player back
@@ -415,7 +419,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     (level-up forgetting the first move), and clear when the slot gets a different move.
     `GetDynamicMoveType` returns the primary type for those moves; the battle move menu and the
     summary screen show it.
-  - Only three in the game, from the Team Rocket grunt on Nugget Bridge (`VAR_MOVE_EXTRACTOR_STAGE`):
+  - More are ultra rare prizes: 1 gym challenge win in 150 (`GYM_CHALLENGE_EXTRACTOR_ODDS`; the
+    challenger leaves it instead of the usual item), and 1 tournament match won in 100
+    (`TOURNEY_EXTRACTOR_ODDS`; not in Bill's simulator), in `include/constants/gym_hack.h`.
+  - Three for sure, from the Team Rocket grunt on Nugget Bridge (`VAR_MOVE_EXTRACTOR_STAGE`):
     1. Say YES when he asks you to join (or later, if you said no and beat him, when you talk to him
        again). Surprised, he admits a grunt can't let anyone in, and gives you a Move Extractor to
        prove your worth by stealing moves.

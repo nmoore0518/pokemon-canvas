@@ -548,11 +548,13 @@ TEST("GymHack: decor: buying takes the money and adds to storage")
     GymDecor_ClearAll();
     SetMoney(&gSaveBlock1Ptr->money, 1500);
     gSpecialVar_0x8004 = GYM_DECOR_POTTED_PLANT;
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_EQ(gSpecialVar_Result, 0);
     EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 1500 - gGymDecor[GYM_DECOR_POTTED_PLANT].price);
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_POTTED_PLANT), 1);
     // Not enough left for a second one
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_EQ(gSpecialVar_Result, 1);
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_POTTED_PLANT), 1);
@@ -567,6 +569,7 @@ TEST("GymHack: decor: leftover secret base bytes are cleared, not read as decora
     // Real decoration data is kept
     SetMoney(&gSaveBlock1Ptr->money, 999999);
     gSpecialVar_0x8004 = GYM_DECOR_TV;
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TV), 1);
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TV), 1);
@@ -587,7 +590,9 @@ TEST("GymHack: decor: placing uses up storage and blocks overlaps")
     GymDecor_ClearAll();
     SetMoney(&gSaveBlock1Ptr->money, 999999);
     gSpecialVar_0x8004 = GYM_DECOR_TABLE;
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_TABLE), 2);
     EXPECT(GymDecor_Place(GYM_DECOR_TABLE, 0, 3, 5));
@@ -608,6 +613,7 @@ TEST("GymHack: decor: nothing goes on the walls, the entrance or the PC")
     GymDecor_ClearAll();
     SetMoney(&gSaveBlock1Ptr->money, 999999);
     gSpecialVar_0x8004 = GYM_DECOR_POTTED_PLANT;
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 5, 0));                         // back wall
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, GYM_PC_FRONT_X, GYM_PC_FRONT_Y - 1)); // entrance area
@@ -622,6 +628,33 @@ TEST("GymHack: decor: nothing goes on the walls, the entrance or the PC")
     EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 2, GYM_EDIT_Y1 - 1));
     EXPECT(!GymRoom_IsPaintable(0, 10));
     EXPECT(GymRoom_IsPaintable(2, GYM_ROOM_HEIGHT - 2));
+}
+
+TEST("GymHack: decor: buying several at once")
+{
+    GymDecor_ClearAll();
+    SetMoney(&gSaveBlock1Ptr->money, gGymDecor[GYM_DECOR_GYM_WALL].price * 20 + 5);
+    gSpecialVar_0x8004 = GYM_DECOR_GYM_WALL;
+    gSpecialVar_0x8009 = 21;                                    // (one too many)
+    GymDecor_TryBuy();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_GYM_WALL), 0);
+    gSpecialVar_0x8009 = 20;
+    GymDecor_BufferDecorInfo();
+    GymDecor_TryBuy();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_GYM_WALL), 20);
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 5);
+    // Storage holds 255 of each
+    GymDecor_SetOwned(GYM_DECOR_GYM_WALL, 250);
+    SetMoney(&gSaveBlock1Ptr->money, 999999);
+    gSpecialVar_0x8009 = 6;
+    GymDecor_TryBuy();
+    EXPECT_EQ(gSpecialVar_Result, 2);
+    gSpecialVar_0x8009 = 5;
+    GymDecor_TryBuy();
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_GYM_WALL), 255);
+    gSpecialVar_0x8009 = 0;
 }
 
 TEST("GymHack: decor: a turned piece takes up its turned shape")
@@ -692,8 +725,10 @@ TEST("GymHack: decor: floors and wall styles are bought once; a wall style is us
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_FLOOR_GYM), 1);      // (the gym's own)
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_WALLS_GYM), 1);
     gSpecialVar_0x8004 = GYM_DECOR_FLOOR_WOOD;
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_EQ(gSpecialVar_Result, 0);
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_EQ(gSpecialVar_Result, 3);
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_FLOOR_WOOD), 1);
@@ -702,6 +737,7 @@ TEST("GymHack: decor: floors and wall styles are bought once; a wall style is us
     gSpecialVar_0x8004 = GYM_DECOR_WALLS_BRICK;
     GymDecor_ApplyWallStyle();
     EXPECT_EQ(GymRoom_GetWallStyle(), 0);
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     GymDecor_ApplyWallStyle();
     EXPECT_EQ(GymRoom_GetWallStyle(), gGymDecor[GYM_DECOR_WALLS_BRICK].style);
@@ -1164,6 +1200,7 @@ TEST("GymHack: decor: the battle stage is free, always in storage, and never sol
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_BATTLE_STAGE), 1);
     EXPECT_EQ(gGymDecor[GYM_DECOR_BATTLE_STAGE].price, 0);
     gSpecialVar_0x8004 = GYM_DECOR_BATTLE_STAGE;
+    gSpecialVar_0x8009 = 0;
     GymDecor_TryBuy();
     EXPECT_NE(gSpecialVar_Result, 0);
     EXPECT(!GymDecor_FindPlaced(GYM_DECOR_BATTLE_STAGE, &x, &y));
@@ -1564,7 +1601,8 @@ TEST("GymHack: practice trainers: any number can be bought, 11 placed at once")
     for (i = 0; i < 14; i++)
     {
         gSpecialVar_0x8004 = GYM_DECOR_TRAINER_BEGINNER + i % 3;
-        GymDecor_TryBuy();
+        gSpecialVar_0x8009 = 0;
+    GymDecor_TryBuy();
         EXPECT_EQ(gSpecialVar_Result, 0);
     }
     EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TRAINER_BEGINNER), 5);

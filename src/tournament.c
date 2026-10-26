@@ -24,6 +24,7 @@
 #include "overworld.h"
 #include "pokemon.h"
 #include "random.h"
+#include "constants/items.h"
 #include "script.h"
 #include "string_util.h"
 #include "title_card.h"
@@ -473,6 +474,17 @@ void Tourney_RecordWin(void)
         run->status = TOURNEY_BILL;     // (the WITHDRAW is for beating Bill after it)
     else if (VarGet(VAR_GAUNTLET_STATE) == GAUNTLET_ACTIVE)
         VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ALL_BEATEN);
+    gSpecialVar_Result = TRUE;
+}
+
+// Special, after a match won: hardly ever, a MOVE EXTRACTOR as a prize (not in the simulator).
+// VAR_RESULT = TRUE if so, VAR_0x8009 = the item
+void Tourney_RollPrize(void)
+{
+    gSpecialVar_Result = FALSE;
+    if (InSim() || Random() % TOURNEY_EXTRACTOR_ODDS != 0)
+        return;
+    gSpecialVar_0x8009 = ITEM_MOVE_EXTRACTOR;
     gSpecialVar_Result = TRUE;
 }
 

@@ -1141,8 +1141,11 @@ void GymChallenge_RecordWin(void)
 
     money = GymChallenge_RewardMoney(save->streak, sKind);
     AddMoney(&gSaveBlock1Ptr->money, money);
-    // Famous challengers and every 10th win always leave something rare
-    if (sKind != GYM_CHALLENGER_TRAINER || save->streak % 10 == 0 || Random() % 16 == 0)
+    // Hardly ever, a MOVE EXTRACTOR (beyond the three from the grunt); otherwise famous
+    // challengers and every 10th win always leave something rare
+    if (Random() % GYM_CHALLENGE_EXTRACTOR_ODDS == 0)
+        gSpecialVar_0x8009 = ITEM_MOVE_EXTRACTOR;
+    else if (sKind != GYM_CHALLENGER_TRAINER || save->streak % 10 == 0 || Random() % 16 == 0)
         gSpecialVar_0x8009 = sRareRewardItems[Random() % ARRAY_COUNT(sRareRewardItems)];
     else
         gSpecialVar_0x8009 = sRewardItems[Random() % ARRAY_COUNT(sRewardItems)];

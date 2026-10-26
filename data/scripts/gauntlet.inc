@@ -137,6 +137,8 @@ Tourney_EventScript_Won::
 	msgbox gGymChallengeAfterText
 	call GymChallenge_EventScript_ChallengerLeaves
 	textcolor NPC_TEXT_COLOR_NEUTRAL
+	special Tourney_RollPrize
+	call_if_eq VAR_RESULT, TRUE, Tourney_EventScript_RarePrize
 	special Tourney_RecordWin
 	goto_if_eq VAR_RESULT, TRUE, Tourney_EventScript_Title
 	call Tourney_EventScript_SayWon
@@ -326,6 +328,16 @@ Tourney_EventScript_SayAnnounce::
 Tourney_EventScript_SayAnnounceSim::
 	msgbox Gauntlet_Text_SimAnnounce
 	return
+
+@ (hardly ever, after a match: a MOVE EXTRACTOR)
+Tourney_EventScript_RarePrize::
+	msgbox Tourney_Text_RarePrize
+	call GymHack_EventScript_GiveStatItem
+	return
+
+Tourney_Text_RarePrize::
+	.string "One moment! The organizers have a\n"
+	.string "rare prize for that match!$"
 
 Tourney_EventScript_SayWon::
 	goto_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_SayWonSim

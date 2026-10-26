@@ -69,6 +69,7 @@ PalletTown_EventScript_OakRatingScene::
 	buffernumberstring STR_VAR_1, VAR_0x8008
 	buffernumberstring STR_VAR_2, VAR_0x8009
 	goto_if_lt VAR_0x8009, 60, PalletTown_EventScript_NotEnoughMonsForNationalDex
+	goto_if_eq VAR_RESULT, TRUE, PalletTown_EventScript_NotEnoughMonsForNationalDex   @ Pokémon Canvas: (older saves) no upgrade scene
 	msgbox PalletTown_Text_CaughtXImpressiveFollowMe
 	closemessage
 	playbgm MUS_FOLLOW_ME, 0

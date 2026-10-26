@@ -119,6 +119,7 @@ GymChallenge_EventScript_Won::
 	msgbox GymChallenge_Text_Won
 	call_if_eq VAR_0x8008, TRUE, GymChallenge_EventScript_NewRecord
 	msgbox GymChallenge_Text_LeftAGift
+	call_if_eq VAR_0x8009, ITEM_MOVE_EXTRACTOR, GymChallenge_EventScript_RareGift
 	call GymHack_EventScript_GiveStatItem
 	special GymSwitch_AfterWin
 	call_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_Mastered
@@ -255,6 +256,14 @@ GymChallenge_Text_Won::
 GymChallenge_Text_NewRecord::
 	.string "And that's a new GYM record:\n"
 	.string "{STR_VAR_2} in a row!$"
+
+GymChallenge_EventScript_RareGift::
+	playse SE_PIN
+	msgbox GymChallenge_Text_RareGift
+	return
+
+GymChallenge_Text_RareGift::
+	.string "Whoa… It's something really rare!$"
 
 GymChallenge_Text_LeftAGift::
 	.string "{STR_VAR_3} left you\n"

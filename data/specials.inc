@@ -752,6 +752,8 @@ gSpecials::
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing
 	def_special GymDecor_GetKind
+	def_special Tourney_RollPrize
+	def_special GymDecor_ChooseQuantity
 	def_special GymDecor_ApplyWallStyle
 	def_special StatItems_CheckMon
 	def_special StatItems_PushIvList

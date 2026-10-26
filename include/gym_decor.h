@@ -99,6 +99,7 @@ bool32 GymDecor_Place(u32 id, u32 facing, s32 x, s32 y);
 bool32 GymDecor_IsOwnedStyle(u32 id);
 void GymDecor_ApplyWallStyle(void);
 void GymDecor_GetKind(void);
+void GymDecor_ChooseQuantity(void);
 bool32 GymDecor_RemoveAt(s32 x, s32 y);
 void GymDecor_ClearAll(void);
 void *GymDecor_GetSpareSaveSpace(u32 *size);

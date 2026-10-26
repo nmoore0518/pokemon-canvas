@@ -41,6 +41,17 @@ GymDecor_EventScript_BuyLoop::
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_BuyCategory
 	copyvar VAR_0x8004, VAR_RESULT
 	copyvar VAR_0x8005, VAR_RESULT
+	setvar VAR_0x8009, 1
+	special GymDecor_GetKind
+	goto_if_ge VAR_RESULT, 3, GymDecor_EventScript_ConfirmBuy   @ (floors and wall styles: bought once)
+	special GymDecor_BufferDecorInfo
+	message GymDecor_Text_HowMany
+	waitmessage
+	special GymDecor_ChooseQuantity
+	waitstate
+	goto_if_eq VAR_RESULT, 0, GymDecor_EventScript_BuyLoop
+	copyvar VAR_0x8009, VAR_RESULT
+GymDecor_EventScript_ConfirmBuy::
 	special GymDecor_BufferDecorInfo
 	msgbox GymDecor_Text_ConfirmBuy, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, GymDecor_EventScript_BuyLoop
@@ -162,13 +173,16 @@ GymDecor_Text_WhichToBuy::
 	.string "Which decoration would you\n"
 	.string "like to buy?$"
 
+GymDecor_Text_HowMany::
+	.string "{STR_VAR_1}? How many?$"
+
 GymDecor_Text_ConfirmBuy::
-	.string "{STR_VAR_1}?\n"
+	.string "{STR_VAR_1}{STR_VAR_3}?\n"
 	.string "That'll be ¥{STR_VAR_2}. OK?$"
 
 GymDecor_Text_Bought::
-	.string "The {STR_VAR_1} was sent to\n"
-	.string "the GYM's storage.$"
+	.string "Sent {STR_VAR_1}{STR_VAR_3}\n"
+	.string "to the GYM's storage!$"
 
 GymDecor_Text_NotEnoughMoney::
 	.string "You don't have enough money.$"
