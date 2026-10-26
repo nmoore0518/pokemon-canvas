@@ -288,8 +288,9 @@ Oak tells you on day one that the Pokémon League is opening a ninth gym, in Pal
 candidates: you and your rival. League rules say a Gym Leader uses one type, so you choose your type in his lab and run
 the whole League challenge with it. Earn the approval of all eight Gym Leaders and the Elite Four, become Champion, and
 then win the gym itself. After that the game opens up: challengers line up at your door, you decorate and train in your
-own gym, you can master other types, the Gym Leader Convention waits in Johto, and the Exotic Pokémon Safari in Fuchsia
-City holds Pokémon from every region.</p>
+own gym, you can master other types, the Gym Leader Convention waits in Johto, the Exotic Pokémon Safari in Fuchsia
+City holds Pokémon from every region, and at the very end an underground tournament of the world's strongest trainers hides
+one last secret. Along the way, the Leader Academy on Route 11 trains Gym Leader candidates (and hands out Mega Stones).</p>
 <p>This guide has spoilers throughout: the story, every legendary's hiding place, and every puzzle's solution.</p>
 """
 
@@ -324,7 +325,10 @@ with a Moon Shard.</li>
 work.</li>
 <li><b>Quick heal pads.</b> A glowing pad in a corner of every Pokémon Center heals your party when you step on it.</li>
 <li><b>The Palm Pilot.</b> Bill gives you a pocket PC with the S.S. Ticket. Use it anywhere outside the League to reach your
-boxes.</li>
+boxes and everything else on the PC (see <a href="#pc">Your PC</a>).</li>
+<li><b>16 PC boxes</b> instead of 14.</li>
+<li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
+Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
 <li><b>Summary screen.</b> On the skills page, A switches between stats, IVs (exact values) and EVs. A new LEVEL-UP MOVES page
 lists every move the species learns and when.</li>
 <li><b>Gym type finder.</b> On the Town Map, SELECT marks every area where a Pokémon of your type can be found.</li>
@@ -413,7 +417,9 @@ On Nugget Bridge, say yes to the Rocket grunt for your first <b>Move Extractor</
 
 <h3>5. Vermilion City to Celadon City</h3>
 <p>The S.S. Anne (the captain gives HM01 and the Hedge Clippers), Lt. Surge, Rock Tunnel, Lavender Town and Celadon City as in
-FireRed. Celadon's Game Corner prizes are Abra, Clefairy, Dratini, Scyther and Porygon; the Dept. Store 4F sells every
+FireRed. With your third badge, step onto Route 11: your mentor (or Oak) calls you over to a gap in the trees on the north
+side, talks the guards round, and you're admitted to the <b>Leader Academy</b> (see <a href="#academy">its chapter</a>). It's
+optional, but its candidates and Battle Hall are the best training in the game. Celadon's Game Corner prizes are Abra, Clefairy, Dratini, Scyther and Porygon; the Dept. Store 4F sells every
 evolution stone and trade item. Erika gives Cilantro with her TM.</p>
 
 <h3>6. Pokémon Tower, Saffron City, Silph Co.</h3>
@@ -431,6 +437,8 @@ the lab revives Mt. Moon's fossil and the Old Amber. Bill doesn't take you to th
 <p>Beat Giovanni and hold his gym for his approval; he then disbands Team Rocket, and the grunt gives you the last Move
 Extractor in Viridian City. The League's front door turns you back until all eight Gym Leaders have approved. Moltres waits on
 Victory Road 2F. Each member of the Elite Four approves you after losing.</p>
+<p>With the 8th badge, the Leader Academy's headmaster has something for you: the <b>Mega Bracelet</b>. Walk into the
+main hall and she calls you to her desk.</p>
 <p>In the Champion's room, Oak walks in before the rival battle, heals your team, and announces that the winner becomes
 Champion <i>and</i> Leader of the Pallet Town Gym.</p>
 
@@ -477,7 +485,8 @@ arrives when the gym first becomes that type.</p>
 <h3>Your type's legendary</h3>
 <p>Right after Oak hands the gym over, the lights go out and the most powerful Pokémon of your type appears in the gym
 (level 70, one battle). If it gets away, it hides in Cerulean Cave: a 1% encounter anywhere in the cave until it's caught.
-The Gym Charm (from your mentor with the convention invitation) makes 1 in 250 Pokémon of your gym's type Shiny.</p>
+The Gym Charm (from your mentor with the convention invitation) makes 1 in 250 Pokémon of your gym's type Shiny.
+Cerulean Cave's guard steps aside once you've entered the Hall of Fame.</p>
 """
 
 JOHTO = """
@@ -489,7 +498,9 @@ are open (guards turn you back at the edges), with wild Pokémon around levels 5
 <p>The convention fills Goldenrod's Radio Tower: 127 Gym Leaders, Kahunas, Trial Captains, Elite Four and Champions from every
 generation, in 18 type halls and a Champions' Hall. The receptionist sends you to any hall. Talk to anyone to battle: Gym
 Leaders are level 75 (aces 76), Elite Four 78, Champions 85-88, full teams with perfect IVs. Your party is healed after every
-battle, won or lost. Clearing a hall wins its trophy (a decoration for your gym); clearing all 19 wins the Grand Trophy.</p>
+battle, won or lost. Clearing a hall wins its trophy (a decoration for your gym); clearing all 19 wins the Grand Trophy.
+Before each battle a title card shows who you're facing: their name, title, region and games.</p>
+<p>Clearing every hall and mastering every type opens the last part of the game: <a href="#tournament">the tournament</a>.</p>
 """
 
 SAFARI_INTRO = """
@@ -510,6 +521,141 @@ there, wandering. They run if not caught.</li>
 </ul>
 <p>On the maps: a legendary's picture marks where it appears (circled in red); yellow numbers are items and people, blue are
 puzzle pieces, and green are the ways out.</p>
+"""
+
+
+ACADEMY = """
+<p>A school for Gym Leader candidates from every region, through a gap in the trees on Route 11's north side. You're
+admitted with your third badge (see the walkthrough). The headmaster, Wisteria, welcomes you; the staff are named for
+flowers. Everything here is single battles. The Pokémon Center makes Vermilion City your place to return to.</p>
+<h3>Battle Points (BP)</h3>
+<p>Beating candidates earns 1-4 BP by their skill, an instructor's demonstration 3 BP, and Battle Hall streaks 1 BP a win plus
+1 for every 3 in the streak (and 5 more at 7 wins). Everything BP buys can also be bought with money.</p>
+<h3>The candidates</h3>
+<p>Eight future Gym Leaders practice on campus: Koji (Johto, Fighting, rookie), Maren (Hoenn, Water), Elias (Sinnoh, Ground),
+Nadia (Unova, Electric, advanced), Rene (Kalos, Fairy, advanced), Keola (Alola, Fire, rookie), Briony (Galar, Dragon, expert)
+and Teo (Paldea, Steel). They'll battle as often as you like, against your own team: their level follows yours (a little
+below for rookies, above for experts), with items and smarter AI higher up. No money is lost, nobody whites out, and both
+sides are healed after.</p>
+<h3>The instructors and the lecture halls</h3>
+<p>Eight instructors teach one subject each: Larkspur (speed and priority), Camellia (setup and win conditions), Foxglove
+(entry hazards), Verbena (pivoting), Marigold (weather and terrain), Hyacinth (reading the opponent), Yarrow (EVs, natures and
+items) and Tansy (team building). Each gives a short lecture and then a demonstration battle: their three level-100 Pokémon
+that show the lesson, against three rentals you pick.</p>
+<h3>The Battle Hall</h3>
+<p>Rental battles: pick 3 of 6 offered Pokémon (each shown with its item and moves), then battle candidates with rentals of their
+own, the AI getting smarter as your streak grows. Keep going or stop after each win. Your own party is set aside and given
+back afterwards, whatever happens.</p>
+<h3>The Exchange</h3>
+<p>Two counters side by side sell the same competitive items, one for money and one for BP: Choice items, Life Orb, Focus
+Sash, Assault Vest, Booster Energy, Heavy-Duty Boots, weather rocks, berries and more. The BP counter also has Bottle Caps,
+the Ability Capsule and Patch, Cilantro, the Multivitamin and mints. The supply shop sells training items for money: caps,
+ability items, Cilantro, the Multivitamin, mints, vitamins, power items, the Macho Brace and the EV berries.</p>
+<h3>The team builder</h3>
+<p>Tansy's team builder plans up to 8 teams: choose a type, then one of its Pokémon (a ball marks the ones you have), then up
+to 4 of the moves it can learn. It only offers Pokémon you can get by now, so a plan never depends on something out of reach.
+The edit screen shows the team's worst weaknesses and the types it can't hit hard; START shows the whole type chart for the
+team. Teams are kept when you save. It's a planner: it doesn't change your party.</p>
+<h3>Mega Evolution: Primrose's trials</h3>
+<p>After your 8th badge, the headmaster gives you the <b>Mega Bracelet</b>, and the guard at door M lets you into Primrose's
+room. A Mega Stone, she says, only answers a bond it has seen proven, so you earn each one in a trial:</p>
+<ul>
+<li>Pick a party Pokémon that can Mega Evolve (Charizard and Mewtwo pick X or Y). Primrose lends it the stone, the rest of
+your party is set aside, and it battles her three Pokémon alone.</li>
+<li>Win and the stone is yours to keep. Lose and try again any time.</li>
+<li>Her teams are levels 55-59 with a level-60 Mega last, chosen so none of them is super effective against your Pokémon.
+The levels never change, so training up is the way through.</li>
+<li>Rayquaza needs a stone like everyone else (the Rayquazite), and Kyogre and Groudon earn the Blue and Red Orbs the
+same way.</li>
+</ul>
+"""
+
+PC = """
+<p>Besides your boxes and items, the PC (and the Palm Pilot) has these once they've something in them:</p>
+<ul>
+<li><b>BILL'S ARCHIVE</b> (once you've met Bill): a living Pokédex. From the box menu, ARCHIVE sends a Pokémon there for
+good: it's released, but its slot (and whether it was Shiny) is kept. Taking one out gives you a new one at level 5 (random
+IVs and nature, Shiny if the stored one was) and empties the slot. One slot per species and form; the screen is laid out
+like a box, 30 to a page in Pokédex order, with what you own in color. L/R turns a page, START jumps to the next
+generation.</li>
+<li><b>TYPE MASTERY</b>: for each type you've mastered, the team of your longest streak with it.</li>
+<li><b>TOURNAMENT</b>: your first tournament title's team, kept for good, and your three most recent, each with the title's
+number and whom you beat in the final.</li>
+<li><b>HALL OF FAME</b>: the Elite Four's, as always.</li>
+</ul>
+"""
+
+TOURNAMENT = """
+<p>Clear every hall of the Gym Leader Convention and master every type, then walk into your gym: a hooded figure is waiting
+by the door. A bookie, he says, running the book on an underground tournament of the strongest trainers in the world.
+Your name's in the draw.</p>
+<h3>The rules</h3>
+<ul>
+<li><b>128 entrants, single elimination.</b> Each tournament draws 127 from the convention's Gym Leaders, Elite Four and
+Champions and the rest of the Pokémon world's rivals, villains, Frontier Brains and professors, plus you. Seven wins takes the
+title.</li>
+<li>Seeding is rough: champions and legends are spread through the bracket so they meet late; everyone else is placed at
+random. You're unseeded. Every tournament is a new draw.</li>
+<li>Everyone's Pokémon are level 100, with the smartest AI. Any of your Pokémon may play, no type rule.</li>
+<li>Your team is locked in when you sign up: the Pokémon with you then, no more and no fewer (any order). You're healed
+between rounds, and you can rest between rounds and come back.</li>
+<li>Each win pays the usual prize money for the opponent's class (a Leader, Elite Four or Champion pays ¥10,000).</li>
+<li><b>One loss ends it.</b> The rest of the tournament plays out without you; then you can sign up for a new one. You can
+also forfeit.</li>
+</ul>
+<h3>The board</h3>
+<p>From the bookie's menu, between rounds and after you're knocked out, the board shows the bracket. 128 names don't fit on
+one screen, so it has nine pages: blocks A to H (each a sixteenth of the bracket, down to the round of 16) and the final 16
+(down to the champion). L/R turns the page. Winners' lines are lit orange; your path is blue and your name red; anyone
+knocked out is grayed.</p>
+<h3>After the title</h3>
+<p>Win, and the bookie admits the one who put the tournament on wants to meet you. When you're ready, the hood comes off:
+it's <b>Bill</b>. He ran his Cell Separation System backward on himself, trying to become a Clefable, and it went wrong:
+what came out is a monster, CLEFFABILL (Fairy/Ghost), and it's eating what's left of him. He put on the tournament to find
+someone strong enough to end it. His team: five Shiny legendaries and himself. Losing changes nothing; he asks you to try
+again.</p>
+<p>Beat him and he fades away, leaving his <b>Palm Pilot</b>:</p>
+<ul>
+<li><b>WITHDRAW</b>: any Pokémon at all, Shiny, at level 70 (a list of every species and form; L/R a page, START the next
+generation).</li>
+<li><b>Battle simulator</b>: new tournaments from Bill's records, the same rules. Win one, then beat Bill's simulation (his
+same team; as many tries as it takes) for another WITHDRAW.</li>
+</ul>
+"""
+
+EVENT = """
+<p>Every Pokémon form that was only ever given out at events is a side quest here. Gifts after your gym is yours are level 50
+(first stages level 5); the main-game ones are level 5.</p>
+<h3>Main game</h3>
+<ul>
+<li><b>The cap collector</b> (the boy in the house in Pallet Town): his seven Pikachu caps are lost around Kanto. He gives you
+the Cap Case; each cap you find is traded for its cap Pikachu (Original, Hoenn, Sinnoh, Unova, Kalos, Alola, World), and all
+seven for the Partner Cap Pikachu. The caps are in Viridian Forest, Mt. Moon B2F, Route 25, Route 9, Route 10 and both
+Underground Paths, where small things get snagged: check carefully.</li>
+</ul>
+<h3>After the gym is yours</h3>
+<ul>
+<li><b>The costume maker</b> (Celadon Condominiums 2F) gives you Cosplay Pikachu, then dresses it up as each costume is
+earned: Rock Star (a 7-win Battle Hall streak), Belle (20 decorations placed in your gym), Pop Star (clear the
+Convention's Fairy hall), Ph.D. (attend all 8 Academy lectures) and Libre (clear the Fighting hall). Each costume comes with
+its special move.</li>
+<li><b>Partner Pikachu and Eevee</b>: once you've mastered Electric (or Normal), Oak has a five-question quiz on that type in
+his lab. Pass for the partner.</li>
+<li><b>Spiky-eared Pichu</b>: beside the shrine in the safari's Ilex Forest, when Celebi is in your party.</li>
+<li><b>Vivillon patterns</b>: the collector in Lumiose City (Kalos zone) gives a Fancy-pattern Scatterbug once you've shown him
+6 Vivillon patterns, and a Poké Ball-pattern one for all 18. After that, each turns up wild in the Kalos zone now and
+then.</li>
+<li><b>Battle Bond Greninja</b>: the trainer at Azure Bay (Kalos zone) gives you a special Froakie once you've beaten a Kalos
+trainer in the tournament (or won it). Its Greninja has Battle Bond.</li>
+<li><b>The Eternal Flower Floette</b>: AZ, in the Lumiose Badlands, once you've beaten him in the tournament (or won it). Show
+him a Floette, then come back with Xerneas, Yveltal and Zygarde caught.</li>
+<li><b>Own Tempo Rockruff</b>: Tala at Hano Beach (Alola zone) battles you with her Lycanroc pack; win for the Rockruff.</li>
+<li><b>Original Color Magearna</b>: the artisan at Hano Beach. Catch Magearna, then find her four antique paint pots, one each
+in Big Wave Beach, the Ruins of Conflict, Wela Volcano Park and Mount Lanakila.</li>
+<li><b>Dada Zarude</b>: in Glimwood Tangle's glade once Zarude is caught, for a party with Celebi.</li>
+<li><b>Eternamax Eternatus</b>: on the Wyndon Stadium pitch, for a party with Zacian, Zamazenta and Eternatus (the Darkest
+Day). It's Eternamax only on the pitch; anywhere else it's Eternatus again.</li>
+</ul>
 """
 
 
@@ -548,7 +694,9 @@ def build(out):
     parts.append(chapter("Contents", """<div class="toc"><ol>
 <li><a href="#about">About the game</a></li><li><a href="#types">Choosing your type</a></li>
 <li><a href="#walk">Walkthrough</a></li><li><a href="#gym">Running your gym</a></li>
+<li><a href="#pc">Your PC</a></li><li><a href="#academy">The Leader Academy</a></li>
 <li><a href="#items">Items</a></li><li><a href="#training">Training houses</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
+<li><a href="#tournament">The tournament</a></li><li><a href="#event">Event Pokémon</a></li>
 <li><a href="#safari">The Exotic Pokémon Safari</a></li></ol></div>""", newpage=False))
     parts.append(chapter("1. About the game", INTRO + RULES + DIFFERENCES, newpage=False, anchor="about"))
     parts.append(chapter("2. Choosing your type", "<p>Oak lists the types from the strongest possible team (the six best "
@@ -557,10 +705,14 @@ def build(out):
                          + type_extras_table(), anchor="types"))
     parts.append(chapter("3. Walkthrough", WALKTHROUGH, anchor="walk"))
     parts.append(chapter("4. Running your gym", GYM, anchor="gym"))
-    parts.append(chapter("5. Items", ITEMS, anchor="items"))
-    parts.append(chapter("6. Training houses", training_section(), anchor="training"))
-    parts.append(chapter("7. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
-    parts.append(chapter("8. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
+    parts.append(chapter("5. Your PC", PC, newpage=False, anchor="pc"))
+    parts.append(chapter("6. The Leader Academy", ACADEMY, anchor="academy"))
+    parts.append(chapter("7. Items", ITEMS, anchor="items"))
+    parts.append(chapter("8. Training houses", training_section(), anchor="training"))
+    parts.append(chapter("9. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
+    parts.append(chapter("10. The tournament", TOURNAMENT, anchor="tournament"))
+    parts.append(chapter("11. Event Pokémon", EVENT, anchor="event"))
+    parts.append(chapter("12. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
     parts.append(safari_section())
     html = "<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>" + "".join(parts) + "</body></html>"
     hp = OUT_DIR / "guide.html"

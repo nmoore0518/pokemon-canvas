@@ -326,6 +326,32 @@ MANUAL = [
 for _sp, _coins in (("ABRA", "180"), ("CLEFAIRY", "500"), ("DRATINI", "2,800"), ("SCYTHER", "5,500"), ("PORYGON", "9,999")):
     MANUAL.append((f"SPECIES_{_sp}", "Celadon Game Corner", f"Prize for {_coins} coins", "After Badge 3"))
 
+# The event Pokémon side quests (src/event_mons.c; the guide's "Event Pokémon" chapter)
+_COSTUMES = {"ROCK_STAR": "a 7-win streak in the Leader Academy's Battle Hall", "BELLE": "20 decorations placed in your gym",
+             "POP_STAR": "clear the Convention's Fairy hall", "PHD": "attend all 8 Leader Academy lectures",
+             "LIBRE": "clear the Convention's Fighting hall"}
+MANUAL += [
+    ("SPECIES_PIKACHU_COSPLAY", "Celadon Condominiums 2F", "Gift from the costume maker (Lv 50)", "post-game"),
+] + [(f"SPECIES_PIKACHU_{k}", "Celadon Condominiums 2F", f"Costume for the Cosplay Pikachu: {v}", "post-game")
+     for k, v in _COSTUMES.items()] + [
+    (f"SPECIES_PIKACHU_{k}", "Pallet Town, house", "Trade the boy one of his 7 lost caps (hidden around Kanto) (Lv 5)", "")
+    for k in ("ORIGINAL", "HOENN", "SINNOH", "UNOVA", "KALOS", "ALOLA", "WORLD")] + [
+    ("SPECIES_PIKACHU_PARTNER", "Pallet Town, house", "All 7 caps found: the Partner Cap Pikachu (Lv 5)", ""),
+    ("SPECIES_PIKACHU_STARTER", "Oak's lab", "Oak's quiz, once Electric is mastered (Lv 5)", "post-game"),
+    ("SPECIES_EEVEE_STARTER", "Oak's lab", "Oak's quiz, once Normal is mastered (Lv 5)", "post-game"),
+    ("SPECIES_SCATTERBUG_FANCY", "Kalos Safari: Lumiose City", "Gift: show the collector 6 Vivillon patterns (Lv 5); then wild in the Kalos zone (rare)", "post-game"),
+    ("SPECIES_SCATTERBUG_POKEBALL", "Kalos Safari: Lumiose City", "Gift: show the collector all 18 patterns (Lv 5); then wild in the Kalos zone (rare)", "post-game"),
+    ("SPECIES_GRENINJA_BATTLE_BOND", "Kalos Safari: Azure Bay", "A Froakie (Lv 5) from the trainer on the shore, once you've beaten a Kalos trainer in the tournament; it evolves into this Greninja", "post-game"),
+    ("SPECIES_FLOETTE_ETERNAL", "Kalos Safari: Lumiose Badlands", "Gift from AZ: show him a Floette, then catch Xerneas, Yveltal and Zygarde (Lv 50)", "post-game"),
+    ("SPECIES_ROCKRUFF_OWN_TEMPO", "Alola Safari: Hano Beach", "Gift from Tala after you beat her Lycanroc (Lv 5)", "post-game"),
+    ("SPECIES_MAGEARNA_ORIGINAL", "Alola Safari: Hano Beach", "Gift from the artisan: catch Magearna and find her 4 antique paint pots (one each in Big Wave Beach, the Ruins of Conflict, Wela Volcano Park and Mount Lanakila) (Lv 50)", "post-game"),
+]
+PUZZLES_EVENT = {
+    "PICHU_SPIKY_EARED": "Beside the shrine; it appears when Celebi is in your party (Lv 5).",
+    "ZARUDE_DADA": "In the glade, once Zarude is caught; it appears when Celebi is in your party.",
+    "ETERNATUS_ETERNAMAX": "On the pitch, for a party with Zacian, Zamazenta and Eternatus. Eternamax only on the pitch: anywhere else it's Eternatus.",
+}
+
 SEVII = re.compile(r"MAP_((ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN)_ISLAND|MT_EMBER|BIRTH_ISLAND|NAVEL_ROCK|TRAINER_TOWER)")
 
 
@@ -427,7 +453,10 @@ def locations(data):
     areas_h = (ROOT / "src/data/exotic_safari_areas.h").read_text()
     for mp, sp in re.findall(r"MAP_NUM\((MAP_EXOTIC_SAFARI_\w+)\), (SPECIES_\w+), FLAG_EXOTIC_LEGEND", areas_h):
         s = safari_name(mp)
-        loc[sp].append((2, f"{s[0]}: {s[1]}", "Legendary (Lv 70). " + PUZZLES.get(sp[8:], ""), "post-game"))
+        if sp[8:] in PUZZLES_EVENT:
+            loc[sp].append((2, f"{s[0]}: {s[1]}", "Event Pokémon. " + PUZZLES_EVENT[sp[8:]], "post-game"))
+        else:
+            loc[sp].append((2, f"{s[0]}: {s[1]}", "Legendary (Lv 70). " + PUZZLES.get(sp[8:], ""), "post-game"))
     for sp, need, region in re.findall(r"\{(SPECIES_\w+), FLAG_EXOTIC_LEGEND_\w+, FLAG_TEMP_\w+, (\w+), (\d)\}", areas_h):
         loc[sp].append((2, f"{REGION_OF_SAFARI[int(region)]} Safari", "Roams: 1 in 8 chance in any area you enter (Lv 70)." + ROAM_NOTES.get(sp[8:], ""), "post-game"))
     for sp, place, how, when in MANUAL:
