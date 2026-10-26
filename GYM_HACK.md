@@ -470,7 +470,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   knocked out, the player runs, or the player loses, it flees the gym; the rival walks in to
   gloat (still sore about the gym) and hints that something that strong would hide in "that cave
   by CERULEAN nobody was allowed into". From then on it's a 1% encounter anywhere in Cerulean Cave
-  (`GymLegend_TryCaveEncounter`, in `TryGenerateWildMon`) until it's caught. Once it's caught (on
+  (`GymLegend_TryCaveEncounter`, in `TryGenerateWildMon`) until it's caught. (Cerulean Cave's
+  guard steps aside after the Hall of Fame - FireRed only moved him from the Sevii Islands, which
+  this hack can't reach, so before v83 the cave was shut for good.) Once it's caught (on
   the stage or in the cave), the rival comes to the gym to scoff that the player needs a
   legendary to win. `VAR_GYM_LEGEND_STATE` (0x40FE, `GYM_LEGEND_*`), `FLAG_GYM_LEGEND_APPEARED`/
   `CAUGHT` (0x0C3/0x0C4). Its overworld sprite is the
@@ -1050,8 +1052,11 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            non-legendary, BST 430-560 for the first two, with no type super effective on the
            player's Pokémon in either form, and the Mega's STAB at least neutral on them; moves are
            level-up damaging moves (no OHKO/explosions, nothing super effective) plus one status
-           move. Fixed levels on purpose: over-levelling is the way through. Rayquaza needs no
-           stone (Dragon Ascent); primal orbs work as normal. A test checks every stone's team.
+           move. Fixed levels on purpose: over-levelling is the way through. Rayquaza needs a stone
+           like the rest (the RAYQUAZITE, a new item, `ITEM_RAYQUAZITE`; no Dragon Ascent Mega, so
+           it can't Mega Evolve and hold another item), and Kyogre and Groudon take the trial for
+           their Blue/Red Orb (the Blue Orb is also in the Hoenn zone). Zinnia's and Bill's
+           Rayquazas hold the Rayquazite. A test checks every stone's team.
          - Megas in other teams: 57 Gym Leader Convention trainers hold a Mega Stone (Norman,
            Misty, Clay and Shauntal added), and 16 Gauntlet trainers (Maxie, Archie, Zinnia, Wally,
            Lysandre, Serena, Calem, Silver, Lyra, Ethan, Dawn, Riley, Guzma, Arven, Brendan, May).
@@ -1085,7 +1090,12 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          - The TEAM BUILDER (Tansy; `src/team_builder.c`): 8 teams, kept in flash sector 30 after the
            archive (`struct TeamBuilderData`; a move is 10 bits to fit). A slot: choose a type, then
            one of its Pokémon from a grid of icons (a ball by those the player has: party, box or
-           archive; only those with the type as their primary type, the gym's rule), then up to 4 of
+           archive; only those with the type as their primary type, the gym's rule; and only those
+           the player has or could get by now: `gDexFormAvail` from `tools/gym_hack/build_availability.py`,
+           run it after changing wild tables, gifts or legendaries - the main game's from the start,
+           Cerulean Cave's after the Hall of Fame, Johto's and the Exotic Safari's once the gym is
+           theirs, Terapagos and Arceus once every type is mastered, a gym legendary once the gym has
+           had its type; everything once Bill's Palm Pilot can withdraw), then up to 4 of
            the moves it can learn (level, TM/tutor, egg). The edit screen
            shows the team's worst weaknesses and the types it can't hit for 2x; START, the full chart:
            for each of the 18 types, how many are weak, how many resist or are immune, and the best

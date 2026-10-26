@@ -980,7 +980,7 @@ static const struct TrainerMon sGauntletParty_zinnia[] = {
     {
         .species = SPECIES_SALAMENCE,
         .lvl = 100,
-        .heldItem = ITEM_SALAMENCITE,
+        .heldItem = ITEM_LIFE_ORB,
         .moves = {MOVE_DRACO_METEOR, MOVE_FIRE_BLAST, MOVE_EARTHQUAKE, MOVE_ROOST},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 0, 0, 252, 252, 0),
@@ -1028,7 +1028,7 @@ static const struct TrainerMon sGauntletParty_zinnia[] = {
     {
         .species = SPECIES_RAYQUAZA,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_RAYQUAZITE,
         .moves = {MOVE_DRAGON_ASCENT, MOVE_EXTREME_SPEED, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),
@@ -6282,7 +6282,7 @@ static const struct TrainerMon sGauntletParty_bill[] = {
     {
         .species = SPECIES_RAYQUAZA,
         .lvl = 100,
-        .heldItem = ITEM_LIFE_ORB,
+        .heldItem = ITEM_RAYQUAZITE,
         .moves = {MOVE_DRAGON_ASCENT, MOVE_EXTREME_SPEED, MOVE_EARTHQUAKE, MOVE_DRAGON_DANCE},
         .iv = TRAINER_PARTY_IVS(31, 31, 31, 31, 31, 31),
         .ev = TRAINER_PARTY_EVS(4, 252, 0, 252, 0, 0),

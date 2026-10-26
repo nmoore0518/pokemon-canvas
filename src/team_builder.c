@@ -6,8 +6,8 @@
 // the player, it's a planner.
 //   TEAMS     the 8 teams; A edits one
 //   EDIT      its 6 slots; A: choose a Pokémon (a type, then a grid of the Pokémon with it as
-//             their primary type - a ball
-//             by those the player has, in the party, a box or the archive), then its moves;
+//             their primary type that the player has or could get by now, TeamBuilder_IsAvailable -
+//             a ball by those the player has, in the party, a box or the archive), then its moves;
 //             SELECT: just the moves; START: the type chart
 //   ANALYSIS  for each of the 18 types: how many of the team are weak to it, how many resist it
 //             (or are immune), and the best hit the team's attacks have on it
@@ -19,6 +19,7 @@
 #include "bg.h"
 #include "dex_forms.h"
 #include "event_data.h"
+#include "gym_switch.h"
 #include "gpu_regs.h"
 #include "list_menu.h"
 #include "main.h"
@@ -40,6 +41,7 @@
 #include "task.h"
 #include "text.h"
 #include "window.h"
+#include "constants/gym_hack.h"
 #include "constants/moves.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -709,6 +711,32 @@ static void ShowTypes(void)
 }
 
 // ---- GRID: that type's Pokémon ----
+// Whether the player could get this Pokémon by now (gDexFormAvail): the main game's from the start,
+// Cerulean Cave's after the Hall of Fame, Johto's and the Exotic Safari's once the gym is theirs,
+// Terapagos and Arceus once every type is mastered, a gym legendary once the gym has had its type
+// (or it's loose in Cerulean Cave, or caught). Bill's Palm Pilot can withdraw anything.
+bool32 TeamBuilder_IsAvailable(u32 form)
+{
+    u32 avail = gDexFormAvail[form];
+    s32 legendType = AVAIL_LEGEND_TYPE(avail);
+    bool32 ok;
+    if (VarGet(VAR_GAUNTLET_STATE) >= GAUNTLET_SIMULATOR)
+        return TRUE;
+    switch (avail & AVAIL_TIER_MASK)
+    {
+    case AVAIL_START:    ok = TRUE; break;
+    case AVAIL_CLEAR:    ok = FlagGet(FLAG_SYS_GAME_CLEAR); break;
+    case AVAIL_LEADER:   ok = FlagGet(FLAG_PALLET_GYM_AWARDED); break;
+    case AVAIL_MASTERED: ok = FlagGet(FLAG_PALLET_GYM_AWARDED) && GymSwitch_AllTypesMastered(); break;
+    default:             ok = FALSE; break;
+    }
+    if (ok && legendType >= 0)
+        ok = GymSwitch_IsOwned(legendType) || FlagGet(FLAG_GYM_LEGEND_LOOSE_TYPE + legendType)
+          || FlagGet(FLAG_GYM_LEGEND_CAUGHT_TYPE + legendType);
+    return ok;
+}
+
+// The grid: Pokémon with this primary type (the gym's rule) that the player has, or could get by now
 static void BuildList(u32 type)
 {
     u32 i;
@@ -716,7 +744,7 @@ static void BuildList(u32 type)
     for (i = 0; i < DEX_FORM_COUNT; i++)
     {
         u32 species = gDexFormSpecies[i];
-        if (GetSpeciesType(species, 0) == type)      // (primary type only: the gym's rule)
+        if (GetSpeciesType(species, 0) == type && (sTB->loc[species] != 0 || TeamBuilder_IsAvailable(i)))
             sTB->list[sTB->listCount++] = i;
     }
 }

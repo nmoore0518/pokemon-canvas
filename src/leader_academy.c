@@ -449,7 +449,8 @@ static u32 GetMegaStones(u32 species, u16 *stones, u16 *megas)
     u32 n = 0;
     for (; fc != NULL && fc->method != FORM_CHANGE_TERMINATOR && n < 2; fc++)
     {
-        if (fc->method == FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM)
+        // (Kyogre's and Groudon's orbs count: Primrose lends them like any stone)
+        if (fc->method == FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM || fc->method == FORM_CHANGE_BATTLE_PRIMAL_REVERSION)
         {
             stones[n] = fc->param1;
             if (megas)
@@ -654,8 +655,8 @@ static bool32 HasItemAnywhere(u32 item)
     return FALSE;
 }
 
-// Special: VAR_0x8004 = a party slot. VAR_RESULT: 0 it can't Mega Evolve (MEGA_TRIAL_DRAGON_ASCENT if
-// it's Rayquaza: no stone needed), 1 or 2 stones (STR_VAR_1/2 their names; VAR_0x8005/6 the items),
+// Special: VAR_0x8004 = a party slot. VAR_RESULT: 0 it can't Mega Evolve, 1 or 2 stones (or
+// Kyogre's/Groudon's orb) (STR_VAR_1/2 their names; VAR_0x8005/6 the items),
 // MEGA_TRIAL_HAS_ALL if the player has them all already. STR_VAR_3 = the Pokémon's name.
 void Academy_MegaTrialCheck(void)
 {
@@ -666,11 +667,6 @@ void Academy_MegaTrialCheck(void)
     gSpecialVar_Result = 0;
     if (GetMonData(mon, MON_DATA_IS_EGG) || species == SPECIES_NONE)
         return;
-    if (GET_BASE_SPECIES_ID(species) == SPECIES_RAYQUAZA)
-    {
-        gSpecialVar_Result = MEGA_TRIAL_DRAGON_ASCENT;
-        return;
-    }
     n = GetMegaStones(species, stones, NULL);
     sTrialStones[0] = stones[0];
     sTrialStones[1] = stones[1];

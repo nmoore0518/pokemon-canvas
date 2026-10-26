@@ -69,7 +69,17 @@
 #define ACADEMY_BRACELET_GIVE   6   // (at her desk: the Mega Bracelet)
 // Academy_MegaTrialCheck's VAR_RESULT, besides 0-2 stones
 #define MEGA_TRIAL_HAS_ALL      3
-#define MEGA_TRIAL_DRAGON_ASCENT 4
+
+// When the player can first get a Pokémon (gDexFormAvail, tools/gym_hack/build_availability.py)
+#define AVAIL_START       0     // the main game
+#define AVAIL_CLEAR       1     // after the Hall of Fame (Cerulean Cave)
+#define AVAIL_LEADER      2     // once the gym is the player's (Johto, the Exotic Safari)
+#define AVAIL_MASTERED    3     // every gym type mastered
+#define AVAIL_NEVER       15    // nowhere in the game
+#define AVAIL_TIER_MASK   0x0F
+#define AVAIL_GYM_LEGEND(type) (((type) + 1) << 8)   // ... and needs the gym legendary of this type
+                                                    // (it comes once the gym has had that type)
+#define AVAIL_LEGEND_TYPE(a)  (((a) >> 8) - 1)          // (-1: none)
 
 #define JOHTO_NOT_INVITED       0
 #define JOHTO_INVITE_WAITING    1   // (after the gym's handed over: the mentor brings it next visit)

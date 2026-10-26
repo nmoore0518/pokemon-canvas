@@ -271,9 +271,6 @@ So I lend it to you. Your POKéMON carries it into battle against my three, with
 Win, and the stone has chosen you both: it's yours. Lose, and it comes back to me, and we wait until you're ready. No shame in that."""
 T["MegaKeeperAsk"] = "PRIMROSE: Which POKéMON will carry a stone?"
 T["MegaNoStone"] = "PRIMROSE: {STR_VAR_3} doesn't Mega Evolve. There's no stone waiting for it, I'm afraid."
-T["MegaDragonAscent"] = """PRIMROSE: RAYQUAZA? It needs no stone at all.
-
-If it knows DRAGON ASCENT, your bracelet is all it takes."""
 T["MegaHasAll"] = "PRIMROSE: {STR_VAR_3}'s stone has already chosen you. Go and use it well!"
 T["MegaWhich"] = "PRIMROSE: Two stones answer to {STR_VAR_3}. Which one?"
 T["MegaHasThis"] = "PRIMROSE: That one's already yours. Perhaps the other?"

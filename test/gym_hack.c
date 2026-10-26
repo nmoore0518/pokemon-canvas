@@ -11,6 +11,7 @@
 #include "archive.h"
 #include "leader_academy.h"
 #include "team_builder.h"
+#include "dex_forms.h"
 #include "gym_challenge.h"
 #include "constants/event_objects.h"
 #include "constants/pokedex.h"
@@ -2442,7 +2443,7 @@ TEST("GymHack: Mega trial teams are fair to the Pokemon taking the trial")
         {
             const struct TrainerMon *team;
             u32 k, m, mega = fc->targetSpecies, stone = fc->param1;
-            if (fc->method != FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM)
+            if (fc->method != FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM && fc->method != FORM_CHANGE_BATTLE_PRIMAL_REVERSION)
                 continue;
             team = Academy_MegaTrialTeam(species, stone);
             checked++;
@@ -2476,4 +2477,57 @@ TEST("GymHack: Mega trial teams are fair to the Pokemon taking the trial")
         }
     }
     EXPECT_GE(checked, 90);
+}
+
+TEST("GymHack: Rayquaza Mega Evolves with the Rayquazite, not Dragon Ascent")
+{
+    const struct FormChange *fc = GetSpeciesFormChanges(SPECIES_RAYQUAZA);
+    bool32 stone = FALSE;
+    for (; fc != NULL && fc->method != FORM_CHANGE_TERMINATOR; fc++)
+    {
+        EXPECT(fc->method != FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE);
+        if (fc->method == FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM && fc->param1 == ITEM_RAYQUAZITE)
+            stone = TRUE;
+    }
+    EXPECT(stone);
+    EXPECT_EQ(GetItemHoldEffect(ITEM_RAYQUAZITE), HOLD_EFFECT_MEGA_STONE);
+    EXPECT_EQ(Academy_MegaTrialTeam(SPECIES_KYOGRE, ITEM_BLUE_ORB)[2].lvl, 60);
+    EXPECT_EQ(Academy_MegaTrialTeam(SPECIES_GROUDON, ITEM_RED_ORB)[2].lvl, 60);
+}
+
+static u32 FormIndex(u32 species)
+{
+    u32 i;
+    for (i = 0; i < DEX_FORM_COUNT; i++)
+        if (gDexFormSpecies[i] == species)
+            return i;
+    return 0;
+}
+
+TEST("GymHack: the team builder only offers Pokemon the player can get by now")
+{
+    FlagClear(FLAG_SYS_GAME_CLEAR);
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    FlagClear(FLAG_GYM_TYPE_OWNED + TYPE_DRAGON);
+    FlagClear(FLAG_GYM_LEGEND_LOOSE_TYPE + TYPE_DRAGON);
+    FlagClear(FLAG_GYM_LEGEND_CAUGHT_TYPE + TYPE_DRAGON);
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_NONE);
+    VarSet(VAR_PLAYER_TYPE, TYPE_FIRE);
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_CHARMANDER)));
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_DRAGONITE)));
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_SPRIGATITO)));     // (the Exotic Safari)
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_RAYQUAZA)));       // (the Dragon gym's legendary)
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_ARCEUS_NORMAL)));
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_PIKACHU_COSPLAY))); // (event only)
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    FlagSet(FLAG_SYS_GAME_CLEAR);
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_SPRIGATITO)));
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_RAYQUAZA)));
+    VarSet(VAR_PLAYER_TYPE, TYPE_DRAGON);
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_RAYQUAZA)));
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR);
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_PIKACHU_COSPLAY)));
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_NONE);
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+    FlagClear(FLAG_SYS_GAME_CLEAR);
 }

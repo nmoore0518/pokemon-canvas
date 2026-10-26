@@ -198,9 +198,6 @@ Academy_Text_MegaKeeperAsk::
 Academy_Text_MegaNoStone::
 	.string "PRIMROSE: {STR_VAR_3} doesn't\nMega Evolve. There's no stone\pwaiting for it, I'm afraid.$"
 
-Academy_Text_MegaDragonAscent::
-	.string "PRIMROSE: RAYQUAZA? It needs no\nstone at all.\pIf it knows DRAGON ASCENT, your\nbracelet is all it takes.$"
-
 Academy_Text_MegaHasAll::
 	.string "PRIMROSE: {STR_VAR_3}'s stone\nhas already chosen you. Go and\puse it well!$"
 

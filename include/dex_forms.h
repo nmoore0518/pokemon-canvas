@@ -8,5 +8,6 @@
 extern const u16 gDexFormSpecies[DEX_FORM_COUNT];
 extern const u8 *const gDexFormLabels[DEX_FORM_COUNT];     // (NULL: the species' own name)
 extern const u16 gDexFormGenStarts[DEX_FORM_GEN_COUNT];
+extern const u16 gDexFormAvail[DEX_FORM_COUNT];   // (AVAIL_*: tools/gym_hack/build_availability.py)
 
 #endif // GUARD_DEX_FORMS_H

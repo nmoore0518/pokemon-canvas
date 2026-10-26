@@ -649,7 +649,6 @@ Academy_EventScript_MegaKeeperAsk::
 	special Academy_MegaTrialCheck
 	switch VAR_RESULT
 	case 0, Academy_EventScript_MegaNoStone
-	case MEGA_TRIAL_DRAGON_ASCENT, Academy_EventScript_MegaDragonAscent
 	case MEGA_TRIAL_HAS_ALL, Academy_EventScript_MegaHasAll
 	case 2, Academy_EventScript_MegaWhich
 	setvar VAR_0x8004, 0
@@ -693,10 +692,6 @@ Academy_EventScript_MegaLost::
 Academy_EventScript_MegaNoStone::
 	msgbox Academy_Text_MegaNoStone
 	goto Academy_EventScript_MegaKeeperAsk
-Academy_EventScript_MegaDragonAscent::
-	msgbox Academy_Text_MegaDragonAscent
-	release
-	end
 Academy_EventScript_MegaHasAll::
 	msgbox Academy_Text_MegaHasAll
 	release

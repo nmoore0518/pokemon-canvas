@@ -16994,6 +16994,25 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_GymCharm,
         .iconPalette = gItemIconPalette_GymCharm,
     },
+
+    [ITEM_RAYQUAZITE] =
+    {
+        // Pokémon Canvas: Rayquaza needs a stone like every other Mega (Primrose's trial)
+        .name = ITEM_NAME("Rayquazite"),
+        .price = 0,
+        .holdEffect = HOLD_EFFECT_MEGA_STONE,
+        .description = COMPOUND_STRING(
+            "This stone enables\n"
+            "Rayquaza to Mega\n"
+            "Evolve in battle."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_MEGA_STONE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .flingPower = 80,
+        .iconPic = gItemIcon_Rayquazite,
+        .iconPalette = gItemIconPalette_Rayquazite,
+    },
 };
 
 #undef ITEM_NAME
