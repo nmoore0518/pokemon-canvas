@@ -116,19 +116,42 @@ def window(px, x, y, h, arched=True):
 
 
 def roof(px, x0, y0, x1, y1, hip=4):
-    """A slate roof from y0 to y1, hipped in by `hip` px at the top, with a white eave and its shadow"""
-    for y in range(y0, y1 + 1):
-        inset = max(0, hip - (y - y0) // 2) if hip else 0
+    """A hipped slate roof from y0 (ridge) to y1 (the eave's shadow on the wall), drawn with some
+    depth: lit near the ridge and darker toward the eave, the sloping ends (hips) in shade, a stone
+    ridge cap, a white fascia with a dark underside"""
+    body = y1 - 3                           # (the last row of shingles)
+    h = max(1, body - y0)
+    hip = max(hip, 6)
+    for y in range(y0, body + 1):
+        tt = (y - y0) / h
+        inset = round(hip * (1 - tt))
+        cy = (y - y0) % 4
+        off = 0 if ((y - y0) // 4) % 2 == 0 else 4
         for x in range(x0 + inset, x1 + 1 - inset):
-            px[x, y] = slate_at(x, y)
-        if inset or y == y0:
-            pass
-    for x in range(x0, x1 + 1):            # ridge
-        if px[x, y0] != T:
-            px[x, y0] = SL_L
-        px[x, y1 - 2] = WHITE              # the eave's fascia
-        px[x, y1 - 1] = ST_S
-        px[x, y1] = BR_D                   # its shadow on the wall
+            side = x < x0 + hip or x > x1 - hip
+            joint = (x + off) % 8 == 0
+            if side:                        # the hips: in shade
+                c = GL_D if cy == 3 or joint else SL_D
+                if cy == 0 and not joint:
+                    c = SL
+            else:
+                band = 0 if tt < 0.34 else (1 if tt < 0.7 else 2)
+                base, light, line = ((SL_L, WHITE if cy == 0 and (x + off) % 8 == 1 else SL_L, SL),
+                                     (SL, SL_L, SL_D),
+                                     (SL_D, SL, GL_D))[band]
+                c = line if cy == 3 or joint else (light if cy == 0 else base)
+            px[x, y] = c
+        if x0 + inset < x1 - inset:         # (the hips' edges against the front slope)
+            px[x0 + hip, y] = px[x0 + hip, y] if tt < 0.05 else GL_D
+            px[x1 - hip, y] = px[x1 - hip, y] if tt < 0.05 else GL_D
+    for x in range(x0 + hip, x1 - hip + 1):     # the ridge cap
+        px[x, y0] = ST
+        if y0 + 1 <= body:
+            px[x, y0 + 1] = ST_S
+    for x in range(x0, x1 + 1):
+        px[x, y1 - 2] = WHITE               # fascia
+        px[x, y1 - 1] = ST_D                # its underside
+        px[x, y1] = BR_D                    # the eave's shadow on the wall
 
 
 def plinth(px, x0, x1, y1):
@@ -195,88 +218,102 @@ def building(wb, hb, roof_h=2, storeys=2, door_col=None, door_style="double", wi
 
 
 def main_hall():
-    """The Academy's main hall: 13 x 9 blocks. Brick wings under a slate roof, a clock tower over a
-    white columned portico with a rose in its pediment, arched windows, the door at (6, 8)"""
-    wb, hb = 13, 9
+    """The Academy's main hall: 14 x 9 blocks, symmetrical about its middle (x 112). Brick wings under
+    a slate roof, a clock tower over a white columned portico with a rose in its pediment, arched
+    windows (the columns in front of them), wide double doors in blocks 6-7 of the bottom row"""
+    wb, hb = 14, 9
     W, H = wb * 16, hb * 16
+    cx = W // 2                             # 112
     img = new(W, H)
     px = img.load()
     roof_top, wall_top = 16, 48
     fill(px, 0, wall_top, W - 1, H - 1, brick_at)
-    roof(px, 0, roof_top, W - 1, wall_top + 2, hip=8)
+    roof(px, 0, roof_top, W - 1, wall_top + 2, hip=14)
     plinth(px, 0, W - 1, H - 1)
     # two storeys of arched windows in the wings
-    for c in list(range(0, 4)) + list(range(9, 13)):
+    for c in list(range(0, 4)) + list(range(10, 14)):
         window(px, c * 16, 54, 20)
         window(px, c * 16, 92, 24)
     for x in range(W):                      # string course
-        if not 64 <= x <= 143:
+        if not 60 <= x <= 163:
             px[x, 86] = ST
             px[x, 87] = ST_S
     for x in (0, W - 1):
         for y in range(wall_top + 2, H - 4):
             px[x, y] = ST if (y // 4) % 2 == 0 else ST_S
-    # the clock tower (blocks 5-7), from the top
-    tx0, tx1 = 80, 127
+    # the clock tower
+    tx0, tx1 = cx - 24, cx + 23
     fill(px, tx0 + 4, 14, tx1 - 4, 47, brick_at)
-    for y in range(0, 16):                  # pyramid cap
+    for x in (tx0 + 4, tx1 - 4):
+        for y in range(16, 48):
+            px[x, y] = ST if (y // 4) % 2 == 0 else ST_S
+    for y in range(0, 16):                  # pyramid cap, its right half in shade
         half = 4 + int((y / 15) * 20)
-        for x in range(104 - half, 104 + half):
-            px[x, y] = slate_at(x, y)
+        for x in range(cx - half, cx + half):
+            v = slate_at(x, y)
+            px[x, y] = v if x < cx else (SL_D if v != SL_D else GL_D)
     for y in range(0, 5):                   # gold finial
-        px[103, y] = GOLD
-        px[104, y] = GOLD
+        px[cx - 1, y] = GOLD
+        px[cx, y] = GOLD
     for x in range(tx0 + 2, tx1 - 1):       # cornice under the cap
         px[x, 15] = WHITE
-        px[x, 16] = ST_S
-    cx, cy, r = 103.5, 30, 9.5              # the clock
+        px[x, 16] = ST_D
+    ccx, ccy, r = cx - 0.5, 30, 9.5         # the clock
     for y in range(18, 43):
-        for x in range(90, 118):
-            d = math.hypot(x - cx, y - cy)
+        for x in range(cx - 14, cx + 14):
+            d = math.hypot(x - ccx, y - ccy)
             if d <= r:
                 px[x, y] = GOLD if d > r - 1.5 else WHITE
     for k in range(12):
         a = k * math.pi / 6
-        px[int(round(cx + math.cos(a) * 6.5)), int(round(cy + math.sin(a) * 6.5))] = OUT
-    for t in range(5):                      # hands: ten past two
-        px[int(round(cx + t * 0.9)), int(round(cy - t * 1.0))] = OUT
-        px[int(round(cx + t * 1.2)), int(round(cy + 0.2 * t))] = OUT
-    # the portico: pediment (blocks 4-8) and white columns
-    px0, px1 = 64, 143
+        px[int(round(ccx + math.cos(a) * 6.5)), int(round(ccy + math.sin(a) * 6.5))] = OUT
+    for s in range(5):                      # hands: ten past two
+        px[int(round(ccx + s * 0.9)), int(round(ccy - s * 1.0))] = OUT
+        px[int(round(ccx + s * 1.2)), int(round(ccy + 0.2 * s))] = OUT
+    # the portico (x 60-163): pediment, entablature, the shade behind the columns
+    px0, px1 = cx - 52, cx + 51
     for y in range(44, 64):
-        half = int((y - 44) / 19 * 40)
-        for x in range(104 - half, 104 + half):
+        half = int((y - 44) / 19 * 52)
+        for x in range(cx - half, cx + half):
             if px0 <= x <= px1:
-                px[x, y] = WHITE if (y - 44) < 2 or abs(x - 104) >= half - 2 else ST
-    for y in range(64, 68):                 # entablature
+                px[x, y] = WHITE if (y - 44) < 2 or abs(x - cx + 0.5) >= half - 2 else ST
+    for y in range(64, 68):
         for x in range(px0, px1 + 1):
             px[x, y] = WHITE if y < 66 else ST_S
-    rose(px, 104, 56)
-    for x in range(px0, px1 + 1):           # the portico's shade behind the columns
+    rose(px, cx, 56)
+    for x in range(px0, px1 + 1):
         for y in range(68, H - 4):
             if px[x, y] in (BR, BR_L, BR_D, ST_S):
                 px[x, y] = BR_D if brick_at(x, y) != ST_S else ST_D
-    for c in (68, 84, 120, 136):            # columns
+    # tall windows in the portico, between where the columns go (drawn first: the columns are in front)
+    for wcx in (cx - 32, cx + 32):
+        window(px, wcx - 8, 76, 44)
+    # the doorway: two blocks wide and two tall, a fanlight in its arch, double doors
+    dx0, dx1 = cx - 16, cx + 15
+    for y in range(102, 128):
+        for x in range(dx0, dx1 + 1):
+            d = math.hypot(x - cx + 0.5, max(0, 118 - y))
+            if d <= 16:
+                if d > 14 or x in (dx0, dx1):
+                    px[x, y] = ST
+                elif y < 117:
+                    px[x, y] = GL_L if (x < cx and (x + y) % 5) else GL_D
+                    if x in (cx - 1, cx) or (y - 102) % 6 == 0:
+                        px[x, y] = WHITE
+                else:
+                    px[x, y] = WOOD
+    for x in range(dx0 + 2, dx1 - 1):
+        px[x, 117] = WHITE
+    door(px, dx0, 128, double=False)
+    door(px, dx0 + 16, 128, double=False)
+    for y in range(117, 144):               # the two doors: one frame, a seam down the middle
+        px[dx0, y] = ST
+        px[dx1, y] = ST
+        px[cx - 1, y] = OUT
+        px[cx, y] = OUT
+    for c in (cx - 46, cx - 23, cx + 17, cx + 40):      # columns (symmetrical: 6 px wide each)
         column(px, c, 68, H - 5)
-    # tall windows between the columns; the doorway: two blocks tall, a fanlight in its arch
-    for c in (5, 7):
-        window(px, c * 16, 76, 44)
-    for y in range(106, 128):
-        for x in range(96, 112):
-            d = math.hypot(x - 103.5, max(0, 114 - y))
-            if d <= 8:
-                px[x, y] = ST if d > 6.5 or x in (96, 111) else (WOOD if y >= 115 else (GL_L if x < 104 else GL_D))
-        if y >= 115:
-            px[103, y] = OUT
-            px[104, y] = OUT
-    for x in range(98, 110):
-        px[x, 114] = WHITE
-    door(px, 96, 128)
-    for y in range(128, 144):               # (the door's frame continues the arch's)
-        px[96, y] = ST
-        px[111, y] = ST
-    # steps
-    for x in range(92, 116):
+    for x in range(dx0 - 4, dx1 + 5):       # steps
         px[x, H - 2] = ST
         px[x, H - 1] = ST_D
     return outline(img)

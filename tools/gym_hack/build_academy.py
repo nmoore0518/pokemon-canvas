@@ -58,7 +58,7 @@ EDGE_L = {"A": 0x0016, "B": 0x001E, "first": 0x001E, "bottom": 0x0026}
 EDGE_R = {"A": 0x0017, "B": 0x001F, "first": 0x001F, "bottom": 0x0027}
 
 # Where everything is. Buildings: (x, y) of the top-left block
-HALL_AT = (14, 4)           # 13 x 9: its door at (20, 12)
+HALL_AT = (14, 4)           # 14 x 9: its doors at (20, 12) and (21, 12), in line with the path
 CENTER = {"src": (22, 34, 26, 38), "door": (2, 4), "at": (6, 19)}      # Saffron's Pokémon Center
 SUPPLY = {"src": (38, 18, 41, 21), "door": (2, 3), "at": (7, 29)}      # Saffron's mart
 BATTLE_AT = (30, 19)        # 7 x 5: door at (33, 23)
@@ -67,12 +67,12 @@ DORMS = ((5, 5), (33, 5))   # 6 x 5
 STATUE_AT = (20, 15)        # 2 x 3
 LAMPS = ((18, 20), (23, 20), (18, 27), (23, 27), (16, 13), (25, 13))
 BENCHES = ((16, 21), (24, 21), (16, 30), (24, 30))
-ROSE_BEDS = [(x, 13) for x in (17, 18, 22, 23)] + [(x, y) for x in (16, 17, 24, 25) for y in (16, 17)]
-TREES = ((12, 18), (27, 18), (12, 27), (27, 27), (13, 30), (26, 30), (5, 13), (35, 13))
+ROSE_BEDS = [(x, 13) for x in (17, 18, 23, 24)] + [(x, y) for x in (16, 17, 24, 25) for y in (16, 17)]
+TREES = ((12, 18), (28, 18), (12, 27), (28, 27), (13, 30), (27, 30), (5, 13), (35, 13))
 FLOWER_PATCHES = ((12, 14, 13, 15), (28, 14, 29, 15), (5, 11, 10, 11), (33, 11, 38, 11),
-                  (13, 35, 18, 35), (24, 35, 29, 35), (5, 27, 6, 28), (37, 27, 38, 28))
+                  (15, 32, 18, 32), (23, 32, 26, 32), (5, 27, 6, 28), (37, 27, 38, 28))
 SIGNS = {"hall": (19, 13), "center": (11, 23), "supply": (11, 32),
-         "battle": (29, 23), "exchange": (30, 32), "gate": (22, 35)}
+         "battle": (29, 23), "exchange": (30, 32), "gate": (22, 32)}     # (the gate's: where the path meets the lower walk)
 
 
 def build_campus():
@@ -141,16 +141,18 @@ def build_campus():
     doors = {}
 
     def stamp(img, at, door=None, ground=None, behind_rows=0):
-        door_block = (door[0] - at[0], door[1] - at[1]) if door else None
-        beh = {door_block: "MB_NON_ANIMATED_DOOR"} if door else None
+        door = [] if door is None else (door if isinstance(door, list) else [door])
+        door_blocks = [(d[0] - at[0], d[1] - at[1]) for d in door]
+        beh = {b: "MB_NON_ANIMATED_DOOR" for b in door_blocks}
         grid = c.art(img, brick, ground=ground or GRASS[0][0], behind_rows=behind_rows, behavior=beh)
         for by, row in enumerate(grid):
             for bx, m in enumerate(row):
-                walk = door_block == (bx, by)
+                walk = (bx, by) in door_blocks
                 put(at[0] + bx, at[1] + by, m, 0 if walk else 1)
 
-    stamp(art.main_hall(), HALL_AT, door=(HALL_AT[0] + 6, HALL_AT[1] + 8))
+    stamp(art.main_hall(), HALL_AT, door=[(HALL_AT[0] + 6, HALL_AT[1] + 8), (HALL_AT[0] + 7, HALL_AT[1] + 8)])
     doors["hall"] = (HALL_AT[0] + 6, HALL_AT[1] + 8)
+    doors["hall2"] = (HALL_AT[0] + 7, HALL_AT[1] + 8)
     stamp(art.battle_hall(), BATTLE_AT, door=(BATTLE_AT[0] + 3, BATTLE_AT[1] + 4))
     doors["battle"] = (BATTLE_AT[0] + 3, BATTLE_AT[1] + 4)
     stamp(art.exchange(), EXCHANGE_AT, door=(EXCHANGE_AT[0] + 2, EXCHANGE_AT[1] + 3))
@@ -166,6 +168,8 @@ def build_campus():
         for dy in range(sy1 - sy0 + 1):
             for dx in range(sx1 - sx0 + 1):
                 v = SAFFRON[sy0 + dy][sx0 + dx]
+                if not (v >> 10) & 3 and (dx, dy) != b["door"]:       # (Saffron's pavement round it: lawn)
+                    continue
                 g[ay + dy][ax + dx] = c.copy(SAFFRON_SYM, v & 0x3FF) | (v & 0xFC00)
         doors[name] = (ax + b["door"][0], ay + b["door"][1])
 
@@ -363,6 +367,7 @@ def write_campus(g, doors):
                  border=[[0x0414, 0x0415], [0x041C, 0x041D]])
     order = list(MAPS)
     warps = [warp(*doors[MAPS[m][3]], mid(m), 0) for m in order]
+    warps.append(warp(*doors["hall2"], mid("LeaderAcademy_Hall"), 1))     # (warp 5: the hall's right door)
     objects = [lobj("LOCALID_ACADEMY_" + p[0], p[1], p[2], p[3], p[4], p[5], p[6], 2 if "WANDER" in p[5] else 1)
                for p in CAMPUS_PEOPLE]
     bgs = [sign(x, y, SIGN_SCRIPTS[k]) for k, (x, y) in SIGNS.items()]
