@@ -1,5 +1,6 @@
 #include "global.h"
 #include "mastery_hall.h"
+#include "archive.h"
 #include "pokemon_storage_system.h"
 #include "agb_flash.h"
 #include "gba/flash_internal.h"
@@ -88,7 +89,7 @@ STATIC_ASSERT(sizeof(struct SaveBlock1) <= SECTOR_DATA_SIZE * (SECTOR_ID_SAVEBLO
 #define STORAGE_EXTRA_SIZE   (sizeof(struct PokemonStorage) - STORAGE_IN_SLOT_SIZE)
 STATIC_ASSERT(sizeof(struct PokemonStorage) > STORAGE_IN_SLOT_SIZE, PokemonStorageExtraSector);
 STATIC_ASSERT(STORAGE_EXTRA_SIZE <= SECTOR_DATA_SIZE, PokemonStorageFreeSpace);
-STATIC_ASSERT(sizeof(struct MasteryHall) <= SECTOR_DATA_SIZE, MasteryHallFreeSpace);
+STATIC_ASSERT(sizeof(struct ExtraSaveData) <= SECTOR_DATA_SIZE, MasteryHallFreeSpace);
 
 COMMON_DATA u16 gLastWrittenSector = 0;
 COMMON_DATA u32 gLastSaveCounter = 0;
@@ -723,7 +724,7 @@ static void UpdateSaveAddresses(void)
 static void SaveExtraSectors(void)
 {
     HandleWriteSectorNBytes(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE);
-    HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall));
+    HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave));
 }
 
 // ...and read back after a load. A save from before them: its PC is rearranged (the boxes come last
@@ -733,15 +734,23 @@ static void LoadExtraSectors(u8 status)
     if (status == SAVE_STATUS_EMPTY)     // (SAVE_STATUS_ERROR: one slot's bad, the other loaded)
     {
         MasteryHall_Clear();
+        Archive_Clear();
         return;
     }
     if (gPokemonStoragePtr->layout != STORAGE_LAYOUT_BOXES_LAST)
         PokemonStorage_UpgradeLayout();
     else if (TryLoadSaveSector(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE) != SAVE_STATUS_OK)
         memset((u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, 0, STORAGE_EXTRA_SIZE);
-    if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall)) != SAVE_STATUS_OK)
-        MasteryHall_Clear();
+    // (sector 30: the Type Mastery Hall of Fame and BILL'S ARCHIVE - or, from before the archive,
+    // the Hall alone)
+    if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave)) != SAVE_STATUS_OK)
+    {
+        Archive_Clear();
+        if (TryLoadSaveSector(SECTOR_ID_MASTERY_HALL, (u8 *)&gMasteryHall, sizeof(gMasteryHall)) != SAVE_STATUS_OK)
+            MasteryHall_Clear();
+    }
     MasteryHall_Validate();
+    Archive_Validate();
 }
 
 u8 HandleSavingData(u8 saveType)

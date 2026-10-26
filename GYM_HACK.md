@@ -981,7 +981,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          waits. Win and he fades away, leaving his Palm Pilot (GAUNTLET_SIMULATOR):
          - WITHDRAW (VAR_GAUNTLET_WITHDRAWS 0x40F4, one per finished run): any Pokémon, shiny, level
            70 - a list of all 1392 species and forms one could keep (`build_withdraw.py` ->
-           src/data/gauntlet_withdraw.h: National Dex order; L/R a page, START the next
+           src/data/dex_forms.h: National Dex order; L/R a page, START the next
            generation) with the shiny picture beside it (`Gauntlet_ChooseWithdraw`);
          - the battle simulator: the whole Gauntlet again from the first challenger, with Bill as
            the 84th; clearing it earns another WITHDRAW. Records: this run's progress by region.
@@ -998,6 +998,19 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            record, the party replaces it). "TYPE MASTERY" on the PC's menu (and the Palm Pilot's)
            once there's one; shown in the Hall of Fame's screen, titled "<TYPE> · STREAK <n>".
            The Elite Four's Hall of Fame (sectors 28-29) is untouched.
+   - [x] BILL'S ARCHIVE, the living dex (v77; src/archive.c). A slot for every species and form one
+         could keep (src/data/dex_forms.h, 1392, the same list as Bill's WITHDRAW). ARCHIVE in the PC's
+         box menu sends a Pokémon there for good (released, but its slot - and whether it was shiny -
+         is kept; a full slot turns it away; the same "can't release" rules). Taking one out gives a
+         new one at level 5 (random IVs and nature, one of its usual abilities, shiny if the stored
+         one was) and empties the slot: never more than one of anything. The screen ("BILL'S
+         ARCHIVE" on the PC's menu once Bill's been met, and the Palm Pilot's) is laid out like a
+         box: 30 icons a page in dex order - stored or owned in color (a ball if it's in a box or
+         the party), not owned as a silhouette, a star on stored shinies - with the one under the
+         cursor's picture, name, number and where it is on the left, and how much of the dex is owned
+         (stored, boxed or in the party). L/R a page, START the next generation, A take out. Kept by
+         species number (two bits each, `struct ArchiveData`) after the Type Mastery Hall of Fame in
+         flash sector 30 (`gExtraSave`).
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more
          closely (`moves_from`): elevation (a step only to the same height, or by stairs/ladders at
          0, or bridges at 15; surfing on and off at 3) and ice (sliding on until something stops

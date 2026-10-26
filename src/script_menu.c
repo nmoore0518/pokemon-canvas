@@ -491,7 +491,7 @@ static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreB
 #define tIgnoreBPress   data[4]
 #define tDoWrap         data[5]
 #define tWindowId       data[6]
-static EWRAM_DATA u8 sPCMenuIds[5] = {0};   // (Gym Trainer hack: CreatePCMultichoice)
+static EWRAM_DATA u8 sPCMenuIds[6] = {0};   // (Gym Trainer hack: CreatePCMultichoice)
 
 #define tMultichoiceId  data[7]
 
@@ -744,45 +744,31 @@ bool16 ScriptMenu_CreatePCMultichoice(void)
 
 // Gym Trainer hack: the PC's menu can have TYPE MASTERY too (src/mastery_hall.c); what's chosen is
 // given as the same number whatever's shown (sPCMenuIds: 0 storage, 1 player's PC, 2 Hall of
-// Fame, 3 log off, 4 Type Mastery)
+// Fame, 3 log off, 4 Type Mastery, 5 BILL'S ARCHIVE)
 static void CreatePCMultichoice(void)
 {
     u8 x = 8;
     u32 pixelWidth = 0;
     u8 width;
-    u8 numChoices = 2;
+    u8 numChoices;
     u8 windowId;
     int i;
-    bool32 hof = FlagGet(FLAG_SYS_GAME_CLEAR), mastery = MasteryHall_Count() != 0;
+    bool32 archive = FlagGet(FLAG_SYS_PC_LANETTE), hof = FlagGet(FLAG_SYS_GAME_CLEAR), mastery = MasteryHall_Count() != 0;
+    const u8 *const archiveText = COMPOUND_STRING("BILL'S ARCHIVE"), *const masteryText = COMPOUND_STRING("TYPE MASTERY");
 
     for (i = 0; i < ARRAY_COUNT(sPCNameStrings); i++)
-    {
         pixelWidth = DisplayTextAndGetWidth(sPCNameStrings[i], pixelWidth);
-    }
+    if (archive)
+        pixelWidth = DisplayTextAndGetWidth(archiveText, pixelWidth);
     if (hof)
         pixelWidth = DisplayTextAndGetWidth(gText_HallOfFame, pixelWidth);
     if (mastery)
-        pixelWidth = DisplayTextAndGetWidth(COMPOUND_STRING("TYPE MASTERY"), pixelWidth);
+        pixelWidth = DisplayTextAndGetWidth(masteryText, pixelWidth);
 
     width = ConvertPixelWidthToTileWidth(pixelWidth);
-    sPCMenuIds[0] = 0;
-    sPCMenuIds[1] = 1;
-    numChoices = 2 + hof + mastery + 1;
+    numChoices = 3 + archive + hof + mastery;
     windowId = CreateWindowFromRect(0, 0, width, numChoices * 2);
     SetStandardWindowBorderStyle(windowId, FALSE);
-    i = 2;
-    if (hof)
-    {
-        AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_HallOfFame, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
-        sPCMenuIds[i++] = 2;
-    }
-    if (mastery)
-    {
-        AddTextPrinterParameterized(windowId, FONT_NORMAL, COMPOUND_STRING("TYPE MASTERY"), x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
-        sPCMenuIds[i++] = 4;
-    }
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_LogOff, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
-    sPCMenuIds[i++] = 3;
 
     // Change PC name if player has met Lanette
     if (FlagGet(FLAG_SYS_PC_LANETTE))
@@ -796,9 +782,29 @@ static void CreatePCMultichoice(void)
     {
         AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_SomeonesPC, x, 1, TEXT_SKIP_DRAW, NULL);
     }
-
+    sPCMenuIds[0] = 0;
+    i = 1;
+    if (archive)
+    {
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, archiveText, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+        sPCMenuIds[i++] = 5;
+    }
     StringExpandPlaceholders(gStringVar4, gText_PlayersPC);
-    PrintPlayerNameOnWindow(windowId, gStringVar4, x, 17);
+    PrintPlayerNameOnWindow(windowId, gStringVar4, x, 1 + 16 * i);
+    sPCMenuIds[i++] = 1;
+    if (hof)
+    {
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_HallOfFame, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+        sPCMenuIds[i++] = 2;
+    }
+    if (mastery)
+    {
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, masteryText, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+        sPCMenuIds[i++] = 4;
+    }
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_LogOff, x, 1 + 16 * i, TEXT_SKIP_DRAW, NULL);
+    sPCMenuIds[i++] = 3;
+
     InitMenuInUpperLeftCornerNormal(windowId, numChoices, 0);
     CopyWindowToVram(windowId, COPYWIN_FULL);
     InitMultichoiceCheckWrap(FALSE, numChoices, windowId, MULTI_PC);

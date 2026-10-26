@@ -12,7 +12,7 @@
 
 #define MASTERY_HALL_MAGIC 0x4D484631    // "MHF1"
 
-EWRAM_DATA struct MasteryHall gMasteryHall = {0};
+EWRAM_DATA struct ExtraSaveData gExtraSave = {0};
 
 void MasteryHall_Clear(void)
 {

@@ -15,6 +15,7 @@ EventScript_PalmPilotMenu::
 	case 1, EventScript_PalmPilotPlayersPC
 	case 2, EventScript_PalmPilotHallOfFame
 	case 4, EventScript_PalmPilotMasteryHall
+	case 5, EventScript_PalmPilotArchive
 	goto EventScript_PalmPilotOff
 	end
 
@@ -33,6 +34,11 @@ EventScript_PalmPilotPlayersPC::
 	special PlayerPC
 	goto EventScript_PalmPilotMenu
 	end
+
+EventScript_PalmPilotArchive::
+	playse SE_PC_LOGIN
+	special AccessArchivePC
+	goto EventScript_PalmPilotMenu
 
 EventScript_PalmPilotMasteryHall::
 	playse SE_PC_LOGIN

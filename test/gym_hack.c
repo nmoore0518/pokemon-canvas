@@ -8,6 +8,7 @@
 #include "gym_hack.h"
 #include "gauntlet.h"
 #include "mastery_hall.h"
+#include "archive.h"
 #include "constants/event_objects.h"
 #include "constants/pokedex.h"
 #include "exotic_safari.h"
@@ -2342,4 +2343,17 @@ TEST("GymHack: the Type Mastery Hall of Fame keeps a type's longest streak and i
     EXPECT_EQ(gMasteryHall.records[TYPE_FIRE].streak, 21);
     EXPECT_EQ((u32)gMasteryHall.records[TYPE_FIRE].mon[0].species, SPECIES_VULPIX);
     EXPECT_EQ(MasteryHall_Count(), 1);
+}
+
+TEST("GymHack: BILL'S ARCHIVE keeps one of each, and only what has a slot")
+{
+    Archive_Clear();
+    EXPECT(Archive_IsSlot(SPECIES_PIKACHU));
+    EXPECT(Archive_IsSlot(SPECIES_VULPIX_ALOLA));
+    EXPECT(!Archive_IsSlot(SPECIES_CLEFABILL));
+    EXPECT(!Archive_IsSlot(SPECIES_CHARIZARD_MEGA_X));
+    EXPECT(!Archive_Has(SPECIES_MEWTWO));
+    Archive_Store(SPECIES_MEWTWO, TRUE);
+    EXPECT(Archive_Has(SPECIES_MEWTWO));
+    EXPECT(!Archive_Has(SPECIES_MEW));
 }

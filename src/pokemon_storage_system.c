@@ -1,4 +1,5 @@
 #include "global.h"
+#include "archive.h"
 #include "malloc.h"
 #include "bg.h"
 #include "data.h"
@@ -109,6 +110,11 @@ enum {
     MSG_ITEM_IS_HELD,
     MSG_CHANGED_TO_ITEM,
     MSG_CANT_STORE_MAIL,
+    MSG_ARCHIVE_POKE,       // (Gym Trainer hack: BILL'S ARCHIVE)
+    MSG_WAS_ARCHIVED,
+    MSG_ARCHIVE_HAS_ONE,
+    MSG_CANT_ARCHIVE,
+    MSG_CANT_ARCHIVE_EGG,
 };
 
 // IDs for how to resolve variables in the above messages
@@ -122,6 +128,9 @@ enum {
     MSG_VAR_RELEASE_MON_3,
     MSG_VAR_ITEM_NAME,
 };
+
+// Gym Trainer hack: releasing for BILL'S ARCHIVE (src/archive.c) rather than for good
+static EWRAM_DATA bool8 sArchiving = FALSE;
 
 // IDs for menu selection items. See SetMenuText, HandleMenuInput, etc
 enum {
@@ -165,6 +174,7 @@ enum {
     MENU_MACHINE,
     MENU_SIMPLE,
     MENU_SELECT,
+    MENU_ARCHIVE,   // Gym Trainer hack: BILL'S ARCHIVE (src/archive.c)
 };
 #define MENU_WALLPAPER_SETS_START MENU_SCENERY_1
 #define MENU_WALLPAPERS_START MENU_FOREST
@@ -1079,6 +1089,11 @@ static const struct StorageMessage sMessages[] =
     [MSG_ITEM_IS_HELD]         = {COMPOUND_STRING("{DYNAMIC 0} is now held."),   MSG_VAR_ITEM_NAME},
     [MSG_CHANGED_TO_ITEM]      = {COMPOUND_STRING("Changed to {DYNAMIC 0}."),    MSG_VAR_ITEM_NAME},
     [MSG_CANT_STORE_MAIL]      = {COMPOUND_STRING("MAIL can't be stored!"),      MSG_VAR_NONE},
+    [MSG_ARCHIVE_POKE]         = {COMPOUND_STRING("Send it to BILL'S ARCHIVE?"), MSG_VAR_NONE},
+    [MSG_WAS_ARCHIVED]         = {COMPOUND_STRING("{DYNAMIC 0} was ARCHIVED."),  MSG_VAR_RELEASE_MON_1},
+    [MSG_ARCHIVE_HAS_ONE]      = {COMPOUND_STRING("BILL'S ARCHIVE has one."),    MSG_VAR_NONE},
+    [MSG_CANT_ARCHIVE]         = {COMPOUND_STRING("{DYNAMIC 0} has to stay."),   MSG_VAR_RELEASE_MON_1},
+    [MSG_CANT_ARCHIVE_EGG]     = {COMPOUND_STRING("An EGG can't be ARCHIVED."),  MSG_VAR_NONE},
 };
 
 static const struct WindowTemplate sYesNoWindowTemplate =
@@ -2681,6 +2696,23 @@ static void Task_OnSelectedMon(u8 taskId)
             else
             {
                 PlaySE(SE_SELECT);
+                sArchiving = FALSE;
+                SetPokeStorageTask(Task_ReleaseMon);
+            }
+            break;
+        case MENU_ARCHIVE:  // (Gym Trainer hack: like releasing it, but its slot in BILL'S ARCHIVE is filled)
+            if (IsRemovingLastPartyMon())
+                sStorage->state = 3;
+            else if (sStorage->displayMonIsEgg)
+                sStorage->state = 7;
+            else if (ItemIsMail(sStorage->displayMonItemId))
+                sStorage->state = 4;
+            else if (!Archive_IsSlot(sStorage->displayMonSpecies) || Archive_Has(sStorage->displayMonSpecies))
+                sStorage->state = 8;
+            else
+            {
+                PlaySE(SE_SELECT);
+                sArchiving = TRUE;
                 SetPokeStorageTask(Task_ReleaseMon);
             }
             break;
@@ -2749,6 +2781,16 @@ static void Task_OnSelectedMon(u8 taskId)
     case 4:
         PlaySE(SE_FAILURE);
         PrintMessage(MSG_PLEASE_REMOVE_MAIL);
+        sStorage->state = 6;
+        break;
+    case 7:
+        PlaySE(SE_FAILURE);
+        PrintMessage(MSG_CANT_ARCHIVE_EGG);
+        sStorage->state = 6;
+        break;
+    case 8:
+        PlaySE(SE_FAILURE);
+        PrintMessage(MSG_ARCHIVE_HAS_ONE);
         sStorage->state = 6;
         break;
     case 6:
@@ -2941,7 +2983,7 @@ static void Task_ReleaseMon(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        PrintMessage(MSG_RELEASE_POKE);
+        PrintMessage(sArchiving ? MSG_ARCHIVE_POKE : MSG_RELEASE_POKE);
         ShowYesNoWindow(1);
         sStorage->state++;
         // fallthrough
@@ -2982,10 +3024,12 @@ static void Task_ReleaseMon(u8 taskId)
         }
         break;
     case 3:
+        if (sArchiving)
+            Archive_Store(GetMonData(&sStorage->tempMon, MON_DATA_SPECIES), GetMonData(&sStorage->tempMon, MON_DATA_IS_SHINY));
         ReleaseMon();
         RefreshDisplayMonData();
-        PrintMessage(MSG_WAS_RELEASED);
-        sStorage->state++;
+        PrintMessage(sArchiving ? MSG_WAS_ARCHIVED : MSG_WAS_RELEASED);
+        sStorage->state = sArchiving ? 5 : 4;   // (no "Bye-bye" for the archive)
         break;
     case 4:
         if (JOY_NEW(A_BUTTON | B_BUTTON | DPAD_ANY))
@@ -3024,6 +3068,12 @@ static void Task_ReleaseMon(u8 taskId)
         break;
     case 8:
         // Start "can't release" sequence
+        if (sArchiving)     // (archiving: just "it has to stay", and it comes back)
+        {
+            PrintMessage(MSG_CANT_ARCHIVE);
+            sStorage->state = 10;
+            break;
+        }
         PrintMessage(MSG_WAS_RELEASED);
         sStorage->state++;
         break;
@@ -3046,6 +3096,11 @@ static void Task_ReleaseMon(u8 taskId)
         if (!ResetReleaseMonSpritePtr())
         {
             TrySetCursorFistAnim();
+            if (sArchiving)
+            {
+                SetPokeStorageTask(Task_PokeStorageMain);
+                break;
+            }
             PrintMessage(MSG_CAME_BACK);
             sStorage->state++;
         }
@@ -7842,7 +7897,10 @@ static bool8 SetMenuTexts_Mon(void)
 
     SetMenuText(MENU_MARK);
     if (sStorage->boxOption != OPTION_SELECT_MON)
+    {
         SetMenuText(MENU_RELEASE);
+        SetMenuText(MENU_ARCHIVE);
+    }
     SetMenuText(MENU_CANCEL);
     return TRUE;
 }
@@ -8138,6 +8196,7 @@ static const u8 *const sMenuTexts[] =
     [MENU_MACHINE]    = COMPOUND_STRING("MACHINE"),
     [MENU_SIMPLE]     = COMPOUND_STRING("SIMPLE"),
     [MENU_SELECT]     = COMPOUND_STRING("SELECT"),
+    [MENU_ARCHIVE]    = COMPOUND_STRING("ARCHIVE"),
 };
 
 static void SetMenuText(u8 textId)

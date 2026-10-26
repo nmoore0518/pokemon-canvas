@@ -1,5 +1,6 @@
 #include "global.h"
 #include "mastery_hall.h"
+#include "archive.h"
 #include "clock.h"
 #include "new_game.h"
 #include "gym_decor.h"
@@ -202,6 +203,7 @@ void NewGameInitData(void)
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     MasteryHall_Clear();   // Gym Trainer hack
+    Archive_Clear();
     DeactivateAllRoamers();
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     ClearBag();

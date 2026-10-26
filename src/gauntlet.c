@@ -15,6 +15,7 @@
 // battle simulator runs the whole Gauntlet again (Bill last) for another.
 #include "global.h"
 #include "gauntlet.h"
+#include "dex_forms.h"
 #include "data.h"
 #include "event_data.h"
 #include "gym_challenge.h"
@@ -69,7 +70,6 @@ struct GauntletTrainer
 };
 
 #include "data/gauntlet.h"
-#include "data/gauntlet_withdraw.h"
 
 u8 CreateMonSprite_FieldMove(enum Species species, bool8 isShiny, u32 personality, s16 x, s16 y, u8 subpriority);
 
@@ -249,7 +249,7 @@ bool32 Gauntlet_IsBillBattle(void)
 
 // ---- WITHDRAW: any Pokémon, shiny (Bill's Palm Pilot) ----
 // Special (then waitstate): VAR_RESULT = the species chosen, or SPECIES_NONE (B). A list of every
-// Pokémon (src/data/gauntlet_withdraw.h, National Dex order; L/R a page, START the next generation)
+// Pokémon (src/data/dex_forms.h, National Dex order; L/R a page, START the next generation)
 // and the shiny picture of the one under the cursor.
 #define WD_SHOWN 6
 #define WD_PIC_X 19
@@ -257,7 +257,7 @@ bool32 Gauntlet_IsBillBattle(void)
 
 struct Withdraw
 {
-    struct ListMenuItem items[WITHDRAW_COUNT];
+    struct ListMenuItem items[DEX_FORM_COUNT];
     u16 scroll, row;
     u8 listWindow, picWindow, listTask, spriteId, arrows;
 };
@@ -271,7 +271,7 @@ static void Withdraw_ShowPic(u32 index)
     struct Withdraw *w = sWithdraw;
     if (w->spriteId != MAX_SPRITES)
         FreeResourcesAndDestroySprite(&gSprites[w->spriteId], w->spriteId);
-    w->spriteId = CreateMonSprite_FieldMove(sWithdrawSpecies[index], TRUE, 0, WD_PIC_X * 8 + 40, WD_PIC_Y * 8 + 40, 0);
+    w->spriteId = CreateMonSprite_FieldMove(gDexFormSpecies[index], TRUE, 0, WD_PIC_X * 8 + 40, WD_PIC_Y * 8 + 40, 0);
     if (w->spriteId != MAX_SPRITES)
     {
         gSprites[w->spriteId].callback = SpriteCallbackDummy;
@@ -289,7 +289,7 @@ static void Withdraw_MoveCursor(s32 index, bool8 onInit, struct ListMenu *list)
 static const struct ListMenuTemplate sWithdrawListTemplate =
 {
     .moveCursorFunc = Withdraw_MoveCursor,
-    .totalItems = WITHDRAW_COUNT,
+    .totalItems = DEX_FORM_COUNT,
     .maxShowed = WD_SHOWN,
     .item_X = 8,
     .upText_Y = 1,
@@ -307,7 +307,7 @@ static void Withdraw_StartList(u32 scroll, u32 row)
     struct ScrollArrowsTemplate arrows = {
         .firstArrowType = SCROLL_ARROW_UP, .firstX = 8 * 9, .firstY = 6,
         .secondArrowType = SCROLL_ARROW_DOWN, .secondX = 8 * 9, .secondY = 8 * (2 + 2 * WD_SHOWN) + 4,
-        .fullyUpThreshold = 0, .fullyDownThreshold = WITHDRAW_COUNT - WD_SHOWN,
+        .fullyUpThreshold = 0, .fullyDownThreshold = DEX_FORM_COUNT - WD_SHOWN,
         .tileTag = 2000, .palTag = 100, .palNum = 0,
     };
     gMultiuseListMenuTemplate = sWithdrawListTemplate;
@@ -333,16 +333,16 @@ static void Task_Withdraw(u8 taskId)
     {
         // the next generation (from the last, back to the first)
         u32 at = w->scroll + w->row, i, to = 0;
-        for (i = 0; i < ARRAY_COUNT(sWithdrawGenStarts); i++)
+        for (i = 0; i < ARRAY_COUNT(gDexFormGenStarts); i++)
         {
-            if (sWithdrawGenStarts[i] > at)
+            if (gDexFormGenStarts[i] > at)
             {
-                to = sWithdrawGenStarts[i];
+                to = gDexFormGenStarts[i];
                 break;
             }
         }
-        if (to > WITHDRAW_COUNT - WD_SHOWN)
-            to = WITHDRAW_COUNT - WD_SHOWN;
+        if (to > DEX_FORM_COUNT - WD_SHOWN)
+            to = DEX_FORM_COUNT - WD_SHOWN;
         PlaySE(SE_SELECT);
         Withdraw_StopList();
         Withdraw_StartList(to, 0);
@@ -352,7 +352,7 @@ static void Task_Withdraw(u8 taskId)
     ListMenuGetScrollAndRow(w->listTask, &w->scroll, &w->row);
     if (input == LIST_NOTHING_CHOSEN || input == LIST_HEADER)
         return;
-    gSpecialVar_Result = input == LIST_CANCEL ? SPECIES_NONE : sWithdrawSpecies[input];
+    gSpecialVar_Result = input == LIST_CANCEL ? SPECIES_NONE : gDexFormSpecies[input];
     PlaySE(SE_SELECT);
     Withdraw_StopList();
     if (w->spriteId != MAX_SPRITES)
@@ -375,9 +375,9 @@ void Gauntlet_ChooseWithdraw(void)
                                  .paletteNum = 15, .baseBlock = 0x008 + 15 * 2 * WD_SHOWN};
     u32 i;
     sWithdraw = w = AllocZeroed(sizeof(*w));
-    for (i = 0; i < WITHDRAW_COUNT; i++)
+    for (i = 0; i < DEX_FORM_COUNT; i++)
     {
-        w->items[i].name = sWithdrawLabels[i] ? sWithdrawLabels[i] : GetSpeciesName(sWithdrawSpecies[i]);
+        w->items[i].name = gDexFormLabels[i] ? gDexFormLabels[i] : GetSpeciesName(gDexFormSpecies[i]);
         w->items[i].id = i;
     }
     w->spriteId = MAX_SPRITES;
@@ -390,7 +390,7 @@ void Gauntlet_ChooseWithdraw(void)
     PutWindowTilemap(w->picWindow);
     FillWindowPixelBuffer(w->picWindow, PIXEL_FILL(1));
     CopyWindowToVram(w->picWindow, COPYWIN_FULL);
-    if (sWithdrawLastScroll + sWithdrawLastRow >= WITHDRAW_COUNT)
+    if (sWithdrawLastScroll + sWithdrawLastRow >= DEX_FORM_COUNT)
         sWithdrawLastScroll = sWithdrawLastRow = 0;
     Withdraw_StartList(sWithdrawLastScroll, sWithdrawLastRow);
     CopyWindowToVram(w->listWindow, COPYWIN_FULL);

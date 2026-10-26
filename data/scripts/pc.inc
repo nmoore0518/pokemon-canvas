@@ -21,7 +21,15 @@ EventScript_AccessPC::
 	case 2, EventScript_AccessHallOfFame
 	case 3, EventScript_TurnOffPC
 	case 4, EventScript_AccessMasteryHall
+	case 5, EventScript_AccessArchive
 	case MULTI_B_PRESSED, EventScript_TurnOffPC
+	end
+
+@ Gym Trainer hack: BILL'S ARCHIVE, the living dex (src/archive.c)
+EventScript_AccessArchive::
+	playse SE_PC_LOGIN
+	special AccessArchivePC
+	goto EventScript_AccessPC
 	end
 
 @ Gym Trainer hack: the Type Mastery Hall of Fame (src/mastery_hall.c)

@@ -694,6 +694,7 @@ gSpecials::
 	def_special Gauntlet_ChooseWithdraw
 	def_special Gauntlet_UseWithdraw
 	def_special AccessMasteryHallPC, waitstate=1
+	def_special AccessArchivePC, waitstate=1
 	def_special Convention_PushHalls
 	def_special Convention_BufferProgress
 	def_special Convention_WarpToHall
