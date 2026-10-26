@@ -236,6 +236,7 @@ void Academy_SetupCandidate(void)
 static EWRAM_DATA struct Pokemon sSavedParty[PARTY_SIZE] = {0};
 static EWRAM_DATA u8 sSavedPartyCount = 0;
 static EWRAM_DATA bool8 sRenting = FALSE;
+static EWRAM_DATA bool8 sRentalTeam = FALSE;     // (the party is rentals: they always obey)
 static EWRAM_DATA u8 sOffer[RENTAL_OFFER] = {0};
 static EWRAM_DATA u8 sTaken[RENTAL_TEAM] = {0};
 static EWRAM_DATA u8 sTakenCount = 0;
@@ -292,6 +293,7 @@ void Academy_RentalBegin(void)
     }
     ZeroPlayerPartyMons();
     gPartiesCount[B_TRAINER_PLAYER] = 0;
+    sRentalTeam = TRUE;
     sTakenCount = 0;
     sStreak = 0;
     for (i = 0; i < RENTAL_OFFER; i++)
@@ -311,6 +313,14 @@ void Academy_RentalEnd(void)
     memcpy(gParties[B_TRAINER_PLAYER], sSavedParty, sizeof(sSavedParty));
     gPartiesCount[B_TRAINER_PLAYER] = sSavedPartyCount;
     sRenting = FALSE;
+    sRentalTeam = FALSE;
+}
+
+// Rental Pokémon are met at level 100, so with few badges they would ignore the player
+// (Gen 8+ obedience goes by the met level). They're on loan from the Academy: they obey
+bool32 Academy_RentalTeamActive(void)
+{
+    return sRentalTeam;
 }
 
 // Special (before dynmultistack): the offered rentals not taken yet, "GARCHOMP @ CHOICE SCARF"

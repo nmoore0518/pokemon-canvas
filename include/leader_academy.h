@@ -12,6 +12,7 @@ bool8 Academy_InvitationDue(void);
 void Academy_SetupCandidate(void);
 void Academy_RentalBegin(void);
 void Academy_RentalEnd(void);
+bool32 Academy_RentalTeamActive(void);
 void Academy_PushRentals(void);
 void Academy_BufferRental(void);
 void Academy_TakeRental(void);

@@ -50,6 +50,7 @@ def blk(m, coll=0, elev=3):
 GRASS = [[0x008, 0x009], [0x010, 0x011]]
 FLOWERS = 0x004
 SIGN = 0x002
+ROAD_L, ROAD, ROAD_R = 0x0D8, 0x0D9, 0x0DA     # Route 11's dirt road (grass rim left / plain / rim right)
 TREE = {
     "A": (0x0014, 0x0015), "B": (0x001C, 0x001D), "first": (0x001E, 0x001F), "bottom": (0x0024, 0x0025),
 }
@@ -121,6 +122,10 @@ def build_campus():
     path(15, 13, 26, 19)                    # the plaza
     path(5, 24, 38, 25)                     # the upper walk
     path(5, 33, 38, 34)                     # the lower walk
+    # the gap through the trees is Route 11's dirt road, coming up to meet the cobbles
+    for y in range(36, H):
+        put(GAP[0], y, ROAD_L, 0)
+        put(GAP[1], y, ROAD_R, 0)
 
     # ---- flowers (the general tileset's, they sway) ----
     for (x0, y0, x1, y1) in FLOWER_PATCHES:
@@ -421,9 +426,10 @@ def write_route11():
     w = lay["width"]
     path = ROOT / lay["blockdata_filepath"]
     data = bytearray(path.read_bytes())
-    for y in (0, 1):
-        for x in (OFFSET + GAP[0], OFFSET + GAP[1]):
-            struct.pack_into("<H", data, (y * w + x) * 2, 0x3001)      # (short grass)
+    # the road runs up from Route 11's (row 2 was its grassy top edge) through the gap
+    for y, row in ((0, (ROAD_L, ROAD_R)), (1, (ROAD_L, ROAD_R)), (2, (ROAD, ROAD))):
+        for x, m in zip((OFFSET + GAP[0], OFFSET + GAP[1]), row):
+            struct.pack_into("<H", data, (y * w + x) * 2, blk(m))
     path.write_bytes(bytes(data))
     mp = ROOT / "data/maps/Route11_Frlg/map.json"
     j = json.loads(mp.read_text())

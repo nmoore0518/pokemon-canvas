@@ -6,6 +6,7 @@
 #include "battle_environment.h"
 #include "battle_pyramid.h"
 #include "battle_util.h"
+#include "leader_academy.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_setup.h"
@@ -5639,6 +5640,8 @@ enum Obedience GetAttackerObedienceForAction(void)
     if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
         return OBEYS;
     if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
+        return OBEYS;
+    if (Academy_RentalTeamActive()) // the Leader Academy's level-100 rentals
         return OBEYS;
     if (B_OBEDIENCE_MECHANICS < GEN_8 && !IsOtherTrainer(gBattleMons[gBattlerAttacker].otId, gBattleMons[gBattlerAttacker].otName))
         return OBEYS;
