@@ -5,11 +5,12 @@
 // Once the player has cleared every hall of the Gym Leader Convention and mastered every gym type,
 // a hooded figure turns up at the gym: a bookie, running the book on an underground tournament of
 // the strongest trainers in the world, 128 of them, and the player's in it. Win it, and the one
-// who put it on shows himself: Bill. His Cell Separation System, run backwards on himself and a
-// Clefable, made him CLEFABILL (Fairy/Ghost), in pain he can't end himself; he put on the whole
-// tournament to find someone strong enough. His team: five shiny legendaries and himself. Beaten,
+// who put it on shows himself: Bill. His Cell Separation System, run backwards on himself, made
+// him a Clefable - CLEFABILL (Fairy/Ghost), hidden under the hood - in pain he can't end himself;
+// he put on the whole tournament to find someone strong enough. His team: five shiny legendaries and himself. Beaten,
 // he fades away and leaves his Palm Pilot (the same object, VAR_OBJ_GFX_ID_D): one WITHDRAW of any
-// Pokémon, shiny, then his battle simulator runs new tournaments, a WITHDRAW for each one won.
+// Pokémon, shiny, then his battle simulator runs new tournaments: win one, then beat his
+// simulation (the same team), for another WITHDRAW.
 #include "global.h"
 #include "gauntlet.h"
 #include "tournament.h"
@@ -195,7 +196,9 @@ static EWRAM_DATA u8 sCardHeader[48] = {0};
 void Gauntlet_ShowBillCard(void)
 {
     const struct GauntletTrainer *t = &sGauntletTrainers[GAUNTLET_COUNT];
-    StringCopy(sCardHeader, COMPOUND_STRING("THE TOURNAMENT  ·  THE ONE BEHIND IT"));
+    StringCopy(sCardHeader, VarGet(VAR_GAUNTLET_STATE) == GAUNTLET_SIMULATOR
+                            ? COMPOUND_STRING("BILL'S SIMULATOR  ·  THE LAST ONE")
+                            : COMPOUND_STRING("THE TOURNAMENT  ·  THE ONE BEHIND IT"));
     TitleCard_Show(t->pic, RGB(20, 5, 18), sCardHeader, t->name, t->title, sGauntletRegions[t->region], t->games);
 }
 

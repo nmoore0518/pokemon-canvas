@@ -65,6 +65,7 @@
 #define TOURNEY_LOST            2
 #define TOURNEY_WON             3
 #define TOURNEY_FORFEIT         4
+#define TOURNEY_BILL            5   // (a simulator title: Bill's simulation is next, for the WITHDRAW)
 #define TOURNEY_ROUNDS          7   // (128 entrants)
 
 // The Leader Academy (north of Route 11; src/leader_academy.c): VAR_ACADEMY_STATE

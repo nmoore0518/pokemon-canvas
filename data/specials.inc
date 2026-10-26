@@ -691,6 +691,7 @@ gSpecials::
 	def_special Tourney_ShowTitleCard
 	def_special Tourney_RecordWin
 	def_special Tourney_RecordLoss
+	def_special Tourney_SimBillWon
 	def_special Tourney_Forfeit
 	def_special Tourney_BufferChampion
 	def_special Tourney_ShowBoard, waitstate=1

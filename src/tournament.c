@@ -446,7 +446,7 @@ static void RecordTitle(u32 finalist)
 }
 
 // Special, after a win. VAR_RESULT = TRUE if that was the final (the title: the Hall of Fame, and
-// the first time, Bill's next; in the simulator, a WITHDRAW). STR_VAR_1 = the next round
+// Bill's next: the first time the real one, in the simulator his simulation, for a WITHDRAW). STR_VAR_1 = the next round
 void Tourney_RecordWin(void)
 {
     struct TourneyRun *run = &gTourneySave.run;
@@ -470,10 +470,19 @@ void Tourney_RecordWin(void)
         gTourneySave.titles++;
     RecordTitle(sOpponent);
     if (InSim())
-        VarSet(VAR_GAUNTLET_WITHDRAWS, VarGet(VAR_GAUNTLET_WITHDRAWS) + 1);
+        run->status = TOURNEY_BILL;     // (the WITHDRAW is for beating Bill after it)
     else if (VarGet(VAR_GAUNTLET_STATE) == GAUNTLET_ACTIVE)
         VarSet(VAR_GAUNTLET_STATE, GAUNTLET_ALL_BEATEN);
     gSpecialVar_Result = TRUE;
+}
+
+// Special: Bill beaten in the simulator, after a simulated title: a WITHDRAW
+void Tourney_SimBillWon(void)
+{
+    if (gTourneySave.run.status != TOURNEY_BILL)
+        return;
+    gTourneySave.run.status = TOURNEY_WON;
+    VarSet(VAR_GAUNTLET_WITHDRAWS, VarGet(VAR_GAUNTLET_WITHDRAWS) + 1);
 }
 
 // Special: STR_VAR_1 = who won the tournament (once it's over), STR_VAR_2 = the round the player

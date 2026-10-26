@@ -977,7 +977,7 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
    - [x] The Gauntlet, part 2 (v72): Bill. After the last challenger (GAUNTLET_ALL_BEATEN) the figure
          asks if you're ready to meet who hired them - the hood comes off (FLAG_GAUNTLET_BILL_REVEALED
          0x3C3; the figure object's look is VAR_OBJ_GFX_ID_D, `Gauntlet_SetFigureGfx`): Bill, his Cell
-         Separation System run backwards on himself and a Clefable. He wants it ended. His team:
+         Separation System run backwards on himself made him a Clefable (CLEFABILL: why the hood). He wants it ended. His team:
          shiny Mewtwo, Lugia, Ho-Oh, Giratina-Origin, Rayquaza and himself - CLEFABILL (a species of
          its own, SPECIES_CLEFABILL: Fairy/Ghost, 150/80/130/170/150/120 = 800, Magic Guard + Life Orb;
          not in the Pokédex, not obtainable, never shiny in his hands; art by `bill_art.py`, his
@@ -1207,8 +1207,10 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          - The first title: the bookie says the one who put it on wants to meet the player; then
            Bill as before (he put on the tournament to find the strongest trainer; losing to him
            just means try again). After him, the Palm Pilot's battle simulator runs new
-           tournaments (same rules, his records): a WITHDRAW for each title. (Bill isn't in the
-           simulator's runs.)
+           tournaments (same rules, his records). A title there isn't the WITHDRAW yet: then comes
+           Bill's simulation (his real team; TOURNEY_BILL, "Face BILL" from the Palm Pilot until
+           he's beaten, any number of tries), and beating him earns it (`Tourney_SimBillWon`).
+         - Bill's reveal says it plainly: the machine made him the Clefable; the hood hides it.
          - The TOURNAMENT Hall of Fame (PC and Palm Pilot, "TOURNAMENT", in the Hall of Fame's
            screen): the first title's team, kept for good, and the three most recent, each with
            the title's number and whom the final was against; the count of titles is kept too.

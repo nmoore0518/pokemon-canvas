@@ -36,6 +36,7 @@ Gauntlet_EventScript_Figure::
 Tourney_EventScript_Menu::
 	special Tourney_GetStatus
 	goto_if_eq VAR_RESULT, TOURNEY_ACTIVE, Tourney_EventScript_MenuActive
+	goto_if_eq VAR_RESULT, TOURNEY_BILL, Tourney_EventScript_MenuSimBill
 	goto_if_eq VAR_RESULT, TOURNEY_NONE, Tourney_EventScript_MenuFirst
 	call Tourney_EventScript_SayAsk
 	dynmultichoice 0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE, Gauntlet_Text_OptEnter, Gauntlet_Text_OptLast, Gauntlet_Text_OptNotNow
@@ -210,6 +211,44 @@ Tourney_EventScript_FirstTitle::
 
 Tourney_EventScript_SimTitle::
 	msgbox Gauntlet_Text_TitleHall
+	msgbox Gauntlet_Text_SimBillNext, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Tourney_EventScript_SimBill
+	msgbox Gauntlet_Text_SimBillLater
+	release
+	end
+
+@ (a simulator title: BILL's simulation, his real team; only beating him earns the WITHDRAW)
+Tourney_EventScript_MenuSimBill::
+	message Gauntlet_Text_SimBillMenu
+	waitmessage
+	dynmultichoice 0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE, Gauntlet_Text_OptBill, Gauntlet_Text_OptBoard, Gauntlet_Text_OptNotNow
+	switch VAR_RESULT
+	case 0, Tourney_EventScript_SimBill
+	case 1, Tourney_EventScript_Board
+	goto Tourney_EventScript_NotNow
+
+Tourney_EventScript_SimBill::
+	special HealPlayerParty
+	special Gauntlet_SetupBill
+	msgbox Gauntlet_Text_SimBillAnnounce
+	msgbox gGymChallengeIntroText
+	closemessage
+	fadescreen FADE_TO_BLACK
+	special Gauntlet_ShowBillCard
+	waitstate
+	cleartrainerflag TRAINER_GYM_CHALLENGER
+	setflag FLAG_GYM_CHALLENGE_BATTLE
+	trainerbattle_no_intro TRAINER_GYM_CHALLENGER, gGymChallengeDefeatText
+	clearflag FLAG_GYM_CHALLENGE_BATTLE
+	specialvar VAR_RESULT, GetBattleOutcome
+	special HealPlayerParty
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, Tourney_EventScript_SimBillWon
+	msgbox Gauntlet_Text_SimBillLost
+	release
+	end
+
+Tourney_EventScript_SimBillWon::
+	special Tourney_SimBillWon
 	playfanfare MUS_RG_OBTAIN_KEY_ITEM
 	message Gauntlet_Text_SimComplete
 	waitfanfare
@@ -636,24 +675,24 @@ Gauntlet_Text_Reveal3:
 	.string "BILL: My CELL SEPARATION SYSTEM.\n"
 	.string "You've heard of it, maybe.\p"
 	.string "I wanted to know what it's like to\n"
-	.string "BE a POKéMON. So I ran it backward.\p"
-	.string "Me, and a CLEFABLE.\p"
+	.string "BE a POKéMON. So I ran it backward,\l"
+	.string "on myself.\p"
 	.string "It worked. And it didn't stop.\p"
-	.string "What came out of that machine\n"
-	.string "isn't me anymore. Not really.\p"
-	.string "It's strong. Stronger than any\n"
-	.string "POKéMON I've ever stored.\p"
-	.string "And I'm trapped inside it.\p"
-	.string "I can think. I can talk.\n"
+	.string "I'm a CLEFABLE now. Mostly.\n"
+	.string "That's why the hood.\p"
+	.string "It made me strong. Stronger than\n"
+	.string "any POKéMON I've ever stored.\p"
+	.string "But the POKéMON in me is in charge.\n"
+	.string "I can think. I can talk.\l"
 	.string "That's all it lets me do.\p"
-	.string "It hurts. All the time. And it\n"
-	.string "won't let itself die.\p"
-	.string "When it battles, it battles to win.\n"
-	.string "I can't hold it back.$"
+	.string "It hurts. All the time. And this\n"
+	.string "body won't let itself die.\p"
+	.string "When I battle, I battle to win.\n"
+	.string "I can't hold myself back.$"
 
 Gauntlet_Text_Reveal4:
 	.string "BILL: So I needed someone strong.\n"
-	.string "Strong enough to beat it.\p"
+	.string "Strong enough to beat me.\p"
 	.string "I put on the tournament to find\n"
 	.string "the strongest trainer there is.\p"
 	.string "And it's you.\p"
@@ -682,8 +721,9 @@ Gauntlet_Text_BillLast:
 	.string "Call it my thanks.\p"
 	.string "And my battle simulator… it can\n"
 	.string "run the tournament again. As many\l"
-	.string "times as you like.\p"
-	.string "Win one, and take another.\p"
+	.string "times as you like. Me at the end.\p"
+	.string "Win it, beat me again, and take\n"
+	.string "another.\p"
 	.string "So you won't forget how hard this\n"
 	.string "was. …Or what it cost.\p"
 	.string "Goodbye, LEADER.$"
@@ -742,8 +782,9 @@ Gauntlet_Text_SimAsk:
 Gauntlet_Text_SimStart:
 	.string "A new tournament: 128 trainers\n"
 	.string "from BILL's records, and you.\p"
-	.string "Win it for a WITHDRAW. The team\n"
-	.string "with you now is locked in.\p"
+	.string "Win it, then beat BILL's own data,\n"
+	.string "for a WITHDRAW.\p"
+	.string "The team with you now is locked in.\p"
 	.string "Start the simulation?$"
 
 Gauntlet_Text_SimDraw:
@@ -789,6 +830,31 @@ Gauntlet_Text_SimForfeitAsk:
 
 Gauntlet_Text_SimForfeited:
 	.string "SIMULATION ended.$"
+
+Gauntlet_Text_OptBill:
+	.string "Face BILL$"
+
+Gauntlet_Text_SimBillNext:
+	.string "SIMULATION: One more. BILL's own\n"
+	.string "data, the team he battled you with.\p"
+	.string "Beat it for a WITHDRAW.\n"
+	.string "Load it now?$"
+
+Gauntlet_Text_SimBillLater:
+	.string "SIMULATION paused. BILL's data\n"
+	.string "will be waiting.$"
+
+Gauntlet_Text_SimBillMenu:
+	.string "SIMULATION: Title won.\n"
+	.string "BILL's data is waiting.$"
+
+Gauntlet_Text_SimBillAnnounce:
+	.string "SIMULATION: The last one…\n"
+	.string "BILL!$"
+
+Gauntlet_Text_SimBillLost:
+	.string "SIMULATION: BILL not cleared.\n"
+	.string "Try again any time.$"
 
 Gauntlet_Text_SimComplete:
 	.string "SIMULATION COMPLETE!\n"

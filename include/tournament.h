@@ -100,6 +100,7 @@ void Tourney_SetupNext(void);
 void Tourney_ShowTitleCard(void);
 void Tourney_RecordWin(void);
 void Tourney_RecordLoss(void);
+void Tourney_SimBillWon(void);
 void Tourney_Forfeit(void);
 void Tourney_BufferChampion(void);
 void Tourney_ShowBoard(void);

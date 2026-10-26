@@ -2416,7 +2416,7 @@ TEST("GymHack: the tournament's opponents are at level 100, and the team is lock
     EXPECT_EQ(gSpecialVar_Result, FALSE);
 }
 
-TEST("GymHack: winning the tournament: the Hall of Fame, then Bill; in the simulator, a WITHDRAW")
+TEST("GymHack: winning the tournament: the Hall of Fame, then Bill; in the simulator, Bill again for a WITHDRAW")
 {
     u32 i, n;
     Tourney_ClearSave();
@@ -2450,6 +2450,13 @@ TEST("GymHack: winning the tournament: the Hall of Fame, then Bill; in the simul
             Tourney_SetupNext();
             Tourney_RecordWin();
         }
+        // (the title alone isn't the WITHDRAW: Bill's simulation is next)
+        EXPECT_EQ(gTourneySave.run.status, TOURNEY_BILL);
+        EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), n - 2);
+        Tourney_GetStatus();
+        EXPECT_EQ(gSpecialVar_Result, TOURNEY_BILL);
+        Tourney_SimBillWon();
+        EXPECT_EQ(gTourneySave.run.status, TOURNEY_WON);
         EXPECT_EQ(VarGet(VAR_GAUNTLET_WITHDRAWS), n - 1);
     }
     EXPECT_EQ(VarGet(VAR_GAUNTLET_STATE), GAUNTLET_SIMULATOR);
