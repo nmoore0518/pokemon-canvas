@@ -385,34 +385,17 @@ Academy_EventScript_\name\()Lecture:
 	academy_teacher Hyacinth, 5
 	academy_teacher Yarrow, 6
 
-@ Tansy also keeps the team builder
-Academy_EventScript_Tansy::
-	lock
-	faceplayer
-	setvar VAR_0x8008, 7
-	goto_if_set FLAG_ACADEMY_LECTURE_FIRST + 7, Academy_EventScript_TansyMenu
-	call Academy_EventScript_TansyLecture
-	setflag FLAG_ACADEMY_LECTURE_FIRST + 7
-Academy_EventScript_TansyMenu::
-	message Academy_Text_TeacherMenu
-	waitmessage
-	dynmultichoice 0, 0, FALSE, 4, 0, DYN_MULTICHOICE_CB_NONE, Academy_Text_OptBuilder, Academy_Text_OptDemo, Academy_Text_OptLecture, Academy_Text_OptBye
-	goto_if_eq VAR_RESULT, 0, Academy_EventScript_TeamBuilder
-	goto_if_eq VAR_RESULT, 1, Academy_EventScript_Demo
-	goto_if_ne VAR_RESULT, 2, Academy_EventScript_TeacherBye
-	call Academy_EventScript_TansyLecture
-	goto Academy_EventScript_TansyMenu
-Academy_EventScript_TansyLecture::
-	msgbox Academy_Text_TansyLecture0
-	msgbox Academy_Text_TansyLecture1
-	msgbox Academy_Text_TansyLecture2
-	msgbox Academy_Text_TansyLecture3
-	return
+	academy_teacher Tansy, 7
 
+@ Tansy's TEAM BUILDER, on the PC by her desk (data/maps/LeaderAcademy_LectureD)
+Academy_EventScript_TeamBuilderPC::
+	lockall
+	playse SE_PC_ON
+	msgbox Academy_Text_TeamBuilderPC
 Academy_EventScript_TeamBuilder::
 	closemessage
 	special Academy_OpenTeamBuilder
-	release
+	releaseall
 	end
 
 Academy_EventScript_TeacherBye::

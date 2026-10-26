@@ -16,6 +16,7 @@
 #include "event_mons.h"
 #include "party_menu.h"
 #include "item.h"
+#include "item_upgrades.h"
 #define ACADEMY_LECTURE_COUNT_FOR_TEST 8
 #include "gym_challenge.h"
 #include "constants/event_objects.h"
@@ -894,16 +895,17 @@ TEST("GymHack: items: Silver Bottle Cap maxes one IV, Gold maxes all")
     EXPECT(!StatItems_MaxAllIvs(TEST_MON));
 }
 
-TEST("GymHack: items: Ability Capsule offers every different ability")
+TEST("GymHack: items: Ability Capsule offers the regular abilities, not the hidden one")
 {
     u8 slots[NUM_ABILITY_SLOTS];
     u32 slot = 0;
     GiveTestMon(SPECIES_GROWLITHE);   // Intimidate / Flash Fire / Justified (hidden)
     SetMonData(TEST_MON, MON_DATA_ABILITY_NUM, &slot);
-    EXPECT_EQ(StatItems_GetAbilityChoices(TEST_MON, slots), 3);
+    EXPECT_EQ(StatItems_GetAbilityChoices(TEST_MON, slots), 2);
     EXPECT(!StatItems_SetAbilitySlot(TEST_MON, 0));              // the one it has
-    EXPECT(StatItems_SetAbilitySlot(TEST_MON, 2));
-    EXPECT_EQ(GetMonAbility(TEST_MON), ABILITY_JUSTIFIED);
+    EXPECT(!StatItems_SetAbilitySlot(TEST_MON, 2));              // the hidden one: the Ability Patch's
+    EXPECT(StatItems_SetAbilitySlot(TEST_MON, 1));
+    EXPECT_EQ(GetMonAbility(TEST_MON), ABILITY_FLASH_FIRE);
     GiveTestMon(SPECIES_GASTLY);      // only Levitate
     EXPECT_EQ(StatItems_GetAbilityChoices(TEST_MON, slots), 1);
 }
@@ -940,7 +942,7 @@ TEST("GymHack: items: Pallet Mart stocks stat items as they unlock")
 {
     const u16 *items;
     u32 i;
-    bool32 silver = FALSE, gold = FALSE, capsule = FALSE;
+    bool32 silver = FALSE, gold = FALSE, capsule = FALSE, patch = FALSE;
     FlagClear(FLAG_BADGE04_GET);
     FlagClear(FLAG_BADGE06_GET);
     FlagClear(FLAG_BADGE07_GET);
@@ -955,15 +957,17 @@ TEST("GymHack: items: Pallet Mart stocks stat items as they unlock")
     {
         silver |= items[i] == ITEM_BOTTLE_CAP;
         capsule |= items[i] == ITEM_ABILITY_CAPSULE;
+        patch |= items[i] == ITEM_ABILITY_PATCH;
         gold |= items[i] == ITEM_GOLD_BOTTLE_CAP;
     }
-    EXPECT(silver && capsule && !gold);
-    EXPECT_EQ(GetItemPrice(ITEM_BOTTLE_CAP), 5000);
-    EXPECT_EQ(GetItemPrice(ITEM_GOLD_BOTTLE_CAP), 25000);
-    EXPECT_EQ(GetItemPrice(ITEM_ABILITY_CAPSULE), 20000);
+    EXPECT(silver && capsule && patch && !gold);
+    EXPECT_EQ(GetItemPrice(ITEM_BOTTLE_CAP), 50000);
+    EXPECT_EQ(GetItemPrice(ITEM_GOLD_BOTTLE_CAP), 150000);
+    EXPECT_EQ(GetItemPrice(ITEM_ABILITY_CAPSULE), 100000);
+    EXPECT_EQ(GetItemPrice(ITEM_ABILITY_PATCH), 250000);
     EXPECT_EQ(GetItemPrice(ITEM_CILANTRO), 40000);
     EXPECT_LT(GetItemPrice(ITEM_ADAMANT_MINT), GetItemPrice(ITEM_CILANTRO));
-    EXPECT_EQ(GetItemPrice(ITEM_MULTIVITAMIN), 30000);
+    EXPECT_EQ(GetItemPrice(ITEM_MULTIVITAMIN), 100000);
     FlagClear(FLAG_BADGE04_GET);
     FlagClear(FLAG_BADGE06_GET);
 }
@@ -3022,4 +3026,28 @@ TEST("GymHack: the save menu counts a starter from outside Kanto")
     ConvertIntToDecimalStringN(expected, 1, STR_CONV_MODE_LEFT_ALIGN, 4);
     // (the colour codes come first)
     EXPECT_EQ(StringCompare(str + StringLength(str) - StringLength(expected), expected), 0);
+}
+
+TEST("GymHack: items: the Lucky Egg and Amulet Coin level up to 10")
+{
+    u32 i;
+    EXPECT_EQ(ItemUpgrade_GetLevel(ITEM_LUCKY_EGG), 1);      // (a new save: the var is 0)
+    EXPECT_EQ(ItemUpgrade_ExpPercent(), 150);
+    EXPECT_EQ(ItemUpgrade_MoneyPercent(), 200);
+    gSpecialVar_0x8004 = ITEM_LUCKY_EGG;
+    for (i = 2; i <= ITEM_UPGRADE_MAX_LEVEL; i++)
+    {
+        ItemUpgrade_Upgrade();
+        EXPECT_EQ(gSpecialVar_Result, i);
+    }
+    ItemUpgrade_Upgrade();
+    EXPECT_EQ(gSpecialVar_Result, 0);                        // (at the top)
+    EXPECT_EQ(ItemUpgrade_ExpPercent(), 600);
+    EXPECT_EQ(ItemUpgrade_GetLevel(ITEM_AMULET_COIN), 1);    // (each item has its own level)
+    ItemUpgrade_SetLevel(ITEM_AMULET_COIN, 10);
+    EXPECT_EQ(ItemUpgrade_MoneyPercent(), 650);
+    EXPECT(!ItemUpgrade_SetLevel(ITEM_POTION, 3));
+    EXPECT(ItemUpgrade_GetDescription(ITEM_POTION) == NULL);
+    ItemUpgrade_SetLevel(ITEM_LUCKY_EGG, 1);
+    ItemUpgrade_SetLevel(ITEM_AMULET_COIN, 1);
 }

@@ -11496,6 +11496,19 @@
       "layout_version": "frlg"
     },
     {
+      "id": "LAYOUT_LEADER_ACADEMY_LECTURE_D",
+      "name": "LeaderAcademy_LectureD_Layout",
+      "width": 10,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_School",
+      "border_filepath": "data/layouts/LeaderAcademy_LectureD/border.bin",
+      "blockdata_filepath": "data/layouts/LeaderAcademy_LectureD/map.bin",
+      "layout_version": "frlg"
+    },
+    {
       "id": "LAYOUT_LEADER_ACADEMY_HALL",
       "name": "LeaderAcademy_Hall_Layout",
       "width": 25,

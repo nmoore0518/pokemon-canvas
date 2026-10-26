@@ -338,6 +338,23 @@ MAPS = {
     "LeaderAcademy_BattleHall": ("LAYOUT_SAFFRON_CITY_DOJO", "MUS_RG_PEWTER", [(5, 14), (6, 14), (7, 14)], "battle"),
     "LeaderAcademy_Exchange": ("LAYOUT_MART_FRLG", "MUS_RG_POKE_CENTER", [(3, 7), (4, 7), (5, 7)], "exchange"),
 }
+TEAM_BUILDER_ROOM = "D"           # (Tansy's)
+TEAM_BUILDER_PC = (6, 2)          # by the wall, next to Tansy (7, 2)
+PC_METATILE = 0x062               # (the building tileset's PC; its floor is the classroom's)
+
+
+def school_with_pc():
+    """Viridian's classroom with the team builder's PC"""
+    lj = json.loads((ROOT / "data/layouts/layouts.json").read_text())
+    lay = next(l for l in lj["layouts"] if l.get("id") == "LAYOUT_VIRIDIAN_CITY_SCHOOL")
+    w, h = lay["width"], lay["height"]
+    cells = struct.unpack(f"<{w * h}H", (ROOT / lay["blockdata_filepath"]).read_bytes())
+    g = [list(cells[y * w:(y + 1) * w]) for y in range(h)]
+    x, y = TEAM_BUILDER_PC
+    g[y][x] = blk(PC_METATILE, 1, 0)
+    return g
+
+
 LECTURE_MAPS = {k: f"LeaderAcademy_Lecture{k}" for k in LECTURES}
 MEGA_ROOM = "LeaderAcademy_MegaRoom"
 DOOR_MAPS = dict(LECTURE_MAPS, M=MEGA_ROOM)
@@ -406,8 +423,13 @@ def write_campus(g, doors):
                   lobj("LOCALID_ACADEMY_" + b[0], b[1], 7, 2, f"Academy_EventScript_{b[2]}"),
                   lobj(f"LOCALID_ACADEMY_LECTURE_{k}_STUDENT", LECTURE_STUDENTS[k], 4, 6,
                        f"Academy_EventScript_Lecture{k}Student", "MOVEMENT_TYPE_FACE_UP")]
-        write_map(m, mid(m), "LAYOUT_VIRIDIAN_CITY_SCHOOL", "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11", "MAP_TYPE_INDOOR",
-                  people, ws, [], False)
+        layout, bgs = "LAYOUT_VIRIDIAN_CITY_SCHOOL", []
+        if k == TEAM_BUILDER_ROOM:          # Tansy's TEAM BUILDER: a PC by her desk, there any time
+            layout = "LAYOUT_LEADER_ACADEMY_LECTURE_" + k
+            write_layout(m, layout, school_with_pc(), "gTileset_BuildingFrlg", "gTileset_School", border=0x008)
+            bgs = [sign(TEAM_BUILDER_PC[0], TEAM_BUILDER_PC[1], "Academy_EventScript_TeamBuilderPC")]
+        write_map(m, mid(m), layout, "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11", "MAP_TYPE_INDOOR",
+                  people, ws, bgs, False)
     ws = [warp(x, 7, mid("LeaderAcademy_Hall"), 7) for x in (3, 4, 5)]
     people = [lobj("LOCALID_ACADEMY_MEGA_KEEPER", "OBJ_EVENT_GFX_WOMAN_1_FRLG", 4, 2, "Academy_EventScript_MegaKeeper")]
     write_map(MEGA_ROOM, mid(MEGA_ROOM), "LAYOUT_VIRIDIAN_CITY_SCHOOL", "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11",

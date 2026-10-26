@@ -79,6 +79,7 @@
 #include "test/battle.h"
 #include "follower_npc.h"
 #include "load_save.h"
+#include "item_upgrades.h"
 
 // Helper for accessing command arguments and advancing gBattlescriptCurrInstr.
 //
@@ -4064,7 +4065,7 @@ static u32 GetTrainerMoneyToGive(u16 trainerId)
             moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * GYM_GUEST_PRIZE_RATE * gGymGuestBattle;
     }
 
-    return moneyReward;
+    return ItemUpgrade_ApplyMoney(moneyReward);   // Gym Trainer hack: the Amulet Coin, by its level
 }
 
 static void Cmd_getmoneyreward(void)
@@ -5764,7 +5765,7 @@ static void Cmd_givepaydaymoney(void)
 
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)) && gPaydayMoney != 0)
     {
-        u32 bonusMoney = gPaydayMoney * gBattleStruct->moneyMultiplier;
+        u32 bonusMoney = ItemUpgrade_ApplyMoney(gPaydayMoney * gBattleStruct->moneyMultiplier);
         AddMoney(&gSaveBlock1Ptr->money, bonusMoney);
 
         PREPARE_HWORD_NUMBER_BUFFER(gBattleTextBuff1, 5, bonusMoney)
@@ -9293,7 +9294,7 @@ void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBat
     if (IsTradedMon(&gParties[B_TRAINER_PLAYER][expGetterMonId]))
         *expAmount = (*expAmount * 150) / 100;
     if (holdEffect == HOLD_EFFECT_LUCKY_EGG)
-        *expAmount = (*expAmount * 150) / 100;
+        *expAmount = (*expAmount * ItemUpgrade_ExpPercent()) / 100;   // Gym Trainer hack: by its level
     if (GetConfig(B_UNEVOLVED_EXP_MULTIPLIER) >= GEN_6 && IsMonPastEvolutionLevel(&gParties[B_TRAINER_PLAYER][expGetterMonId]))
         *expAmount = (*expAmount * 4915) / 4096;
     if (GetConfig(B_AFFECTION_MECHANICS) == TRUE && GetMonAffectionHearts(&gParties[B_TRAINER_PLAYER][expGetterMonId]) >= AFFECTION_FOUR_HEARTS)

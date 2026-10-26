@@ -1,5 +1,6 @@
 #include "global.h"
 #include "item.h"
+#include "item_upgrades.h"
 #include "berry.h"
 #include "pokeball.h"
 #include "string_util.h"
@@ -863,6 +864,9 @@ u32 GetItemHoldEffectParam(enum Item itemId)
 
 const u8 *GetItemDescription(enum Item itemId)
 {
+    const u8 *upgraded = ItemUpgrade_GetDescription(itemId);   // Gym Trainer hack: with its level
+    if (upgraded != NULL)
+        return upgraded;
     return gItemsInfo[SanitizeItemId(itemId)].description;
 }
 

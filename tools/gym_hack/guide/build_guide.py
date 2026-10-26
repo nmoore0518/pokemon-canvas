@@ -341,11 +341,11 @@ ITEMS = """
 <h3>Training items</h3>
 <ul>
 <li><b>Silver Bottle Cap</b>: one IV becomes 31. <b>Gold Bottle Cap</b>: all six do.</li>
-<li><b>Ability Capsule</b>: pick any of the species' abilities, the hidden one included.</li>
+<li><b>Ability Capsule</b>: switch between the species' two regular abilities. <b>Ability Patch</b>: the hidden one.</li>
 <li><b>Cilantro</b>: pick any nature (like a mint).</li>
 <li><b>Multivitamin</b>: set all six EVs on one screen (252 per stat, 510 in all). Cancelling doesn't use it up.</li>
 </ul>
-<p>The Pallet Town Mart sells them as you progress: the Silver Bottle Cap after Erika's badge, the Ability Capsule after
+<p>The Pallet Town Mart sells them as you progress: the Silver Bottle Cap after Erika's badge, the Ability Capsule and Ability Patch after
 Sabrina's, Cilantro after Blaine's, and the Gold Bottle Cap and Multivitamin after the Elite Four. Every Gym Leader also gives
 a Silver Bottle Cap with their TM; Erika adds Cilantro and Koga an Ability Capsule; your rival gives a Gold Bottle Cap at the
 Pokémon Tower, and Giovanni a Multivitamin at Silph Co.</p>
@@ -569,7 +569,7 @@ Sash, Assault Vest, Booster Energy, Heavy-Duty Boots, weather rocks, berries and
 the Ability Capsule and Patch, Cilantro, the Multivitamin and mints. The supply shop sells training items for money: caps,
 ability items, Cilantro, the Multivitamin, mints, vitamins, power items, the Macho Brace and the EV berries.</p>
 <h3>The team builder</h3>
-<p>Tansy's team builder plans up to 8 teams: choose a type, then one of its Pokémon (a ball marks the ones you have), then up
+<p>Tansy's team builder, on the PC next to her in Lecture Hall D (use it any time), plans up to 8 teams: choose a type, then one of its Pokémon (a ball marks the ones you have), then up
 to 4 of the moves it can learn. It only offers Pokémon you can get by now, so a plan never depends on something out of reach.
 The edit screen shows the team's worst weaknesses and the types it can't hit hard; START shows the whole type chart for the
 team. Teams are kept when you save. It's a planner: it doesn't change your party.</p>

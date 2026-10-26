@@ -357,6 +357,10 @@
 #define VAR_EVENT_CAPS                                   0x4091 // (bits 0-6: caps found; 8-15: cap Pikachu given)
 #define VAR_EVENT_VIVILLON_LO                            0x409B // (Vivillon patterns shown to the collector: 0-15)
 #define VAR_EVENT_VIVILLON_HI                            0x409D // (... 16-17)
+// The Lucky Egg's and Amulet Coin's levels (1-10; 0 counts as 1. src/item_upgrades.c). FireRed's scripts
+// never use these two.
+#define VAR_LUCKY_EGG_LEVEL                              0x4092
+#define VAR_AMULET_COIN_LEVEL                            0x4093
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

@@ -1529,14 +1529,14 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_ABILITY_CAPSULE] =
     {
-        // Gym Trainer hack: pick any of the species' Abilities, hidden ones included
+        // Gym Trainer hack: switch between the species' two regular Abilities (hidden: the Ability Patch)
         .name = ITEM_NAME("Ability Capsule"),
-        .price = 20000,
+        .price = 100000,
         .holdEffectParam = 0,
         .description = COMPOUND_STRING(
-            "Lets a Pokémon\n"
-            "switch to any of\n"
-            "its Abilities."),
+            "Switches a Pokémon\n"
+            "between its two\n"
+            "regular Abilities."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_FIELD_USE,
         .type = ITEM_USE_FIELD,
@@ -2602,7 +2602,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         // Gym Trainer hack: maxes one IV of your choice
         .name = ITEM_NAME("Silver Bottle Cap"),
-        .price = 5000,
+        .price = 50000,
         .description = COMPOUND_STRING(
             "Brings one stat of\n"
             "a Pokémon to its\n"
@@ -2620,7 +2620,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         // Gym Trainer hack: maxes every IV
         .name = ITEM_NAME("Gold Bottle Cap"),
-        .price = 25000,
+        .price = 150000,
         .description = COMPOUND_STRING(
             "Brings every stat\n"
             "of a Pokémon to its\n"
@@ -16262,7 +16262,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         // Gym Trainer hack: set all six EVs once
         .name = ITEM_NAME("Multivitamin"),
-        .price = 30000,
+        .price = 100000,
         .description = COMPOUND_STRING(
             "Lets you choose a\n"
             "Pokémon's effort\n"

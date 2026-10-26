@@ -243,9 +243,6 @@ Academy_Text_OptDemo::
 Academy_Text_OptLecture::
 	.string "THE LECTURE$"
 
-Academy_Text_OptBuilder::
-	.string "TEAM BUILDER$"
-
 Academy_Text_LarkspurLecture0::
 	.string "LARKSPUR: Speed and priority.\nWelcome!$"
 
@@ -340,7 +337,10 @@ Academy_Text_TansyLecture2::
 	.string "Check your weaknesses: if three\nof your six fear ICE, that's a\pproblem.\pCheck your coverage: can your\nattacks hit every type well?$"
 
 Academy_Text_TansyLecture3::
-	.string "I keep a TEAM BUILDER right\nhere. Pick six, choose their\pmoves, and it shows you your\nweaknesses and coverage.\pYou can save up to eight teams\nin it!$"
+	.string "That PC next to me? I made a\nTEAM BUILDER for it myself.\pPick six, choose their moves,\nand it shows you your weaknesses\pand coverage. It keeps up to\neight teams.\pUse it whenever you like: you\ndon't have to ask me!$"
+
+Academy_Text_TeamBuilderPC::
+	.string "TANSY'S TEAM BUILDER\nbooted up.$"
 
 Academy_Text_KojiHello::
 	.string "KOJI: I'm from CIANWOOD, in\nJOHTO. CHUCK trained me himself…\pmostly by throwing me into the\nsea.\pHe says when I can beat him\nwithout shouting, the GYM is\pmine. I'm working on the quiet\npart.$"

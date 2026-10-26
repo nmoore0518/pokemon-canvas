@@ -269,18 +269,25 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   held items. Each trainer keeps the same name. No prize money (`gGymPracticeBattle` skips it in
   `data/battle_scripts_1.s`), losing doesn't white out, and your team is healed after.
   `GymChallenge_GeneratePractice` in `src/gym_challenge.c`.
+- **Lucky Egg and Amulet Coin levels** (`src/item_upgrades.c`): both have a level, 1-10, kept
+  for the player (`VAR_LUCKY_EGG_LEVEL` 0x4092, `VAR_AMULET_COIN_LEVEL` 0x4093; 0 counts as 1).
+  Each level adds 0.5x: the Lucky Egg 1.5x EXP at level 1 up to 6x at 10, the Amulet Coin 2x
+  prize money up to 6.5x (battle prize money and Pay Day). The bag's description shows the level.
+  How to earn upgrades is still to be decided: scripts call `special ItemUpgrade_Upgrade` with
+  VAR_0x8004 = the item (VAR_RESULT = the new level, 0 if maxed) and `ItemUpgrade_BufferLevel`.
 - **Stat training items** (`src/stat_items.c`, `data/scripts/stat_items.inc`), all used up when
   used, all chosen from the bag and then a Pokémon:
-  - Silver Bottle Cap (5,000): pick one stat; its IV becomes 31.
-  - Gold Bottle Cap (25,000): every IV becomes 31.
-  - Ability Capsule (20,000): pick any of the species' Abilities, the hidden one included.
-  - Cilantro (15,000): pick a nature from all 25. It sets the stat nature (like a mint), and the
+  - Silver Bottle Cap (50,000): pick one stat; its IV becomes 31.
+  - Gold Bottle Cap (150,000): every IV becomes 31.
+  - Ability Capsule (100,000): switch between the species' two regular Abilities (the hidden
+    one is the Ability Patch's job: 250,000, sold at the same mart from the same badge).
+  - Cilantro (40,000): pick a nature from all 25. It sets the stat nature (like a mint), and the
     summary screen shows the new nature.
-  - Multivitamin (30,000): an editing screen for all six EVs. Left/Right move 4 at a time, L/R
+  - Multivitamin (100,000): an editing screen for all six EVs. Left/Right move 4 at a time, L/R
     set none or the most allowed, and it never lets a stat pass 252 or the total pass 510. It
     shows what each stat would be. Cancelling, or changing nothing, doesn't use it up.
   - Sold only at the Pallet Town Mart (`GymHack_PalletMart`): Silver Bottle Cap after Erika's
-    badge, Ability Capsule after Sabrina's, Cilantro after Blaine's, Gold Bottle Cap and
+    badge, Ability Capsule and Ability Patch after Sabrina's, Cilantro after Blaine's, Gold Bottle Cap and
     Multivitamin after the Elite Four (`FLAG_SYS_GAME_CLEAR`).
   - One-time gifts, each with the leader's own lines: a Silver Bottle Cap from every gym leader
     (after the TM), plus Cilantro from Erika and an Ability Capsule from Koga; a Gold Bottle Cap
@@ -1157,7 +1164,8 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            smarter with the streak; keep going or stop after each win. The player's party is copied
            aside (EWRAM) and put back after, won, lost or backed out; the whole run is one locked
            script, so the game can't be saved with rentals in the party.
-         - The TEAM BUILDER (Tansy; `src/team_builder.c`): 8 teams, kept in flash sector 30 after the
+         - The TEAM BUILDER (Tansy's, on the PC by her desk in Lecture Hall D, usable any time:
+           `Academy_EventScript_TeamBuilderPC`; `src/team_builder.c`): 8 teams, kept in flash sector 30 after the
            archive (`struct TeamBuilderData`; a move is 10 bits to fit). A slot: choose a type, then
            one of its Pokémon from a grid of icons (a ball by those the player has: party, box or
            archive; only those with the type as their primary type, the gym's rule; and only those

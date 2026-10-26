@@ -1,7 +1,8 @@
 // Gym Trainer hack: stat training items.
 //   Silver Bottle Cap  - one IV of your choice becomes 31
 //   Gold Bottle Cap    - every IV becomes 31
-//   Ability Capsule    - pick any of the species' abilities (including the hidden one)
+//   Ability Capsule    - pick one of the species' regular abilities (not the hidden one: that's the
+//                        Ability Patch)
 //   Cilantro           - pick a nature (the stat nature, like a mint; the summary shows it too)
 //   Multivitamin       - set all six EVs on an editing screen, within the game's limits
 // Each item is used from the bag: it runs data/scripts/stat_items.inc, which asks for a Pokémon
@@ -89,13 +90,14 @@ bool32 StatItems_MaxAllIvs(struct Pokemon *mon)
     return changed;
 }
 
-// The ability slots (0, 1, hidden) that give different abilities, in order. Returns how many.
+// The regular ability slots (0, 1) that give different abilities, in order. Returns how many.
+// (The hidden ability is the Ability Patch's job.)
 u32 StatItems_GetAbilityChoices(struct Pokemon *mon, u8 *slots)
 {
     enum Species species = GetMonData(mon, MON_DATA_SPECIES);
     enum Ability seen[NUM_ABILITY_SLOTS];
     u32 i, j, n = 0;
-    for (i = 0; i < NUM_ABILITY_SLOTS; i++)
+    for (i = 0; i < NUM_NORMAL_ABILITY_SLOTS; i++)
     {
         enum Ability ability = gSpeciesInfo[species].abilities[i];
         if (ability == ABILITY_NONE)
@@ -249,10 +251,6 @@ void StatItems_PushAbilityList(void)
         {
             StringCopy(end, COMPOUND_STRING(" (now)"));
             gSpecialVar_0x8005 = i;
-        }
-        else if (slots[i] == NUM_NORMAL_ABILITY_SLOTS)
-        {
-            StringCopy(end, COMPOUND_STRING(" (hidden)"));
         }
         PushChoice(str, slots[i]);
     }
@@ -540,6 +538,7 @@ static const struct { u16 item; u16 flag; } sStatItemUnlocks[] =
 {
     {ITEM_BOTTLE_CAP,      FLAG_BADGE04_GET},     // Erika
     {ITEM_ABILITY_CAPSULE, FLAG_BADGE06_GET},     // Sabrina
+    {ITEM_ABILITY_PATCH,   FLAG_BADGE06_GET},
     {ITEM_CILANTRO,        FLAG_BADGE07_GET},     // Blaine
     {ITEM_GOLD_BOTTLE_CAP, FLAG_SYS_GAME_CLEAR},  // the Elite Four
     {ITEM_MULTIVITAMIN,    FLAG_SYS_GAME_CLEAR},

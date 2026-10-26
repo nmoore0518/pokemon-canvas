@@ -340,9 +340,8 @@ GymHack_Text_KogaAbilityCapsule::
 	.string "A ninja's secret!$"
 
 GymHack_Text_KogaAbilityCapsuleAfter::
-	.string "An ABILITY CAPSULE lets a POKéMON\n"
-	.string "use any ABILITY it is capable of.\p"
-	.string "Even the ones it keeps hidden!\p"
+	.string "An ABILITY CAPSULE switches a\n"
+	.string "POKéMON to its other ABILITY.\p"
 	.string "A foe who thinks he knows your\n"
 	.string "POKéMON is a foe already beaten.$"
 

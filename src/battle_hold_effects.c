@@ -42,11 +42,9 @@ static enum ItemEffect TryDoublePrize(enum BattlerId battler)
 {
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
+    // Gym Trainer hack: the multiplier goes by the Amulet Coin's level (ItemUpgrade_ApplyMoney)
     if (IsOnPlayerSide(battler) && !gBattleStruct->moneyMultiplierItem)
-    {
-        gBattleStruct->moneyMultiplier *= 2;
         gBattleStruct->moneyMultiplierItem = TRUE;
-    }
 
     return effect;
 }
