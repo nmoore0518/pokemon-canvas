@@ -657,6 +657,39 @@ TEST("GymHack: decor: buying several at once")
     gSpecialVar_0x8009 = 0;
 }
 
+TEST("GymHack: decor: selling what's in storage, for half price; putting everything away")
+{
+    u32 id, facing;
+    GymDecor_ClearAll();
+    SetMoney(&gSaveBlock1Ptr->money, 0);
+    GymDecor_SetOwned(GYM_DECOR_TABLE, 3);
+    EXPECT(GymDecor_Place(GYM_DECOR_TABLE, 0, 3, 5));
+    gSpecialVar_0x8004 = GYM_DECOR_TABLE;
+    gSpecialVar_0x8009 = 3;                                     // (only 2 aren't placed)
+    GymDecor_Sell();
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TABLE), 3);
+    gSpecialVar_0x8009 = 2;
+    GymDecor_Sell();
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_TABLE), 1);
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), gGymDecor[GYM_DECOR_TABLE].price);
+    // Picking a piece up says which it was and how it faced
+    GymDecor_SetOwned(GYM_DECOR_NORMAL_COUCH, 1);
+    EXPECT(GymDecor_Place(GYM_DECOR_NORMAL_COUCH, 2, 10, 5));
+    EXPECT(GymDecor_TakeAt(11, 5, &id, &facing));
+    EXPECT_EQ(id, GYM_DECOR_NORMAL_COUCH);
+    EXPECT_EQ(facing, 2);
+    // Everything back in storage
+    GymDecor_PutAllAway();
+    EXPECT_EQ(GymDecor_NumPlaced(), 0);
+    EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_TABLE), 1);
+    // The free and the bought-once can't be sold
+    gSpecialVar_0x8004 = GYM_DECOR_BATTLE_STAGE;
+    gSpecialVar_0x8009 = 1;
+    GymDecor_Sell();
+    EXPECT_EQ(GymDecor_CountOwned(GYM_DECOR_BATTLE_STAGE), 1);
+    gSpecialVar_0x8009 = 0;
+}
+
 TEST("GymHack: decor: a turned piece takes up its turned shape")
 {
     s32 x = 3, y = 5;

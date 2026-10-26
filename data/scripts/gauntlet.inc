@@ -331,9 +331,22 @@ Tourney_EventScript_SayAnnounceSim::
 
 @ (hardly ever, after a match: a MOVE EXTRACTOR)
 Tourney_EventScript_RarePrize::
-	msgbox Tourney_Text_RarePrize
+	call_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_RarePrizeSim
+	call_if_ne VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_RarePrizeReal
 	call GymHack_EventScript_GiveStatItem
 	return
+
+Tourney_EventScript_RarePrizeReal::
+	msgbox Tourney_Text_RarePrize
+	return
+
+Tourney_EventScript_RarePrizeSim::
+	msgbox Tourney_Text_RarePrizeSim
+	return
+
+Tourney_Text_RarePrizeSim::
+	.string "The simulator printed out a rare\n"
+	.string "prize for that match! A real one!$"
 
 Tourney_Text_RarePrize::
 	.string "One moment! The organizers have a\n"

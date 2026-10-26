@@ -99,6 +99,12 @@ static const struct DynamicListMenuEventCollection sDynamicListMenuEventCollecti
         .OnInit = GymDecor_ListOnInit,
         .OnSelectionChanged = GymDecor_OwnedListOnSelectionChanged,
         .OnDestroy = GymDecor_ListOnDestroy
+    },
+    [DYN_MULTICHOICE_CB_GYM_DECOR_SELL] =
+    {
+        .OnInit = GymDecor_ListOnInit,
+        .OnSelectionChanged = GymDecor_SellListOnSelectionChanged,
+        .OnDestroy = GymDecor_ListOnDestroy
     }
 };
 

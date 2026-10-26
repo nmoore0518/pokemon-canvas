@@ -173,12 +173,15 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 - **Gym decorations**: the gym has a PC left of the entrance (`data/scripts/gym_decor.inc`). BUY
   DECORATIONS lists everything unlocked so far with its price, how many you have and a short
   description; you choose how many (UP/DOWN one at a time, LEFT/RIGHT ten, up to 99; floors and
-  wall styles are bought once), and they go to the gym's storage. DECORATE starts edit mode: walk anywhere in
+  wall styles are bought once), and they go to the gym's storage. SELL DECORATIONS sells what's in
+  storage (not placed) for half price, in any number; PUT ALL AWAY sends every placed piece back to
+  storage (floors and the wall style stay). DECORATE starts edit mode: walk anywhere in
   the gym (you can walk through things while decorating) and the selected piece is shown in front
   of you, whole, tinted red where it can't go (anywhere between the side walls, from the back wall
   down to the bottom row) (`ShowRedOverlay`: see-through sprites), with the
-  kept-clear area (entrance, statues, PC) shaded. A places it, START turns it, SELECT puts away
-  the one in front, L/R switch pieces, B finishes. Nothing can go on the walls, the doormat, the
+  kept-clear area (entrance, statues, PC) shaded. A places it, START turns it, SELECT picks up
+  the one in front (it's then the piece in hand, the same way round, to put down elsewhere; L/R
+  leaves it in storage), L/R switch pieces, B finishes. Nothing can go on the walls, the doormat, the
   statues or the PC, or on a wall's front face (except another wall), and if you've boxed yourself
   in when you finish, you're put back at the PC. Invisible walls are shown while decorating. The
   help box sits at the bottom of the screen.
@@ -421,7 +424,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     summary screen show it.
   - More are ultra rare prizes: 1 gym challenge win in 150 (`GYM_CHALLENGE_EXTRACTOR_ODDS`; the
     challenger leaves it instead of the usual item), and 1 tournament match won in 100
-    (`TOURNEY_EXTRACTOR_ODDS`; not in Bill's simulator), in `include/constants/gym_hack.h`.
+    (`TOURNEY_EXTRACTOR_ODDS`; Bill's simulator too), in `include/constants/gym_hack.h`.
   - Three for sure, from the Team Rocket grunt on Nugget Bridge (`VAR_MOVE_EXTRACTOR_STAGE`):
     1. Say YES when he asks you to join (or later, if you said no and beat him, when you talk to him
        again). Surprised, he admits a grunt can't let anyone in, and gives you a Move Extractor to

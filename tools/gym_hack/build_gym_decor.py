@@ -857,7 +857,7 @@ def build():
     for x in STATUES:
         put(x, RH - 4, STATUE_TOP, False)
         put(x, RH - 3, STATUE_BOTTOM, True)
-    put(PC[0], PC[1] + 1, fixed["PC_BOTTOM"], True)
+    put(PC[0], PC[1] + 1, ts.cell(FIXED["PC_BOTTOM"], False)[0], True)   # (in this tileset: fixed[] is the map tools' one)
     for x in range(RW):
         room[0][x] = "GYM_BASE_WALL_TOP"
         room[1][x] = "GYM_BASE_WALL_FACE"

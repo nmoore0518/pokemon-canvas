@@ -752,6 +752,12 @@ gSpecials::
 	def_special GymDecor_TryBuy
 	def_special GymDecor_StartEditing
 	def_special GymDecor_GetKind
+	def_special GymDecor_ChooseSellQuantity
+	def_special GymDecor_PushSellCategories
+	def_special GymDecor_PushSellList
+	def_special GymDecor_BufferSellInfo
+	def_special GymDecor_Sell
+	def_special GymDecor_PutAllAway
 	def_special Tourney_RollPrize
 	def_special GymDecor_ChooseQuantity
 	def_special GymDecor_ApplyWallStyle

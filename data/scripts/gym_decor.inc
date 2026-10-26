@@ -7,10 +7,12 @@ GymDecor_EventScript_GymPC::
 GymDecor_EventScript_PCMenu::
 	message GymDecor_Text_WhatToDo
 	waitmessage
-	dynmultichoice 0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE, GymDecor_Text_Buy, GymDecor_Text_Decorate, GymDecor_Text_LogOff
+	dynmultichoice 0, 0, FALSE, 5, 0, DYN_MULTICHOICE_CB_NONE, GymDecor_Text_Buy, GymDecor_Text_Sell, GymDecor_Text_Decorate, GymDecor_Text_PutAllAway, GymDecor_Text_LogOff
 	switch VAR_RESULT
 	case 0, GymDecor_EventScript_Buy
-	case 1, GymDecor_EventScript_Decorate
+	case 1, GymDecor_EventScript_Sell
+	case 2, GymDecor_EventScript_Decorate
+	case 3, GymDecor_EventScript_PutAllAway
 	goto GymDecor_EventScript_LogOff
 	end
 
@@ -83,6 +85,64 @@ GymDecor_EventScript_AlreadyHave::
 
 GymDecor_EventScript_BuyDone::
 	hidemoneybox
+	goto GymDecor_EventScript_PCMenu
+	end
+
+@ ---- Selling (what's in storage, not placed; half price) ------------------
+GymDecor_EventScript_Sell::
+	setvar VAR_0x8007, 0
+	showmoneybox 0, 0
+GymDecor_EventScript_SellCategory::
+	special GymDecor_PushSellCategories
+	goto_if_eq VAR_RESULT, 0, GymDecor_EventScript_NothingToSell
+	message GymDecor_Text_WhichKindToSell
+	waitmessage
+	dynmultistack 18, 0, FALSE, 6, FALSE, VAR_0x8007, DYN_MULTICHOICE_CB_NONE
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_SellDone
+	copyvar VAR_0x8006, VAR_RESULT
+	copyvar VAR_0x8007, VAR_RESULT
+	setvar VAR_0x8005, 0
+GymDecor_EventScript_SellLoop::
+	special GymDecor_PushSellList
+	goto_if_eq VAR_RESULT, 0, GymDecor_EventScript_SellCategory
+	message GymDecor_Text_WhichToSell
+	waitmessage
+	dynmultistack 15, 0, FALSE, 5, FALSE, VAR_0x8005, DYN_MULTICHOICE_CB_GYM_DECOR_SELL
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymDecor_EventScript_SellCategory
+	copyvar VAR_0x8004, VAR_RESULT
+	copyvar VAR_0x8005, VAR_RESULT
+	setvar VAR_0x8009, 1
+	special GymDecor_BufferSellInfo
+	message GymDecor_Text_HowManyToSell
+	waitmessage
+	special GymDecor_ChooseSellQuantity
+	waitstate
+	goto_if_eq VAR_RESULT, 0, GymDecor_EventScript_SellLoop
+	copyvar VAR_0x8009, VAR_RESULT
+	special GymDecor_BufferSellInfo
+	msgbox GymDecor_Text_ConfirmSell, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, GymDecor_EventScript_SellLoop
+	special GymDecor_Sell
+	updatemoneybox
+	playse SE_SHOP
+	msgbox GymDecor_Text_Sold, MSGBOX_DEFAULT
+	goto GymDecor_EventScript_SellLoop
+	end
+
+GymDecor_EventScript_NothingToSell::
+	msgbox GymDecor_Text_NothingToSell, MSGBOX_DEFAULT
+GymDecor_EventScript_SellDone::
+	hidemoneybox
+	goto GymDecor_EventScript_PCMenu
+	end
+
+@ ---- Putting everything away ---------------------------------------------
+GymDecor_EventScript_PutAllAway::
+	msgbox GymDecor_Text_ConfirmPutAllAway, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, GymDecor_EventScript_PCMenu
+	special GymDecor_PutAllAway
+	playse SE_CLICK
+	msgbox GymDecor_Text_AllPutAway, MSGBOX_DEFAULT
 	goto GymDecor_EventScript_PCMenu
 	end
 
@@ -159,6 +219,43 @@ GymDecor_Text_Buy::
 GymDecor_Text_Decorate::
 	.string "DECORATE$"
 
+GymDecor_Text_Sell::
+	.string "SELL DECORATIONS$"
+
+GymDecor_Text_PutAllAway::
+	.string "PUT ALL AWAY$"
+
+GymDecor_Text_WhichKindToSell::
+	.string "What kind of decoration will\n"
+	.string "you sell?$"
+
+GymDecor_Text_WhichToSell::
+	.string "Which decoration will you\n"
+	.string "sell? (Only ones in storage.)$"
+
+GymDecor_Text_HowManyToSell::
+	.string "{STR_VAR_1}? How many?$"
+
+GymDecor_Text_ConfirmSell::
+	.string "{STR_VAR_1}{STR_VAR_3}?\n"
+	.string "You'll get ¥{STR_VAR_2}. OK?$"
+
+GymDecor_Text_Sold::
+	.string "Sold {STR_VAR_1}{STR_VAR_3}\n"
+	.string "for ¥{STR_VAR_2}!$"
+
+GymDecor_Text_NothingToSell::
+	.string "There's nothing in storage to\n"
+	.string "sell. (Placed pieces have to be\l"
+	.string "put away first.)$"
+
+GymDecor_Text_ConfirmPutAllAway::
+	.string "Put all the decorations back in\n"
+	.string "storage? Floors and walls stay.$"
+
+GymDecor_Text_AllPutAway::
+	.string "Everything's back in storage.$"
+
 GymDecor_Text_LogOff::
 	.string "LOG OFF$"
 
@@ -200,7 +297,8 @@ GymDecor_Text_HowToDecorate::
 	.string "decoration appears in front of you,\l"
 	.string "in red where it can't go.\p"
 	.string "A: place it. START: turn it.\n"
-	.string "SELECT: put away the one in front.\p"
+	.string "SELECT: pick up the one in front,\l"
+	.string "to move it (L/R: back to storage).\p"
 	.string "L and R: switch decorations.\n"
 	.string "B: finish decorating.$"
 
@@ -210,7 +308,8 @@ GymDecor_Text_HowToPaint::
 	.string "Hold A down as you walk to paint\n"
 	.string "every square you face.\p"
 	.string "SELECT: fill the whole area of\n"
-	.string "floor in front with it.\p"
+	.string "floor in front with it (or pick\l"
+	.string "up a piece in front).\p"
 	.string "L and R: switch to a decoration\n"
 	.string "or another floor. B: finish.$"
 

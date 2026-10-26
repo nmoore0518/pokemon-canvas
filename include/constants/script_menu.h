@@ -234,6 +234,7 @@ enum
     //add new callback choices after this comment!
     DYN_MULTICHOICE_CB_GYM_DECOR_SHOP,
     DYN_MULTICHOICE_CB_GYM_DECOR_OWNED,
+    DYN_MULTICHOICE_CB_GYM_DECOR_SELL,
     
     DYN_MULTICHOICE_CB_NONE,
 };

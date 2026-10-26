@@ -357,10 +357,19 @@ bool32 GymDecor_Place(u32 id, u32 facing, s32 x, s32 y)
 
 bool32 GymDecor_RemoveAt(s32 x, s32 y)
 {
+    u32 id, facing;
+    return GymDecor_TakeAt(x, y, &id, &facing);
+}
+
+// Puts away the piece covering (x, y), saying which it was and the way it faced
+bool32 GymDecor_TakeAt(s32 x, s32 y, u32 *id, u32 *facing)
+{
     struct GymDecorSaveData *save = GetSave();
     s32 i = FindPlacementAt(x, y);
     if (i < 0)
         return FALSE;
+    *id = save->placed[i].id;
+    *facing = GYM_PLACEMENT_FACING(&save->placed[i]);
     memmove(&save->placed[i], &save->placed[i + 1], (save->numPlaced - i - 1) * sizeof(save->placed[0]));
     save->numPlaced--;
     return TRUE;
@@ -541,10 +550,75 @@ void GymDecor_BufferDecorInfo(void)
     }
 }
 
-// ---- How many to buy: a little window, UP/DOWN 1 at a time, LEFT/RIGHT 10 ----
+static void PlaceTrainers(void);
+
+// Selling: half the price, like any shop
+static u32 SellPrice(u32 id)
+{
+    return gGymDecor[id].price / 2;
+}
+
+static bool32 CanSell(u32 id)
+{
+    return gGymDecor[id].price != 0 && !IsStyle(id) && GymDecor_CountAvailable(id) > 0;
+}
+
+void GymDecor_PushSellCategories(void)
+{
+    PushCategories(CanSell);
+}
+
+// VAR_0x8006 = the category
+void GymDecor_PushSellList(void)
+{
+    u32 i, n = 0;
+    for (i = 0; i < GYM_DECOR_COUNT; i++)
+    {
+        if (gGymDecor[i].category == gSpecialVar_0x8006 && CanSell(i))
+        {
+            PushItem(i);
+            n++;
+        }
+    }
+    gSpecialVar_Result = n;
+}
+
+// VAR_0x8004 = decoration, VAR_0x8009 = how many: like GymDecor_BufferDecorInfo, with what they
+// sell for in STR_VAR_2
+void GymDecor_BufferSellInfo(void)
+{
+    u32 id = gSpecialVar_0x8004;
+    GymDecor_BufferDecorInfo();
+    if (id < GYM_DECOR_COUNT)
+        ConvertIntToDecimalStringN(gStringVar2, SellPrice(id) * BuyQuantity(), STR_CONV_MODE_LEFT_ALIGN, 7);
+}
+
+// Special: VAR_0x8004 = decoration, VAR_0x8009 = how many: sold, from what's in storage
+void GymDecor_Sell(void)
+{
+    u32 id = gSpecialVar_0x8004, n = BuyQuantity();
+    if (id >= GYM_DECOR_COUNT || !CanSell(id) || n > GymDecor_CountAvailable(id))
+        return;
+    GetSave()->owned[id] -= n;
+    AddMoney(&gSaveBlock1Ptr->money, SellPrice(id) * n);
+}
+
+// Special (in the gym): everything placed goes back to storage (floors and walls stay as they are)
+void GymDecor_PutAllAway(void)
+{
+    GetSave()->numPlaced = 0;
+    if (InGym())
+    {
+        GymRoom_Build(FALSE);
+        PlaceTrainers();
+    }
+}
+
+// ---- How many: a little window, UP/DOWN 1 at a time, LEFT/RIGHT 10 ----
 #define tQuantity data[0]
 #define tMax      data[1]
 #define tWindow   data[2]
+#define tSelling  data[3]
 
 static void PrintQuantity(u8 taskId)
 {
@@ -554,7 +628,8 @@ static void PrintQuantity(u8 taskId)
     end = StringCopy(str, COMPOUND_STRING("×"));
     ConvertIntToDecimalStringN(end, tQuantity, STR_CONV_MODE_LEADING_ZEROS, 2);
     AddTextPrinterParameterized(tWindow, FONT_NORMAL, str, 4, 1, TEXT_SKIP_DRAW, NULL);
-    ConvertIntToDecimalStringN(gStringVar1, gGymDecor[gSpecialVar_0x8004].price * tQuantity, STR_CONV_MODE_LEFT_ALIGN, 7);
+    ConvertIntToDecimalStringN(gStringVar1, (tSelling ? SellPrice(gSpecialVar_0x8004) : gGymDecor[gSpecialVar_0x8004].price) * tQuantity,
+                               STR_CONV_MODE_LEFT_ALIGN, 7);
     StringExpandPlaceholders(str, gText_PokedollarVar1);
     AddTextPrinterParameterized(tWindow, FONT_NORMAL, str, GetStringRightAlignXOffset(FONT_NORMAL, str, 11 * 8) - 2, 1, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(tWindow, COPYWIN_FULL);
@@ -602,7 +677,7 @@ static void Task_ChooseQuantity(u8 taskId)
 // mind). As many as the money and storage allow, 99 at most; with room for just one (or none:
 // buying then says why), that's the answer, with no window. (A task answers and lets the script
 // go on, in both cases.)
-void GymDecor_ChooseQuantity(void)
+static void ChooseQuantity(bool32 selling)
 {
     u32 id = gSpecialVar_0x8004, max, owned;
     u8 taskId;
@@ -614,8 +689,15 @@ void GymDecor_ChooseQuantity(void)
         return;
     }
     owned = GetSave()->owned[id];
-    max = GetMoney(&gSaveBlock1Ptr->money) / gGymDecor[id].price;
-    max = min(max, 255 - owned);
+    if (selling)
+    {
+        max = GymDecor_CountAvailable(id);
+    }
+    else
+    {
+        max = GetMoney(&gSaveBlock1Ptr->money) / gGymDecor[id].price;
+        max = min(max, 255 - owned);
+    }
     max = min(max, 99u);
     if (max <= 1)
     {
@@ -626,6 +708,7 @@ void GymDecor_ChooseQuantity(void)
     data = gTasks[taskId].data;
     tQuantity = 1;
     tMax = max;
+    tSelling = selling;
     template = CreateWindowTemplate(0, 18, 11, 11, 2, 15, 0x125);
     tWindow = AddWindow(&template);
     SetStandardWindowBorderStyle(tWindow, FALSE);
@@ -633,9 +716,21 @@ void GymDecor_ChooseQuantity(void)
     PrintQuantity(taskId);
 }
 
+void GymDecor_ChooseQuantity(void)
+{
+    ChooseQuantity(FALSE);
+}
+
+// The same, for selling: as many as are in storage (not placed), 99 at most
+void GymDecor_ChooseSellQuantity(void)
+{
+    ChooseQuantity(TRUE);
+}
+
 #undef tQuantity
 #undef tMax
 #undef tWindow
+#undef tSelling
 
 // A decoration won (a convention trophy): one more in storage
 void GymDecor_Give(u32 id)
@@ -749,7 +844,9 @@ static void WrapLine(u8 *str, u32 maxWidth, u32 fontId)
     }
 }
 
-static void PrintListInfo(u32 id, bool32 shop)
+enum { LIST_OWNED, LIST_SHOP, LIST_SELL };
+
+static void PrintListInfo(u32 id, u32 mode)
 {
     u8 *str;
     u8 *line;
@@ -757,7 +854,17 @@ static void PrintListInfo(u32 id, bool32 shop)
         return;
     str = Alloc(160);
     FillWindowPixelBuffer(sListAuxWindowId, PIXEL_FILL(1));
-    if (IsStyle(id))
+    bool32 shop = (mode == LIST_SHOP);
+    if (mode == LIST_SELL)
+    {
+        ConvertIntToDecimalStringN(gStringVar1, SellPrice(id), STR_CONV_MODE_LEFT_ALIGN, 6);
+        line = StringCopy(str, COMPOUND_STRING("SELLS: "));
+        StringExpandPlaceholders(line, gText_PokedollarVar1);
+        AddTextPrinterParameterized(sListAuxWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
+        line = StringCopy(str, COMPOUND_STRING("IN STORAGE: "));
+        ConvertIntToDecimalStringN(line, GymDecor_CountAvailable(id), STR_CONV_MODE_LEFT_ALIGN, 3);
+    }
+    else if (IsStyle(id))
     {
         // (bought once, used everywhere)
         if (shop && !GymDecor_CountOwned(id))
@@ -813,12 +920,17 @@ static void PrintListInfo(u32 id, bool32 shop)
 
 void GymDecor_ShopListOnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs)
 {
-    PrintListInfo(eventArgs->selectedItem, TRUE);
+    PrintListInfo(eventArgs->selectedItem, LIST_SHOP);
 }
 
 void GymDecor_OwnedListOnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs)
 {
-    PrintListInfo(eventArgs->selectedItem, FALSE);
+    PrintListInfo(eventArgs->selectedItem, LIST_OWNED);
+}
+
+void GymDecor_SellListOnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs)
+{
+    PrintListInfo(eventArgs->selectedItem, LIST_SELL);
 }
 
 void GymDecor_ListOnDestroy(struct DynamicListMenuEventArgs *eventArgs)
@@ -1116,7 +1228,7 @@ static void PrintHud(void)
         return;
     str = Alloc(100);
     FillWindowPixelBuffer(sHudWindowId, PIXEL_FILL(1));
-    help = COMPOUND_STRING("A:place START:turn SELECT:remove L/R B:done");
+    help = COMPOUND_STRING("A:place START:turn SELECT:pick up L/R B:done");
     if (sSelected == DECOR_NONE)
     {
         StringCopy(str, COMPOUND_STRING("Nothing left to place"));
@@ -1139,7 +1251,7 @@ static void PrintHud(void)
             ConvertIntToDecimalStringN(end, GymDecor_CountAvailable(sSelected), STR_CONV_MODE_LEFT_ALIGN, 3);
         }
         if (gGymDecor[sSelected].numFacings <= 1)
-            help = COMPOUND_STRING("A:place  SELECT:remove  L/R:switch  B:done");
+            help = COMPOUND_STRING("A:place  SELECT:pick up  L/R:switch  B:done");
     }
     AddTextPrinterParameterized(sHudWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
     AddTextPrinterParameterized(sHudWindowId, FONT_SMALL, help, 2, 16, TEXT_SKIP_DRAW, NULL);
@@ -1507,7 +1619,7 @@ bool32 GymDecor_HandleEditInput(struct FieldInput *input)
         GetXYCoordsOneStepInFrontOfPlayer(&fx, &fy);
         fx -= MAP_OFFSET;
         fy -= MAP_OFFSET;
-        if (sSelected != DECOR_NONE && IsFloor(sSelected))
+        if (sSelected != DECOR_NONE && IsFloor(sSelected) && FindPlacementAt(fx, fy) < 0)
         {
             // Fills the area of the floor in front with the selected one
             u32 style = gGymDecor[sSelected].style;
@@ -1526,13 +1638,17 @@ bool32 GymDecor_HandleEditInput(struct FieldInput *input)
         }
         else
         {
+            // Picks up the piece in front: it's the one in hand now, the same way round, to put
+            // down somewhere else (or swap for another with L/R: it's back in storage)
+            u32 id, facing;
             ClearPreview();
-            if (GymDecor_RemoveAt(fx, fy))
+            if (GymDecor_TakeAt(fx, fy, &id, &facing))
             {
                 PlaySE(SE_CLICK);
                 GymRoom_Build(TRUE);
-                if (sSelected == DECOR_NONE)
-                    SelectNext(1);
+                sSelected = id;
+                sFacing = facing;
+                sPainting = FALSE;
                 PrintHud();
             }
             else

@@ -477,12 +477,12 @@ void Tourney_RecordWin(void)
     gSpecialVar_Result = TRUE;
 }
 
-// Special, after a match won: hardly ever, a MOVE EXTRACTOR as a prize (not in the simulator).
+// Special, after a match won (in Bill's simulator too): hardly ever, a MOVE EXTRACTOR as a prize.
 // VAR_RESULT = TRUE if so, VAR_0x8009 = the item
 void Tourney_RollPrize(void)
 {
     gSpecialVar_Result = FALSE;
-    if (InSim() || Random() % TOURNEY_EXTRACTOR_ODDS != 0)
+    if (Random() % TOURNEY_EXTRACTOR_ODDS != 0)
         return;
     gSpecialVar_0x8009 = ITEM_MOVE_EXTRACTOR;
     gSpecialVar_Result = TRUE;
