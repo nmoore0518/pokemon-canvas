@@ -168,9 +168,12 @@ def build_campus():
         for dy in range(sy1 - sy0 + 1):
             for dx in range(sx1 - sx0 + 1):
                 v = SAFFRON[sy0 + dy][sx0 + dx]
-                if not (v >> 10) & 3 and (dx, dy) != b["door"]:       # (Saffron's pavement round it: lawn)
-                    continue
-                g[ay + dy][ax + dx] = c.copy(SAFFRON_SYM, v & 0x3FF) | (v & 0xFC00)
+                m = c.copy(SAFFRON_SYM, v & 0x3FF)
+                if not (v >> 10) & 3 and (dx, dy) != b["door"] and m >= 0x280:
+                    # (the roof's top edge, drawn over Saffron's pavement: over the lawn instead)
+                    m = c.add_metatile(c.ground(GRASS[(ay + dy) % 2][(ax + dx) % 2]) + c.metatiles[m - 0x280][4:],
+                                       c.attrs[m - 0x280])
+                g[ay + dy][ax + dx] = m | (v & 0xFC00)
         doors[name] = (ax + b["door"][0], ay + b["door"][1])
 
     # ---- the statue, lamps, benches, rose beds ----
