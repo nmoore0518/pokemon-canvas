@@ -2695,6 +2695,23 @@
 #define FLAG_GYM_LEGEND_CAUGHT_TYPE   0x114   // to 0x127
 #define FLAG_GYM_LEGEND_LOOSE_TYPE    0x128   // to 0x13B
 #define FLAG_GYM_TYPE_MASTERED        0x13C   // to 0x14F (+ type: its streak has been mastered)
+// The event Pokémon's side quests (src/event_mons.c, data/scripts/event_mons.inc): FireRed's unused 0x4E2-0x4FE
+#define FLAG_EVENT_COSPLAY_GIVEN              0x4E2   // (the Celadon costume maker's Cosplay Pikachu)
+#define FLAG_EVENT_HALL_STREAK_7              0x4E3   // (a 7-win streak in the Academy's Battle Hall: Rock Star Pikachu)
+#define FLAG_EVENT_PARTNER_PIKACHU            0x4E4   // (Oak's quiz, once Electric is mastered)
+#define FLAG_EVENT_PARTNER_EEVEE              0x4E5   // (Oak's quiz, once Normal is mastered)
+#define FLAG_EXOTIC_LEGEND_PICHU_SPIKY_EARED  0x4E6   // (the Ilex shrine, Celebi along)
+#define FLAG_EVENT_FANCY_SCATTERBUG           0x4E7   // (the Vivillon collector: 6 patterns shown)
+#define FLAG_EVENT_POKEBALL_SCATTERBUG        0x4E8   // (... all 18)
+#define FLAG_EVENT_BATTLE_BOND_FROAKIE        0x4E9   // (after the Gauntlet's Kalos challengers)
+#define FLAG_EVENT_AZ_FLOETTE_SHOWN           0x4EA   // (AZ has seen a Floette and told his story)
+#define FLAG_EVENT_ETERNAL_FLOETTE            0x4EB
+#define FLAG_EVENT_OWN_TEMPO_ROCKRUFF         0x4EC   // (the Alola zone's Rockruff trainer beaten)
+#define FLAG_EVENT_PAINT_POT_FIRST            0x4ED   // (to 0x4F0: the four antique paint pots)
+#define FLAG_EVENT_MAGEARNA_ORIGINAL          0x4F1
+#define FLAG_EXOTIC_LEGEND_ZARUDE_DADA        0x4F2   // (Glimwood's glade, Celebi along, Zarude caught)
+#define FLAG_EXOTIC_LEGEND_ETERNATUS_ETERNAMAX 0x4F3  // (the Darkest Day, on the pitch)
+// (0x4F4: Pallet Town's Lucky Egg, constants/flags_frlg.h)
 
 
 #if TESTING

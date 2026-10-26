@@ -29,7 +29,7 @@ ExoticSafari_AlolaVolcano_EventScript_LegendSolgaleo::
 
 ExoticSafari_AlolaVolcano_EventScript_SealSolgaleo::
 	lockall
-	setvar VAR_0x8004, 19
+	setvar VAR_0x8004, 21
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaVolcano_EventScript_LegendNecrozma::
@@ -44,7 +44,7 @@ ExoticSafari_AlolaVolcano_EventScript_LegendNecrozma::
 
 ExoticSafari_AlolaVolcano_EventScript_SealNecrozma::
 	lockall
-	setvar VAR_0x8004, 20
+	setvar VAR_0x8004, 22
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaVolcano_EventScript_ItemSunStone::
@@ -59,3 +59,7 @@ ExoticSafari_AlolaVolcano_EventScript_Relic4::
 	lock
 	setvar VAR_0x8004, 4
 	goto ExoticSafari_EventScript_Relic
+
+ExoticSafari_AlolaVolcano_EventScript_PaintPot::
+	lock
+	goto EventMons_EventScript_PaintPot

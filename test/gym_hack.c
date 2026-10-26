@@ -12,6 +12,10 @@
 #include "leader_academy.h"
 #include "team_builder.h"
 #include "dex_forms.h"
+#include "event_mons.h"
+#include "party_menu.h"
+#include "item.h"
+#define ACADEMY_LECTURE_COUNT_FOR_TEST 8
 #include "gym_challenge.h"
 #include "constants/event_objects.h"
 #include "constants/pokedex.h"
@@ -2518,7 +2522,9 @@ TEST("GymHack: the team builder only offers Pokemon the player can get by now")
     EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_SPRIGATITO)));     // (the Exotic Safari)
     EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_RAYQUAZA)));       // (the Dragon gym's legendary)
     EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_ARCEUS_NORMAL)));
-    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_PIKACHU_COSPLAY))); // (event only)
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_PIKACHU_COSPLAY))); // (the costume maker: post-game)
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_PIKACHU_ORIGINAL)));  // (the caps: main game)
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_PIKACHU_STARTER)));
     FlagSet(FLAG_PALLET_GYM_AWARDED);
     FlagSet(FLAG_SYS_GAME_CLEAR);
     EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_SPRIGATITO)));
@@ -2530,4 +2536,100 @@ TEST("GymHack: the team builder only offers Pokemon the player can get by now")
     VarSet(VAR_GAUNTLET_STATE, GAUNTLET_NONE);
     FlagClear(FLAG_PALLET_GYM_AWARDED);
     FlagClear(FLAG_SYS_GAME_CLEAR);
+}
+
+TEST("GymHack: every species and form can be had somewhere")
+{
+    u32 i;
+    for (i = 0; i < DEX_FORM_COUNT; i++)
+        EXPECT_NE(gDexFormAvail[i] & AVAIL_TIER_MASK, AVAIL_NEVER);
+}
+
+TEST("GymHack: the Let's Go partners wait for their type to be mastered")
+{
+    FlagSet(FLAG_PALLET_GYM_AWARDED);
+    FlagClear(FLAG_GYM_TYPE_MASTERED + TYPE_ELECTRIC);
+    FlagClear(FLAG_GYM_TYPE_MASTERED + TYPE_NORMAL);
+    FlagClear(FLAG_EVENT_PARTNER_PIKACHU);
+    FlagClear(FLAG_EVENT_PARTNER_EEVEE);
+    VarSet(VAR_GAUNTLET_STATE, GAUNTLET_NONE);
+    EventMons_PartnerReady();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    EXPECT(!TeamBuilder_IsAvailable(FormIndex(SPECIES_EEVEE_STARTER)));
+    FlagSet(FLAG_GYM_TYPE_MASTERED + TYPE_NORMAL);
+    EventMons_PartnerReady();
+    EXPECT_EQ(gSpecialVar_Result, 2);
+    EXPECT(TeamBuilder_IsAvailable(FormIndex(SPECIES_EEVEE_STARTER)));
+    FlagSet(FLAG_GYM_TYPE_MASTERED + TYPE_ELECTRIC);
+    EventMons_PartnerReady();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    FlagClear(FLAG_GYM_TYPE_MASTERED + TYPE_ELECTRIC);
+    FlagClear(FLAG_GYM_TYPE_MASTERED + TYPE_NORMAL);
+    FlagClear(FLAG_PALLET_GYM_AWARDED);
+}
+
+TEST("GymHack: Cosplay Pikachu changes costume and brings the costume's move")
+{
+    u32 i;
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_PIKACHU_COSPLAY, 50;);
+    for (i = 0; i < ACADEMY_LECTURE_COUNT_FOR_TEST; i++)
+        FlagSet(FLAG_ACADEMY_LECTURE_FIRST + i);
+    gSpecialVar_0x8005 = 4;     // (Ph.D.)
+    EventMons_CostumeUnlocked();
+    EXPECT(gSpecialVar_Result);
+    gSpecialVar_0x8004 = 0;
+    EventMons_SetCostume();
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIKACHU_PHD);
+    EXPECT(MonKnowsMove(&gParties[B_TRAINER_PLAYER][0], MOVE_ELECTRIC_TERRAIN));
+    gSpecialVar_0x8005 = 0;     // (back to no costume: Electric Terrain goes, Thunder Shock comes)
+    EventMons_SetCostume();
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIKACHU_COSPLAY);
+    EXPECT(!MonKnowsMove(&gParties[B_TRAINER_PLAYER][0], MOVE_ELECTRIC_TERRAIN));
+    for (i = 0; i < ACADEMY_LECTURE_COUNT_FOR_TEST; i++)
+        FlagClear(FLAG_ACADEMY_LECTURE_FIRST + i);
+}
+
+TEST("GymHack: the caps need the Cap Case, and each is traded once")
+{
+    VarSet(VAR_EVENT_CAPS, 0);
+    RemoveBagItem(ITEM_CAP_CASE, 1);
+    gSpecialVar_0x8004 = 3;
+    EventMons_CapFound();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    AddBagItem(ITEM_CAP_CASE, 1);
+    EventMons_CapFound();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    EventMons_CapFound();
+    EXPECT_EQ(gSpecialVar_Result, 2);
+    EventMons_CapReward();
+    EXPECT_EQ(gSpecialVar_Result, SPECIES_PIKACHU_UNOVA);
+    EventMons_CapRewardGiven();
+    EventMons_CapReward();
+    EXPECT_EQ(gSpecialVar_Result, SPECIES_NONE);
+    VarSet(VAR_EVENT_CAPS, 0x7F00);     // (all seven traded: the Partner Cap)
+    EventMons_CapReward();
+    EXPECT_EQ(gSpecialVar_Result, SPECIES_PIKACHU_PARTNER);
+    VarSet(VAR_EVENT_CAPS, 0);
+    RemoveBagItem(ITEM_CAP_CASE, 1);
+}
+
+TEST("GymHack: a Battle Bond Froakie's line ends in Greninja's Battle Bond form")
+{
+    struct Pokemon mon;
+    bool32 bond = TRUE;
+    CreateRandomMon(&mon, SPECIES_FROGADIER, 40);
+    EXPECT_EQ(EventMons_EvolutionTarget(&mon, SPECIES_GRENINJA), SPECIES_GRENINJA);
+    SetMonData(&mon, MON_DATA_BATTLE_BOND, &bond);
+    EXPECT_EQ(EventMons_EvolutionTarget(&mon, SPECIES_GRENINJA), SPECIES_GRENINJA_BATTLE_BOND);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_GRENINJA_BATTLE_BOND);
+}
+
+TEST("GymHack: Eternamax is the pitch's alone")
+{
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_ETERNATUS_ETERNAMAX, 70;);
+    EventMons_OnMapLoad();      // (the tests' map isn't the pitch)
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_ETERNATUS);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HP), GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_MAX_HP));
 }

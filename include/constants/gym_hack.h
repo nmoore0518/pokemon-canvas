@@ -80,6 +80,8 @@
 #define AVAIL_GYM_LEGEND(type) (((type) + 1) << 8)   // ... and needs the gym legendary of this type
                                                     // (it comes once the gym has had that type)
 #define AVAIL_LEGEND_TYPE(a)  (((a) >> 8) - 1)          // (-1: none)
+#define AVAIL_MASTERY     0x80  // (with the type above: not its legendary, but that type mastered)
+#define AVAIL_TYPE_MASTERED(type) (AVAIL_GYM_LEGEND(type) | AVAIL_MASTERY)
 
 #define JOHTO_NOT_INVITED       0
 #define JOHTO_INVITE_WAITING    1   // (after the gym's handed over: the mentor brings it next visit)

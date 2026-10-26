@@ -24,7 +24,7 @@ ExoticSafari_KalosCave_EventScript_LegendHoopa::
 
 ExoticSafari_KalosCave_EventScript_SealHoopa::
 	lockall
-	setvar VAR_0x8004, 23
+	setvar VAR_0x8004, 25
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_KalosCave_EventScript_Cell0::

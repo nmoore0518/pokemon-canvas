@@ -9,6 +9,7 @@ ExoticSafari_EventScript_LegendBattle::
 	waitmoncry
 	special ExoticSafari_LegendForm
 	setvar VAR_0x8005, EXOTIC_SAFARI_LEGEND_LEVEL
+	special ExoticSafari_LegendLevel
 	setvar VAR_0x8006, ITEM_NONE
 	special CreateEnemyEventMon
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -68,6 +69,7 @@ ExoticSafari_EventScript_Seal::
 	case SEAL_WISH, ExoticSafari_EventScript_SealWish
 	case SEAL_GS_BALL, ExoticSafari_EventScript_SealGsBall
 	case SEAL_REVISIT, ExoticSafari_EventScript_SealRevisit
+	case SEAL_PARTY, EventMons_EventScript_SealParty
 	msgbox ExoticSafari_Text_SealMastery
 	releaseall
 	end

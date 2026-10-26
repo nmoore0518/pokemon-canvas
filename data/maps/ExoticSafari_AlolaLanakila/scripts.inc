@@ -29,7 +29,7 @@ ExoticSafari_AlolaLanakila_EventScript_LegendLunala::
 
 ExoticSafari_AlolaLanakila_EventScript_SealLunala::
 	lockall
-	setvar VAR_0x8004, 21
+	setvar VAR_0x8004, 23
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaLanakila_EventScript_ItemMoonStone::
@@ -44,3 +44,7 @@ ExoticSafari_AlolaLanakila_EventScript_Relic5::
 	lock
 	setvar VAR_0x8004, 5
 	goto ExoticSafari_EventScript_Relic
+
+ExoticSafari_AlolaLanakila_EventScript_PaintPot::
+	lock
+	goto EventMons_EventScript_PaintPot

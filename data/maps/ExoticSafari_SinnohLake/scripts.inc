@@ -44,7 +44,7 @@ ExoticSafari_SinnohLake_EventScript_LegendUxie::
 
 ExoticSafari_SinnohLake_EventScript_SealUxie::
 	lockall
-	setvar VAR_0x8004, 34
+	setvar VAR_0x8004, 36
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_SinnohLake_EventScript_LegendAzelf::
@@ -59,7 +59,7 @@ ExoticSafari_SinnohLake_EventScript_LegendAzelf::
 
 ExoticSafari_SinnohLake_EventScript_SealAzelf::
 	lockall
-	setvar VAR_0x8004, 35
+	setvar VAR_0x8004, 37
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_SinnohLake_EventScript_LegendMesprit::
@@ -74,5 +74,5 @@ ExoticSafari_SinnohLake_EventScript_LegendMesprit::
 
 ExoticSafari_SinnohLake_EventScript_SealMesprit::
 	lockall
-	setvar VAR_0x8004, 36
+	setvar VAR_0x8004, 38
 	goto ExoticSafari_EventScript_Seal

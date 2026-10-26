@@ -44,7 +44,7 @@ ExoticSafari_AlolaResort_EventScript_LegendMagearna::
 
 ExoticSafari_AlolaResort_EventScript_SealMagearna::
 	lockall
-	setvar VAR_0x8004, 14
+	setvar VAR_0x8004, 16
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaResort_EventScript_LegendMeltan::
@@ -59,5 +59,5 @@ ExoticSafari_AlolaResort_EventScript_LegendMeltan::
 
 ExoticSafari_AlolaResort_EventScript_SealMeltan::
 	lockall
-	setvar VAR_0x8004, 15
+	setvar VAR_0x8004, 17
 	goto ExoticSafari_EventScript_Seal

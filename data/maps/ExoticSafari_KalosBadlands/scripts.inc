@@ -34,7 +34,7 @@ ExoticSafari_KalosBadlands_EventScript_LegendYveltal::
 
 ExoticSafari_KalosBadlands_EventScript_SealYveltal::
 	lockall
-	setvar VAR_0x8004, 24
+	setvar VAR_0x8004, 26
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_KalosBadlands_EventScript_Cell0::

@@ -24,5 +24,5 @@ ExoticSafari_UnovaChargestone_EventScript_LegendZekrom::
 
 ExoticSafari_UnovaChargestone_EventScript_SealZekrom::
 	lockall
-	setvar VAR_0x8004, 31
+	setvar VAR_0x8004, 33
 	goto ExoticSafari_EventScript_Seal

@@ -730,7 +730,9 @@ bool32 TeamBuilder_IsAvailable(u32 form)
     case AVAIL_MASTERED: ok = FlagGet(FLAG_PALLET_GYM_AWARDED) && GymSwitch_AllTypesMastered(); break;
     default:             ok = FALSE; break;
     }
-    if (ok && legendType >= 0)
+    if (ok && legendType >= 0 && (avail & AVAIL_MASTERY))      // (the Let's Go partners: Oak's quiz)
+        ok = FlagGet(FLAG_GYM_TYPE_MASTERED + legendType);
+    else if (ok && legendType >= 0)
         ok = GymSwitch_IsOwned(legendType) || FlagGet(FLAG_GYM_LEGEND_LOOSE_TYPE + legendType)
           || FlagGet(FLAG_GYM_LEGEND_CAUGHT_TYPE + legendType);
     return ok;

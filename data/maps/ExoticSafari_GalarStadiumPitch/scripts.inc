@@ -33,6 +33,21 @@ ExoticSafari_GalarStadiumPitch_EventScript_SealKubfu::
 	setvar VAR_0x8004, 9
 	goto ExoticSafari_EventScript_Seal
 
+ExoticSafari_GalarStadiumPitch_EventScript_LegendEternatusEternamax::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_ETERNATUS_ETERNAMAX
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_LEGEND_ETERNATUS_ETERNAMAX
+	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_GalarStadiumPitch_EventScript_SealEternatusEternamax::
+	lockall
+	setvar VAR_0x8004, 10
+	goto ExoticSafari_EventScript_Seal
+
 ExoticSafari_GalarStadiumPitch_EventScript_ItemScrollOfDarkness::
 	finditem ITEM_SCROLL_OF_DARKNESS
 	end

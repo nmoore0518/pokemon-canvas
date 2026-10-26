@@ -7,6 +7,7 @@
 // comes out of it), and closes again when they walk away. Checked after every step in the hall
 // (src/field_control_avatar.c) and when the hall loads.
 #include "global.h"
+#include "event_mons.h"
 #include "exotic_safari.h"
 #include "event_data.h"
 #include "field_player_avatar.h"
@@ -355,6 +356,56 @@ static u16 CaughtFlag(u16 species)
     return 0;
 }
 
+// The event Pokémon's statics (src/event_mons.c): who must be in the party, and one that must be caught
+struct PartySeal { u16 party[3]; u16 caught; };
+static const struct PartySeal sPartySeals[] =
+{
+    {{SPECIES_CELEBI}, SPECIES_NONE},                                        // (Spiky-eared Pichu)
+    {{SPECIES_CELEBI}, SPECIES_ZARUDE},                                      // (Zarude, Dada)
+    {{SPECIES_ZACIAN, SPECIES_ZAMAZENTA, SPECIES_ETERNATUS}, SPECIES_NONE},  // (Eternamax)
+};
+
+static bool32 PartyHasBase(u32 base)
+{
+    u32 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][i];
+        if (!GetMonData(mon, MON_DATA_IS_EGG) && GET_BASE_SPECIES_ID(GetMonData(mon, MON_DATA_SPECIES)) == base)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static u16 CaughtFlag(u16 species);
+
+// How much of a party seal is left; STR_VAR_1 = what's missing first, VAR_0x8005 = whether that's a
+// Pokémon to catch (TRUE) or one to bring (FALSE)
+static u32 PartySealLeft(u32 k, bool32 buffer)
+{
+    const struct PartySeal *s = &sPartySeals[min(k, ARRAY_COUNT(sPartySeals) - 1)];
+    u32 i, left = 0;
+    if (s->caught != SPECIES_NONE && !FlagGet(CaughtFlag(s->caught)))
+    {
+        if (left++ == 0 && buffer)
+        {
+            StringCopy(gStringVar1, GetSpeciesName(s->caught));
+            gSpecialVar_0x8005 = TRUE;
+        }
+    }
+    for (i = 0; i < ARRAY_COUNT(s->party); i++)
+    {
+        if (s->party[i] == SPECIES_NONE || PartyHasBase(s->party[i]))
+            continue;
+        if (left++ == 0 && buffer)
+        {
+            StringCopy(gStringVar1, GetSpeciesName(s->party[i]));
+            gSpecialVar_0x8005 = FALSE;
+        }
+    }
+    return left;
+}
+
 // STR_VAR_1: the legendaries of sCaughtSeals[k] not yet caught ("A", "A and B", "A, B and C")
 static void BufferUncaught(u32 k)
 {
@@ -461,6 +512,8 @@ static u32 SealLeft(const struct ExoticSafariStatic *s)
         return !(Lead() && GetMonData(Lead(), MON_DATA_HELD_ITEM) == ITEM_BLUE_ORB);
     case SEAL_GS_BALL:      // (Celebi: the GS Ball found)
         return !FlagGet(FLAG_EXOTIC_GS_BALL);
+    case SEAL_PARTY:        // (event Pokémon: sPartySeals[sealArg])
+        return PartySealLeft(s->sealArg, FALSE);
     case SEAL_WISH:         // (Jirachi: the zone's other legendaries caught)
         for (i = 0; i < ARRAY_COUNT(sWishSeal); i++)
             left += !FlagGet(CaughtFlag(sWishSeal[i]));
@@ -505,6 +558,8 @@ void ExoticSafari_BufferSeal(void)
         StringCopy(gStringVar1, sRelics[s->sealArg].name);
     else if (s->seal == SEAL_REGIS)
         BufferRegisMissing();
+    else if (s->seal == SEAL_PARTY)
+        PartySealLeft(s->sealArg, TRUE);
     if (s->seal == SEAL_BLUE_ORB)            // (VAR_0x8005: the Blue Orb found yet)
         gSpecialVar_0x8005 = FlagGet(FLAG_EXOTIC_ITEM_BLUE_ORB);
     ConvertIntToDecimalStringN(gStringVar2, left, STR_CONV_MODE_LEFT_ALIGN, 2);
@@ -733,7 +788,7 @@ u16 ExoticSafari_WildSpecies(u16 species, u8 *level)
         *level = EXOTIC_SAFARI_LEGEND_LEVEL;
         return WildZygarde();
     }
-    species = RandomForm(PoolSpecies(species));
+    species = EventMons_WildVivillonPattern(RandomForm(PoolSpecies(species)));   // (Fancy, Poké Ball: src/event_mons.c)
     if (!unown || UnownPanelsOpen() < UNOWN_PANELS
      || gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(EXOTIC_SAFARI_UNOWN_MAP)
      || gSaveBlock1Ptr->location.mapNum != MAP_NUM(EXOTIC_SAFARI_UNOWN_MAP))
@@ -1105,6 +1160,14 @@ void ExoticSafari_CountCells(void)
 // Special (a legendary's battle, VAR_0x8004 its species): the form it battles in. Zygarde: its 10%
 // Forme; its 50% Forme with 8 of its Cells found; with all of them, whole: Power Construct (its 100%
 // Complete Forme in battle)
+// Special (after the level is set, VAR_0x8005): the event Pokémon's own levels (Spiky-eared Pichu: a
+// first-stage Pokémon, at a starter's level)
+void ExoticSafari_LegendLevel(void)
+{
+    if (gSpecialVar_0x8004 == SPECIES_PICHU_SPIKY_EARED)
+        gSpecialVar_0x8005 = 5;
+}
+
 void ExoticSafari_LegendForm(void)
 {
     if (gSpecialVar_0x8004 != SPECIES_ZYGARDE)

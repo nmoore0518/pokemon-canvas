@@ -29,7 +29,7 @@ ExoticSafari_GalarForest_EventScript_LegendZarude::
 
 ExoticSafari_GalarForest_EventScript_SealZarude::
 	lockall
-	setvar VAR_0x8004, 12
+	setvar VAR_0x8004, 13
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_GalarForest_EventScript_LegendEnamorus::
@@ -44,7 +44,22 @@ ExoticSafari_GalarForest_EventScript_LegendEnamorus::
 
 ExoticSafari_GalarForest_EventScript_SealEnamorus::
 	lockall
-	setvar VAR_0x8004, 13
+	setvar VAR_0x8004, 14
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_GalarForest_EventScript_LegendZarudeDada::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_ZARUDE_DADA
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_LEGEND_ZARUDE_DADA
+	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_GalarForest_EventScript_SealZarudeDada::
+	lockall
+	setvar VAR_0x8004, 15
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_GalarForest_EventScript_ItemChippedPot::

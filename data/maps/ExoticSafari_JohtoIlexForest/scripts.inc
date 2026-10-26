@@ -24,5 +24,20 @@ ExoticSafari_JohtoIlexForest_EventScript_LegendCelebi::
 
 ExoticSafari_JohtoIlexForest_EventScript_SealCelebi::
 	lockall
-	setvar VAR_0x8004, 47
+	setvar VAR_0x8004, 49
+	goto ExoticSafari_EventScript_Seal
+
+ExoticSafari_JohtoIlexForest_EventScript_LegendPichuSpikyEared::
+	lock
+	faceplayer
+	setvar VAR_0x8004, SPECIES_PICHU_SPIKY_EARED
+	call ExoticSafari_EventScript_LegendBattle
+	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, ExoticSafari_EventScript_LegendGone
+	removeobject VAR_LAST_TALKED
+	setflag FLAG_EXOTIC_LEGEND_PICHU_SPIKY_EARED
+	goto ExoticSafari_EventScript_Release
+
+ExoticSafari_JohtoIlexForest_EventScript_SealPichuSpikyEared::
+	lockall
+	setvar VAR_0x8004, 50
 	goto ExoticSafari_EventScript_Seal

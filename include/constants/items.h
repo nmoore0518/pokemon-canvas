@@ -1107,6 +1107,7 @@ enum __attribute__((packed)) Item
     ITEM_EXOTIC_PASS = 923,  // Pokémon Canvas: entry to the Exotic Pokémon Safari's zones
     ITEM_GYM_CHARM = 924,    // Pokémon Canvas: Shiny Pokémon of the gym's type are more likely (src/pokemon.c)
     ITEM_RAYQUAZITE = 925,   // Pokémon Canvas: Rayquaza Mega Evolves with a stone like the others (no Dragon Ascent)
+    ITEM_CAP_CASE = 926,     // Pokémon Canvas: the Pallet boy's lost caps go in it (src/event_mons.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

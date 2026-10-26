@@ -24,5 +24,5 @@ ExoticSafari_SinnohHallOfOrigin_EventScript_LegendArceus::
 
 ExoticSafari_SinnohHallOfOrigin_EventScript_SealArceus::
 	lockall
-	setvar VAR_0x8004, 40
+	setvar VAR_0x8004, 42
 	goto ExoticSafari_EventScript_Seal

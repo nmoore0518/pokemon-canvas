@@ -29,7 +29,7 @@ ExoticSafari_AlolaRuins_EventScript_LegendMarshadow::
 
 ExoticSafari_AlolaRuins_EventScript_SealMarshadow::
 	lockall
-	setvar VAR_0x8004, 18
+	setvar VAR_0x8004, 20
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaRuins_EventScript_ItemDuskStone::
@@ -45,3 +45,7 @@ ExoticSafari_AlolaRuins_EventScript_Relic3::
 	lock
 	setvar VAR_0x8004, 3
 	goto ExoticSafari_EventScript_Relic
+
+ExoticSafari_AlolaRuins_EventScript_PaintPot::
+	lock
+	goto EventMons_EventScript_PaintPot

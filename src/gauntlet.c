@@ -424,6 +424,32 @@ static u32 CountInRegion(u32 region, bool32 beatenOnly)
     return n;
 }
 
+// (src/event_mons.c) Whether every challenger from a region has been beaten (in the first run: the
+// simulator's runs don't count, but once the first run is over they all have been)
+bool32 Gauntlet_RegionBeaten(u32 region)
+{
+    u32 state = VarGet(VAR_GAUNTLET_STATE);
+    if (state >= GAUNTLET_ALL_BEATEN)
+        return TRUE;
+    if (state != GAUNTLET_ACTIVE)
+        return FALSE;
+    return CountInRegion(region, TRUE) == CountInRegion(region, FALSE);
+}
+
+// (src/event_mons.c) Whether the challenger with this name has been beaten (first run)
+bool32 Gauntlet_TrainerBeaten(const u8 *name)
+{
+    u32 i, state = VarGet(VAR_GAUNTLET_STATE);
+    if (state >= GAUNTLET_ALL_BEATEN)
+        return TRUE;
+    if (state != GAUNTLET_ACTIVE)
+        return FALSE;
+    for (i = 0; i < GAUNTLET_COUNT; i++)
+        if (StringCompare(sGauntletTrainers[i].name, name) == 0)
+            return i < Next();
+    return FALSE;
+}
+
 // Special: the clipboard's pages, one per region: "KANTO 3/10" (a star once all are beaten)
 void Gauntlet_PushRegions(void)
 {

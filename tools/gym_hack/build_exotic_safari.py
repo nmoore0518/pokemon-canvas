@@ -533,6 +533,7 @@ import sinnoh                                   # noqa: E402
 import hoenn                                    # noqa: E402
 import johto_safari                             # noqa: E402
 import safari_names                             # noqa: E402
+import event_mons_safari                        # noqa: E402
 import render_map                               # noqa: E402  (tileset_dir)
 
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
@@ -637,6 +638,7 @@ def pick_spot(g, beh, reach, taken, warps, seed):
 def build_region(mod, zone_warp, out):
     """One region's zone (mod: tools/gym_hack/<region>.py): its areas' layouts, maps, scripts, wild
     Pokémon; adds its rows to `out` (the header's tables)"""
+    event_mons_safari.patch(mod)             # (the event Pokémon's statics)
     areas = mod.AREAS
     region = mod.REGION
     built = {}
@@ -833,10 +835,11 @@ def build_region(mod, zone_warp, out):
             o = obj("OBJ_EVENT_GFX_VELVET_ROPE", x, y, "ExoticSafari_EventScript_Rope", "MOVEMENT_TYPE_FACE_DOWN")
             o["elevation"] = elev(x, y)
             objects.append(o)
+        ctx = {"name": name, "objects": objects, "bgs": bgs, "coords": coords, "scripts": scripts,
+               "elev": elev, "g": g, "reach": reach, "obj": obj, "beh": b["beh"], "warps": b["warps"]}
         if "extra" in a:                         # (anything else: puzzles' signs, triggers, people)
-            a["extra"]({"name": name, "objects": objects, "bgs": bgs, "coords": coords, "scripts": scripts,
-                        "elev": elev, "g": g, "reach": reach, "obj": obj, "beh": b["beh"],
-                        "warps": b["warps"]})
+            a["extra"](ctx)
+        event_mons_safari.extra(ctx)            # (the event Pokémon's people and the paint pots)
         for o in a.get("objects", []):          # (anything else the area wants: decorations)
             objects.append(dict(obj(o["gfx"], o["x"], o["y"], o.get("script", "0"), o.get("movement", "MOVEMENT_TYPE_FACE_DOWN")),
                                 elevation=elev(o["x"], o["y"])))
@@ -1251,6 +1254,7 @@ def main():
               "#define SEAL_WISH     32    // (Jirachi: the zone's other legendaries caught)",
               "#define SEAL_GS_BALL  33    // (Celebi: the GS Ball found)",
               "#define SEAL_REVISIT  34    // (the second Kubfu: every Galar area visited again)",
+              "#define SEAL_PARTY    35    // (event Pokémon: certain Pokémon in the party, sometimes one caught: sPartySeals[sealArg])",
               "#define SEAL_RESULT_CAUGHT 0xFF", "#define SEAL_RESULT_AWAY 0xFE",
               "// Each static legendary's index (sExoticSafariStatics)"]
     consts += [f"#define EXOTIC_SAFARI_STATIC_{sp} {i}" for i, sp in enumerate(STATICS)]

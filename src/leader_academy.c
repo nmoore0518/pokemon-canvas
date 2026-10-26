@@ -13,6 +13,7 @@
 //     happens inside one locked script, so the game can't be saved with the rentals in the party.
 #include "global.h"
 #include "leader_academy.h"
+#include "event_mons.h"
 #include "battle.h"
 #include "data.h"
 #include "event_data.h"
@@ -407,6 +408,7 @@ void Academy_HallWin(void)
 {
     sStreak++;
     gSpecialVar_0x8004 = 1 + sStreak / 3 + (sStreak == 7 ? 5 : 0);
+    EventMons_HallStreak(sStreak);     // (Rock Star Pikachu's costume)
     gSpecialVar_Result = sStreak;
     ConvertIntToDecimalStringN(gStringVar2, sStreak, STR_CONV_MODE_LEFT_ALIGN, 3);
 }

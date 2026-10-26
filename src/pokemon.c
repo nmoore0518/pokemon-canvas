@@ -1,4 +1,5 @@
 #include "global.h"
+#include "event_mons.h"
 #include "gauntlet.h"
 #include "exotic_safari.h"
 #include "malloc.h"
@@ -4445,7 +4446,15 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
     return TRUE;
 }
 
+static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum EvolutionMode mode, enum Item evolutionItem, struct Pokemon *tradePartner, bool32 *canStopEvo, enum EvoState evoState);
+
+// Pokémon Canvas: a Battle Bond Froakie's line ends in Greninja's Battle Bond form (src/event_mons.c)
 enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode mode, enum Item evolutionItem, struct Pokemon *tradePartner, bool32 *canStopEvo, enum EvoState evoState)
+{
+    return EventMons_EvolutionTarget(mon, GetEvolutionTargetSpeciesInternal(mon, mode, evolutionItem, tradePartner, canStopEvo, evoState));
+}
+
+static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum EvolutionMode mode, enum Item evolutionItem, struct Pokemon *tradePartner, bool32 *canStopEvo, enum EvoState evoState)
 {
     int i;
     enum Species targetSpecies = SPECIES_NONE;

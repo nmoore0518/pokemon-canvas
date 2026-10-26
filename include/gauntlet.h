@@ -16,5 +16,7 @@ void Gauntlet_RevealBill(void);
 bool32 Gauntlet_IsBillBattle(void);
 void Gauntlet_ChooseWithdraw(void);
 void Gauntlet_UseWithdraw(void);
+bool32 Gauntlet_RegionBeaten(u32 region);
+bool32 Gauntlet_TrainerBeaten(const u8 *name);
 
 #endif // GUARD_GAUNTLET_H

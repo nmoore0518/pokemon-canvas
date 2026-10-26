@@ -116,6 +116,20 @@
     },
     {
       "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SPECIES(ZARUDE_DADA)",
+      "x": 30,
+      "y": 2,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "ExoticSafari_GalarForest_EventScript_LegendZarudeDada",
+      "flag": "FLAG_TEMP_13"
+    },
+    {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 35,
       "y": 2,
@@ -169,6 +183,20 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ExoticSafari_GalarForest_EventScript_ItemRustedSword",
       "flag": "FLAG_EXOTIC_ITEM_RUSTED_SWORD"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_LITTLE_BOY_FRLG",
+      "x": 37,
+      "y": 3,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "EventMons_EventScript_GlimwoodBoy",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -216,6 +244,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "ExoticSafari_GalarForest_EventScript_SealEnamorus"
+    },
+    {
+      "type": "sign",
+      "x": 30,
+      "y": 2,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "ExoticSafari_GalarForest_EventScript_SealZarudeDada"
     },
     {
       "type": "sign",

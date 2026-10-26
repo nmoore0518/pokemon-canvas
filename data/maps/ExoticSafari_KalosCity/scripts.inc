@@ -25,7 +25,7 @@ ExoticSafari_KalosCity_EventScript_LegendZygarde::
 
 ExoticSafari_KalosCity_EventScript_SealZygarde::
 	lockall
-	setvar VAR_0x8004, 22
+	setvar VAR_0x8004, 24
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_KalosCity_EventScript_ItemSachet::

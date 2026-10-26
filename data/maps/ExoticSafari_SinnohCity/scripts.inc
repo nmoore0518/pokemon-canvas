@@ -24,5 +24,5 @@ ExoticSafari_SinnohCity_EventScript_LegendRegigigas::
 
 ExoticSafari_SinnohCity_EventScript_SealRegigigas::
 	lockall
-	setvar VAR_0x8004, 38
+	setvar VAR_0x8004, 40
 	goto ExoticSafari_EventScript_Seal

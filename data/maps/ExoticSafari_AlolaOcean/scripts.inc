@@ -34,7 +34,7 @@ ExoticSafari_AlolaOcean_EventScript_LegendZeraora::
 
 ExoticSafari_AlolaOcean_EventScript_SealZeraora::
 	lockall
-	setvar VAR_0x8004, 17
+	setvar VAR_0x8004, 19
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaOcean_EventScript_Relic1::

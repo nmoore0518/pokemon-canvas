@@ -29,10 +29,14 @@ ExoticSafari_AlolaBeach_EventScript_LegendCosmog::
 
 ExoticSafari_AlolaBeach_EventScript_SealCosmog::
 	lockall
-	setvar VAR_0x8004, 16
+	setvar VAR_0x8004, 18
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_AlolaBeach_EventScript_Relic2::
 	lock
 	setvar VAR_0x8004, 2
 	goto ExoticSafari_EventScript_Relic
+
+ExoticSafari_AlolaBeach_EventScript_PaintPot::
+	lock
+	goto EventMons_EventScript_PaintPot

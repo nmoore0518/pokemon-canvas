@@ -29,7 +29,7 @@ ExoticSafari_HoennPacifidlog_EventScript_LegendKyogre::
 
 ExoticSafari_HoennPacifidlog_EventScript_SealKyogre::
 	lockall
-	setvar VAR_0x8004, 41
+	setvar VAR_0x8004, 43
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_HoennPacifidlog_EventScript_ItemSoulDew::

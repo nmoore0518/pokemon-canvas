@@ -353,6 +353,10 @@
 // The legendary of the player's type after its battle on the stage: GYM_LEGEND_* (include/constants/gym_hack.h)
 #define VAR_GYM_LEGEND_STATE                             0x40FE
 #define VAR_JOHTO_STATE                                  0x40FF // (JOHTO_* in constants/gym_hack.h)
+// The event Pokémon's side quests (src/event_mons.c). FireRed's scripts never use these three.
+#define VAR_EVENT_CAPS                                   0x4091 // (bits 0-6: caps found; 8-15: cap Pikachu given)
+#define VAR_EVENT_VIVILLON_LO                            0x409B // (Vivillon patterns shown to the collector: 0-15)
+#define VAR_EVENT_VIVILLON_HI                            0x409D // (... 16-17)
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

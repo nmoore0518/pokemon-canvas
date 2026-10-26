@@ -29,7 +29,7 @@ ExoticSafari_KalosOcean_EventScript_LegendVolcanion::
 
 ExoticSafari_KalosOcean_EventScript_SealVolcanion::
 	lockall
-	setvar VAR_0x8004, 25
+	setvar VAR_0x8004, 27
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_KalosOcean_EventScript_Cell0::

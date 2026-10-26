@@ -17013,6 +17013,23 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_Rayquazite,
         .iconPalette = gItemIconPalette_Rayquazite,
     },
+
+    [ITEM_CAP_CASE] =
+    {
+        // Pokémon Canvas: from the boy in Pallet Town who lost his caps (src/event_mons.c)
+        .name = ITEM_NAME("Cap Case"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "Holds the caps\n"
+            "you find for the\n"
+            "boy in Pallet Town."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_CapCase,
+        .iconPalette = gItemIconPalette_CapCase,
+    },
 };
 
 #undef ITEM_NAME

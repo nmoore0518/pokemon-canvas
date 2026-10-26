@@ -784,6 +784,7 @@ gSpecials::
 	def_special ExoticSafari_TakeCell
 	def_special ExoticSafari_CountCells
 	def_special ExoticSafari_LegendForm
+	def_special ExoticSafari_LegendLevel
 	def_special ExoticSafari_IsFurfrou
 	def_special ExoticSafari_TrimFurfrou
 	def_special ExoticSafari_TakeKey
@@ -803,3 +804,20 @@ gSpecials::
 	def_special GymBadge_BufferName
 	def_special GymBadge_ShowIcon
 	def_special GymBadge_HideIcon
+	def_special EventMons_GiveMon
+	def_special EventMons_CostumeUnlocked
+	def_special EventMons_CostumeCount
+	def_special EventMons_CostumeCheckMon
+	def_special EventMons_SetCostume
+	def_special EventMons_CapFound
+	def_special EventMons_CapReward
+	def_special EventMons_CapRewardGiven
+	def_special EventMons_CapHint
+	def_special EventMons_PartnerReady
+	def_special EventMons_RecordVivillon
+	def_special EventMons_KalosGauntletBeaten
+	def_special EventMons_AzBeaten
+	def_special EventMons_PartyHasFloette
+	def_special EventMons_KalosTrioLeft
+	def_special EventMons_SetupTala
+	def_special EventMons_PaintPotsLeft

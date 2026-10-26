@@ -24,7 +24,7 @@ ExoticSafari_UnovaRelicCastle_EventScript_LegendVictini::
 
 ExoticSafari_UnovaRelicCastle_EventScript_SealVictini::
 	lockall
-	setvar VAR_0x8004, 32
+	setvar VAR_0x8004, 34
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_UnovaRelicCastle_EventScript_Key0::

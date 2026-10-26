@@ -24,7 +24,7 @@ ExoticSafari_UnovaGiantChasm_EventScript_LegendCobalion::
 
 ExoticSafari_UnovaGiantChasm_EventScript_SealCobalion::
 	lockall
-	setvar VAR_0x8004, 28
+	setvar VAR_0x8004, 30
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_UnovaGiantChasm_EventScript_LegendKyurem::
@@ -39,5 +39,5 @@ ExoticSafari_UnovaGiantChasm_EventScript_LegendKyurem::
 
 ExoticSafari_UnovaGiantChasm_EventScript_SealKyurem::
 	lockall
-	setvar VAR_0x8004, 29
+	setvar VAR_0x8004, 31
 	goto ExoticSafari_EventScript_Seal

@@ -24,5 +24,5 @@ ExoticSafari_UnovaDragonspiral_EventScript_LegendReshiram::
 
 ExoticSafari_UnovaDragonspiral_EventScript_SealReshiram::
 	lockall
-	setvar VAR_0x8004, 30
+	setvar VAR_0x8004, 32
 	goto ExoticSafari_EventScript_Seal

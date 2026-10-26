@@ -24,7 +24,7 @@ ExoticSafari_UnovaAbyssalRuins_EventScript_LegendKeldeo::
 
 ExoticSafari_UnovaAbyssalRuins_EventScript_SealKeldeo::
 	lockall
-	setvar VAR_0x8004, 33
+	setvar VAR_0x8004, 35
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_UnovaAbyssalRuins_EventScript_Key1::

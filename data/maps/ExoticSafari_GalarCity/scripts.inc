@@ -34,7 +34,7 @@ ExoticSafari_GalarCity_EventScript_LegendZacian::
 
 ExoticSafari_GalarCity_EventScript_SealZacian::
 	lockall
-	setvar VAR_0x8004, 10
+	setvar VAR_0x8004, 11
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_GalarCity_EventScript_LegendZamazenta::
@@ -49,7 +49,7 @@ ExoticSafari_GalarCity_EventScript_LegendZamazenta::
 
 ExoticSafari_GalarCity_EventScript_SealZamazenta::
 	lockall
-	setvar VAR_0x8004, 11
+	setvar VAR_0x8004, 12
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_GalarCity_EventScript_ItemRazorClaw::

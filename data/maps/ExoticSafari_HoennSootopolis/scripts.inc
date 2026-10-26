@@ -24,7 +24,7 @@ ExoticSafari_HoennSootopolis_EventScript_LegendJirachi::
 
 ExoticSafari_HoennSootopolis_EventScript_SealJirachi::
 	lockall
-	setvar VAR_0x8004, 43
+	setvar VAR_0x8004, 45
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_HoennSootopolis_EventScript_ItemBlueOrb::

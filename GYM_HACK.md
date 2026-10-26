@@ -1057,6 +1057,36 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            it can't Mega Evolve and hold another item), and Kyogre and Groudon take the trial for
            their Blue/Red Orb (the Blue Orb is also in the Hoenn zone). Zinnia's and Bill's
            Rayquazas hold the Rayquazite. A test checks every stone's team.
+         - EVENT POKéMON (v84): every form that was only ever an event is now a side quest
+           (`src/event_mons.c`, `data/scripts/event_mons.inc`, lines `tools/gym_hack/event_mons_text.py`,
+           safari pieces `tools/gym_hack/event_mons_safari.py`). Gifts after the gym is the player's are
+           Lv 50 (first stages Lv 5); main-game gifts Lv 5.
+           1. Costume Maker (Celadon Condominiums 2F, post-game): Cosplay Pikachu, then costumes from her
+              menu: Rock Star (a 7-win Battle Hall streak, `FLAG_EVENT_HALL_STREAK_7`), Belle (20 gym
+              decorations placed), Pop Star (the Convention's Fairy hall), Ph.D. (all 8 Academy
+              lectures), Libre (the Convention's Fighting hall). Each costume brings its ORAS move.
+           2. Cap Collector (the boy in Pallet's house, main game): the CAP CASE (`ITEM_CAP_CASE`); seven
+              caps hidden in Kanto where small hidden items were (Viridian Forest, Mt. Moon B2F, Route
+              25, Route 9, Route 10, both Underground Paths; signs, `EventMons_EventScript_Cap0-6`), each
+              traded for its cap Pikachu, all seven for the Partner Cap one (`VAR_EVENT_CAPS` 0x4091).
+           3. Partners: once Electric (Normal) is mastered, Oak's 5-question type quiz gives Partner
+              Pikachu (Eevee), Lv 5; the team builder waits for the mastery too (`AVAIL_TYPE_MASTERED`).
+           4. Spiky-eared Pichu (Lv 5): a static beside the safari's Ilex shrine, for a party with Celebi.
+           5. Vivillon collector (Kalos city): 6 patterns shown -> Fancy Scatterbug, all 18 -> Poké Ball
+              Scatterbug (`VAR_EVENT_VIVILLON_LO/HI`); each then turns up wild in Kalos, 1 in 19.
+           6. Battle Bond (Kalos ocean): a Froakie once the Gauntlet's Kalos challengers are beaten; its
+              line ends in Greninja's Battle Bond form (`MON_DATA_BATTLE_BOND`, FireRed's unused shadow bit).
+           7. AZ (Kalos badlands, once beaten in the Gauntlet): shown a Floette, then with Xerneas,
+              Yveltal and Zygarde caught, the Eternal Flower Floette (its Mega: Primrose's Floettite).
+           8. Tala (Alola resort): her Lycanroc pack (Lv 58-60); win for an Own Tempo Rockruff.
+           9. The artisan (Alola resort): Magearna caught and her 4 paint pots (one each in the Beach,
+              Ruins, Volcano and Lanakila) -> Original Color Magearna.
+           10. Zarude (Dada): a static in Glimwood's glade for a party with Celebi, Zarude caught.
+           11. Eternamax: a static on the stadium's pitch for a party with Zacian, Zamazenta and Eternatus
+              (the Darkest Day). It's the pitch's alone: elsewhere an Eternamax in the party is an
+              Eternatus again, and on the pitch every Eternatus is Eternamax (`EventMons_OnMapLoad`).
+           The statics use the safari's seals (`SEAL_PARTY`, `sPartySeals`). Flags 0x4E2-0x4F3. Pallet's
+           Lucky Egg moved to flag 0x4F4: it had shared 0x4A7 with Erika's Silver Cap.
          - Megas in other teams: 57 Gym Leader Convention trainers hold a Mega Stone (Norman,
            Misty, Clay and Shauntal added), and 16 Gauntlet trainers (Maxie, Archie, Zinnia, Wally,
            Lysandre, Serena, Calem, Silver, Lyra, Ethan, Dawn, Riley, Guzma, Arven, Brendan, May).

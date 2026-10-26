@@ -205,6 +205,13 @@ dex = (R/'tools/gym_hack/guide/build_dex.py').read_text()
 STARTERS = re.findall(r'\{ (SPECIES_\w+),\s+TYPE_\w+\s*\}', (R/'src/gym_hack.c').read_text())
 for sp in STARTERS: add(sp, 'starter (one, for the type picked)')
 
+# the event Pokémon's side quests (src/event_mons.c): gifts
+import event_mons_safari  # noqa: E402
+for f in event_mons_safari.GIFT_FORMS:
+    sp = 'SPECIES_' + f
+    if sp in S or canon(sp) in S:
+        src_of.setdefault(sp if sp in S else canon(sp), []).append('event quest (src/event_mons.c)')
+
 # ---- closure: evolutions and form changes ------------------------------------------------
 OK_IF = {"IF_MIN_FRIENDSHIP", "IF_GENDER", "IF_ATK_GT_DEF", "IF_ATK_EQ_DEF", "IF_ATK_LT_DEF", "IF_NOT_REGION",
          "IF_PID_UPPER_MODULO_10_GT", "IF_PID_UPPER_MODULO_10_EQ", "IF_PID_UPPER_MODULO_10_LT",

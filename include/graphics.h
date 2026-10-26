@@ -1022,6 +1022,8 @@ extern const u32 gItemIcon_Glalitite[];
 extern const u16 gItemIconPalette_Glalitite[];
 extern const u32 gItemIcon_Salamencite[];
 extern const u16 gItemIconPalette_Salamencite[];
+extern const u32 gItemIcon_CapCase[];
+extern const u16 gItemIconPalette_CapCase[];
 extern const u32 gItemIcon_Rayquazite[];
 extern const u16 gItemIconPalette_Rayquazite[];
 extern const u32 gItemIcon_Metagrossite[];

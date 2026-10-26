@@ -24,7 +24,7 @@ ExoticSafari_HoennMtChimney_EventScript_LegendDeoxys::
 
 ExoticSafari_HoennMtChimney_EventScript_SealDeoxys::
 	lockall
-	setvar VAR_0x8004, 42
+	setvar VAR_0x8004, 44
 	goto ExoticSafari_EventScript_Seal
 
 ExoticSafari_HoennMtChimney_EventScript_ItemMeteorite::
