@@ -406,6 +406,10 @@ const u16 gMetatiles_HoennRuins[] = INCBIN_U16("data/tilesets/secondary/hoenn_ru
 const u16 gMetatileAttributes_HoennRuins[] = INCBIN_U16("data/tilesets/secondary/hoenn_ruins/metatile_attributes.bin");
 const u16 gMetatiles_HoennIce[] = INCBIN_U16("data/tilesets/secondary/hoenn_ice/metatiles.bin");
 const u16 gMetatileAttributes_HoennIce[] = INCBIN_U16("data/tilesets/secondary/hoenn_ice/metatile_attributes.bin");
+const u16 gMetatiles_LeaderAcademy[] = INCBIN_U16("data/tilesets/secondary/leader_academy_frlg/metatiles.bin");
+const u16 gMetatileAttributes_LeaderAcademy[] = INCBIN_U16("data/tilesets/secondary/leader_academy_frlg/metatile_attributes.bin");
+const u16 gMetatiles_LeaderAcademyHall[] = INCBIN_U16("data/tilesets/secondary/leader_academy_hall_frlg/metatiles.bin");
+const u16 gMetatileAttributes_LeaderAcademyHall[] = INCBIN_U16("data/tilesets/secondary/leader_academy_hall_frlg/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 

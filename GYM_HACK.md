@@ -1023,18 +1023,27 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            guards round; on the campus the headmaster, WISTERIA, walks down to welcome them (the hall,
            the Battle Hall and BP, the Exchange - money too -, the candidates, the Pokémon Center),
            then the mentor leaves. Staff are named for flowers (the professors are trees).
-         - The campus is generated (44x40, General + Saffron tilesets: trees, cobbles, lawns, and
-           buildings stamped from Saffron's - Silph Co.'s tower for the main hall, the Pokémon Center,
-           a mart for the SUPPLY shop, the dojo for the BATTLE HALL, a house for the EXCHANGE, two
-           apartment blocks as dorms). Its interiors reuse FireRed's (Silph Co. 1F, Pokémon Center,
-           Mart, Dojo): a first cut. The name pop-up says LEADER ACADEMY. The Pokémon Center sets the
-           respawn to Vermilion's.
+         - The campus (v79) has its own tileset (`gTileset_LeaderAcademy`, built by
+           `tools/gym_hack/tileset_composer.py` from art in `academy_art.py`): red brick buildings
+           under slate roofs - the main hall (13x9: a clock tower, a white columned portico with a
+           rose in its pediment, arched windows), the Battle Hall (a Poké Ball banner), the Exchange
+           (a striped awning) and two dorms - plus FireRed's Pokémon Center and mart (Saffron's).
+           Lawns everywhere (the general tileset's grass, no wild Pokémon), single trees, flower
+           patches and rose beds, iron lamps, benches, cobbled walks, and a Roserade statue in the
+           plaza (its overworld sprite on a pedestal; the plaque reads "Grace. Thorns. Victory.").
+         - The main hall inside is a library (`gTileset_LeaderAcademyHall`, over the building
+           tileset): floorboards, a red carpet to the headmaster's desk (talked to across it), walls
+           of bookshelves, stacks, reading tables, globes, and four doors to the lecture halls A-D
+           (Viridian's classroom layout; A: Larkspur and Camellia, B: Foxglove and Verbena, C:
+           Marigold and Hyacinth, D: Yarrow and Tansy). The other interiors are still FireRed's.
+           The name pop-up says LEADER ACADEMY. The Pokémon Center sets the respawn to Vermilion's.
          - BP: the frontier's `battlePoints`. Earned by beating candidates (1-4 by skill), the
            instructors' demonstrations (3) and Battle Hall streaks (1 + streak/3 a win, +5 at 7).
          - The EXCHANGE: two counters side by side, the same competitive items (Choice items, Life Orb,
            Focus Sash, Assault Vest, Booster Energy, Heavy-Duty Boots, weather rocks...) for money
            (a mart) or BP (32 for a Choice item, 4 for a berry). The BP counter also has Bottle Caps,
-           the Ability Capsule and Patch, Cilantro, the Multivitamin and eight mints. Signs, the
+           the Ability Capsule and Patch, Cilantro (16 BP), the Multivitamin and eight mints (4 BP).
+           Mints cost ¥10,000 and Cilantro (any nature) ¥40,000, everywhere. Signs, the
            headmaster and the clerks all say money works too. The SUPPLY shop (money): caps, ability
            items, Cilantro, Multivitamin, ten mints, vitamins, power items, the Macho Brace, the EV
            berries.
@@ -1058,12 +1067,13 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          - The TEAM BUILDER (Tansy; `src/team_builder.c`): 8 teams, kept in flash sector 30 after the
            archive (`struct TeamBuilderData`; a move is 10 bits to fit). A slot: choose a type, then
            one of its Pokémon from a grid of icons (a ball by those the player has: party, box or
-           archive), then up to 4 of the moves it can learn (level, TM/tutor, egg). The edit screen
+           archive; only those with the type as their primary type, the gym's rule), then up to 4 of
+           the moves it can learn (level, TM/tutor, egg). The edit screen
            shows the team's worst weaknesses and the types it can't hit for 2x; START, the full chart:
            for each of the 18 types, how many are weak, how many resist or are immune, and the best
            hit the team's attacks have. The screen says the limit (8) and that teams are kept when the
            game is saved.
-         - Not yet: the interiors are FireRed's, not new; the battle hall has no streak record; the
+         - Not yet: the lecture halls, Battle Hall, Exchange and shops inside are FireRed's; the battle hall has no streak record; the
            team builder doesn't load a team into the party (it's a planner); abilities (Levitate...)
            aren't in the chart; doubles everywhere is a later, game-wide project.
    - [x] The reachability check (and `unstick`, roamer spots) now follows the game's rules more

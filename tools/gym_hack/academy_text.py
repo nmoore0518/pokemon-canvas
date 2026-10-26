@@ -37,7 +37,7 @@ T["Welcome1"] = """WISTERIA: Ah, {STR_VAR_1}. And you must be {PLAYER}.
 Welcome to the LEADER ACADEMY. I am WISTERIA, its HEADMASTER.
 
 Our candidates come from every region, all chasing the same dream you are: a GYM of their own."""
-T["Welcome2"] = """Our INSTRUCTORS teach in the big hall, just ahead. Each has a lesson in tournament strategy… and a demonstration battle.
+T["Welcome2"] = """The main hall, just ahead, is our library. Its lecture halls are where our INSTRUCTORS teach: each has a lesson in tournament strategy… and a demonstration battle.
 
 In the BATTLE HALL, you can battle with rental teams. Every win pays BATTLE POINTS, or BP."""
 T["Welcome3"] = """Spend BP at the EXCHANGE on held items, MINTS, and the like.
@@ -51,7 +51,7 @@ T["MentorBye"] = """{STR_VAR_1}: That's my cue. Learn everything you can here, {
 The next time we battle, I want to be surprised!"""
 
 # ---------------------------------------------------------------- signs
-T["HallSign"] = "LEADER ACADEMY · MAIN HALL\nLectures in tournament strategy, every day."
+T["HallSign"] = "LEADER ACADEMY · MAIN HALL\nThe library, and lecture halls A to D."
 T["CenterSign"] = "POKéMON CENTER\nCandidates heal free of charge."
 T["SupplySign"] = "ACADEMY SUPPLY\nBOTTLE CAPS, ABILITY items, MINTS, vitamins: all for ¥."
 T["BattleSign"] = "BATTLE HALL\nRental battles. Win streaks pay BP."
@@ -71,7 +71,9 @@ T["HeadmasterCandidates"] = """Candidates come here from JOHTO, HOENN, SINNOH, U
 Some are just starting out. Some could take a GYM tomorrow. All of them will battle you, as often as you like."""
 T["HeadmasterTeachers"] = """Each of my INSTRUCTORS is named for a flower, as I am. It's a tradition here.
 
-LARKSPUR teaches speed, CAMELLIA setup, FOXGLOVE hazards, VERBENA pivoting, MARIGOLD weather, HYACINTH reading the opponent, YARROW training, and TANSY team building."""
+Their lecture halls are through the doors behind me. In A, LARKSPUR teaches speed and CAMELLIA setup. In B, FOXGLOVE hazards and VERBENA pivoting.
+
+In C, MARIGOLD weather and HYACINTH reading the opponent. In D, YARROW training and TANSY team building."""
 T["HeadmasterBye"] = "Off you go, then. A GYM LEADER never stops learning."
 
 # ---------------------------------------------------------------- lectures (singles)
@@ -230,6 +232,15 @@ T["CandidateLater"] = "Anytime. I'll be here."
 T["CandidateHealed"] = "Your POKéMON were patched up after the practice match."
 
 # ---------------------------------------------------------------- students
+T["Statue"] = """A statue of ROSERADE, the ACADEMY's emblem.
+
+The plaque reads: “Grace. Thorns. Victory.”"""
+T["Reader1"] = "Shh! I'm reading about speed tiers. There's a whole shelf on POKéMON that move at exactly 100!"
+T["Reader2"] = "Every GYM in every region sends its battle records here. I could read in this library forever."
+T["LectureAStudent"] = "Speed decides everything… unless the other side has priority. Then it decides nothing! I'm so confused."
+T["LectureBStudent"] = "Since FOXGLOVE's lecture, I can't stop counting how much STEALTH ROCK has chipped off."
+T["LectureCStudent"] = "HYACINTH says the obvious attack is coming. But what if they know I know that?"
+T["LectureDStudent"] = "I've rebuilt my team in TANSY's TEAM BUILDER six times today. Seven's the charm!"
 T["Student1"] = "I came all the way from SINNOH for YARROW's lecture. I took notes on everything. Everything!"
 T["Student2"] = "I'm saving my BP for a CHOICE SCARF. Or I could just buy one… Hmm. Money's tight, though!"
 T["Student3"] = "A GOLD BOTTLE CAP maxes every stat at once. The candidates go crazy for them."

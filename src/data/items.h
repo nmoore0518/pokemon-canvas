@@ -1568,7 +1568,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_LONELY_MINT] =
     {
         .name = ITEM_NAME("Lonely Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Attack and\n"
@@ -1586,7 +1586,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_ADAMANT_MINT] =
     {
         .name = ITEM_NAME("Adamant Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Attack and\n"
@@ -1604,7 +1604,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_NAUGHTY_MINT] =
     {
         .name = ITEM_NAME("Naughty Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Attack and\n"
@@ -1622,7 +1622,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_BRAVE_MINT] =
     {
         .name = ITEM_NAME("Brave Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Attack and\n"
@@ -1640,7 +1640,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_BOLD_MINT] =
     {
         .name = ITEM_NAME("Bold Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Defense and\n"
@@ -1658,7 +1658,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_IMPISH_MINT] =
     {
         .name = ITEM_NAME("Impish Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Defense and\n"
@@ -1676,7 +1676,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_LAX_MINT] =
     {
         .name = ITEM_NAME("Lax Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Defense and\n"
@@ -1694,7 +1694,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_RELAXED_MINT] =
     {
         .name = ITEM_NAME("Relaxed Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Defense and\n"
@@ -1712,7 +1712,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_MODEST_MINT] =
     {
         .name = ITEM_NAME("Modest Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Atk and\n"
@@ -1730,7 +1730,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_MILD_MINT] =
     {
         .name = ITEM_NAME("Mild Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Atk and\n"
@@ -1748,7 +1748,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_RASH_MINT] =
     {
         .name = ITEM_NAME("Rash Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Atk and\n"
@@ -1766,7 +1766,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_QUIET_MINT] =
     {
         .name = ITEM_NAME("Quiet Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Atk and\n"
@@ -1784,7 +1784,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_CALM_MINT] =
     {
         .name = ITEM_NAME("Calm Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Def and\n"
@@ -1802,7 +1802,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_GENTLE_MINT] =
     {
         .name = ITEM_NAME("Gentle Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Def and\n"
@@ -1820,7 +1820,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_CAREFUL_MINT] =
     {
         .name = ITEM_NAME("Careful Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Def and\n"
@@ -1838,7 +1838,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_SASSY_MINT] =
     {
         .name = ITEM_NAME("Sassy Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Sp. Def and\n"
@@ -1856,7 +1856,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_TIMID_MINT] =
     {
         .name = ITEM_NAME("Timid Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Speed and\n"
@@ -1874,7 +1874,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_HASTY_MINT] =
     {
         .name = ITEM_NAME("Hasty Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Speed and\n"
@@ -1892,7 +1892,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_JOLLY_MINT] =
     {
         .name = ITEM_NAME("Jolly Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Speed and\n"
@@ -1910,7 +1910,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_NAIVE_MINT] =
     {
         .name = ITEM_NAME("Naive Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "raises Speed and\n"
@@ -1928,7 +1928,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_SERIOUS_MINT] =
     {
         .name = ITEM_NAME("Serious Mint"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : 20,
+        .price = 10000,   // Gym Trainer hack: cheaper than CILANTRO (any nature)
         .description = COMPOUND_STRING(
             "When smelled, it\n"
             "makes a Pokémon's\n"
@@ -16245,7 +16245,7 @@ const struct ItemInfo gItemsInfo[] =
     {
         // Gym Trainer hack: pick a nature
         .name = ITEM_NAME("Cilantro"),
-        .price = 15000,
+        .price = 40000,   // Gym Trainer hack: any nature, so it costs more than a mint
         .description = COMPOUND_STRING(
             "A pungent herb.\n"
             "Its scent changes a\n"

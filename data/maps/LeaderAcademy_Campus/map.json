@@ -56,7 +56,7 @@
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_BLACK_BELT_FRLG",
       "x": 13,
-      "y": 20,
+      "y": 25,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 1,
@@ -70,8 +70,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SWIMMER_F_LAND",
-      "x": 16,
-      "y": 26,
+      "x": 17,
+      "y": 18,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 2,
@@ -85,8 +85,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_CAMPER_FRLG",
-      "x": 27,
-      "y": 29,
+      "x": 30,
+      "y": 34,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 2,
@@ -101,7 +101,7 @@
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_BEAUTY_FRLG",
       "x": 25,
-      "y": 20,
+      "y": 22,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 1,
@@ -115,12 +115,12 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_LASS_FRLG",
-      "x": 14,
-      "y": 13,
+      "x": 17,
+      "y": 22,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
-      "movement_range_x": 2,
-      "movement_range_y": 2,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Academy_EventScript_Student1",
@@ -130,8 +130,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER_FRLG",
-      "x": 33,
-      "y": 14,
+      "x": 14,
+      "y": 33,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 2,
@@ -145,36 +145,36 @@
   ],
   "warp_events": [
     {
-      "x": 21,
-      "y": 18,
+      "x": 20,
+      "y": 12,
       "elevation": 0,
       "dest_map": "MAP_LEADER_ACADEMY_HALL",
       "dest_warp_id": "0"
     },
     {
-      "x": 9,
-      "y": 25,
+      "x": 8,
+      "y": 23,
       "elevation": 0,
       "dest_map": "MAP_LEADER_ACADEMY_POKEMON_CENTER",
       "dest_warp_id": "0"
     },
     {
-      "x": 10,
-      "y": 31,
+      "x": 9,
+      "y": 32,
       "elevation": 0,
       "dest_map": "MAP_LEADER_ACADEMY_SUPPLY",
       "dest_warp_id": "0"
     },
     {
       "x": 33,
-      "y": 25,
+      "y": 23,
       "elevation": 0,
       "dest_map": "MAP_LEADER_ACADEMY_BATTLE_HALL",
       "dest_warp_id": "0"
     },
     {
-      "x": 32,
-      "y": 31,
+      "x": 33,
+      "y": 32,
       "elevation": 0,
       "dest_map": "MAP_LEADER_ACADEMY_EXCHANGE",
       "dest_warp_id": "0"
@@ -185,23 +185,23 @@
     {
       "type": "sign",
       "x": 19,
-      "y": 19,
+      "y": 13,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Academy_EventScript_HallSign"
     },
     {
       "type": "sign",
-      "x": 6,
-      "y": 25,
+      "x": 11,
+      "y": 23,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Academy_EventScript_CenterSign"
     },
     {
       "type": "sign",
-      "x": 7,
-      "y": 31,
+      "x": 11,
+      "y": 32,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Academy_EventScript_SupplySign"
@@ -209,15 +209,15 @@
     {
       "type": "sign",
       "x": 29,
-      "y": 25,
+      "y": 23,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Academy_EventScript_BattleSign"
     },
     {
       "type": "sign",
-      "x": 29,
-      "y": 31,
+      "x": 30,
+      "y": 32,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Academy_EventScript_ExchangeSign"
@@ -225,10 +225,26 @@
     {
       "type": "sign",
       "x": 22,
-      "y": 34,
+      "y": 35,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Academy_EventScript_GateSign"
+    },
+    {
+      "type": "sign",
+      "x": 20,
+      "y": 17,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Academy_EventScript_Statue"
+    },
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 17,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Academy_EventScript_Statue"
     }
   ]
 }

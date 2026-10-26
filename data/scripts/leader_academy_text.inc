@@ -16,7 +16,7 @@ Academy_Text_Welcome1::
 	.string "WISTERIA: Ah, {STR_VAR_1}. And\nyou must be {PLAYER}.\pWelcome to the LEADER ACADEMY. I\nam WISTERIA, its HEADMASTER.\pOur candidates come from every\nregion, all chasing the same\pdream you are: a GYM of their\nown.$"
 
 Academy_Text_Welcome2::
-	.string "Our INSTRUCTORS teach in the big\nhall, just ahead. Each has a\plesson in tournament strategy…\nand a demonstration battle.\pIn the BATTLE HALL, you can\nbattle with rental teams. Every\pwin pays BATTLE POINTS, or BP.$"
+	.string "The main hall, just ahead, is\nour library. Its lecture halls\pare where our INSTRUCTORS teach:\neach has a lesson in tournament\pstrategy… and a demonstration\nbattle.\pIn the BATTLE HALL, you can\nbattle with rental teams. Every\pwin pays BATTLE POINTS, or BP.$"
 
 Academy_Text_Welcome3::
 	.string "Spend BP at the EXCHANGE on held\nitems, MINTS, and the like.\pBut know this: BP is never the\nonly way! The EXCHANGE and the\pSUPPLY shop take ordinary money\nfor every item, too.$"
@@ -28,7 +28,7 @@ Academy_Text_MentorBye::
 	.string "{STR_VAR_1}: That's my cue.\nLearn everything you can here,\p{PLAYER}.\pThe next time we battle, I want\nto be surprised!$"
 
 Academy_Text_HallSign::
-	.string "LEADER ACADEMY · MAIN HALL\nLectures in tournament strategy,\pevery day.$"
+	.string "LEADER ACADEMY · MAIN HALL The\nlibrary, and lecture halls A to\pD.$"
 
 Academy_Text_CenterSign::
 	.string "POKéMON CENTER Candidates heal\nfree of charge.$"
@@ -58,7 +58,7 @@ Academy_Text_HeadmasterCandidates::
 	.string "Candidates come here from JOHTO,\nHOENN, SINNOH, UNOVA, KALOS,\pALOLA, GALAR and PALDEA.\pSome are just starting out. Some\ncould take a GYM tomorrow. All\pof them will battle you, as\noften as you like.$"
 
 Academy_Text_HeadmasterTeachers::
-	.string "Each of my INSTRUCTORS is named\nfor a flower, as I am. It's a\ptradition here.\pLARKSPUR teaches speed, CAMELLIA\nsetup, FOXGLOVE hazards, VERBENA\ppivoting, MARIGOLD weather,\nHYACINTH reading the opponent,\pYARROW training, and TANSY team\nbuilding.$"
+	.string "Each of my INSTRUCTORS is named\nfor a flower, as I am. It's a\ptradition here.\pTheir lecture halls are through\nthe doors behind me. In A,\pLARKSPUR teaches speed and\nCAMELLIA setup. In B, FOXGLOVE\phazards and VERBENA pivoting.\pIn C, MARIGOLD weather and\nHYACINTH reading the opponent.\pIn D, YARROW training and TANSY\nteam building.$"
 
 Academy_Text_HeadmasterBye::
 	.string "Off you go, then. A GYM LEADER\nnever stops learning.$"
@@ -140,6 +140,27 @@ Academy_Text_CandidateLater::
 
 Academy_Text_CandidateHealed::
 	.string "Your POKéMON were patched up\nafter the practice match.$"
+
+Academy_Text_Statue::
+	.string "A statue of ROSERADE, the\nACADEMY's emblem.\pThe plaque reads: “Grace.\nThorns. Victory.”$"
+
+Academy_Text_Reader1::
+	.string "Shh! I'm reading about speed\ntiers. There's a whole shelf on\pPOKéMON that move at exactly\n100!$"
+
+Academy_Text_Reader2::
+	.string "Every GYM in every region sends\nits battle records here. I could\pread in this library forever.$"
+
+Academy_Text_LectureAStudent::
+	.string "Speed decides everything… unless\nthe other side has priority.\pThen it decides nothing! I'm so\nconfused.$"
+
+Academy_Text_LectureBStudent::
+	.string "Since FOXGLOVE's lecture, I\ncan't stop counting how much\pSTEALTH ROCK has chipped off.$"
+
+Academy_Text_LectureCStudent::
+	.string "HYACINTH says the obvious attack\nis coming. But what if they know\pI know that?$"
+
+Academy_Text_LectureDStudent::
+	.string "I've rebuilt my team in TANSY's\nTEAM BUILDER six times today.\pSeven's the charm!$"
 
 Academy_Text_Student1::
 	.string "I came all the way from SINNOH\nfor YARROW's lecture. I took\pnotes on everything. Everything!$"

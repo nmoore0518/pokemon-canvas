@@ -6,3 +6,7 @@
 	.include "data/maps/LeaderAcademy_Supply/scripts.inc"
 	.include "data/maps/LeaderAcademy_BattleHall/scripts.inc"
 	.include "data/maps/LeaderAcademy_Exchange/scripts.inc"
+	.include "data/maps/LeaderAcademy_LectureA/scripts.inc"
+	.include "data/maps/LeaderAcademy_LectureB/scripts.inc"
+	.include "data/maps/LeaderAcademy_LectureC/scripts.inc"
+	.include "data/maps/LeaderAcademy_LectureD/scripts.inc"

@@ -1346,6 +1346,10 @@
     "LeaderAcademy_PokemonCenter",
     "LeaderAcademy_Supply",
     "LeaderAcademy_BattleHall",
-    "LeaderAcademy_Exchange"
+    "LeaderAcademy_Exchange",
+    "LeaderAcademy_LectureA",
+    "LeaderAcademy_LectureB",
+    "LeaderAcademy_LectureC",
+    "LeaderAcademy_LectureD"
   ]
 }

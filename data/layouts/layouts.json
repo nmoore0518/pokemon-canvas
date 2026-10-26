@@ -11490,9 +11490,22 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_SaffronCity",
+      "secondary_tileset": "gTileset_LeaderAcademy",
       "border_filepath": "data/layouts/LeaderAcademy_Campus/border.bin",
       "blockdata_filepath": "data/layouts/LeaderAcademy_Campus/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_LEADER_ACADEMY_HALL",
+      "name": "LeaderAcademy_Hall_Layout",
+      "width": 25,
+      "height": 17,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_LeaderAcademyHall",
+      "border_filepath": "data/layouts/LeaderAcademy_Hall/border.bin",
+      "blockdata_filepath": "data/layouts/LeaderAcademy_Hall/map.bin",
       "layout_version": "frlg"
     }
   ]

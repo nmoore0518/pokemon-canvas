@@ -153,6 +153,27 @@ Academy_EventScript_Student1::
 Academy_EventScript_Student2::
 	msgbox Academy_Text_Student2, MSGBOX_NPC
 	end
+Academy_EventScript_Statue::
+	msgbox Academy_Text_Statue, MSGBOX_SIGN
+	end
+Academy_EventScript_Reader1::
+	msgbox Academy_Text_Reader1, MSGBOX_NPC
+	end
+Academy_EventScript_Reader2::
+	msgbox Academy_Text_Reader2, MSGBOX_NPC
+	end
+Academy_EventScript_LectureAStudent::
+	msgbox Academy_Text_LectureAStudent, MSGBOX_NPC
+	end
+Academy_EventScript_LectureBStudent::
+	msgbox Academy_Text_LectureBStudent, MSGBOX_NPC
+	end
+Academy_EventScript_LectureCStudent::
+	msgbox Academy_Text_LectureCStudent, MSGBOX_NPC
+	end
+Academy_EventScript_LectureDStudent::
+	msgbox Academy_Text_LectureDStudent, MSGBOX_NPC
+	end
 Academy_EventScript_Student3::
 	msgbox Academy_Text_Student3, MSGBOX_NPC
 	end

@@ -1663,6 +1663,28 @@ const struct Tileset gTileset_HoennIce =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_LeaderAcademy =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_LeaderAcademy,
+    .palettes = gTilesetPalettes_LeaderAcademy,
+    .metatiles = gMetatiles_LeaderAcademy,
+    .metatileAttributes = gMetatileAttributes_LeaderAcademy,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_LeaderAcademyHall =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_LeaderAcademyHall,
+    .palettes = gTilesetPalettes_LeaderAcademyHall,
+    .metatiles = gMetatiles_LeaderAcademyHall,
+    .metatileAttributes = gMetatileAttributes_LeaderAcademyHall,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,

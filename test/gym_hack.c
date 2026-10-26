@@ -777,7 +777,8 @@ TEST("GymHack: items: Pallet Mart stocks stat items as they unlock")
     EXPECT_EQ(GetItemPrice(ITEM_BOTTLE_CAP), 5000);
     EXPECT_EQ(GetItemPrice(ITEM_GOLD_BOTTLE_CAP), 25000);
     EXPECT_EQ(GetItemPrice(ITEM_ABILITY_CAPSULE), 20000);
-    EXPECT_EQ(GetItemPrice(ITEM_CILANTRO), 15000);
+    EXPECT_EQ(GetItemPrice(ITEM_CILANTRO), 40000);
+    EXPECT_LT(GetItemPrice(ITEM_ADAMANT_MINT), GetItemPrice(ITEM_CILANTRO));
     EXPECT_EQ(GetItemPrice(ITEM_MULTIVITAMIN), 30000);
     FlagClear(FLAG_BADGE04_GET);
     FlagClear(FLAG_BADGE06_GET);

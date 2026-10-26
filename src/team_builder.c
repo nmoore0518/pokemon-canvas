@@ -5,7 +5,8 @@
 // TeamBuilderData, saved with the game). A team is six species and their moves; nothing is given to
 // the player, it's a planner.
 //   TEAMS     the 8 teams; A edits one
-//   EDIT      its 6 slots; A: choose a Pokémon (a type, then a grid of that type's Pokémon - a ball
+//   EDIT      its 6 slots; A: choose a Pokémon (a type, then a grid of the Pokémon with it as
+//             their primary type - a ball
 //             by those the player has, in the party, a box or the archive), then its moves;
 //             SELECT: just the moves; START: the type chart
 //   ANALYSIS  for each of the 18 types: how many of the team are weak to it, how many resist it
@@ -715,7 +716,7 @@ static void BuildList(u32 type)
     for (i = 0; i < DEX_FORM_COUNT; i++)
     {
         u32 species = gDexFormSpecies[i];
-        if (GetSpeciesType(species, 0) == type || GetSpeciesType(species, 1) == type)
+        if (GetSpeciesType(species, 0) == type)      // (primary type only: the gym's rule)
             sTB->list[sTB->listCount++] = i;
     }
 }
