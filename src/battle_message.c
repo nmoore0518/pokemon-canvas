@@ -2937,7 +2937,7 @@ static const u8 *BattleStringGetOpponentNameByTrainerId(u16 trainerId, u8 *text,
         else
             toCpy = gLinkPlayers[GetBattlerMultiplayerId(battler) & BIT_SIDE].name;
     }
-    else if (trainerId == TRAINER_FRONTIER_BRAIN)
+    else if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER && trainerId == TRAINER_FRONTIER_BRAIN)   // (Gym Trainer hack: 310 is Lorelei in FRLG)
     {
         CopyFrontierBrainTrainerName(text);
         toCpy = text;
@@ -3057,7 +3057,7 @@ static const u8 *BattleStringGetOpponentClassByTrainerId(u16 trainerId)
         toCpy = gTrainerClasses[GetSecretBaseTrainerClass()].name;
     else if (trainerId == TRAINER_UNION_ROOM)
         toCpy = gTrainerClasses[GetUnionRoomTrainerClass()].name;
-    else if (trainerId == TRAINER_FRONTIER_BRAIN)
+    else if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER && trainerId == TRAINER_FRONTIER_BRAIN)   // (Gym Trainer hack: 310 is Lorelei in FRLG)
         toCpy = gTrainerClasses[GetFrontierBrainTrainerClass()].name;
     else if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
         toCpy = gTrainerClasses[GetFrontierOpponentClass(trainerId)].name;

@@ -316,7 +316,9 @@ static u32 OpponentGetTrainerPicId(enum BattlerId battlerId)
     {
         trainerPicId = GetSecretBaseTrainerPicIndex();
     }
-    else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_FRONTIER_BRAIN)
+    // Gym Trainer hack: only in Frontier battles. In FRLG mode TRAINER_FRONTIER_BRAIN is 310, which
+    // is also TRAINER_ELITE_FOUR_LORELEI (she was drawn and named as the Frontier Brain)
+    else if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER && TRAINER_BATTLE_PARAM.opponentA == TRAINER_FRONTIER_BRAIN)
     {
         trainerPicId = GetFrontierBrainTrainerPicIndex();
     }
