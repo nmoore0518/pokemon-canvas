@@ -21,6 +21,7 @@ OUT_DIR = ROOT / "build/guide"
 
 import build_dex as D        # noqa: E402
 import safari_maps as M      # noqa: E402
+import trainer_teams as TT   # noqa: E402
 
 TYPE_COLORS = D.TYPE_COLORS
 
@@ -714,7 +715,7 @@ def build(out):
 <li><a href="#pc">Your PC</a></li><li><a href="#academy">The Leader Academy</a></li>
 <li><a href="#items">Items</a></li><li><a href="#training">Training houses</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
 <li><a href="#tournament">The tournament</a></li><li><a href="#event">Event Pokémon</a></li>
-<li><a href="#safari">The Exotic Pokémon Safari</a></li></ol></div>""", newpage=False))
+<li><a href="#teams">Trainers and their teams</a></li><li><a href="#safari">The Exotic Pokémon Safari</a></li></ol></div>""", newpage=False))
     parts.append(chapter("1. About the game", INTRO + RULES + DIFFERENCES, newpage=False, anchor="about"))
     parts.append(chapter("2. Choosing your type", "<p>Oak lists the types from the strongest possible team (the six best "
                          "species of that type in the first 386) to the weakest. Your rival's type beats yours. Your mentor "
@@ -729,9 +730,16 @@ def build(out):
     parts.append(chapter("9. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
     parts.append(chapter("10. The tournament", TOURNAMENT, anchor="tournament"))
     parts.append(chapter("11. Event Pokémon", EVENT, anchor="event"))
-    parts.append(chapter("12. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
+    rival, _ = rivals_and_legends()
+    player_for_rival = {}
+    for t, starter, *_ in TYPES:
+        rt = rival.get(starter.upper())
+        if rt:
+            player_for_rival.setdefault(rt, []).append(t)
+    parts.append(chapter("12. Trainers and their teams", TT.build(badge, player_for_rival), anchor="teams"))
+    parts.append(chapter("13. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
     parts.append(safari_section())
-    html = "<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>" + "".join(parts) + "</body></html>"
+    html = "<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + TT.TEAM_CSS + "</style></head><body>" + "".join(parts) + "</body></html>"
     hp = OUT_DIR / "guide.html"
     hp.write_text(html)
     from playwright.sync_api import sync_playwright
