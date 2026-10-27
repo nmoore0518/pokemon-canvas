@@ -706,6 +706,10 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
       teams of 2-3 happen). Target: at most one per random team, on about one team in two or
       three; famous challengers and the mentor get one.
 - [ ] **First mastery streak 20 -> 15** (later types stay 10).
+- [ ] **The mentor at the end of a streak** is their full convention team (Misty: Mega Starmie,
+      Thunderbolt x2, Freeze-Dry, Wish) at average + 3 with 2 Full Restores. A same-type mirror
+      where they have the coverage: the bot reached the 20th battle twice (19-win streaks) and lost
+      both. Consider average + 0/1 and no Mega here (the convention keeps the full team).
 - [ ] **Oak's battle for the gym**: average + 5 with perfect IVs/EVs, items, competitive sets and
       the smartest AI (bot: 0 for 4 at an even 68 vs 73). Consider a smaller margin besides
       dropping the Full Restores.
