@@ -695,6 +695,29 @@ make check BUILD=firered TESTS="GymHack" -j$(nproc)       # run this hack's auto
 python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
 ```
 
+## Balance pass (to do: from the October 2026 bot playthrough)
+
+- [ ] **No healing items in post-game battles**, to mirror competitive play: the gym challenges'
+      mentor boss (`items[0..1] = ITEM_FULL_RESTORE`, `src/gym_challenge.c` ~1018) and Oak's
+      battle for the gym (~974). Random/famous challengers, the convention and the tournament
+      already carry none.
+- [ ] **Fewer legendaries on random challengers**: today a slot is any fully evolved Gen 1-3
+      species with base stats 420+ (`IsStrongSpecies`), about 1 in 7 a legendary (~0.7 per team;
+      teams of 2-3 happen). Target: at most one per random team, on about one team in two or
+      three; famous challengers and the mentor get one.
+- [ ] **First mastery streak 20 -> 15** (later types stay 10).
+- [ ] **Oak's battle for the gym**: average + 5 with perfect IVs/EVs, items, competitive sets and
+      the smartest AI (bot: 0 for 4 at an even 68 vs 73). Consider a smaller margin besides
+      dropping the Full Restores.
+- [ ] **The Champion**: the rival's counter type, perfect IVs and 4 Full Restores (Lv 57-63).
+      The bot needed its whole team at 68 (8 over his average) and won about half its tries.
+      Consider: drop the IVs and Full Restores; one member of another type; and keep the Elite
+      Four beaten after a Champion loss (or a rematch from the lobby), so a loss doesn't mean
+      the whole League again.
+- Confirmed as intended: gym challengers draw from Gen 1-3 (Kanto trainers); convention teams
+  are each trainer's canonical team (their own region's Pokémon); the tournament draws from the
+  convention and the Gauntlet's characters (every region).
+
 ## Roadmap
 
 1. [x] Source build, debug menu
