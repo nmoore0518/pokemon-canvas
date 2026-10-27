@@ -57,7 +57,12 @@ enum
     PLAYTEST_SET_FLAG,      // args: flag, on
     PLAYTEST_VAR,           // args: var -> result
     PLAYTEST_SET_VAR,       // args: var, value
+    PLAYTEST_TRAIN_MON,     // args: party slot, nature, held item, EV spread (PLAYTEST_EVS_*): what the
+                            //       training items do (Gold Bottle Cap, Multivitamin, Cilantro)
 };
+
+// EV spreads for PLAYTEST_TRAIN_MON (252 / 252 / 4)
+enum { PLAYTEST_EVS_ATK_SPE, PLAYTEST_EVS_SPA_SPE, PLAYTEST_EVS_HP_ATK, PLAYTEST_EVS_HP_SPA, PLAYTEST_EVS_HP_DEF, PLAYTEST_EVS_HP_SPD };
 
 struct Playtest
 {

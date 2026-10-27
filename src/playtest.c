@@ -354,6 +354,33 @@ void Playtest_Update(void)
     case PLAYTEST_SET_VAR:
         VarSet(a[0], a[1]);
         break;
+    case PLAYTEST_TRAIN_MON:
+        if (a[0] < PARTY_SIZE)
+        {
+            static const u8 sSpreads[][6] =   // HP, Atk, Def, Spe, SpA, SpD (MON_DATA_*_EV order)
+            {
+                [PLAYTEST_EVS_ATK_SPE] = {4, 252, 0, 252, 0, 0},
+                [PLAYTEST_EVS_SPA_SPE] = {4, 0, 0, 252, 252, 0},
+                [PLAYTEST_EVS_HP_ATK]  = {252, 252, 4, 0, 0, 0},
+                [PLAYTEST_EVS_HP_SPA]  = {252, 0, 4, 0, 252, 0},
+                [PLAYTEST_EVS_HP_DEF]  = {252, 0, 252, 0, 0, 4},
+                [PLAYTEST_EVS_HP_SPD]  = {252, 0, 4, 0, 0, 252},
+            };
+            struct Pokemon *mon = &gPlayerParty[a[0]];
+            u32 i, iv = MAX_PER_STAT_IVS, nature = a[1], item = a[2];
+            const u8 *evs = sSpreads[min(a[3], ARRAY_COUNT(sSpreads) - 1)];
+            for (i = 0; i < NUM_STATS; i++)
+            {
+                u8 ev = evs[i];
+                SetMonData(mon, MON_DATA_HP_IV + i, &iv);
+                SetMonData(mon, MON_DATA_HP_EV + i, &ev);
+            }
+            if (nature < NUM_NATURES)
+                SetMonData(mon, MON_DATA_HIDDEN_NATURE, &nature);
+            SetMonData(mon, MON_DATA_HELD_ITEM, &item);
+            CalculateMonStats(mon);
+        }
+        break;
     case PLAYTEST_RELEASE:
         if (a[0] < PARTY_SIZE)
         {
