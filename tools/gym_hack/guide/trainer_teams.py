@@ -36,11 +36,21 @@ def norm(name):
     return n
 
 
+_DATA = None
+
+
+def data():
+    global _DATA
+    if _DATA is None:
+        _DATA = D.load()
+    return _DATA
+
+
 def species_types():
     """SPECIES name (no prefix) -> [types]"""
     global _TYPES
     if _TYPES is None:
-        data = D.load()
+        data = globals()["data"]()
         _TYPES = {}
         for key, body in data["species"].items():
             types = list(dict.fromkeys(re.findall(r"TYPE_(\w+)", D.field(body, "types") or "")))
@@ -49,17 +59,44 @@ def species_types():
     return _TYPES
 
 
-def types_of(species):
+def species_key(species):
+    """'Weezing-Galar' -> 'WEEZING_GALAR' (a key of the species data), or None"""
     t = species_types()
     n = norm(re.sub(r"^Shiny ", "", species.strip()))
     for cand in (n, n + "_NORMAL", n.replace("_MEGA", "")):
         if cand in t:
-            return t[cand]
+            return cand
     forms = sorted(k for k in t if k.startswith(n + "_"))      # (Aegislash -> AEGISLASH_SHIELD...)
     if forms:
-        return t[forms[0]]
+        return forms[0]
     base = n.split("_")[0]
-    return t.get(base, [])
+    return base if base in t else None
+
+
+def types_of(species):
+    k = species_key(species)
+    return species_types().get(k, []) if k else []
+
+
+_SPRITES = {}
+
+
+def sprite_img(species):
+    """a small <img> of the Pokémon's front sprite ('' if there's none)"""
+    k = species_key(species)
+    if k is None:
+        return ""
+    if k not in _SPRITES:
+        d = data()
+        body = d["species"].get("SPECIES_" + k)
+        path = None
+        if body:
+            try:
+                path = D.sprite(D.parse_species("SPECIES_" + k, body, d), d)
+            except Exception:
+                path = None
+        _SPRITES[k] = f'<img class="tmon" src="{path.as_uri()}">' if path else ""
+    return _SPRITES[k]
 
 
 def pretty(species):
@@ -73,7 +110,7 @@ def mon_row(badge, species, level, item="", moves=(), note=""):
     tb = " ".join(badge(t.title()) for t in types_of(species))
     lv = f"{level}" if level != "" else ""
     mv = " / ".join(moves) if moves else ("its level-up moves" if level not in ("avg", "avg+5") else "")
-    return (f"<tr><td><b>{esc(species)}</b> {tb}</td><td>{lv}</td><td>{esc(item)}</td>"
+    return (f"<tr><td>{sprite_img(species)}<b>{esc(species)}</b> {tb}</td><td>{lv}</td><td>{esc(item)}</td>"
             f"<td>{esc(mv)}{(' <i>' + esc(note) + '</i>') if note else ''}</td></tr>")
 
 
@@ -279,5 +316,6 @@ TEAM_CSS = """
 .tname { font-family: 'DejaVu Sans', sans-serif; font-weight: 700; font-size: 9.5pt; margin-bottom: 1px; }
 .tsub { font-weight: 400; color: #666; font-size: 8pt; }
 table.teamt { font-size: 7.8pt; margin: 2px 0 4px; }
-table.teamt td, table.teamt th { padding: 2px 4px; }
+table.teamt td, table.teamt th { padding: 1px 4px; vertical-align: middle; }
+img.tmon { width: 30px; height: 30px; image-rendering: pixelated; vertical-align: middle; margin: -4px 3px -4px -2px; }
 """
