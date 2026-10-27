@@ -381,6 +381,10 @@ void Playtest_Update(void)
             CalculateMonStats(mon);
         }
         break;
+    case PLAYTEST_SET_MOVE:
+        if (a[0] < PARTY_SIZE && a[1] < MAX_MON_MOVES && a[2] < MOVES_COUNT)
+            SetMonMoveSlot(&gPlayerParty[a[0]], a[2], a[1]);
+        break;
     case PLAYTEST_RELEASE:
         if (a[0] < PARTY_SIZE)
         {

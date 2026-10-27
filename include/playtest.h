@@ -59,6 +59,7 @@ enum
     PLAYTEST_SET_VAR,       // args: var, value
     PLAYTEST_TRAIN_MON,     // args: party slot, nature, held item, EV spread (PLAYTEST_EVS_*): what the
                             //       training items do (Gold Bottle Cap, Multivitamin, Cilantro)
+    PLAYTEST_SET_MOVE,      // args: party slot, move slot (0-3), move (its full PP)
 };
 
 // EV spreads for PLAYTEST_TRAIN_MON (252 / 252 / 4)
