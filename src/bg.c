@@ -284,7 +284,10 @@ bool32 IsInvalidBg(u32 bg)
 int BgTileAllocOp(int bg, int offset, int count, int mode)
 {
     int result = BgTileAllocOpUnchecked(bg, offset, count, mode);
-    fatal_assertf(result > 0);
+    // Gym Trainer hack: only a search (mode 0) can fail, with -1; it can find space at 0. Marking
+    // tiles used or free (modes 1 and 2) returns 0. This was result > 0, which crashed the FRLG
+    // credits (they turn window tile allocation on) the first time they loaded a map
+    fatal_assertf(mode != 0 || result >= 0);
     return result;
 }
 
