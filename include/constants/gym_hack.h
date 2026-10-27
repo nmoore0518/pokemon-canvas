@@ -18,8 +18,12 @@
 
 // Changing the gym's type after the League (src/gym_switch.c): a streak this long (its last battle
 // against the mentor) masters the type and earns a new one; the first takes longer
-#define GYM_SWITCH_FIRST_STREAK   20
+#define GYM_SWITCH_FIRST_STREAK   15
 #define GYM_SWITCH_NEXT_STREAK    10
+// Random gym challengers: the share of teams with a legendary (never more than one)
+#define GYM_CHALLENGER_LEGEND_PERCENT 40
+// Oak's battle for the gym: his level over the player's average (never below 65)
+#define GYM_OAK_FINALE_MARGIN     1
 
 // The Gym Charm (from the mentor, after the League): Shiny odds for Pokémon of the gym's type
 #define GYM_CHARM_SHINY_ODDS      250

@@ -347,8 +347,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - The player can put it off ("come challenge me in the GYM when you're ready"); Oak then waits
     in the gym. The one-type and no-duplicate rules apply (he refuses an illegal team).
   - The battle: Oak's team (Tauros, Exeggutor, Arcanine, Gyarados, Snorlax, Dragonite) with full
-    IVs, EVs, held items, competitive moves, two Full Restores and the smartest AI; five levels
-    above the player's average, never below 65. Champion battle music.
+    IVs, EVs, held items, competitive moves and the smartest AI, no healing items; one level
+    above the player's average (`GYM_OAK_FINALE_MARGIN`), never below 65. Champion battle music.
     `GymChallenge_GenerateOakFinale` in `src/gym_challenge.c`.
   - Losing sends the player home (no money lost), and the scene plays again when they step out.
   - Winning: Oak apologizes and hands over the gym (`FLAG_PALLET_GYM_AWARDED`, which opens the
@@ -526,9 +526,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   Grass: Shaymin, Electric: Miraidon, Psychic: Cresselia, Ice: Glastrier, Dragon: Rayquaza,
   Dark: Darkrai, Fairy: Xerneas. Navel Rock's Ho-Oh (an event map) never appears now.
 - **Changing the gym's type** (`src/gym_switch.c`, `data/scripts/gym_switch.inc`): after the gym
-  is the player's, a streak of 20 wins (10 for every later type) masters its type. The streak's last
+  is the player's, a streak of 15 wins (`GYM_SWITCH_FIRST_STREAK`; 10 for every later type) masters its type. The streak's last
   battle is the player's mentor with their full Gym Leader Convention team, at least 3 levels above
-  the player's average, with two Full Restores (`GYM_CHALLENGER_BOSS`; the aide announces them).
+  the player's average, no healing items (`GYM_CHALLENGER_BOSS`; the aide announces them).
   Beating them earns a new type, saved as a "ticket" (`switchTickets`/`switchesEarned` in
   `GymChallengeSave`, `FLAG_GYM_RUN_MASTERED` 0x0DE), and the player can keep going: after each win
   the aide offers KEEP GOING / CALL IT A DAY / TAKE A BREAK. When the streak ends (a loss, or
@@ -695,29 +695,23 @@ make check BUILD=firered TESTS="GymHack" -j$(nproc)       # run this hack's auto
 python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
 ```
 
-## Balance pass (to do: from the October 2026 bot playthrough)
+## Balance pass (October 2026, from the bot playthrough)
 
-- [ ] **No healing items in post-game battles**, to mirror competitive play: the gym challenges'
-      mentor boss (`items[0..1] = ITEM_FULL_RESTORE`, `src/gym_challenge.c` ~1018) and Oak's
-      battle for the gym (~974). Random/famous challengers, the convention and the tournament
-      already carry none.
-- [ ] **Fewer legendaries on random challengers**: today a slot is any fully evolved Gen 1-3
-      species with base stats 420+ (`IsStrongSpecies`), about 1 in 7 a legendary (~0.7 per team;
-      teams of 2-3 happen). Target: at most one per random team, on about one team in two or
-      three; famous challengers and the mentor get one.
-- [ ] **First mastery streak 20 -> 15** (later types stay 10).
-- [ ] **The mentor at the end of a streak** is their full convention team (Misty: Mega Starmie,
-      Thunderbolt x2, Freeze-Dry, Wish) at average + 3 with 2 Full Restores. A same-type mirror
-      where they have the coverage: the bot reached the 20th battle twice (19-win streaks) and lost
-      both. Decision: remove the Full Restores only (a human should beat it as it is otherwise).
-- [ ] **Oak's battle for the gym**: average + 5 with perfect IVs/EVs, items, competitive sets and
-      the smartest AI (bot: 0 for 4 at an even 68 vs 73). Consider a smaller margin besides
-      dropping the Full Restores.
-- [ ] **The Champion**: the rival's counter type, perfect IVs and 4 Full Restores (Lv 57-63).
-      The bot needed its whole team at 68 (8 over his average) and won about half its tries.
-      Consider: drop the IVs and Full Restores; one member of another type; and keep the Elite
-      Four beaten after a Champion loss (or a rematch from the lobby), so a loss doesn't mean
-      the whole League again.
+- [x] **No battle items in post-game battles**, to mirror competitive play: Oak's battle for the
+      gym, the mastery mentor, the Elite Four rematches and the Champion (first and rematch, all
+      types: `tools/gym_hack/gen_rival_teams.py`). Random/famous challengers, the convention and the
+      tournament never had any. The story's trainers keep theirs.
+- [x] **At most one legendary on a random challenger's team**, on `GYM_CHALLENGER_LEGEND_PERCENT`
+      (40%) of teams (it was any slot, ~1 in 7: ~0.7 a team, teams of 2-3).
+- [x] **First mastery streak 15** (`GYM_SWITCH_FIRST_STREAK`; later types stay 10).
+- [x] **Oak's battle for the gym at average + 1** (`GYM_OAK_FINALE_MARGIN`; was + 5: the bot went
+      0 for 4 at an even 68 vs 73).
+- [x] **The Champion**: no Full Restores (the IVs stay). After two losses to him in a row
+      (`VAR_CHAMPION_LOSSES`, 0x4094, counted in his room), the League's door guard in the Indigo
+      Plateau lobby offers the way straight to him: no Elite Four again.
+- [x] Fixed on the way: the door guard blocked the League ("Lorelei is absent") whenever the
+      National Dex was on, as in FireRed before the Sevii Islands. With the National Dex from the
+      start (v92), the League was shut for every new save. The door is always open now.
 - Confirmed as intended: gym challengers draw from Gen 1-3 (Kanto trainers); convention teams
   are each trainer's canonical team (their own region's Pokémon); the tournament draws from the
   convention and the Gauntlet's characters (every region).

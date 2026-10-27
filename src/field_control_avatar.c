@@ -728,6 +728,14 @@ static bool8 TryStartCoordEventScript(struct MapPosition *position)
     return TRUE;
 }
 
+// Gym Trainer hack: whether the player stands on a warp (a door, stairs, a mat)
+static bool32 IsPlayerOnWarp(void)
+{
+    struct MapPosition position;
+    GetPlayerPosition(&position);
+    return GetWarpEventAtMapPosition(&gMapHeader, &position) != WARP_ID_NONE;
+}
+
 static bool8 TryStartMiscWalkingScripts(u16 metatileBehavior)
 {
     s16 x, y;
@@ -760,6 +768,7 @@ static bool8 TryStartMiscWalkingScripts(u16 metatileBehavior)
     }
     else if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_FORCED_MOVE)
           && !MetatileBehavior_IsForcedMovementTile(metatileBehavior)
+          && !IsPlayerOnWarp()             // (the message waits: it used to eat the step through a door)
           && GymDecor_CheckNewUnlocks())   // Gym Trainer hack
     {
         ScriptContext_SetupScript(EventScript_NewGymDecor);

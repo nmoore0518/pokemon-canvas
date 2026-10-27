@@ -378,6 +378,12 @@ static bool32 IsStrongSpecies(u32 species)
         && GetSpeciesBaseStatTotal(species) >= 420;
 }
 
+static bool32 IsLegendarySpecies(u32 species)
+{
+    const struct SpeciesInfo *info = &gSpeciesInfo[species];
+    return info->isRestrictedLegendary || info->isSubLegendary || info->isMythical;
+}
+
 // A Pokémon from an early-game team that's now high level evolves (Geodude -> Golem)
 u32 GymChallenge_EvolveForLevel(u32 species, u32 level)
 {
@@ -470,6 +476,8 @@ static void GenerateTrainer(u32 level)
 
     memcpy(spread, sLevelSpread[n], sizeof(spread));
     ShuffleLevels(spread, n);
+    // At most one legendary, on GYM_CHALLENGER_LEGEND_PERCENT of the teams (any slot)
+    u32 legendSlot = (Random() % 100 < GYM_CHALLENGER_LEGEND_PERCENT) ? Random() % n : PARTY_SIZE;
     SetupTrainer(cls->trainerClass, cls->trainerPic, cls->female, name, n);
     for (i = 0; i < n; i++)
     {
@@ -482,7 +490,8 @@ static void GenerateTrainer(u32 level)
                 if (sChallengerMons[j].species == species)
                     species = SPECIES_NONE;
             }
-        } while (species == SPECIES_NONE || !IsStrongSpecies(species));
+        } while (species == SPECIES_NONE || !IsStrongSpecies(species)
+                 || IsLegendarySpecies(species) != (i == legendSlot));
         InitMon(&sChallengerMons[i], species, ClampLevel(level + spread[i]), 24);
         if (Random() % 100 < 40)
             sChallengerMons[i].heldItem = sHeldItems[Random() % ARRAY_COUNT(sHeldItems)];
@@ -957,7 +966,7 @@ void GymChallenge_EndPractice(void)
 
 u32 GymChallenge_OakFinaleLevel(void)
 {
-    u32 level = GymChallenge_PlayerAverageLevel() + 5;
+    u32 level = GymChallenge_PlayerAverageLevel() + GYM_OAK_FINALE_MARGIN;
     if (level < 65)
         level = 65;
     return ClampLevel(level);
@@ -971,8 +980,7 @@ void GymChallenge_GenerateOakFinale(void)
     u32 level = GymChallenge_OakFinaleLevel(), i;
     SetupTrainer(TRAINER_CLASS_PKMN_PROF_FRLG, TRAINER_PIC_PROFESSOR_OAK_FRLG, FALSE, COMPOUND_STRING("OAK"),
                  ARRAY_COUNT(sOakFinaleTeam));
-    sChallenger.items[0] = ITEM_FULL_RESTORE;
-    sChallenger.items[1] = ITEM_FULL_RESTORE;
+    // (no battle items: post-game battles mirror competitive play)
     for (i = 0; i < ARRAY_COUNT(sOakFinaleTeam); i++)
     {
         const struct OakMon *oak = &sOakFinaleTeam[i];
@@ -1015,8 +1023,7 @@ static void GenerateBoss(u32 streak)
         VarSet(VAR_OBJ_GFX_ID_0, Convention_GetGraphicsId(index));
     }
     sChallenger.aiFlags |= AI_FLAG_SMART_TRAINER;
-    sChallenger.items[0] = ITEM_FULL_RESTORE;
-    sChallenger.items[1] = ITEM_FULL_RESTORE;
+    // (no battle items: post-game battles mirror competitive play)
     SetTexts(COMPOUND_STRING("{STR_VAR_1}: {PLAYER}! {STR_VAR_3} wins\nin a row? I had to see it myself!\p"
                              "As your mentor, I'll test you with\nmy real team.\p"
                              "Show me you've mastered\n{STR_VAR_2}-type POKéMON!"),

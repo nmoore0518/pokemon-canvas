@@ -56,8 +56,10 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	setflag FLAG_TEMP_3
 	setflag FLAG_TEMP_5
 	savebgm MUS_VICTORY_GYM_LEADER
+	addvar VAR_CHAMPION_LOSSES, 1      @ (Gym Trainer hack: a loss whites out; a win resets it)
 	call_if_unset FLAG_IS_CHAMPION, PokemonLeague_ChampionsRoom_EventScript_Battle
 	call_if_set FLAG_IS_CHAMPION, PokemonLeague_ChampionsRoom_EventScript_Rematch
+	setvar VAR_CHAMPION_LOSSES, 0
 	setflag FLAG_TEMP_4
 	clearflag FLAG_TEMP_5
 	setflag FLAG_DEFEATED_CHAMP

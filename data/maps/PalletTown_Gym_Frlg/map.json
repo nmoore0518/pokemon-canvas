@@ -260,7 +260,7 @@
       "local_id": "LOCALID_PALLET_GYM_FIGURE",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_VAR_D",
-      "x": 10,
+      "x": 9,
       "y": 24,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",

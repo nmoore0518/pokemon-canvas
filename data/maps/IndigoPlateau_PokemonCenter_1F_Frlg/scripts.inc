@@ -5,32 +5,41 @@ IndigoPlateau_PokemonCenter_1F_Frlg_MapScripts::
 
 IndigoPlateau_PokemonCenter_1F_OnTransition::
 	setrespawn HEAL_LOCATION_INDIGO_PLATEAU
-	specialvar VAR_RESULT, IsNationalPokedexEnabled
-	call_if_eq VAR_RESULT, TRUE, IndigoPlateau_PokemonCenter_1F_EventScript_CheckBlockDoor
 	end
 
-IndigoPlateau_PokemonCenter_1F_EventScript_CheckBlockDoor::
-	goto_if_set FLAG_IS_CHAMPION, Common_EventScript_NopReturn
-	setobjectxyperm LOCALID_LEAGUE_DOOR_GUARD, 4, 2
-	return
-
+@ Gym Trainer hack: FireRed's guard blocked the door ("Lorelei is absent") from the National Dex
+@ until the Sevii Islands were done. This hack has the National Dex from the start and no Sevii
+@ Islands, so the door is always open.
+@ She also offers a way straight to the Champion once the player has lost to him twice in a row
+@ (VAR_CHAMPION_LOSSES, counted in the Champion's room): they've beaten the Elite Four twice.
 IndigoPlateau_PokemonCenter_1F_EventScript_DoorGuard::
 	lock
 	faceplayer
-	specialvar VAR_RESULT, IsNationalPokedexEnabled
-	goto_if_eq VAR_RESULT, TRUE, IndigoPlateau_PokemonCenter_1F_EventScript_CheckSeviiIslandComplete
+	goto_if_ge VAR_CHAMPION_LOSSES, 2, IndigoPlateau_PokemonCenter_1F_EventScript_ChampionSkipOffer
 	msgbox IndigoPlateau_PokemonCenter_1F_Text_FaceEliteFourGoodLuck
 	release
 	end
 
-IndigoPlateau_PokemonCenter_1F_EventScript_CheckSeviiIslandComplete::
-	goto_if_set FLAG_IS_CHAMPION, IndigoPlateau_PokemonCenter_1F_EventScript_SeviiIslandComplete
-	msgbox IndigoPlateau_PokemonCenter_1F_Text_LoreleiIsAbsentClosedForTimeBeing
+IndigoPlateau_PokemonCenter_1F_EventScript_ChampionSkipOffer::
+	msgbox IndigoPlateau_PokemonCenter_1F_Text_ChampionSkipOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, IndigoPlateau_PokemonCenter_1F_EventScript_ChampionSkipNo
+	special GymHack_CheckTeamSpecial
+	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, IndigoPlateau_PokemonCenter_1F_EventScript_ChampionSkipTeam
+	msgbox IndigoPlateau_PokemonCenter_1F_Text_ChampionSkipGo
+	closemessage
+	playse SE_EXIT
+	warp MAP_POKEMON_LEAGUE_CHAMPIONS_ROOM, 0
+	waitstate
 	release
 	end
 
-IndigoPlateau_PokemonCenter_1F_EventScript_SeviiIslandComplete::
+IndigoPlateau_PokemonCenter_1F_EventScript_ChampionSkipNo::
 	msgbox IndigoPlateau_PokemonCenter_1F_Text_FaceEliteFourGoodLuck
+	release
+	end
+
+IndigoPlateau_PokemonCenter_1F_EventScript_ChampionSkipTeam::
+	call EventScript_GymHack_ShowTeamRuleMessage
 	release
 	end
 
@@ -96,6 +105,16 @@ IndigoPlateau_PokemonCenter_1F_Text_GymGuyAdvice::
 	.string "over again!\p"
 	.string "This is it!\n"
 	.string "Go for it!$"
+
+IndigoPlateau_PokemonCenter_1F_Text_ChampionSkipOffer::
+	.string "You again! You've beaten the ELITE\n"
+	.string "FOUR twice and reached the CHAMPION.\p"
+	.string "The LEAGUE has seen enough. I can\n"
+	.string "take you straight to the CHAMPION.\p"
+	.string "Shall I?$"
+
+IndigoPlateau_PokemonCenter_1F_Text_ChampionSkipGo::
+	.string "Right this way. Good luck!$"
 
 IndigoPlateau_PokemonCenter_1F_Text_FaceEliteFourGoodLuck::
 	.string "From here on, you face the\n"

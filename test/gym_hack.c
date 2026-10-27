@@ -1368,7 +1368,7 @@ TEST("GymHack: Oak's type-choice lines fit the message box")
 
 extern const u8 GymFinale_Text_OakComeToTheGym[], GymFinale_Text_OakHereWeAre[], GymFinale_Text_OakThinking[], GymFinale_Text_OakWontGiveItUp[], GymFinale_Text_OakYouCameBack[], GymFinale_Text_OakWillYouBattle[], GymFinale_Text_OakThenShowMe[], GymFinale_Text_OakComeBackWhenReady[], GymFinale_Text_OakRulesStillApply[], GymFinale_Text_OakStillHasIt[], GymFinale_Text_OakGivesUp[], GymFinale_Text_YourBadge[], GymFinale_Text_OakMeetMyAide[], GymFinale_Text_AideHello[], GymFinale_Text_OakHowItWorks[], GymFinale_Text_OakWait[], GymFinale_Text_OakMadeIt[], GymFinale_Text_PokemonHealed[], GymFinale_Text_OakThisBattleDecides[], GymFinale_Text_OakCongratulations[], GymFinale_Text_OakToRival[];
 
-TEST("GymHack: finale: Oak's team for the gym is six strong Pokemon above the player's level")
+TEST("GymHack: finale: Oak's team for the gym is six strong Pokemon at the player's level + 1")
 {
     const struct Trainer *t;
     u32 i;
@@ -1384,8 +1384,10 @@ TEST("GymHack: finale: Oak's team for the gym is six strong Pokemon above the pl
     }
     GivePlayerTeamAt(80, 82);
     GymChallenge_GenerateOakFinale();
-    EXPECT_EQ(GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->party[0].lvl, 86);
+    EXPECT_EQ(GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->party[0].lvl, 81 + GYM_OAK_FINALE_MARGIN);
     EXPECT_EQ(GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->trainerClass, TRAINER_CLASS_PKMN_PROF_FRLG);
+    for (i = 0; i < MAX_TRAINER_ITEMS; i++)     // (no battle items in post-game battles)
+        EXPECT_EQ(GetTrainerStructFromId(TRAINER_GYM_CHALLENGER)->items[i], ITEM_NONE);
 }
 
 TEST("GymHack: finale: the gym challenges open once the gym is awarded")
@@ -2171,16 +2173,16 @@ static void SwitchTo(u32 type)
     GymSwitch_SetType();
 }
 
-TEST("GymHack: switch: the mastery battle is the 20th win, then the 10th")
+TEST("GymHack: switch: the mastery battle is the 15th win, then the 10th")
 {
     u32 t;
     ResetGymTypes(TYPE_ROCK);
-    EXPECT(GymSwitch_IsMasteryBattle(20));
+    EXPECT(GymSwitch_IsMasteryBattle(15));
     EXPECT(!GymSwitch_IsMasteryBattle(10));
-    EXPECT(!GymSwitch_IsMasteryBattle(21));
+    EXPECT(!GymSwitch_IsMasteryBattle(16));
     GymChallenge_GetSave()->switchesEarned = 1;
     EXPECT(GymSwitch_IsMasteryBattle(10));
-    EXPECT(!GymSwitch_IsMasteryBattle(20));
+    EXPECT(!GymSwitch_IsMasteryBattle(15));
     // Not before the gym is the player's, nor once it has had every type and mastered its own
     FlagClear(FLAG_PALLET_GYM_AWARDED);
     EXPECT(!GymSwitch_IsMasteryBattle(10));
@@ -2215,11 +2217,13 @@ TEST("GymHack: switch: the mastery battle is the mentor with their convention te
     ResetGymTypes(TYPE_WATER);
     ZeroPlayerPartyMons();
     CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_LAPRAS, 60, 0, OTID_STRUCT_PLAYER_ID);
-    GymChallenge_GetSave()->streak = 19;
+    GymChallenge_GetSave()->streak = GYM_SWITCH_FIRST_STREAK - 1;
     GymChallenge_NextChallenger();
     EXPECT_EQ(gSpecialVar_Result, GYM_CHALLENGER_BOSS);
     trainer = GymChallenge_GetTrainer(TRAINER_GYM_CHALLENGER);
     EXPECT_EQ(StringCompare(trainer->trainerName, COMPOUND_STRING("MISTY")), 0);
+    for (i = 0; i < MAX_TRAINER_ITEMS; i++)       // (no battle items)
+        EXPECT_EQ(trainer->items[i], ITEM_NONE);
     EXPECT_GE((u32)trainer->partySize, 4);
     for (i = 0; i < trainer->partySize; i++)
         total += trainer->party[i].lvl;
@@ -3050,4 +3054,28 @@ TEST("GymHack: items: the Lucky Egg and Amulet Coin level up to 10")
     EXPECT(ItemUpgrade_GetDescription(ITEM_POTION) == NULL);
     ItemUpgrade_SetLevel(ITEM_LUCKY_EGG, 1);
     ItemUpgrade_SetLevel(ITEM_AMULET_COIN, 1);
+}
+
+TEST("GymHack: challenges: random challengers have at most one legendary")
+{
+    u32 run, i, teamsWithOne = 0;
+    GivePlayerTeamAt(60, 62);
+    for (run = 0; run < 60; run++)
+    {
+        const struct Trainer *t;
+        u32 legends = 0;
+        GymChallenge_Generate(GYM_CHALLENGER_TRAINER, 0);
+        t = GetTrainerStructFromId(TRAINER_GYM_CHALLENGER);
+        for (i = 0; i < t->partySize; i++)
+        {
+            const struct SpeciesInfo *info = &gSpeciesInfo[t->party[i].species];
+            legends += info->isRestrictedLegendary || info->isSubLegendary || info->isMythical;
+        }
+        EXPECT_LE(legends, 1);
+        teamsWithOne += legends;
+        for (i = 0; i < MAX_TRAINER_ITEMS; i++)
+            EXPECT_EQ(t->items[i], ITEM_NONE);
+    }
+    EXPECT_GT(teamsWithOne, 5);       // (about 40% of teams)
+    EXPECT_LT(teamsWithOne, 45);
 }

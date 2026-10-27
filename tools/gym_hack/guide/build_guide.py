@@ -448,7 +448,7 @@ Champion <i>and</i> Leader of the Pallet Town Gym.</p>
 <p>After the credits, Oak meets you outside your house and takes you to the gym, and then he can't let it go: it's his town,
 next to his lab ("Remember when I said I'd run it myself? I wasn't joking!"). He challenges you for the gym. You can put it
 off; he'll wait in the gym. His team (Tauros, Exeggutor, Arcanine, Gyarados, Snorlax, Dragonite) has full IVs and EVs, held
-items, two Full Restores and the smartest AI, five levels above your average (never below 65). Losing just sends you home to
+items and the smartest AI, one level above your average (never below 65); no healing items. Losing just sends you home to
 try again. Win, and the gym and your own badge are yours, and his aide explains the challenger system.</p>
 """
 
@@ -496,8 +496,9 @@ gym, the back wall included.</li>
 has a fresh random team of your type for practice battles (no prize, no whiteout, healed after). Some trainers on the road
 ask to join your gym after you beat them; they're placed the same way and use their own favorite type.</p>
 <h3>Mastering types and changing your gym's type</h3>
-<p>A streak of 20 wins masters your gym's type (10 for every type after the first). The streak's last battle is your mentor
-with their full Gym Leader Convention team. Beat them and Oak offers a new type: choose one the gym hasn't had, and the badge
+<p>A streak of 15 wins masters your gym's type (10 for every type after the first). The streak's last battle is your mentor
+with their full Gym Leader Convention team, three levels above your average. Random challengers bring at most one legendary,
+and no post-game opponent uses healing items. Beat them and Oak offers a new type: choose one the gym hasn't had, and the badge
 and pedestal change. In his lab Oak also switches the gym back to any type it has had, for free. Each type's legendary
 arrives when the gym first becomes that type.</p>
 <h3>Your type's legendary</h3>

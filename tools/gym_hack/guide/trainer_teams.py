@@ -109,7 +109,7 @@ def pretty(species):
 def mon_row(badge, species, level, item="", moves=(), note=""):
     tb = " ".join(badge(t.title()) for t in types_of(species))
     lv = f"{level}" if level != "" else ""
-    mv = " / ".join(moves) if moves else ("its level-up moves" if level not in ("avg", "avg+5") else "")
+    mv = " / ".join(moves) if moves else ("its level-up moves" if level not in ("avg", "avg+1") else "")
     return (f"<tr><td>{sprite_img(species)}<b>{esc(species)}</b> {tb}</td><td>{lv}</td><td>{esc(item)}</td>"
             f"<td>{esc(mv)}{(' <i>' + esc(note) + '</i>') if note else ''}</td></tr>")
 
@@ -235,9 +235,9 @@ def gym_challenge_data():
 def gym_section(badge):
     oak, folk, extras, _ = gym_challenge_data()
     out = ["<h3>Professor Oak: the battle for your gym</h3>"
-           "<p>After the Hall of Fame. His team is five levels above your team's average (never below 65), with "
+           "<p>After the Hall of Fame. His team is one level above your team's average (never below 65), with "
            "perfect IVs, full EVs, the held items and natures below, and the smartest AI.</p>",
-           team_table(badge, "OAK", [(sp, "avg+5", it, mv) for sp, _, it, mv, _ in oak],
+           team_table(badge, "OAK", [(sp, "avg+1", it, mv) for sp, _, it, mv, _ in oak],
                       "natures: " + ", ".join(f"{sp} {n}" for sp, _, _, _, n in oak))]
     out.append("<h3>Gym challengers</h3><p>Every challenger's team averages your team's level. Most are random trainers "
                "with 4-6 fully evolved Pokémon from the first three generations (base stats 420 or more). "

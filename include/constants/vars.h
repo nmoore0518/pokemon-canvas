@@ -361,6 +361,8 @@
 // never use these two.
 #define VAR_LUCKY_EGG_LEVEL                              0x4092
 #define VAR_AMULET_COIN_LEVEL                            0x4093
+// Champion battles lost in a row (the League's door guard offers the way straight to him at 2)
+#define VAR_CHAMPION_LOSSES                              0x4094
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

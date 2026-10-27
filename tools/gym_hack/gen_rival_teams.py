@@ -136,11 +136,11 @@ STAGES = [
      [(0, 37, 12), (3, 38, 12), (4, 35, 12), (1, 35, 12), (ACE, 40, 18)]),
     ("ROUTE22_LATE", "ROUTE22_LATE", HEADER_LATE, "",
      [(0, 47, 18), (2, 45, 18), (3, 45, 18), (4, 45, 18), (1, 47, 18), (ACE, 53, 30)]),
-    ("CHAMPION_FIRST", "CHAMPION_FIRST", HEADER_CHAMP,
-     "Items: Full Restore / Full Restore / Full Restore / Full Restore\n",
+    # (no battle items for the Champion: the playtest found 4 Full Restores made a counter-type
+    #  team at full IVs a wall)
+    ("CHAMPION_FIRST", "CHAMPION_FIRST", HEADER_CHAMP, "",
      [(0, 59, 31), (1, 57, 31), (2, 59, 31), (3, 59, 31), (4, 61, 31), (ACE, 63, 31)]),
-    ("CHAMPION_REMATCH", "CHAMPION_REMATCH", HEADER_CHAMP,
-     "Items: Full Restore / Full Restore / Full Restore / Full Restore\n",
+    ("CHAMPION_REMATCH", "CHAMPION_REMATCH", HEADER_CHAMP, "",
      [(0, 72, 31), (1, 73, 31), (2, 72, 31), (3, 73, 31), (4, 73, 31), (ACE, 75, 31)]),
 ]
 
