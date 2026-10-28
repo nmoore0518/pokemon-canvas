@@ -6271,7 +6271,7 @@ void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)
     }
     else
     {
-        if (GetItemPocket(gSpecialVar_ItemId) != POCKET_KEY_ITEMS)
+        if (!IsKeyItemPocket(GetItemPocket(gSpecialVar_ItemId)))
             RemoveBagItem(gSpecialVar_ItemId, 1);
         FreePartyPointers();
     }

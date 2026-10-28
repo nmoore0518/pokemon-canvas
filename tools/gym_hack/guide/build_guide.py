@@ -329,7 +329,9 @@ work.</li>
 boxes and everything else on the PC (see <a href="#pc">Your PC</a>).</li>
 <li><b>16 PC boxes</b> instead of 14.</li>
 <li><b>Reusable TMs.</b> Like HMs, a TM is never used up: teach it to as many Pokémon as you like.</li>
-<li><b>A bigger bag.</b> Room for every Key Item, Poké Ball, TM and Berry in the game, and 297 different items.</li>
+<li><b>A bag with ten pockets</b>, with room for one of every item in the game: Items (evolution items, training items,
+valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berries, TMs &amp; HMs, Tools (the key items you use, and
+can register to SELECT) and Key Items.</li>
 <li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
 Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
 <li><b>Summary screen.</b> On the skills page, A switches between stats, IVs (exact values) and EVs. A new LEVEL-UP MOVES page

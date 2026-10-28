@@ -716,17 +716,29 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
   are each trainer's canonical team (their own region's Pokémon); the tournament draws from the
   convention and the Gauntlet's characters (every region).
 
-## Quality of life (v99)
+## Quality of life (v99-v100)
 
 - [x] **TMs are reusable** (`I_REUSABLE_TMS`): like HMs, never used up, and the mart only sells
       one of each.
-- [x] **A bigger bag**: every Key Item (90), Poké Ball (28), TM/HM (108) and Berry (68) fits,
-      and 297 kinds of items (was 30/30/16/64/46). The save had no room for all ~640 items, so
-      not quite unlimited: the Key Items, Balls and Berries fill SaveBlock1's old 744 bytes, the
-      items and TMs SaveBlock3 (the 116 spare bytes at the end of every save sector; it held one
-      byte). `Bag_UpgradeLayout` (`src/item.c`, on loading) moves an older save's bag over;
-      `SaveBlock3.bagLayout` marks it done. SAVE_LINK now writes the whole slot, since every
-      sector carries a piece of SaveBlock3.
+- [x] **A ten-pocket bag with room for every item** (v100; v99 had five bigger pockets): ITEMS
+      (evolution and training items, valuables, fossils...), MEDICINE, POKé BALLS, BATTLE ITEMS,
+      HOLD ITEMS, MEGA STONES (in the order of their Pokémon), BERRIES, TMs & HMs, TOOLS (key items
+      that do something: bikes, rods, the Palm Pilot, the HM tools...; registrable to SELECT) and
+      KEY ITEMS. The item data still has FireRed's five pockets; `GetItemPocket` (`src/item.c`)
+      sorts ITEMS by `sortType` and key items by whether they have a field use (Z-Crystals go with
+      the hold items). Every pocket holds one of everything that can go in it
+      (`test/gym_hack.c` adds one of every item). The save has no single place big enough, so a
+      pocket can come in two pieces (`BagPocket.splitAt`/`itemSlots2`, behind
+      `BagPocket_GetSlotData`/`SetSlotData`), and the pockets fill: SaveBlock1's old bag bytes (Key
+      Items, Tools, Balls, Berries), SaveBlock3 (TMs, Mega Stones, most Items), SaveBlock1's
+      `pokeblocks` (Medicine) and `berryTrees` (Hold Items, the rest of the Items: there are no
+      berry trees in Kanto, so `BerryTreeTimeUpdate` isn't called) and 116 bytes added at the end of
+      SaveBlock1 (Battle Items). `Bag_UpgradeLayout` moves a FireRed-layout (v98) or v99 bag over
+      on loading (`SaveBlock3.bagLayout`: 0xB3 now). Long pocket names print in the narrow font;
+      the ten pocket squares are drawn over the background's five.
+  (v99's bag, for the record: every Key Item (90), Poké Ball (28), TM/HM (108) and Berry (68), and 297 kinds of items
+      (was 30/30/16/64/46). Since v99 SAVE_LINK writes the whole slot: every sector carries a
+      piece of SaveBlock3.)
 - [x] **The Leader Academy on the Town Map and for FLY** (see the academy above), the mart
       student out of the shelf.
 

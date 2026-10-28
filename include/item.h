@@ -94,6 +94,10 @@ struct ALIGNED(2) BagPocket
     struct ItemSlot *itemSlots;
     u16 capacity:10;
     enum Pocket id:6;
+    // Gym Trainer hack: a pocket can be in two pieces (the save has no one place big enough for every
+    // pocket): slots from splitAt on are in itemSlots2. Go through BagPocket_GetSlotData/SetSlotData.
+    u16 splitAt;
+    struct ItemSlot *itemSlots2;
 };
 
 struct TmHmIndexKey
@@ -256,6 +260,7 @@ void CompactPCItems(void);
 void SwapRegisteredBike(void);
 void CompactItemsInBagPocket(enum Pocket pocketId);
 void Bag_UpgradeLayout(void);
+bool32 IsKeyItemPocket(enum Pocket pocket);
 void MoveItemSlotInPocket(enum Pocket pocketId, u32 from, u32 to);
 void MoveItemSlotInPC(struct ItemSlot *itemSlots, u32 from, u32 to);
 void ClearBag(void);

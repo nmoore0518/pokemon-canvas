@@ -110,22 +110,39 @@ enum Language
 #define ROAMER_COUNT 1 // Number of maximum concurrent active roamers
 
 // Bag constants
-// Gym Trainer hack: room for every Key Item, Poke Ball, TM/HM and Berry there is, and 297 kinds of
-// items. The Key Items, Balls and Berries are where the five pockets used to be in SaveBlock1 (the
-// same 744 bytes); the items and TMs are in SaveBlock3 (src/item.c Bag_UpgradeLayout moves an
-// older save's bag over).
-#define BAG_ITEMS_COUNT 297
-#define BAG_KEYITEMS_COUNT 90
-#define BAG_POKEBALLS_COUNT 28
-#define BAG_TMHM_COUNT 108
-#define BAG_BERRIES_COUNT 68
-// (the old pockets, for the move)
+// Gym Trainer hack: ten pockets with room for every item in the game (test/gym_hack.c checks).
+// Where they are in the save:
+//   SaveBlock1's bag (where the five old pockets were, 744 bytes): Key Items, Tools, Balls, Berries
+//   SaveBlock3 (the spare bytes at the end of every save sector): TMs, Mega Stones, Items (most)
+//   SaveBlock1's pokeblocks (no Pokeblocks in Kanto): Medicine
+//   SaveBlock1's berryTrees (no berry trees either): Hold Items, Items (the rest)
+//   the end of SaveBlock1: Battle Items
+// src/item.c Bag_UpgradeLayout moves an older save's bag over.
+#define BAG_ITEMS_COUNT_1       204     // (in SaveBlock3)
+#define BAG_ITEMS_COUNT_2        17     // (after the hold items)
+#define BAG_ITEMS_COUNT         (BAG_ITEMS_COUNT_1 + BAG_ITEMS_COUNT_2)
+#define BAG_MEDICINE_COUNT       80
+#define BAG_POKEBALLS_COUNT      28
+#define BAG_BATTLE_ITEMS_COUNT   29
+#define BAG_HOLD_ITEMS_COUNT    239
+#define BAG_MEGA_STONES_COUNT    93
+#define BAG_BERRIES_COUNT        68
+#define BAG_TMHM_COUNT          108
+#define BAG_TOOLS_COUNT          37
+#define BAG_KEYITEMS_COUNT       53
+// (the old bags, for the move: FireRed's, then v99's)
 #define BAG_OLD_ITEMS_COUNT 30
 #define BAG_OLD_KEYITEMS_COUNT 30
 #define BAG_OLD_POKEBALLS_COUNT 16
 #define BAG_OLD_TMHM_COUNT 64
 #define BAG_OLD_BERRIES_COUNT 46
-#define BAG_LAYOUT_SPLIT 0xB2   // SaveBlock3's bagLayout: the bag's in its new places
+#define BAG_V99_ITEMS_COUNT 297
+#define BAG_V99_KEYITEMS_COUNT 90
+#define BAG_V99_POKEBALLS_COUNT 28
+#define BAG_V99_TMHM_COUNT 108
+#define BAG_V99_BERRIES_COUNT 68
+#define BAG_LAYOUT_SPLIT   0xB2   // SaveBlock3's bagLayout: v99's five big pockets
+#define BAG_LAYOUT_POCKETS 0xB3   //   and now: the ten pockets
 
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.

@@ -1,12 +1,21 @@
 #ifndef GUARD_ITEM_CONSTANTS_H
 #define GUARD_ITEM_CONSTANTS_H
 
+// Gym Trainer hack: ten pockets, in the bag's order. The item data still names only the first five
+// kinds (ITEMS, POKE_BALLS, TM_HM, BERRIES, KEY_ITEMS); GetItemPocket (src/item.c) sorts an ITEMS
+// item into MEDICINE, BATTLE ITEMS, HOLD ITEMS or MEGA STONES by its sort type, and a key item
+// that does something when used into TOOLS.
 enum Pocket
 {
     POCKET_ITEMS,
+    POCKET_MEDICINE,
     POCKET_POKE_BALLS,
-    POCKET_TM_HM,
+    POCKET_BATTLE_ITEMS,
+    POCKET_HOLD_ITEMS,
+    POCKET_MEGA_STONES,
     POCKET_BERRIES,
+    POCKET_TM_HM,
+    POCKET_TOOLS,
     POCKET_KEY_ITEMS,
     POCKETS_COUNT,
     POCKET_DUMMY = POCKETS_COUNT,

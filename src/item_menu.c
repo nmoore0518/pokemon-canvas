@@ -58,11 +58,9 @@
 // number of item slots that could fit in a single pocket, + 1 for Cancel.
 // This constant picks the max of the existing pocket sizes.
 // By default, the largest pocket is BAG_TMHM_COUNT at 64.
-#define MAX_POCKET_ITEMS  ((max(BAG_TMHM_COUNT,              \
-                            max(BAG_BERRIES_COUNT,           \
-                            max(BAG_ITEMS_COUNT,             \
-                            max(BAG_KEYITEMS_COUNT,          \
-                                BAG_POKEBALLS_COUNT))))) + 1)
+// (Gym Trainer hack: the hold items, at 239)
+#define MAX_POCKET_ITEMS  (max(max(max(BAG_TMHM_COUNT, BAG_BERRIES_COUNT), max(BAG_ITEMS_COUNT, BAG_KEYITEMS_COUNT)), \
+                           max(max(BAG_POKEBALLS_COUNT, BAG_MEDICINE_COUNT), max(BAG_HOLD_ITEMS_COUNT, BAG_MEGA_STONES_COUNT))) + 1)
 
 // Up to 8 item slots can be visible at a time
 #define MAX_ITEMS_SHOWN 8
@@ -721,6 +719,7 @@ static void CB2_Bag(void)
 static bool8 SetupBagMenu(void)
 {
     u8 taskId;
+    u32 i;
 
     switch (gMain.state)
     {
@@ -785,7 +784,8 @@ static bool8 SetupBagMenu(void)
     case 13:
         PrintPocketNames(gPocketNamesStringsTable[gBagPosition.pocket], 0);
         CopyPocketNameToWindow(0);
-        DrawPocketIndicatorSquare(gBagPosition.pocket, TRUE);
+        for (i = 0; i < POCKETS_COUNT; i++)      // (the background has squares for five)
+            DrawPocketIndicatorSquare(i, i == gBagPosition.pocket);
         gMain.state++;
         break;
     case 14:
@@ -1013,7 +1013,7 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
         if (gBagPosition.pocket == POCKET_TM_HM && GetItemTMHMIndex(itemSlot.itemId) > NUM_TECHNICAL_MACHINES)
             BlitBitmapToWindow(windowId, gBagMenuHMIcon_Gfx, 8, y - 1, 16, 16);
 
-        if (gBagPosition.pocket != POCKET_KEY_ITEMS && GetItemImportance(itemSlot.itemId) == FALSE)
+        if (!IsKeyItemPocket(gBagPosition.pocket) && GetItemImportance(itemSlot.itemId) == FALSE)
         {
             // Print item quantity
             ConvertIntToDecimalStringN(gStringVar1, itemSlot.quantity, STR_CONV_MODE_RIGHT_ALIGN, MAX_ITEM_DIGITS);
@@ -1164,6 +1164,7 @@ void UpdatePocketItemList(enum Pocket pocketId)
     {
     case POCKET_TM_HM:
     case POCKET_BERRIES:
+    case POCKET_MEGA_STONES:        // (Gym Trainer hack: in the order of their Pokémon)
         SortItemsInBag(pocket, SORT_BY_INDEX);
         break;
     default:
@@ -1494,12 +1495,14 @@ static void DrawItemListBgRow(u8 y)
     ScheduleBgCopyTilemapToVram(2);
 }
 
+// (Gym Trainer hack: ten pockets, ten squares, centred under the pocket's name)
+#define POCKET_SQUARES_X  (7 - POCKETS_COUNT / 2)
 static void DrawPocketIndicatorSquare(u8 x, bool8 isCurrentPocket)
 {
     if (!isCurrentPocket)
-        FillBgTilemapBufferRect_Palette0(2, 0x1017, x + 5, 3, 1, 1);
+        FillBgTilemapBufferRect_Palette0(2, 0x1017, x + POCKET_SQUARES_X, 3, 1, 1);
     else
-        FillBgTilemapBufferRect_Palette0(2, 0x102B, x + 5, 3, 1, 1);
+        FillBgTilemapBufferRect_Palette0(2, 0x102B, x + POCKET_SQUARES_X, 3, 1, 1);
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -1511,7 +1514,8 @@ static bool8 CanSwapItems(void)
     {
         // TMHMs and berries are numbered, and so may not be swapped
         if (gBagPosition.pocket != POCKET_TM_HM
-         && gBagPosition.pocket != POCKET_BERRIES)
+         && gBagPosition.pocket != POCKET_BERRIES
+         && gBagPosition.pocket != POCKET_MEGA_STONES)
             return TRUE;
     }
     return FALSE;
@@ -1682,7 +1686,7 @@ static void OpenContextMenu(u8 taskId)
     default:
         if (MenuHelpers_IsLinkActive() == TRUE || InUnionRoom() == TRUE)
         {
-            if (gBagPosition.pocket == POCKET_KEY_ITEMS || !IsHoldingItemAllowed(gSpecialVar_ItemId))
+            if (IsKeyItemPocket(gBagPosition.pocket) || !IsHoldingItemAllowed(gSpecialVar_ItemId))
             {
                 gBagMenu->contextMenuItemsPtr = sContextMenuItems_Cancel;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_Cancel);
@@ -1698,6 +1702,10 @@ static void OpenContextMenu(u8 taskId)
             switch (gBagPosition.pocket)
             {
             case POCKET_ITEMS:
+            case POCKET_MEDICINE:
+            case POCKET_BATTLE_ITEMS:
+            case POCKET_HOLD_ITEMS:
+            case POCKET_MEGA_STONES:
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_ItemsPocket);
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_ItemsPocket, sizeof(sContextMenuItems_ItemsPocket));
@@ -1708,7 +1716,9 @@ static void OpenContextMenu(u8 taskId)
                  || GetItemHoldEffect(gSpecialVar_ItemId) == HOLD_EFFECT_TYPE_EDGE)
                     gBagMenu->contextMenuItemsBuffer[2] = ACTION_DUMMY;
                 break;
+            case POCKET_TOOLS:
             case POCKET_KEY_ITEMS:
+            default:
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_KeyItemsPocket);
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_KeyItemsPocket, sizeof(sContextMenuItems_KeyItemsPocket));
@@ -2138,7 +2148,7 @@ static void Task_ItemContext_GiveToParty(u8 taskId)
         StringExpandPlaceholders(gStringVar4, sText_Var1CantBeHeldHere);
         DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, HandleErrorMessage);
     }
-    else if (gBagPosition.pocket != POCKET_KEY_ITEMS && !GetItemImportance(gSpecialVar_ItemId))
+    else if (!IsKeyItemPocket(gBagPosition.pocket) && !GetItemImportance(gSpecialVar_ItemId))
     {
         Task_FadeAndCloseBagMenu(taskId);
     }
@@ -2153,7 +2163,7 @@ static void Task_ItemContext_GiveToPC(u8 taskId)
 {
     if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
         DisplayItemMessage(taskId, FONT_NORMAL, gText_CantWriteMail, HandleErrorMessage);
-    else if (gBagPosition.pocket != POCKET_KEY_ITEMS && !GetItemImportance(gSpecialVar_ItemId))
+    else if (!IsKeyItemPocket(gBagPosition.pocket) && !GetItemImportance(gSpecialVar_ItemId))
         gTasks[taskId].func = Task_FadeAndCloseBagMenu;
     else
         PrintItemCantBeHeld(taskId);
@@ -2439,7 +2449,7 @@ static void RestoreBagAfterWallyTutorial(void)
 {
     u32 i;
 
-    memcpy(gSaveBlock3Ptr->bagItems, sTempWallyBag->bagPocket_Items, sizeof(sTempWallyBag->bagPocket_Items));
+    memcpy(gSaveBlock3Ptr->bagItems, sTempWallyBag->bagPocket_Items, sizeof(gSaveBlock3Ptr->bagItems));
     memcpy(gSaveBlock1Ptr->bag.pokeBalls, sTempWallyBag->bagPocket_PokeBalls, sizeof(sTempWallyBag->bagPocket_PokeBalls));
     gBagPosition.pocket = sTempWallyBag->pocket;
     for (i = 0; i < POCKETS_COUNT; i++)
@@ -2550,22 +2560,31 @@ static void CB2_QuizLadyExitBagMenu(void)
     SetMainCallback2(CB2_ReturnToField);
 }
 
+// (Gym Trainer hack: BATTLE ITEMS and the like are too wide for the normal font's 64 pixels)
+static u32 PocketNameFont(const u8 *name)
+{
+    return GetStringWidth(FONT_NORMAL, name, 0) > 0x40 - 4 ? FONT_NARROW : FONT_NORMAL;
+}
+
 static void PrintPocketNames(const u8 *pocketName1, const u8 *pocketName2)
 {
     struct WindowTemplate window = {0};
     u16 windowId;
     int offset;
+    u32 font;
 
     window.width = 16;
     window.height = 2;
     windowId = AddWindow(&window);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
-    offset = GetStringCenterAlignXOffset(FONT_NORMAL, pocketName1, 0x40);
-    BagMenu_Print(windowId, FONT_NORMAL, pocketName1, offset, 1, 0, 0, TEXT_SKIP_DRAW, COLORID_POCKET_NAME);
+    font = PocketNameFont(pocketName1);
+    offset = GetStringCenterAlignXOffset(font, pocketName1, 0x40);
+    BagMenu_Print(windowId, font, pocketName1, offset, 1, 0, 0, TEXT_SKIP_DRAW, COLORID_POCKET_NAME);
     if (pocketName2)
     {
-        offset = GetStringCenterAlignXOffset(FONT_NORMAL, pocketName2, 0x40);
-        BagMenu_Print(windowId, FONT_NORMAL, pocketName2, offset + 0x40, 1, 0, 0, TEXT_SKIP_DRAW, COLORID_POCKET_NAME);
+        font = PocketNameFont(pocketName2);
+        offset = GetStringCenterAlignXOffset(font, pocketName2, 0x40);
+        BagMenu_Print(windowId, font, pocketName2, offset + 0x40, 1, 0, 0, TEXT_SKIP_DRAW, COLORID_POCKET_NAME);
     }
     CpuCopy32((u8 *)GetWindowAttribute(windowId, WINDOW_TILE_DATA), gBagMenu->pocketNameBuffer, sizeof(gBagMenu->pocketNameBuffer));
     RemoveWindow(windowId);
@@ -2786,6 +2805,7 @@ static void AddBagSortSubMenu(void)
 {
     switch (gBagPosition.pocket)
     {
+    case POCKET_TOOLS:
     case POCKET_KEY_ITEMS:
         gBagMenu->contextMenuItemsPtr = sBagMenuSortKeyItems;
         memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortKeyItems, NELEMS(sBagMenuSortKeyItems));
@@ -2798,6 +2818,7 @@ static void AddBagSortSubMenu(void)
         break;
     case POCKET_BERRIES:
     case POCKET_TM_HM:
+    case POCKET_MEGA_STONES:
         gBagMenu->contextMenuItemsPtr = sBagMenuSortBerriesTMsHMs;
         memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortBerriesTMsHMs, NELEMS(sBagMenuSortBerriesTMsHMs));
         gBagMenu->contextMenuNumItems = NELEMS(sBagMenuSortBerriesTMsHMs);
@@ -3031,6 +3052,7 @@ static s32 CompareItemsByIndex(enum Pocket pocketId, struct ItemSlot item1, stru
         index2 = GetItemTMHMIndex(item2.itemId);
         break;
     case POCKET_BERRIES: // To do - requires #7305
+    case POCKET_MEGA_STONES:
         index1 = item1.itemId;
         index2 = item2.itemId;
         break;

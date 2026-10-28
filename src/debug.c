@@ -3758,7 +3758,7 @@ static void DebugAction_PCBag_Fill_PocketKeyItems(u8 taskId)
 
     for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
     {
-        if (GetItemPocket(itemId) == POCKET_KEY_ITEMS && CheckBagHasSpace(itemId, 1))
+        if (IsKeyItemPocket(GetItemPocket(itemId)) && CheckBagHasSpace(itemId, 1))
             AddBagItem(itemId, 1);
     }
 }

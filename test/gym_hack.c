@@ -376,9 +376,9 @@ TEST("GymHack: each HM key item matches its field move")
     EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_STRENGTH), ITEM_CAN_OF_SPINACH);
     EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_ROCK_SMASH), ITEM_SLEDGEHAMMER);
     EXPECT_EQ(GymHack_GetFieldMoveItem(FIELD_MOVE_WATERFALL), ITEM_ROCKET_BOOTS);
-    EXPECT_EQ(GetItemPocket(ITEM_HEDGE_CLIPPERS), POCKET_KEY_ITEMS);
-    EXPECT_EQ(GetItemPocket(ITEM_CAN_OF_SPINACH), POCKET_KEY_ITEMS);
-    EXPECT_EQ(GetItemPocket(ITEM_ROCKET_BOOTS), POCKET_KEY_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_HEDGE_CLIPPERS), POCKET_TOOLS);
+    EXPECT_EQ(GetItemPocket(ITEM_CAN_OF_SPINACH), POCKET_TOOLS);
+    EXPECT_EQ(GetItemPocket(ITEM_ROCKET_BOOTS), POCKET_TOOLS);
 }
 
 TEST("GymHack: a tree can be cut with the Hedge Clippers instead of a Pokemon")
@@ -1078,6 +1078,7 @@ TEST("GymHack: challenge: famous challengers and townsfolk have full teams at th
 {
     u32 i;
     GivePlayerTeamAt(70, 70);
+    StringCopy(gSaveBlock1Ptr->rivalName, COMPOUND_STRING("BLUE"));    // (the rival's lines name him)
     for (i = 0; i < GymChallenge_CountFamous(); i++)
     {
         const struct Trainer *t;
@@ -2018,7 +2019,7 @@ TEST("GymHack: the Pokémon Center tileset has the heal pad")
 
 TEST("GymHack: the Palm Pilot is a key item that works outside the League")
 {
-    EXPECT_EQ(GetItemPocket(ITEM_PALM_PILOT), POCKET_KEY_ITEMS);
+    EXPECT(IsKeyItemPocket(GetItemPocket(ITEM_PALM_PILOT)));
     EXPECT(GetItemImportance(ITEM_PALM_PILOT));
     gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_VIRIDIAN_CITY);
     gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_VIRIDIAN_CITY);
@@ -3088,58 +3089,111 @@ TEST("GymHack: bag: every TM is reusable")
     EXPECT_EQ(GetItemImportance(ITEM_HM_CUT), 1);
 }
 
-TEST("GymHack: bag: a save's old five pockets move into the bigger bag")
+static void Encrypt(struct ItemSlot *slots, u32 n)
+{
+    u32 i;
+    for (i = 0; i < n; i++)
+        ApplyNewEncryptionKeyToHword(&slots[i].quantity, gSaveBlock2Ptr->encryptionKey);
+}
+
+TEST("GymHack: bag: items go into the ten pockets")
+{
+    EXPECT_EQ(GetItemPocket(ITEM_POTION), POCKET_MEDICINE);
+    EXPECT_EQ(GetItemPocket(ITEM_RARE_CANDY), POCKET_MEDICINE);
+    EXPECT_EQ(GetItemPocket(ITEM_X_ATTACK), POCKET_BATTLE_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_LEFTOVERS), POCKET_HOLD_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_CHARIZARDITE_X), POCKET_MEGA_STONES);
+    EXPECT_EQ(GetItemPocket(ITEM_NUGGET), POCKET_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_FIRE_STONE), POCKET_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_ULTRA_BALL), POCKET_POKE_BALLS);
+    EXPECT_EQ(GetItemPocket(ITEM_ORAN_BERRY), POCKET_BERRIES);
+    EXPECT_EQ(GetItemPocket(ITEM_TM_THUNDERBOLT), POCKET_TM_HM);
+    EXPECT_EQ(GetItemPocket(ITEM_BICYCLE), POCKET_TOOLS);
+    EXPECT_EQ(GetItemPocket(ITEM_OLD_ROD), POCKET_TOOLS);
+    EXPECT_EQ(GetItemPocket(ITEM_SS_TICKET), POCKET_KEY_ITEMS);
+}
+
+TEST("GymHack: bag: one of every item in the game fits")
+{
+    u32 i, n = 0;
+    ClearBag();
+    for (i = ITEM_NONE + 1; i < ITEMS_COUNT; i++)
+    {
+        if (GetItemPocket(i) >= POCKETS_COUNT || gItemsInfo[i].name[0] == 0 || CheckBagHasItem(i, 1))
+            continue;
+        EXPECT(AddBagItem(i, 1));
+        n++;
+    }
+    EXPECT_GT(n, 900);
+    ClearBag();
+}
+
+TEST("GymHack: bag: a FireRed save's five pockets move into the ten")
 {
     struct OldBag *old = (struct OldBag *)&gSaveBlock1Ptr->bag;
-    u32 i;
 
     ClearBag();
     memset(old, 0, sizeof(*old));
     gSaveBlock3Ptr->bagLayout = 0;              // (as an older save's)
     old->items[0] = (struct ItemSlot) {ITEM_POTION, 5};
+    old->items[1] = (struct ItemSlot) {ITEM_X_ATTACK, 2};
+    old->items[2] = (struct ItemSlot) {ITEM_CHARIZARDITE_X, 1};
     old->items[BAG_OLD_ITEMS_COUNT - 1] = (struct ItemSlot) {ITEM_LEFTOVERS, 1};
     old->keyItems[3] = (struct ItemSlot) {ITEM_BICYCLE, 1};
+    old->keyItems[4] = (struct ItemSlot) {ITEM_SS_TICKET, 1};
     old->pokeBalls[0] = (struct ItemSlot) {ITEM_ULTRA_BALL, 12};
     old->TMsHMs[0] = (struct ItemSlot) {ITEM_TM_THUNDERBOLT, 1};
     old->berries[0] = (struct ItemSlot) {ITEM_ORAN_BERRY, 3};
-    for (i = 0; i < ARRAY_COUNT(old->items); i++)          // (the quantities are encrypted)
-        ApplyNewEncryptionKeyToHword(&old->items[i].quantity, gSaveBlock2Ptr->encryptionKey);
-    ApplyNewEncryptionKeyToHword(&old->keyItems[3].quantity, gSaveBlock2Ptr->encryptionKey);
-    ApplyNewEncryptionKeyToHword(&old->pokeBalls[0].quantity, gSaveBlock2Ptr->encryptionKey);
-    ApplyNewEncryptionKeyToHword(&old->TMsHMs[0].quantity, gSaveBlock2Ptr->encryptionKey);
-    ApplyNewEncryptionKeyToHword(&old->berries[0].quantity, gSaveBlock2Ptr->encryptionKey);
+    Encrypt((struct ItemSlot *)old, sizeof(*old) / sizeof(struct ItemSlot));
     Bag_UpgradeLayout();
-    EXPECT_EQ(gSaveBlock3Ptr->bagLayout, BAG_LAYOUT_SPLIT);
+    EXPECT_EQ(gSaveBlock3Ptr->bagLayout, BAG_LAYOUT_POCKETS);
     EXPECT(CheckBagHasItem(ITEM_POTION, 5));
+    EXPECT(CheckBagHasItem(ITEM_X_ATTACK, 2));
+    EXPECT(CheckBagHasItem(ITEM_CHARIZARDITE_X, 1));
     EXPECT(CheckBagHasItem(ITEM_LEFTOVERS, 1));
     EXPECT(CheckBagHasItem(ITEM_BICYCLE, 1));
+    EXPECT(CheckBagHasItem(ITEM_SS_TICKET, 1));
     EXPECT(CheckBagHasItem(ITEM_ULTRA_BALL, 12));
     EXPECT(CheckBagHasItem(ITEM_TM_THUNDERBOLT, 1));
     EXPECT(CheckBagHasItem(ITEM_ORAN_BERRY, 3));
+    EXPECT(!CheckBagHasItem(ITEM_POTION, 6));
+    EXPECT_EQ(GetBagItemId(POCKET_MEDICINE, 0), ITEM_POTION);
+    EXPECT_EQ(GetBagItemId(POCKET_MEGA_STONES, 0), ITEM_CHARIZARDITE_X);
+    EXPECT_EQ(GetBagItemId(POCKET_TOOLS, 0), ITEM_BICYCLE);
     Bag_UpgradeLayout();                        // (once only)
     EXPECT(CheckBagHasItem(ITEM_POTION, 5));
     ClearBag();
 }
 
-TEST("GymHack: bag: the item pocket holds 297 kinds of items")
+TEST("GymHack: bag: a v99 save's five big pockets move into the ten")
 {
-    u32 i, added = 0;
+    struct V99Bag *sb1 = (struct V99Bag *)&gSaveBlock1Ptr->bag;
+    struct ItemSlot *sb3 = gSaveBlock3Ptr->bagTMsHMs;      // (v99: 108 TMs, then 297 items)
+    u32 i;
+
     ClearBag();
-    for (i = ITEM_NONE + 1; i < ITEMS_COUNT && added < BAG_ITEMS_COUNT; i++)
-    {
-        if (GetItemPocket(i) != POCKET_ITEMS || GetItemImportance(i))
-            continue;
-        EXPECT(AddBagItem(i, 1));
-        added++;
-    }
-    EXPECT_EQ(added, BAG_ITEMS_COUNT);
-    for (; i < ITEMS_COUNT; i++)                // (and then it's full)
-    {
-        if (GetItemPocket(i) == POCKET_ITEMS && !GetItemImportance(i))
-        {
-            EXPECT(!AddBagItem(i, 1));
-            break;
-        }
-    }
+    memset(sb1, 0, sizeof(*sb1));
+    memset(sb3, 0, (BAG_V99_TMHM_COUNT + BAG_V99_ITEMS_COUNT) * sizeof(struct ItemSlot));
+    gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_SPLIT;
+    sb1->keyItems[0] = (struct ItemSlot) {ITEM_OLD_ROD, 1};
+    sb1->keyItems[BAG_V99_KEYITEMS_COUNT - 1] = (struct ItemSlot) {ITEM_SS_TICKET, 1};
+    sb1->pokeBalls[5] = (struct ItemSlot) {ITEM_GREAT_BALL, 7};
+    sb1->berries[0] = (struct ItemSlot) {ITEM_SITRUS_BERRY, 2};
+    sb3[0] = (struct ItemSlot) {ITEM_TM_ICE_BEAM, 1};
+    for (i = 0; i < 40; i++)    // (forty kinds of items)
+        sb3[BAG_V99_TMHM_COUNT + i] = (struct ItemSlot) {ITEM_VENUSAURITE + i, 1};
+    sb3[BAG_V99_TMHM_COUNT + 296] = (struct ItemSlot) {ITEM_HYPER_POTION, 9};
+    Encrypt((struct ItemSlot *)sb1, sizeof(*sb1) / sizeof(struct ItemSlot));
+    Encrypt(sb3, BAG_V99_TMHM_COUNT + BAG_V99_ITEMS_COUNT);
+    Bag_UpgradeLayout();
+    EXPECT_EQ(gSaveBlock3Ptr->bagLayout, BAG_LAYOUT_POCKETS);
+    EXPECT(CheckBagHasItem(ITEM_OLD_ROD, 1));
+    EXPECT(CheckBagHasItem(ITEM_SS_TICKET, 1));
+    EXPECT(CheckBagHasItem(ITEM_GREAT_BALL, 7));
+    EXPECT(CheckBagHasItem(ITEM_SITRUS_BERRY, 2));
+    EXPECT(CheckBagHasItem(ITEM_TM_ICE_BEAM, 1));
+    EXPECT(CheckBagHasItem(ITEM_HYPER_POTION, 9));
+    for (i = 0; i < 40; i++)
+        EXPECT(CheckBagHasItem(ITEM_VENUSAURITE + i, 1));
     ClearBag();
 }

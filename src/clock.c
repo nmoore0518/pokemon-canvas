@@ -90,7 +90,7 @@ static void UpdatePerMinute(struct Time *localTime)
     {
         if (minutes >= 0)
         {
-            BerryTreeTimeUpdate(minutes);
+            // (Gym Trainer hack: no berry trees in Kanto - their save space holds the bag's hold items)
             gSaveBlock2Ptr->lastBerryTreeUpdate = *localTime;
         }
     }

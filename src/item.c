@@ -28,6 +28,7 @@
     .id = POCKET_DUMMY,                     \
     .capacity = PC_ITEMS_COUNT,             \
     .itemSlots = gSaveBlock1Ptr->pcItems,   \
+    .splitAt = PC_ITEMS_COUNT,              \
 }
 
 static bool32 CheckPyramidBagHasItem(enum Item itemId, u16 count);
@@ -64,72 +65,37 @@ const struct TmHmIndexKey gTMHMItemMoveIds[NUM_ALL_MACHINES + 1] =
 #undef UNPACK_TM_ITEM_ID
 #undef UNPACK_HM_ITEM_ID
 
-static inline struct ItemSlot NONNULL BagPocket_GetSlotDataGeneric(struct BagPocket *pocket, u32 pocketPos)
+// Gym Trainer hack: a pocket's slot, in whichever of its two pieces it is
+static inline struct ItemSlot *NONNULL BagPocket_Slot(struct BagPocket *pocket, u32 pocketPos)
 {
-    return (struct ItemSlot) {
-        .itemId = pocket->itemSlots[pocketPos].itemId,
-        .quantity = pocket->itemSlots[pocketPos].quantity ^ gSaveBlock2Ptr->encryptionKey,
-    };
-}
-
-static inline struct ItemSlot NONNULL BagPocket_GetSlotDataPC(struct BagPocket *pocket, u32 pocketPos)
-{
-    return (struct ItemSlot) {
-        .itemId = pocket->itemSlots[pocketPos].itemId,
-        .quantity = pocket->itemSlots[pocketPos].quantity,
-    };
-}
-
-static inline void NONNULL BagPocket_SetSlotDataGeneric(struct BagPocket *pocket, u32 pocketPos, struct ItemSlot newSlot)
-{
-    pocket->itemSlots[pocketPos].itemId = newSlot.itemId;
-    pocket->itemSlots[pocketPos].quantity = newSlot.quantity ^ gSaveBlock2Ptr->encryptionKey;
-}
-
-static inline void NONNULL BagPocket_SetSlotDataPC(struct BagPocket *pocket, u32 pocketPos, struct ItemSlot newSlot)
-{
-    pocket->itemSlots[pocketPos].itemId = newSlot.itemId;
-    pocket->itemSlots[pocketPos].quantity = newSlot.quantity;
+    if (pocketPos < pocket->splitAt)
+        return &pocket->itemSlots[pocketPos];
+    return &pocket->itemSlots2[pocketPos - pocket->splitAt];
 }
 
 struct ItemSlot NONNULL BagPocket_GetSlotData(struct BagPocket *pocket, u32 pocketPos)
 {
-    switch (pocket->id)
-    {
-    case POCKET_ITEMS:
-    case POCKET_KEY_ITEMS:
-    case POCKET_POKE_BALLS:
-    case POCKET_TM_HM:
-    case POCKET_BERRIES:
-        return BagPocket_GetSlotDataGeneric(pocket, pocketPos);
-    case POCKET_DUMMY:
-        return BagPocket_GetSlotDataPC(pocket, pocketPos);
-    }
+    struct ItemSlot *slot = BagPocket_Slot(pocket, pocketPos);
 
-    return (struct ItemSlot) {0}; // Because compiler complains
+    if (pocket->id == POCKET_DUMMY)     // (the PC's items: not encrypted)
+        return *slot;
+    return (struct ItemSlot) {
+        .itemId = slot->itemId,
+        .quantity = slot->quantity ^ gSaveBlock2Ptr->encryptionKey,
+    };
 }
 
 void NONNULL BagPocket_SetSlotData(struct BagPocket *pocket, u32 pocketPos, struct ItemSlot newSlot)
 {
+    struct ItemSlot *slot = BagPocket_Slot(pocket, pocketPos);
+
     if (newSlot.itemId == ITEM_NONE || newSlot.quantity == 0) // Sets to zero if quantity or itemId is zero
     {
         newSlot.itemId = ITEM_NONE;
         newSlot.quantity = 0;
     }
-
-    switch (pocket->id)
-    {
-    case POCKET_ITEMS:
-    case POCKET_KEY_ITEMS:
-    case POCKET_POKE_BALLS:
-    case POCKET_TM_HM:
-    case POCKET_BERRIES:
-        BagPocket_SetSlotDataGeneric(pocket, pocketPos, newSlot);
-        break;
-    case POCKET_DUMMY:
-        BagPocket_SetSlotDataPC(pocket, pocketPos, newSlot);
-        break;
-    }
+    slot->itemId = newSlot.itemId;
+    slot->quantity = (pocket->id == POCKET_DUMMY) ? newSlot.quantity : (newSlot.quantity ^ gSaveBlock2Ptr->encryptionKey);
 }
 
 void ApplyNewEncryptionKeyToBagItems(u32 newKey)
@@ -139,31 +105,38 @@ void ApplyNewEncryptionKeyToBagItems(u32 newKey)
     for (pocketId = 0; pocketId < POCKETS_COUNT; pocketId++)
     {
         for (item = ITEM_NONE; item < gBagPockets[pocketId].capacity; item++)
-            ApplyNewEncryptionKeyToHword(&(gBagPockets[pocketId].itemSlots[item].quantity), newKey);
+            ApplyNewEncryptionKeyToHword(&BagPocket_Slot(&gBagPockets[pocketId], item)->quantity, newKey);
     }
+}
+
+// Gym Trainer hack: where the ten pockets are (see constants/global.h)
+#define BAG_MEDICINE_SLOTS  ((struct ItemSlot *)gSaveBlock1Ptr->pokeblocks)
+#define BAG_HOLD_SLOTS      ((struct ItemSlot *)gSaveBlock1Ptr->berryTrees)
+STATIC_ASSERT(BAG_MEDICINE_COUNT * sizeof(struct ItemSlot) <= sizeof(((struct SaveBlock1 *)0)->pokeblocks), MedicineFitsInPokeblocks);
+STATIC_ASSERT((BAG_HOLD_ITEMS_COUNT + BAG_ITEMS_COUNT_2) * sizeof(struct ItemSlot) <= sizeof(((struct SaveBlock1 *)0)->berryTrees), HoldItemsFitInBerryTrees);
+STATIC_ASSERT(offsetof(struct SaveBlock1, pokeblocks) % 2 == 0 && offsetof(struct SaveBlock1, berryTrees) % 2 == 0, BagSlotsAligned);
+
+static void SetPocket(enum Pocket id, struct ItemSlot *slots, u32 count, struct ItemSlot *slots2, u32 count2)
+{
+    gBagPockets[id].itemSlots = slots;
+    gBagPockets[id].splitAt = count;
+    gBagPockets[id].itemSlots2 = slots2;
+    gBagPockets[id].capacity = count + count2;
+    gBagPockets[id].id = id;
 }
 
 void SetBagItemsPointers(void)
 {
-    gBagPockets[POCKET_ITEMS].itemSlots = gSaveBlock3Ptr->bagItems;
-    gBagPockets[POCKET_ITEMS].capacity = BAG_ITEMS_COUNT;
-    gBagPockets[POCKET_ITEMS].id = POCKET_ITEMS;
-
-    gBagPockets[POCKET_KEY_ITEMS].itemSlots = gSaveBlock1Ptr->bag.keyItems;
-    gBagPockets[POCKET_KEY_ITEMS].capacity = BAG_KEYITEMS_COUNT;
-    gBagPockets[POCKET_KEY_ITEMS].id = POCKET_KEY_ITEMS;
-
-    gBagPockets[POCKET_POKE_BALLS].itemSlots = gSaveBlock1Ptr->bag.pokeBalls;
-    gBagPockets[POCKET_POKE_BALLS].capacity = BAG_POKEBALLS_COUNT;
-    gBagPockets[POCKET_POKE_BALLS].id = POCKET_POKE_BALLS;
-
-    gBagPockets[POCKET_TM_HM].itemSlots = gSaveBlock3Ptr->bagTMsHMs;
-    gBagPockets[POCKET_TM_HM].capacity = BAG_TMHM_COUNT;
-    gBagPockets[POCKET_TM_HM].id = POCKET_TM_HM;
-
-    gBagPockets[POCKET_BERRIES].itemSlots = gSaveBlock1Ptr->bag.berries;
-    gBagPockets[POCKET_BERRIES].capacity = BAG_BERRIES_COUNT;
-    gBagPockets[POCKET_BERRIES].id = POCKET_BERRIES;
+    SetPocket(POCKET_ITEMS, gSaveBlock3Ptr->bagItems, BAG_ITEMS_COUNT_1, BAG_HOLD_SLOTS + BAG_HOLD_ITEMS_COUNT, BAG_ITEMS_COUNT_2);
+    SetPocket(POCKET_MEDICINE, BAG_MEDICINE_SLOTS, BAG_MEDICINE_COUNT, NULL, 0);
+    SetPocket(POCKET_POKE_BALLS, gSaveBlock1Ptr->bag.pokeBalls, BAG_POKEBALLS_COUNT, NULL, 0);
+    SetPocket(POCKET_BATTLE_ITEMS, gSaveBlock1Ptr->bagBattleItems, BAG_BATTLE_ITEMS_COUNT, NULL, 0);
+    SetPocket(POCKET_HOLD_ITEMS, BAG_HOLD_SLOTS, BAG_HOLD_ITEMS_COUNT, NULL, 0);
+    SetPocket(POCKET_MEGA_STONES, gSaveBlock3Ptr->bagMegaStones, BAG_MEGA_STONES_COUNT, NULL, 0);
+    SetPocket(POCKET_BERRIES, gSaveBlock1Ptr->bag.berries, BAG_BERRIES_COUNT, NULL, 0);
+    SetPocket(POCKET_TM_HM, gSaveBlock3Ptr->bagTMsHMs, BAG_TMHM_COUNT, NULL, 0);
+    SetPocket(POCKET_TOOLS, gSaveBlock1Ptr->bag.tools, BAG_TOOLS_COUNT, NULL, 0);
+    SetPocket(POCKET_KEY_ITEMS, gSaveBlock1Ptr->bag.keyItems, BAG_KEYITEMS_COUNT, NULL, 0);
 }
 
 u8 *CopyItemName(enum Item itemId, u8 *dst)
@@ -559,31 +532,78 @@ void MoveItemSlotInPC(struct ItemSlot *itemSlots, u32 from, u32 to)
 }
 
 STATIC_ASSERT(sizeof(struct Bag) == sizeof(struct OldBag), BagKeepsSaveBlock1sLayout);
+STATIC_ASSERT(sizeof(struct V99Bag) == sizeof(struct OldBag), V99BagKeepsSaveBlock1sLayout);
+STATIC_ASSERT(BAG_V99_TMHM_COUNT + BAG_V99_ITEMS_COUNT <= (sizeof(struct SaveBlock3) - offsetof(struct SaveBlock3, bagTMsHMs)) / sizeof(struct ItemSlot), V99BagInSaveBlock3);
 
 void ClearBag(void)
 {
     memset(&gSaveBlock1Ptr->bag, 0, sizeof(struct Bag));
     memset(gSaveBlock3Ptr->bagTMsHMs, 0, sizeof(gSaveBlock3Ptr->bagTMsHMs));
+    memset(gSaveBlock3Ptr->bagMegaStones, 0, sizeof(gSaveBlock3Ptr->bagMegaStones));
     memset(gSaveBlock3Ptr->bagItems, 0, sizeof(gSaveBlock3Ptr->bagItems));
-    gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_SPLIT;
+    memset(BAG_MEDICINE_SLOTS, 0, BAG_MEDICINE_COUNT * sizeof(struct ItemSlot));
+    memset(BAG_HOLD_SLOTS, 0, (BAG_HOLD_ITEMS_COUNT + BAG_ITEMS_COUNT_2) * sizeof(struct ItemSlot));
+    memset(gSaveBlock1Ptr->bagBattleItems, 0, sizeof(gSaveBlock1Ptr->bagBattleItems));
+    gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_POCKETS;
 }
 
-// Gym Trainer hack: a save from before the bigger bag has its five pockets in SaveBlock1, where
-// the Key Items, Balls and Berries now are; move them into their new places (the quantities stay
-// encrypted with the same key)
+// Put a slot from an older bag into its pocket now (as it is: the quantity's encrypted with the
+// same key)
+static void Bag_PutOldSlot(struct ItemSlot slot)
+{
+    struct BagPocket *pocket;
+    u32 i;
+
+    if (slot.itemId == ITEM_NONE || slot.itemId >= ITEMS_COUNT || GetItemPocket(slot.itemId) >= POCKETS_COUNT)
+        return;
+    pocket = &gBagPockets[GetItemPocket(slot.itemId)];
+    for (i = 0; i < pocket->capacity; i++)
+    {
+        struct ItemSlot *dest = BagPocket_Slot(pocket, i);
+        if (dest->itemId == ITEM_NONE)
+        {
+            *dest = slot;
+            return;
+        }
+    }
+}
+
+static void Bag_PutOldSlots(const struct ItemSlot *slots, u32 count)
+{
+    u32 i;
+    for (i = 0; i < count; i++)
+        Bag_PutOldSlot(slots[i]);
+}
+
+// Gym Trainer hack: an older save's bag goes into the ten pockets: FireRed's (five small pockets
+// in SaveBlock1) or v99's (the Key Items, Balls and Berries in SaveBlock1, the TMs and 297 items in
+// SaveBlock3)
 void Bag_UpgradeLayout(void)
 {
-    struct OldBag old;
+    u32 oldLayout = gSaveBlock3Ptr->bagLayout;
+    u32 sb3Slots = (sizeof(struct SaveBlock3) - offsetof(struct SaveBlock3, bagTMsHMs)) / sizeof(struct ItemSlot);
+    struct ItemSlot *buffer;
 
-    if (gSaveBlock3Ptr->bagLayout == BAG_LAYOUT_SPLIT)
+    if (oldLayout == BAG_LAYOUT_POCKETS)
         return;
-    memcpy(&old, &gSaveBlock1Ptr->bag, sizeof(old));
+    buffer = Alloc(sizeof(struct OldBag) + sb3Slots * sizeof(struct ItemSlot));
+    if (buffer == NULL)
+        return;     // (no room to do it now: next time)
+    memcpy(buffer, &gSaveBlock1Ptr->bag, sizeof(struct OldBag));
+    memcpy((u8 *)buffer + sizeof(struct OldBag), gSaveBlock3Ptr->bagTMsHMs, sb3Slots * sizeof(struct ItemSlot));
+    SetBagItemsPointers();
     ClearBag();
-    memcpy(gSaveBlock3Ptr->bagItems, old.items, sizeof(old.items));
-    memcpy(gSaveBlock1Ptr->bag.keyItems, old.keyItems, sizeof(old.keyItems));
-    memcpy(gSaveBlock1Ptr->bag.pokeBalls, old.pokeBalls, sizeof(old.pokeBalls));
-    memcpy(gSaveBlock3Ptr->bagTMsHMs, old.TMsHMs, sizeof(old.TMsHMs));
-    memcpy(gSaveBlock1Ptr->bag.berries, old.berries, sizeof(old.berries));
+    if (oldLayout == BAG_LAYOUT_SPLIT)
+    {
+        const struct ItemSlot *sb3 = (const struct ItemSlot *)((u8 *)buffer + sizeof(struct OldBag));
+        Bag_PutOldSlots(buffer, sizeof(struct V99Bag) / sizeof(struct ItemSlot));
+        Bag_PutOldSlots(sb3, BAG_V99_TMHM_COUNT + BAG_V99_ITEMS_COUNT);
+    }
+    else
+    {
+        Bag_PutOldSlots(buffer, sizeof(struct OldBag) / sizeof(struct ItemSlot));
+    }
+    Free(buffer);
 }
 
 static inline u16 NONNULL BagPocket_CountTotalItemQuantity(struct BagPocket *pocket, enum Item itemId)
@@ -903,9 +923,56 @@ u8 GetItemConsumability(enum Item itemId)
     return !gItemsInfo[SanitizeItemId(itemId)].notConsumed;
 }
 
+// Gym Trainer hack: the ten pockets (constants/item.h)
 enum Pocket GetItemPocket(enum Item itemId)
 {
-    return gItemsInfo[SanitizeItemId(itemId)].pocket;
+    const struct ItemInfo *info = &gItemsInfo[SanitizeItemId(itemId)];
+
+    switch (info->pocket)
+    {
+    case POCKET_ITEMS:
+        switch (info->sortType)
+        {
+        case ITEM_TYPE_HEALTH_RECOVERY:
+        case ITEM_TYPE_STATUS_RECOVERY:
+        case ITEM_TYPE_PP_RECOVERY:
+        case ITEM_TYPE_STAT_BOOST_DRINK:
+        case ITEM_TYPE_STAT_BOOST_FEATHER:
+        case ITEM_TYPE_STAT_BOOST_MOCHI:
+        case ITEM_TYPE_LEVEL_UP_ITEM:
+            return POCKET_MEDICINE;
+        case ITEM_TYPE_X_ITEM:
+        case ITEM_TYPE_FLUTE:
+        case ITEM_TYPE_AUX_ITEM:
+            return POCKET_BATTLE_ITEMS;
+        case ITEM_TYPE_HELD_ITEM:
+        case ITEM_TYPE_TYPE_BOOST_HELD_ITEM:
+        case ITEM_TYPE_SPECIAL_HELD_ITEM:
+        case ITEM_TYPE_EV_BOOST_HELD_ITEM:
+        case ITEM_TYPE_INCENSE:
+        case ITEM_TYPE_GEM:
+        case ITEM_TYPE_PLATE:
+        case ITEM_TYPE_MEMORY:
+        case ITEM_TYPE_DRIVE:
+        case ITEM_TYPE_CONTEST_HELD_ITEM:
+            return POCKET_HOLD_ITEMS;
+        case ITEM_TYPE_MEGA_STONE:
+            return POCKET_MEGA_STONES;
+        default:
+            return POCKET_ITEMS;
+        }
+    case POCKET_KEY_ITEMS:
+        if (info->fieldUseFunc != NULL && info->fieldUseFunc != ItemUseOutOfBattle_CannotUse)
+            return POCKET_TOOLS;
+        return POCKET_KEY_ITEMS;
+    default:
+        return info->pocket;
+    }
+}
+
+bool32 IsKeyItemPocket(enum Pocket pocket)
+{
+    return pocket == POCKET_KEY_ITEMS || pocket == POCKET_TOOLS;
 }
 
 enum ItemType GetItemType(enum Item itemId)

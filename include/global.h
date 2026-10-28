@@ -275,9 +275,10 @@ struct SaveBlock3
     u8 dexNavSearchLevels[NUM_SPECIES];
 #endif
     u8 dexNavChain;
-    u8 bagLayout;                                   // (Gym Trainer hack: BAG_LAYOUT_SPLIT)
-    struct ItemSlot bagTMsHMs[BAG_TMHM_COUNT];      // (the bag's TM and item pockets: SaveBlock1's
-    struct ItemSlot bagItems[BAG_ITEMS_COUNT];      //  struct Bag has the other three)
+    u8 bagLayout;                                       // (Gym Trainer hack: BAG_LAYOUT_POCKETS)
+    struct ItemSlot bagTMsHMs[BAG_TMHM_COUNT];          // (three of the bag's pockets: see
+    struct ItemSlot bagMegaStones[BAG_MEGA_STONES_COUNT]; //  constants/global.h for the rest)
+    struct ItemSlot bagItems[BAG_ITEMS_COUNT_1];
 #if APRICORN_TREE_COUNT > 0
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
 #endif
@@ -1089,8 +1090,17 @@ struct ExternalEventFlags
 struct Bag
 {
     struct ItemSlot keyItems[BAG_KEYITEMS_COUNT];
+    struct ItemSlot tools[BAG_TOOLS_COUNT];
     struct ItemSlot pokeBalls[BAG_POKEBALLS_COUNT];
     struct ItemSlot berries[BAG_BERRIES_COUNT];
+};
+
+// v99's (SaveBlock1's part: SaveBlock3 had the TMs, then 297 items)
+struct V99Bag
+{
+    struct ItemSlot keyItems[BAG_V99_KEYITEMS_COUNT];
+    struct ItemSlot pokeBalls[BAG_V99_POKEBALLS_COUNT];
+    struct ItemSlot berries[BAG_V99_BERRIES_COUNT];
 };
 
 // The bag before the Gym Trainer hack's bigger one (in the same place in SaveBlock1)
@@ -1221,6 +1231,7 @@ struct SaveBlock1
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     struct DaycareMon route5DayCareMon;
 #endif
+    struct ItemSlot bagBattleItems[BAG_BATTLE_ITEMS_COUNT];     // (Gym Trainer hack: the last 116 bytes)
     // sizeof: 0x3???
 };
 
