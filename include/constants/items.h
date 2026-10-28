@@ -1108,6 +1108,7 @@ enum __attribute__((packed)) Item
     ITEM_GYM_CHARM = 924,    // Pokémon Canvas: Shiny Pokémon of the gym's type are more likely (src/pokemon.c)
     ITEM_RAYQUAZITE = 925,   // Pokémon Canvas: Rayquaza Mega Evolves with a stone like the others (no Dragon Ascent)
     ITEM_CAP_CASE = 926,     // Pokémon Canvas: the Pallet boy's lost caps go in it (src/event_mons.c)
+    ITEM_INCENSE = 927,      // Pokémon Canvas: rare wild Pokémon 5x as likely for 600 steps (src/incense.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

@@ -1,5 +1,6 @@
 #include "exotic_safari.h"
 #include "global.h"
+#include "incense.h"
 #include "form_items.h"
 #include "gym_decor.h"
 #include "battle_setup.h"
@@ -708,6 +709,8 @@ bool8 TryStartStepBasedScript(struct MapPosition *position, u16 metatileBehavior
         return TRUE;
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_FORCED_MOVE) && !MetatileBehavior_IsForcedMovementTile(metatileBehavior) && UpdateRepelCounter() == TRUE)
         return TRUE;
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_FORCED_MOVE) && !MetatileBehavior_IsForcedMovementTile(metatileBehavior) && Incense_OnStep() == TRUE)
+        return TRUE;    // (Pokémon Canvas: the Incense burned out)
     if (OnStep_DexNavSearch())
         return TRUE;
     return FALSE;

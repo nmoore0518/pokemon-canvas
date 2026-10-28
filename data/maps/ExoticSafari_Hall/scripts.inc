@@ -112,6 +112,24 @@ ExoticSafari_Hall_EventScript_Kiosk::
 	release
 	end
 
+@ The evolution items' kiosk: what's been found in the zones
+ExoticSafari_Hall_EventScript_EvoKiosk::
+	lock
+	faceplayer
+	message ExoticSafari_Hall_Text_EvoKiosk
+	waitmessage
+	special ExoticSafari_EvoKiosk
+	goto_if_eq VAR_RESULT, FALSE, ExoticSafari_Hall_EventScript_EvoKioskEmpty
+	waitstate
+	msgbox gText_PleaseComeAgain
+	release
+	end
+
+ExoticSafari_Hall_EventScript_EvoKioskEmpty::
+	msgbox ExoticSafari_Hall_Text_EvoKioskEmpty
+	release
+	end
+
 @ The doors (signs on them: an open door slides open, so only the shut ones say anything)
 ExoticSafari_Hall_EventScript_DoorJohto::
 	bufferstring STR_VAR_1, ExoticSafari_Hall_Text_Johto
@@ -221,3 +239,12 @@ ExoticSafari_Hall_Text_Enjoy::
 ExoticSafari_Hall_Text_Kiosk::
 	.string "Welcome to the SAFARI KIOSK!\n"
 	.string "Stocking up for a trip?$"
+
+ExoticSafari_Hall_Text_EvoKiosk::
+	.string "EVOLUTION KIOSK! Anything found\n"
+	.string "out in the zones, we stock here.$"
+
+ExoticSafari_Hall_Text_EvoKioskEmpty::
+	.string "Nothing's come in yet, though.\p"
+	.string "Find an evolution item in a zone\n"
+	.string "and we'll keep more of them here.$"

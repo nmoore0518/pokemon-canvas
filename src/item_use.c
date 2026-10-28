@@ -4,6 +4,7 @@
 #include "region_map.h"
 #include "item_use.h"
 #include "move_extractor.h"
+#include "incense.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_stat_change.h"
@@ -1013,6 +1014,41 @@ void ItemUseOutOfBattle_Repel(u8 taskId)
         DisplayItemMessage(taskId, FONT_NORMAL, gText_RepelEffectsLingered, CloseItemMessage);
     else
         DisplayItemMessageInBattlePyramid(taskId, gText_RepelEffectsLingered, Task_CloseBattlePyramidBagMessage);
+}
+
+// Pokémon Canvas: the Incense (src/incense.c)
+static const u8 sText_IncenseLingers[] = _("But the INCENSE lit earlier\nis still burning.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_LitIncense[] = _("{PLAYER} lit the INCENSE.\nRare POKéMON are drawn to it!{PAUSE_UNTIL_PRESS}");
+
+static void Task_UseIncense(u8 taskId)
+{
+    if (!IsSEPlaying())
+    {
+        Incense_Start();
+        RemoveUsedItem();
+        StringExpandPlaceholders(gStringVar4, sText_LitIncense);
+        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+    }
+}
+
+static void Task_StartUseIncense(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    if (++data[8] > 7)
+    {
+        data[8] = 0;
+        PlaySE(SE_REPEL);
+        gTasks[taskId].func = Task_UseIncense;
+    }
+}
+
+void ItemUseOutOfBattle_Incense(u8 taskId)
+{
+    if (!Incense_IsActive())
+        gTasks[taskId].func = Task_StartUseIncense;
+    else
+        DisplayItemMessage(taskId, FONT_NORMAL, sText_IncenseLingers, CloseItemMessage);
 }
 
 static void Task_StartUseRepel(u8 taskId)

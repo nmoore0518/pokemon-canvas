@@ -60,7 +60,8 @@ DOOR_SPACING, FIRST_DOOR = 4, 3
 HALL_W, HALL_H = FIRST_DOOR * 2 + DOOR_SPACING * (len(REGIONS) - 1) + 1, 12
 MAT_X = HALL_W // 2                    # the entrance mat's middle, and the gap in the counter
 DOOR_Y, COUNTER_Y = 3, 7
-KIOSK_X = MAT_X + 6
+KIOSK_X = MAT_X + 6                    # the supply kiosk
+EVO_KIOSK_X = MAT_X - 6                # the evolution items' kiosk
 FUCHSIA_DOOR = (26, 5)                 # the new door on the Safari Zone building (a window before)
 FUCHSIA_SIGN = (27, 6)
 
@@ -539,7 +540,7 @@ import render_map                               # noqa: E402  (tileset_dir)
 LEGEND_LEVEL = paldea.LEGEND_LEVEL
 REGION_MODULES = [paldea, galar, alola, kalos, unova, sinnoh, hoenn, johto_safari]
 KIOSK_SUPPLIES = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "QUICK_BALL", "DUSK_BALL", "NET_BALL",
-                  "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE"]
+                  "MAX_REPEL", "HYPER_POTION", "MAX_POTION", "FULL_HEAL", "REVIVE", "INCENSE"]
 ENCOUNTER_RATES = {"MAP_TYPE_ROUTE": 21, "MAP_TYPE_CITY": 15, "MAP_TYPE_UNDERGROUND": 10, "MAP_TYPE_INDOOR": 10, "MAP_TYPE_UNDERWATER": 10}
 ROAMER_FLAG_BASE = 0x1B             # (the roamers' hide flags: FLAG_TEMP_1B-1F; statics' from FLAG_TEMP_11)
 ROAMER_SPOTS = 48                    # (per area: a sample of its reachable grass/sand/cave floor)
@@ -1213,7 +1214,8 @@ def main():
                    flag="FLAG_EXOTIC_SAFARI_PASS"),
                obj("OBJ_EVENT_GFX_WORKER_M", MAT_X - 1, COUNTER_Y - 1, "ExoticSafari_Hall_EventScript_AttendantDesk",
                    flag="FLAG_HIDE_EXOTIC_SAFARI_DESK"),
-               obj("OBJ_EVENT_GFX_CLERK", KIOSK_X, COUNTER_Y - 1, "ExoticSafari_Hall_EventScript_Kiosk")],
+               obj("OBJ_EVENT_GFX_CLERK", KIOSK_X, COUNTER_Y - 1, "ExoticSafari_Hall_EventScript_Kiosk"),
+               obj("OBJ_EVENT_GFX_CLERK", EVO_KIOSK_X, COUNTER_Y - 1, "ExoticSafari_Hall_EventScript_EvoKiosk")],
               warps, bgs, False)
 
     # The zones

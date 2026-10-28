@@ -1,4 +1,5 @@
 #include "global.h"
+#include "incense.h"
 #include "exotic_safari.h"
 #include "gym_legend.h"
 #include "battle_setup.h"
@@ -527,6 +528,30 @@ void CreateWildMon(enum Species species, u8 level)
 #define TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildPokemon, type, ability, ptr, count) TryGetAbilityInfluencedWildMonIndex(wildPokemon, type, ability, ptr)
 #endif
 
+STATIC_ASSERT(ENCOUNTER_CHANCE_LAND_MONS_SLOT_0 == 20 && ENCOUNTER_CHANCE_LAND_MONS_TOTAL == 100
+           && ENCOUNTER_CHANCE_WATER_MONS_SLOT_0 == 60 && ENCOUNTER_CHANCE_ROCK_SMASH_MONS_SLOT_0 == 60, IncenseKnowsTheSlotOdds);
+
+// Pokémon Canvas: with the Incense lit, the slot is chosen again with the rare ones 5 times as likely
+// (an ability that picks the slot - Static, Magnet Pull... - still does, when it does)
+static u32 Incense_Reroll(const struct WildPokemon *mons, enum WildPokemonArea area, u32 index)
+{
+    static const u8 sLand[] = {20, 20, 10, 10, 10, 10, 5, 5, 4, 4, 1, 1};
+    static const u8 sFive[] = {60, 30, 5, 4, 1};
+
+    if (!Incense_IsActive())
+        return index;
+    switch (area)
+    {
+    case WILD_AREA_LAND:
+        return Incense_ChooseSlot(mons, 0, sLand, ARRAY_COUNT(sLand));
+    case WILD_AREA_WATER:
+    case WILD_AREA_ROCKS:
+        return Incense_ChooseSlot(mons, 0, sFive, ARRAY_COUNT(sFive));
+    default:
+        return index;
+    }
+}
+
 bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPokemonArea area, u8 flags)
 {
     u8 wildMonIndex = 0;
@@ -548,7 +573,7 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
         if (OW_STORM_DRAIN >= GEN_8 && TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TYPE_WATER, ABILITY_STORM_DRAIN, &wildMonIndex, NUM_LAND_MONS_ENCOUNTER_SLOTS))
             break;
 
-        wildMonIndex = ChooseWildMonIndex_Land();
+        wildMonIndex = Incense_Reroll(wildMonInfo->wildPokemon, area, ChooseWildMonIndex_Land());
         break;
     case WILD_AREA_WATER:
         if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TYPE_STEEL, ABILITY_MAGNET_PULL, &wildMonIndex, NUM_WATER_MONS_ENCOUNTER_SLOTS))
@@ -564,10 +589,10 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
         if (OW_STORM_DRAIN >= GEN_8 && TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TYPE_WATER, ABILITY_STORM_DRAIN, &wildMonIndex, NUM_WATER_MONS_ENCOUNTER_SLOTS))
             break;
 
-        wildMonIndex = ChooseWildMonIndex_Water();
+        wildMonIndex = Incense_Reroll(wildMonInfo->wildPokemon, area, ChooseWildMonIndex_Water());
         break;
     case WILD_AREA_ROCKS:
-        wildMonIndex = ChooseWildMonIndex_Rocks();
+        wildMonIndex = Incense_Reroll(wildMonInfo->wildPokemon, area, ChooseWildMonIndex_Rocks());
         break;
     default:
     case WILD_AREA_FISHING:
@@ -590,6 +615,22 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
 static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
 {
     u8 wildMonIndex = ChooseWildMonIndex_Fishing(rod);
+    if (Incense_IsActive())     // (Pokémon Canvas: the Incense)
+    {
+        static const u8 sOld[] = {ENCOUNTER_CHANCE_FISHING_MONS_OLD_ROD_SLOT_0, ENCOUNTER_CHANCE_FISHING_MONS_OLD_ROD_SLOT_1 - ENCOUNTER_CHANCE_FISHING_MONS_OLD_ROD_SLOT_0};
+        static const u8 sGood[] = {ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_2, ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_3 - ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_2,
+                                   ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_4 - ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_3};
+        static const u8 sSuper[] = {ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_5, ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_6 - ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_5,
+                                    ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_7 - ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_6,
+                                    ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_8 - ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_7,
+                                    ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_9 - ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_8};
+        if (rod == OLD_ROD)
+            wildMonIndex = Incense_ChooseSlot(wildMonInfo->wildPokemon, 0, sOld, ARRAY_COUNT(sOld));
+        else if (rod == GOOD_ROD)
+            wildMonIndex = 2 + Incense_ChooseSlot(wildMonInfo->wildPokemon, 2, sGood, ARRAY_COUNT(sGood));
+        else
+            wildMonIndex = 5 + Incense_ChooseSlot(wildMonInfo->wildPokemon, 5, sSuper, ARRAY_COUNT(sSuper));
+    }
     enum Species wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
     u8 level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING);
 

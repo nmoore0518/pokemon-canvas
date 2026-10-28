@@ -1262,7 +1262,19 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
          sells the EXOTIC PASS (one-time Gym Leader special, ¥10,000: trainers will want exotic
          Pokémon once they see a leader's), the camera shows the doors, and they step aside.
          Before that, "not open yet, come back later". The SAFARI KIOSK on the counter sells
-         balls, Max Repels and healing items.
+         balls, Max Repels and healing items (and, v101, the Incense); the EVOLUTION KIOSK on the
+         other side (v101) the evolution items found in the zones (`ExoticSafari_EvoKiosk`).
+   - [x] The Incense (v101; `ITEM_INCENSE`, ¥50,000, the Safari Kiosk only; `src/incense.c`):
+         lit, for 600 steps (the Safari Zone's; `VAR_INCENSE_STEPS`, 0x4096) every wild Pokémon
+         that's 10% or less of that method's encounters there (its slots added up; an Exotic
+         Safari shared slot split between its species) is 5 times as likely, and the common ones
+         share what's left in their old proportions. If the rare ones would pass 100% (more than
+         20% of rare ones), the common ones get nothing and the rare ones split it all in their
+         own proportions. Grass/caves, surfing, Rock Smash and every rod; an ability that picks
+         the slot (Static...) still does. Burnt out, it asks to light another
+         (`data/scripts/incense.inc`), like a Repel. Its icon is the hack's own (a censer and its
+         smoke). The ITEMS pocket got 6 more slots for it (hold items 233, items 227: the
+         berry trees' bytes split anew; `Bag_UpgradeLayout` moves a v100 save's).
    - [x] The Gym Charm (key item, from the mentor with the convention invitation; Oak hands it
          over for older saves): 1 in 250 Pokémon of the gym's current type (primary type) are
          Shiny (`GYM_CHARM_SHINY_ODDS`, `src/pokemon.c`). It follows the gym when it changes type.

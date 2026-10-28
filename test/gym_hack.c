@@ -18,6 +18,7 @@
 #include "item.h"
 #include "item_upgrades.h"
 #include "load_save.h"
+#include "incense.h"
 #define ACADEMY_LECTURE_COUNT_FOR_TEST 8
 #include "gym_challenge.h"
 #include "constants/event_objects.h"
@@ -3195,5 +3196,75 @@ TEST("GymHack: bag: a v99 save's five big pockets move into the ten")
     EXPECT(CheckBagHasItem(ITEM_HYPER_POTION, 9));
     for (i = 0; i < 40; i++)
         EXPECT(CheckBagHasItem(ITEM_VENUSAURITE + i, 1));
+    ClearBag();
+}
+
+static u32 IncenseChance(const struct WildPokemon *mons, u32 species)
+{
+    static const u8 sLand[] = {20, 20, 10, 10, 10, 10, 5, 5, 4, 4, 1, 1};
+    u32 i, total = 0;
+    for (i = 0; i < 12; i++)
+    {
+        if (mons[i].species == species)
+            total += Incense_BoostedChance(mons, 0, sLand, 12, i, 100);
+    }
+    return total;   // (out of 10000)
+}
+
+TEST("GymHack: incense: rare Pokemon are 5 times as likely, the common ones share the rest")
+{
+    // A 40%, B 45%, D 10% and E 5%: D and E (15%) go to 50% and 25%; A and B share 25%
+    static const struct WildPokemon mons[12] = {
+        {5, 5, SPECIES_PIDGEY}, {5, 5, SPECIES_PIDGEY}, {5, 5, SPECIES_RATTATA}, {5, 5, SPECIES_RATTATA},
+        {5, 5, SPECIES_RATTATA}, {5, 5, SPECIES_RATTATA}, {5, 5, SPECIES_EEVEE}, {5, 5, SPECIES_RATTATA},
+        {5, 5, SPECIES_ABRA}, {5, 5, SPECIES_ABRA}, {5, 5, SPECIES_ABRA}, {5, 5, SPECIES_ABRA},
+    };
+    EXPECT_EQ(IncenseChance(mons, SPECIES_ABRA), 5000);
+    EXPECT_EQ(IncenseChance(mons, SPECIES_EEVEE), 2500);
+    EXPECT_GE(IncenseChance(mons, SPECIES_PIDGEY) + IncenseChance(mons, SPECIES_RATTATA), 2490);
+    EXPECT_LE(IncenseChance(mons, SPECIES_PIDGEY) + IncenseChance(mons, SPECIES_RATTATA), 2500);
+}
+
+TEST("GymHack: incense: when the rare ones would pass 100%, they share it all")
+{
+    // A 40%, B 40%; C 10%, D 8%, E 2% (20%: 5 times is 100%) - C 50%, D 40%, E 10%, A and B none
+    static const struct WildPokemon mons[12] = {
+        {5, 5, SPECIES_PIDGEY}, {5, 5, SPECIES_PIDGEY}, {5, 5, SPECIES_RATTATA}, {5, 5, SPECIES_RATTATA},
+        {5, 5, SPECIES_RATTATA}, {5, 5, SPECIES_RATTATA}, {5, 5, SPECIES_ABRA}, {5, 5, SPECIES_ABRA},
+        {5, 5, SPECIES_EEVEE}, {5, 5, SPECIES_EEVEE}, {5, 5, SPECIES_MEW}, {5, 5, SPECIES_MEW},
+    };
+    EXPECT_EQ(IncenseChance(mons, SPECIES_ABRA), 5000);
+    EXPECT_EQ(IncenseChance(mons, SPECIES_EEVEE), 4000);
+    EXPECT_EQ(IncenseChance(mons, SPECIES_MEW), 1000);
+    EXPECT_EQ(IncenseChance(mons, SPECIES_PIDGEY), 0);
+}
+
+TEST("GymHack: incense: lasts the Safari Zone's 600 steps and is sold at 50,000")
+{
+    VarSet(VAR_INCENSE_STEPS, 0);
+    EXPECT(!Incense_IsActive());
+    Incense_Start();
+    EXPECT_EQ(VarGet(VAR_INCENSE_STEPS), 600);
+    EXPECT_EQ(GetItemPrice(ITEM_INCENSE), 50000);
+    EXPECT_EQ(GetItemPocket(ITEM_INCENSE), POCKET_ITEMS);
+    VarSet(VAR_INCENSE_STEPS, 0);
+}
+
+TEST("GymHack: bag: a v100 save's hold items and last items move to their new places")
+{
+    struct ItemSlot *trees = (struct ItemSlot *)gSaveBlock1Ptr->berryTrees;
+    ClearBag();
+    gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_POCKETS_V100;
+    trees[0] = (struct ItemSlot) {ITEM_LEFTOVERS, 1};
+    trees[238] = (struct ItemSlot) {ITEM_LIFE_ORB, 1};
+    trees[239] = (struct ItemSlot) {ITEM_NUGGET, 4};       // (v100's items 205-221)
+    trees[255] = (struct ItemSlot) {ITEM_PEARL, 2};
+    Encrypt(trees, 256);
+    Bag_UpgradeLayout();
+    EXPECT_EQ(gSaveBlock3Ptr->bagLayout, BAG_LAYOUT_POCKETS);
+    EXPECT(CheckBagHasItem(ITEM_LEFTOVERS, 1));
+    EXPECT(CheckBagHasItem(ITEM_LIFE_ORB, 1));
+    EXPECT(CheckBagHasItem(ITEM_NUGGET, 4));
+    EXPECT(CheckBagHasItem(ITEM_PEARL, 2));
     ClearBag();
 }

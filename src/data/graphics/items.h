@@ -847,6 +847,8 @@ const u32 gItemIcon_Salamencite[] = INCGFX_U32("graphics/items/icons/salamencite
 const u16 gItemIconPalette_Salamencite[] = INCGFX_U16("graphics/items/icon_palettes/salamencite.pal", ".gbapal");
 const u32 gItemIcon_CapCase[] = INCGFX_U32("graphics/items/icons/cap_case.png", ".4bpp.smol");
 const u16 gItemIconPalette_CapCase[] = INCGFX_U16("graphics/items/icon_palettes/cap_case.pal", ".gbapal");
+const u32 gItemIcon_Incense[] = INCGFX_U32("graphics/items/icons/incense.png", ".4bpp.smol");
+const u16 gItemIconPalette_Incense[] = INCGFX_U16("graphics/items/icon_palettes/incense.pal", ".gbapal");
 const u32 gItemIcon_Rayquazite[] = INCGFX_U32("graphics/items/icons/rayquazite.png", ".4bpp.smol");
 const u16 gItemIconPalette_Rayquazite[] = INCGFX_U16("graphics/items/icon_palettes/rayquazite.pal", ".gbapal");
 

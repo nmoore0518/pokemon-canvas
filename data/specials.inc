@@ -789,6 +789,8 @@ gSpecials::
 	def_special ExoticSafari_OnLoad
 	def_special ExoticSafari_AreaOnTransition
 	def_special ExoticSafari_Kiosk
+	def_special ExoticSafari_EvoKiosk
+	def_special Incense_UseAnother
 	def_special ExoticSafari_BufferSeal
 	def_special ExoticSafari_CountStakes
 	def_special ExoticSafari_MarkGone

@@ -8,6 +8,8 @@ const unsigned char *ExoticSafari_GetAreaName(void);   // (unsigned char: u8, th
 void ExoticSafari_OnStep(void);
 void ExoticSafari_AreaOnTransition(void);
 void ExoticSafari_Kiosk(void);
+void ExoticSafari_EvoKiosk(void);
+unsigned int ExoticSafari_PoolSize(unsigned short species);
 void ExoticSafari_BufferSeal(void);
 void ExoticSafari_CountStakes(void);
 void ExoticSafari_MarkGone(void);

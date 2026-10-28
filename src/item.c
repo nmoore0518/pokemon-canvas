@@ -42,6 +42,7 @@ static enum Item SanitizeBagItemId(enum Item itemId);
 EWRAM_DATA struct BagPocket gBagPockets[POCKETS_COUNT] = {0};
 
 #include "data/pokemon/item_effects.h"
+#include "incense.h"
 #include "data/items.h"
 
 #define UNPACK_TM_ITEM_ID(_tm) [CAT(ENUM_TM_HM_, _tm) + 1] = { CAT(ITEM_TM_, _tm), CAT(MOVE_, _tm) },
@@ -586,6 +587,22 @@ void Bag_UpgradeLayout(void)
 
     if (oldLayout == BAG_LAYOUT_POCKETS)
         return;
+    if (oldLayout == BAG_LAYOUT_POCKETS_V100)
+    {
+        // (only the berry trees' bytes moved: the hold items, then the items that didn't fit in
+        // SaveBlock3 - take them out and put them back)
+        u32 n = BAG_HOLD_ITEMS_COUNT + BAG_ITEMS_COUNT_2;     // (all 256 of the berry trees' slots)
+        buffer = Alloc(n * sizeof(struct ItemSlot));
+        if (buffer == NULL)
+            return;
+        memcpy(buffer, BAG_HOLD_SLOTS, n * sizeof(struct ItemSlot));
+        memset(BAG_HOLD_SLOTS, 0, n * sizeof(struct ItemSlot));
+        SetBagItemsPointers();
+        Bag_PutOldSlots(buffer, n);
+        Free(buffer);
+        gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_POCKETS;
+        return;
+    }
     buffer = Alloc(sizeof(struct OldBag) + sb3Slots * sizeof(struct ItemSlot));
     if (buffer == NULL)
         return;     // (no room to do it now: next time)

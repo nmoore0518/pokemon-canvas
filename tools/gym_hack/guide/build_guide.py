@@ -533,8 +533,12 @@ gym is yours, the attendant sells the <b>Exotic Pass</b> (¥10,000, once); then 
 up to it.</p>
 <ul>
 <li>Normal wild battles with your own Poké Balls: no Safari Balls, no step limit. Wild Pokémon are levels 48-55.</li>
-<li>The <b>Safari Kiosk</b> on the hall's counter sells balls, Max Repels and healing items, plus every evolution item once
-you've found it in a zone.</li>
+<li>Two kiosks stand behind the hall's counter. The <b>Safari Kiosk</b> (right) sells balls, Max Repels, healing items and
+<b>Incense</b> (¥50,000). The <b>Evolution Kiosk</b> (left) sells every evolution item once you've found it in a zone.</li>
+<li><b>Incense</b>: for 600 steps, any wild Pokémon that's 10% or less of a place's encounters is 5 times as likely (1%
+becomes 5%, 10% becomes 50%), and the common ones share what's left. Where the rare ones add up to more than 20%, they
+take all the encounters between them. It works everywhere, with every method (grass, caves, surfing, rods, Rock
+Smash), and when it burns out you can light another straight away, like a Repel.</li>
 <li>Every legendary is level 70. Most stand in one spot and appear only after a puzzle is solved (until then, checking their
 spot gives a hint). If a battle doesn't catch one, it's gone for the rest of the visit and back next time you enter the
 area.</li>

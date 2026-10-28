@@ -17030,6 +17030,23 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_CapCase,
         .iconPalette = gItemIconPalette_CapCase,
     },
+
+    [ITEM_INCENSE] =
+    {
+        // Pokémon Canvas: the Exotic Safari kiosk's (src/incense.c)
+        .name = ITEM_NAME("Incense"),
+        .price = 50000,
+        .description = COMPOUND_STRING(
+            "Rare wild Pokémon\n"
+            "are 5 times as\n"
+            "likely for 600 steps."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_FIELD_USE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Incense,
+        .iconPic = gItemIcon_Incense,
+        .iconPalette = gItemIconPalette_Incense,
+    },
 };
 
 #undef ITEM_NAME

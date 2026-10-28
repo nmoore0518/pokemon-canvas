@@ -119,12 +119,12 @@ enum Language
 //   the end of SaveBlock1: Battle Items
 // src/item.c Bag_UpgradeLayout moves an older save's bag over.
 #define BAG_ITEMS_COUNT_1       204     // (in SaveBlock3)
-#define BAG_ITEMS_COUNT_2        17     // (after the hold items)
+#define BAG_ITEMS_COUNT_2        23     // (after the hold items)
 #define BAG_ITEMS_COUNT         (BAG_ITEMS_COUNT_1 + BAG_ITEMS_COUNT_2)
 #define BAG_MEDICINE_COUNT       80
 #define BAG_POKEBALLS_COUNT      28
 #define BAG_BATTLE_ITEMS_COUNT   29
-#define BAG_HOLD_ITEMS_COUNT    239
+#define BAG_HOLD_ITEMS_COUNT    233
 #define BAG_MEGA_STONES_COUNT    93
 #define BAG_BERRIES_COUNT        68
 #define BAG_TMHM_COUNT          108
@@ -142,7 +142,8 @@ enum Language
 #define BAG_V99_TMHM_COUNT 108
 #define BAG_V99_BERRIES_COUNT 68
 #define BAG_LAYOUT_SPLIT   0xB2   // SaveBlock3's bagLayout: v99's five big pockets
-#define BAG_LAYOUT_POCKETS 0xB3   //   and now: the ten pockets
+#define BAG_LAYOUT_POCKETS_V100 0xB3   // v100's ten pockets (239 hold items, then 17 items)
+#define BAG_LAYOUT_POCKETS 0xB4   //   and now (233 and 23: room for the Incense)
 
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.

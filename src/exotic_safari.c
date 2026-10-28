@@ -720,6 +720,23 @@ static u16 RandomForm(u16 species)
     return species;
 }
 
+// How many species share this slot here (1 for most; src/incense.c)
+unsigned int ExoticSafari_PoolSize(unsigned short species)
+{
+    u32 i, n;
+    for (i = 0; i < ARRAY_COUNT(sSlotPools); i++)
+    {
+        const struct ExoticSafariPool *p = &sSlotPools[i];
+        if (p->mapGroup != gSaveBlock1Ptr->location.mapGroup || p->mapNum != gSaveBlock1Ptr->location.mapNum
+         || p->species[0] != species)
+            continue;
+        for (n = 1; n < ARRAY_COUNT(p->species) && p->species[n] != SPECIES_NONE; n++)
+            ;
+        return n;
+    }
+    return 1;
+}
+
 // A slot shared by several species (the area's table names the first: sSlotPools)
 static u16 PoolSpecies(u16 species)
 {
@@ -884,18 +901,30 @@ void ExoticSafari_AreaOnTransition(void)
 // ---------------------------------------------------------------------------------------------
 static EWRAM_DATA u16 sKioskItems[ARRAY_COUNT(sKioskSupplies) + ARRAY_COUNT(sKioskFinds) + 1] = {0};
 
+// The supply kiosk: Balls, a Max Repel, medicine and the Incense
 void ExoticSafari_Kiosk(void)
 {
     u32 i, n = 0;
     for (i = 0; i < ARRAY_COUNT(sKioskSupplies); i++)
         sKioskItems[n++] = sKioskSupplies[i];
+    sKioskItems[n] = ITEM_NONE;
+    CreatePokemartMenu(sKioskItems);
+}
+
+// The evolution kiosk (the other side of the counter): the evolution items found in the zones.
+// VAR_RESULT: FALSE if there's nothing to sell yet
+void ExoticSafari_EvoKiosk(void)
+{
+    u32 i, n = 0;
     for (i = 0; i < ARRAY_COUNT(sKioskFinds); i++)
     {
         if (FlagGet(sKioskFinds[i].flag))
             sKioskItems[n++] = sKioskFinds[i].item;
     }
     sKioskItems[n] = ITEM_NONE;
-    CreatePokemartMenu(sKioskItems);
+    gSpecialVar_Result = n != 0;
+    if (n != 0)
+        CreatePokemartMenu(sKioskItems);
 }
 
 // ---------------------------------------------------------------------------------------------
