@@ -381,6 +381,14 @@
       "y": 44,
       "respawn_map": "MAP_OLIVINE_CITY_POKEMON_CENTER",
       "respawn_npc": "LOCALID_OLIVINE_CITY_POKEMON_CENTER_NURSE"
+    },
+    {
+      "id": "HEAL_LOCATION_LEADER_ACADEMY",
+      "map": "MAP_LEADER_ACADEMY_CAMPUS",
+      "x": 8,
+      "y": 24,
+      "respawn_map": "MAP_LEADER_ACADEMY_POKEMON_CENTER",
+      "respawn_npc": "LOCALID_ACADEMY_NURSE"
     }
   ]
 }

@@ -4,7 +4,7 @@
   "layout": "LAYOUT_VIRIDIAN_CITY_SCHOOL",
   "music": "MUS_RG_OAK_LAB",
   "region": "REGION_KANTO",
-  "region_map_section": "MAPSEC_ROUTE_11",
+  "region_map_section": "MAPSEC_LEADER_ACADEMY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",

@@ -568,8 +568,6 @@ u8 *GetPopUpMapName(u8 *dest, const struct MapHeader *mapHeader)
 
     if (safariArea != NULL)                 // (Gym Trainer hack: the Exotic Safari's areas by name)
         StringCopy(dest, safariArea);
-    else if (mapHeader == &gMapHeader && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_LEADER_ACADEMY_CAMPUS))
-        StringCopy(dest, COMPOUND_STRING("LEADER ACADEMY"));
     else if (IsCeladonDeptStore(mapHeader))
         StringCopy(dest, COMPOUND_STRING("CELADON DEPT."));
     else

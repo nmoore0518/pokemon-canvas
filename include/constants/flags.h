@@ -2493,6 +2493,7 @@
 #define FLAG_WORLD_MAP_ECRUTEAK_CITY  0x0C7
 #define FLAG_WORLD_MAP_GOLDENROD_CITY 0x0C8
 #define FLAG_WORLD_MAP_AZALEA_TOWN    0x0C9
+#define FLAG_WORLD_MAP_LEADER_ACADEMY 0x0F0 // (the Leader Academy, for FLY: set on first coming onto its campus)
 // The Gym Leader Convention's trophies (src/gym_convention.c): a hall cleared, and all of them
 #define FLAG_CONVENTION_TROPHIES      0x0CA
 #define FLAG_CONVENTION_TROPHY_NORMAL     (FLAG_CONVENTION_TROPHIES + 0)

@@ -8,6 +8,7 @@
 #include "gba/flash_internal.h"
 #include "fieldmap.h"
 #include "save.h"
+#include "item.h"
 #include "task.h"
 #include "decompress.h"
 #include "load_save.h"
@@ -758,6 +759,7 @@ static void LoadExtraSectors(u8 status)
         Tourney_ClearSave();
         return;
     }
+    Bag_UpgradeLayout();
     if (gPokemonStoragePtr->layout != STORAGE_LAYOUT_BOXES_LAST)
         PokemonStorage_UpgradeLayout();
     else if (TryLoadSaveSector(SECTOR_ID_EXTRA_STORAGE, (u8 *)gPokemonStoragePtr + STORAGE_IN_SLOT_SIZE, STORAGE_EXTRA_SIZE) != SAVE_STATUS_OK)
@@ -825,10 +827,11 @@ u8 HandleSavingData(u8 saveType)
     case SAVE_EREADER: // Dummied, now duplicate of SAVE_LINK
         // Used by link / Battle Frontier
         // Write only SaveBlocks 1 and 2 (skips the PC)
+        // Gym Trainer hack: and the PC's sectors too - they carry SaveBlock3, where the bag is now
         CopyPartyAndObjectsToSave();
-        for (i = SECTOR_ID_SAVEBLOCK2; i <= SECTOR_ID_SAVEBLOCK1_END; i++)
+        for (i = SECTOR_ID_SAVEBLOCK2; i < NUM_SECTORS_PER_SLOT; i++)
             HandleReplaceSector(i, gRamSaveSectorLocations);
-        for (i = SECTOR_ID_SAVEBLOCK2; i <= SECTOR_ID_SAVEBLOCK1_END; i++)
+        for (i = SECTOR_ID_SAVEBLOCK2; i < NUM_SECTORS_PER_SLOT; i++)
             WriteSectorSignatureByte_NoOffset(i, gRamSaveSectorLocations);
         break;
     case SAVE_OVERWRITE_DIFFERENT_FILE:

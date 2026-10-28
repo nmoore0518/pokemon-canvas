@@ -145,7 +145,7 @@ void ApplyNewEncryptionKeyToBagItems(u32 newKey)
 
 void SetBagItemsPointers(void)
 {
-    gBagPockets[POCKET_ITEMS].itemSlots = gSaveBlock1Ptr->bag.items;
+    gBagPockets[POCKET_ITEMS].itemSlots = gSaveBlock3Ptr->bagItems;
     gBagPockets[POCKET_ITEMS].capacity = BAG_ITEMS_COUNT;
     gBagPockets[POCKET_ITEMS].id = POCKET_ITEMS;
 
@@ -157,7 +157,7 @@ void SetBagItemsPointers(void)
     gBagPockets[POCKET_POKE_BALLS].capacity = BAG_POKEBALLS_COUNT;
     gBagPockets[POCKET_POKE_BALLS].id = POCKET_POKE_BALLS;
 
-    gBagPockets[POCKET_TM_HM].itemSlots = gSaveBlock1Ptr->bag.TMsHMs;
+    gBagPockets[POCKET_TM_HM].itemSlots = gSaveBlock3Ptr->bagTMsHMs;
     gBagPockets[POCKET_TM_HM].capacity = BAG_TMHM_COUNT;
     gBagPockets[POCKET_TM_HM].id = POCKET_TM_HM;
 
@@ -558,9 +558,32 @@ void MoveItemSlotInPC(struct ItemSlot *itemSlots, u32 from, u32 to)
     return BagPocket_MoveItemSlot(&dummyPocket, from, to);
 }
 
+STATIC_ASSERT(sizeof(struct Bag) == sizeof(struct OldBag), BagKeepsSaveBlock1sLayout);
+
 void ClearBag(void)
 {
-    CpuFastFill(0, &gSaveBlock1Ptr->bag, sizeof(struct Bag));
+    memset(&gSaveBlock1Ptr->bag, 0, sizeof(struct Bag));
+    memset(gSaveBlock3Ptr->bagTMsHMs, 0, sizeof(gSaveBlock3Ptr->bagTMsHMs));
+    memset(gSaveBlock3Ptr->bagItems, 0, sizeof(gSaveBlock3Ptr->bagItems));
+    gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_SPLIT;
+}
+
+// Gym Trainer hack: a save from before the bigger bag has its five pockets in SaveBlock1, where
+// the Key Items, Balls and Berries now are; move them into their new places (the quantities stay
+// encrypted with the same key)
+void Bag_UpgradeLayout(void)
+{
+    struct OldBag old;
+
+    if (gSaveBlock3Ptr->bagLayout == BAG_LAYOUT_SPLIT)
+        return;
+    memcpy(&old, &gSaveBlock1Ptr->bag, sizeof(old));
+    ClearBag();
+    memcpy(gSaveBlock3Ptr->bagItems, old.items, sizeof(old.items));
+    memcpy(gSaveBlock1Ptr->bag.keyItems, old.keyItems, sizeof(old.keyItems));
+    memcpy(gSaveBlock1Ptr->bag.pokeBalls, old.pokeBalls, sizeof(old.pokeBalls));
+    memcpy(gSaveBlock3Ptr->bagTMsHMs, old.TMsHMs, sizeof(old.TMsHMs));
+    memcpy(gSaveBlock1Ptr->bag.berries, old.berries, sizeof(old.berries));
 }
 
 static inline u16 NONNULL BagPocket_CountTotalItemQuantity(struct BagPocket *pocket, enum Item itemId)

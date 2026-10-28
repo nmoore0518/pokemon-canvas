@@ -716,6 +716,20 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
   are each trainer's canonical team (their own region's Pokémon); the tournament draws from the
   convention and the Gauntlet's characters (every region).
 
+## Quality of life (v99)
+
+- [x] **TMs are reusable** (`I_REUSABLE_TMS`): like HMs, never used up, and the mart only sells
+      one of each.
+- [x] **A bigger bag**: every Key Item (90), Poké Ball (28), TM/HM (108) and Berry (68) fits,
+      and 297 kinds of items (was 30/30/16/64/46). The save had no room for all ~640 items, so
+      not quite unlimited: the Key Items, Balls and Berries fill SaveBlock1's old 744 bytes, the
+      items and TMs SaveBlock3 (the 116 spare bytes at the end of every save sector; it held one
+      byte). `Bag_UpgradeLayout` (`src/item.c`, on loading) moves an older save's bag over;
+      `SaveBlock3.bagLayout` marks it done. SAVE_LINK now writes the whole slot, since every
+      sector carries a piece of SaveBlock3.
+- [x] **The Leader Academy on the Town Map and for FLY** (see the academy above), the mart
+      student out of the shelf.
+
 ## Roadmap
 
 1. [x] Source build, debug menu
@@ -1107,6 +1121,13 @@ python3 tools/gym_hack/render_map.py <MapFolder> out.png  # preview a map
            (Viridian's classroom layout; A: Larkspur and Camellia, B: Foxglove and Verbena, C:
            Marigold and Hyacinth, D: Yarrow and Tansy). The other interiors are still FireRed's.
            The name pop-up says LEADER ACADEMY. The Pokémon Center sets the respawn to Vermilion's.
+           (v99: its own map section, `MAPSEC_LEADER_ACADEMY`, on the Town Map north of Route 11
+           with a town dot, and a FLY destination - `FLAG_WORLD_MAP_LEADER_ACADEMY`, 0x0F0, set on
+           the campus, landing at the Pokémon Center - which is now where you respawn,
+           `HEAL_LOCATION_LEADER_ACADEMY`. The campus is 4 rows taller at the bottom: eight rows of
+           trees and road, so none of its own tileset is drawn while the player's on Route 11 - drawn
+           with Route 11's tileset, the cobbles came out as garbage at the top of the screen and stayed
+           after walking back up.)
          - MEGA EVOLUTION (v82): after the 8th badge, entering the main hall has the headmaster
            call the player to her desk and hand over the MEGA BRACELET (`ITEM_MEGA_RING` renamed;
            `FLAG_GOT_MEGA_BRACELET`). The guard at door M then steps aside: PRIMROSE's room

@@ -4,6 +4,7 @@ LeaderAcademy_Campus_MapScripts::
 	.byte 0
 
 LeaderAcademy_Campus_OnTransition::
+	setworldmapflag FLAG_WORLD_MAP_LEADER_ACADEMY
 	call Academy_EventScript_CampusTransition
 	end
 

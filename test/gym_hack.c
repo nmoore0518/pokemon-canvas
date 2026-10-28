@@ -17,6 +17,7 @@
 #include "party_menu.h"
 #include "item.h"
 #include "item_upgrades.h"
+#include "load_save.h"
 #define ACADEMY_LECTURE_COUNT_FOR_TEST 8
 #include "gym_challenge.h"
 #include "constants/event_objects.h"
@@ -3078,4 +3079,67 @@ TEST("GymHack: challenges: random challengers have at most one legendary")
     }
     EXPECT_GT(teamsWithOne, 5);       // (about 40% of teams)
     EXPECT_LT(teamsWithOne, 45);
+}
+
+TEST("GymHack: bag: every TM is reusable")
+{
+    EXPECT_EQ(GetItemImportance(ITEM_TM_FOCUS_PUNCH), 1);
+    EXPECT_EQ(GetItemImportance(ITEM_TM_THUNDERBOLT), 1);
+    EXPECT_EQ(GetItemImportance(ITEM_HM_CUT), 1);
+}
+
+TEST("GymHack: bag: a save's old five pockets move into the bigger bag")
+{
+    struct OldBag *old = (struct OldBag *)&gSaveBlock1Ptr->bag;
+    u32 i;
+
+    ClearBag();
+    memset(old, 0, sizeof(*old));
+    gSaveBlock3Ptr->bagLayout = 0;              // (as an older save's)
+    old->items[0] = (struct ItemSlot) {ITEM_POTION, 5};
+    old->items[BAG_OLD_ITEMS_COUNT - 1] = (struct ItemSlot) {ITEM_LEFTOVERS, 1};
+    old->keyItems[3] = (struct ItemSlot) {ITEM_BICYCLE, 1};
+    old->pokeBalls[0] = (struct ItemSlot) {ITEM_ULTRA_BALL, 12};
+    old->TMsHMs[0] = (struct ItemSlot) {ITEM_TM_THUNDERBOLT, 1};
+    old->berries[0] = (struct ItemSlot) {ITEM_ORAN_BERRY, 3};
+    for (i = 0; i < ARRAY_COUNT(old->items); i++)          // (the quantities are encrypted)
+        ApplyNewEncryptionKeyToHword(&old->items[i].quantity, gSaveBlock2Ptr->encryptionKey);
+    ApplyNewEncryptionKeyToHword(&old->keyItems[3].quantity, gSaveBlock2Ptr->encryptionKey);
+    ApplyNewEncryptionKeyToHword(&old->pokeBalls[0].quantity, gSaveBlock2Ptr->encryptionKey);
+    ApplyNewEncryptionKeyToHword(&old->TMsHMs[0].quantity, gSaveBlock2Ptr->encryptionKey);
+    ApplyNewEncryptionKeyToHword(&old->berries[0].quantity, gSaveBlock2Ptr->encryptionKey);
+    Bag_UpgradeLayout();
+    EXPECT_EQ(gSaveBlock3Ptr->bagLayout, BAG_LAYOUT_SPLIT);
+    EXPECT(CheckBagHasItem(ITEM_POTION, 5));
+    EXPECT(CheckBagHasItem(ITEM_LEFTOVERS, 1));
+    EXPECT(CheckBagHasItem(ITEM_BICYCLE, 1));
+    EXPECT(CheckBagHasItem(ITEM_ULTRA_BALL, 12));
+    EXPECT(CheckBagHasItem(ITEM_TM_THUNDERBOLT, 1));
+    EXPECT(CheckBagHasItem(ITEM_ORAN_BERRY, 3));
+    Bag_UpgradeLayout();                        // (once only)
+    EXPECT(CheckBagHasItem(ITEM_POTION, 5));
+    ClearBag();
+}
+
+TEST("GymHack: bag: the item pocket holds 297 kinds of items")
+{
+    u32 i, added = 0;
+    ClearBag();
+    for (i = ITEM_NONE + 1; i < ITEMS_COUNT && added < BAG_ITEMS_COUNT; i++)
+    {
+        if (GetItemPocket(i) != POCKET_ITEMS || GetItemImportance(i))
+            continue;
+        EXPECT(AddBagItem(i, 1));
+        added++;
+    }
+    EXPECT_EQ(added, BAG_ITEMS_COUNT);
+    for (; i < ITEMS_COUNT; i++)                // (and then it's full)
+    {
+        if (GetItemPocket(i) == POCKET_ITEMS && !GetItemImportance(i))
+        {
+            EXPECT(!AddBagItem(i, 1));
+            break;
+        }
+    }
+    ClearBag();
 }

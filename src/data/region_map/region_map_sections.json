@@ -1766,6 +1766,14 @@
       "y": 4,
       "width": 1,
       "height": 5
+    },
+    {
+      "id": "MAPSEC_LEADER_ACADEMY",
+      "name": "LEADER ACADEMY",
+      "x": 16,
+      "y": 8,
+      "width": 1,
+      "height": 1
     }
   ]
 }

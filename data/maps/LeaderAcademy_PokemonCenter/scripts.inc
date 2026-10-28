@@ -3,5 +3,5 @@ LeaderAcademy_PokemonCenter_MapScripts::
 	.byte 0
 
 LeaderAcademy_PokemonCenter_OnTransition::
-	setrespawn HEAL_LOCATION_VERMILION_CITY
+	setrespawn HEAL_LOCATION_LEADER_ACADEMY
 	end

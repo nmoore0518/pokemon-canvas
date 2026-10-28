@@ -254,6 +254,12 @@ struct NPCFollower
 #include "constants/items.h"
 #define ITEM_FLAGS_COUNT ((ITEMS_COUNT / 8) + ((ITEMS_COUNT % 8) ? 1 : 0))
 
+struct ItemSlot
+{
+    enum Item itemId;
+    u16 quantity;
+};
+
 struct SaveBlock3
 {
 #if OW_USE_FAKE_RTC
@@ -269,6 +275,9 @@ struct SaveBlock3
     u8 dexNavSearchLevels[NUM_SPECIES];
 #endif
     u8 dexNavChain;
+    u8 bagLayout;                                   // (Gym Trainer hack: BAG_LAYOUT_SPLIT)
+    struct ItemSlot bagTMsHMs[BAG_TMHM_COUNT];      // (the bag's TM and item pockets: SaveBlock1's
+    struct ItemSlot bagItems[BAG_ITEMS_COUNT];      //  struct Bag has the other three)
 #if APRICORN_TREE_COUNT > 0
     u8 apricornTrees[NUM_APRICORN_TREE_BYTES];
 #endif
@@ -671,12 +680,6 @@ struct WarpData
     s8 warpId;
     //u8 padding;
     s16 x, y;
-};
-
-struct ItemSlot
-{
-    enum Item itemId;
-    u16 quantity;
 };
 
 struct Pokeblock
@@ -1085,11 +1088,19 @@ struct ExternalEventFlags
 
 struct Bag
 {
-    struct ItemSlot items[BAG_ITEMS_COUNT];
     struct ItemSlot keyItems[BAG_KEYITEMS_COUNT];
     struct ItemSlot pokeBalls[BAG_POKEBALLS_COUNT];
-    struct ItemSlot TMsHMs[BAG_TMHM_COUNT];
     struct ItemSlot berries[BAG_BERRIES_COUNT];
+};
+
+// The bag before the Gym Trainer hack's bigger one (in the same place in SaveBlock1)
+struct OldBag
+{
+    struct ItemSlot items[BAG_OLD_ITEMS_COUNT];
+    struct ItemSlot keyItems[BAG_OLD_KEYITEMS_COUNT];
+    struct ItemSlot pokeBalls[BAG_OLD_POKEBALLS_COUNT];
+    struct ItemSlot TMsHMs[BAG_OLD_TMHM_COUNT];
+    struct ItemSlot berries[BAG_OLD_BERRIES_COUNT];
 };
 
 struct SaveBlock1

@@ -110,11 +110,22 @@ enum Language
 #define ROAMER_COUNT 1 // Number of maximum concurrent active roamers
 
 // Bag constants
-#define BAG_ITEMS_COUNT 30
-#define BAG_KEYITEMS_COUNT 30
-#define BAG_POKEBALLS_COUNT 16
-#define BAG_TMHM_COUNT 64
-#define BAG_BERRIES_COUNT 46
+// Gym Trainer hack: room for every Key Item, Poke Ball, TM/HM and Berry there is, and 297 kinds of
+// items. The Key Items, Balls and Berries are where the five pockets used to be in SaveBlock1 (the
+// same 744 bytes); the items and TMs are in SaveBlock3 (src/item.c Bag_UpgradeLayout moves an
+// older save's bag over).
+#define BAG_ITEMS_COUNT 297
+#define BAG_KEYITEMS_COUNT 90
+#define BAG_POKEBALLS_COUNT 28
+#define BAG_TMHM_COUNT 108
+#define BAG_BERRIES_COUNT 68
+// (the old pockets, for the move)
+#define BAG_OLD_ITEMS_COUNT 30
+#define BAG_OLD_KEYITEMS_COUNT 30
+#define BAG_OLD_POKEBALLS_COUNT 16
+#define BAG_OLD_TMHM_COUNT 64
+#define BAG_OLD_BERRIES_COUNT 46
+#define BAG_LAYOUT_SPLIT 0xB2   // SaveBlock3's bagLayout: the bag's in its new places
 
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.

@@ -328,6 +328,8 @@ work.</li>
 <li><b>The Palm Pilot.</b> Bill gives you a pocket PC with the S.S. Ticket. Use it anywhere outside the League to reach your
 boxes and everything else on the PC (see <a href="#pc">Your PC</a>).</li>
 <li><b>16 PC boxes</b> instead of 14.</li>
+<li><b>Reusable TMs.</b> Like HMs, a TM is never used up: teach it to as many Pokémon as you like.</li>
+<li><b>A bigger bag.</b> Room for every Key Item, Poké Ball, TM and Berry in the game, and 297 different items.</li>
 <li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
 Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
 <li><b>Summary screen.</b> On the skills page, A switches between stats, IVs (exact values) and EVs. A new LEVEL-UP MOVES page
@@ -546,7 +548,8 @@ puzzle pieces, and green are the ways out.</p>
 ACADEMY = """
 <p>A school for Gym Leader candidates from every region, through a gap in the trees on Route 11's north side. You're
 admitted with your third badge (see the walkthrough). The headmaster, Wisteria, welcomes you; the staff are named for
-flowers. Everything here is single battles. The Pokémon Center makes Vermilion City your place to return to.</p>
+flowers. Everything here is single battles. Once you've been, it's on the Town Map and you can FLY here; you land at
+its Pokémon Center, which is also where you return to after a loss.</p>
 <h3>Battle Points (BP)</h3>
 <p>Beating candidates earns 1-4 BP by their skill, an instructor's demonstration 3 BP, and Battle Hall streaks 1 BP a win plus
 1 for every 3 in the streak (and 5 more at 7 wins). Everything BP buys can also be bought with money.</p>

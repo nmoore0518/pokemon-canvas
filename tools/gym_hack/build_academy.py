@@ -35,7 +35,8 @@ import paldea                                   # noqa: E402  (read_layout)
 from build_exotic_safari import obj, write_layout, write_map     # noqa: E402
 from tileset_composer import LAYER_COVERED, Composer             # noqa: E402
 
-W, H = 44, 40
+W, H = 44, 44              # (rows 36+: the trees and the road down to Route 11 - eight rows, so that
+                            # nothing of the campus's own tileset is drawn while the player's on Route 11)
 OFFSET = 18                 # (the campus's x 0 is Route 11's x 18: its path, x 20-21, is the gap at 38-39)
 GAP = (20, 21)
 SAFFRON_SYM = "gTileset_SaffronCity"
@@ -118,7 +119,7 @@ def build_campus():
                 put(x, y - 1, crown[0 if left else 1], 0)
 
     # ---- paths: the gate up to the plaza, the plaza, two cross walks, the buildings' fronts ----
-    path(20, 20, 21, 39)
+    path(20, 20, 21, 35)
     path(15, 13, 26, 19)                    # the plaza
     path(5, 24, 38, 25)                     # the upper walk
     path(5, 33, 38, 34)                     # the lower walk
@@ -366,7 +367,7 @@ INTERIOR_PEOPLE = {
     ],
     "LeaderAcademy_Supply": [
         ("SUPPLY_CLERK", "OBJ_EVENT_GFX_CLERK", 2, 3, "Academy_EventScript_SupplyClerk", "MOVEMENT_TYPE_FACE_RIGHT"),
-        ("STUDENT_3", "OBJ_EVENT_GFX_POKE_MANIAC_FRLG", 8, 4, "Academy_EventScript_Student3", "MOVEMENT_TYPE_FACE_UP"),
+        ("STUDENT_3", "OBJ_EVENT_GFX_POKE_MANIAC_FRLG", 9, 4, "Academy_EventScript_Student3", "MOVEMENT_TYPE_FACE_LEFT"),
     ],
     "LeaderAcademy_BattleHall": [
         ("RENTAL_CLERK", "OBJ_EVENT_GFX_COOLTRAINER_M", 6, 5, "Academy_EventScript_RentalClerk", "MOVEMENT_TYPE_FACE_DOWN"),
@@ -382,6 +383,7 @@ SIGN_SCRIPTS = {"hall": "Academy_EventScript_HallSign", "center": "Academy_Event
                 "supply": "Academy_EventScript_SupplySign", "battle": "Academy_EventScript_BattleSign",
                 "exchange": "Academy_EventScript_ExchangeSign", "gate": "Academy_EventScript_GateSign"}
 CAMPUS = "LeaderAcademy_Campus"
+MAPSEC = "MAPSEC_LEADER_ACADEMY"      # (its own on the Town Map, and somewhere to FLY)
 STATUE_SCRIPT = "Academy_EventScript_Statue"
 
 
@@ -400,7 +402,7 @@ def write_campus(g, doors):
                for p in CAMPUS_PEOPLE]
     bgs = [sign(x, y, SIGN_SCRIPTS[k]) for k, (x, y) in SIGNS.items()]
     bgs += [sign(STATUE_AT[0] + dx, STATUE_AT[1] + 2, STATUE_SCRIPT) for dx in (0, 1)]
-    write_map(CAMPUS, mid(CAMPUS), "LAYOUT_LEADER_ACADEMY_CAMPUS", "MUS_RG_CELADON", "MAPSEC_ROUTE_11", "MAP_TYPE_CITY",
+    write_map(CAMPUS, mid(CAMPUS), "LAYOUT_LEADER_ACADEMY_CAMPUS", "MUS_RG_CELADON", MAPSEC, "MAP_TYPE_CITY",
               objects, warps, bgs, True)
     j = json.loads((ROOT / f"data/maps/{CAMPUS}/map.json").read_text())
     j["connections"] = [{"map": "MAP_ROUTE11", "offset": -OFFSET, "direction": "down"}]
@@ -415,7 +417,7 @@ def write_campus(g, doors):
         if m == "LeaderAcademy_Hall":
             g_ = MEGA_DOOR_GUARD
             people.append(lobj("LOCALID_ACADEMY_" + g_[0], g_[1], g_[2], g_[3], g_[4], g_[5], g_[6]))
-        write_map(m, mid(m), layout, music, "MAPSEC_ROUTE_11", "MAP_TYPE_INDOOR", people, ws, [], False)
+        write_map(m, mid(m), layout, music, MAPSEC, "MAP_TYPE_INDOOR", people, ws, [], False)
     for n, (k, m) in enumerate(LECTURE_MAPS.items()):
         ws = [warp(x, 7, mid("LeaderAcademy_Hall"), 3 + n) for x in (3, 4, 5)]
         (a, b) = LECTURES[k]
@@ -428,11 +430,11 @@ def write_campus(g, doors):
             layout = "LAYOUT_LEADER_ACADEMY_LECTURE_" + k
             write_layout(m, layout, school_with_pc(), "gTileset_BuildingFrlg", "gTileset_School", border=0x008)
             bgs = [sign(TEAM_BUILDER_PC[0], TEAM_BUILDER_PC[1], "Academy_EventScript_TeamBuilderPC")]
-        write_map(m, mid(m), layout, "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11", "MAP_TYPE_INDOOR",
+        write_map(m, mid(m), layout, "MUS_RG_OAK_LAB", MAPSEC, "MAP_TYPE_INDOOR",
                   people, ws, bgs, False)
     ws = [warp(x, 7, mid("LeaderAcademy_Hall"), 7) for x in (3, 4, 5)]
     people = [lobj("LOCALID_ACADEMY_MEGA_KEEPER", "OBJ_EVENT_GFX_WOMAN_1_FRLG", 4, 2, "Academy_EventScript_MegaKeeper")]
-    write_map(MEGA_ROOM, mid(MEGA_ROOM), "LAYOUT_VIRIDIAN_CITY_SCHOOL", "MUS_RG_OAK_LAB", "MAPSEC_ROUTE_11",
+    write_map(MEGA_ROOM, mid(MEGA_ROOM), "LAYOUT_VIRIDIAN_CITY_SCHOOL", "MUS_RG_OAK_LAB", MAPSEC,
               "MAP_TYPE_INDOOR", people, ws, [], False)
 
 
