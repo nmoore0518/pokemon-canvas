@@ -498,7 +498,8 @@ gym, the back wall included.</li>
 <h3>Practice trainers</h3>
 <p>Under TRAINERS in the PC: Rookie (¥5,000), Skilled (¥10,000) and Expert (¥20,000) trainers; up to 11 placed at once. Each
 has a fresh random team of your type for practice battles (no prize, no whiteout, healed after). Some trainers on the road
-ask to join your gym after you beat them; they're placed the same way and use their own favorite type.</p>
+ask to join your gym after you beat them; they're placed the same way and use their own favorite type. While one is placed in your gym, they're no longer at
+their old spot on the road (they come back if you put them back in storage).</p>
 <h3>Mastering types and changing your gym's type</h3>
 <p>A streak of 15 wins masters your gym's type (10 for every type after the first). The streak's last battle is your mentor
 with their full Gym Leader Convention team, three levels above your average. Random challengers bring at most one legendary,

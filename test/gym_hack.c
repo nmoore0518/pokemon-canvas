@@ -3268,3 +3268,25 @@ TEST("GymHack: bag: a v100 save's hold items and last items move to their new pl
     EXPECT(CheckBagHasItem(ITEM_PEARL, 2));
     ClearBag();
 }
+
+extern const u8 Route8_EventScript_Andrea[];
+extern const u8 Route8_EventScript_Julia[];
+
+TEST("GymHack: recruits: a recruit placed in the GYM is gone from their route until put away")
+{
+    s32 x, y;
+    bool32 placed = FALSE;
+    GymDecor_ClearAll();
+    GymDecor_SetOwned(GYM_DECOR_RECRUIT_NORMAL, 1);
+    EXPECT(!GymCandidate_IsPlacedRecruitScript(Route8_EventScript_Andrea));   // (only in the PC)
+    for (y = 0; y < 20 && !placed; y++)
+        for (x = 0; x < 20 && !placed; x++)
+            placed = GymDecor_Place(GYM_DECOR_RECRUIT_NORMAL, 0, x, y);
+    EXPECT(placed);
+    EXPECT(GymCandidate_IsPlacedRecruitScript(Route8_EventScript_Andrea));
+    EXPECT(!GymCandidate_IsPlacedRecruitScript(Route8_EventScript_Julia));   // (the FAIRY recruit)
+    EXPECT(!GymCandidate_IsPlacedRecruitScript(NULL));
+    GymDecor_PutAllAway();
+    EXPECT(!GymCandidate_IsPlacedRecruitScript(Route8_EventScript_Andrea));
+    GymDecor_ClearAll();
+}

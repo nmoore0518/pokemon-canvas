@@ -408,7 +408,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - **Trainers who join**: one trainer per type on the road asks to join your gym after you beat
     them (and when you talk to them again, until they do). They go to the gym PC's TRAINERS
     storage and are placed like the bought trainers; in practice battles they use a team of their
-    own favorite type. Andrea (Normal, Route 8), Hitoshi (Fighting, Dojo), Perry (Flying, Route
+    own favorite type. While one is placed in the gym, they're gone from their spot on the road
+    (`GymCandidate_IsPlacedRecruitScript`, checked when objects spawn); put them back in storage
+    and they return. Andrea (Normal, Route 8), Hitoshi (Fighting, Dojo), Perry (Flying, Route
     13), Jared (Poison, Route 13), Drew (Ground, Route 9), Marcos (Rock, Mt. Moon), Rick (Bug,
     Viridian Forest), Angelica (Ghost, Pokémon Tower), Bernie (Steel, Route 11), Thomas (Fire,
     S.S. Anne), Ned (Water, Route 12), Alicia (Grass, Route 9), Luca (Electric, Route 12), Nelson

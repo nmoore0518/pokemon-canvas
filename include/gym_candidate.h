@@ -52,6 +52,7 @@ const struct GymCandidateMentor *GymCandidate_GetMentorForType(u32 type);
 const u8 *GymCandidate_GetEliteFourApproval(u32 i);
 const struct GymRecruit *GymCandidate_GetRecruit(u32 type);
 const struct GymRecruit *GymCandidate_GetRecruitByDecor(u32 decor);
+bool32 GymCandidate_IsPlacedRecruitScript(const u8 *script);
 u16 GymCandidate_GetTypeItem(u32 type, bool32 offensive);
 const u8 *GymCandidate_GetMentorName(u32 who);
 const u8 *GymCandidate_GetMentorGiftText(u32 who, bool32 offensive);

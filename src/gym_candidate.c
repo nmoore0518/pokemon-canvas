@@ -27,6 +27,7 @@
 #include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/opponents.h"
+#include "constants/script_commands.h"
 #include "constants/vars.h"
 
 // ---------------------------------------------------------------------------
@@ -1038,6 +1039,25 @@ const struct GymRecruit *GymCandidate_GetRecruitByDecor(u32 decor)
             return &gGymRecruits[t];
     }
     return NULL;
+}
+
+// Whether an overworld object's script is the trainer battle of a recruit whose trainer
+// decoration is currently placed in the player's GYM. Such a trainer has moved to the GYM,
+// so their overworld object doesn't spawn; they come back if the decoration is put away.
+bool32 GymCandidate_IsPlacedRecruitScript(const u8 *script)
+{
+    u32 t, trainerId;
+
+    if (script == NULL || script[0] != SCR_OP_TRAINERBATTLE)
+        return FALSE;
+    // opcode, flag bits, objEventLocalIdA, then opponentA (unaligned u16)
+    trainerId = script[3] | (script[4] << 8);
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (gGymRecruits[t].decor != 0 && gGymRecruits[t].trainerId == trainerId)
+            return GymDecor_CountPlaced(gGymRecruits[t].decor) > 0;
+    }
+    return FALSE;
 }
 
 // Special: VAR_0x8004 = type -> VAR_RESULT = whether they've joined; gStringVar4 = their pitch;

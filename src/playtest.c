@@ -17,6 +17,7 @@
 #include "constants/moves.h"
 #include "constants/battle.h"
 #include "constants/trainers.h"
+#include "gym_decor.h"
 
 EWRAM_DATA struct Playtest gPlaytest = {0};
 // (the harness reads these by offset: tools/gym_hack/playtest/)
@@ -384,6 +385,18 @@ void Playtest_Update(void)
     case PLAYTEST_SET_MOVE:
         if (a[0] < PARTY_SIZE && a[1] < MAX_MON_MOVES && a[2] < MOVES_COUNT)
             SetMonMoveSlot(&gPlayerParty[a[0]], a[2], a[1]);
+        break;
+    case PLAYTEST_PLACE_DECOR:
+        GymDecor_PutAllAway();   // (room for it)
+        if (a[0] != 0)
+        {
+            s32 x, y;
+            if (GymDecor_CountOwned(a[0]) == 0)
+                GymDecor_SetOwned(a[0], 1);
+            for (y = 0; y < 32 && !gPlaytest.result; y++)
+                for (x = 0; x < 32 && !gPlaytest.result; x++)
+                    gPlaytest.result = GymDecor_Place(a[0], 0, x, y);
+        }
         break;
     case PLAYTEST_RELEASE:
         if (a[0] < PARTY_SIZE)

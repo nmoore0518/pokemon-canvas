@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_candidate.h"
 #include "form_items.h"
 #include "gym_decor.h"
 #include "malloc.h"
@@ -3031,7 +3032,8 @@ void TrySpawnObjectEvents(s16 cameraX, s16 cameraY)
             s16 npcY = template->y + MAP_OFFSET;
 
             if (top <= npcY && bottom >= npcY && left <= npcX && right >= npcX && !FlagGet(template->flagId)
-             && !FormItems_ObjectWaits(template->flagId))   // (Pokémon Canvas: Genesect's Drives)
+             && !FormItems_ObjectWaits(template->flagId)   // (Pokémon Canvas: Genesect's Drives)
+             && !GymCandidate_IsPlacedRecruitScript(template->script))   // (Pokémon Canvas: recruit moved to the GYM)
             {
                 if (template->graphicsId == OBJ_EVENT_GFX_LIGHT_SPRITE)
                     SpawnLightSprite(npcX, npcY, cameraX, cameraY, template->trainerRange_berryTreeId); // light sprite instead
