@@ -1685,6 +1685,17 @@ const struct Tileset gTileset_LeaderAcademyHall =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_PlayersBasement =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PlayersBasement,
+    .palettes = gTilesetPalettes_PlayersBasement,
+    .metatiles = gMetatiles_PlayersBasement,
+    .metatileAttributes = gMetatileAttributes_PlayersBasement,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,

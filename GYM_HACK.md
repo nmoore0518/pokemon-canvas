@@ -110,6 +110,17 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   intro and post-League scenes follow the new streets. Don't hand-edit those two files or the
   layout in Porymap; changes would be overwritten the next time the script runs.
   The gym door is locked for now; the gym itself comes in the next step.
+- **The basement** (`PalletTown_PlayersHouse_B1F_Frlg`): Dad's workshop, down a stairwell on the
+  house's 1F (x 7-9, rows 2-3: the 2F's stairwell blocks; the rug, table and Mom moved a row down,
+  the whiteout spot with them). Concrete, pipes, two caged lamps and dark corners; the Ability
+  Synthesizer (a belt into a falling stream of glowing liquid, a vat), the Ball Maker (a hopper,
+  a slot, a hand crank), the Ball Changer (two pedestals - the balls on them are object events, so
+  they jump across - and a console with a lever), a wall switch that's only there with
+  `FLAG_BASEMENT_SWITCH_SHOWN` (thrown: `FLAG_BASEMENT_SWITCH_ON`), four loose pages, a workbench,
+  lab table, desk, bookshelf, chalkboard, crates and a trash can. Drawn in
+  `tools/gym_hack/basement_art.py`, built by `tools/gym_hack/build_basement.py` (its own tileset,
+  `gTileset_PlayersBasement`: 379 of 384 tiles used). The machines animate by setting their blocks
+  frame by frame (`frames.inc`, generated); what they actually do comes later.
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,
   benches and street lamps are pixel art in `tools/gym_hack/pallet_art.py` (`statue()`, `bench()`,
   `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
@@ -660,6 +671,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `data/scripts/gym_hack.inc` | Team-rule messages, HM key item scripts and text |
 | `src/field_region_map.c` | Town Map screen: type finder markers |
 | `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
+| `tools/gym_hack/build_basement.py`, `basement_art.py` | The basement under the player's house: its art, tileset, map, the machines' frames, the stairwell on 1F |
 | `tools/gym_hack/pallet_art.py` | Chansey statue, bench and lamp art |
 | `tools/gym_hack/build_pallet_gym.py`, `data/maps/PalletTown_Gym_Frlg/` | The gym inside and Oak's gym scene |
 | `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |

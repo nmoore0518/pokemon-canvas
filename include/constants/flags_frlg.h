@@ -974,8 +974,8 @@
 #define FLAG_EXOTIC_LEGEND_ENTEI     0x3D3   // (the Johto zone)
 #define FLAG_EXOTIC_LEGEND_SUICUNE   0x3D4   // (the Johto zone)
 #define FLAG_EXOTIC_RED_GYARADOS     0x3D5   // (the Johto zone)
-#define FLAG_0x3D6               0x3D6
-#define FLAG_0x3D7               0x3D7
+#define FLAG_BASEMENT_SWITCH_SHOWN 0x3D6   // (Pokémon Canvas: the wall switch in the basement is there)
+#define FLAG_BASEMENT_SWITCH_ON  0x3D7   // (Pokémon Canvas: ...and thrown)
 #define FLAG_MYSTERY_GIFT_DONE   0x3D8
 #define FLAG_MYSTERY_GIFT_1      0x3D9
 #define FLAG_MYSTERY_GIFT_2      0x3DA

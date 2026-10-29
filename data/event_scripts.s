@@ -869,6 +869,7 @@ gStdScripts_End::
 	.include "data/maps/PalletTown_Mart_Frlg/scripts.inc"
 	.include "data/maps/PalletTown_Gym_Frlg/scripts.inc"
 	.include "data/maps/PalletTown_TrainingHall_Frlg/scripts.inc"
+	.include "data/maps/PalletTown_PlayersHouse_B1F_Frlg/scripts.inc"
 	.include "data/maps/ViridianCity_House_Frlg/scripts.inc"
 	.include "data/maps/ViridianCity_Gym_Frlg/scripts.inc"
 	.include "data/maps/ViridianCity_School_Frlg/scripts.inc"

@@ -11520,6 +11520,19 @@
       "border_filepath": "data/layouts/LeaderAcademy_Hall/border.bin",
       "blockdata_filepath": "data/layouts/LeaderAcademy_Hall/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_PALLET_TOWN_PLAYERS_HOUSE_B1F",
+      "name": "PalletTown_PlayersHouse_B1F_Frlg_Layout",
+      "width": 15,
+      "height": 11,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_PlayersBasement",
+      "border_filepath": "data/layouts/PalletTown_PlayersHouse_B1F_Frlg/border.bin",
+      "blockdata_filepath": "data/layouts/PalletTown_PlayersHouse_B1F_Frlg/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

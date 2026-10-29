@@ -98,7 +98,7 @@ GymFinale_EventScript_LostToOak::
 	setvar VAR_GYM_FINALE, GYM_FINALE_OAK_WAITS
 	setflag FLAG_HIDE_PALLET_GYM_OAK_AND_RIVAL
 	fadescreen FADE_TO_BLACK
-	warp MAP_PALLET_TOWN_PLAYERS_HOUSE_1F, 8, 5
+	warp MAP_PALLET_TOWN_PLAYERS_HOUSE_1F, 8, 6
 	waitstate
 	releaseall
 	end
