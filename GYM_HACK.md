@@ -44,6 +44,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 - The post-game training trainers: `tools/gym_hack/build_training_houses.py` (the `TRAINERS` list:
   name, class, house, spot, team). Edit it and run it; it rewrites their party entries, ids,
   scripts and map objects.
+- All the game's dialogue as two Word files to edit (story and named characters; everyone else):
+  `python3 tools/gym_hack/dialogue/build_dialogue_docs.py` -> `build/dialogue/`. Every text gets an
+  ID (`tools/gym_hack/dialogue/dialogue_ids.json` keeps them stable); `build/dialogue/dialogue_index.json`
+  maps each ID back to its script label or C file:line.
 
 ## Design decisions
 
