@@ -135,6 +135,9 @@ def load():
     data["gfx"] = {s: p for s, p in re.findall(r"(gMon(?:FrontPic|Palette)_\w+)\[\] = INCGFX_U\d+\(\"([^\"]+)\"", poke)}
     species = blocks(poke, r"\[(SPECIES_\w+)\]\s*=\s*(?=\{)")
     data["species"] = species
+    # each species' synthetic ability (the Ability Synthesizer: tools/gym_hack/build_synthetic_abilities.py)
+    sa = ROOT / "src/data/pokemon/synthetic_abilities.h"
+    data["synthetic"] = dict(re.findall(r"\[(SPECIES_\w+)\] = (ABILITY_\w+),", sa.read_text())) if sa.exists() else {}
     return data
 
 
@@ -588,6 +591,8 @@ def card(info, data, loc, prevo, family_line):
     abil_txt = ", ".join(dict.fromkeys(a for a in abil[:2] if a and a != "-------" and a != "None"))
     if len(abil) > 2 and abil[2] and abil[2] not in ("-------", "None") and abil[2] not in abil[:2]:
         abil_txt += f" · <i>Hidden: {abil[2]}</i>"
+    synth = data.get("synthetic", {}).get(info["key"])
+    synth_txt = f'<div class="sec"><span class="label">Synthetic ability:</span> {esc(data["abilities"].get(synth, synth))}</div>' if synth else ""
     moves = " · ".join(f'<span class="mv"><span class="lv">{"Evo" if l == 0 else l}</span> {esc(data["moves"].get(m, m))}</span>'
                        for l, m in info["learnset"])
     lines = by_method(loc.get(info["key"], []))
@@ -604,6 +609,7 @@ def card(info, data, loc, prevo, family_line):
     <div class="stats">{stats}</div>
     <div><span class="label">Total</span> {total}</div>
     <div class="sec"><span class="label">Abilities:</span> {abil_txt}</div>
+    {synth_txt}
   </div></div>
   <div class="desc">{esc(info['description'])}</div>
   <div class="sec"><span class="label">Evolution:</span> {family_line}</div>

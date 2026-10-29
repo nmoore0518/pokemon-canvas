@@ -3290,3 +3290,26 @@ TEST("GymHack: recruits: a recruit placed in the GYM is gone from their route un
     EXPECT(!GymCandidate_IsPlacedRecruitScript(Route8_EventScript_Andrea));
     GymDecor_ClearAll();
 }
+
+#include "synthetic_abilities.h"
+
+TEST("GymHack: synthetic abilities: every Pokémon has one, and Chansey's is Triage")
+{
+    u32 i, missing = 0;
+    EXPECT_EQ(GetSpeciesSyntheticAbility(SPECIES_CHANSEY), ABILITY_TRIAGE);
+    EXPECT_EQ(GetSpeciesSyntheticAbility(SPECIES_BLISSEY), ABILITY_TRIAGE);
+    EXPECT_EQ(GetSpeciesSyntheticAbility(SPECIES_PIKACHU_ORIGINAL), ABILITY_TRANSISTOR);   // (a form: its species')
+    for (i = 1; i < NUM_SPECIES; i++)
+    {
+        if (!IsSpeciesEnabled(i) || gSpeciesInfo[i].isMegaEvolution || gSpeciesInfo[i].isGigantamax
+         || gSpeciesInfo[i].isTotem || gSpeciesInfo[i].isPrimalReversion || gSpeciesInfo[i].isUltraBurst
+         || gSpeciesInfo[i].isTeraForm || gSpeciesInfo[i].natDexNum == 0)
+            continue;
+        if (GetSpeciesSyntheticAbility(i) == ABILITY_NONE)
+        {
+            DebugPrintf("no synthetic ability: %d", i);
+            missing++;
+        }
+    }
+    EXPECT_EQ(missing, 0);
+}

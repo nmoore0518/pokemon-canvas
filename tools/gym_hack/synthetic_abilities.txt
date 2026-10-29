@@ -1,0 +1,655 @@
+# Pokémon Canvas: each Pokémon's synthetic ability (the Ability Synthesizer, in the basement).
+#
+# One line per group:   SPECIES (without SPECIES_), space-separated : Ability name : why
+# A form not listed takes its species' first form's (Pikachu's caps, Unown's letters, Vivillon's
+# patterns...). Always an existing ability; meant to be a little better than what the Pokémon has,
+# never game-breaking. "sidegrade" = its own ability is already one of the best it could have, so
+# this is an alternative rather than an upgrade. "flag" = its own ability drives a form change
+# (Stance Change, Schooling...) that the synthetic ability would replace.
+#
+# Built into src/data/pokemon/synthetic_abilities.h and the review list by
+# tools/gym_hack/build_synthetic_abilities.py.
+
+# ---------------------------------------------------------------------------------------- Gen 1
+BULBASAUR IVYSAUR VENUSAUR : Thick Fat : halves Fire and Ice damage, its two worst weaknesses (Mega Venusaur's ability)
+CHARMANDER CHARMELEON CHARIZARD : Tough Claws : opens up a physical Charizard (Flare Blitz, Dragon Claw); Mega Charizard X's ability
+SQUIRTLE WARTORTLE BLASTOISE : Mega Launcher : boosts Water Pulse, Aura Sphere, Dark and Dragon Pulse (Mega Blastoise's ability)
+CATERPIE METAPOD BUTTERFREE : Magic Bounce : bounces status back; a support boost for a frail bug
+WEEDLE KAKUNA BEEDRILL : Adaptability : STAB 2x instead of 1.5x (Mega Beedrill's ability) on a modest 90 Attack
+PIDGEY PIDGEOTTO PIDGEOT : No Guard : Hurricane never misses (Mega Pidgeot's ability)
+RATTATA RATICATE : Strong Jaw : Hyper Fang, Crunch and the elemental fangs hit 1.5x
+RATTATA_ALOLA RATICATE_ALOLA : Strong Jaw : same as Kanto's; its moves are all bites
+SPEAROW FEAROW : Moxie : an Attack boost after each KO for a mid-tier attacker
+EKANS ARBOK : Strong Jaw : Poison Fang, Crunch and four elemental fangs
+SANDSHREW SANDSLASH : Tough Claws : claws; boosts its contact moves
+SANDSHREW_ALOLA SANDSLASH_ALOLA : Tough Claws : as Kanto's (Iron Head, Knock Off, Rapid Spin)
+NIDORAN_F NIDORINA NIDOQUEEN : Solid Rock : takes less from its many weaknesses (Water, Ice, Ground, Psychic)
+NIDORAN_M NIDORINO NIDOKING : Tinted Lens : its wide movepool hits even resisted targets hard; similar to Sheer Force
+VULPIX NINETALES : Magic Bounce : a mystic fox that reflects hazards and status
+VULPIX_ALOLA NINETALES_ALOLA : Ice Scales : halves special damage; trades Aurora Veil setting for bulk
+CLEFFA CLEFAIRY CLEFABLE : Triage : Moonlight and Draining Kiss go first
+IGGLYBUFF JIGGLYPUFF WIGGLYTUFF : Pixilate : Normal moves become Fairy and hit 1.2x
+ZUBAT GOLBAT CROBAT : Intimidate : lowers foes' Attack on entry; good on a fast pivot
+ODDISH GLOOM VILEPLUME : Regenerator : heals a third on switching; suits a bulky special wall
+BELLOSSOM : Triage : Giga Drain, Synthesis and Moonblast's drains move first
+PARAS PARASECT : Triage : priority Leech Life and Giga Drain keep a slow bug alive
+VENONAT VENOMOTH : Sheer Force : Bug Buzz, Sludge Bomb and Psychic hit 1.3x (no side effects)
+DIGLETT DUGTRIO : Mold Breaker : Earthquake hits Levitate users
+DIGLETT_ALOLA DUGTRIO_ALOLA : Mold Breaker : as Kanto's
+MEOWTH PERSIAN : Super Luck : more critical hits (Slash, Night Slash)
+MEOWTH_ALOLA PERSIAN_ALOLA : Prankster : status moves go first (Parting Shot, Nasty Plot); it's frail
+MEOWTH_GALAR PERRSERKER : Steelworker : Steel moves 1.5x on a slow, hard-hitting Steel type
+PSYDUCK GOLDUCK : Sheer Force : Scald, Ice Beam and Psychic hit 1.3x
+MANKEY PRIMEAPE ANNIHILAPE : Iron Fist : punches 1.2x (Drain Punch, Rage Fist, elemental punches)
+GROWLITHE ARCANINE : Tough Claws : Flare Blitz, Extreme Speed, Close Combat 1.3x
+GROWLITHE_HISUI ARCANINE_HISUI : Solid Rock : softens its 4x Water and Ground weaknesses
+POLIWAG POLIWHIRL POLIWRATH : Iron Fist : Ice Punch, Drain Punch, Dynamic Punch 1.2x
+POLITOED : Storm Drain : draws in Water moves and gains Sp. Atk from them
+ABRA KADABRA ALAKAZAM : Trace : copies the foe's ability (Mega Alakazam's)
+MACHOP MACHOKE MACHAMP : Iron Fist : punches 1.2x; an alternative to No Guard
+BELLSPROUT WEEPINBELL VICTREEBEL : Sharpness : Leaf Blade and Razor Leaf 1.5x
+TENTACOOL TENTACRUEL : Regenerator : heals on switching; it's a spinner and hazard setter
+GEODUDE GRAVELER GOLEM : Solid Rock : softens its 4x Water and Grass weaknesses
+GEODUDE_ALOLA GRAVELER_ALOLA GOLEM_ALOLA : Solid Rock : softens its 4x Ground weakness
+PONYTA RAPIDASH : Reckless : Flare Blitz and Wild Charge 1.2x
+PONYTA_GALAR RAPIDASH_GALAR : Tough Claws : Play Rough, Zen Headbutt and Megahorn 1.3x
+SLOWPOKE SLOWBRO SLOWKING : Unaware : ignores the foe's stat boosts; a wall's ability
+SLOWPOKE_GALAR SLOWKING_GALAR : Unaware : as Kanto's
+SLOWBRO_GALAR : Sheer Force : Shell Side Arm and Sludge Bomb lose their poison chance and hit 1.3x
+MAGNEMITE MAGNETON MAGNEZONE : Levitate : immune to Ground, its 4x weakness
+FARFETCHD : Super Luck : crit chance up; pairs with its Leek
+FARFETCHD_GALAR SIRFETCHD : Super Luck : crits with its Leek
+DODUO DODRIO : Reckless : Brave Bird and Double-Edge 1.2x
+SEEL DEWGONG : Ice Scales : halves special damage
+GRIMER MUK : Toxic Debris : sets Toxic Spikes when hit by a physical move
+GRIMER_ALOLA MUK_ALOLA : Toxic Debris : as Kanto's
+SHELLDER CLOYSTER : Ice Scales : covers its poor Sp. Def (sidegrade: gives up Skill Link)
+GASTLY HAUNTER GENGAR : Tinted Lens : not-very-effective hits do normal damage
+ONIX : Solid Rock : softens its 4x Water and Grass weaknesses
+STEELIX : Solid Rock : takes less from Fire, Water, Fighting and Ground
+DROWZEE HYPNO : Bad Dreams : sleeping foes lose 1/8 HP a turn; pairs with Hypnosis
+KRABBY KINGLER : Tough Claws : Crabhammer and its other contact moves 1.3x
+VOLTORB ELECTRODE : Prankster : Thunder Wave, screens and Taunt go first
+VOLTORB_HISUI ELECTRODE_HISUI : Grassy Surge : sets Grassy Terrain (Grass 1.3x, heals)
+EXEGGCUTE EXEGGUTOR : Psychic Surge : sets Psychic Terrain (Psychic 1.3x, blocks priority)
+EXEGGUTOR_ALOLA : Grassy Surge : sets Grassy Terrain
+CUBONE MAROWAK : Technician : Bonemerang (50) and Bone Club hit 1.5x
+MAROWAK_ALOLA : Technician : Bonemerang 1.5x
+LICKITUNG LICKILICKY : Fluffy : halves contact damage (doubles Fire)
+KOFFING WEEZING : Toxic Debris : sets Toxic Spikes when hit physically; it's a physical wall
+WEEZING_GALAR : Toxic Debris : as Kanto's
+RHYHORN RHYDON : Solid Rock : softens its 4x Water and Grass weaknesses
+RHYPERIOR : Sand Stream : summons sand (Rock types +50% Sp. Def); already has Solid Rock
+TANGELA TANGROWTH : Grassy Surge : sets Grassy Terrain (Grass 1.3x, healing)
+KANGASKHAN : Tough Claws : Fake Out, Return and Sucker Punch 1.3x (Mega's Parental Bond is too strong)
+HORSEA SEADRA KINGDRA : Mega Launcher : Water Pulse and Dragon Pulse 1.5x
+GOLDEEN SEAKING : Tough Claws : Waterfall, Megahorn, Poison Jab 1.3x
+STARYU STARMIE : Regenerator : heals on switching; it's a spinner
+SCYTHER : Sharpness : X-Scissor, Air Slash, Night Slash 1.5x
+SCIZOR : Tough Claws : Bullet Punch and U-turn 1.3x (sidegrade: gives up Technician)
+PINSIR : Aerilate : Normal moves become Flying and hit 1.2x (Mega Pinsir's ability)
+TAUROS : Reckless : Double-Edge and Head Smash 1.2x
+TAUROS_PALDEA_COMBAT TAUROS_PALDEA_BLAZE TAUROS_PALDEA_AQUA : Tough Claws : Close Combat, Raging Bull 1.3x
+MAGIKARP GYARADOS : Mold Breaker : Mega Gyarados's ability; ignores Levitate and Sturdy
+LAPRAS : Filter : takes less from super effective hits
+DITTO : Prankster : Transform goes first (sidegrade: gives up Imposter)
+EEVEE : Technician : Quick Attack, Swift and Covet 1.5x
+VAPOREON : Unaware : ignores boosts; Vaporeon walls with Wish and Scald
+JOLTEON : Electric Surge : sets Electric Terrain (Electric 1.3x, no sleep)
+FLAREON : Tough Claws : Flare Blitz, Superpower and Facade 1.3x
+ESPEON : Psychic Surge : sets Psychic Terrain (Psychic 1.3x, blocks priority)
+UMBREON : Regenerator : heals on switching; a classic wall
+LEAFEON : Sharpness : Leaf Blade, X-Scissor, Night Slash 1.5x
+GLACEON : Snow Warning : summons snow (Blizzard never misses, Ice types +50% Defense)
+SYLVEON : Triage : Draining Kiss and Wish-style healing go first (sidegrade: gives up Pixilate)
+PORYGON PORYGON2 : Filter : takes less from super effective hits; suits an Eviolite wall
+PORYGON_Z : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Adaptability)
+OMANYTE OMASTAR : Solid Rock : softens its 4x Grass weakness
+KABUTO KABUTOPS : Sharpness : Razor Shell, X-Scissor, Night Slash 1.5x
+AERODACTYL : Tough Claws : Mega Aerodactyl's ability; Dual Wingbeat, Fire/Ice Fang, Crunch
+ARTICUNO : Snow Warning : snow on entry (Blizzard always hits, Ice Defense +50%)
+ARTICUNO_GALAR : Psychic Surge : Psychic Terrain on entry
+ZAPDOS : Electric Surge : Electric Terrain on entry
+ZAPDOS_GALAR : Tough Claws : Thunderous Kick and Brave Bird 1.3x
+MOLTRES : Drought : sun on entry (Fire 1.5x)
+MOLTRES_GALAR : Tinted Lens : resisted hits do normal damage
+DRATINI DRAGONAIR DRAGONITE : Tough Claws : Outrage, Extreme Speed, Fire Punch 1.3x (sidegrade: gives up Multiscale)
+MEWTWO : Trace : copies the foe's ability; kept modest on a 680-stat legend
+MEW : Magic Guard : only direct attacks hurt it (Life Orb, hazards, status don't)
+
+# ---------------------------------------------------------------------------------------- Gen 2
+CHIKORITA BAYLEEF MEGANIUM : Triage : Synthesis and Giga Drain go first; a support starter
+CYNDAQUIL QUILAVA TYPHLOSION : Drought : sun on entry; Eruption and Flamethrower 1.5x
+TYPHLOSION_HISUI : Drought : as Johto's
+TOTODILE CROCONAW FERALIGATR : Strong Jaw : Crunch, Ice Fang, Psychic Fangs 1.5x
+SENTRET FURRET : Adaptability : Normal STAB 2x on a weak Normal type
+HOOTHOOT NOCTOWL : Magic Bounce : reflects status and hazards
+LEDYBA LEDIAN : Prankster : screens and Tailwind go first
+SPINARAK ARIADOS : Merciless : always crits poisoned foes (Toxic Thread, Toxic)
+CHINCHOU LANTURN : Regenerator : heals on Volt Switch out (sidegrade: gives up an absorb ability)
+PICHU PIKACHU RAICHU : Transistor : Electric moves 1.3x
+PICHU_SPIKY_EARED : Transistor : as Pikachu
+RAICHU_ALOLA : Transistor : Electric moves 1.3x
+TOGEPI TOGETIC TOGEKISS : Magic Bounce : reflects status and hazards (sidegrade: gives up Serene Grace)
+NATU XATU : Magic Guard : only direct attacks hurt it
+MAREEP FLAAFFY AMPHAROS : Electric Surge : Electric Terrain on entry
+HOPPIP SKIPLOOM JUMPLUFF : Unburden : Speed doubles once its item is used (Acrobatics)
+AIPOM : Technician : Fake Out, Double Hit, Fury Swipes 1.5x
+AMBIPOM : Tough Claws : Fake Out, Double Hit, U-turn 1.3x (sidegrade: gives up Technician)
+SUNKERN SUNFLORA : Drought : its own sun for Chlorophyll-style sweeping and Solar Beam
+YANMA YANMEGA : Sheer Force : Bug Buzz, Air Slash, Ancient Power 1.3x (sidegrade: gives up Speed Boost)
+WOOPER QUAGSIRE : Regenerator : heals on switching (sidegrade: gives up Unaware)
+WOOPER_PALDEA CLODSIRE : Regenerator : heals on switching
+MURKROW HONCHKROW : Tough Claws : Brave Bird and Sucker Punch 1.3x
+MISDREAVUS MISMAGIUS : Magic Bounce : reflects status and hazards
+UNOWN : Adaptability : Hidden Power STAB 2x (it only knows one move)
+GIRAFARIG : Armor Tail : blocks priority moves (Farigiraf's ability)
+FARIGIRAF : Analytic : moves 1.3x when it moves last; it's slow
+PINECO FORRETRESS : Iron Barbs : contact attackers lose 1/8 HP
+DUNSPARCE DUDUNSPARCE_TWO_SEGMENT : Regenerator : heals on switching
+GLIGAR : Poison Heal : heals 1/8 a turn when poisoned (Gliscor's ability)
+GLISCOR : Tough Claws : contact moves 1.3x (sidegrade: gives up Poison Heal)
+SNUBBULL GRANBULL : Strong Jaw : Crunch, Fire/Ice/Thunder/Psychic Fang 1.5x
+QWILFISH : Toxic Debris : Toxic Spikes when hit physically
+QWILFISH_HISUI OVERQWIL : Toxic Debris : as Johto's
+SHUCKLE : Stamina : Defense +1 every time it's hit
+HERACROSS : Skill Link : Pin Missile, Rock Blast, Arm Thrust always hit 5 (Mega Heracross's ability)
+SNEASEL WEAVILE : Technician : Ice Shard, Fake Out, Beat Up 1.5x
+SNEASEL_HISUI SNEASLER : Tough Claws : Dire Claw, Close Combat 1.3x
+TEDDIURSA URSARING : Iron Fist : Hammer Arm and elemental punches 1.2x
+URSALUNA : Thick Fat : halves Fire and Ice damage (sidegrade: gives up Guts)
+URSALUNA_BLOODMOON : Thick Fat : halves Fire and Ice damage (sidegrade: gives up Mind's Eye)
+SLUGMA MAGCARGO : Solid Rock : softens its 4x Water and Ground weaknesses
+SWINUB PILOSWINE MAMOSWINE : Technician : Ice Shard and Icicle Spear 1.5x
+CORSOLA : Solid Rock : takes less from super effective hits
+CORSOLA_GALAR CURSOLA : Tinted Lens : resisted hits do normal damage
+REMORAID OCTILLERY : Mega Launcher : Water Pulse, Aura Sphere, Dark Pulse 1.5x
+DELIBIRD : Refrigerate : Normal moves become Ice and hit 1.2x
+MANTYKE MANTINE : Regenerator : heals on switching; a Defog pivot
+SKARMORY : Mirror Armor : bounces back stat drops (Intimidate, Sticky Web)
+HOUNDOUR HOUNDOOM : Sheer Force : Flamethrower, Dark Pulse, Sludge Bomb 1.3x
+PHANPY DONPHAN : Solid Rock : takes less from Water, Grass and Ice
+STANTLER WYRDEER : Reckless : Double-Edge and Jump Kick 1.2x
+SMEARGLE : Magic Bounce : reflects status (sidegrade: gives up Moody; Prankster with Spore would be too strong)
+TYROGUE : Technician : Mach Punch and Fake Out 1.5x
+HITMONLEE : Tough Claws : High Jump Kick and Blaze Kick 1.3x
+HITMONCHAN : Technician : Mach Punch and Bullet Punch 1.5x
+HITMONTOP : Regenerator : heals on switching after Fake Out and Rapid Spin
+SMOOCHUM JYNX : Snow Warning : snow on entry (Blizzard always hits)
+ELEKID ELECTABUZZ ELECTIVIRE : Iron Fist : Thunder, Ice and Fire Punch 1.2x
+MAGBY MAGMAR MAGMORTAR : Sheer Force : Flamethrower, Thunderbolt, Focus Blast 1.3x
+MILTANK : Stamina : Defense +1 every time it's hit
+RAIKOU : Electric Surge : Electric Terrain on entry
+ENTEI : Reckless : Flare Blitz 1.2x
+SUICUNE : Regenerator : heals on switching; Calm Mind wall
+LARVITAR PUPITAR TYRANITAR : Solid Rock : softens its 4x Fighting weakness (sidegrade: gives up Sand Stream)
+LUGIA : Unaware : ignores the foe's boosts (sidegrade: gives up Multiscale)
+HO_OH : Drought : sun on entry; Sacred Fire 1.5x
+CELEBI : Triage : Recover and Giga Drain go first
+
+# ---------------------------------------------------------------------------------------- Gen 3
+TREECKO GROVYLE SCEPTILE : Sharpness : Leaf Blade, X-Scissor 1.5x; opens a physical set
+TORCHIC COMBUSKEN BLAZIKEN : Tough Claws : Flare Blitz, High Jump Kick 1.3x (sidegrade: gives up Speed Boost)
+MUDKIP MARSHTOMP SWAMPERT : Swift Swim : Speed doubles in rain (Mega Swampert's ability)
+POOCHYENA MIGHTYENA : Strong Jaw : Crunch and three elemental fangs 1.5x
+ZIGZAGOON LINOONE : Tough Claws : Extreme Speed and Belly Drum sets 1.3x
+ZIGZAGOON_GALAR LINOONE_GALAR OBSTAGOON : Tough Claws : Obstruct sets, Close Combat, Knock Off 1.3x
+WURMPLE SILCOON BEAUTIFLY : Tinted Lens : resisted hits do normal damage
+CASCOON DUSTOX : Regenerator : heals on switching
+LOTAD LOMBRE LUDICOLO : Drizzle : its own rain
+SEEDOT NUZLEAF SHIFTRY : Sharpness : Leaf Blade and Night Slash 1.5x
+TAILLOW SWELLOW : Tough Claws : Brave Bird and Facade 1.3x
+WINGULL PELIPPER : Regenerator : heals on U-turn out (sidegrade: gives up Drizzle)
+RALTS KIRLIA GARDEVOIR : Psychic Surge : Psychic Terrain on entry
+GALLADE : Tough Claws : Close Combat, Leaf Blade, Zen Headbutt 1.3x (sidegrade: gives up Sharpness)
+SURSKIT MASQUERAIN : Tinted Lens : resisted hits do normal damage
+SHROOMISH BRELOOM : Skill Link : Bullet Seed and Rock Blast always hit 5 (sidegrade: gives up Technician)
+SLAKOTH SLAKING : Slow Start : half Attack and Speed for 5 turns, then full power (Truant's trade-off kept)
+VIGOROTH : Tough Claws : contact moves 1.3x
+NINCADA : Speed Boost : Speed +1 each turn
+NINJASK : Technician : Fury Cutter, Aerial Ace 1.5x (sidegrade: gives up Speed Boost)
+SHEDINJA : Magic Guard : only direct attacks hurt it (sidegrade: it loses Wonder Guard, so 1 HP)
+WHISMUR LOUDRED EXPLOUD : Punk Rock : sound moves (Boomburst, Hyper Voice) 1.3x and it takes half from them
+MAKUHITA HARIYAMA : Iron Fist : Bullet Punch, Ice and Thunder Punch 1.2x
+AZURILL MARILL AZUMARILL : Regenerator : heals on switching (sidegrade: gives up Huge Power)
+NOSEPASS PROBOPASS : Levitate : immune to Ground, one of its two 4x weaknesses
+SKITTY DELCATTY : Pixilate : Normal moves become Fairy and hit 1.2x
+SABLEYE : Magic Bounce : Mega Sableye's ability (sidegrade: gives up Prankster)
+MAWILE : Strong Jaw : Crunch and elemental fangs 1.5x
+ARON LAIRON AGGRON : Filter : takes less from super effective hits (Mega Aggron's ability)
+MEDITITE MEDICHAM : Iron Fist : elemental punches, Drain Punch, Bullet Punch 1.2x (sidegrade: gives up Pure Power)
+ELECTRIKE MANECTRIC : Intimidate : Mega Manectric's ability
+PLUSLE MINUN : Electric Surge : Electric Terrain on entry
+VOLBEAT : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Prankster)
+ILLUMISE : Magic Bounce : reflects status (sidegrade: gives up Prankster)
+GULPIN SWALOT : Regenerator : heals on switching
+CARVANHA SHARPEDO : Strong Jaw : Crunch, Psychic Fangs, Ice Fang 1.5x (Mega Sharpedo's ability)
+WAILMER WAILORD : Drizzle : its own rain for Water Spout
+NUMEL CAMERUPT : Sheer Force : Mega Camerupt's ability
+TORKOAL : Solid Rock : takes less from Water, Ground, Rock (sidegrade: gives up Drought)
+SPOINK GRUMPIG : Magic Guard : only direct attacks hurt it
+SPINDA : Prankster : Teeter Dance and status moves go first
+TRAPINCH VIBRAVA FLYGON : Tough Claws : Outrage, U-turn, Fire Punch 1.3x (gives up Levitate)
+CACNEA CACTURNE : Tough Claws : Needle Arm, Sucker Punch, Drain Punch 1.3x
+SWABLU ALTARIA : Pixilate : Normal moves become Fairy (Mega Altaria's ability)
+ZANGOOSE : Tough Claws : Close Combat, Facade, Quick Attack 1.3x (sidegrade: gives up Toxic Boost)
+SEVIPER : Strong Jaw : Poison Fang, Crunch, Fire Fang 1.5x
+LUNATONE : Magic Guard : only direct attacks hurt it
+SOLROCK : Drought : sun on entry
+BARBOACH WHISCASH : Sap Sipper : immune to Grass, its only weakness; Whiscash is weak enough to carry it
+CORPHISH CRAWDAUNT : Tough Claws : Crabhammer, Knock Off, Aqua Jet 1.3x (sidegrade: gives up Adaptability)
+BALTOY CLAYDOL : Filter : takes less from super effective hits
+LILEEP CRADILY : Sand Stream : sand on entry (Rock types +50% Sp. Def)
+ANORITH ARMALDO : Tough Claws : X-Scissor, Liquidation 1.3x
+FEEBAS MILOTIC : Regenerator : heals on switching; a Recover wall
+CASTFORM_NORMAL : Prankster : weather moves go first (gives up Forecast's form change)
+KECLEON : Tough Claws : contact moves 1.3x (sidegrade: gives up Protean)
+SHUPPET BANETTE : Prankster : Mega Banette's ability; Will-O-Wisp, Destiny Bond first
+DUSKULL DUSCLOPS DUSKNOIR : Iron Fist : Shadow Punch, elemental punches, Drain Punch 1.2x
+TROPIUS : Drought : its own sun for Chlorophyll-free Solar Beam
+CHINGLING CHIMECHO : Punk Rock : sound moves 1.3x
+ABSOL : Sharpness : Night Slash, Psycho Cut, Slash 1.5x
+WYNAUT WOBBUFFET : Magic Bounce : reflects status (sidegrade: gives up Shadow Tag)
+SNORUNT GLALIE : Refrigerate : Normal moves become Ice (Mega Glalie's ability)
+FROSLASS : Prankster : Spikes, Will-O-Wisp, Destiny Bond first
+SPHEAL SEALEO WALREIN : Unaware : ignores the foe's boosts
+CLAMPERL : Swift Swim : Speed doubles in rain
+HUNTAIL : Strong Jaw : Crunch, Ice Fang 1.5x
+GOREBYSS : Mega Launcher : Water Pulse 1.5x
+RELICANTH : Solid Rock : softens its Grass weakness
+LUVDISC : Triage : Draining Kiss goes first
+BAGON SHELGON SALAMENCE : Tough Claws : Outrage, Dragon Claw, Fire Fang 1.3x
+BELDUM METANG METAGROSS : Iron Fist : Meteor Mash, Bullet Punch, Ice Punch 1.2x
+REGIROCK : Solid Rock : takes less from super effective hits
+REGICE : Snow Warning : snow on entry (Ice Defense +50%, Blizzard always hits)
+REGISTEEL : Iron Barbs : contact attackers lose 1/8 HP
+LATIAS : Regenerator : heals on switching (gives up Levitate)
+LATIOS : Tinted Lens : resisted hits do normal damage (gives up Levitate)
+KYOGRE : Swift Swim : Speed doubles in rain (sidegrade: gives up Drizzle)
+GROUDON : Solid Rock : takes less from super effective hits (sidegrade: gives up Drought)
+RAYQUAZA : Inner Focus : can't flinch, ignores Intimidate; Air Lock is weak, but anything big on Rayquaza breaks it
+JIRACHI : Magic Guard : only direct attacks hurt it (sidegrade: gives up Serene Grace)
+DEOXYS_NORMAL : Magic Guard : only direct attacks hurt it
+
+# ---------------------------------------------------------------------------------------- Gen 4
+TURTWIG GROTLE TORTERRA : Solid Rock : softens its 4x Ice weakness
+CHIMCHAR MONFERNO INFERNAPE : Technician : Mach Punch, Fake Out, Vacuum Wave 1.5x
+PIPLUP PRINPLUP EMPOLEON : Sheer Force : Scald, Flash Cannon, Ice Beam 1.3x
+STARLY STARAVIA STARAPTOR : Tough Claws : Brave Bird, Close Combat 1.3x (sidegrade: gives up Reckless)
+BIDOOF BIBAREL : Strong Jaw : Hyper Fang, Crunch 1.5x
+KRICKETOT KRICKETUNE : Punk Rock : Bug Buzz is a sound move: 1.3x
+SHINX LUXIO LUXRAY : Strong Jaw : Thunder, Fire, Ice and Psychic Fangs, Crunch 1.5x
+BUDEW ROSELIA ROSERADE : Sheer Force : Sludge Bomb, Shadow Ball, Energy Ball 1.3x
+CRANIDOS RAMPARDOS : Reckless : Head Smash 1.2x (Rock Head would be too strong)
+SHIELDON BASTIODON : Filter : softens its 4x Fighting and Ground weaknesses
+BURMY_PLANT : Filter : takes less from super effective hits
+WORMADAM_PLANT WORMADAM_SANDY WORMADAM_TRASH : Solid Rock : takes less from super effective hits
+MOTHIM_PLANT : Speed Boost : Speed +1 each turn; Mothim is weak
+COMBEE VESPIQUEN : Queenly Majesty : blocks priority moves aimed at it
+PACHIRISU : Prankster : Follow Me, Thunder Wave go first
+BUIZEL FLOATZEL : Technician : Aqua Jet 1.5x
+CHERUBI CHERRIM_OVERCAST : Drought : its own sun (gives up Flower Gift's form change)
+SHELLOS_WEST GASTRODON_WEST : Regenerator : heals on switching
+DRIFLOON DRIFBLIM : Regenerator : heals on switching
+BUNEARY LOPUNNY : Scrappy : Normal and Fighting hit Ghosts (Mega Lopunny's ability)
+GLAMEOW PURUGLY : Tough Claws : Fake Out, Body Slam, U-turn 1.3x
+STUNKY SKUNTANK : Neutralizing Gas : turns off every other ability on the field while it's in
+BRONZOR BRONZONG : Magic Bounce : reflects status and hazards
+BONSLY SUDOWOODO : Solid Rock : takes less from super effective hits
+MIME_JR MR_MIME : Prankster : screens, Baton Pass go first
+MR_MIME_GALAR MR_RIME : Ice Scales : halves special damage
+HAPPINY CHANSEY BLISSEY : Triage : Soft-Boiled and other healing moves go first
+CHATOT : Punk Rock : Boomburst, Chatter, Hyper Voice 1.3x
+SPIRITOMB : Cursed Body : 30% chance to disable the move that hit it
+GIBLE GABITE GARCHOMP : Sand Force : Ground, Rock, Steel moves 1.3x in sand (Mega Garchomp's ability)
+MUNCHLAX SNORLAX : Fluffy : halves contact damage (doubles Fire)
+RIOLU LUCARIO : Mega Launcher : Aura Sphere, Dark Pulse, Dragon Pulse, Water Pulse 1.5x
+HIPPOPOTAS HIPPOWDON : Stamina : Defense +1 every time it's hit (sidegrade: gives up Sand Stream)
+SKORUPI DRAPION : Strong Jaw : Crunch, Poison Fang, Fire/Ice/Thunder Fang 1.5x
+CROAGUNK TOXICROAK : Iron Fist : Drain Punch and the elemental punches 1.2x
+CARNIVINE : Strong Jaw : Crunch and Bite 1.5x
+FINNEON LUMINEON : Regenerator : heals on switching
+SNOVER ABOMASNOW : Thick Fat : halves Fire (its 4x weakness) and Ice
+ROTOM ROTOM_HEAT ROTOM_WASH ROTOM_FROST ROTOM_FAN ROTOM_MOW : Transistor : Electric moves 1.3x (gives up Levitate)
+UXIE : Magic Bounce : reflects status and hazards
+MESPRIT : Regenerator : heals on switching
+AZELF : Tinted Lens : resisted hits do normal damage
+DIALGA : Filter : takes less from super effective hits
+PALKIA : Tinted Lens : resisted hits do normal damage
+HEATRAN : Solid Rock : softens its 4x Ground weakness
+REGIGIGAS : Stall : always moves last, but at full power from turn 1 (Slow Start's trade-off kept)
+GIRATINA_ALTERED : Unaware : ignores the foe's boosts
+GIRATINA_ORIGIN : Tinted Lens : resisted hits do normal damage
+CRESSELIA : Magic Bounce : reflects status and hazards
+PHIONE MANAPHY : Regenerator : heals on switching
+DARKRAI : Tinted Lens : resisted hits do normal damage (Prankster with Dark Void would break it)
+SHAYMIN_LAND : Triage : Synthesis and Giga Drain go first
+SHAYMIN_SKY : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Serene Grace)
+ARCEUS_NORMAL : Pressure : flag - Arceus needs Multitype to change type with its plates; don't synthesize it
+
+# ---------------------------------------------------------------------------------------- Gen 5
+VICTINI : Magic Guard : only direct attacks hurt it
+SNIVY SERVINE SERPERIOR : Regenerator : heals on switching (sidegrade: gives up Contrary)
+TEPIG PIGNITE EMBOAR : Tough Claws : Flare Blitz, Close Combat, Wild Charge 1.3x
+OSHAWOTT DEWOTT SAMUROTT : Sharpness : Razor Shell, Aqua Cutter, Night Slash 1.5x
+SAMUROTT_HISUI : Tough Claws : Ceaseless Edge, Aqua Jet, Sucker Punch 1.3x (sidegrade: gives up Sharpness)
+PATRAT WATCHOG : Stakeout : 2x damage to foes switching in
+LILLIPUP HERDIER STOUTLAND : Strong Jaw : Crunch and the elemental fangs 1.5x
+PURRLOIN LIEPARD : Tough Claws : Knock Off, Sucker Punch, U-turn 1.3x
+PANSAGE SIMISAGE PANSEAR SIMISEAR PANPOUR SIMIPOUR : Unburden : Speed doubles once its item is used (Acrobatics)
+MUNNA MUSHARNA : Bad Dreams : sleeping foes lose 1/8 HP a turn
+PIDOVE TRANQUILL UNFEZANT : Reckless : Brave Bird and Double-Edge 1.2x
+BLITZLE ZEBSTRIKA : Reckless : Wild Charge and Flare Blitz 1.2x
+ROGGENROLA BOLDORE GIGALITH : Solid Rock : takes less from its five weaknesses
+WOOBAT SWOOBAT : Magic Guard : only direct attacks hurt it
+DRILBUR EXCADRILL : Tough Claws : Iron Head, Drill Run, Rapid Spin 1.3x
+AUDINO : Triage : healing moves go first
+TIMBURR GURDURR CONKELDURR : Tough Claws : Drain Punch, Mach Punch, Knock Off 1.3x (sidegrade: gives up Guts)
+TYMPOLE PALPITOAD SEISMITOAD : Regenerator : heals on switching
+THROH : Stamina : Defense +1 every time it's hit
+SAWK : Tough Claws : Close Combat and Knock Off 1.3x
+SEWADDLE SWADLOON LEAVANNY : Sharpness : Leaf Blade, X-Scissor 1.5x
+VENIPEDE WHIRLIPEDE SCOLIPEDE : Tough Claws : Megahorn and Poison Jab 1.3x (sidegrade: gives up Speed Boost)
+COTTONEE WHIMSICOTT : Regenerator : heals on U-turn out (sidegrade: gives up Prankster)
+PETILIL LILLIGANT : Drought : its own sun; Quiver Dance and Solar Beam
+LILLIGANT_HISUI : Tough Claws : Close Combat and Leaf Blade 1.3x
+BASCULIN_RED_STRIPED BASCULIN_BLUE_STRIPED BASCULIN_WHITE_STRIPED : Strong Jaw : Crunch and Psychic Fangs 1.5x
+BASCULEGION_M : Tough Claws : Wave Crash and Aqua Jet 1.3x
+SANDILE KROKOROK KROOKODILE : Strong Jaw : Crunch and Fire/Thunder Fang 1.5x
+DARUMAKA DARMANITAN_STANDARD DARMANITAN_ZEN : Tough Claws : Flare Blitz and U-turn 1.3x (flag: gives up Zen Mode)
+DARUMAKA_GALAR DARMANITAN_GALAR_STANDARD DARMANITAN_GALAR_ZEN : Tough Claws : Flare Blitz, U-turn 1.3x (sidegrade: gives up Gorilla Tactics)
+MARACTUS : Grassy Surge : Grassy Terrain on entry
+DWEBBLE CRUSTLE : Solid Rock : takes less from super effective hits
+SCRAGGY SCRAFTY : Iron Fist : Drain Punch and elemental punches 1.2x (sidegrade: gives up Intimidate)
+SIGILYPH : Magic Bounce : reflects status and hazards
+YAMASK COFAGRIGUS : Regenerator : heals on switching
+YAMASK_GALAR RUNERIGUS : Stamina : Defense +1 every time it's hit
+TIRTOUGA CARRACOSTA : Tough Claws : Aqua Jet, Liquidation 1.3x
+ARCHEN ARCHEOPS : Unnerve : no Defeatist - full power at any HP is the real upgrade
+TRUBBISH GARBODOR : Toxic Debris : sets Toxic Spikes when hit physically
+ZORUA ZOROARK : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Illusion)
+ZORUA_HISUI ZOROARK_HISUI : Tinted Lens : as Unova's
+MINCCINO CINCCINO : Tough Claws : Tail Slap and U-turn 1.3x (sidegrade: gives up Skill Link)
+GOTHITA GOTHORITA GOTHITELLE : Magic Bounce : reflects status (sidegrade: gives up Shadow Tag)
+SOLOSIS DUOSION REUNICLUS : Psychic Surge : Psychic Terrain on entry
+DUCKLETT SWANNA : Swift Swim : Speed doubles in rain
+VANILLITE VANILLISH VANILLUXE : Refrigerate : Normal moves (Hyper Voice) become Ice and hit 1.2x
+DEERLING_SPRING SAWSBUCK_SPRING : Tough Claws : Horn Leech and Double-Edge 1.3x
+EMOLGA : Unburden : Speed doubles once its item is used (Acrobatics)
+KARRABLAST ESCAVALIER : Tough Claws : Megahorn and Iron Head 1.3x
+FOONGUS AMOONGUSS : Grassy Surge : Grassy Terrain on entry (sidegrade: gives up Regenerator)
+FRILLISH JELLICENT : Regenerator : heals on switching
+ALOMOMOLA : Unaware : ignores the foe's boosts
+JOLTIK GALVANTULA : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Compound Eyes)
+FERROSEED FERROTHORN : Filter : softens its 4x Fire weakness
+KLINK KLANG KLINKLANG : Tough Claws : Gear Grind and Wild Charge 1.3x
+TYNAMO EELEKTRIK EELEKTROSS : Strong Jaw : Crunch and Thunder/Fire Fang 1.5x (gives up Levitate)
+ELGYEM BEHEEYEM : Download : raises Attack or Sp. Atk on entry
+LITWICK LAMPENT CHANDELURE : Magic Guard : only direct attacks hurt it
+AXEW FRAXURE HAXORUS : Sharpness : Night Slash, X-Scissor, Psycho Cut 1.5x
+CUBCHOO BEARTIC : Tough Claws : Superpower, Aqua Jet, Night Slash 1.3x
+CRYOGONAL : Regenerator : heals on switching; it's a spinner
+SHELMET ACCELGOR : Tinted Lens : resisted hits do normal damage
+STUNFISK : Regenerator : heals on switching
+STUNFISK_GALAR : Iron Barbs : contact attackers lose 1/8 HP (gives up Mimicry)
+MIENFOO MIENSHAO : Technician : Fake Out and Force Palm 1.5x (sidegrade: gives up Regenerator)
+DRUDDIGON : Strong Jaw : Crunch, Fire and Thunder Fang 1.5x
+GOLETT GOLURK : Tough Claws : Heavy Slam, Drain Punch, Shadow Punch 1.3x
+PAWNIARD BISHARP : Sharpness : Night Slash, Psycho Cut, Kowtow Cleave 1.5x
+KINGAMBIT : Sharpness : Kowtow Cleave, Night Slash 1.5x (sidegrade: gives up Supreme Overlord)
+BOUFFALANT : Tough Claws : Head Charge, Close Combat 1.3x
+RUFFLET BRAVIARY : Tough Claws : Brave Bird, Close Combat 1.3x
+BRAVIARY_HISUI : Magic Guard : only direct attacks hurt it
+VULLABY MANDIBUZZ : Regenerator : heals on U-turn out
+HEATMOR : Sheer Force : Flamethrower, Fire Lash, Focus Blast 1.3x
+DURANT : Tough Claws : X-Scissor, Iron Head 1.3x (sidegrade: gives up Hustle)
+DEINO ZWEILOUS HYDREIGON : Sheer Force : Dark Pulse, Flamethrower, Earth Power 1.3x (gives up Levitate)
+LARVESTA VOLCARONA : Tinted Lens : resisted hits do normal damage
+COBALION TERRAKION VIRIZION : Sharpness : Sacred Sword and Leaf Blade 1.5x - the Swords of Justice
+TORNADUS_INCARNATE TORNADUS_THERIAN : Wind Rider : immune to wind moves, which raise its Attack
+THUNDURUS_INCARNATE THUNDURUS_THERIAN : Wind Power : charges up when hit by wind moves
+LANDORUS_INCARNATE LANDORUS_THERIAN : Sand Stream : sand on entry
+RESHIRAM ZEKROM : Tinted Lens : resisted hits do normal damage
+KYUREM KYUREM_WHITE KYUREM_BLACK : Snow Warning : snow on entry (Blizzard always hits)
+KELDEO_ORDINARY : Sharpness : Secret Sword and Sacred Sword 1.5x
+MELOETTA_ARIA MELOETTA_PIROUETTE : Punk Rock : Relic Song and Hyper Voice 1.3x
+GENESECT : Tinted Lens : resisted hits do normal damage
+
+# ---------------------------------------------------------------------------------------- Gen 6
+CHESPIN QUILLADIN CHESNAUGHT : Rough Skin : contact attackers lose 1/8 HP
+FENNEKIN BRAIXEN DELPHOX : Magic Guard : only direct attacks hurt it
+FROAKIE FROGADIER GRENINJA GRENINJA_BATTLE_BOND : Technician : Water Shuriken 1.5x (sidegrade: gives up Protean / Battle Bond)
+BUNNELBY DIGGERSBY : Regenerator : heals on switching (sidegrade: gives up Huge Power)
+FLETCHLING FLETCHINDER TALONFLAME : Tough Claws : Brave Bird, Flare Blitz 1.3x (sidegrade: gives up Gale Wings)
+SCATTERBUG_ICY_SNOW SPEWPA_ICY_SNOW VIVILLON_ICY_SNOW : Tinted Lens : resisted hits do normal damage
+LITLEO PYROAR : Punk Rock : Hyper Voice and other sound moves 1.3x
+FLABEBE_RED FLOETTE_RED FLORGES_RED : Regenerator : heals on switching
+SKIDDO GOGOAT : Grassy Surge : Grassy Terrain on entry
+PANCHAM PANGORO : Tough Claws : Drain Punch, Knock Off 1.3x
+FURFROU_NATURAL : Intimidate : lowers foes' Attack (sidegrade: gives up Fur Coat)
+ESPURR MEOWSTIC_M : Magic Bounce : reflects status and hazards
+MEOWSTIC_F : Psychic Surge : Psychic Terrain on entry
+HONEDGE DOUBLADE : Sharpness : Sacred Sword, Night Slash 1.5x
+AEGISLASH_SHIELD : Sharpness : slicing moves 1.5x (flag: gives up Stance Change, so it stays in Shield Forme)
+SPRITZEE AROMATISSE : Triage : healing moves go first
+SWIRLIX SLURPUFF : Tough Claws : Play Rough, Drain Punch 1.3x
+INKAY MALAMAR : Tough Claws : Knock Off, Psycho Cut 1.3x (sidegrade: gives up Contrary)
+BINACLE BARBARACLE : Sharpness : Razor Shell, Stone Axe, X-Scissor 1.5x
+SKRELP DRAGALGE : Mega Launcher : Dragon Pulse, Water Pulse 1.5x (sidegrade: gives up Adaptability)
+CLAUNCHER CLAWITZER : Regenerator : heals on U-turn out (sidegrade: gives up Mega Launcher)
+HELIOPTILE HELIOLISK : Electric Surge : Electric Terrain on entry
+TYRUNT TYRANTRUM : Solid Rock : takes less from super effective hits
+AMAURA AURORUS : Solid Rock : softens its 4x Fighting and Steel weaknesses
+HAWLUCHA : Tough Claws : High Jump Kick, Acrobatics 1.3x
+DEDENNE : Prankster : status moves go first
+CARBINK : Magic Bounce : Mega Diancie's ability
+GOOMY SLIGGOO GOODRA : Regenerator : heals on switching
+SLIGGOO_HISUI GOODRA_HISUI : Regenerator : heals on switching
+KLEFKI : Magic Bounce : reflects status (sidegrade: gives up Prankster)
+PHANTUMP TREVENANT : Tough Claws : Wood Hammer, Horn Leech, Phantom Force 1.3x
+PUMPKABOO_AVERAGE GOURGEIST_AVERAGE : Cursed Body : 30% chance to disable the move that hit it
+BERGMITE AVALUGG : Ice Scales : halves special damage, its glaring weakness
+AVALUGG_HISUI : Solid Rock : softens its 4x Fighting and Steel weaknesses
+NOIBAT NOIVERN : Punk Rock : Boomburst 1.3x
+XERNEAS_NEUTRAL : Magic Guard : only direct attacks hurt it (sidegrade: gives up Fairy Aura)
+YVELTAL : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Dark Aura)
+ZYGARDE_50 ZYGARDE_50_POWER_CONSTRUCT : Sand Stream : sand on entry (flag on the Power Construct one: no Complete Forme)
+DIANCIE : Magic Bounce : Mega Diancie's ability
+HOOPA_CONFINED HOOPA_UNBOUND : Magic Guard : only direct attacks hurt it
+VOLCANION : Sheer Force : Steam Eruption, Flamethrower, Sludge Bomb 1.3x
+
+# ---------------------------------------------------------------------------------------- Gen 7
+ROWLET DARTRIX DECIDUEYE : Sharpness : Leaf Blade and Night Slash 1.5x
+DECIDUEYE_HISUI : Tough Claws : Close Combat, Leaf Blade, Brave Bird 1.3x
+LITTEN TORRACAT INCINEROAR : Tough Claws : Flare Blitz, Darkest Lariat, Knock Off 1.3x (sidegrade: gives up Intimidate)
+POPPLIO BRIONNE PRIMARINA : Punk Rock : Sparkling Aria and Hyper Voice 1.3x, half damage from sound
+PIKIPEK TRUMBEAK TOUCANNON : Reckless : Brave Bird 1.2x (sidegrade: gives up Skill Link)
+YUNGOOS GUMSHOOS : Tough Claws : contact moves 1.3x
+GRUBBIN CHARJABUG VIKAVOLT : Tinted Lens : resisted hits do normal damage (gives up Levitate)
+CRABRAWLER CRABOMINABLE : Tough Claws : Crabhammer, Ice Hammer 1.3x
+ORICORIO_BAILE ORICORIO_POM_POM ORICORIO_PAU ORICORIO_SENSU : Tinted Lens : resisted hits do normal damage
+CUTIEFLY RIBOMBEE : Tinted Lens : resisted hits do normal damage
+ROCKRUFF ROCKRUFF_OWN_TEMPO : Strong Jaw : Crunch, Fire/Thunder/Psychic Fang 1.5x
+LYCANROC_MIDDAY LYCANROC_MIDNIGHT : Tough Claws : Accelerock, Close Combat, Crunch 1.3x
+LYCANROC_DUSK : Strong Jaw : Crunch, Psychic Fangs 1.5x (sidegrade: gives up Tough Claws)
+WISHIWASHI_SOLO : Swift Swim : flag - gives up Schooling, so it never forms a school
+MAREANIE TOXAPEX : Unaware : ignores the foe's boosts (sidegrade: gives up Regenerator)
+MUDBRAY MUDSDALE : Tough Claws : High Horsepower, Heavy Slam 1.3x
+DEWPIDER ARAQUANID : Regenerator : heals on switching (sidegrade: gives up Water Bubble)
+FOMANTIS LURANTIS : Sharpness : Leaf Blade, Solar Blade, X-Scissor 1.5x
+MORELULL SHIINOTIC : Triage : Strength Sap and Giga Drain go first
+SALANDIT SALAZZLE : Merciless : always crits poisoned foes
+STUFFUL BEWEAR : Iron Fist : Hammer Arm, Drain Punch, Ice Punch 1.2x (sidegrade: gives up Fluffy)
+BOUNSWEET STEENEE TSAREENA : Tough Claws : Trop Kick, High Jump Kick, Power Whip 1.3x
+COMFEY : Regenerator : heals on switching (sidegrade: gives up Triage)
+ORANGURU : Prankster : Trick Room and screens go first
+PASSIMIAN : Tough Claws : Close Combat, Knock Off, U-turn 1.3x
+WIMPOD GOLISOPOD : Sharpness : Razor Shell, X-Scissor 1.5x - and no Emergency Exit
+SANDYGAST PALOSSAND : Sand Stream : sand on entry
+PYUKUMUKU : Regenerator : heals on switching
+TYPE_NULL : Stamina : Defense +1 every time it's hit
+SILVALLY_NORMAL : Tough Claws : Multi-Attack 1.3x (flag: gives up RKS System, so memories don't change its type)
+MINIOR_METEOR_RED : Sturdy : survives one hit at full HP (flag: gives up Shields Down; it stays in Meteor Form)
+KOMALA : Fluffy : halves contact damage (sidegrade: gives up Comatose)
+TURTONATOR : Rough Skin : contact attackers lose 1/8 HP
+TOGEDEMARU : Tough Claws : Zing Zap and Iron Head 1.3x
+MIMIKYU_DISGUISED : Tough Claws : Play Rough, Shadow Claw 1.3x (flag: gives up Disguise)
+BRUXISH : Tough Claws : contact moves 1.3x (sidegrade: gives up Strong Jaw)
+DRAMPA : Punk Rock : Hyper Voice and Boomburst 1.3x
+DHELMISE : Tough Claws : Anchor Shot and Power Whip 1.3x
+JANGMO_O HAKAMO_O KOMMO_O : Punk Rock : Clanging Scales, Clangorous Soul and Boomburst 1.3x
+TAPU_KOKO : Tough Claws : Wild Charge, Brave Bird, U-turn 1.3x (sidegrade: gives up Electric Surge)
+TAPU_LELE : Magic Guard : only direct attacks hurt it (sidegrade: gives up Psychic Surge)
+TAPU_BULU : Tough Claws : Wood Hammer, Horn Leech 1.3x (sidegrade: gives up Grassy Surge)
+TAPU_FINI : Regenerator : heals on switching (sidegrade: gives up Misty Surge)
+COSMOG COSMOEM : Magic Guard : only direct attacks hurt it
+SOLGALEO : Filter : takes less from super effective hits (sidegrade: gives up Full Metal Body)
+LUNALA : Magic Guard : only direct attacks hurt it (sidegrade: gives up Shadow Shield)
+NIHILEGO : Toxic Debris : sets Toxic Spikes when hit physically (sidegrade: gives up Beast Boost)
+BUZZWOLE : Iron Fist : Drain Punch, Ice and Thunder Punch 1.2x (sidegrade: gives up Beast Boost)
+PHEROMOSA : Tough Claws : High Jump Kick, U-turn 1.3x (sidegrade: gives up Beast Boost)
+XURKITREE : Transistor : Electric moves 1.3x (sidegrade: gives up Beast Boost)
+CELESTEELA : Filter : takes less from super effective hits (sidegrade: gives up Beast Boost)
+KARTANA : Inner Focus : can't flinch; kept small - Sharpness on 181 Attack would be too much
+GUZZLORD : Strong Jaw : Crunch and Fire/Thunder Fang 1.5x
+NECROZMA NECROZMA_DUSK_MANE NECROZMA_DAWN_WINGS : Magic Guard : only direct attacks hurt it (sidegrade: gives up Prism Armor)
+MAGEARNA : Download : raises Attack or Sp. Atk on entry (sidegrade: gives up Soul-Heart)
+MARSHADOW : Tough Claws : Spectral Thief, Close Combat 1.3x (sidegrade: gives up Technician)
+POIPOLE NAGANADEL : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Beast Boost)
+STAKATAKA : Solid Rock : softens its 4x Fighting and Ground weaknesses
+BLACEPHALON : Tinted Lens : resisted hits do normal damage (Magic Guard with Mind Blown would be too strong)
+ZERAORA : Iron Fist : Plasma Fists, Ice and Fire Punch 1.2x
+MELTAN MELMETAL : Filter : takes less from super effective hits
+
+# ---------------------------------------------------------------------------------------- Gen 8
+GROOKEY THWACKEY RILLABOOM : Tough Claws : Wood Hammer, Knock Off, U-turn 1.3x (sidegrade: gives up Grassy Surge)
+SCORBUNNY RABOOT CINDERACE : Tough Claws : High Jump Kick, U-turn, Sucker Punch 1.3x (sidegrade: gives up Libero)
+SOBBLE DRIZZILE INTELEON : Tinted Lens : resisted hits do normal damage
+SKWOVET GREEDENT : Strong Jaw : Crunch and Bite 1.5x
+ROOKIDEE CORVISQUIRE CORVIKNIGHT : Filter : takes less from super effective hits
+BLIPBUG DOTTLER ORBEETLE : Magic Bounce : reflects status and hazards
+NICKIT THIEVUL : Prankster : Nasty Plot and Parting Shot go first
+GOSSIFLEUR ELDEGOSS : Triage : Synthesis and Giga Drain go first
+WOOLOO DUBWOOL : Stamina : Defense +1 every time it's hit
+CHEWTLE DREDNAW : Solid Rock : softens its 4x Grass weakness
+YAMPER : Strong Jaw : Crunch and Thunder Fang 1.5x
+BOLTUND : Tough Claws : Wild Charge, Play Rough 1.3x (sidegrade: gives up Strong Jaw)
+ROLYCOLY CARKOL COALOSSAL : Solid Rock : softens its 4x Water and Ground weaknesses
+APPLIN : Thick Fat : halves Ice (4x) and Fire damage
+FLAPPLE : Tough Claws : Acrobatics, Dragon Rush 1.3x
+APPLETUN : Regenerator : heals on switching
+DIPPLIN HYDRAPPLE : Thick Fat : halves Ice (4x) and Fire damage
+SILICOBRA SANDACONDA : Sand Stream : sand on entry
+CRAMORANT : Swift Swim : Speed doubles in rain (flag: gives up Gulp Missile)
+ARROKUDA BARRASKEWDA : Strong Jaw : Psychic Fangs, Crunch 1.5x
+TOXEL TOXTRICITY_AMPED TOXTRICITY_LOW_KEY : Electric Surge : Electric Terrain on entry (sidegrade: gives up Punk Rock)
+SIZZLIPEDE CENTISKORCH : Tough Claws : Fire Lash, Leech Life 1.3x
+CLOBBOPUS GRAPPLOCT : Tough Claws : Drain Punch, Brutal Swing and other contact moves 1.3x
+SINISTEA_PHONY POLTEAGEIST_PHONY : Tinted Lens : resisted hits do normal damage
+HATENNA HATTREM HATTERENE : Psychic Surge : Psychic Terrain on entry (sidegrade: gives up Magic Bounce)
+IMPIDIMP MORGREM GRIMMSNARL : Tough Claws : Spirit Break, Play Rough 1.3x (sidegrade: gives up Prankster)
+MILCERY ALCREMIE_STRAWBERRY_VANILLA_CREAM : Triage : Recover and Draining Kiss go first
+FALINKS : Tough Claws : Megahorn, Close Combat 1.3x
+PINCURCHIN : Rough Skin : contact attackers lose 1/8 HP
+SNOM FROSMOTH : Snow Warning : snow on entry; Blizzard always hits (sidegrade: gives up Ice Scales)
+STONJOURNER : Solid Rock : takes less from super effective hits
+EISCUE_ICE : Ice Scales : halves special damage (flag: gives up Ice Face)
+INDEEDEE_M : Magic Bounce : reflects status and hazards
+INDEEDEE_F : Triage : Heal Pulse and Draining Kiss go first
+MORPEKO_FULL_BELLY : Strong Jaw : Psychic Fangs, Crunch, Thunder Fang 1.5x (flag: gives up Hunger Switch)
+CUFANT COPPERAJAH : Tough Claws : Iron Head, Heavy Slam 1.3x
+DRACOZOLT : Tough Claws : Bolt Beak, Dragon Rush 1.3x (sidegrade: gives up Hustle)
+ARCTOZOLT : Tough Claws : Bolt Beak 1.3x
+DRACOVISH : Tough Claws : Fishious Rend, Dragon Rush 1.3x (sidegrade: gives up Strong Jaw)
+ARCTOVISH : Strong Jaw : Fishious Rend 1.5x
+DURALUDON ARCHALUDON : Filter : takes less from super effective hits
+DREEPY DRAKLOAK DRAGAPULT : Tinted Lens : resisted hits do normal damage
+ZACIAN_HERO ZACIAN_CROWNED : Sharpness : Behemoth Blade, Sacred Sword 1.5x (sidegrade: gives up Intrepid Sword)
+ZAMAZENTA_HERO ZAMAZENTA_CROWNED : Stamina : Defense +1 every time it's hit (sidegrade: gives up Dauntless Shield)
+ETERNATUS : Filter : takes less from super effective hits
+KUBFU URSHIFU_SINGLE_STRIKE URSHIFU_RAPID_STRIKE : Iron Fist : Wicked Blow and Surging Strikes are punches: 1.2x (sidegrade: gives up Unseen Fist)
+ZARUDE : Tough Claws : Power Whip, Close Combat 1.3x
+REGIELEKI : Electric Surge : Electric Terrain on entry (sidegrade: gives up Transistor)
+REGIDRAGO : Filter : takes less from super effective hits (sidegrade: gives up Dragon's Maw)
+GLASTRIER : Slush Rush : Speed doubles in snow (sidegrade: gives up Chilling Neigh)
+SPECTRIER : Tinted Lens : resisted hits do normal damage (sidegrade: gives up Grim Neigh)
+CALYREX : Grassy Surge : Grassy Terrain on entry
+CALYREX_ICE : Snow Warning : snow on entry (flag: gives up As One)
+CALYREX_SHADOW : Tinted Lens : resisted hits do normal damage (flag: gives up As One)
+KLEAVOR : Tough Claws : X-Scissor, Close Combat 1.3x (sidegrade: gives up Sharpness)
+ENAMORUS_INCARNATE ENAMORUS_THERIAN : Magic Guard : only direct attacks hurt it
+
+# ---------------------------------------------------------------------------------------- Gen 9
+SPRIGATITO FLORAGATO MEOWSCARADA : Sharpness : Leaf Blade, Night Slash 1.5x (sidegrade: gives up Protean)
+FUECOCO CROCALOR SKELEDIRGE : Punk Rock : Torch Song is a sound move: 1.3x
+QUAXLY QUAXWELL QUAQUAVAL : Tough Claws : Aqua Step, Close Combat 1.3x
+LECHONK OINKOLOGNE_M OINKOLOGNE_F : Reckless : Double-Edge 1.2x
+TAROUNTULA SPIDOPS : Prankster : Sticky Web and Spikes go first
+NYMBLE LOKIX : Tough Claws : First Impression, Axe Kick, Sucker Punch 1.3x
+PAWMI PAWMO PAWMOT : Tough Claws : Double Shock, Close Combat 1.3x
+TANDEMAUS MAUSHOLD_THREE : Tough Claws : Population Bomb, U-turn 1.3x (sidegrade: gives up Technician)
+FIDOUGH DACHSBUN : Fluffy : halves contact damage
+SMOLIV DOLLIV ARBOLIVA : Grassy Surge : Grassy Terrain on entry
+SQUAWKABILLY_GREEN SQUAWKABILLY_YELLOW : Tough Claws : Brave Bird, Double-Edge 1.3x
+NACLI NACLSTACK GARGANACL : Solid Rock : takes less from super effective hits (sidegrade: gives up Purifying Salt)
+CHARCADET ARMAROUGE : Tinted Lens : resisted hits do normal damage
+CERULEDGE : Sharpness : Bitter Blade, Psycho Cut, Shadow Claw 1.5x
+TADBULB BELLIBOLT : Regenerator : heals on switching
+WATTREL KILOWATTREL : Electric Surge : Electric Terrain on entry
+MASCHIFF MABOSSTIFF : Strong Jaw : Crunch, Psychic and Fire Fang 1.5x
+SHROODLE GRAFAIAI : Tough Claws : Knock Off, U-turn 1.3x
+BRAMBLIN BRAMBLEGHAST : Regenerator : heals on switching; it's a spinner
+TOEDSCOOL TOEDSCRUEL : Regenerator : heals on switching; it's a spinner
+KLAWF : Tough Claws : Crush Claw, X-Scissor, Knock Off 1.3x
+CAPSAKID SCOVILLAIN : Drought : its own sun
+RELLOR RABSCA : Magic Bounce : reflects status and hazards
+FLITTLE ESPATHRA : Psychic Surge : Psychic Terrain on entry (sidegrade: gives up Speed Boost)
+TINKATINK TINKATUFF TINKATON : Thick Fat : halves Fire damage (Steelworker with Gigaton Hammer would be too much)
+WIGLETT WUGTRIO : Technician : Triple Dive (30x3) 1.5x
+BOMBIRDIER : Tough Claws : Brave Bird, Knock Off 1.3x
+FINIZEN PALAFIN_ZERO : Tough Claws : Wave Crash, Close Combat 1.3x (flag: gives up Zero to Hero)
+VAROOM REVAVROOM : Tough Claws : Spin Out, Iron Head 1.3x
+CYCLIZAR : Tough Claws : Dragon Claw, U-turn, Double-Edge 1.3x
+ORTHWORM : Stamina : Defense +1 when hit; pairs with Body Press
+GLIMMET GLIMMORA : Solid Rock : softens its 4x Ground weakness
+GREAVARD HOUNDSTONE : Strong Jaw : Crunch and Psychic Fangs 1.5x
+FLAMIGO : Tough Claws : Close Combat, Brave Bird 1.3x
+CETODDLE CETITAN : Tough Claws : Ice Spinner, Heavy Slam 1.3x
+VELUZA : Super Luck : more crits from Night Slash and Psycho Cut
+DONDOZO : Regenerator : heals on switching (sidegrade: gives up Unaware)
+TATSUGIRI_CURLY : Mega Launcher : Dragon Pulse and Water Pulse 1.5x (flag: gives up Commander)
+GREAT_TUSK : Tough Claws : Headlong Rush, Close Combat 1.3x (sidegrade: gives up Protosynthesis)
+SCREAM_TAIL : Triage : healing moves go first
+BRUTE_BONNET : Grassy Surge : Grassy Terrain on entry
+FLUTTER_MANE : Cursed Body : 30% chance to disable the move that hit it (kept small: it's very strong)
+SLITHER_WING : Tough Claws : First Impression, Close Combat 1.3x
+SANDY_SHOCKS : Sand Stream : sand on entry
+IRON_TREADS : Tough Claws : Iron Head, Rapid Spin 1.3x
+IRON_BUNDLE : Ice Scales : halves special damage
+IRON_HANDS : Iron Fist : Drain Punch, Thunder and Ice Punch 1.2x
+IRON_JUGULIS : Tinted Lens : resisted hits do normal damage
+IRON_MOTH : Tinted Lens : resisted hits do normal damage
+IRON_THORNS : Sand Stream : sand on entry
+ROARING_MOON : Tough Claws : Crunch, Dragon Claw, Acrobatics 1.3x
+IRON_VALIANT : Sharpness : Sacred Sword, Psycho Cut, Night Slash 1.5x
+KORAIDON : Drought : sun on entry (sidegrade: gives up Orichalcum Pulse's Attack boost)
+MIRAIDON : Electric Surge : Electric Terrain on entry (sidegrade: gives up Hadron Engine's Sp. Atk boost)
+WALKING_WAKE : Swift Swim : Speed doubles in rain
+IRON_LEAVES : Sharpness : Psyblade, Leaf Blade 1.5x
+GOUGING_FIRE : Tough Claws : Heat Crash, Dragon Claw 1.3x
+RAGING_BOLT : Transistor : Electric moves 1.3x (sidegrade)
+IRON_BOULDER : Sharpness : Mighty Cleave, Psycho Cut 1.5x
+IRON_CROWN : Sharpness : Tachyon Cutter, Psycho Cut 1.5x
+FRIGIBAX ARCTIBAX BAXCALIBUR : Thick Fat : halves Fire and Ice damage
+GIMMIGHOUL_CHEST GIMMIGHOUL_ROAMING GHOLDENGO : Magic Guard : only direct attacks hurt it (sidegrade: gives up Good as Gold)
+WO_CHIEN : Regenerator : heals on switching (sidegrade: gives up Tablets of Ruin)
+CHIEN_PAO : Sharpness : Sacred Sword, Night Slash, Psycho Cut 1.5x (sidegrade: gives up Sword of Ruin)
+TING_LU : Stamina : Defense +1 every time it's hit (sidegrade: gives up Vessel of Ruin)
+CHI_YU : Drought : sun on entry (sidegrade: gives up Beads of Ruin)
+POLTCHAGEIST_COUNTERFEIT SINISTCHA_UNREMARKABLE : Regenerator : heals on switching; a Strength Sap wall
+OKIDOGI : Iron Fist : Drain Punch and elemental punches 1.2x
+MUNKIDORI : Tinted Lens : resisted hits do normal damage
+FEZANDIPITI : Tough Claws : Play Rough and Brave Bird 1.3x
+OGERPON_TEAL OGERPON_WELLSPRING OGERPON_HEARTHFLAME OGERPON_CORNERSTONE : Super Luck : Ivy Cudgel's high crit chance goes higher
+TERAPAGOS_NORMAL TERAPAGOS_TERASTAL : Tera Shell : at full HP every hit is not very effective (flag: gives up Tera Shift)
+PECHARUNT : Regenerator : heals on Parting Shot out (sidegrade: gives up Poison Puppeteer)
