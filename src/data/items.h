@@ -17038,8 +17038,8 @@ const struct ItemInfo gItemsInfo[] =
         .price = 50000,
         .description = COMPOUND_STRING(
             "Rare wild Pokémon\n"
-            "are 5 times as\n"
-            "likely for 600 steps."),
+            "are 5x as likely\n"
+            "for 600 steps."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_FIELD_USE,
         .type = ITEM_USE_BAG_MENU,
