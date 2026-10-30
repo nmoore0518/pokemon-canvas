@@ -77,6 +77,7 @@ static enum PokeBall GetBattlerPokeballItemId(enum BattlerId battler);
 #define GFX_TAG_PARK_BALL    55025
 #define GFX_TAG_BEAST_BALL   55026
 #define GFX_TAG_CHERISH_BALL 55027
+#define GFX_TAG_TYPE_BALL(n)  (55028 + (n))  // Pokémon Canvas: the Type Balls
 
 static const struct OamData sBallOamData =
 {
@@ -378,6 +379,114 @@ const struct PokeBallSprite gPokeBalls[POKEBALL_COUNT] =
     {
         POKE_BALL_SPRITE(GFX_TAG_CHERISH_BALL, gBallGfx_Cherish, gBallPal_Cherish),
         .itemId = ITEM_CHERISH_BALL,
+    },
+
+    [BALL_TYPE_NORMAL] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(0), gBallGfx_TypeNormal, gBallPal_TypeNormal),
+        .itemId = ITEM_NORMAL_BALL,
+    },
+
+    [BALL_TYPE_FIGHTING] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(1), gBallGfx_TypeFighting, gBallPal_TypeFighting),
+        .itemId = ITEM_FIGHTING_BALL,
+    },
+
+    [BALL_TYPE_FLYING] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(2), gBallGfx_TypeFlying, gBallPal_TypeFlying),
+        .itemId = ITEM_FLYING_BALL,
+    },
+
+    [BALL_TYPE_POISON] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(3), gBallGfx_TypePoison, gBallPal_TypePoison),
+        .itemId = ITEM_POISON_BALL,
+    },
+
+    [BALL_TYPE_GROUND] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(4), gBallGfx_TypeGround, gBallPal_TypeGround),
+        .itemId = ITEM_GROUND_BALL,
+    },
+
+    [BALL_TYPE_ROCK] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(5), gBallGfx_TypeRock, gBallPal_TypeRock),
+        .itemId = ITEM_ROCK_BALL,
+    },
+
+    [BALL_TYPE_BUG] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(6), gBallGfx_TypeBug, gBallPal_TypeBug),
+        .itemId = ITEM_BUG_BALL,
+    },
+
+    [BALL_TYPE_GHOST] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(7), gBallGfx_TypeGhost, gBallPal_TypeGhost),
+        .itemId = ITEM_GHOST_BALL,
+    },
+
+    [BALL_TYPE_STEEL] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(8), gBallGfx_TypeSteel, gBallPal_TypeSteel),
+        .itemId = ITEM_STEEL_BALL,
+    },
+
+    [BALL_TYPE_FIRE] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(9), gBallGfx_TypeFire, gBallPal_TypeFire),
+        .itemId = ITEM_FIRE_BALL,
+    },
+
+    [BALL_TYPE_WATER] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(10), gBallGfx_TypeWater, gBallPal_TypeWater),
+        .itemId = ITEM_WATER_BALL,
+    },
+
+    [BALL_TYPE_GRASS] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(11), gBallGfx_TypeGrass, gBallPal_TypeGrass),
+        .itemId = ITEM_GRASS_BALL,
+    },
+
+    [BALL_TYPE_ELECTRIC] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(12), gBallGfx_TypeElectric, gBallPal_TypeElectric),
+        .itemId = ITEM_ELECTRIC_BALL,
+    },
+
+    [BALL_TYPE_PSYCHIC] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(13), gBallGfx_TypePsychic, gBallPal_TypePsychic),
+        .itemId = ITEM_PSYCHIC_BALL,
+    },
+
+    [BALL_TYPE_ICE] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(14), gBallGfx_TypeIce, gBallPal_TypeIce),
+        .itemId = ITEM_ICE_BALL,
+    },
+
+    [BALL_TYPE_DRAGON] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(15), gBallGfx_TypeDragon, gBallPal_TypeDragon),
+        .itemId = ITEM_DRAGON_BALL,
+    },
+
+    [BALL_TYPE_DARK] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(16), gBallGfx_TypeDark, gBallPal_TypeDark),
+        .itemId = ITEM_DARK_BALL,
+    },
+
+    [BALL_TYPE_FAIRY] =
+    {
+        POKE_BALL_SPRITE(GFX_TAG_TYPE_BALL(17), gBallGfx_TypeFairy, gBallPal_TypeFairy),
+        .itemId = ITEM_FAIRY_BALL,
     },
 };
 
@@ -1406,6 +1515,7 @@ void LoadBallGfx(enum PokeBall ballId)
     case BALL_NET ... BALL_NEST:
     case BALL_REPEAT:
     case BALL_SAFARI:
+    case FIRST_TYPE_BALL ... LAST_TYPE_BALL:
         var = GetSpriteTileStartByTag(gPokeBalls[ballId].pic.tag);
         DecompressDataWithHeaderVram(gOpenPokeballGfx, (void *)(OBJ_VRAM0 + 0x100 + var * 32));
         break;

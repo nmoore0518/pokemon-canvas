@@ -633,6 +633,8 @@ struct SaveBlock2
 #endif //FREE_RECORD_MIXING_HALL_RECORDS
     /*0x624*/ u16 contestLinkResults[CONTEST_CATEGORIES_COUNT][CONTESTANT_COUNT];
     /*0x64C*/ struct BattleFrontier frontier;
+    struct ItemSlot bagPokeBalls2[BAG_POKEBALLS_COUNT_2]; // (Pokémon Canvas: the Poké Balls pocket's second part;
+                                                          //  older saves have zeros here: empty slots)
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
@@ -1091,7 +1093,7 @@ struct Bag
 {
     struct ItemSlot keyItems[BAG_KEYITEMS_COUNT];
     struct ItemSlot tools[BAG_TOOLS_COUNT];
-    struct ItemSlot pokeBalls[BAG_POKEBALLS_COUNT];
+    struct ItemSlot pokeBalls[BAG_POKEBALLS_COUNT_1];
     struct ItemSlot berries[BAG_BERRIES_COUNT];
 };
 

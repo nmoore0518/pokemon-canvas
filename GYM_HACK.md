@@ -120,7 +120,49 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   lab table, desk, bookshelf, chalkboard, crates and a trash can. Drawn in
   `tools/gym_hack/basement_art.py`, built by `tools/gym_hack/build_basement.py` (its own tileset,
   `gTileset_PlayersBasement`: 379 of 384 tiles used). The machines animate by setting their blocks
-  frame by frame (`frames.inc`, generated); what they actually do comes later.
+  frame by frame (`frames.inc`, generated).
+- **Dad's machines** (`src/basement_machines.c`, `include/constants/basement_machines.h`, the basement's
+  `scripts.inc`). The wall switch sets the mode once it's there: up = Evil Mode, thrown = Nice Mode
+  (`FLAG_BASEMENT_NICE_MODE`, the same flag as `FLAG_BASEMENT_SWITCH_ON`); it asks "Switch machines
+  from Evil Mode to Nice Mode?" (or back). Party Pokémon only (`ChoosePartyMon`), never an Egg.
+  - **Ability Synthesizer**: 3 Strong Acid (Evil) or 3 Apple Juice (Nice) and a Pokémon in; the screen
+    reads REMOVING ABILITIES. / IMPLANTING SYNTHETIC ABILITY.; it comes out with its synthetic ability.
+    Evil: friendship to 0 ("in a lot of pain... very unhappy"). Nice: friendship +20
+    (`SYNTH_NICE_FRIENDSHIP`; it loved the juice too much to notice). It won't take a Pokémon that
+    already has it, or a flagged one (below); the fuel is only used when it runs.
+  - **Ball Maker**: a Pokémon of Lv. 50+ in, a Type Ball of its primary type (`GetSpeciesType(.., 0)`,
+    so the hack's swapped types count: Pidgeot makes a Flying Ball) out. Evil: GRINDING. EXTRACTING.
+    POKéMON ELIMINATED. [TYPE] BALL CREATED. - the Pokémon is gone (its held item goes to the bag;
+    it won't take your last one). Nice: SCANNING. EXTRACTING SMALL DNA SAMPLE. - it loses 5 levels
+    (`BALL_MAKER_NICE_LEVELS`, moves kept) and comes back.
+  - **Ball Changer** (same in both modes): pick a Pokémon, then a Ball from the bag (the bag opens on
+    the Poké Balls pocket, `Bag_ChooseBall`); the balls on the pedestals jump across, the Pokémon is
+    in the new Ball and the old one goes back in the bag.
+  - **Strong Acid / Apple Juice** (`TryGiveWildMonLabItem`, before the usual held-item roll): wild
+    Poison Pokémon hold Strong Acid 25% of the time, wild Grass Pokémon Apple Juice 25% (the Applin
+    line 50%); a Poison/Grass one rolls for the acid first. Plain items (sell for 100).
+- **Synthetic abilities** (`tools/gym_hack/synthetic_abilities.txt` -> `build_synthetic_abilities.py` ->
+  `src/data/pokemon/synthetic_abilities.h`; the review page: `synthetic_abilities_page.py`). One
+  existing ability per species, a little better than its own. A Pokémon has it when its ability slot
+  (`MON_DATA_ABILITY_NUM`) is 3 (`ABILITY_NUM_SYNTHETIC`; 0-1 regular, 2 hidden):
+  `GetAbilityBySpecies` / `GetSpeciesAbility` look it up, so battle, the summary screen, evolution
+  (it gets the evolved species' one) and form changes all follow it. Not passed on by breeding;
+  the Ability Capsule, Ability Patch and the stat-training ability change don't work on it.
+  Lines tagged `flag` in the list would lose a form-changing ability (Stance Change, Schooling,
+  Disguise, Zen Mode...): those species are in `gSpeciesSyntheticBlocked`, the Synthesizer refuses
+  them ("ERROR. ABILITY CANNOT BE REMOVED."), and a synthetic Pokémon that evolves into one (Doublade
+  -> Aegislash) keeps that species' own first ability. The Pokédex PDF lists each one ("none" for
+  the blocked).
+- **Type Balls** (`BALL_TYPE_NORMAL`..`BALL_TYPE_FAIRY` = 28-45, `ITEM_NORMAL_BALL`.. ; only from the
+  Ball Maker, can't be sold). 3.5x catch rate on a Pokémon of that type (either of its types), 1x
+  otherwise. A Pokémon in a Type Ball of one of its types gets its lowest base stat x1.5 (rounded
+  down; every stat tied for lowest; never Shedinja's 1 HP) in `CalculateMonStats`
+  (`GetTypeBallStatBoosts`): stats are recalculated when it's caught in one or the Ball Changer
+  moves it. Random balls (`BALL_RANDOM`) never pick one. Art from `tools/gym_hack/type_ball_art.py`
+  (bag icons with a type emblem; the battle ball is the Poké Ball's recolored), which also draws
+  the Strong Acid and Apple Juice icons.
+  - The bag's Poké Balls pocket holds 46: 28 in SaveBlock1's bag, 18 more at the end of SaveBlock2
+    (`bagPokeBalls2`; older saves have zeros there, i.e. empty slots).
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,
   benches and street lamps are pixel art in `tools/gym_hack/pallet_art.py` (`statue()`, `bench()`,
   `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
@@ -672,6 +714,9 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/field_region_map.c` | Town Map screen: type finder markers |
 | `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
 | `tools/gym_hack/build_basement.py`, `basement_art.py` | The basement under the player's house: its art, tileset, map, the machines' frames, the stairwell on 1F |
+| `src/basement_machines.c`, `include/basement_machines.h`, `include/constants/basement_machines.h` | Dad's machines (Synthesizer, Ball Maker, Ball Changer), Type Ball effects, Strong Acid / Apple Juice on wild Pokémon |
+| `tools/gym_hack/synthetic_abilities.txt`, `build_synthetic_abilities.py`, `synthetic_abilities_page.py` | Each species' synthetic ability, the generated table, the review page |
+| `tools/gym_hack/type_ball_art.py` | Type Ball, Strong Acid and Apple Juice art (`python3 tools/gym_hack/type_ball_art.py sheet.png`) |
 | `tools/gym_hack/pallet_art.py` | Chansey statue, bench and lamp art |
 | `tools/gym_hack/build_pallet_gym.py`, `data/maps/PalletTown_Gym_Frlg/` | The gym inside and Oak's gym scene |
 | `tools/gym_hack/build_gym_decor.py` | Decoration catalog and the gym tileset that draws it |

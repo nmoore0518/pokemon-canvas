@@ -137,7 +137,10 @@ def load():
     data["species"] = species
     # each species' synthetic ability (the Ability Synthesizer: tools/gym_hack/build_synthetic_abilities.py)
     sa = ROOT / "src/data/pokemon/synthetic_abilities.h"
-    data["synthetic"] = dict(re.findall(r"\[(SPECIES_\w+)\] = (ABILITY_\w+),", sa.read_text())) if sa.exists() else {}
+    text = sa.read_text() if sa.exists() else ""
+    data["synthetic"] = dict(re.findall(r"\[(SPECIES_\w+)\] = (ABILITY_\w+),", text))
+    blocked = text.split("gSpeciesSyntheticBlocked", 1)[1] if "gSpeciesSyntheticBlocked" in text else ""
+    data["synthetic_blocked"] = set(re.findall(r"(SPECIES_\w+),", blocked))
     return data
 
 
@@ -592,7 +595,11 @@ def card(info, data, loc, prevo, family_line):
     if len(abil) > 2 and abil[2] and abil[2] not in ("-------", "None") and abil[2] not in abil[:2]:
         abil_txt += f" · <i>Hidden: {abil[2]}</i>"
     synth = data.get("synthetic", {}).get(info["key"])
-    synth_txt = f'<div class="sec"><span class="label">Synthetic ability:</span> {esc(data["abilities"].get(synth, synth))}</div>' if synth else ""
+    synth_txt = ""
+    if info["key"] in data.get("synthetic_blocked", ()):
+        synth_txt = '<div class="sec"><span class="label">Synthetic ability:</span> <i>none (the Synthesizer won\'t take it)</i></div>'
+    elif synth:
+        synth_txt = f'<div class="sec"><span class="label">Synthetic ability:</span> {esc(data["abilities"].get(synth, synth))}</div>'
     moves = " · ".join(f'<span class="mv"><span class="lv">{"Evo" if l == 0 else l}</span> {esc(data["moves"].get(m, m))}</span>'
                        for l, m in info["learnset"])
     lines = by_method(loc.get(info["key"], []))

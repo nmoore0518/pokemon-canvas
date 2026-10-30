@@ -22,10 +22,10 @@
 EWRAM_DATA struct Playtest gPlaytest = {0};
 // (the harness reads these by offset: tools/gym_hack/playtest/)
 STATIC_ASSERT(sizeof(struct PlaytestBattle) == 80, PlaytestBattleSize);
-STATIC_ASSERT(sizeof(struct PlaytestPartyMon) == 28, PlaytestPartyMonSize);
+STATIC_ASSERT(sizeof(struct PlaytestPartyMon) == 32, PlaytestPartyMonSize);
 STATIC_ASSERT(offsetof(struct Playtest, log) == 24, PlaytestLogOffset);
 STATIC_ASSERT(offsetof(struct Playtest, party) == 24 + 80 * PLAYTEST_LOG_SIZE, PlaytestPartyOffset);
-STATIC_ASSERT(offsetof(struct Playtest, asserts) == 24 + 80 * PLAYTEST_LOG_SIZE + 28 * PARTY_SIZE + 4, PlaytestAssertsOffset);
+STATIC_ASSERT(offsetof(struct Playtest, asserts) == 24 + 80 * PLAYTEST_LOG_SIZE + 32 * PARTY_SIZE + 4, PlaytestAssertsOffset);
 static EWRAM_DATA u16 sHpBefore[PARTY_SIZE] = {0};
 static EWRAM_DATA u16 sOpponentSpecies[PARTY_SIZE] = {0};
 static EWRAM_DATA u8 sOpponentLevel[PARTY_SIZE] = {0};
@@ -232,6 +232,9 @@ static void DumpParty(void)
         p->speed = GetMonData(mon, MON_DATA_SPEED);
         p->spAttack = GetMonData(mon, MON_DATA_SPATK);
         p->spDefense = GetMonData(mon, MON_DATA_SPDEF);
+        p->ability = GetMonAbility(mon);
+        p->ball = GetMonData(mon, MON_DATA_POKEBALL);
+        p->friendship = GetMonData(mon, MON_DATA_FRIENDSHIP);
     }
 }
 

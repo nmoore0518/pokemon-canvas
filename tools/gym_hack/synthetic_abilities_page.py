@@ -152,7 +152,7 @@ tr.gen td { background: var(--chip); font-family: var(--mono); font-size: 12px; 
     <div class="tally" id="tally"></div>
     <div class="legend">
       <span><span class="pill side">sidegrade</span>its own ability is already one of its best, so this is an alternative rather than an upgrade</span>
-      <span><span class="pill flag">flag</span>its own ability drives a form change (Stance Change, Schooling...) that this would replace</span>
+      <span><span class="pill flag">flag</span>its own ability drives a form change (Stance Change, Schooling...), so the Synthesizer won't take it: it keeps its own ability</span>
     </div>
   </header>
 

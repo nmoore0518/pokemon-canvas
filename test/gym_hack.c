@@ -3305,11 +3305,164 @@ TEST("GymHack: synthetic abilities: every Pokémon has one, and Chansey's is Tri
          || gSpeciesInfo[i].isTotem || gSpeciesInfo[i].isPrimalReversion || gSpeciesInfo[i].isUltraBurst
          || gSpeciesInfo[i].isTeraForm || gSpeciesInfo[i].natDexNum == 0)
             continue;
-        if (GetSpeciesSyntheticAbility(i) == ABILITY_NONE)
+        if (GetSpeciesListedSyntheticAbility(i) == ABILITY_NONE)
         {
             DebugPrintf("no synthetic ability: %d", i);
             missing++;
         }
     }
     EXPECT_EQ(missing, 0);
+}
+
+#include "basement_machines.h"
+#include "item_menu.h"
+
+TEST("GymHack: synthetic ability: slot 3 gives the species' synthetic ability, a blocked one keeps its own")
+{
+    u32 slot = ABILITY_NUM_SYNTHETIC;
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHANSEY, 30;
+        givemon SPECIES_DOUBLADE, 40;
+    );
+    SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_ABILITY_NUM, &slot);
+    SetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_ABILITY_NUM, &slot);
+    EXPECT_EQ(GetMonAbility(&gParties[B_TRAINER_PLAYER][0]), ABILITY_TRIAGE);
+    EXPECT_EQ(GetMonAbility(&gParties[B_TRAINER_PLAYER][1]), ABILITY_SHARPNESS);
+    // Doublade evolves into Aegislash, which the Synthesizer won't take: it keeps Stance Change
+    EXPECT_EQ(GetAbilityBySpecies(SPECIES_AEGISLASH_SHIELD, ABILITY_NUM_SYNTHETIC), ABILITY_STANCE_CHANGE);
+    EXPECT_EQ(GetSpeciesAbility(SPECIES_AEGISLASH_SHIELD, ABILITY_NUM_SYNTHETIC), ABILITY_STANCE_CHANGE);
+    // ...and evolving keeps the slot: Blissey gets Blissey's
+    EXPECT_EQ(GetAbilityBySpecies(SPECIES_BLISSEY, ABILITY_NUM_SYNTHETIC), ABILITY_TRIAGE);
+}
+
+TEST("GymHack: Synthesizer: Evil Mode sets friendship to 0, Nice Mode raises it; it won't take a flagged one twice")
+{
+    u32 friendship = 100;
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHANSEY, 30;
+        givemon SPECIES_MIMIKYU, 30;
+    );
+    SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_FRIENDSHIP, &friendship);
+    gSpecialVar_0x8004 = 0;
+    FlagClear(FLAG_BASEMENT_NICE_MODE);
+    Synthesizer_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_OK);
+    Synthesizer_Apply();
+    EXPECT_EQ(GetMonAbility(&gParties[B_TRAINER_PLAYER][0]), ABILITY_TRIAGE);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_FRIENDSHIP), 0);
+    Synthesizer_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_SYNTH_ALREADY);
+
+    FlagSet(FLAG_BASEMENT_NICE_MODE);
+    SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_FRIENDSHIP, &friendship);
+    Synthesizer_Apply();
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_FRIENDSHIP), 100 + SYNTH_NICE_FRIENDSHIP);
+    FlagClear(FLAG_BASEMENT_NICE_MODE);
+
+    gSpecialVar_0x8004 = 1;
+    Synthesizer_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_SYNTH_BLOCKED);
+}
+
+TEST("GymHack: Type Ball: Metapod's weakest base stat (Attack 20) counts as 30 in a Bug Ball, not in a Fire Ball")
+{
+    u32 ball, plainAtk, plainDef;
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_METAPOD, 100;
+    );
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    plainAtk = GetMonData(mon, MON_DATA_ATK);
+    plainDef = GetMonData(mon, MON_DATA_DEF);
+    EXPECT_EQ(GetTypeBallStatBoosts(SPECIES_METAPOD, BALL_TYPE_BUG), 1u << STAT_ATK);
+    ball = BALL_TYPE_BUG;
+    SetMonData(mon, MON_DATA_POKEBALL, &ball);
+    CalculateMonStats(mon);
+    EXPECT_GE(GetMonData(mon, MON_DATA_ATK) - plainAtk, 18); // 2 * 10 more base at Lv. 100, give or take its nature
+    EXPECT_LE(GetMonData(mon, MON_DATA_ATK) - plainAtk, 22);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_DEF), plainDef);
+    ball = BALL_TYPE_FIRE;
+    SetMonData(mon, MON_DATA_POKEBALL, &ball);
+    CalculateMonStats(mon);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_ATK), plainAtk);
+    // ties: Chansey's Attack and Defense are both 5
+    EXPECT_EQ(GetTypeBallStatBoosts(SPECIES_CHANSEY, BALL_TYPE_NORMAL), (1u << STAT_ATK) | (1u << STAT_DEF));
+    EXPECT_EQ(GetTypeBallStatBoosts(SPECIES_VENUSAUR, BALL_TYPE_POISON), (1u << STAT_HP) | (1u << STAT_SPEED)); // either type counts
+    EXPECT_EQ(GetTypeBallStatBoosts(SPECIES_SHEDINJA, BALL_TYPE_BUG), (1u << STAT_SPATK) | (1u << STAT_SPDEF)); // never its 1 HP
+    EXPECT_EQ(GetTypeBallStatBoosts(SPECIES_METAPOD, BALL_POKE), 0);
+}
+
+TEST("GymHack: Ball Maker: Evil Mode takes the Pokemon, Nice Mode takes 5 levels; Lv. 50 and up only")
+{
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARIZARD, 60, ITEM_LEFTOVERS;
+        givemon SPECIES_PIDGEY, 49;
+        givemon SPECIES_BLASTOISE, 55;
+    );
+    FlagClear(FLAG_BASEMENT_NICE_MODE);
+    gSpecialVar_0x8004 = 1;
+    BallMaker_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_MAKER_LOW_LEVEL);
+
+    gSpecialVar_0x8004 = 0;
+    BallMaker_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_OK);
+    EXPECT_EQ(gSpecialVar_0x8005, ITEM_FIRE_BALL);
+    u32 leftovers = CountTotalItemQuantityInBag(ITEM_LEFTOVERS);
+    BallMaker_Apply();
+    EXPECT_EQ(CalculatePlayerPartyCount(), 2);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIDGEY);
+    EXPECT_EQ(CountTotalItemQuantityInBag(ITEM_LEFTOVERS), leftovers + 1);   // its held item came back
+
+    FlagSet(FLAG_BASEMENT_NICE_MODE);
+    gSpecialVar_0x8004 = 1;
+    BallMaker_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_OK);
+    EXPECT_EQ(gSpecialVar_0x8005, ITEM_WATER_BALL);
+    BallMaker_Apply();
+    EXPECT_EQ(CalculatePlayerPartyCount(), 2);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_LEVEL), 50);
+    FlagClear(FLAG_BASEMENT_NICE_MODE);
+
+    // Evil Mode won't take your last Pokémon
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_CHARIZARD, 60;);
+    gSpecialVar_0x8004 = 0;
+    BallMaker_CheckMon();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_MAKER_LAST_MON);
+}
+
+TEST("GymHack: Ball Changer moves the Pokemon into the new ball and gives back the old one")
+{
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_METAPOD, 100;);
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    u32 atk = GetMonData(mon, MON_DATA_ATK);
+    u32 poke = CountTotalItemQuantityInBag(ITEM_POKE_BALL);
+    AddBagItem(ITEM_BUG_BALL, 1);
+    gSpecialVar_0x8004 = 0;
+    gSpecialVar_ItemId = ITEM_POKE_BALL;
+    BallChanger_CheckBall();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_CHANGER_SAME_BALL);
+    gSpecialVar_ItemId = ITEM_BUG_BALL;
+    BallChanger_CheckBall();
+    EXPECT_EQ(gSpecialVar_Result, MACHINE_OK);
+    BallChanger_Apply();
+    EXPECT_EQ(GetMonData(mon, MON_DATA_POKEBALL), BALL_TYPE_BUG);
+    EXPECT_EQ(CountTotalItemQuantityInBag(ITEM_BUG_BALL), 0);
+    EXPECT_EQ(CountTotalItemQuantityInBag(ITEM_POKE_BALL), poke + 1);
+    EXPECT_GT(GetMonData(mon, MON_DATA_ATK), atk);   // the Bug Ball's boost
+}
+
+TEST("GymHack: the Ability Capsule leaves a synthetic ability alone")
+{
+    u8 slots[NUM_ABILITY_SLOTS];
+    u32 slot = ABILITY_NUM_SYNTHETIC;
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_BULBASAUR, 10;);
+    SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_ABILITY_NUM, &slot);
+    EXPECT_EQ(StatItems_GetAbilityChoices(&gParties[B_TRAINER_PLAYER][0], slots), 0);
 }

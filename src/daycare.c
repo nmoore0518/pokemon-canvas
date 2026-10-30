@@ -740,7 +740,7 @@ void InheritAbility(struct Pokemon *egg, struct DayCare *daycare)
         inheritAbility = GetBoxMonData(&daycare->mons[abilitySlot].mon, MON_DATA_ABILITY_NUM);
     }
 
-    if (inheritAbility < 0)
+    if (inheritAbility < 0 || inheritAbility >= NUM_ABILITY_SLOTS) // Pokémon Canvas: a synthetic ability isn't inherited
         return;
 
     u32 hiddenAbilityPercentChance = (GetConfig(ABILITY_INHERITANCE) == GEN_5) ? 80 : 60;

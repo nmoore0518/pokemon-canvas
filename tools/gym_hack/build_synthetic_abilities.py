@@ -80,7 +80,8 @@ def main():
             missing.append(k)
             continue
         ab, why, _ = assigned[src]
-        result[k] = {"ability": by_name[ab.lower()], "name": names[by_name[ab.lower()]], "why": why,
+        flagged = why.startswith("flag") or "(flag" in why
+        result[k] = {"blocked": flagged,"ability": by_name[ab.lower()], "name": names[by_name[ab.lower()]], "why": why,
                      "from": src, "dex": info["dex_num"], "species": info["name"], "types": info["types"],
                      "own": [names.get(a, a) for a in info["abilities"] if a != "ABILITY_NONE"],
                      "own_keys": [a for a in info["abilities"] if a != "ABILITY_NONE"]}
@@ -95,11 +96,17 @@ def main():
              "const u16 gSpeciesSyntheticAbilities[NUM_SPECIES] =", "{"]
     for k, r in result.items():
         lines.append(f"    [{k}] = {r['ability']},")
+    lines += ["};", "",
+              "// Lines flagged in the list (the synthetic ability would replace a form-changing one):",
+              "// the Synthesizer won't take them, and they keep their own ability if one evolves into them.",
+              "const u16 gSpeciesSyntheticBlocked[] =", "{"]
+    lines += [f"    {k}," for k, r in result.items() if r["blocked"]]
     lines += ["};", ""]
     OUT_H.write_text("\n".join(lines))
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(result, ensure_ascii=False, indent=1))
     used = sorted({r["name"] for r in result.values()})
+    print(sum(r["blocked"] for r in result.values()), "blocked (flagged) species and forms")
     print(f"{len(result)} species and forms, {len(assigned)} listed, {len(used)} different abilities")
 
 

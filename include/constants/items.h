@@ -1109,6 +1109,27 @@ enum __attribute__((packed)) Item
     ITEM_RAYQUAZITE = 925,   // Pokémon Canvas: Rayquaza Mega Evolves with a stone like the others (no Dragon Ascent)
     ITEM_CAP_CASE = 926,     // Pokémon Canvas: the Pallet boy's lost caps go in it (src/event_mons.c)
     ITEM_INCENSE = 927,      // Pokémon Canvas: rare wild Pokémon 5x as likely for 600 steps (src/incense.c)
+    // Pokémon Canvas: Dad's basement machines (src/basement_machines.c)
+    ITEM_STRONG_ACID = 928,  // the Ability Synthesizer's fuel (Evil Mode); held by wild Poison Pokémon
+    ITEM_APPLE_JUICE = 929,  // its fuel in Nice Mode; held by wild Grass Pokémon
+    ITEM_NORMAL_BALL = 930,
+    ITEM_FIGHTING_BALL = 931,
+    ITEM_FLYING_BALL = 932,
+    ITEM_POISON_BALL = 933,
+    ITEM_GROUND_BALL = 934,
+    ITEM_ROCK_BALL = 935,
+    ITEM_BUG_BALL = 936,
+    ITEM_GHOST_BALL = 937,
+    ITEM_STEEL_BALL = 938,
+    ITEM_FIRE_BALL = 939,
+    ITEM_WATER_BALL = 940,
+    ITEM_GRASS_BALL = 941,
+    ITEM_ELECTRIC_BALL = 942,
+    ITEM_PSYCHIC_BALL = 943,
+    ITEM_ICE_BALL = 944,
+    ITEM_DRAGON_BALL = 945,
+    ITEM_DARK_BALL = 946,
+    ITEM_FAIRY_BALL = 947,
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

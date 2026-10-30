@@ -38,6 +38,9 @@ struct PlaytestPartyMon
     u16 moves[MAX_MON_MOVES];
     u16 heldItem;
     u16 attack, defense, speed, spAttack, spDefense;
+    u16 ability;            // (Pokémon Canvas: for the basement machines' checks)
+    u8 ball;
+    u8 friendship;
 };
 
 // The harness writes a command (and its arguments), the game runs it on its next overworld

@@ -841,3 +841,11 @@ gSpecials::
 	def_special EventMons_KalosTrioLeft
 	def_special EventMons_SetupTala
 	def_special EventMons_PaintPotsLeft
+	def_special Synthesizer_CheckMon
+	def_special Synthesizer_Apply
+	def_special BallMaker_CheckMon
+	def_special BallMaker_Apply
+	def_special Bag_ChooseBall, waitstate=1
+	def_special BallChanger_CheckMon
+	def_special BallChanger_CheckBall
+	def_special BallChanger_Apply

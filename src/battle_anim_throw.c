@@ -159,6 +159,7 @@ static const struct CaptureStar sCaptureStars[] =
 #define TAG_PARTICLES_PARK_BALL    65055
 #define TAG_PARTICLES_BEAST_BALL   65056
 #define TAG_PARTICLES_CHERISH_BALL 65057
+#define TAG_PARTICLES_TYPE_BALL(n)  (65058 + (n))  // Pokémon Canvas: the Type Balls
 
 static const union AnimCmd sAnim_RegularBall[] =
 {
@@ -457,6 +458,150 @@ static const struct PokeBallParticles sBallParticles[POKEBALL_COUNT] =
         .openFadeColor = RGB(25, 4, 3),
         .animNums = 0,
         .particleAnimationFunc = MasterBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_NORMAL] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(0), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(28, 27, 22),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_FIGHTING] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(1), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(27, 8, 6),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_FLYING] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(2), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(21, 19, 31),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_POISON] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(3), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(23, 9, 24),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_GROUND] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(4), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(28, 24, 13),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_ROCK] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(5), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(23, 20, 10),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_BUG] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(6), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(23, 26, 6),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_GHOST] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(7), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(15, 12, 22),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_STEEL] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(8), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(25, 25, 28),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_FIRE] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(9), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(31, 16, 6),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_WATER] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(10), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(11, 18, 30),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_GRASS] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(11), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(13, 25, 10),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_ELECTRIC] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(12), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(31, 27, 6),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_PSYCHIC] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(13), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(31, 13, 19),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_ICE] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(14), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(19, 28, 29),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_DRAGON] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(15), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(16, 10, 31),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_DARK] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(16), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(13, 10, 9),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
+    },
+
+    [BALL_TYPE_FAIRY] =
+    {
+        POKE_BALL_ANIMATION(TAG_PARTICLES_TYPE_BALL(17), gBattleAnimSpriteGfx_Particles, gBattleAnimSpritePal_CircleImpact),
+        .openFadeColor = RGB(31, 21, 24),
+        .animNums = 0,
+        .particleAnimationFunc = PokeBallOpenParticleAnimation,
     },
 };
 

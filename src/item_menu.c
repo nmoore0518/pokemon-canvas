@@ -115,7 +115,7 @@ struct ListBuffer2 {
 
 struct TempWallyBag {
     struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
-    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
+    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT_1];
     u16 cursorPosition[POCKETS_COUNT];
     u16 scrollPosition[POCKETS_COUNT];
     u16 unused;
@@ -605,6 +605,12 @@ void CB2_BagMenuFromBattle(void)
 void CB2_ChooseBerry(void)
 {
     GoToBagMenu(ITEMMENULOCATION_BERRY_TREE, POCKET_BERRIES, CB2_ReturnToFieldContinueScript);
+}
+
+// Pokémon Canvas: the Ball Changer's ball (src/basement_machines.c)
+void CB2_ChooseBallForChanger(void)
+{
+    GoToBagMenu(ITEMMENULOCATION_BERRY_TREE, POCKET_POKE_BALLS, CB2_ReturnToFieldContinueScript);
 }
 
 // Choosing mulch to use

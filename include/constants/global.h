@@ -117,12 +117,15 @@ enum Language
 //   SaveBlock1's pokeblocks (no Pokeblocks in Kanto): Medicine
 //   SaveBlock1's berryTrees (no berry trees either): Hold Items, Items (the rest)
 //   the end of SaveBlock1: Battle Items
+//   the end of SaveBlock2: the rest of the Poké Balls (Pokémon Canvas: room for the Type Balls)
 // src/item.c Bag_UpgradeLayout moves an older save's bag over.
 #define BAG_ITEMS_COUNT_1       204     // (in SaveBlock3)
 #define BAG_ITEMS_COUNT_2        23     // (after the hold items)
 #define BAG_ITEMS_COUNT         (BAG_ITEMS_COUNT_1 + BAG_ITEMS_COUNT_2)
 #define BAG_MEDICINE_COUNT       80
-#define BAG_POKEBALLS_COUNT      28
+#define BAG_POKEBALLS_COUNT_1    28     // (in SaveBlock1's bag)
+#define BAG_POKEBALLS_COUNT_2    18     // (Pokémon Canvas: the Type Balls' room, at the end of SaveBlock2)
+#define BAG_POKEBALLS_COUNT     (BAG_POKEBALLS_COUNT_1 + BAG_POKEBALLS_COUNT_2)
 #define BAG_BATTLE_ITEMS_COUNT   29
 #define BAG_HOLD_ITEMS_COUNT    233
 #define BAG_MEGA_STONES_COUNT    93

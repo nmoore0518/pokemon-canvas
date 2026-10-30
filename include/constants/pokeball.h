@@ -31,9 +31,31 @@ enum PokeBall
     BALL_PARK = 25,
     BALL_BEAST = 26,
     BALL_CHERISH = 27,
+    // Pokémon Canvas: the Ball Maker's Type Balls (src/basement_machines.c), one per type
+    BALL_TYPE_NORMAL = 28,
+    BALL_TYPE_FIGHTING = 29,
+    BALL_TYPE_FLYING = 30,
+    BALL_TYPE_POISON = 31,
+    BALL_TYPE_GROUND = 32,
+    BALL_TYPE_ROCK = 33,
+    BALL_TYPE_BUG = 34,
+    BALL_TYPE_GHOST = 35,
+    BALL_TYPE_STEEL = 36,
+    BALL_TYPE_FIRE = 37,
+    BALL_TYPE_WATER = 38,
+    BALL_TYPE_GRASS = 39,
+    BALL_TYPE_ELECTRIC = 40,
+    BALL_TYPE_PSYCHIC = 41,
+    BALL_TYPE_ICE = 42,
+    BALL_TYPE_DRAGON = 43,
+    BALL_TYPE_DARK = 44,
+    BALL_TYPE_FAIRY = 45,
     POKEBALL_COUNT
 };
 
 #define BALL_RANDOM (POKEBALL_COUNT + 1)
+#define FIRST_TYPE_BALL BALL_TYPE_NORMAL
+#define LAST_TYPE_BALL  BALL_TYPE_FAIRY
+#define IS_TYPE_BALL(ball) ((ball) >= FIRST_TYPE_BALL && (ball) <= LAST_TYPE_BALL)
 
 #endif // GUARD_CONSTANTS_POKEBALL_H

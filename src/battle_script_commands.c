@@ -80,6 +80,7 @@
 #include "follower_npc.h"
 #include "load_save.h"
 #include "item_upgrades.h"
+#include "basement_machines.h"
 
 // Helper for accessing command arguments and advancing gBattlescriptCurrInstr.
 //
@@ -7836,6 +7837,8 @@ static void FinalizeCapture(void)
     gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
     struct Pokemon *caughtMon = GetBattlerMon(gBattlerTarget);
     SetMonData(caughtMon, MON_DATA_POKEBALL, &ballId);
+    if (IS_TYPE_BALL(ballId))
+        CalculateMonStats(caughtMon); // Pokémon Canvas: the Type Ball's stat boost
     RestoreCaughtWildMonHeldItem(caughtMon, gBattlerTarget);
 
     if (CalculatePlayerPartyCount() == PARTY_SIZE)
@@ -8051,6 +8054,10 @@ static void ComputeBallData(u32 wildMonBattler, u32 playerBattler, struct BallDa
     case BALL_BEAST:
         ball->multiplier = 410;
         ball->divider = 4096;
+        break;
+    case FIRST_TYPE_BALL ... LAST_TYPE_BALL: // Pokémon Canvas: 3.5x on its own type
+        if (IS_BATTLER_OF_TYPE(wildMonBattler, GetTypeBallType(ballId)))
+            ball->multiplier = 350;
         break;
     default:
         break;

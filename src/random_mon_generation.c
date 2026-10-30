@@ -415,7 +415,7 @@ enum Item GetRandomItem(u32 optionId, const struct FilterFuncArgs *filterFuncArg
 
 enum PokeBall GetRandomBall(void)
 {
-    return RandomUniform(RNG_RANDOM_BALL, BALL_POKE, POKEBALL_COUNT - 1);
+    return RandomUniform(RNG_RANDOM_BALL, BALL_POKE, FIRST_TYPE_BALL - 1); // Pokémon Canvas: never a Type Ball
 }
 
 static bool32 MoveOrder(enum Move moveA, enum Move moveB)

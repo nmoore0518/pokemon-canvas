@@ -16248,8 +16248,8 @@ const struct ItemInfo gItemsInfo[] =
         .price = 40000,   // Gym Trainer hack: any nature, so it costs more than a mint
         .description = COMPOUND_STRING(
             "A pungent herb.\n"
-            "Its scent changes a\n"
-            "Pokémon's nature."),
+            "Its smell changes\n"
+            "a Pokémon's nature."),
         .pocket = POCKET_ITEMS,
         .sortType = ITEM_TYPE_FIELD_USE,
         .type = ITEM_USE_FIELD,
@@ -17046,6 +17046,346 @@ const struct ItemInfo gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_Incense,
         .iconPic = gItemIcon_Incense,
         .iconPalette = gItemIconPalette_Incense,
+    },
+
+    [ITEM_STRONG_ACID] =
+    {
+        // Pokémon Canvas: the Ability Synthesizer's fuel in Evil Mode (src/basement_machines.c)
+        .name = ITEM_NAME("Strong Acid"),
+        .pluralName = ITEM_PLURAL_NAME("Strong Acid"),
+        .price = 200,
+        .description = COMPOUND_STRING(
+            "A vial of caustic\n"
+            "acid. Wild Poison\n"
+            "Pokémon carry it."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_StrongAcid,
+        .iconPalette = gItemIconPalette_StrongAcid,
+    },
+
+    [ITEM_APPLE_JUICE] =
+    {
+        // Pokémon Canvas: the Ability Synthesizer's fuel in Nice Mode (src/basement_machines.c)
+        .name = ITEM_NAME("Apple Juice"),
+        .pluralName = ITEM_PLURAL_NAME("Apple Juice"),
+        .price = 200,
+        .description = COMPOUND_STRING(
+            "Sweet, fresh juice.\n"
+            "Wild Grass Pokémon\n"
+            "carry it."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_AppleJuice,
+        .iconPalette = gItemIconPalette_AppleJuice,
+    },
+
+    [ITEM_NORMAL_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Normal Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Normal Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_NORMAL,
+        .iconPic = gItemIcon_NormalBall,
+        .iconPalette = gItemIconPalette_NormalBall,
+    },
+
+    [ITEM_FIGHTING_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Fighting Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Fighting Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_FIGHTING,
+        .iconPic = gItemIcon_FightingBall,
+        .iconPalette = gItemIconPalette_FightingBall,
+    },
+
+    [ITEM_FLYING_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Flying Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Flying Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_FLYING,
+        .iconPic = gItemIcon_FlyingBall,
+        .iconPalette = gItemIconPalette_FlyingBall,
+    },
+
+    [ITEM_POISON_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Poison Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Poison Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_POISON,
+        .iconPic = gItemIcon_PoisonBall,
+        .iconPalette = gItemIconPalette_PoisonBall,
+    },
+
+    [ITEM_GROUND_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Ground Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Ground Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_GROUND,
+        .iconPic = gItemIcon_GroundBall,
+        .iconPalette = gItemIconPalette_GroundBall,
+    },
+
+    [ITEM_ROCK_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Rock Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Rock Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_ROCK,
+        .iconPic = gItemIcon_RockBall,
+        .iconPalette = gItemIconPalette_RockBall,
+    },
+
+    [ITEM_BUG_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Bug Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Bug Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_BUG,
+        .iconPic = gItemIcon_BugBall,
+        .iconPalette = gItemIconPalette_BugBall,
+    },
+
+    [ITEM_GHOST_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Ghost Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Ghost Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_GHOST,
+        .iconPic = gItemIcon_GhostBall,
+        .iconPalette = gItemIconPalette_GhostBall,
+    },
+
+    [ITEM_STEEL_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Steel Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Steel Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_STEEL,
+        .iconPic = gItemIcon_SteelBall,
+        .iconPalette = gItemIconPalette_SteelBall,
+    },
+
+    [ITEM_FIRE_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Fire Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Fire Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_FIRE,
+        .iconPic = gItemIcon_FireBall,
+        .iconPalette = gItemIconPalette_FireBall,
+    },
+
+    [ITEM_WATER_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Water Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Water Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_WATER,
+        .iconPic = gItemIcon_WaterBall,
+        .iconPalette = gItemIconPalette_WaterBall,
+    },
+
+    [ITEM_GRASS_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Grass Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Grass Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_GRASS,
+        .iconPic = gItemIcon_GrassBall,
+        .iconPalette = gItemIconPalette_GrassBall,
+    },
+
+    [ITEM_ELECTRIC_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Electric Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Electric Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_ELECTRIC,
+        .iconPic = gItemIcon_ElectricBall,
+        .iconPalette = gItemIconPalette_ElectricBall,
+    },
+
+    [ITEM_PSYCHIC_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Psychic Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Psychic Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_PSYCHIC,
+        .iconPic = gItemIcon_PsychicBall,
+        .iconPalette = gItemIconPalette_PsychicBall,
+    },
+
+    [ITEM_ICE_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Ice Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Ice Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_ICE,
+        .iconPic = gItemIcon_IceBall,
+        .iconPalette = gItemIconPalette_IceBall,
+    },
+
+    [ITEM_DRAGON_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Dragon Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Dragon Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_DRAGON,
+        .iconPic = gItemIcon_DragonBall,
+        .iconPalette = gItemIconPalette_DragonBall,
+    },
+
+    [ITEM_DARK_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Dark Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Dark Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_DARK,
+        .iconPic = gItemIcon_DarkBall,
+        .iconPalette = gItemIconPalette_DarkBall,
+    },
+
+    [ITEM_FAIRY_BALL] =
+    {
+        // Pokémon Canvas: from the Ball Maker (src/basement_machines.c)
+        .name = ITEM_NAME("Fairy Ball"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Fairy Pokémon:\n"
+            "easier to catch,\n"
+            "weakest stat x1.5."),
+        .pocket = POCKET_POKE_BALLS,
+        .type = ITEM_USE_BAG_MENU,
+        .battleUsage = EFFECT_ITEM_THROW_BALL,
+        .secondaryId = BALL_TYPE_FAIRY,
+        .iconPic = gItemIcon_FairyBall,
+        .iconPalette = gItemIconPalette_FairyBall,
     },
 };
 

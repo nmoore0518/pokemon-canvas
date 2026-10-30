@@ -1,4 +1,6 @@
 #include "global.h"
+#include "basement_machines.h"
+#include "synthetic_abilities.h"
 #include "event_mons.h"
 #include "gauntlet.h"
 #include "exotic_safari.h"
@@ -1397,6 +1399,7 @@ void CalculateMonStatsCont(struct Pokemon *mon, bool32 updateSpeedStat)
     s32 newMaxHP;
 
     u8 nature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
+    u32 ballBoosts = GetTypeBallStatBoosts(species, GetMonData(mon, MON_DATA_POKEBALL)); // Pokémon Canvas
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
@@ -1421,7 +1424,9 @@ void CalculateMonStatsCont(struct Pokemon *mon, bool32 updateSpeedStat)
         if (i == STAT_HP)
             continue;
 
-        u8 baseStat = GetSpeciesBaseStat(species, i);
+        s32 baseStat = GetSpeciesBaseStat(species, i);
+        if (ballBoosts & (1u << i))
+            baseStat = baseStat * 3 / 2; // Pokémon Canvas: its weakest stat, in its own Type Ball
         s32 n = (((2 * baseStat + iv[i] + ev[i] / 4) * level) / 100) + 5;
         n = ModifyStatByNature(nature, n, i);
         if (B_FRIENDSHIP_BOOST == TRUE)
@@ -1440,7 +1445,10 @@ void CalculateMonStatsCont(struct Pokemon *mon, bool32 updateSpeedStat)
     }
     else
     {
-        s32 n = 2 * GetSpeciesBaseHP(species) + iv[STAT_HP];
+        s32 baseHP = GetSpeciesBaseHP(species);
+        if (ballBoosts & (1u << STAT_HP))
+            baseHP = baseHP * 3 / 2;
+        s32 n = 2 * baseHP + iv[STAT_HP];
         newMaxHP = (((n + ev[STAT_HP] / 4) * level) / 100) + level + 10;
     }
 
@@ -3125,6 +3133,15 @@ enum Ability GetAbilityBySpecies(enum Species species, u8 abilityNum)
 {
     int i;
 
+    // Pokémon Canvas: slot 3 is the Ability Synthesizer's (a species it won't take keeps its first ability)
+    if (abilityNum == ABILITY_NUM_SYNTHETIC)
+    {
+        gLastUsedAbility = GetSpeciesSyntheticAbility(species);
+        if (gLastUsedAbility != ABILITY_NONE)
+            return gLastUsedAbility;
+        abilityNum = 0;
+    }
+
     if (abilityNum < NUM_ABILITY_SLOTS)
         gLastUsedAbility = GetSpeciesAbility(species, abilityNum);
     else
@@ -3261,6 +3278,11 @@ enum Type GetSpeciesType(enum Species species, u8 slot)
 
 enum Ability GetSpeciesAbility(enum Species species, u8 slot)
 {
+    if (slot >= NUM_ABILITY_SLOTS) // Pokémon Canvas: the synthetic slot
+    {
+        enum Ability synthetic = (slot == ABILITY_NUM_SYNTHETIC) ? GetSpeciesSyntheticAbility(species) : ABILITY_NONE;
+        return synthetic != ABILITY_NONE ? synthetic : gSpeciesInfo[SanitizeSpeciesId(species)].abilities[0];
+    }
     return gSpeciesInfo[SanitizeSpeciesId(species)].abilities[slot];
 }
 
@@ -5471,6 +5493,8 @@ void SetWildMonHeldItem(void)
     {
         if (GetMonData(&gParties[B_TRAINER_OPPONENT_A][i], MON_DATA_HELD_ITEM) != ITEM_NONE)
             continue; // prevent overwriting previously set item
+        if (TryGiveWildMonLabItem(&gParties[B_TRAINER_OPPONENT_A][i]))
+            continue; // Pokémon Canvas: Strong Acid / Apple Juice
 
         rnd = Random() % 100;
         species = GetMonData(&gParties[B_TRAINER_OPPONENT_A][i], MON_DATA_SPECIES, 0);
