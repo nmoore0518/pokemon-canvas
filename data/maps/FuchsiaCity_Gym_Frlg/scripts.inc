@@ -9,7 +9,11 @@ FuchsiaCity_Gym_OnTransitionGuest::
 
 FuchsiaCity_Gym_EventScript_Koga::
 	famechecker FAMECHECKER_KOGA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 4   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, FuchsiaCity_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_KOGA, FuchsiaCity_Gym_Text_KogaIntro, FuchsiaCity_Gym_Text_KogaDefeat, FuchsiaCity_Gym_EventScript_DefeatedKoga, NO_MUSIC
+FuchsiaCity_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM06_FROM_KOGA, FuchsiaCity_Gym_EventScript_GiveTM06
 	call GymHack_EventScript_KogaGifts
 	call GymCandidate_EventScript_FuchsiaCityTalk
@@ -255,3 +259,7 @@ FuchsiaCity_Gym_Text_GymStatuePlayerWon::
 	.string "WINNING TRAINERS:\n"
 	.string "{RIVAL}, {PLAYER}$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+FuchsiaCity_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_KOGA, gStringVar4, FuchsiaCity_Gym_Text_KogaDefeat, FuchsiaCity_Gym_EventScript_DefeatedKoga, NO_MUSIC
+	goto FuchsiaCity_Gym_EventScript_AfterLeaderBattle

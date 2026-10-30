@@ -19,8 +19,78 @@ DadStory_EventScript_ArmSendoff::
 @ (Pallet Town's ON_TRANSITION) MOM is outside the lab only while she's waiting
 DadStory_EventScript_PalletTransition::
 	setflag FLAG_HIDE_SENDOFF_MOM
+	goto_if_eq VAR_DAD_STORY, DAD_STORY_DONE, DadStory_EventScript_MemorialSetup
 	goto_if_ne VAR_DAD_STORY, DAD_STORY_SENDOFF, Common_EventScript_NopReturn
 	clearflag FLAG_HIDE_SENDOFF_MOM
+	return
+
+@ After VIRIDIAN: MOM and OAK wait at the CHANSEY statue, either side of where the player stands
+DadStory_EventScript_MemorialSetup::
+	clearflag FLAG_HIDE_SENDOFF_MOM
+	setobjectxyperm LOCALID_PALLET_SENDOFF_MOM, DAD_STORY_MEMORIAL_X - 1, DAD_STORY_MEMORIAL_Y
+	setobjectmovementtype LOCALID_PALLET_SENDOFF_MOM, MOVEMENT_TYPE_FACE_RIGHT
+	clearflag FLAG_HIDE_OAK_IN_PALLET_TOWN
+	setobjectxyperm LOCALID_PALLET_PROF_OAK, DAD_STORY_MEMORIAL_X + 1, DAD_STORY_MEMORIAL_Y
+	setobjectmovementtype LOCALID_PALLET_PROF_OAK, MOVEMENT_TYPE_FACE_LEFT
+	return
+
+@ MOM and OAK remember the player's father; OAK explains the statue and the LEAGUE's approval
+DadStory_EventScript_Memorial::
+	lockall
+	getplayerxy VAR_0x8004, VAR_0x8005
+	goto_if_ne VAR_0x8004, DAD_STORY_MEMORIAL_X, DadStory_EventScript_MemorialGoThere
+	goto_if_ne VAR_0x8005, DAD_STORY_MEMORIAL_Y, DadStory_EventScript_MemorialGoThere
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+	waitmovement 0
+	delay 30
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
+	waitmovement 0
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox DadStory_Text_MemorialOak1
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
+	waitmovement 0
+	textcolor NPC_TEXT_COLOR_FEMALE
+	msgbox DadStory_Text_MemorialMom1
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
+	waitmovement 0
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox DadStory_Text_MemorialOak2
+	textcolor NPC_TEXT_COLOR_FEMALE
+	msgbox DadStory_Text_MemorialMom2
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox DadStory_Text_MemorialOak3
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
+	waitmovement 0
+	textcolor NPC_TEXT_COLOR_FEMALE
+	msgbox DadStory_Text_MemorialMom3
+	closemessage
+	setflag FLAG_GYM_APPROVAL_GIOVANNI
+	setvar VAR_DAD_STORY, DAD_STORY_REMEMBERED
+	fadescreen FADE_TO_BLACK
+	removeobject LOCALID_PALLET_SENDOFF_MOM
+	removeobject LOCALID_PALLET_PROF_OAK
+	setflag FLAG_HIDE_SENDOFF_MOM
+	setflag FLAG_HIDE_OAK_IN_PALLET_TOWN
+	@ (their usual places, for the scenes that don't set them)
+	setobjectxyperm LOCALID_PALLET_SENDOFF_MOM, PALLET_MOM_SENDOFF_X, PALLET_MOM_SENDOFF_Y
+	setobjectmovementtype LOCALID_PALLET_SENDOFF_MOM, MOVEMENT_TYPE_FACE_UP
+	setobjectxyperm LOCALID_PALLET_PROF_OAK, PALLET_OAK_START_X, PALLET_OAK_START_Y
+	setobjectmovementtype LOCALID_PALLET_PROF_OAK, MOVEMENT_TYPE_FACE_UP
+	fadescreen FADE_FROM_BLACK
+	releaseall
+	end
+
+@ (an older save coming into PALLET TOWN some other way: to the statue first)
+DadStory_EventScript_MemorialGoThere::
+	fadescreen FADE_TO_BLACK
+	warp MAP_PALLET_TOWN, DAD_STORY_MEMORIAL_X, DAD_STORY_MEMORIAL_Y
+	waitstate
+	releaseall
+	end
+
+@ MOM at home after VIRIDIAN (then her usual rest)
+DadStory_EventScript_MomAtHome::
+	msgbox DadStory_Text_MomAfterViridian
 	return
 
 DadStory_EventScript_Sendoff::
@@ -399,11 +469,13 @@ DadStory_EventScript_GiovanniFinale::
 	setflag FLAG_BASEMENT_SWITCH_SHOWN
 	setflag FLAG_GYM_APPROVAL_GIOVANNI
 	setvar VAR_DAD_STORY, DAD_STORY_DONE
+	@ what MOM knew; then home, where OAK is waiting at the CHANSEY statue
+	msgbox DadStory_Text_MomConfession
 	closemessage
-	applymovement LOCALID_VIRIDIAN_GYM_MOM, DadStory_Movement_MomLeaves
-	waitmovement 0
-	removeobject LOCALID_VIRIDIAN_GYM_MOM
 	setflag FLAG_HIDE_VIRIDIAN_GYM_MOM
+	fadescreen FADE_TO_BLACK
+	warp MAP_PALLET_TOWN, DAD_STORY_MEMORIAL_X, DAD_STORY_MEMORIAL_Y
+	waitstate
 	release
 	end
 
@@ -455,4 +527,23 @@ DadStory_Movement_MomLeaves:
 DadStory_EventScript_ViridianGymTransition::
 	setflag FLAG_HIDE_VIRIDIAN_GYM_MOM
 	setflag FLAG_HIDE_VIRIDIAN_GYM_CHANSEY
+	setflag FLAG_HIDE_VIRIDIAN_ARCHER
+	goto_if_lt VAR_DAD_STORY, DAD_STORY_REMEMBERED, Common_EventScript_NopReturn
+	clearflag FLAG_HIDE_VIRIDIAN_ARCHER
+	setflag FLAG_HIDE_VIRIDIAN_GIOVANNI   @ (his spot is ARCHER's now)
 	return
+
+@ ARCHER, VIRIDIAN's LEADER after GIOVANNI: where he came from (once), then a word
+DadStory_EventScript_Archer::
+	lock
+	faceplayer
+	goto_if_ge VAR_DAD_STORY, DAD_STORY_MET_ARCHER, DadStory_EventScript_ArcherAgain
+	msgbox DadStory_Text_ArcherIntro
+	setvar VAR_DAD_STORY, DAD_STORY_MET_ARCHER
+	release
+	end
+
+DadStory_EventScript_ArcherAgain::
+	msgbox DadStory_Text_ArcherAgain
+	release
+	end

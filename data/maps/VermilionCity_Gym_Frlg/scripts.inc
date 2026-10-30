@@ -204,7 +204,11 @@ VermilionCity_Gym_EventScript_SetBeamsOn::
 
 VermilionCity_Gym_EventScript_LtSurge::
 	famechecker FAMECHECKER_LTSURGE, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 2   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, VermilionCity_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_LT_SURGE, VermilionCity_Gym_Text_LtSurgeIntro, VermilionCity_Gym_Text_LtSurgeDefeat, VermilionCity_Gym_EventScript_DefeatedLtSurge, NO_MUSIC
+VermilionCity_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM34_FROM_SURGE, VermilionCity_Gym_EventScript_GiveTM34
 	call GymHack_EventScript_SurgeGifts
 	call GymCandidate_EventScript_VermilionCityTalk
@@ -424,3 +428,7 @@ VermilionCity_Gym_Text_OnlyTrashLocksWereReset::
 	.string "Hey!\n"
 	.string "The electric locks were reset!$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+VermilionCity_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_LT_SURGE, gStringVar4, VermilionCity_Gym_Text_LtSurgeDefeat, VermilionCity_Gym_EventScript_DefeatedLtSurge, NO_MUSIC
+	goto VermilionCity_Gym_EventScript_AfterLeaderBattle

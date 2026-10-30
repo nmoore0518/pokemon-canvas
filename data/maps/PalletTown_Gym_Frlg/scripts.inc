@@ -159,7 +159,11 @@ PalletTown_Gym_Text_OakDecorateIt::
 
 PalletTown_Gym_Text_OakTakeBalloon::
 	.string "OAK: Oh, and {PLAYER}…\p"
-	.string "Your journey will take you far\n"
+	.string "Your father always dreamed of a\n"
+	.string "GYM of his own, you know.\p"
+	.string "I think he'd be very glad to see\n"
+	.string "you standing here.\p"
+	.string "Now, your journey will take you far\n"
 	.string "from PALLET TOWN.\p"
 	.string "So take this! It's a HOT AIR\n"
 	.string "BALLOON of my own design.$"

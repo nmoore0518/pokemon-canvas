@@ -806,6 +806,8 @@ def write_movements():
            f".equ PALLET_SIGN_LADY_SIGN_X, {SIGN_LADY_AT_SIGN[0]}\n.equ PALLET_SIGN_LADY_SIGN_Y, {SIGN_LADY_AT_SIGN[1]}\n",
            f".equ PALLET_SIGN_LADY_EXIT_X, {SIGN_LADY_AT_EXIT[0]}\n.equ PALLET_SIGN_LADY_EXIT_Y, {SIGN_LADY_AT_EXIT[1]}\n",
            f".equ PALLET_GYM_DOOR_X, {GYM_DOOR[0]}\n.equ PALLET_GYM_DOOR_Y, {GYM_DOOR[1]}\n",
+           f".equ PALLET_OAK_START_X, {OAK_START[0]}\n.equ PALLET_OAK_START_Y, {OAK_START[1]}\n",
+           f".equ PALLET_MOM_SENDOFF_X, {MOM_SENDOFF[0]}\n.equ PALLET_MOM_SENDOFF_Y, {MOM_SENDOFF[1]}\n",
            f".equ METATILE_PALLET_GYM_DOOR_LOCKED, 0x{GYM_DOOR_LOCKED:X}\n\n"]
 
     def lead(prefix, oak_from, player_from):

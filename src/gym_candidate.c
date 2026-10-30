@@ -456,6 +456,34 @@ void GymCandidate_BufferMentorFirst(void)
         StringExpandPlaceholders(gStringVar4, mentor->first);
 }
 
+// Pokémon Canvas: what a Gym Leader says before your gym battle when they're your mentor (they met
+// you in OAK's lab, so their usual intro doesn't fit). data/text/mentor_story.inc.
+extern const u8 GymCandidate_Text_PreBattleRock[], GymCandidate_Text_PreBattleNormal[], GymCandidate_Text_PreBattleWater[],
+    GymCandidate_Text_PreBattleElectric[], GymCandidate_Text_PreBattleSteel[], GymCandidate_Text_PreBattleGrass[],
+    GymCandidate_Text_PreBattlePoison[], GymCandidate_Text_PreBattleBug[], GymCandidate_Text_PreBattlePsychic[],
+    GymCandidate_Text_PreBattleFairy[], GymCandidate_Text_PreBattleFire[];
+static const u8 *const sMentorPreBattle[NUMBER_OF_MON_TYPES] =
+{
+    [TYPE_ROCK] = GymCandidate_Text_PreBattleRock, [TYPE_NORMAL] = GymCandidate_Text_PreBattleNormal,
+    [TYPE_WATER] = GymCandidate_Text_PreBattleWater, [TYPE_ELECTRIC] = GymCandidate_Text_PreBattleElectric,
+    [TYPE_STEEL] = GymCandidate_Text_PreBattleSteel, [TYPE_GRASS] = GymCandidate_Text_PreBattleGrass,
+    [TYPE_POISON] = GymCandidate_Text_PreBattlePoison, [TYPE_BUG] = GymCandidate_Text_PreBattleBug,
+    [TYPE_PSYCHIC] = GymCandidate_Text_PreBattlePsychic, [TYPE_FAIRY] = GymCandidate_Text_PreBattleFairy,
+    [TYPE_FIRE] = GymCandidate_Text_PreBattleFire,
+};
+
+// Special: VAR_0x8009 = a Gym Leader (0-7). VAR_RESULT = whether they're the player's mentor (and
+// have a pre-battle line); gStringVar4 = that line.
+void GymCandidate_BufferMentorPreBattle(void)
+{
+    u32 type = VarGet(VAR_PLAYER_TYPE);
+    gSpecialVar_Result = FALSE;
+    if (GetMentor(gSpecialVar_0x8009) == NULL || type >= NUMBER_OF_MON_TYPES || sMentorPreBattle[type] == NULL)
+        return;
+    StringExpandPlaceholders(gStringVar4, sMentorPreBattle[type]);
+    gSpecialVar_Result = TRUE;
+}
+
 // Special: VAR_0x8009 = leader. Approves; gStringVar4 = what they say (the mentor's version if
 // they mentor the player's type); STR_VAR_1 = approvals so far
 void GymCandidate_Approve(void)

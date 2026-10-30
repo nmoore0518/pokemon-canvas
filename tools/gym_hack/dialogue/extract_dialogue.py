@@ -60,7 +60,7 @@ SHARED_USED = re.compile(r"data/(scripts|text)/(aide|day_care_frlg|hall_of_fame_
                          r"pokemon_league|route23|safari_zone|pokemon_mansion|static_pokemon|elite_four|"
                          r"silphco_doors|move_tutors_frlg|training_houses|new_game_intro_frlg|pokedex_rating(?<=scripts/pokedex_rating)|"
                          r"ingame_trade_frlg|gym_\w+|leader_academy\w*|exotic_safari\w*|"
-                         r"event_mons\w*|gauntlet|incense|johto|move_extractor|palm_pilot|stat_items|dad_story|outfits|outfits_list)\.inc$")
+                         r"event_mons\w*|gauntlet|incense|johto|move_extractor|palm_pilot|stat_items|dad_story|mentor_story|outfits|outfits_list)\.inc$")
 # text the game no longer shows (CANVAS_SKIP_CONTROLS_GUIDE in src/oak_speech.c)
 UNUSED_TEXT = re.compile(r"^g(ControlsGuide|PikachuIntro)_")
 

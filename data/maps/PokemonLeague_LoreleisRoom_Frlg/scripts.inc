@@ -65,9 +65,11 @@ PokemonLeague_LoreleisRoom_EventScript_Lorelei::
 	end
 
 PokemonLeague_LoreleisRoom_EventScript_Intro::
-	msgbox PokemonLeague_LoreleisRoom_Text_Intro
 	setvar VAR_0x8009, 8
-	call GymCandidate_EventScript_EliteFourMentor
+	@ (Pokémon Canvas: your mentor greets you as someone they know, instead of the usual intro)
+	special GymCandidate_BufferMentorFirst
+	goto_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_ShowText4
+	msgbox PokemonLeague_LoreleisRoom_Text_Intro
 	return
 
 PokemonLeague_LoreleisRoom_EventScript_RematchIntro::

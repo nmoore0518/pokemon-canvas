@@ -9,7 +9,11 @@ CeladonCity_Gym_OnTransitionGuest::
 
 CeladonCity_Gym_EventScript_Erika::
 	famechecker FAMECHECKER_ERIKA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 3   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_ERIKA, CeladonCity_Gym_Text_ErikaIntro, CeladonCity_Gym_Text_ErikaDefeat, CeladonCity_Gym_EventScript_DefeatedErika, NO_MUSIC
+CeladonCity_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM19_FROM_ERIKA, CeladonCity_Gym_EventScript_GiveTM19
 	call GymHack_EventScript_ErikaGifts
 	call GymCandidate_EventScript_CeladonCityTalk
@@ -245,3 +249,7 @@ CeladonCity_Gym_Text_GymStatuePlayerWon::
 	.string "WINNING TRAINERS:\n"
 	.string "{RIVAL}, {PLAYER}$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+CeladonCity_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_ERIKA, gStringVar4, CeladonCity_Gym_Text_ErikaDefeat, CeladonCity_Gym_EventScript_DefeatedErika, NO_MUSIC
+	goto CeladonCity_Gym_EventScript_AfterLeaderBattle

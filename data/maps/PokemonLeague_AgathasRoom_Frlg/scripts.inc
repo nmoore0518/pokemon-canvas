@@ -61,9 +61,11 @@ PokemonLeague_AgathasRoom_EventScript_Agatha::
 	end
 
 PokemonLeague_AgathasRoom_EventScript_Intro::
-	msgbox PokemonLeague_AgathasRoom_Text_Intro
 	setvar VAR_0x8009, 10
-	call GymCandidate_EventScript_EliteFourMentor
+	@ (Pokémon Canvas: your mentor greets you as someone they know, instead of the usual intro)
+	special GymCandidate_BufferMentorFirst
+	goto_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_ShowText4
+	msgbox PokemonLeague_AgathasRoom_Text_Intro
 	return
 
 PokemonLeague_AgathasRoom_EventScript_RematchIntro::

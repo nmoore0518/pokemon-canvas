@@ -186,6 +186,12 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     Normal Ball, Lv. 50, perfect IVs, no EVs, OT DAD, can't breed, evolve or be traded) holding
     **Dad's Notebook** (a key-ish item: can't be sold, tossed, stolen or knocked off; read it from the
     bag). The basement switch appears (`FLAG_BASEMENT_SWITCH_SHOWN`) and Giovanni's approval is set.
+  - After VIRIDIAN (8-10): Mom owns up to what she knew, then the player is warped home to the
+    CHANSEY statue, where Mom and Oak remember Dad; Oak explains the statue (the town put it up for
+    him) and that the League counts Viridian's approval as given (`DadStory_EventScript_Memorial`,
+    `DAD_STORY_REMEMBERED`; an older save at `DAD_STORY_DONE` gets it the next time it enters Pallet).
+    From then on ARCHER is the Viridian Gym's leader (`LOCALID_VIRIDIAN_GYM_ARCHER`): he tells the
+    player where he came from once (`DAD_STORY_MET_ARCHER`). Mom's talk at home changes after Viridian.
   - Saves already past a step skip its scene (e.g. past Silph: the stairs are simply there).
   - Giovanni isn't one of the famous gym challengers any more.
   - In the Gym Leader Convention, ARCHER (a former Team Rocket executive) holds Giovanni's place in
@@ -510,7 +516,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     Brock, Erika, Blaine, Lorelei, Bruno, Sabrina (cool but accepting). Prickly: Misty, Surge,
     Koga, Giovanni, Agatha, Lance. Types with no Kanto leader go to the closest fit:
     Normal→Brock, Steel→Surge, Bug→Koga, Fairy→Sabrina, Dark→Agatha, Flying→Lance; Ground goes to
-    Bruno (Giovanni, the villain of Dad's story, mentors no one).
+    Bruno (Giovanni, the villain of Dad's story, mentors no one). A mentor greets the player as
+    someone they know: a Gym Leader mentor's gym battle opens with their own line
+    (`tools/gym_hack/story/mentor_story.txt`, `GymCandidate_BufferMentorPreBattle`), and an Elite
+    Four mentor's line replaces their usual intro.
   - **The rival** is the other candidate: his Route 22, Cerulean, S.S. Anne, Pokémon Tower and
     Silph Co. lines are about the race for approvals and the Pallet gym.
   - **Oak's doubts** grow quietly: lines in his lab as approvals come in (picked the gym's floor

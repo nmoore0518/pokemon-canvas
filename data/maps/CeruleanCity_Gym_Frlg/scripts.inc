@@ -9,7 +9,11 @@ CeruleanCity_Gym_OnTransitionGuest::
 
 CeruleanCity_Gym_EventScript_Misty::
 	famechecker FAMECHECKER_MISTY, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 1   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, CeruleanCity_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_MISTY, CeruleanCity_Gym_Text_MistyIntro, CeruleanCity_Gym_Text_MistyDefeat, CeruleanCity_Gym_EventScript_MistyDefeated, NO_MUSIC
+CeruleanCity_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM03_FROM_MISTY, CeruleanCity_Gym_EventScript_GiveTM03
 	call GymHack_EventScript_MistyGifts
 	call GymCandidate_EventScript_CeruleanCityTalk
@@ -171,3 +175,7 @@ CeruleanCity_Gym_Text_GymStatuePlayerWon::
 	.string "WINNING TRAINERS:\n"
 	.string "{RIVAL}, {PLAYER}$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+CeruleanCity_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_MISTY, gStringVar4, CeruleanCity_Gym_Text_MistyDefeat, CeruleanCity_Gym_EventScript_MistyDefeated, NO_MUSIC
+	goto CeruleanCity_Gym_EventScript_AfterLeaderBattle

@@ -51,6 +51,7 @@ PalletTown_OnFrame::
 	map_script_2 VAR_GYM_FINALE, GYM_FINALE_OAK_WAITS, GymFinale_EventScript_OakAtTheDoor
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_OAK, 2, PalletTown_EventScript_OakRatingScene
 	map_script_2 VAR_DAD_STORY, DAD_STORY_SENDOFF, DadStory_EventScript_Sendoff
+	map_script_2 VAR_DAD_STORY, DAD_STORY_DONE, DadStory_EventScript_Memorial
 	.2byte 0
 
 @ Oak approaches player after exiting their house post Elite Four to check if they should receieve the National Dex

@@ -70,7 +70,10 @@ DadStory_Text_MomSilphGirl::
 	.string "{PLAYER}, come with me!$"
 
 DadStory_Text_MomWhyWithHim::
-	.string "MOM: Why were you with him…?\p"
+	.string "MOM: I was shopping in SAFFRON when I\n"
+	.string "saw you go into SILPH CO. I followed you\l"
+	.string "all the way up.\p"
+	.string "Why were you with him…?\p"
 	.string "Those aren't good people, you know that,\n"
 	.string "right?\p"
 	.string "They do more than just steal POKéMON.\n"
@@ -211,6 +214,29 @@ DadStory_Text_MomDadsChansey::
 	.string "That's what he would have wanted.\p"
 	.string "Go battle the ELITE FOUR. Win your GYM.$"
 
+DadStory_Text_MomConfession::
+	.string "MOM: {PLAYER}… there's something I need\n"
+	.string "to tell you.\p"
+	.string "I knew your father worked with\n"
+	.string "GIOVANNI. I knew TEAM ROCKET came to\l"
+	.string "our door at all hours.\p"
+	.string "But I never knew how deep it went. Not\n"
+	.string "until today.\p"
+	.string "He never told me, and I never asked. I\n"
+	.string "think I was afraid of the answer.\p"
+	.string "What I did know is that, at the end, he\n"
+	.string "was trying to make it right.\p"
+	.string "This CHANSEY. The switch in his lab that\n"
+	.string "makes his machines gentle. That was him\l"
+	.string "making amends.\p"
+	.string "I hid that switch after he died. I\n"
+	.string "couldn't bear to look at it. It's back\l"
+	.string "where it belongs now.\p"
+	.string "I should have told you all of this a long\n"
+	.string "time ago. I'm sorry.\p"
+	.string "Come on. Let's go home. PROF. OAK wants\n"
+	.string "to see you.$"
+
 DadStory_Text_ReceivedDadsChansey::
 	.string "{PLAYER} received DAD's CHANSEY!$"
 
@@ -220,6 +246,94 @@ DadStory_Text_ReceivedDadsNotebook::
 
 DadStory_Text_ChanseySentToPC::
 	.string "DAD's CHANSEY was sent to the PC.$"
+
+DadStory_Text_MemorialOak1::
+	.string "OAK: {PLAYER}! Your MOTHER called me\n"
+	.string "from VIRIDIAN. I heard everything.\p"
+	.string "I knew your father, you know. He was a\n"
+	.string "brilliant man. One of the brightest minds\l"
+	.string "I've ever met.\p"
+	.string "He could build anything he set his mind\n"
+	.string "to. But brilliance draws attention…\p"
+	.string "And he fell in with the wrong crowd.$"
+
+DadStory_Text_MemorialMom1::
+	.string "MOM: He did, at first. But not at the end.$"
+
+DadStory_Text_MemorialOak2::
+	.string "OAK: No. Not at the end.\p"
+	.string "When he turned on GIOVANNI, TEAM ROCKET\n"
+	.string "never truly recovered. You saw to the\l"
+	.string "rest today.\p"
+	.string "{PLAYER}, have you ever wondered why\n"
+	.string "there's a CHANSEY statue in PALLET\l"
+	.string "TOWN?\p"
+	.string "The town put it up after your father\n"
+	.string "passed. For what he did to weaken TEAM\l"
+	.string "ROCKET…\p"
+	.string "…and for the CHANSEY he made to heal,\n"
+	.string "not to hurt.\p"
+	.string "“May all who visit PALLET TOWN leave a\n"
+	.string "little happier.” That was his idea of\l"
+	.string "what POKéMON are for.$"
+
+DadStory_Text_MemorialMom2::
+	.string "MOM: He would have hated having a\n"
+	.string "statue. But he'd have loved that it's a\l"
+	.string "CHANSEY.$"
+
+DadStory_Text_MemorialOak3::
+	.string "OAK: Ho ho! That he would.\p"
+	.string "Oh, and one more thing. I spoke with the\n"
+	.string "LEAGUE before I came out here.\p"
+	.string "After what happened at VIRIDIAN,\n"
+	.string "they've agreed to count its LEADER's\l"
+	.string "approval as given.\p"
+	.string "VIRIDIAN's LEADER is gone, after all. And\n"
+	.string "you beat him fair and square.\p"
+	.string "That makes eight, {PLAYER}. The ELITE\n"
+	.string "FOUR are waiting for you.$"
+
+DadStory_Text_MemorialMom3::
+	.string "MOM: Go on, honey. Make us proud.$"
+
+DadStory_Text_ArcherIntro::
+	.string "ARCHER: …So you're the one. The kid who\n"
+	.string "beat the BOSS. More than once.\p"
+	.string "I'm ARCHER. I was one of TEAM ROCKET's\n"
+	.string "executives. When GIOVANNI was away, I\l"
+	.string "ran things.\p"
+	.string "When he vanished, TEAM ROCKET fell\n"
+	.string "apart. Some of us are still out there,\l"
+	.string "waiting for him to come back.\p"
+	.string "Not me. I turned myself in to the LEAGUE.\p"
+	.string "They made me an offer. VIRIDIAN needed\n"
+	.string "a LEADER, and the BOSS's POKéMON needed\l"
+	.string "a TRAINER.\p"
+	.string "So here I am. LEADER of the VIRIDIAN\n"
+	.string "GYM, with GIOVANNI's old team… and the\l"
+	.string "LEAGUE watching my every move.\p"
+	.string "Your father was the only one of us who\n"
+	.string "ever stood up to GIOVANNI. I didn't\l"
+	.string "understand it back then.\p"
+	.string "I think I'm starting to.$"
+
+DadStory_Text_ArcherAgain::
+	.string "ARCHER: The BOSS's POKéMON answer to me\n"
+	.string "now. I'll make this a GYM your father\l"
+	.string "would have respected.$"
+
+DadStory_Text_CrateIsDads::
+	.string "Oh… it's DAD's ROCKET uniform.$"
+
+DadStory_Text_MomAfterViridian::
+	.string "MOM: {PLAYER}! How is CHANSEY doing?\p"
+	.string "She was always so gentle with you, even\n"
+	.string "when you were a baby. Your father made\l"
+	.string "sure of that.\p"
+	.string "He'd be so proud of you, you know. I know\n"
+	.string "I am.\p"
+	.string "Take care of each other out there.$"
 
 DadStory_Text_Note1::
 	.string "NOTES ON SYNTHESIZER\n"

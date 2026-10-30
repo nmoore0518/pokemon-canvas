@@ -187,7 +187,7 @@
 #define FLAG_BASEMENT_REVEALED               0x0D2  // Pokémon Canvas: the Dad story
 #define FLAG_GOT_DADS_CHANSEY               0x0D3  // Pokémon Canvas: the Dad story
 #define FLAG_NAME_RATER_TIP      0x0D4  // Pokémon Canvas: the NAME RATER said you can rename from the summary
-#define FLAG_0x0D5               0x0D5
+#define FLAG_HIDE_VIRIDIAN_ARCHER 0x0D5  // Pokémon Canvas: ARCHER runs the VIRIDIAN GYM after the Dad story
 #define FLAG_0x0D6               0x0D6
 #define FLAG_0x0D7               0x0D7
 #define FLAG_0x0D8               0x0D8

@@ -45,10 +45,19 @@ Outfits_EventScript_BasementCrates::
 	message Outfits_Text_FoundRocketUniform
 	waitmessage
 	waitfanfare
-	msgbox Outfits_Text_WhyIsThisHere
+	call_if_lt VAR_DAD_STORY, DAD_STORY_DONE, Outfits_EventScript_WhyIsThisHere
+	call_if_ge VAR_DAD_STORY, DAD_STORY_DONE, Outfits_EventScript_ItsDads
 	msgbox Outfits_Text_PutInWardrobe
 	releaseall
 	end
+
+Outfits_EventScript_WhyIsThisHere::
+	msgbox Outfits_Text_WhyIsThisHere
+	return
+
+Outfits_EventScript_ItsDads::
+	msgbox DadStory_Text_CrateIsDads
+	return
 
 Outfits_EventScript_CratesEmpty::
 	msgbox Outfits_Text_CratesEmpty, MSGBOX_SIGN

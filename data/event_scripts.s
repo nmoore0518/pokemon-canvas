@@ -1078,6 +1078,7 @@ gStdScripts_End::
 	.include "data/scripts/move_extractor.inc"
 	.include "data/scripts/dad_story.inc"
 	.include "data/text/dad_story.inc"
+	.include "data/text/mentor_story.inc"
 	.include "data/scripts/outfits.inc"
 	.include "data/scripts/palm_pilot.inc"
 	.include "data/scripts/gym_legend.inc"

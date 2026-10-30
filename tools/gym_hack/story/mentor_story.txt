@@ -1,0 +1,73 @@
+# Pokémon Canvas: what a Gym Leader says before your gym battle when they are your mentor (they've
+# met you in OAK's lab, so their usual "who are you?" intro doesn't fit). Built into
+# data/text/mentor_story.inc by tools/gym_hack/story/build_story_text.py; used by
+# GymCandidate_BufferMentorPreBattle (src/gym_candidate.c).
+# (Claude's drafts, Oct 30: rewrite freely.)
+#
+#   == Label            a message box text: words wrap two lines to a box
+#   |                   (on its own line) start a new box
+
+== GymCandidate_Text_PreBattleRock
+BROCK: {PLAYER}! You made it to PEWTER!
+|
+We met in OAK's lab, but here I'm a GYM LEADER, and you're a challenger.
+|
+Show me what your ROCK POKéMON can do!
+
+== GymCandidate_Text_PreBattleNormal
+BROCK: {PLAYER}! Good to see you again.
+|
+Since OAK's lab, I've wondered how your NORMAL types would do against my ROCK types.
+|
+Let's find out!
+
+== GymCandidate_Text_PreBattleWater
+MISTY: Well, well. The kid from OAK's lab.
+|
+A WATER trainer, here to take the WATER GYM's BADGE? Ha!
+|
+Let's see you try!
+
+== GymCandidate_Text_PreBattleElectric
+LT. SURGE: Ten-hut! The ELECTRIC kid from OAK's lab!
+|
+This is MY turf, soldier. Let's see who's packing more voltage!
+
+== GymCandidate_Text_PreBattleSteel
+LT. SURGE: The STEEL kid! Told you I'd be watching.
+|
+Let's see if that armor holds up under fire!
+
+== GymCandidate_Text_PreBattleGrass
+ERIKA: Oh, {PLAYER}… Welcome. I'm so glad you came.
+|
+I've been looking forward to seeing your GRASS POKéMON again.
+|
+Shall we?
+
+== GymCandidate_Text_PreBattlePoison
+KOGA: …You have come, as I knew you would.
+|
+I have watched you from the shadows since OAK's lab.
+|
+Now show me your POISON in the open!
+
+== GymCandidate_Text_PreBattleBug
+KOGA: Fwahaha! The BUG trainer from OAK's lab.
+|
+Most call BUG POKéMON weak. Show me why they are wrong!
+
+== GymCandidate_Text_PreBattlePsychic
+SABRINA: …I saw this battle in a vision, the day we met in OAK's lab.
+|
+Two PSYCHIC trainers. Only one leaves with the win.
+
+== GymCandidate_Text_PreBattleFairy
+SABRINA: We meet again, as I said we would.
+|
+Show me whether your FAIRY POKéMON trust you as much as I foresaw.
+
+== GymCandidate_Text_PreBattleFire
+BLAINE: Hah! Quiz! Who's the FIRE trainer I met in OAK's lab?
+|
+Answer: YOU! Now let's see if you can take the heat!

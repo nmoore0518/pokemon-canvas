@@ -114,9 +114,11 @@ PokemonLeague_LancesRoom_EventScript_Lance::
 	end
 
 PokemonLeague_LancesRoom_EventScript_Intro::
-	msgbox PokemonLeague_LancesRoom_Text_Intro
 	setvar VAR_0x8009, 11
-	call GymCandidate_EventScript_EliteFourMentor
+	@ (Pokémon Canvas: your mentor greets you as someone they know, instead of the usual intro)
+	special GymCandidate_BufferMentorFirst
+	goto_if_eq VAR_RESULT, TRUE, GymCandidate_EventScript_ShowText4
+	msgbox PokemonLeague_LancesRoom_Text_Intro
 	return
 
 PokemonLeague_LancesRoom_EventScript_RematchIntro::

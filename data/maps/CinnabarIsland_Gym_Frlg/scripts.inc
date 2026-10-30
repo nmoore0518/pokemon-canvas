@@ -53,7 +53,11 @@ CinnabarIsland_Gym_OnLoadOpenDoor6::
 
 CinnabarIsland_Gym_EventScript_Blaine::
 	famechecker FAMECHECKER_BLAINE, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 6   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, CinnabarIsland_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_BLAINE, CinnabarIsland_Gym_Text_BlaineIntro, CinnabarIsland_Gym_Text_BlaineDefeat, CinnabarIsland_Gym_EventScript_DefeatedBlaine, NO_MUSIC
+CinnabarIsland_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM38_FROM_BLAINE, CinnabarIsland_Gym_EventScript_GiveTM38
 	call GymHack_EventScript_BlaineGifts
 	call GymCandidate_EventScript_CinnabarIslandTalk
@@ -908,3 +912,7 @@ CinnabarIsland_Gym_Text_SorryBadCall::
 	.string "Sorry!\n"
 	.string "Bad call!$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+CinnabarIsland_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_BLAINE, gStringVar4, CinnabarIsland_Gym_Text_BlaineDefeat, CinnabarIsland_Gym_EventScript_DefeatedBlaine, NO_MUSIC
+	goto CinnabarIsland_Gym_EventScript_AfterLeaderBattle

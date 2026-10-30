@@ -123,8 +123,7 @@ RocketHideout_B4F_EventScript_RemoveBarrier::
 RocketHideout_B4F_Text_GiovanniIntro::
 	.string "So! I must say, I am impressed you\n"
 	.string "got here.\p"
-	.string "You're more like your father than\n"
-	.string "I thought.\p"
+	.string "You remind me of your father.\p"
 	.string "Oh? You didn't know I knew your\n"
 	.string "father?\p"
 	.string "I wonder why your MOM never told\n"

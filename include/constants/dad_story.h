@@ -10,7 +10,14 @@
 #define DAD_STORY_SILPH_HOME    5   // MOM took the player home from SILPH CO. (the basement scene is next)
 #define DAD_STORY_BASEMENT      6   // MOM showed the player the basement
 #define DAD_STORY_GIOVANNI      7   // beat GIOVANNI once at VIRIDIAN; his last battle is next
-#define DAD_STORY_DONE          8   // GIOVANNI is gone; DAD's CHANSEY, the notebook, the switch
+#define DAD_STORY_DONE          8   // GIOVANNI is gone; DAD's CHANSEY, the notebook, the switch (MOM and OAK
+                                    // are waiting at PALLET TOWN's CHANSEY statue)
+#define DAD_STORY_REMEMBERED    9   // ...and have talked to the player there (ARCHER runs the VIRIDIAN GYM)
+#define DAD_STORY_MET_ARCHER    10  // ARCHER has told the player where he came from
+
+// Where the player stands for the scene at the CHANSEY statue (two squares below its plaque)
+#define DAD_STORY_MEMORIAL_X    42
+#define DAD_STORY_MEMORIAL_Y    8
 
 // The basement's notes (VAR_0x8004 for ShowNotePage)
 #define NOTE_PAGE_NOTE_1    0

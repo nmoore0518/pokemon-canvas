@@ -9,7 +9,11 @@ SaffronCity_Gym_OnTransitionGuest::
 
 SaffronCity_Gym_EventScript_Sabrina::
 	famechecker FAMECHECKER_SABRINA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 5   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_SABRINA, SaffronCity_Gym_Text_SabrinaIntro, SaffronCity_Gym_Text_SabrinaDefeat, SaffronCity_Gym_EventScript_DefeatedSabrina, NO_MUSIC
+SaffronCity_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM04_FROM_SABRINA, SaffronCity_Gym_EventScript_GiveTM04
 	call GymHack_EventScript_SabrinaGifts
 	call GymCandidate_EventScript_SaffronCityTalk
@@ -265,3 +269,7 @@ SaffronCity_Gym_Text_GymStatuePlayerWon::
 	.string "WINNING TRAINERS:\n"
 	.string "{RIVAL}, {PLAYER}$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+SaffronCity_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_SABRINA, gStringVar4, SaffronCity_Gym_Text_SabrinaDefeat, SaffronCity_Gym_EventScript_DefeatedSabrina, NO_MUSIC
+	goto SaffronCity_Gym_EventScript_AfterLeaderBattle

@@ -86,7 +86,9 @@ Leave her alone, GIOVANNI!
 {PLAYER}, come with me!
 
 == DadStory_Text_MomWhyWithHim
-MOM: Why were you with him…?
+MOM: I was shopping in SAFFRON when I saw you go into SILPH CO. I followed you all the way up.
+|
+Why were you with him…?
 |
 Those aren't good people, you know that, right?
 |
@@ -229,6 +231,26 @@ Take this CHANSEY. It's yours now. That's what he would have wanted.
 |
 Go battle the ELITE FOUR. Win your GYM.
 
+# (Claude's draft, Oct 30: Mom owns up to what she knew; then home to see Oak)
+== DadStory_Text_MomConfession
+MOM: {PLAYER}… there's something I need to tell you.
+|
+I knew your father worked with GIOVANNI. I knew TEAM ROCKET came to our door at all hours.
+|
+But I never knew how deep it went. Not until today.
+|
+He never told me, and I never asked. I think I was afraid of the answer.
+|
+What I did know is that, at the end, he was trying to make it right.
+|
+This CHANSEY. The switch in his lab that makes his machines gentle. That was him making amends.
+|
+I hid that switch after he died. I couldn't bear to look at it. It's back where it belongs now.
+|
+I should have told you all of this a long time ago. I'm sorry.
+|
+Come on. Let's go home. PROF. OAK wants to see you.
+
 == DadStory_Text_ReceivedDadsChansey
 {PLAYER} received DAD's CHANSEY!
 
@@ -241,6 +263,84 @@ She handed you something.
 DAD's CHANSEY was sent to the PC.
 
 # ---- Dad's notes, on the basement floor (read as pages) ----
+# ---- Pallet Town: Mom and Oak at the CHANSEY statue, right after Viridian (Claude's draft) ----
+== DadStory_Text_MemorialOak1
+OAK: {PLAYER}! Your MOTHER called me from VIRIDIAN. I heard everything.
+|
+I knew your father, you know. He was a brilliant man. One of the brightest minds I've ever met.
+|
+He could build anything he set his mind to. But brilliance draws attention…
+|
+And he fell in with the wrong crowd.
+
+== DadStory_Text_MemorialMom1
+MOM: He did, at first. But not at the end.
+
+== DadStory_Text_MemorialOak2
+OAK: No. Not at the end.
+|
+When he turned on GIOVANNI, TEAM ROCKET never truly recovered. You saw to the rest today.
+|
+{PLAYER}, have you ever wondered why there's a CHANSEY statue in PALLET TOWN?
+|
+The town put it up after your father passed. For what he did to weaken TEAM ROCKET…
+|
+…and for the CHANSEY he made to heal, not to hurt.
+|
+“May all who visit PALLET TOWN leave a little happier.” That was his idea of what POKéMON are for.
+
+== DadStory_Text_MemorialMom2
+MOM: He would have hated having a statue. But he'd have loved that it's a CHANSEY.
+
+== DadStory_Text_MemorialOak3
+OAK: Ho ho! That he would.
+|
+Oh, and one more thing. I spoke with the LEAGUE before I came out here.
+|
+After what happened at VIRIDIAN, they've agreed to count its LEADER's approval as given.
+|
+VIRIDIAN's LEADER is gone, after all. And you beat him fair and square.
+|
+That makes eight, {PLAYER}. The ELITE FOUR are waiting for you.
+
+== DadStory_Text_MemorialMom3
+MOM: Go on, honey. Make us proud.
+
+# ---- Viridian Gym after the story: ARCHER, its new LEADER (Claude's draft) ----
+== DadStory_Text_ArcherIntro
+ARCHER: …So you're the one. The kid who beat the BOSS. More than once.
+|
+I'm ARCHER. I was one of TEAM ROCKET's executives. When GIOVANNI was away, I ran things.
+|
+When he vanished, TEAM ROCKET fell apart. Some of us are still out there, waiting for him to come back.
+|
+Not me. I turned myself in to the LEAGUE.
+|
+They made me an offer. VIRIDIAN needed a LEADER, and the BOSS's POKéMON needed a TRAINER.
+|
+So here I am. LEADER of the VIRIDIAN GYM, with GIOVANNI's old team… and the LEAGUE watching my every move.
+|
+Your father was the only one of us who ever stood up to GIOVANNI. I didn't understand it back then.
+|
+I think I'm starting to.
+
+== DadStory_Text_ArcherAgain
+ARCHER: The BOSS's POKéMON answer to me now. I'll make this a GYM your father would have respected.
+
+# ---- The basement crates, once the player knows (Nick, Oct 30) ----
+== DadStory_Text_CrateIsDads
+Oh… it's DAD's ROCKET uniform.
+
+# ---- Mom at home, after Viridian (Claude's draft) ----
+== DadStory_Text_MomAfterViridian
+MOM: {PLAYER}! How is CHANSEY doing?
+|
+She was always so gentle with you, even when you were a baby. Your father made sure of that.
+|
+He'd be so proud of you, you know. I know I am.
+|
+Take care of each other out there.
+
 == DadStory_Text_Note1 [page]
 NOTES ON SYNTHESIZER
 Finding: A strong acid is needed to strip away the known ability.

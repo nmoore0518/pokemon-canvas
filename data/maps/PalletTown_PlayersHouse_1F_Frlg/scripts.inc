@@ -31,6 +31,7 @@ PalletTown_PlayersHouse_1F_EventScript_MomOakLookingForYouFemale::
 	return
 
 PalletTown_PlayersHouse_1F_EventScript_MomHeal::
+	call_if_ge VAR_DAD_STORY, DAD_STORY_DONE, DadStory_EventScript_MomAtHome   @ (Pokémon Canvas)
 	msgbox PalletTown_PlayersHouse_1F_Text_YouShouldTakeQuickRest
 	closemessage
 	call Common_EventScript_OutOfCenterPartyHeal

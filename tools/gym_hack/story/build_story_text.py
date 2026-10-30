@@ -117,8 +117,9 @@ def build(src, dst):
 
 
 def main():
-    n = build(ROOT / "tools/gym_hack/story/dad_story.txt", ROOT / "data/text/dad_story.inc")
-    print(n, "texts -> data/text/dad_story.inc")
+    for name in ("dad_story", "mentor_story"):
+        n = build(ROOT / f"tools/gym_hack/story/{name}.txt", ROOT / f"data/text/{name}.inc")
+        print(n, f"texts -> data/text/{name}.inc")
 
 
 if __name__ == "__main__":

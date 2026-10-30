@@ -9,7 +9,11 @@ PewterCity_Gym_OnTransitionGuest::
 
 PewterCity_Gym_EventScript_Brock::
 	famechecker FAMECHECKER_BROCK, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	setvar VAR_0x8009, 0   @ (Pokémon Canvas: your mentor greets you as someone they know)
+	special GymCandidate_BufferMentorPreBattle
+	goto_if_eq VAR_RESULT, TRUE, PewterCity_Gym_EventScript_MentorBattle
 	trainerbattle_single TRAINER_LEADER_BROCK, PewterCity_Gym_Text_BrockIntro, PewterCity_Gym_Text_BrockDefeat, PewterCity_Gym_EventScript_DefeatedBrock, NO_MUSIC
+PewterCity_Gym_EventScript_AfterLeaderBattle::
 	goto_if_unset FLAG_GOT_TM39_FROM_BROCK, PewterCity_Gym_EventScript_GiveTM39
 	call GymHack_EventScript_BrockGifts
 	call GymCandidate_EventScript_PewterCityTalk
@@ -210,3 +214,7 @@ PewterCity_Gym_Text_GymStatuePlayerWon::
 	.string "WINNING TRAINERS:\n"
 	.string "{RIVAL}, {PLAYER}$"
 
+@ (Pokémon Canvas) the battle with your mentor's own greeting
+PewterCity_Gym_EventScript_MentorBattle::
+	trainerbattle_single TRAINER_LEADER_BROCK, gStringVar4, PewterCity_Gym_Text_BrockDefeat, PewterCity_Gym_EventScript_DefeatedBrock, NO_MUSIC
+	goto PewterCity_Gym_EventScript_AfterLeaderBattle
