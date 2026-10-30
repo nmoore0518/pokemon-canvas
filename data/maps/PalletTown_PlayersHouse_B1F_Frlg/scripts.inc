@@ -358,8 +358,7 @@ PlayersHouse_B1F_EventScript_TrashCan::
 	end
 
 PlayersHouse_B1F_EventScript_Crates::
-	msgbox PlayersHouse_B1F_Text_Crates, MSGBOX_SIGN
-	end
+	goto Outfits_EventScript_BasementCrates   @ (Pokémon Canvas: DAD's TEAM ROCKET uniform)
 
 	.include "data/maps/PalletTown_PlayersHouse_B1F_Frlg/frames.inc"
 
@@ -558,5 +557,3 @@ PlayersHouse_B1F_Text_Desk::
 PlayersHouse_B1F_Text_TrashCan::
 	.string "Crumpled papers. Nothing readable.$"
 
-PlayersHouse_B1F_Text_Crates::
-	.string "Wooden crates, nailed shut.$"

@@ -235,6 +235,7 @@ enum
     DYN_MULTICHOICE_CB_GYM_DECOR_SHOP,
     DYN_MULTICHOICE_CB_GYM_DECOR_OWNED,
     DYN_MULTICHOICE_CB_GYM_DECOR_SELL,
+    DYN_MULTICHOICE_CB_OUTFIT,          // Pokémon Canvas: the wardrobe (the player shows each outfit)
     
     DYN_MULTICHOICE_CB_NONE,
 };

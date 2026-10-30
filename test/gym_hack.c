@@ -3471,6 +3471,8 @@ TEST("GymHack: the Ability Capsule leaves a synthetic ability alone")
 #include "tv.h"
 #include "data.h"
 #include "constants/dad_story.h"
+#include "constants/outfits.h"
+#include "outfits.h"
 
 extern const u8 DadStory_Text_MomSendoff[], DadStory_Text_RivalMomHasSomething[], DadStory_Text_MomDadsBall[],
     DadStory_Text_MomMoveExtractor[], DadStory_Text_GruntInsists[], DadStory_Text_GiovanniSilphGift[],
@@ -3618,4 +3620,28 @@ TEST("GymHack: Dad story: BRUNO mentors GROUND and AGATHA mentors DARK (not GIOV
 {
     EXPECT_EQ(StringCompare(GymCandidate_GetMentorName(GymCandidate_GetMentorForType(TYPE_GROUND)->who), COMPOUND_STRING("BRUNO")), 0);
     EXPECT_EQ(StringCompare(GymCandidate_GetMentorName(GymCandidate_GetMentorForType(TYPE_DARK)->who), COMPOUND_STRING("AGATHA")), 0);
+}
+
+TEST("GymHack: outfits: each type has its gym uniform, and unlocking keeps the others")
+{
+    u32 t, before = VarGet(VAR_OUTFITS_UNLOCKED), before2 = VarGet(VAR_OUTFITS_UNLOCKED_2);
+    for (t = TYPE_NORMAL; t <= TYPE_FAIRY; t++)
+    {
+        if (t == TYPE_MYSTERY)
+            continue;
+        EXPECT_NE(Outfit_ForType(t), OUTFIT_CASUAL);
+    }
+    EXPECT_EQ(Outfit_ForType(TYPE_WATER), OUTFIT_WATER);
+    EXPECT_EQ(Outfit_ForType(TYPE_FAIRY), OUTFIT_FAIRY);
+    VarSet(VAR_OUTFITS_UNLOCKED, 0);
+    VarSet(VAR_OUTFITS_UNLOCKED_2, 0);
+    EXPECT(Outfit_IsUnlocked(OUTFIT_CASUAL));
+    EXPECT(!Outfit_IsUnlocked(OUTFIT_ROCKET));
+    Outfit_Unlock(OUTFIT_ROCKET);
+    Outfit_Unlock(OUTFIT_FAIRY);
+    EXPECT(Outfit_IsUnlocked(OUTFIT_ROCKET));
+    EXPECT(Outfit_IsUnlocked(OUTFIT_FAIRY));
+    EXPECT(!Outfit_IsUnlocked(OUTFIT_DARK));
+    VarSet(VAR_OUTFITS_UNLOCKED, before);
+    VarSet(VAR_OUTFITS_UNLOCKED_2, before2);
 }

@@ -28,6 +28,7 @@
 
 #include "data/script_menu.h"
 #include "gym_decor.h"
+#include "outfits.h"
 
 typedef void (*DynamicListCallback)(struct DynamicListMenuEventArgs *eventArgs);
 
@@ -105,7 +106,13 @@ static const struct DynamicListMenuEventCollection sDynamicListMenuEventCollecti
         .OnInit = GymDecor_ListOnInit,
         .OnSelectionChanged = GymDecor_SellListOnSelectionChanged,
         .OnDestroy = GymDecor_ListOnDestroy
-    }
+    },
+    [DYN_MULTICHOICE_CB_OUTFIT] =
+    {
+        .OnInit = Outfit_ListOnInit,
+        .OnSelectionChanged = Outfit_ListOnSelectionChanged,
+        .OnDestroy = Outfit_ListOnDestroy
+    },
 };
 
 static const struct ListMenuTemplate sScriptableListMenuTemplate =

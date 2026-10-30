@@ -1,4 +1,5 @@
 #include "global.h"
+#include "outfits.h"
 #include "gym_candidate.h"
 #include "form_items.h"
 #include "gym_decor.h"
@@ -535,10 +536,11 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_RubySapphireBrendan,   OBJ_EVENT_PAL_TAG_RS_BRENDAN},
     {gObjectEventPal_RubySapphireMay,       OBJ_EVENT_PAL_TAG_RS_MAY},
 #if IS_FRLG
-    {gObjectEventPal_PlayerFrlg,            OBJ_EVENT_PAL_TAG_PLAYER_RED},
-    {gObjectEventPal_PlayerReflectionFrlg,  OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
-    {gObjectEventPal_PlayerFrlg,            OBJ_EVENT_PAL_TAG_PLAYER_GREEN},
-    {gObjectEventPal_PlayerReflectionFrlg,  OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION},
+    // (Pokémon Canvas: the player's colors are the outfit's, in RAM: src/outfits.c)
+    {gOutfitPlayerPalettes[MALE],                 OBJ_EVENT_PAL_TAG_PLAYER_RED},
+    {gOutfitPlayerReflectionPalettes[MALE],       OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
+    {gOutfitPlayerPalettes[FEMALE],               OBJ_EVENT_PAL_TAG_PLAYER_GREEN},
+    {gOutfitPlayerReflectionPalettes[FEMALE],     OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION},
     {gObjectEventPal_NpcBlue,               OBJ_EVENT_PAL_TAG_NPC_BLUE},
     {gObjectEventPal_NpcPink,               OBJ_EVENT_PAL_TAG_NPC_PINK},
     {gObjectEventPal_NpcGreen,              OBJ_EVENT_PAL_TAG_NPC_GREEN},
@@ -3499,6 +3501,10 @@ void PatchObjectPaletteRange(const u16 *paletteTags, u8 minSlot, u8 maxSlot)
 static u8 FindObjectEventPaletteIndexByTag(u16 tag)
 {
     u8 i;
+
+    if (tag == OBJ_EVENT_PAL_TAG_PLAYER_RED || tag == OBJ_EVENT_PAL_TAG_PLAYER_GREEN
+     || tag == OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION || tag == OBJ_EVENT_PAL_TAG_PLAYER_GREEN_REFLECTION)
+        Outfit_RefreshPalettes();   // (Pokémon Canvas: the player's outfit)
 
     for (i = 0; sObjectEventSpritePalettes[i].tag != OBJ_EVENT_PAL_TAG_NONE; i++)
     {

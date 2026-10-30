@@ -369,6 +369,7 @@ GymCandidate_EventScript_MentorItemExplain::
 	bufferitemname STR_VAR_1, VAR_0x8004
 	goto_if_eq VAR_0x8009, 6, GymCandidate_EventScript_EdgeItemExplain
 	msgbox GymCandidate_Text_GuardItemExplain
+	call Outfits_EventScript_GymUniform   @ (Pokémon Canvas: and the gym uniform of the player's type)
 	return
 
 GymCandidate_EventScript_EdgeItemExplain::

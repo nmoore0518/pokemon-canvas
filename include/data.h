@@ -432,8 +432,12 @@ static inline const union AnimCmd *const *GetTrainerBackPicAnims(enum TrainerPic
     return gTrainerPicInfo[SanitizeBackTrainerPic(trainerPic)].backPic->animation;
 }
 
+const u16 *Outfit_GetBackPicPalette(bool32 female);
 static inline const u16 *GetTrainerBackPicPalette(enum TrainerPicID trainerPic)
 {
+    // (Pokémon Canvas: the player's back pic wears their outfit)
+    if (trainerPic == TRAINER_PIC_RED || trainerPic == TRAINER_PIC_LEAF)
+        return Outfit_GetBackPicPalette(trainerPic == TRAINER_PIC_LEAF);
     return gTrainerPicInfo[SanitizeBackTrainerPic(trainerPic)].backPic->paletteData;
 }
 

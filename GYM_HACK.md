@@ -190,6 +190,20 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Giovanni isn't one of the famous gym challengers any more.
   - In the Gym Leader Convention, ARCHER (a former Team Rocket executive) holds Giovanni's place in
     the Ground hall with Giovanni's old team: the League let him take over the Viridian Gym.
+- **Outfits** (`src/outfits.c`, `include/constants/outfits.h`, `data/scripts/outfits.inc`; colors from
+  `tools/gym_hack/outfit_art.py`). An outfit is a set of colors for the player's own sprites, so it
+  covers every one of them (walking, running, bike, surf, fishing, field moves, reflections and the
+  battle back pic) for both boy and girl. The player's overworld palettes point at RAM
+  (`gOutfitPlayerPalettes`, refreshed from the outfit whenever they're looked up) and
+  `GetTrainerBackPicPalette` hands the back pic the outfit's. `VAR_PLAYER_OUTFIT` (0x40DC) is the one
+  worn; `VAR_OUTFITS_UNLOCKED` (0x40E5) / `_2` (0x4091) which are unlocked. The wardrobe (the green
+  cabinet in the player's room, x 4-5) lists the ones the player has, and the player shows each as
+  it's picked (`DYN_MULTICHOICE_CB_OUTFIT`).
+  - CASUAL CLOTHES: always. ROCKET UNIFORM: Dad's, in the basement crates (`Outfits_EventScript_BasementCrates`).
+  - The 18 gym uniforms (the clothes in the type's Type Ball colors): the player's type's comes with
+    the mentor's first gift after Mt. Moon (older saves get it at the wardrobe), and changing the
+    gym's type unlocks the new type's. The lines are placeholders.
+  - New outfits go at the end of `OUTFITS` (saves keep the numbers); run the script after changing it.
 - **Renaming from the summary**: the first time the player talks to the Name Rater (Lavender Town),
   he says they can rename a Pokémon any time (`FLAG_NAME_RATER_TIP`); from then on the summary
   screen's first page shows RENAME (A) for the party's own Pokémon (not traded ones, Eggs or the

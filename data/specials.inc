@@ -854,3 +854,9 @@ gSpecials::
 	def_special DadStory_GetGymTypeBall
 	def_special DadStory_GiveChansey
 	def_special BufferItemPocketName
+	def_special Outfit_CheckUnlocked
+	def_special Outfit_CountUnlocked
+	def_special Outfit_UnlockSpecial
+	def_special Outfit_GiveGymUniform
+	def_special Outfit_CatchUp
+	def_special Outfit_Wear

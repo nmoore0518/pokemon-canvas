@@ -158,7 +158,7 @@
 #define VAR_0x408E                 0x408E
 #define VAR_0x408F                 0x408F
 #define VAR_0x4090                 0x4090
-#define VAR_0x4091                 0x4091
+#define VAR_OUTFITS_UNLOCKED_2     0x4091   // Pokémon Canvas: outfits 17-32 unlocked
 #define VAR_0x4092                 0x4092
 #define VAR_0x4093                 0x4093
 #define VAR_0x4094                 0x4094
@@ -232,7 +232,7 @@
 #define VAR_0x40D9                 0x40D9
 #define VAR_0x40DA                 0x40DA
 #define VAR_DAD_STORY              0x40DB   // Pokémon Canvas: the Dad story (DAD_STORY_*, constants/dad_story.h)
-#define VAR_0x40DC                 0x40DC
+#define VAR_PLAYER_OUTFIT          0x40DC   // Pokémon Canvas: the outfit the player wears (OUTFIT_*)
 #define VAR_0x40DD                 0x40DD
 #define VAR_0x40DE                 0x40DE
 #define VAR_0x40DF                 0x40DF
@@ -241,7 +241,7 @@
 #define VAR_0x40E2                 0x40E2
 #define VAR_0x40E3                 0x40E3
 #define VAR_0x40E4                 0x40E4
-#define VAR_0x40E5                 0x40E5
+#define VAR_OUTFITS_UNLOCKED       0x40E5   // Pokémon Canvas: outfits 1-16 unlocked (bit n-1)
 #define VAR_DAILY_SLOTS            0x40E6
 #define VAR_DAILY_WILDS            0x40E7
 #define VAR_DAILY_BLENDER          0x40E8
