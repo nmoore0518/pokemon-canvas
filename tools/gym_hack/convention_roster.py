@@ -88,7 +88,8 @@ ROSTER = {
         ("koga", "KOGA", "E", False, "TRAINER_PIC_LEADER_KOGA_FRLG", "OBJ_EVENT_GFX_KOGA"),
     ],
     "GROUND": [
-        ("giovanni", "GIOVANNI", "L", False, "TRAINER_PIC_LEADER_GIOVANNI_FRLG", "OBJ_EVENT_GFX_GIOVANNI"),
+        # (Pokémon Canvas: GIOVANNI is gone after Dad's story; ARCHER runs his gym with his old team)
+        ("archer", "ARCHER", "L", False, "TRAINER_PIC_GAUNTLET_ARCHER", "OBJ_EVENT_GFX_GAUNTLET_ARCHER"),
         ("clay", "CLAY", "L", False, "unova/clay.png", R + "unova/clay.png"),
         ("hapu", "HAPU", "L", True, "alola/hapu.png", R + "alola/hapu.png"),
         ("bertha", "BERTHA", "E", True, "sinnoh/bertha.png", R + "sinnoh/bertha.png"),

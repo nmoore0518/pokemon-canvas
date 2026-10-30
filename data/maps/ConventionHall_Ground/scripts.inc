@@ -1,7 +1,7 @@
 ConventionHall_Ground_MapScripts::
 	.byte 0
 
-ConventionHall_Ground_EventScript_Giovanni::
+ConventionHall_Ground_EventScript_Archer::
 	setvar VAR_0x8004, 55
 	goto Convention_EventScript_Trainer
 

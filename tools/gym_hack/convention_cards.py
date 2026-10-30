@@ -79,7 +79,7 @@ CARDS = {
     "roxie": (leader("VIRBANK"), f"UNOVA · {B2}"),
     "koga": ("ELITE FOUR", f"JOHTO · {GS}"),
     # Ground
-    "giovanni": (leader("VIRIDIAN"), f"KANTO · {RB}"),
+    "archer": (leader("VIRIDIAN"), "KANTO · HEARTGOLD/SOULSILVER"),
     "clay": (leader("DRIFTVEIL"), f"UNOVA · {BW}"),
     "hapu": ("PONI KAHUNA", f"ALOLA · {SM}"),
     "bertha": ("ELITE FOUR", f"SINNOH · {DP}"),

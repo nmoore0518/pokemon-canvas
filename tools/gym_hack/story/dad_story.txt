@@ -121,7 +121,7 @@ You can come down here whenever you want. I should have told you about this earl
 
 # ---- Viridian Gym: Giovanni, after the first battle ----
 == DadStory_Text_GiovanniTakeThese
-GIOVANNI: You're just like your father. He tried to stop me too.
+GIOVANNI: You're just like your father.
 |
 Take these.
 

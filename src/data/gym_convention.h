@@ -3796,7 +3796,7 @@ static const struct TrainerMon sConventionParty_koga[] = {
     },
 };
 
-static const struct TrainerMon sConventionParty_giovanni[] = {
+static const struct TrainerMon sConventionParty_archer[] = {
     {
         .species = SPECIES_DUGTRIO,
         .lvl = 75,
@@ -9316,14 +9316,14 @@ static const struct ConventionTrainer sConventionTrainers[CONVENTION_TRAINER_COU
         .after = COMPOUND_STRING("You'd make a fine ninja, LEADER.\nTrain well."),
     },
     [55] = { // GROUND
-        .name = COMPOUND_STRING("GIOVANNI"),
+        .name = COMPOUND_STRING("ARCHER"),
         .trainerClass = TRAINER_CLASS_LEADER_FRLG,
         .female = FALSE,
         .hall = CONVENTION_HALL_GROUND,
-        .party = sConventionParty_giovanni,
-        .intro = COMPOUND_STRING("So. The new LEADER from Pallet.\nYou've come far. Let me see if\pyou deserve that badge."),
-        .defeat = COMPOUND_STRING("Ha! That was a truly intense\nfight."),
-        .after = COMPOUND_STRING("Hmph. You've proven yourself. I\nwill keep my eye on you."),
+        .party = sConventionParty_archer,
+        .intro = COMPOUND_STRING("I'm ARCHER. I was an executive\nof TEAM ROCKET, once.\pWhen GIOVANNI disappeared, the\nLEAGUE let me take over the\pVIRIDIAN GYM, and his POKéMON\nwith it.\pLet's see how you handle the\nBOSS's old team!"),
+        .defeat = COMPOUND_STRING("So even the BOSS's team falls to\nyou..."),
+        .after = COMPOUND_STRING("GIOVANNI's POKéMON answer to me\nnow. I'll make VIRIDIAN a GYM\pworth respecting."),
     },
     [56] = { // GROUND
         .name = COMPOUND_STRING("CLAY"),

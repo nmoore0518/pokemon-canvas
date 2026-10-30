@@ -456,7 +456,7 @@ TEAMS = {
     "Crobat @ Black Sludge: Brave Bird / Cross Poison / U-turn / Roost",
 ],
 # ----------------------------------------------------------------------------- GROUND
-"giovanni": [
+"archer": [   # (GIOVANNI's old team)
     "Dugtrio @ Focus Sash: Earthquake / Stone Edge / Sucker Punch / Memento",
     "Marowak @ Thick Club: Earthquake / Stone Edge / Knock Off / Swords Dance",
     "Golem @ Custap Berry: Earthquake / Stone Edge / Explosion / Stealth Rock",
@@ -1156,8 +1156,8 @@ LINES = {
           "Ugh! You out-rocked me!", "That was LOUD. I love it! Come to a show sometime!"),
 "koga": ("Fwahahaha! A ninja's poison is subtle and certain. Can you see through my tricks?",
          "Ah! You have proven your worth!", "You'd make a fine ninja, LEADER. Train well."),
-"giovanni": ("So. The new LEADER from Pallet. You've come far. Let me see if you deserve that badge.",
-             "Ha! That was a truly intense fight.", "Hmph. You've proven yourself. I will keep my eye on you."),
+"archer": ("I'm ARCHER. I was an executive of TEAM ROCKET, once.\n\nWhen GIOVANNI disappeared, the LEAGUE let me take over the VIRIDIAN GYM, and his POKéMON with it.\n\nLet's see how you handle the BOSS's old team!",
+           "So even the BOSS's team falls to you...", "GIOVANNI's POKéMON answer to me now. I'll make VIRIDIAN a GYM worth respecting."),
 "clay": ("Hah! Another young'un tryin' to dig up some glory! Let's see what you're made of!",
          "Well, ya dug that one up good!", "You're stronger'n you look. Good on ya."),
 "hapu": ("I am the kahuna of Poni Island. Do not underestimate the grit of the earth.",

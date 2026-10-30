@@ -188,6 +188,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     bag). The basement switch appears (`FLAG_BASEMENT_SWITCH_SHOWN`) and Giovanni's approval is set.
   - Saves already past a step skip its scene (e.g. past Silph: the stairs are simply there).
   - Giovanni isn't one of the famous gym challengers any more.
+  - In the Gym Leader Convention, ARCHER (a former Team Rocket executive) holds Giovanni's place in
+    the Ground hall with Giovanni's old team: the League let him take over the Viridian Gym.
 - **The opening** skips the controls guide and the Pikachu pages (`CANVAS_SKIP_CONTROLS_GUIDE` in
   `src/oak_speech.c`): New Game goes straight to Oak.
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,

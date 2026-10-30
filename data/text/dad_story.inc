@@ -103,8 +103,7 @@ DadStory_Text_MomBasement::
 	.string "earlier.$"
 
 DadStory_Text_GiovanniTakeThese::
-	.string "GIOVANNI: You're just like your father.\n"
-	.string "He tried to stop me too.\p"
+	.string "GIOVANNI: You're just like your father.\p"
 	.string "Take these.$"
 
 DadStory_Text_ReceivedEarthBadge::
