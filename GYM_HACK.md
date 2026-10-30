@@ -190,6 +190,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Giovanni isn't one of the famous gym challengers any more.
   - In the Gym Leader Convention, ARCHER (a former Team Rocket executive) holds Giovanni's place in
     the Ground hall with Giovanni's old team: the League let him take over the Viridian Gym.
+- **Renaming from the summary**: the first time the player talks to the Name Rater (Lavender Town),
+  he says they can rename a Pokémon any time (`FLAG_NAME_RATER_TIP`); from then on the summary
+  screen's first page shows RENAME (A) for the party's own Pokémon (not traded ones, Eggs or the
+  PC's: the expansion's `P_SUMMARY_SCREEN_RENAME`, gated in `ShouldShowRename`).
 - **The opening** skips the controls guide and the Pikachu pages (`CANVAS_SKIP_CONTROLS_GUIDE` in
   `src/oak_speech.c`): New Game goes straight to Oak.
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,

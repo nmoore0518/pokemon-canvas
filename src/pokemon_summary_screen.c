@@ -4792,6 +4792,8 @@ static inline bool32 ShouldShowMoveRelearner(void)
 static inline bool32 ShouldShowRename(void)
 {
     return (P_SUMMARY_SCREEN_RENAME
+         && FlagGet(FLAG_NAME_RATER_TIP)   // (Pokémon Canvas: once the NAME RATER has told you)
+         && !sMonSummaryScreen->isBoxMon   // (its naming screen returns to the party's summary)
          && !sMonSummaryScreen->lockMovesFlag
          && !sMonSummaryScreen->summary.isEgg
          && sMonSummaryScreen->mode != SUMMARY_MODE_BOX_CURSOR

@@ -186,7 +186,7 @@
 #define FLAG_ITEM_SILPH_CO_11F_STRONG_ACID               0x0D1  // Pokémon Canvas: the Dad story
 #define FLAG_BASEMENT_REVEALED               0x0D2  // Pokémon Canvas: the Dad story
 #define FLAG_GOT_DADS_CHANSEY               0x0D3  // Pokémon Canvas: the Dad story
-#define FLAG_0x0D4               0x0D4
+#define FLAG_NAME_RATER_TIP      0x0D4  // Pokémon Canvas: the NAME RATER said you can rename from the summary
 #define FLAG_0x0D5               0x0D5
 #define FLAG_0x0D6               0x0D6
 #define FLAG_0x0D7               0x0D7

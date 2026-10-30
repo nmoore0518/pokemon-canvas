@@ -4,10 +4,19 @@ LavenderTown_House2_Frlg_MapScripts::
 LavenderTown_House2_EventScript_NameRater::
 	lock
 	faceplayer
+	goto_if_unset FLAG_NAME_RATER_TIP, LavenderTown_House2_EventScript_Tip
 	msgbox LavenderTown_House2_Text_WantMeToRateNicknames, MSGBOX_YESNO
+LavenderTown_House2_EventScript_Answer::
 	goto_if_eq VAR_RESULT, YES, LavenderTown_House2_EventScript_ChooseMon
 	goto_if_eq VAR_RESULT, NO, LavenderTown_House2_EventScript_DontRateNickname
 	end
+
+@ Pokémon Canvas: the first visit, he tells you about RENAME on the summary screen
+LavenderTown_House2_EventScript_Tip::
+	msgbox LavenderTown_House2_Text_Tip
+	setflag FLAG_NAME_RATER_TIP
+	msgbox LavenderTown_House2_Text_StillWantRating, MSGBOX_YESNO
+	goto LavenderTown_House2_EventScript_Answer
 
 LavenderTown_House2_EventScript_ChooseMon::
 	msgbox LavenderTown_House2_Text_CritiqueWhichMonsNickname
@@ -107,3 +116,21 @@ LavenderTown_House2_Text_ThatIsMerelyAnEgg::
 	.string "Now, now.\n"
 	.string "That is merely an EGG!$"
 
+
+LavenderTown_House2_Text_Tip::
+	.string "Hello, hello!\n"
+	.string "I am the official NAME RATER!\p"
+	.string "Before we begin, a little secret.\n"
+	.string "You don't need me to rename\l"
+	.string "your POKéMON!\p"
+	.string "You may give a POKéMON a new\n"
+	.string "nickname whenever you like.\p"
+	.string "Just open its SUMMARY, and press\n"
+	.string "A on the first page to RENAME it.\p"
+	.string "Of course, a POKéMON from another\n"
+	.string "TRAINER keeps the name it has.\p"
+	.string "Now then!$"
+
+LavenderTown_House2_Text_StillWantRating::
+	.string "Want me to rate the nicknames of\n"
+	.string "your POKéMON all the same?$"
