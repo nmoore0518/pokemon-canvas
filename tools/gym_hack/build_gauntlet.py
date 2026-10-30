@@ -104,6 +104,8 @@ def class_for(key, t):
         return "TRAINER_CLASS_AQUA_LEADER"
     if "AQUA" in title:
         return "TRAINER_CLASS_AQUA_ADMIN"
+    if "GYM LEADER" in title:
+        return "TRAINER_CLASS_LEADER_FRLG"
     if "PROFESSOR" in title:
         return "TRAINER_CLASS_PKMN_PROF_FRLG"
     return {"noland": "TRAINER_CLASS_FACTORY_HEAD", "greta": "TRAINER_CLASS_ARENA_TYCOON", "tucker": "TRAINER_CLASS_DOME_ACE",

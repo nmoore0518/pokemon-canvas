@@ -88,16 +88,16 @@ ROSTER = {
 ], ("Suicune itself whispered your name to me. Well... my hooded friend did. Close enough!",
     "Defeated... as gracefully as a north wind.", "Suicune would approve of you. And Suicune is very picky.",
     "The north wind blows in my favor!")),
-"archer": T("ARCHER", "TEAM ROCKET EXECUTIVE", "JOHTO", "HEARTGOLD/SOULSILVER", False, "hns:archer_hns.png", "rogue:rogue/npc/team/rocket_archer.png", [
+"archer": T("ARCHER", "VIRIDIAN GYM LEADER", "JOHTO", "HEARTGOLD/SOULSILVER", False, "hns:archer_hns.png", "rogue:rogue/npc/team/rocket_archer.png", [
     "Houndoom @ Life Orb: Dark Pulse / Fire Blast / Sludge Bomb / Nasty Plot",
     "Crobat @ Black Sludge: Brave Bird / Cross Poison / U-turn / Roost",
     "Honchkrow @ Black Glasses: Sucker Punch / Brave Bird / Superpower / Heat Wave",
     "Weavile @ Choice Band: Knock Off / Ice Shard / Triple Axel / Low Kick",
     "Tyranitar @ Leftovers: Stone Edge / Crunch / Earthquake / Dragon Dance",
     "Mewtwo @ Life Orb: Psystrike / Aura Sphere / Ice Beam / Calm Mind",
-], ("When Giovanni returns, I want a gift waiting for him. Your gym will do nicely.",
-    "Impossible... again?", "Team Rocket never truly disappears. Remember that.",
-    "Team Rocket is reborn!")),
+], ("I left TEAM ROCKET behind. I lead the VIRIDIAN GYM now, and I came to prove I earned it.",
+    "Impossible... again?", "I may have left TEAM ROCKET, but I haven't gone soft. Remember that.",
+    "VIRIDIAN's GYM is in good hands!")),
 "ariana": T("ARIANA", "TEAM ROCKET EXECUTIVE", "JOHTO", "HEARTGOLD/SOULSILVER", True, "hns:ariana_hns.png", "rogue:rogue/npc/team/rocket_ariana.png", [
     "Arbok @ Black Sludge: Gunk Shot / Earthquake / Sucker Punch / Glare",
     "Vileplume @ Black Sludge: Sludge Bomb / Giga Drain / Sleep Powder / Strength Sap",
