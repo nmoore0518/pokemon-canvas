@@ -15,6 +15,7 @@
 #include "pokemon.h"
 #include "sprite.h"
 #include "string_util.h"
+#include "constants/event_objects.h"
 #include "constants/gym_hack.h"
 #include "constants/outfits.h"
 #include "constants/pokemon.h"
@@ -86,19 +87,34 @@ void Outfit_RefreshPalettes(void)
 
 const u16 *Outfit_GetBackPicPalette(bool32 female)
 {
-    CpuCopy16(sOutfitPalettes[Outfit_Get()][female ? FEMALE : MALE], sBackPicPalette, sizeof(sBackPicPalette));
+    CpuCopy16(sOutfitBackPicPalettes[Outfit_Get()][female ? FEMALE : MALE], sBackPicPalette, sizeof(sBackPicPalette));
     return sBackPicPalette;
 }
 
-// The player's sprite takes the shown outfit's colors right away
+// The walking state's frames (with the outfit's chest mark) for the player's walking sprites
+const struct SpriteFrameImage *Outfit_ObjectImages(const struct ObjectEventGraphicsInfo *info)
+{
+    const struct SpriteFrameImage *table = NULL;
+    if (info == GetObjectEventGraphicsInfo(OBJ_EVENT_GFX_RED_NORMAL))
+        table = sOutfitPicTables[ShownOutfit()][MALE];
+    else if (info == GetObjectEventGraphicsInfo(OBJ_EVENT_GFX_GREEN_NORMAL))
+        table = sOutfitPicTables[ShownOutfit()][FEMALE];
+    return table != NULL ? table : info->images;
+}
+
+// The player's sprite takes the shown outfit's colors (and chest mark) right away
 static void ApplyToPlayerSprite(void)
 {
     struct Sprite *sprite;
+    struct ObjectEvent *player;
     Outfit_RefreshPalettes();
     if (gPlayerAvatar.spriteId >= MAX_SPRITES)
         return;
     sprite = &gSprites[gPlayerAvatar.spriteId];
+    player = &gObjectEvents[gPlayerAvatar.objectEventId];
     LoadPalette(gOutfitPlayerPalettes[gPlayerAvatar.gender], OBJ_PLTT_ID(sprite->oam.paletteNum), PLTT_SIZE_4BPP);
+    sprite->images = Outfit_ObjectImages(GetObjectEventGraphicsInfo(player->graphicsId));
+    StartSpriteAnim(sprite, sprite->animNum);   // (its frame is copied again)
 }
 
 // ---- specials ----

@@ -2034,7 +2034,7 @@ u8 TrySpawnObjectEventTemplate(const struct ObjectEventTemplate *objectEventTemp
     if (objectEventId == OBJECT_EVENTS_COUNT)
         return OBJECT_EVENTS_COUNT;
 
-    gSprites[gObjectEvents[objectEventId].spriteId].images = graphicsInfo->images;
+    gSprites[gObjectEvents[objectEventId].spriteId].images = Outfit_ObjectImages(graphicsInfo);
     if (subspriteTables)
         SetSubspriteTables(&gSprites[gObjectEvents[objectEventId].spriteId], subspriteTables);
 
@@ -2092,7 +2092,7 @@ void CopyObjectGraphicsInfoToSpriteTemplate(u16 graphicsId, void (*callback)(str
     spriteTemplate->paletteTag = graphicsInfo->paletteTag;
     spriteTemplate->oam = graphicsInfo->oam;
     spriteTemplate->anims = graphicsInfo->anims;
-    spriteTemplate->images = graphicsInfo->images;
+    spriteTemplate->images = Outfit_ObjectImages(graphicsInfo);
     spriteTemplate->affineAnims = graphicsInfo->affineAnims;
     spriteTemplate->callback = callback;
     *subspriteTables = graphicsInfo->subspriteTables;
@@ -2399,7 +2399,7 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent)
 
     sprite->oam.shape = graphicsInfo->oam->shape;
     sprite->oam.size = graphicsInfo->oam->size;
-    sprite->images = graphicsInfo->images;
+    sprite->images = Outfit_ObjectImages(graphicsInfo);
     sprite->anims = graphicsInfo->anims;
     sprite->subspriteTables = graphicsInfo->subspriteTables;
     objEvent->inanimate = graphicsInfo->inanimate;
@@ -3160,7 +3160,7 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
         sprite->centerToCornerVecY = -(graphicsInfo->height >> 1);
         sprite->x += 8;
         sprite->y += 16 + sprite->centerToCornerVecY;
-        sprite->images = graphicsInfo->images;
+        sprite->images = Outfit_ObjectImages(graphicsInfo);
         if (objectEvent->movementType == MOVEMENT_TYPE_PLAYER)
         {
             SetPlayerAvatarObjectEventIdAndObjectId(objectEventId, i);
@@ -3249,7 +3249,7 @@ static void ObjectEventSetGraphics(struct ObjectEvent *objectEvent, const struct
 
     sprite->oam.shape = graphicsInfo->oam->shape;
     sprite->oam.size = graphicsInfo->oam->size;
-    sprite->images = graphicsInfo->images;
+    sprite->images = Outfit_ObjectImages(graphicsInfo);
     sprite->anims = graphicsInfo->anims;
     sprite->subspriteTables = graphicsInfo->subspriteTables;
     objectEvent->inanimate = graphicsInfo->inanimate;
@@ -11154,7 +11154,7 @@ void SetVirtualObjectGraphics(u8 virtualObjId, u16 graphicsId)
 
         sprite->oam = *graphicsInfo->oam;
         sprite->oam.tileNum = tileNum;
-        sprite->images = graphicsInfo->images;
+        sprite->images = Outfit_ObjectImages(graphicsInfo);
 
         if (graphicsInfo->subspriteTables == NULL)
         {

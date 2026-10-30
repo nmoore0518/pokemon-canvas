@@ -32,7 +32,7 @@ Outfits_EventScript_OnlyOne::
 	releaseall
 	end
 
-@ The basement's crates: one of them holds DAD's old TEAM ROCKET uniform
+@ The basement's crates: one of them holds DAD's old TEAM ROCKET uniform (the player doesn't know it's his yet)
 Outfits_EventScript_BasementCrates::
 	setvar VAR_0x8004, OUTFIT_ROCKET
 	special Outfit_CheckUnlocked
@@ -45,6 +45,7 @@ Outfits_EventScript_BasementCrates::
 	message Outfits_Text_FoundRocketUniform
 	waitmessage
 	waitfanfare
+	msgbox Outfits_Text_WhyIsThisHere
 	msgbox Outfits_Text_PutInWardrobe
 	releaseall
 	end
@@ -86,8 +87,12 @@ Outfits_Text_LooseCrate:
 	.string "There's something folded inside.$"
 
 Outfits_Text_FoundRocketUniform:
-	.string "{PLAYER} found DAD's old\n"
+	.string "{PLAYER} found a\n"
 	.string "TEAM ROCKET uniform!$"
+
+Outfits_Text_WhyIsThisHere:
+	.string "A TEAM ROCKET uniform?\n"
+	.string "Why is this here?$"
 
 Outfits_Text_PutInWardrobe:
 	.string "{PLAYER} put it in the wardrobe\n"

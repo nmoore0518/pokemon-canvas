@@ -7,6 +7,8 @@
 extern u16 gOutfitPlayerPalettes[GENDER_COUNT][16];            // the player's colors (overworld and back pic)
 extern u16 gOutfitPlayerReflectionPalettes[GENDER_COUNT][16];
 
+struct ObjectEventGraphicsInfo;
+const struct SpriteFrameImage *Outfit_ObjectImages(const struct ObjectEventGraphicsInfo *info);
 u32 Outfit_Get(void);
 bool32 Outfit_IsUnlocked(u32 outfit);
 void Outfit_Unlock(u32 outfit);

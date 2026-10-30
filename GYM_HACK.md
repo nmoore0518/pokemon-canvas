@@ -203,6 +203,13 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - The 18 gym uniforms (the clothes in the type's Type Ball colors): the player's type's comes with
     the mentor's first gift after Mt. Moon (older saves get it at the wardrobe), and changing the
     gym's type unlocks the new type's. The lines are placeholders.
+  - Chest marks: every outfit but the casual clothes has a 4x3 mark on the chest (the Rocket R, a
+    gym uniform's type emblem in the Type Ball's emblem color, on a patch of the jacket's color),
+    drawn on the walking and running frames that face the screen. Those frames are their own sheets
+    (`graphics/object_events/pics/people/outfits/`, generated), which the player's walking sprite
+    uses (`Outfit_ObjectImages`, wherever the game sets an object's frames). The mark is color 13,
+    so the player's own sheets keep their bag in one shade (14).
+  - The crate scene doesn't say whose uniform it is (the player doesn't know about Dad yet).
   - New outfits go at the end of `OUTFITS` (saves keep the numbers); run the script after changing it.
 - **Renaming from the summary**: the first time the player talks to the Name Rater (Lavender Town),
   he says they can rename a Pokémon any time (`FLAG_NAME_RATER_TIP`); from then on the summary
