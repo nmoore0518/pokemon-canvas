@@ -167,7 +167,7 @@ STORY = [
                      "LEADER_SABRINA", "LEADER_BLAINE", "LEADER_GIOVANNI"]),
     ("Elite Four", ["ELITE_FOUR_LORELEI", "ELITE_FOUR_BRUNO", "ELITE_FOUR_AGATHA", "ELITE_FOUR_LANCE"]),
     ("Elite Four rematches", ["ELITE_FOUR_LORELEI_2", "ELITE_FOUR_BRUNO_2", "ELITE_FOUR_AGATHA_2", "ELITE_FOUR_LANCE_2"]),
-    ("Giovanni (Team Rocket)", ["BOSS_GIOVANNI", "BOSS_GIOVANNI_2"]),
+    ("Giovanni (Team Rocket)", ["BOSS_GIOVANNI", "BOSS_GIOVANNI_2", "GIOVANNI_DAD_FINAL"]),
 ]
 
 RIVAL_STAGES = [("LAB", "Oak's lab"), ("ROUTE22_EARLY", "Route 22 (first)"), ("CERULEAN", "Cerulean City"),
@@ -188,6 +188,8 @@ def story_section(badge):
             label = esc(t.get("Name", n).title())
             if n.endswith("_2"):
                 label += " (rematch)"
+            if n == "GIOVANNI_DAD_FINAL":
+                label += " (Viridian Gym, his last battle: every one with its synthetic ability, in a Type Ball)"
             items = t.get("Items", "")
             sub = f"items: {esc(items)}" if items else ""
             out.append(team_table(badge, label, t["mons"], sub))
@@ -242,7 +244,7 @@ def gym_section(badge):
     out.append("<h3>Gym challengers</h3><p>Every challenger's team averages your team's level. Most are random trainers "
                "with 4-6 fully evolved Pokémon from the first three generations (base stats 420 or more). "
                "Every seventh challenger in a streak, and one in six otherwise, is famous: a Kanto Gym Leader, an "
-               "Elite Four member, your rival (his Champion team), Giovanni or Oak, with the story team above (or "
+               "Elite Four member, your rival (his Champion team) or Oak, with the story team above (or "
                "his Champion team) brought up to your level and evolved where the level calls for it. "
                "Leaders with fewer than four Pokémon add:</p><ul class='small'>"
                + "".join(f"<li><b>{n}</b>: {', '.join(e)}</li>" for n, e in extras.items() if e)

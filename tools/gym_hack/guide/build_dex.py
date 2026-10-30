@@ -328,6 +328,7 @@ MANUAL = [
     ("SPECIES_AERODACTYL", "Cinnabar Lab", "Revive the Old Amber (Pewter Museum)", "After Badge 5"),
     ("SPECIES_HITMONLEE", "Saffron Fighting Dojo", "Gift: beat the dojo, choose Hitmonlee or Hitmonchan (Lv 25)", "After Badge 5"),
     ("SPECIES_HITMONCHAN", "Saffron Fighting Dojo", "Gift: beat the dojo, choose Hitmonlee or Hitmonchan (Lv 25)", "After Badge 5"),
+    ("SPECIES_CHANSEY", "Viridian Gym", "Dad's Chansey: Mom's gift after Giovanni's last battle (Lv 50; its own Chansey, with 100 Attack and Sp. Atk and Triage; can't evolve, breed or be traded)", "Badge 8"),
 ]
 for _sp, _coins in (("ABRA", "180"), ("CLEFAIRY", "500"), ("DRATINI", "2,800"), ("SCYTHER", "5,500"), ("PORYGON", "9,999")):
     MANUAL.append((f"SPECIES_{_sp}", "Celadon Game Corner", f"Prize for {_coins} coins", "After Badge 3"))

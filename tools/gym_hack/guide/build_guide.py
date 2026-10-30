@@ -62,11 +62,11 @@ TYPES = [
     ("Bug", "Caterpie", "Koga", "Infestation", "Bug Catcher Sammy (Viridian Forest)", "Rick (Viridian Forest)", "Cacoon", "Extra Stinger"),
     ("Steel", "Beldum", "Lt. Surge", "Wrench", "Giovanni (Rocket Hideout)", "Bernie (Route 11)", "Stainless Alloy", "Knife Sharpener"),
     ("Ice", "Spheal", "Lorelei", "Sub-Zero", "Giovanni (Viridian Gym)", "Nora (Route 20)", "Cooler", "Rock Salt"),
-    ("Ground", "Sandshrew", "Giovanni", "Shovel", "Super Nerd Miguel (Mt. Moon)", "Drew (Route 9)", "Granite Sarcophagus", "Diamond Drill Bit"),
+    ("Ground", "Sandshrew", "Bruno", "Shovel", "Super Nerd Miguel (Mt. Moon)", "Drew (Route 9)", "Granite Sarcophagus", "Diamond Drill Bit"),
     ("Flying", "Spearow", "Lance", "Rocket", "the rival in Silph Co.", "Perry (Route 13)", "Aviator Goggles", "Jet Engine"),
     ("Dragon", "Dratini", "Lance", "Egg", "Lance (Elite Four)", "Shirley (Route 20)", "Fire Shroud", "Bionic Jaw"),
     ("Fighting", "Tyrogue", "Bruno", "Knockout", "the Fighting Dojo master", "Hitoshi (Dojo)", "Mouth Guard", "Steroids"),
-    ("Dark", "Poochyena", "Giovanni", "Evil", "Picnicker Dana (Rock Tunnel)", "Lewis (Pokémon Mansion)", "Black Veil", "Manifesto"),
+    ("Dark", "Poochyena", "Agatha", "Evil", "Picnicker Dana (Rock Tunnel)", "Lewis (Pokémon Mansion)", "Black Veil", "Manifesto"),
     ("Ghost", "Gastly", "Agatha", "Death", "the rival in Pokémon Tower", "Angelica (Pokémon Tower)", "Light Switch", "Ouija Board"),
     ("Fairy", "Clefairy", "Sabrina", "Elder", "the rival on the S.S. Anne", "Julia (Route 8)", "Twinkling Lights", "Magic Wand"),
 ]
@@ -292,6 +292,9 @@ then win the gym itself. After that the game opens up: challengers line up at yo
 own gym, you can master other types, the Gym Leader Convention waits in Johto, the Exotic Pokémon Safari in Fuchsia
 City holds Pokémon from every region, and at the very end an underground tournament of the world's strongest trainers hides
 one last secret. Along the way, the Leader Academy on Route 11 trains Gym Leader candidates (and hands out Mega Stones).</p>
+<p>There's a second story running under the first: your father's. Your mom says he wanted to be a Gym Leader too,
+"among other things". Team Rocket's grunts keep saying you look just like him, Giovanni says he knew him, and his old lab
+is hidden under your house. What he built down there (and what he did with it) comes out at the Viridian Gym.</p>
 <p>This guide has spoilers throughout: the story, every legendary's hiding place, and every puzzle's solution.</p>
 """
 
@@ -328,8 +331,11 @@ work.</li>
 <li><b>The Palm Pilot.</b> Bill gives you a pocket PC with the S.S. Ticket. Use it anywhere outside the League to reach your
 boxes and everything else on the PC (see <a href="#pc">Your PC</a>).</li>
 <li><b>16 PC boxes</b> instead of 14.</li>
+<li><b>Renaming.</b> After the Name Rater in Lavender Town tells you the secret, the first page of a Pokémon's summary
+offers RENAME (press A) for your own Pokémon in your party.</li>
+<li><b>Outfits.</b> The wardrobe in your room changes your clothes (see <a href="#lab">Dad's lab</a>).</li>
 <li><b>Reusable TMs.</b> Like HMs, a TM is never used up: teach it to as many Pokémon as you like.</li>
-<li><b>A bag with ten pockets</b>, with room for one of every item in the game: Items (evolution items, training items,
+<li><b>A bag with ten pockets</b>, with room for one of every item in the game (and 46 kinds of Poké Ball): Items (evolution items, training items,
 valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berries, TMs &amp; HMs, Tools (the key items you use, and
 can register to SELECT) and Key Items.</li>
 <li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
@@ -353,13 +359,23 @@ ITEMS = """
 <p>The Pallet Town Mart sells them as you progress: the Silver Bottle Cap after Erika's badge, the Ability Capsule and Ability Patch after
 Sabrina's, Cilantro after Blaine's, and the Gold Bottle Cap and Multivitamin after the Elite Four. Every Gym Leader also gives
 a Silver Bottle Cap with their TM; Erika adds Cilantro and Koga an Ability Capsule; your rival gives a Gold Bottle Cap at the
-Pokémon Tower, and Giovanni a Multivitamin at Silph Co.</p>
+Pokémon Tower, and Giovanni a Multivitamin at Silph Co. (along with the Master Ball).</p>
 <h3>EXP and money</h3>
 <ul>
 <li><b>Lucky Egg</b> (held: 1.5x EXP): at the base of the Chansey statue in Pallet Town, west of the Pokémon Center.
 Check the statue.</li>
 <li><b>Amulet Coin</b> (held: double prize money): an item ball in the Pokémon Mansion, 3F, in the room with the
 machines. Oak's aide in the Route 16 gate gives another once you've caught 40 kinds of Pokémon.</li>
+</ul>
+<h3>From Dad's lab</h3>
+<ul>
+<li><b>Type Balls</b> (18, one per type): made by the Ball Maker in the basement, never sold. 3.5x catch rate on a Pokémon of
+that type, and a Pokémon of that type kept in one has its lowest base stat raised by half. Your mom gives you one, your
+gym type's, after Nugget Bridge: your father made it. Two-toned so you can tell them apart.</li>
+<li><b>Strong Acid</b> and <b>Apple Juice</b>: fuel for the Ability Synthesizer (3 a run). Wild Poison Pokémon hold Strong
+Acid a quarter of the time, wild Grass Pokémon Apple Juice (half the time for the Applin line). Silph Co. 11F has 3 Strong
+Acid by the door.</li>
+<li><b>Dad's Notebook</b>: held by Dad's Chansey. Take it and read it from the bag. It can't be lost.</li>
 </ul>
 <h3>Your mentor's type items</h3>
 <p>Each type has two one-of-a-kind held items, brought by your mentor (the Gym Leader or Elite Four member of your type, or
@@ -376,9 +392,9 @@ instead. (Abilities like Levitate still block.)</li>
 it lets one of your Pokémon learn that move, and the move takes your Pokémon's primary type (a new same-type move). The foe
 can't use it again that battle.</p>
 <ol>
-<li>Say <b>YES</b> when the grunt asks you to join Team Rocket (or, if you said no and beat him, talk to him again).</li>
+<li>The grunt on Nugget Bridge won't take no for an answer: you join Team Rocket, and he hands them over.</li>
 <li>After you beat Giovanni at Silph Co., he finds you in Saffron City.</li>
-<li>After Giovanni approves you as a Gym Leader, he finds you in Viridian City.</li>
+<li>After Giovanni is gone (the Viridian Gym), he finds you in Viridian City.</li>
 </ol>
 """
 
@@ -393,13 +409,14 @@ new gym. In the lab, the Poké Ball shelves open the type menu: Oak lists the 18
 the weakest (the last four come with a warning). You get your type's starter, and your rival picks a type that's super
 effective against yours. Your first rival battle follows.</p>
 <p>Oak then takes you both to the empty gym: you'll decorate it whenever you're in town, as part of your "audition", and a
-new leader needs the approval of all eight Gym Leaders and the Elite Four. The Hot Air Balloon (Fly) is his gift here.</p>
+new leader needs the approval of all eight Gym Leaders and the Elite Four. The Hot Air Balloon (Fly) is his gift here.
+He also mentions your father: he always dreamed of a gym of his own.</p>
 
 <h3>2. Viridian City, the parcel, and your mentor</h3>
 <p>Oak's Parcel carries a letter: Oak wrote to your <b>mentor</b> (the leader or Elite Four member of your type), and the
 reply says they're coming. After the Pokédex scene they walk into the lab, introduce themselves, give advice about running a
 gym, and leave a housewarming gift in your gym's PC (a decoration of your type). They'll turn up again through the story,
-with your type items.</p>
+with your type items. When you leave the lab with the Pokédex, your mom is waiting outside to see you off.</p>
 <div class="tip">The Pokédex is a scouting tool here: "a Gym Leader who doesn't know their opponents won't last a week".
 The gym comes first.</div>
 
@@ -418,20 +435,27 @@ after the badge says what it unlocked.</li>
 
 <h3>4. Mt. Moon, Cerulean City, Nugget Bridge</h3>
 <p>Mt. Moon as in FireRed. After Misty's badge your mentor drops by the Cerulean Gym with your <b>defensive type item</b>.
-On Nugget Bridge, say yes to the Rocket grunt for your first <b>Move Extractor</b>. Bill gives you the S.S. Ticket and the
-<b>Palm Pilot</b>. Your rival's lines from Route 22 on are about the race for approvals and the Pallet gym.</p>
+On Nugget Bridge the Rocket grunt won't let you say no: you join Team Rocket and get your first <b>Move Extractor</b>.
+Your rival catches up with you there: your mom has something for you. You're sent home, where she gives you
+the <b>Type Ball</b> your father made (your gym's type) and worries about that Move Extractor. Bill gives you the S.S.
+Ticket and the <b>Palm Pilot</b>. Your rival's lines from Route 22 on are about the race for approvals and the Pallet gym.</p>
 
 <h3>5. Vermilion City to Celadon City</h3>
 <p>The S.S. Anne (the captain gives HM01 and the Hedge Clippers), Lt. Surge, Rock Tunnel, Lavender Town and Celadon City as in
 FireRed. With your third badge, step onto Route 11: your mentor (or Oak) calls you over to a gap in the trees on the north
 side, talks the guards round, and you're admitted to the <b>Leader Academy</b> (see <a href="#academy">its chapter</a>). It's
 optional, but its candidates and Battle Hall are the best training in the game. Celadon's Game Corner prizes are Abra, Clefairy, Dratini, Scyther and Porygon; the Dept. Store 4F sells every
-evolution stone and trade item. Erika gives Cilantro with her TM.</p>
+evolution stone and trade item. Erika gives Cilantro with her TM. In the Game Corner and the Rocket Hideout, the grunts seem to recognize you;
+at the bottom of the hideout, Giovanni says you remind him of your father, and wonders why your mom never told you he
+knew him.</p>
 
 <h3>6. Pokémon Tower, Saffron City, Silph Co.</h3>
-<p>Your rival gives you a Gold Bottle Cap at the Pokémon Tower. Silph Co. as in FireRed: Lapras is the gift on 7F, Giovanni
-gives a Multivitamin after his defeat, and the Rocket grunt finds you in Saffron with the second Move Extractor. The Fighting
-Dojo gives Hitmonlee or Hitmonchan.</p>
+<p>Your rival gives you a Gold Bottle Cap at the Pokémon Tower. Silph Co. as in FireRed up to 11F (Lapras is the gift on
+7F), but the boardroom is different: no President, 3 Strong Acid by the door, and after his defeat Giovanni gives you the
+<b>Master Ball</b> and a Multivitamin ("consider it an investment"). Then your mom runs in, and takes you home.</p>
+<p>At home she moves the bookcase: behind it are stairs down to <b>your father's lab</b> (see <a href="#lab">Dad's
+lab</a>). His machines work from then on; read the four pages on the floor. Back in Saffron, the Rocket grunt finds you with
+the second Move Extractor. The Fighting Dojo gives Hitmonlee or Hitmonchan.</p>
 
 <h3>7. Fuchsia City, the Safari Zone, Cinnabar Island</h3>
 <p>Koga gives an Ability Capsule. The Safari Zone (Surf: HM03 and the Boogie Board in its secret house; Strength from the
@@ -440,8 +464,16 @@ only, so it waits for the post-game. On Cinnabar, Blaine's badge brings your men
 the lab revives Mt. Moon's fossil and the Old Amber. Bill doesn't take you to the Sevii Islands any more.</p>
 
 <h3>8. Viridian Gym, Victory Road, the League</h3>
-<p>Beat Giovanni and hold his gym for his approval; he then disbands Team Rocket, and the grunt gives you the last Move
-Extractor in Viridian City. The League's front door turns you back until all eight Gym Leaders have approved. Moltres waits on
+<p>Beat Giovanni and he hands over the Earthbadge, TM26 and a Silver Bottle Cap at once. Then he tells you who your
+father was: his top deputy and best scientist, whose inventions made Team Rocket strong, until he turned on Giovanni. And
+he battles you again, with the power your father gave him: Persian, Crobat, Weezing, Nidoqueen, Rhyperior and Nidoking
+(levels 50-54), every one with its synthetic ability and in a Type Ball. Losing doesn't white out: talk to him to try
+again. Win, and your mom arrives with her Chansey, and Giovanni is gone. She gives you <b>Dad's Chansey</b> (level 50, a
+Chansey with 100 Attack and Special Attack, Triage, perfect IVs, in a Normal Ball; it can't evolve, breed or be traded),
+holding <b>Dad's Notebook</b>, and tells you what she knew. Then she takes you home: she and Oak are waiting by the Chansey
+statue to remember your father, and Oak has talked to the League: Giovanni's approval counts. After this, Archer, once a
+Rocket executive, runs the Viridian Gym, and the grunt gives you the last Move Extractor in Viridian City.</p>
+<p>The League's front door turns you back until all eight Gym Leaders have approved. Moltres waits on
 Victory Road 2F. Each member of the Elite Four approves you after losing.</p>
 <p>With the 8th badge, the Leader Academy's headmaster has something for you: the <b>Mega Bracelet</b>. Walk into the
 main hall and she calls you to her desk.</p>
@@ -465,7 +497,7 @@ your decorations leave).</p>
 <ul>
 <li><b>Random trainers</b>: 4-6 different fully evolved Pokémon from the first 386, legendaries included, smart AI.</li>
 <li><b>Famous challengers</b> (every 7th in a streak, and sometimes otherwise): the eight Gym Leaders, the Elite Four, your
-rival, Giovanni and Oak, their real teams levelled to match.</li>
+rival and Oak, their real teams levelled to match.</li>
 <li><b>Townsfolk</b> (now and then): Mom, Nurse Joy, Bill, Daisy and Mr. Fuji, with teams of their own.</li>
 <li>Every team's average level is your party's average.</li>
 </ul>
@@ -504,7 +536,7 @@ their old spot on the road (they come back if you put them back in storage).</p>
 <p>A streak of 15 wins masters your gym's type (10 for every type after the first). The streak's last battle is your mentor
 with their full Gym Leader Convention team, three levels above your average. Random challengers bring at most one legendary,
 and no post-game opponent uses healing items. Beat them and Oak offers a new type: choose one the gym hasn't had, and the badge
-and pedestal change. In his lab Oak also switches the gym back to any type it has had, for free. Each type's legendary
+and pedestal change. The first time, you also get a gym uniform for every type (see <a href="#lab">the wardrobe</a>). In his lab Oak also switches the gym back to any type it has had, for free. Each type's legendary
 arrives when the gym first becomes that type.</p>
 <h3>Your type's legendary</h3>
 <p>Right after Oak hands the gym over, the lights go out and the most powerful Pokémon of your type appears in the gym
@@ -596,6 +628,36 @@ your party is set aside, and it battles her three Pokémon alone.</li>
 The levels never change, so training up is the way through.</li>
 <li>Rayquaza needs a stone like everyone else (the Rayquazite), and Kyogre and Groudon earn the Blue and Red Orbs the
 same way.</li>
+</ul>
+"""
+
+LAB = """
+<p>Under your house, behind the bookcase your mom moves after Silph Co., is your father's workshop. Three machines and a
+wall switch; four loose pages; crates.</p>
+<h3>The switch: Evil and Nice</h3>
+<p>The machines start in <b>Evil Mode</b>. The switch on the back wall appears after the Viridian Gym, and flips them to
+<b>Nice Mode</b> (and back). All three take Pokémon from your party, never an Egg.</p>
+<h3>The Ability Synthesizer</h3>
+<p>Every species has one <b>synthetic ability</b>: an existing ability, a little better than its own (the Pokédex lists
+each). Feed the machine 3 Strong Acid (Evil) or 3 Apple Juice (Nice) and a Pokémon, and it comes out with it. In Evil
+Mode its friendship drops to zero; in Nice Mode it loved the juice so much it's a little happier. A synthetic ability
+stays through evolution (it becomes the evolved species' one) and isn't passed on by breeding; the Ability Capsule and
+Patch don't work on it. A few Pokémon whose ability changes their form (Aegislash, Wishiwashi, Mimikyu...) can't be
+synthesized.</p>
+<h3>The Ball Maker</h3>
+<p>Put in a Pokémon of level 50 or more and get a <b>Type Ball</b> of its primary type. In Evil Mode the Pokémon doesn't
+come back (its held item goes to your bag, and it won't take your last Pokémon). In Nice Mode it only gives a little DNA:
+it loses 5 levels (moves kept) and comes back.</p>
+<h3>The Ball Changer</h3>
+<p>Choose a Pokémon and a ball from your bag: it moves into the new ball, and the old one goes back in your bag.</p>
+<h3>The wardrobe: outfits</h3>
+<p>The green cabinet in your room. It lists the outfits you have, and you change into each one as you scroll through them:
+everything you do (walking, biking, surfing, fishing, battle) shows it.</p>
+<ul>
+<li><b>Casual clothes</b>: what you start in.</li>
+<li><b>Rocket uniform</b>: one of the crates in the basement has a loose lid.</li>
+<li><b>Gym uniforms</b>: your clothes in a type's Type Ball colors, with its emblem on your chest. Your type's comes from
+your mentor with their first gift (after Mt. Moon); the first time you change your gym's type, you get all 18.</li>
 </ul>
 """
 
@@ -723,7 +785,7 @@ def build(out):
     parts.append(chapter("Contents", """<div class="toc"><ol>
 <li><a href="#about">About the game</a></li><li><a href="#types">Choosing your type</a></li>
 <li><a href="#walk">Walkthrough</a></li><li><a href="#gym">Running your gym</a></li>
-<li><a href="#pc">Your PC</a></li><li><a href="#academy">The Leader Academy</a></li>
+<li><a href="#pc">Your PC</a></li><li><a href="#lab">Dad's lab and the wardrobe</a></li><li><a href="#academy">The Leader Academy</a></li>
 <li><a href="#items">Items</a></li><li><a href="#training">Training houses</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
 <li><a href="#tournament">The tournament</a></li><li><a href="#event">Event Pokémon</a></li>
 <li><a href="#teams">Trainers and their teams</a></li><li><a href="#safari">The Exotic Pokémon Safari</a></li></ol></div>""", newpage=False))
@@ -735,20 +797,21 @@ def build(out):
     parts.append(chapter("3. Walkthrough", WALKTHROUGH, anchor="walk"))
     parts.append(chapter("4. Running your gym", GYM, anchor="gym"))
     parts.append(chapter("5. Your PC", PC, newpage=False, anchor="pc"))
-    parts.append(chapter("6. The Leader Academy", ACADEMY, anchor="academy"))
-    parts.append(chapter("7. Items", ITEMS, anchor="items"))
-    parts.append(chapter("8. Training houses", training_section(), anchor="training"))
-    parts.append(chapter("9. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
-    parts.append(chapter("10. The tournament", TOURNAMENT, anchor="tournament"))
-    parts.append(chapter("11. Event Pokémon", EVENT, anchor="event"))
+    parts.append(chapter("6. Dad's lab and the wardrobe", LAB, anchor="lab"))
+    parts.append(chapter("7. The Leader Academy", ACADEMY, anchor="academy"))
+    parts.append(chapter("8. Items", ITEMS, anchor="items"))
+    parts.append(chapter("9. Training houses", training_section(), anchor="training"))
+    parts.append(chapter("10. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
+    parts.append(chapter("11. The tournament", TOURNAMENT, anchor="tournament"))
+    parts.append(chapter("12. Event Pokémon", EVENT, anchor="event"))
     rival, _ = rivals_and_legends()
     player_for_rival = {}
     for t, starter, *_ in TYPES:
         rt = rival.get(starter.upper())
         if rt:
             player_for_rival.setdefault(rt, []).append(t)
-    parts.append(chapter("12. Trainers and their teams", TT.build(badge, player_for_rival), anchor="teams"))
-    parts.append(chapter("13. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
+    parts.append(chapter("13. Trainers and their teams", TT.build(badge, player_for_rival), anchor="teams"))
+    parts.append(chapter("14. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
     parts.append(safari_section())
     html = "<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + TT.TEAM_CSS + "</style></head><body>" + "".join(parts) + "</body></html>"
     hp = OUT_DIR / "guide.html"
