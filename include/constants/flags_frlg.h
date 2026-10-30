@@ -177,15 +177,15 @@
 #define FLAG_0x0C8               0x0C8
 #define FLAG_0x0C9               0x0C9
 #define FLAG_0x0CA               0x0CA
-#define FLAG_0x0CB               0x0CB
-#define FLAG_0x0CC               0x0CC
-#define FLAG_0x0CD               0x0CD
-#define FLAG_0x0CE               0x0CE
-#define FLAG_0x0CF               0x0CF
-#define FLAG_0x0D0               0x0D0
-#define FLAG_0x0D1               0x0D1
-#define FLAG_0x0D2               0x0D2
-#define FLAG_0x0D3               0x0D3
+#define FLAG_HIDE_SENDOFF_MOM               0x0CB  // Pokémon Canvas: the Dad story
+#define FLAG_HIDE_ROUTE24_RIVAL               0x0CC  // Pokémon Canvas: the Dad story
+#define FLAG_HIDE_SILPH_MOM               0x0CD  // Pokémon Canvas: the Dad story
+#define FLAG_HIDE_BASEMENT_MOM               0x0CE  // Pokémon Canvas: the Dad story
+#define FLAG_HIDE_VIRIDIAN_GYM_MOM               0x0CF  // Pokémon Canvas: the Dad story
+#define FLAG_HIDE_VIRIDIAN_GYM_CHANSEY               0x0D0  // Pokémon Canvas: the Dad story
+#define FLAG_ITEM_SILPH_CO_11F_STRONG_ACID               0x0D1  // Pokémon Canvas: the Dad story
+#define FLAG_BASEMENT_REVEALED               0x0D2  // Pokémon Canvas: the Dad story
+#define FLAG_GOT_DADS_CHANSEY               0x0D3  // Pokémon Canvas: the Dad story
 #define FLAG_0x0D4               0x0D4
 #define FLAG_0x0D5               0x0D5
 #define FLAG_0x0D6               0x0D6

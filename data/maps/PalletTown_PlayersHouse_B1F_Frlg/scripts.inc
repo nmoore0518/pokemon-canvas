@@ -4,7 +4,17 @@
 
 PalletTown_PlayersHouse_B1F_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, PlayersHouse_B1F_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, PlayersHouse_B1F_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, PlayersHouse_B1F_OnFrame
 	.byte 0
+
+PlayersHouse_B1F_OnTransition::
+	call DadStory_EventScript_BasementTransition
+	end
+
+PlayersHouse_B1F_OnFrame::
+	map_script_2 VAR_DAD_STORY, DAD_STORY_SILPH_HOME, DadStory_EventScript_Basement
+	.2byte 0
 
 PlayersHouse_B1F_OnLoad::
 	call_if_set FLAG_BASEMENT_SWITCH_SHOWN, PlayersHouse_B1F_EventScript_SetSwitch
@@ -293,21 +303,33 @@ PlayersHouse_B1F_EventScript_SwitchWall::
 	releaseall
 	end
 
-@ ---- The loose pages ----
+@ ---- The loose pages: Dad's notes, read as pages (src/dad_story.c) ----
 PlayersHouse_B1F_EventScript_Paper1::
-	msgbox PlayersHouse_B1F_Text_Paper1, MSGBOX_SIGN
+	lockall
+	setvar VAR_0x8004, NOTE_PAGE_NOTE_1
+	special ShowNotePage
+	releaseall
 	end
 
 PlayersHouse_B1F_EventScript_Paper2::
-	msgbox PlayersHouse_B1F_Text_Paper2, MSGBOX_SIGN
+	lockall
+	setvar VAR_0x8004, NOTE_PAGE_NOTE_2
+	special ShowNotePage
+	releaseall
 	end
 
 PlayersHouse_B1F_EventScript_Paper3::
-	msgbox PlayersHouse_B1F_Text_Paper3, MSGBOX_SIGN
+	lockall
+	setvar VAR_0x8004, NOTE_PAGE_NOTE_3
+	special ShowNotePage
+	releaseall
 	end
 
 PlayersHouse_B1F_EventScript_Paper4::
-	msgbox PlayersHouse_B1F_Text_Paper4, MSGBOX_SIGN
+	lockall
+	setvar VAR_0x8004, NOTE_PAGE_NOTE_4
+	special ShowNotePage
+	releaseall
 	end
 
 @ ---- Everything else ----
@@ -510,22 +532,6 @@ PlayersHouse_B1F_Text_SwitchedToNice::
 PlayersHouse_B1F_Text_SwitchedToEvil::
 	.string "{PLAYER} threw the switch back.\n"
 	.string "The machines growl. Evil Mode.$"
-
-PlayersHouse_B1F_Text_Paper1::
-	.string "A loose page, covered in hurried\n"
-	.string "handwriting. (Page 1)$"
-
-PlayersHouse_B1F_Text_Paper2::
-	.string "A loose page, creased and stained.\n"
-	.string "(Page 2)$"
-
-PlayersHouse_B1F_Text_Paper3::
-	.string "A loose page. Most of it has been\n"
-	.string "scratched out. (Page 3)$"
-
-PlayersHouse_B1F_Text_Paper4::
-	.string "A loose page, torn at one corner.\n"
-	.string "(Page 4)$"
 
 PlayersHouse_B1F_Text_Chalkboard::
 	.string "A POKé BALL, drawn split in two.\n"

@@ -691,6 +691,7 @@ PalletTown_ProfessorOaksLab_EventScript_ReceiveDexScene::
 	setvar VAR_MAP_SCENE_ROUTE22, 1
 	setvar VAR_0x800A, LOCALID_OAKS_LAB_MENTOR
 	call GymCandidate_EventScript_MentorIntro   @ Gym Trainer hack: the mentor Oak wrote to
+	call DadStory_EventScript_ArmSendoff   @ Pokémon Canvas: MOM is waiting outside
 	release
 	end
 

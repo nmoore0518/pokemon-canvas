@@ -190,7 +190,9 @@ SaffronCity_Text_SawRocketBossEscaping::
 
 SaffronCity_Text_ImASecurityGuard::
 	.string "I'm a security guard.\p"
-	.string "Suspicious kids I don't allow in!$"
+	.string "Suspicious kids I don't allow in!\p"
+	.string "Oh, but you're his kid. Maybe…\p"
+	.string "No!$"
 
 SaffronCity_Text_HesTakingASnooze::
 	.string "…\n"

@@ -849,3 +849,8 @@ gSpecials::
 	def_special BallChanger_CheckMon
 	def_special BallChanger_CheckBall
 	def_special BallChanger_Apply
+	def_special ShowNotePage, waitstate=1
+	def_special DadStory_BufferAce
+	def_special DadStory_GetGymTypeBall
+	def_special DadStory_GiveChansey
+	def_special BufferItemPocketName

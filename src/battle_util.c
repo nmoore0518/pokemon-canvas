@@ -8892,6 +8892,8 @@ bool32 CanBattlerGetOrLoseItem(enum BattlerId fromBattler, enum BattlerId battle
         return FALSE;
     else if (holdEffect == HOLD_EFFECT_TYPE_GUARD || holdEffect == HOLD_EFFECT_TYPE_EDGE) // Gym Trainer hack: one of a kind
         return FALSE;
+    else if (itemId == ITEM_DADS_NOTEBOOK)   // Pokémon Canvas: one of a kind
+        return FALSE;
     else if (holdEffect == HOLD_EFFECT_BOOSTER_ENERGY
          && (gSpeciesInfo[fromSpecies].isParadox || gSpeciesInfo[otherSpecies].isParadox))
         return FALSE;

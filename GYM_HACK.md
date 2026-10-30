@@ -163,6 +163,33 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   the Strong Acid and Apple Juice icons.
   - The bag's Poké Balls pocket holds 46: 28 in SaveBlock1's bag, 18 more at the end of SaveBlock2
     (`bagPokeBalls2`; older saves have zeros there, i.e. empty slots).
+- **Dad's story** (`data/scripts/dad_story.inc`, `src/dad_story.c`, `include/constants/dad_story.h`;
+  the text in `tools/gym_hack/story/dad_story.txt` -> `build_story_text.py` -> `data/text/dad_story.inc`,
+  wrapped to the box by pixel width). `VAR_DAD_STORY` (0x40DB) steps through it:
+  - **Send-off** (1): set after the mentor leaves Oak's lab; Mom waits outside the lab door the first
+    time the player walks out, gives her speech and walks home.
+  - **Nugget Bridge** (2-4): joining Team Rocket is forced (NO gets "Come on, join us!" and the
+    question again); after the Move Extractor the rival walks up (`LOCALID_ROUTE24_RIVAL`), says Mom
+    has something, and the player is warped home; Mom gives Dad's Type Ball (the player's gym type,
+    `DadStory_GetGymTypeBall`) and asks about the Move Extractor.
+  - **Silph Co. 11F** (4-6): no President or secretary; a Strong Acid ball (x3) by the door. Giovanni
+    gives the Master Ball and the Multivitamin, Mom runs in, takes the player home ("Why were you
+    with him?"), moves the bookcase (`DadStory_EventScript_HouseOnLoad` hides the stairwell with
+    `setmetatile` until `FLAG_BASEMENT_REVEALED`) and shows the basement. Its four pages and Dad's
+    Notebook open as full pages (`ShowNotePage`, `NOTE_PAGE_*`: A for the next page, B closes).
+  - **Viridian Gym** (6-8): after the first battle Giovanni hands over the badge, TM26 and the silver
+    cap at once ("You're just like your father..."), then his last battle (`TRAINER_GIOVANNI_DAD_FINAL`,
+    no whiteout: losing heals the party and he waits for a rematch). His team is synthesized in
+    `CreateNPCTrainerParty` (`DadStory_SynthesizeParty`: synthetic abilities, Type Balls of their
+    types). Dad's ace in his story depends on the player's type (`sDadsAce`). Mom's Chansey makes him
+    vanish; Mom gives **Dad's Chansey** (`SPECIES_CHANSEY_DAD`: Chansey with 100 Atk / Sp. Atk, Triage,
+    Normal Ball, Lv. 50, perfect IVs, no EVs, OT DAD, can't breed, evolve or be traded) holding
+    **Dad's Notebook** (a key-ish item: can't be sold, tossed, stolen or knocked off; read it from the
+    bag). The basement switch appears (`FLAG_BASEMENT_SWITCH_SHOWN`) and Giovanni's approval is set.
+  - Saves already past a step skip its scene (e.g. past Silph: the stairs are simply there).
+  - Giovanni isn't one of the famous gym challengers any more.
+- **The opening** skips the controls guide and the Pikachu pages (`CANVAS_SKIP_CONTROLS_GUIDE` in
+  `src/oak_speech.c`): New Game goes straight to Oak.
   Houses take a roof color (`house(x, y, "blue")`: red, blue, green or purple). The Chansey statue,
   benches and street lamps are pixel art in `tools/gym_hack/pallet_art.py` (`statue()`, `bench()`,
   `lamp()` in the layout); the script adds their tiles and palettes to the Pallet Town tileset.
@@ -455,7 +482,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     Friendly:
     Brock, Erika, Blaine, Lorelei, Bruno, Sabrina (cool but accepting). Prickly: Misty, Surge,
     Koga, Giovanni, Agatha, Lance. Types with no Kanto leader go to the closest fit:
-    Normal→Brock, Steel→Surge, Bug→Koga, Fairy→Sabrina, Dark→Giovanni, Flying→Lance.
+    Normal→Brock, Steel→Surge, Bug→Koga, Fairy→Sabrina, Dark→Agatha, Flying→Lance; Ground goes to
+    Bruno (Giovanni, the villain of Dad's story, mentors no one).
   - **The rival** is the other candidate: his Route 22, Cerulean, S.S. Anne, Pokémon Tower and
     Silph Co. lines are about the race for approvals and the Pallet gym.
   - **Oak's doubts** grow quietly: lines in his lab as approvals come in (picked the gym's floor
@@ -714,6 +742,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 | `src/field_region_map.c` | Town Map screen: type finder markers |
 | `tools/gym_hack/build_pallet_town.py` | Draws Pallet Town and writes its events and Oak's routes |
 | `tools/gym_hack/build_basement.py`, `basement_art.py` | The basement under the player's house: its art, tileset, map, the machines' frames, the stairwell on 1F |
+| `data/scripts/dad_story.inc`, `src/dad_story.c`, `tools/gym_hack/story/` | Dad's story: its scenes, note pages, Dad's ace, Giovanni's last team, Dad's Chansey; the story text and its generator |
 | `src/basement_machines.c`, `include/basement_machines.h`, `include/constants/basement_machines.h` | Dad's machines (Synthesizer, Ball Maker, Ball Changer), Type Ball effects, Strong Acid / Apple Juice on wild Pokémon |
 | `tools/gym_hack/synthetic_abilities.txt`, `build_synthetic_abilities.py`, `synthetic_abilities_page.py` | Each species' synthetic ability, the generated table, the review page |
 | `tools/gym_hack/type_ball_art.py` | Type Ball, Strong Acid and Apple Juice art (`python3 tools/gym_hack/type_ball_art.py sheet.png`) |

@@ -175,6 +175,10 @@ def write_basement_map(grid):
         o["local_id"] = f"LOCALID_BASEMENT_BALL_{k}"
         o["movement_range_x"] = o["movement_range_y"] = 0
         objects.append(o)
+    # Pokémon Canvas: MOM, for the scene when she first shows the player the basement (data/scripts/dad_story.inc)
+    o = obj("OBJ_EVENT_GFX_MOM_FRLG", sx - 1, sy + 2, "0x0", "MOVEMENT_TYPE_FACE_RIGHT")
+    o["local_id"], o["flag"] = "LOCALID_BASEMENT_MOM", "FLAG_HIDE_BASEMENT_MOM"
+    objects.append(o)
     N = "BG_EVENT_PLAYER_FACING_NORTH"
     bgs = []
     syx, syy = art.SYNTH

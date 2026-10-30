@@ -1,0 +1,285 @@
+# Pokémon Canvas: the Dad story (Nick's dialogue sheet, Oct 2026), built into data/text/dad_story.inc by
+# tools/gym_hack/story/build_story_text.py.
+#
+#   == Label            a message box text: words wrap two lines to a box
+#   == Label [page]     a page (Dad's notes, his notebook): seven lines to a page
+#   |                   (on its own line) start a new box / page
+#   {PLAYER} {RIVAL} {STR_VAR_1}...   as in scripts
+#
+# Kept as written; only spelling, capitals (POKéMON, names) and punctuation are fixed.
+
+# ---- Pallet Town: Mom sends the player off (outside Oak's lab, after the Pokédex) ----
+== DadStory_Text_MomSendoff
+MOM: {PLAYER}, you've grown up so fast.
+|
+I always knew I'd see this day, but I didn't think it would come so soon.
+|
+You know… you're so much like your dad.
+|
+He wanted to become a GYM LEADER too… among other things.
+|
+Of course, there was no GYM in PALLET TOWN when he was around.
+|
+But it was always his ambition to become the best POKéMON TRAINER.
+|
+You have a chance to do what he didn't. Go make him proud!
+
+# ---- Nugget Bridge: after the player joins and gets the Move Extractor ----
+== DadStory_Text_RivalMomHasSomething
+{RIVAL}: Oh, one last thing I forgot.
+|
+I was back in PALLET TOWN checking on my GYM and ran into your MOM.
+|
+She says she has something for you. You should go talk to her.
+
+== DadStory_Text_MomDadsBall
+MOM: Hey, {PLAYER}! How is the GYM LEADER journey going so far?
+|
+I meant to give you something of your father's before you left, but I couldn't find it.
+|
+I dug it up, though. Here, take a look.
+|
+It's a special POKé BALL your dad made.
+|
+I've told you how much he loved to work with his hands. Well, that's something he made.
+|
+I guess it makes POKéMON a little stronger if they're inside it.
+|
+Use it to catch a POKéMON to use in your GYM. Or maybe just hang on to it to remember him by.
+
+== DadStory_Text_MomMoveExtractor
+MOM: Wait… what is that thing in your BAG? A MOVE EXTRACTOR?
+|
+How did you get that?
+|
+Just… be careful, honey. Please.
+|
+There are a lot of dangerous things… dangerous people out there.
+|
+Promise me you'll be safe.
+
+== DadStory_Text_GruntInsists
+Are you sure?
+|
+Come on, join us!
+|
+I'm telling you to join!
+
+# ---- Silph Co. 11F: Giovanni, alone ----
+== DadStory_Text_GiovanniSilphGift
+GIOVANNI: But fine. You want this?
+|
+I don't need it. I'm plenty powerful without it. You'll see.
+
+== DadStory_Text_MomSilphBoy
+MOM: What are you doing here? Why are you with him?!
+|
+Leave him alone, GIOVANNI!
+|
+{PLAYER}, come with me!
+
+== DadStory_Text_MomSilphGirl
+MOM: What are you doing here? Why are you with him?!
+|
+Leave her alone, GIOVANNI!
+|
+{PLAYER}, come with me!
+
+== DadStory_Text_MomWhyWithHim
+MOM: Why were you with him…?
+|
+Those aren't good people, you know that, right?
+|
+They do more than just steal POKéMON. They corrupt them.
+|
+They morph them into things they were never meant to be.
+|
+Come here. I want to show you something.
+
+== DadStory_Text_MomBasement
+MOM: This is where your father did his work.
+|
+I don't really know what all he got into, but he was down here day and night… tinkering.
+|
+He didn't really like me coming down here, so I didn't.
+|
+It scared me, {PLAYER}, at the height of it. He wasn't himself.
+|
+He had strange visitors at all hours. I don't think he slept.
+|
+When you were born, that all changed.
+|
+I don't want you to ever think he didn't love you.
+|
+You were the only thing that I thought could pull him out of his obsession.
+|
+But he was in too deep…
+|
+…
+|
+You can come down here whenever you want. I should have told you about this earlier.
+
+# ---- Viridian Gym: Giovanni, after the first battle ----
+== DadStory_Text_GiovanniTakeThese
+GIOVANNI: You're just like your father. He tried to stop me too.
+|
+Take these.
+
+== DadStory_Text_ReceivedEarthBadge
+{PLAYER} received the EARTHBADGE from GIOVANNI!
+
+== DadStory_Text_GiovanniYourFather
+GIOVANNI: He tried to stop me too, you know.
+|
+He did well. He took down much of the organization I built from within.
+|
+But he paid the price.
+|
+Do you know what he did, {PLAYER}? All the evil things he contributed to TEAM ROCKET?
+|
+Ha. I bet you don't know the first thing about him.
+|
+He was my top deputy. My best scientist. His inventions gave us unfathomable power!
+|
+It was a shame when he defied me.
+|
+Something about a “conscience,” treating POKéMON with “kindness” and not as a means for power.
+|
+Blah, blah, blah. I shut him up, though. Used his own inventions against him.
+|
+I tried to play nice with you. You're his child, after all.
+|
+And he was such a good deputy, even if he was a little… soft.
+|
+But I'm done playing nice.
+|
+I'll show you my true power… the power your father gave me!
+
+== DadStory_Text_GiovanniRematch
+GIOVANNI: Back again?
+|
+Then face the power your father gave me!
+
+== DadStory_Text_GiovanniFinalDefeat
+Impossible…!
+
+== DadStory_Text_GiovanniYouLost
+GIOVANNI: Ha. Looks like I was right.
+|
+Now get out of here, kid.
+
+== DadStory_Text_GiovanniHow
+GIOVANNI: How?! Did you… did you use your father's inventions?
+|
+He beat me in the end too. Not at first.
+|
+He tried and tried and tried to do it without help, but eventually he succumbed to the allure of strength and power.
+|
+He came back, one last time, with a team full of his creations.
+|
+The strongest POKéMON I have ever seen…
+|
+I wasn't even angry; I was in awe.
+|
+And I was sure I could convince him to come back to help TEAM ROCKET.
+|
+And just when I thought I'd worn him down, that's when it happened.
+|
+His {STR_VAR_1} got angry, or scared, or confused, or something. Not that it matters.
+|
+It attacked your father. And he didn't stand a chance.
+|
+But that doesn't matter to me.
+|
+He beat me once and TEAM ROCKET survived. His kid beating me is no different.
+|
+Now get out of my…
+
+== DadStory_Text_MomLastTime
+MOM: This is the last time you hurt my family, GIOVANNI.
+|
+The last time!
+
+== DadStory_Text_MomDadsChansey
+MOM: He created this POKéMON. This CHANSEY.
+|
+After you were born… you inspired him.
+|
+It was an attempt to heal all the damage he had done.
+|
+It's strong, like the others, but it derives its strength from something not evil.
+|
+It's a partner, a true friend.
+|
+He gave it to me when he got… swept up in all this.
+|
+And I've kept it all these years as a way to remember him.
+|
+Those last few months, {PLAYER}, he was in shambles about what he'd done.
+|
+You were born and it gave him a new perspective.
+|
+He tried to make up for the years of pain he caused. And, in a way, he succeeded.
+|
+He succeeded with you.
+|
+What you did today, to finish the work that he started… he would have been so proud.
+|
+Take this CHANSEY. It's yours now. That's what he would have wanted.
+|
+Go battle the ELITE FOUR. Win your GYM.
+
+== DadStory_Text_ReceivedDadsChansey
+{PLAYER} received DAD's CHANSEY!
+
+== DadStory_Text_ReceivedDadsNotebook
+She handed you something.
+|
+{PLAYER} received DAD's NOTEBOOK!
+
+== DadStory_Text_ChanseySentToPC
+DAD's CHANSEY was sent to the PC.
+
+# ---- Dad's notes, on the basement floor (read as pages) ----
+== DadStory_Text_Note1 [page]
+NOTES ON SYNTHESIZER
+Finding: A strong acid is needed to strip away the known ability.
+Finding: All acids strong enough to strip an ability appear to knock the POKéMON out.
+|
+Finding: Implantation is simpler on a knocked-out POKéMON. Combine acid wash with reprogramming step to achieve desired result.
+|
+Finding: Successful implantation of new ability on a RATTATA. Upon revival, POKéMON appears much less friendly. Will monitor further.
+
+== DadStory_Text_Note2 [page]
+NOTES ON BALL MAKER, PART 1
+Finding: POKéMON appear to exhibit increased strength surrounded by POKéMON of their type. Potential opportunity to harness this phenomenon.
+|
+Finding: Testing group of METAPOD. Strength gains appear to be limited to Attack stat, which was previously METAPOD's weakest. Monitor further.
+|
+Finding: Increased Attack appears to remain with as little as two METAPOD together.
+
+== DadStory_Text_Note3 [page]
+NOTES ON BALL MAKER, PART 2
+Finding: Unintended battle occurred when METAPOD used its increased Attack to knock out another METAPOD. Gains appear to remain even after other POKéMON is knocked out.
+|
+Finding: Knocked-out METAPOD did not recover. Attack stat remains elevated in surviving METAPOD.
+
+== DadStory_Text_Note4 [page]
+LAB VISITOR
+Invited BILL to see lab. He was… not impressed.
+|
+Thinks this type of work will get me caught up with the wrong people. Thinks I should live with the POKéMON, not manipulate them.
+|
+He even mentioned trying to become a POKéMON. Lunatic…
+
+== DadStory_Text_Notebook [page]
+MODIFICATIONS TO MACHINES
+1. APPLE JUICE has the same effect as STRONG ACID in removing a POKéMON's current ability.
+|
+They also appear to enjoy the taste so much that implantation of synthetic ability can be performed without resistance.
+|
+2. After further experiments, it has been determined that POKéMON do not need to have expired to gather enough material to create a TYPE BALL with the same effects.
+|
+BALL MAKER has been modified to painlessly extract a small amount of a POKéMON's DNA to apply to the ball.
+|
+Operate SWITCH in lab to toggle modes for these two machines.

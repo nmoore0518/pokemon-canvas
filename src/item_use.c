@@ -789,6 +789,19 @@ void ItemUseOutOfBattle_PalmPilot(u8 taskId)
     SetUpItemUseOnFieldCallback(taskId);
 }
 
+// Pokémon Canvas: DAD's NOTEBOOK opens as a page (src/dad_story.c)
+static void Task_ReadDadsNotebook(u8 taskId)
+{
+    ScriptContext_SetupScript(DadStory_EventScript_ReadNotebook);
+    DestroyTask(taskId);
+}
+
+void ItemUseOutOfBattle_DadsNotebook(u8 taskId)
+{
+    sItemUseOnFieldCB = Task_ReadDadsNotebook;
+    SetUpItemUseOnFieldCallback(taskId);
+}
+
 void ItemUseOutOfBattle_CoinCase(u8 taskId)
 {
     ConvertIntToDecimalStringN(gStringVar1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);

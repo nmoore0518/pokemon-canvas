@@ -695,6 +695,8 @@ SIGN_LADY_HOME = (7, 24)
 SIGN_LADY_AT_SIGN = (TIPS_SIGN[0], TIPS_SIGN[1] + 1)
 SIGN_LADY_AT_EXIT = (NORTH_EXIT[0], 2)
 FAT_MAN_HOME = (46, 12)
+# Pokémon Canvas: MOM waits two steps below the lab door to send the player off (data/scripts/dad_story.inc)
+MOM_SENDOFF = (LAB_DOOR[0], LAB_DOOR[1] + 3)
 
 
 def obj(local_id, gfx, pos, move, rx, ry, script, flag="0"):
@@ -723,6 +725,8 @@ def write_map_json():
             3, 2, "PalletTown_EventScript_FatMan"),
         obj("LOCALID_PALLET_PROF_OAK", "OBJ_EVENT_GFX_PROF_OAK", OAK_START, "MOVEMENT_TYPE_FACE_UP",
             1, 1, "0x0", "FLAG_HIDE_OAK_IN_PALLET_TOWN"),
+        obj("LOCALID_PALLET_SENDOFF_MOM", "OBJ_EVENT_GFX_MOM_FRLG", MOM_SENDOFF, "MOVEMENT_TYPE_FACE_UP",
+            1, 1, "0x0", "FLAG_HIDE_SENDOFF_MOM"),
     ]
     m["warp_events"] = [{"x": d[0], "y": d[1], "elevation": 0, "dest_map": dest, "dest_warp_id": str(w)}
                         for d, dest, w in WARPS]
@@ -824,6 +828,11 @@ def write_movements():
     out.append(movement("PalletTown_Movement_OakWalkToPlayersDoor", steps(walk_in) + ["walk_in_place_faster_up"]))
     out.append(movement("PalletTown_Movement_OakExit", steps(walk_in[::-1])))
     lead("PalletTown_Movement_FromHouse", below, outside)
+    # MOM's send-off: she steps up to the player outside the lab, then walks home
+    beside = (lab_front[0], lab_front[1] + 1)
+    out.append(movement("PalletTown_Movement_MomSendoffApproach", steps(route(MOM_SENDOFF, beside)) + ["walk_in_place_faster_up"]))
+    # (the first eleven steps of her way home take her off the screen; the script removes her then)
+    out.append(movement("PalletTown_Movement_MomSendoffGoHome", steps(route(beside, outside))[:11]))
     (ROOT / "data/maps/PalletTown_Frlg/movements.inc").write_text("".join(out))
     # The gym door's metatile, for its opening animation (src/field_door.c)
     (ROOT / "include/constants/pallet_town_gym.h").write_text(

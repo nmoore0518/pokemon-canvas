@@ -2,6 +2,8 @@
 #include "synthetic_abilities.h"
 #include "constants/abilities.h"
 #include "constants/species.h"
+#include "pokedex.h"
+#include "pokemon.h"
 
 #include "data/pokemon/synthetic_abilities.h"
 
@@ -19,6 +21,9 @@ u16 GetSpeciesListedSyntheticAbility(u16 species)
 {
     if (species >= NUM_SPECIES)
         return ABILITY_NONE;
+    // (the hack's own species, like DAD's CHANSEY, share their National Dex species')
+    if (gSpeciesSyntheticAbilities[species] == ABILITY_NONE && gSpeciesInfo[species].natDexNum != NATIONAL_DEX_NONE)
+        return gSpeciesSyntheticAbilities[NationalPokedexNumToSpecies(gSpeciesInfo[species].natDexNum)];
     return gSpeciesSyntheticAbilities[species];
 }
 

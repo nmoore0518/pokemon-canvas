@@ -889,6 +889,8 @@ const u32 gItemIcon_DarkBall[] = INCGFX_U32("graphics/items/icons/gym/dark_ball.
 const u16 gItemIconPalette_DarkBall[] = INCGFX_U16("graphics/items/icon_palettes/gym/dark_ball.pal", ".gbapal");
 const u32 gItemIcon_FairyBall[] = INCGFX_U32("graphics/items/icons/gym/fairy_ball.png", ".4bpp.smol");
 const u16 gItemIconPalette_FairyBall[] = INCGFX_U16("graphics/items/icon_palettes/gym/fairy_ball.pal", ".gbapal");
+const u32 gItemIcon_DadsNotebook[] = INCGFX_U32("graphics/items/icons/gym/dads_notebook.png", ".4bpp.smol");
+const u16 gItemIconPalette_DadsNotebook[] = INCGFX_U16("graphics/items/icon_palettes/gym/dads_notebook.pal", ".gbapal");
 const u32 gItemIcon_Rayquazite[] = INCGFX_U32("graphics/items/icons/rayquazite.png", ".4bpp.smol");
 const u16 gItemIconPalette_Rayquazite[] = INCGFX_U16("graphics/items/icon_palettes/rayquazite.pal", ".gbapal");
 

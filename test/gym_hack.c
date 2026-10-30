@@ -3466,3 +3466,156 @@ TEST("GymHack: the Ability Capsule leaves a synthetic ability alone")
     SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_ABILITY_NUM, &slot);
     EXPECT_EQ(StatItems_GetAbilityChoices(&gParties[B_TRAINER_PLAYER][0], slots), 0);
 }
+
+#include "dad_story.h"
+#include "tv.h"
+#include "data.h"
+#include "constants/dad_story.h"
+
+extern const u8 DadStory_Text_MomSendoff[], DadStory_Text_RivalMomHasSomething[], DadStory_Text_MomDadsBall[],
+    DadStory_Text_MomMoveExtractor[], DadStory_Text_GruntInsists[], DadStory_Text_GiovanniSilphGift[],
+    DadStory_Text_MomSilphBoy[], DadStory_Text_MomSilphGirl[], DadStory_Text_MomWhyWithHim[], DadStory_Text_MomBasement[],
+    DadStory_Text_GiovanniTakeThese[], DadStory_Text_ReceivedEarthBadge[], DadStory_Text_GiovanniYourFather[],
+    DadStory_Text_GiovanniRematch[], DadStory_Text_GiovanniFinalDefeat[], DadStory_Text_GiovanniYouLost[],
+    DadStory_Text_GiovanniHow[], DadStory_Text_MomLastTime[], DadStory_Text_MomDadsChansey[],
+    DadStory_Text_ReceivedDadsChansey[], DadStory_Text_ReceivedDadsNotebook[], DadStory_Text_ChanseySentToPC[],
+    DadStory_Text_Note1[], DadStory_Text_Note2[], DadStory_Text_Note3[], DadStory_Text_Note4[], DadStory_Text_Notebook[],
+    RocketHideout_B4F_Text_GiovanniIntro[], RocketHideout_B4F_Text_GiovanniPostBattle[], RocketHideout_B4F_Text_Grunt2Intro[],
+    RocketHideout_B1F_Text_Grunt1Intro[], RocketHideout_B1F_Text_Grunt5Intro[], CeladonCity_GameCorner_Text_GruntPostBattle[],
+    SaffronCity_Text_ImASecurityGuard[], SilphCo_4F_Text_Grunt2Defeat[], SilphCo_11F_Text_GiovanniIntro[],
+    SilphCo_11F_Text_GiovanniPostBattle[], PalletTown_Text_OakDontGoOut[], PalletTown_Text_OakGrassUnsafeNeedMon[],
+    MoveExtractor_Text_ThirdVisit[], MoveExtractor_Text_ThirdVisitAfter[];
+
+// Each line of a text (after placeholders) no wider than maxWidth; a page no more than maxLines lines
+static void ExpectStoryTextFits(const u8 *text, u32 maxWidth, u32 maxLines)
+{
+    u8 *buf = Alloc(3000);
+    u8 *line, *p;
+    u32 lines = 0;
+    StringExpandPlaceholders(buf, text);
+    for (line = p = buf; ; p++)
+    {
+        u8 c = *p;
+        if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+        {
+            *p = EOS;
+            lines++;
+            if (GetStringWidth(FONT_NORMAL, line, 0) > maxWidth)
+                DebugPrintf("line too wide: %S", line);
+            EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), maxWidth);
+            if (c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                EXPECT_LE(lines, maxLines);
+                lines = 0;
+            }
+            if (c == EOS)
+                break;
+            line = p + 1;
+        }
+    }
+    Free(buf);
+}
+
+TEST("GymHack: Dad story: every line fits the message box, and Dad's notes fit their pages")
+{
+    static const u8 *const boxes[] = {
+        DadStory_Text_MomSendoff, DadStory_Text_RivalMomHasSomething, DadStory_Text_MomDadsBall,
+        DadStory_Text_MomMoveExtractor, DadStory_Text_GruntInsists, DadStory_Text_GiovanniSilphGift,
+        DadStory_Text_MomSilphBoy, DadStory_Text_MomSilphGirl, DadStory_Text_MomWhyWithHim, DadStory_Text_MomBasement,
+        DadStory_Text_GiovanniTakeThese, DadStory_Text_ReceivedEarthBadge, DadStory_Text_GiovanniYourFather,
+        DadStory_Text_GiovanniRematch, DadStory_Text_GiovanniFinalDefeat, DadStory_Text_GiovanniYouLost,
+        DadStory_Text_GiovanniHow, DadStory_Text_MomLastTime, DadStory_Text_MomDadsChansey,
+        DadStory_Text_ReceivedDadsChansey, DadStory_Text_ReceivedDadsNotebook, DadStory_Text_ChanseySentToPC,
+        RocketHideout_B4F_Text_GiovanniIntro, RocketHideout_B4F_Text_GiovanniPostBattle, RocketHideout_B4F_Text_Grunt2Intro,
+        RocketHideout_B1F_Text_Grunt1Intro, RocketHideout_B1F_Text_Grunt5Intro, CeladonCity_GameCorner_Text_GruntPostBattle,
+        SaffronCity_Text_ImASecurityGuard, SilphCo_4F_Text_Grunt2Defeat, SilphCo_11F_Text_GiovanniIntro,
+        SilphCo_11F_Text_GiovanniPostBattle, PalletTown_Text_OakDontGoOut, PalletTown_Text_OakGrassUnsafeNeedMon,
+        MoveExtractor_Text_ThirdVisit, MoveExtractor_Text_ThirdVisitAfter,
+    };
+    static const u8 *const pages[] = {
+        DadStory_Text_Note1, DadStory_Text_Note2, DadStory_Text_Note3, DadStory_Text_Note4, DadStory_Text_Notebook,
+    };
+    u32 i;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gSaveBlock1Ptr->rivalName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, GetSpeciesName(SPECIES_MEOWSCARADA));   // (the longest of Dad's aces)
+    for (i = 0; i < ARRAY_COUNT(boxes); i++)
+        ExpectStoryTextFits(boxes[i], 27 * 8 - 4, 99);
+    for (i = 0; i < ARRAY_COUNT(pages); i++)
+        ExpectStoryTextFits(pages[i], 26 * 8 - 12, 7);
+}
+
+TEST("GymHack: Dad story: DAD's CHANSEY is a Lv. 50 trade with Triage, perfect IVs and Attack 100, in a Normal Ball")
+{
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_PIKACHU, 5;);
+    DadStory_GiveChansey();
+    EXPECT_EQ(gSpecialVar_Result, MON_GIVEN_TO_PARTY);
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][1];
+    u8 ot[PLAYER_NAME_LENGTH + 1];
+    u32 i;
+    EXPECT_EQ(GetMonData(mon, MON_DATA_SPECIES), SPECIES_CHANSEY_DAD);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_LEVEL), DADS_CHANSEY_LEVEL);
+    EXPECT_EQ(GetMonAbility(mon), ABILITY_TRIAGE);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_POKEBALL), BALL_TYPE_NORMAL);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_HELD_ITEM), ITEM_DADS_NOTEBOOK);
+    for (i = 0; i < NUM_STATS; i++)
+    {
+        EXPECT_EQ(GetMonData(mon, MON_DATA_HP_IV + i), MAX_PER_STAT_IVS);
+        EXPECT_EQ(GetMonData(mon, MON_DATA_HP_EV + i), 0);
+    }
+    GetMonData(mon, MON_DATA_OT_NAME, ot);
+    EXPECT_EQ(StringCompare(ot, COMPOUND_STRING("DAD")), 0);
+    EXPECT_NE(GetMonData(mon, MON_DATA_OT_ID), GetPlayerIDAsU32());                     // a trade
+    EXPECT_EQ(StringCompare(GetSpeciesName(SPECIES_CHANSEY_DAD), GetSpeciesName(SPECIES_CHANSEY)), 0);
+    EXPECT_EQ(GetSpeciesBaseStat(SPECIES_CHANSEY_DAD, STAT_ATK), 100);
+    EXPECT_EQ(GetSpeciesBaseStat(SPECIES_CHANSEY_DAD, STAT_SPATK), 100);
+    EXPECT_GT(GetMonData(mon, MON_DATA_ATK), 100);
+    EXPECT_EQ(GetTypeBallStatBoosts(SPECIES_CHANSEY_DAD, BALL_TYPE_NORMAL), 1u << STAT_DEF);   // its lowest now
+    EXPECT_EQ(GetSpeciesEvolutions(SPECIES_CHANSEY_DAD), NULL);
+}
+
+TEST("GymHack: Dad story: GIOVANNI's last team has their synthetic abilities, each in its own Type Ball")
+{
+    // (tests have their own trainer table: his team as in trainers_frlg.party)
+    static const u16 team[] = {SPECIES_PERSIAN, SPECIES_CROBAT, SPECIES_WEEZING, SPECIES_NIDOQUEEN, SPECIES_RHYPERIOR, SPECIES_NIDOKING};
+    u32 i;
+    ZeroPartyMons(gParties[B_TRAINER_OPPONENT_A]);
+    for (i = 0; i < PARTY_SIZE; i++)
+        CreateMon(&gParties[B_TRAINER_OPPONENT_A][i], team[i], 50, 0, OTID_STRUCT_RANDOM_NO_SHINY);
+    DadStory_SynthesizeParty(gParties[B_TRAINER_OPPONENT_A]);
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        struct Pokemon *mon = &gParties[B_TRAINER_OPPONENT_A][i];
+        enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+        EXPECT_NE(species, SPECIES_NONE);
+        EXPECT_EQ(GetMonAbility(mon), GetSpeciesSyntheticAbility(species));
+        EXPECT_EQ(GetTypeBallType(GetMonData(mon, MON_DATA_POKEBALL)), GetSpeciesType(species, 0));
+    }
+}
+
+TEST("GymHack: Dad story: Dad's ace is a starter the player's GYM type hits super effectively")
+{
+    u32 type;
+    for (type = TYPE_NORMAL; type < NUMBER_OF_MON_TYPES; type++)
+    {
+        enum Species ace;
+        if (type == TYPE_MYSTERY || type == TYPE_STELLAR)
+            continue;
+        ace = DadStory_GetAce(type);
+        EXPECT_NE(ace, SPECIES_NONE);
+        if (type == TYPE_NORMAL || type == TYPE_STEEL || type == TYPE_DRAGON)
+            continue;   // (no starter is weak to these)
+        uq4_12_t mod = uq4_12_multiply(GetTypeModifier(type, GetSpeciesType(ace, 0)),
+                                       GetSpeciesType(ace, 1) != GetSpeciesType(ace, 0) ? GetTypeModifier(type, GetSpeciesType(ace, 1)) : UQ_4_12(1.0));
+        if (mod <= UQ_4_12(1.0))
+            DebugPrintf("type %d: %S isn't weak to it", type, GetSpeciesName(ace));
+        EXPECT_GT(mod, UQ_4_12(1.0));
+    }
+}
+
+TEST("GymHack: Dad story: BRUNO mentors GROUND and AGATHA mentors DARK (not GIOVANNI)")
+{
+    EXPECT_EQ(StringCompare(GymCandidate_GetMentorName(GymCandidate_GetMentorForType(TYPE_GROUND)->who), COMPOUND_STRING("BRUNO")), 0);
+    EXPECT_EQ(StringCompare(GymCandidate_GetMentorName(GymCandidate_GetMentorForType(TYPE_DARK)->who), COMPOUND_STRING("AGATHA")), 0);
+}

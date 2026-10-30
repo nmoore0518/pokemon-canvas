@@ -1693,6 +1693,7 @@ enum __attribute__((packed)) Species
     SPECIES_CUSTOM_START = SPECIES_GLIMMORA_MEGA,
     // Add any custom species between here and SPECIES_CUSTOM_END
     SPECIES_CLEFFABILL,      // Gym Trainer hack: Bill, gone wrong (the Gauntlet's finale; not obtainable)
+    SPECIES_CHANSEY_DAD,     // Pokémon Canvas: DAD's CHANSEY (Attack and Sp. Atk 100; MOM gives it at VIRIDIAN)
     SPECIES_CUSTOM_END,
 
     SPECIES_EGG = SPECIES_CUSTOM_END,

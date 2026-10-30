@@ -16,14 +16,13 @@ EventScript_ObtainItemMessage::
 	call_if_eq VAR_0x8007, FALSE, EventScript_NoRoomForItem
 	return
 
+@ Pokémon Canvas: every pocket of the ten (a switch over FireRed's five ended the script for the others:
+@ an item for MEDICINE, BATTLE ITEMS, HOLD ITEMS, MEGA STONES or TOOLS was never given or picked up)
 EventScript_BufferPocketNameAndTryFanfare::
-	switch VAR_RESULT
-	case POCKET_ITEMS,      EventScript_BufferItemsPocket
-	case POCKET_KEY_ITEMS,  EventScript_BufferKeyItemsPocket
-	case POCKET_POKE_BALLS, EventScript_BufferPokeballsPocket
-	case POCKET_TM_HM,      EventScript_BufferTMHMsPocket
-	case POCKET_BERRIES,    EventScript_BufferBerriesPocket
-	end
+	goto_if_eq VAR_RESULT, POCKET_TM_HM, EventScript_BufferTMHMsPocket
+	special BufferItemPocketName
+	call_if_eq VAR_0x8007, TRUE, EventScript_PlayFanfareObtainedItem
+	return
 
 EventScript_BufferItemsPocket::
 	bufferstdstring STR_VAR_3, STDSTRING_ITEMS
@@ -250,13 +249,9 @@ Std_PutItemAway::
 	return
 
 EventScript_BufferPutAwayPocketName::
-	switch VAR_RESULT
-	case POCKET_ITEMS,       EventScript_BufferPutAwayPocketItems
-	case POCKET_KEY_ITEMS,   EventScript_BufferPutAwayPocketKeyItems
-	case POCKET_POKE_BALLS,  EventScript_BufferPutAwayPocketPokeBalls
-	case POCKET_TM_HM,     EventScript_BufferPutAwayPocketTMCase
-	case POCKET_BERRIES, EventScript_BufferPutAwayPocketBerryPouch
-	end
+	goto_if_eq VAR_RESULT, POCKET_TM_HM, EventScript_BufferPutAwayPocketTMCase
+	special BufferItemPocketName   @ (Pokémon Canvas: all ten pockets)
+	return
 
 EventScript_BufferPutAwayPocketItems::
 	bufferstdstring STR_VAR_3, STDSTRING_ITEMS

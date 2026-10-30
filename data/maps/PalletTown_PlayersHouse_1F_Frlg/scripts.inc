@@ -1,5 +1,13 @@
 PalletTown_PlayersHouse_1F_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, DadStory_EventScript_HouseOnLoad
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, PalletTown_PlayersHouse_1F_OnFrame
 	.byte 0
+
+@ Pokémon Canvas: MOM's scenes in the Dad story (data/scripts/dad_story.inc)
+PalletTown_PlayersHouse_1F_OnFrame::
+	map_script_2 VAR_DAD_STORY, DAD_STORY_MOM_CALLING, DadStory_EventScript_MomDadsBall
+	map_script_2 VAR_DAD_STORY, DAD_STORY_SILPH_HOME, DadStory_EventScript_MomWhyWithHim
+	.2byte 0
 
 PalletTown_PlayersHouse_1F_EventScript_Mom::
 	lock

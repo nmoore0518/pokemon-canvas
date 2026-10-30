@@ -17387,6 +17387,23 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_FairyBall,
         .iconPalette = gItemIconPalette_FairyBall,
     },
+
+    [ITEM_DADS_NOTEBOOK] =
+    {
+        // Pokémon Canvas: DAD's CHANSEY holds it (src/dad_story.c); one of a kind
+        .name = ITEM_NAME("Dad's Notebook"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "Dad's notes on his\n"
+            "machines. Some pages\n"
+            "are dog-eared."),
+        .pocket = POCKET_ITEMS,
+        .type = ITEM_USE_FIELD,
+        .fieldUseFunc = ItemUseOutOfBattle_DadsNotebook,
+        .iconPic = gItemIcon_DadsNotebook,
+        .iconPalette = gItemIconPalette_DadsNotebook,
+    },
 };
 
 #undef ITEM_NAME

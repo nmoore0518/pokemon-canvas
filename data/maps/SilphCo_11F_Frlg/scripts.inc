@@ -1,46 +1,19 @@
 SilphCo_11F_Frlg_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, SilphCo_11F_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, SilphCo_11F_OnTransition
 	.byte 0
+
+SilphCo_11F_OnTransition::
+	call DadStory_EventScript_SilphTransition
+	end
+
+@ Pokémon Canvas: STRONG ACID by the boardroom door (enough for one run of Dad's Synthesizer)
+SilphCo_11F_EventScript_ItemStrongAcid::
+	finditem ITEM_STRONG_ACID, 3
+	end
 
 SilphCo_11F_OnLoad::
 	call_if_unset FLAG_SILPH_11F_DOOR, EventScript_Close11FDoor
-	end
-
-SilphCo_11F_EventScript_President::
-	lock
-	faceplayer
-	goto_if_set FLAG_GOT_MASTER_BALL_FROM_SILPH, SilphCo_11F_EventScript_AlreadyGotMasterBall
-	checkplayergender
-	call_if_eq VAR_RESULT, MALE, SilphCo_11F_EventScript_PresidentThanksMale
-	call_if_eq VAR_RESULT, FEMALE, SilphCo_11F_EventScript_PresidentThanksFemale
-	checkitemspace ITEM_MASTER_BALL
-	goto_if_eq VAR_RESULT, FALSE, SilphCo_11F_EventScript_NoRoomForMasterBall
-	giveitem_msg SilphCo_11F_Text_ObtainedMasterBallFromPresident, ITEM_MASTER_BALL, 1, MUS_RG_OBTAIN_KEY_ITEM
-	msgbox SilphCo_11F_Text_ThatsOurSecretPrototype
-	setflag FLAG_GOT_MASTER_BALL_FROM_SILPH
-	release
-	end
-
-SilphCo_11F_EventScript_PresidentThanksMale::
-	msgbox SilphCo_11F_Text_ThanksForSavingMeDearBoy
-	return
-
-SilphCo_11F_EventScript_PresidentThanksFemale::
-	msgbox SilphCo_11F_Text_ThanksForSavingMeDearGirl
-	return
-
-SilphCo_11F_EventScript_NoRoomForMasterBall::
-	msgbox SilphCo_11F_Text_YouHaveNoRoomForThis
-	release
-	end
-
-SilphCo_11F_EventScript_AlreadyGotMasterBall::
-	msgbox SilphCo_11F_Text_ThatsOurSecretPrototype
-	release
-	end
-
-SilphCo_11F_EventScript_Secretary::
-	msgbox SilphCo_11F_Text_ThanksForRescuingUs, MSGBOX_NPC
 	end
 
 SilphCo_11F_EventScript_GiovanniTriggerLeft::
@@ -67,16 +40,19 @@ SilphCo_11F_EventScript_BattleGiovanni::
 	setvar VAR_LAST_TALKED, LOCALID_SILPH_CO_GIOVANNI
 	trainerbattle_no_intro TRAINER_BOSS_GIOVANNI_2, SilphCo_11F_Text_GiovanniDefeat
 	msgbox SilphCo_11F_Text_GiovanniPostBattle
-	call GymHack_EventScript_SilphGiovanniGift
+	call DadStory_EventScript_SilphGiovanniGives   @ Pokémon Canvas: the MASTER BALL from him; then MOM runs in
 	closemessage
 	fadescreen FADE_TO_BLACK
 	removeobject LOCALID_SILPH_CO_GIOVANNI
 	removeobject LOCALID_SILPH_CO_11F_GRUNT1
 	removeobject LOCALID_SILPH_CO_11F_GRUNT2
-	fadescreen FADE_FROM_BLACK
+	removeobject LOCALID_SILPH_CO_11F_MOM
+	setflag FLAG_HIDE_SILPH_MOM
 	setvar VAR_MAP_SCENE_SILPH_CO_11F, 1
 	setflag FLAG_HIDE_SAFFRON_ROCKETS
 	clearflag FLAG_HIDE_SAFFRON_CIVILIANS
+	goto_if_eq VAR_DAD_STORY, DAD_STORY_SILPH_HOME, DadStory_EventScript_SilphWarpHome
+	fadescreen FADE_FROM_BLACK
 	releaseall
 	end
 
@@ -179,9 +155,8 @@ SilphCo_11F_Text_ThanksForRescuingUs::
 SilphCo_11F_Text_GiovanniIntro::
 	.string "Ah, {PLAYER}!\n"
 	.string "So we meet again!\p"
-	.string "The PRESIDENT and I are discussing\n"
-	.string "a vital business proposition.\p"
-	.string "Keep your nose out of grown-up\n"
+	.string "You don't belong here.\n"
+	.string "Keep your nose out of grown-up\l"
 	.string "matters…\p"
 	.string "Or, experience a world of pain!$"
 
@@ -192,7 +167,9 @@ SilphCo_11F_Text_GiovanniDefeat::
 SilphCo_11F_Text_GiovanniPostBattle::
 	.string "Blast it all!\n"
 	.string "You ruined our plans for SILPH!\p"
-	.string "But, TEAM ROCKET will never fall!\p"
+	.string "If only you were more like your\n"
+	.string "father! He knew the true worth of\l"
+	.string "POKéMON!\p"
 	.string "{PLAYER}! Never forget that all\n"
 	.string "POKéMON exist for TEAM ROCKET!$"
 

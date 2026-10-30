@@ -5,10 +5,12 @@ ViridianCity_Gym_Frlg_MapScripts::
 @ Gym Trainer hack: the spare person for Guest Leader challengers stays hidden
 ViridianCity_Gym_OnTransitionGuest::
 	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER
+	call DadStory_EventScript_ViridianGymTransition
 	end
 
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	goto_if_eq VAR_DAD_STORY, DAD_STORY_GIOVANNI, DadStory_EventScript_GiovanniRematch   @ Pokémon Canvas
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM26
 	call GymHack_EventScript_GiovanniGifts
@@ -28,7 +30,7 @@ ViridianCity_Gym_EventScript_DefeatedGiovanni::
 	setflag FLAG_BADGE08_GET
 	setvar VAR_MAP_SCENE_ROUTE22, 3
 	set_gym_trainers_frlg 8
-	goto ViridianCity_Gym_EventScript_GiveTM26
+	goto DadStory_EventScript_GiovanniTakeThese   @ Pokémon Canvas: the badge in a hurry, his story, his last battle
 	end
 
 ViridianCity_Gym_EventScript_GiveTM26::
@@ -126,11 +128,7 @@ ViridianCity_Gym_Text_GiovanniIntro::
 	.string "GIOVANNI, the greatest TRAINER!{PLAY_BGM}{MUS_RG_ENCOUNTER_ROCKET}$"
 
 ViridianCity_Gym_Text_GiovanniDefeat::
-	.string "Ha!\n"
-	.string "That was a truly intense fight.\l"
-	.string "You have won!\p"
-	.string "As proof, here is the EARTHBADGE!\n"
-	.string "{PAUSE_MUSIC}{PLAY_BGM}{MUS_OBTAIN_BADGE}{PAUSE 0xFE}{PAUSE 0x56}{RESUME_MUSIC}$"
+	.string "…!$"
 
 ViridianCity_Gym_Text_GiovanniPostBattle::
 	.string "Having lost in this fashion, \n"

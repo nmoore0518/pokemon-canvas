@@ -1066,6 +1066,8 @@ extern const u32 gItemIcon_DarkBall[];
 extern const u16 gItemIconPalette_DarkBall[];
 extern const u32 gItemIcon_FairyBall[];
 extern const u16 gItemIconPalette_FairyBall[];
+extern const u32 gItemIcon_DadsNotebook[];
+extern const u16 gItemIconPalette_DadsNotebook[];
 extern const u32 gBallGfx_TypeNormal[];
 extern const u16 gBallPal_TypeNormal[];
 extern const u32 gBallGfx_TypeFighting[];

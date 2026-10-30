@@ -201,6 +201,33 @@ LAB = {
         "                        ",
         "                        ",
         "                        "]),
+    "dads_notebook": ({
+        "o": (40, 28, 20), "b": (112, 72, 40), "B": (148, 100, 56), "h": (184, 136, 80), "p": (240, 232, 208),
+        "P": (208, 196, 168), "s": (64, 44, 28), "g": (200, 168, 72)}, [
+        "                        ",
+        "                        ",
+        "    oooooooooooooooo    ",
+        "    obBBBBBBBBBBBBBbo   ",
+        "    obBhhhhhhhhhhhBbop  ",
+        "    obBhBBBBBBBBBhBbop  ",
+        "    obBhBggggggBBhBbop  ",
+        "    obBhBBBBBBBBBhBbop  ",
+        "    obBhhhhhhhhhhhBbop  ",
+        "    obBBBBBBBBBBBBBbop  ",
+        "   ssssobBBBBBBBBBBbop  ",
+        "   sggsobBBBBBBBBBBbop  ",
+        "   ssssobBBBBBBBBBBbop  ",
+        "    obBBBBBBBBBBBBBbop  ",
+        "    obBBBBBBBBBBBBBbop  ",
+        "    obBBBBBBBBBBBBBbop  ",
+        "    obBBBBBBBBBBBBBbop  ",
+        "    obBBBBBBBBBBBBBboP  ",
+        "    obbbbbbbbbbbbbbboP  ",
+        "    ooooooooooooooooopP ",
+        "      PPPPPPPPPPPPPPP   ",
+        "                        ",
+        "                        ",
+        "                        "]),
 }
 
 

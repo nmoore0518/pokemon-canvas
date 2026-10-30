@@ -123,6 +123,12 @@ RocketHideout_B4F_EventScript_RemoveBarrier::
 RocketHideout_B4F_Text_GiovanniIntro::
 	.string "So! I must say, I am impressed you\n"
 	.string "got here.\p"
+	.string "You're more like your father than\n"
+	.string "I thought.\p"
+	.string "Oh? You didn't know I knew your\n"
+	.string "father?\p"
+	.string "I wonder why your MOM never told\n"
+	.string "you…\p"
 	.string "TEAM ROCKET captures POKéMON from\n"
 	.string "around the world.\p"
 	.string "They're important tools for keeping\n"
@@ -138,13 +144,17 @@ RocketHideout_B4F_Text_GiovanniDefeat::
 RocketHideout_B4F_Text_GiovanniPostBattle::
 	.string "I see that you raise POKéMON with\n"
 	.string "utmost care.\p"
-	.string "A child like you would never\n"
-	.string "understand what I hope to achieve.\p"
+	.string "Not an evil bone in your body…\n"
+	.string "yet.\p"
+	.string "One day you might understand what\n"
+	.string "I hope to achieve, if you're\l"
+	.string "anything like…\p"
 	.string "I shall step aside this time!\p"
 	.string "I hope we meet again…$"
 
 RocketHideout_B4F_Text_Grunt2Intro::
-	.string "I know you!\n"
+	.string "I know you! You look like…\p"
+	.string "Oh, wait!\n"
 	.string "You ruined our plans at MT. MOON!$"
 
 RocketHideout_B4F_Text_Grunt2Defeat::

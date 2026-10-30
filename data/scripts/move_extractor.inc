@@ -164,8 +164,6 @@ MoveExtractor_Text_SecondVisitAfter::
 MoveExtractor_Text_ThirdVisit::
 	.string "Kid… it's over.\n"
 	.string "The BOSS is gone.\p"
-	.string "He broke up TEAM ROCKET.\n"
-	.string "Just like that.\p"
 	.string "No higher-ups. No recommendation.\n"
 	.string "Sorry, kid.\p"
 	.string "…Funny thing is, I don't even mind.\p"
@@ -175,5 +173,5 @@ MoveExtractor_Text_ThirdVisit::
 	.string "KANTO with it.$"
 
 MoveExtractor_Text_ThirdVisitAfter::
-	.string "Maybe I'll go straight too.\n"
+	.string "Maybe I'll go straight.\n"
 	.string "See you around, LEADER.$"

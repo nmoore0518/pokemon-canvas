@@ -231,7 +231,7 @@
 #define VAR_0x40D8                 0x40D8
 #define VAR_0x40D9                 0x40D9
 #define VAR_0x40DA                 0x40DA
-#define VAR_0x40DB                 0x40DB
+#define VAR_DAD_STORY              0x40DB   // Pokémon Canvas: the Dad story (DAD_STORY_*, constants/dad_story.h)
 #define VAR_0x40DC                 0x40DC
 #define VAR_0x40DD                 0x40DD
 #define VAR_0x40DE                 0x40DE

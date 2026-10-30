@@ -431,3 +431,22 @@ PalletTown_Movement_FromHouse_PlayerEnterLab::
 	set_invisible
 	step_end
 
+PalletTown_Movement_MomSendoffApproach::
+	walk_up
+	walk_in_place_faster_up
+	step_end
+
+PalletTown_Movement_MomSendoffGoHome::
+	walk_down
+	walk_down
+	walk_down
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	walk_left
+	step_end
+

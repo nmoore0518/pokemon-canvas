@@ -1093,3 +1093,10 @@ bool32 IsItemShopCriteriaFulfilled(enum Item itemId)
 
     return func(SanitizeItemId(itemId));
 }
+
+// Pokémon Canvas (special): STR_VAR_3 = the name of the bag pocket in VAR_RESULT (after checkitemtype),
+// for the obtain and put-away messages (data/scripts/obtain_item.inc)
+void BufferItemPocketName(void)
+{
+    StringCopy(gStringVar3, gPocketNamesStringsTable[gSpecialVar_Result < POCKETS_COUNT ? gSpecialVar_Result : POCKET_ITEMS]);
+}

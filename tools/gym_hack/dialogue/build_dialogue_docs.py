@@ -46,6 +46,8 @@ AREA_NAMES = {"MAPSEC_S_S_ANNE": "S.S. Anne", "MAPSEC_KANTO_SAFARI_ZONE": "Safar
 # shared script files: where they go (None = left out), and their heading
 SHARED = OrderedDict([
     ("data/text/new_game_intro_frlg.inc", (1, "The opening: Prof. Oak's welcome")),
+    ("data/scripts/dad_story.inc", (1, "Dad's story: Nugget Bridge, Silph Co., the basement, Viridian Gym")),
+    ("data/text/dad_story.inc", (1, "Dad's story: the basement notes and Dad's Notebook")),
     ("data/scripts/gym_hack.inc", (1, "Your gym: choosing a type, the gym's basics")),
     ("data/scripts/gym_candidate.inc", (1, "Your gym: candidacy, approvals and recruits")),
     ("data/scripts/gym_challenge.inc", (1, "Your gym: challengers")),

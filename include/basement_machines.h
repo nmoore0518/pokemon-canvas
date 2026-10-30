@@ -9,6 +9,7 @@
 #include "constants/pokeball.h"
 
 enum Type GetTypeBallType(enum PokeBall ball);
+enum Item GetTypeBallItem(enum Type type);   // the Type Ball item of a type (ITEM_NONE if none)
 // Bit per stat (1 << STAT_HP...) whose base stat is raised by half: the species' lowest (all of them if tied),
 // when the ball is a Type Ball of one of its types. 0 otherwise.
 u32 GetTypeBallStatBoosts(enum Species species, enum PokeBall ball);

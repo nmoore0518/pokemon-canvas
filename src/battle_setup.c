@@ -1,4 +1,5 @@
 #include "global.h"
+#include "dad_story.h"
 #include "gym_legend.h"
 #include "data.h"
 #include "main.h"
@@ -2222,6 +2223,8 @@ static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
     if (!GetTrainerStructFromId(trainerNum)->overrideTrainer)
     {
         CreateNPCTrainerPartyFromTrainer(party, GetTrainerStructFromId(trainerNum));
+        if (trainerNum == TRAINER_GIOVANNI_DAD_FINAL)
+            DadStory_SynthesizeParty(party);   // Pokémon Canvas: Dad's inventions, in GIOVANNI's hands
         return;
     }
 

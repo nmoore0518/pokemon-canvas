@@ -54,6 +54,7 @@ struct OakSpeechResources
 static EWRAM_DATA struct OakSpeechResources *sOakSpeechResources = NULL;
 
 static void Task_NewGameScene(u8);
+#define CANVAS_SKIP_CONTROLS_GUIDE TRUE // Pokémon Canvas: the controls guide and Pikachu pages are cut
 
 static void ControlsGuide_LoadPage1(void);
 static void Task_ControlsGuide_HandleInput(u8);
@@ -774,6 +775,15 @@ static void Task_NewGameScene(u8 taskId)
         CopyBgTilemapBufferToVram(1);
         break;
     case 7:
+        if (CANVAS_SKIP_CONTROLS_GUIDE)
+        {
+            // Pokémon Canvas: no controls guide or adventure pages; straight to Prof. Oak
+            u16 black = RGB_BLACK;
+            LoadPalette(&black, BG_PLTT_ID(0), PLTT_SIZEOF(1));
+            gPaletteFade.bufferTransferDisabled = FALSE;
+            BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
+            break;
+        }
         HofPCTopBar_AddWindow(0, 30, 0, 13, 0x1C4);
         FillBgTilemapBufferRect_Palette0(1, 0xD00F, 0,  0, 30, 2);
         FillBgTilemapBufferRect_Palette0(1, 0xD002, 0,  2, 30, 1);
@@ -784,6 +794,17 @@ static void Task_NewGameScene(u8 taskId)
         BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         break;
     case 10:
+        if (CANVAS_SKIP_CONTROLS_GUIDE)
+        {
+            SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
+            ShowBg(0);
+            ShowBg(1);
+            SetVBlankCallback(VBlankCB_NewGameScene);
+            gTasks[taskId].tTimer = 30;
+            gTasks[taskId].func = Task_OakSpeech_Init;
+            gMain.state = 0;
+            return;
+        }
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
         ShowBg(0);

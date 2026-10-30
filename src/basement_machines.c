@@ -55,7 +55,7 @@ enum Type GetTypeBallType(enum PokeBall ball)
     return sTypeBallTypes[ball - FIRST_TYPE_BALL];
 }
 
-static enum Item GetTypeBallItem(enum Type type)
+enum Item GetTypeBallItem(enum Type type)
 {
     for (u32 i = 0; i < ARRAY_COUNT(sTypeBallTypes); i++)
     {

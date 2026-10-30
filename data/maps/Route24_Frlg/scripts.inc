@@ -1,5 +1,11 @@
 Route24_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Route24_OnTransition
 	.byte 0
+
+@ Pokémon Canvas: the rival only comes back up the bridge in the Dad story's scene
+Route24_OnTransition::
+	setflag FLAG_HIDE_ROUTE24_RIVAL
+	end
 
 Route24_EventScript_Rocket::
 	lock
@@ -49,17 +55,10 @@ Route24_EventScript_RocketTrigger::
 Route24_EventScript_BattleRocket::
 	giveitem_msg Route24_Text_ReceivedNuggetFromMysteryTrainer, ITEM_NUGGET
 	playbgm MUS_RG_ENCOUNTER_ROCKET, 0
-	@ Gym Trainer hack: a real choice. YES: he gives the player a Move Extractor instead of battling
-	call MoveExtractor_EventScript_AskToJoin
-	goto_if_eq VAR_RESULT, TRUE, Route24_EventScript_JoinedRocket
-	message Route24_Text_JoinTeamRocket
-	waitmessage
-	waitbuttonpress
-	setvar VAR_LAST_TALKED, LOCALID_ROUTE24_ROCKET
-	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_6, Route24_Text_RocketDefeat
-	msgbox Route24_Text_YoudBecomeTopRocketLeader
-	setvar VAR_MAP_SCENE_ROUTE24, 1
-	return
+	@ Pokémon Canvas: the player has to join (and gets the Move Extractor); then the rival comes back
+	@ and the player goes home to MOM (data/scripts/dad_story.inc). Ends the script.
+	call DadStory_EventScript_MustJoin
+	goto DadStory_EventScript_RivalSendsHome
 
 Route24_EventScript_JoinedRocket::
 	fadedefaultbgm

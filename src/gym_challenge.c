@@ -4,7 +4,8 @@
 // battles until they lose. Each challenger is built here, into one trainer slot
 // (TRAINER_GYM_CHALLENGER), which GetTrainerStructFromId (include/data.h) hands to the battle.
 //   - most are random trainers with a random name and 4-6 strong Pokémon (legendaries included);
-//   - some are famous: gym leaders, the Elite Four, the rival, Giovanni or Oak, with their teams;
+//   - some are famous: gym leaders, the Elite Four, the rival or Oak, with their teams (Giovanni's
+//     entry stays for the mentor indexes, but he's never picked);
 //   - a few are townsfolk who don't usually battle: Mom, Nurse Joy, Bill, Daisy, Mr. Fuji.
 // Every team's average level matches the player's. Wins pay money and an item; the streak,
 // record and everyone who beats the player are saved (in the secret base space after the gym
@@ -1070,7 +1071,8 @@ void GymChallenge_NextChallenger(void)
         u32 index;
         do
             index = Random() % ARRAY_COUNT(sFamous);
-        while (index == sLastFamous && ARRAY_COUNT(sFamous) > 1);
+        while ((index == sLastFamous && ARRAY_COUNT(sFamous) > 1)
+            || sFamous[index].trainerId == TRAINER_LEADER_GIOVANNI);   // Pokémon Canvas: he's gone after the story
         sLastFamous = index;
         GymChallenge_Generate(GYM_CHALLENGER_FAMOUS, index);
     }

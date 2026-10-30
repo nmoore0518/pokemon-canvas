@@ -652,12 +652,13 @@
 #define TRAINER_TRAINING_REGINALD                  646
 #define TRAINER_TRAINING_ARABELLA                  647
 #define TRAINER_TRAINING_MATILDA                   648
+#define TRAINER_GIOVANNI_DAD_FINAL                 649 // Pokémon Canvas: GIOVANNI's last battle at VIRIDIAN (synthetic abilities, Type Balls)
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT_FRLG can be increased but will take up additional saveblock space
 
-#define TRAINERS_COUNT_FRLG                      649
+#define TRAINERS_COUNT_FRLG                      650
 #define MAX_TRAINERS_COUNT_FRLG                  768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_FRLG_H

@@ -75,7 +75,8 @@ SilphCo_4F_Text_Grunt2Intro::
 	.string "Intruder spotted!$"
 
 SilphCo_4F_Text_Grunt2Defeat::
-	.string "Who are you?$"
+	.string "I know you. You look just like\n"
+	.string "your father.$"
 
 SilphCo_4F_Text_Grunt2PostBattle::
 	.string "I better tell the BOSS on 11F!$"

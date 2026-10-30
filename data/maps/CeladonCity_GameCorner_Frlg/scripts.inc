@@ -582,6 +582,9 @@ CeladonCity_GameCorner_Text_GruntDefeat::
 CeladonCity_GameCorner_Text_GruntPostBattle::
 	.string "The TEAM ROCKET HIDEOUT might\n"
 	.string "be discovered!\p"
+	.string "Wait, you're that inventor from\n"
+	.string "PALLET TOWN!\p"
+	.string "Oh, wait… never mind.\p"
 	.string "I better tell BOSS!$"
 
 CeladonCity_GameCorner_Text_SwitchBehindPosterPushIt::

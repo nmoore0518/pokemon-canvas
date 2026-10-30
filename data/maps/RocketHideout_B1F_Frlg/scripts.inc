@@ -63,7 +63,7 @@ RocketHideout_B1F_EventScript_RemoveBarrier::
 	return
 
 RocketHideout_B1F_Text_Grunt1Intro::
-	.string "Who are you?\n"
+	.string "Who are you? You look familiar.\n"
 	.string "How did you get here?$"
 
 RocketHideout_B1F_Text_Grunt1Defeat::
@@ -106,7 +106,8 @@ RocketHideout_B1F_Text_Grunt4PostBattle::
 	.string "Take the elevator to see my BOSS.$"
 
 RocketHideout_B1F_Text_Grunt5Intro::
-	.string "Are you lost, you little mouse?$"
+	.string "Are you using synthetic\n"
+	.string "abilities?$"
 
 RocketHideout_B1F_Text_Grunt5Defeat::
 	.string "Why…?$"

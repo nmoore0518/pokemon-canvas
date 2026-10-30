@@ -569,6 +569,7 @@ extern const u8 EventScript_PalletTown_PlayersHouse_2F_TurnOnPC[];
 extern const u8 EventScript_PC[];
 extern const u8 EventScript_AccessPokemonBoxLink[];
 extern const u8 EventScript_PalmPilot[];
+extern const u8 DadStory_EventScript_ReadNotebook[];
 extern const u8 EventScript_QuickHealPad[];
 extern const u8 EventScript_NewGymDecor[];
 extern const u8 Text_PalmPilotNoSignal[];

@@ -18,6 +18,7 @@ PalletTown_EventScript_LockGymDoor::
 
 PalletTown_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_PALLET_TOWN
+	call DadStory_EventScript_PalletTransition
 	call Johto_EventScript_TryInviteWaiting
 	call_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_TryReadySignLady
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY, 0, PalletTown_EventScript_SetSignLadyPos
@@ -49,6 +50,7 @@ PalletTown_EventScript_MoveSignLadyToRouteEntrance::
 PalletTown_OnFrame::
 	map_script_2 VAR_GYM_FINALE, GYM_FINALE_OAK_WAITS, GymFinale_EventScript_OakAtTheDoor
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_OAK, 2, PalletTown_EventScript_OakRatingScene
+	map_script_2 VAR_DAD_STORY, DAD_STORY_SENDOFF, DadStory_EventScript_Sendoff
 	.2byte 0
 
 @ Oak approaches player after exiting their house post Elite Four to check if they should receieve the National Dex
@@ -386,15 +388,12 @@ PalletTown_EventScript_SignLadyStartShowSign::
 
 PalletTown_Text_OakDontGoOut::
 	.string "OAK: Hey! Wait!\n"
-	.string "Don't go out!$"
+	.string "Don't go yet!$"
 
 PalletTown_Text_OakGrassUnsafeNeedMon::
-	.string "OAK: It's unsafe!\n"
-	.string "Wild POKéMON live in tall grass!\p"
-	.string "You need your own POKéMON for\n"
-	.string "your protection.\p"
-	.string "I know!\n"
-	.string "Here, come with me!$"
+	.string "OAK: There's something we need to\n"
+	.string "talk about!\p"
+	.string "Come with me!$"
 
 PalletTown_Text_RaisingMonsToo::
 	.string "I'm raising POKéMON, too.\p"
