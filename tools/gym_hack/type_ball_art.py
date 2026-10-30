@@ -59,6 +59,28 @@ EMBLEMS = {
     "fairy":    ["   #   ", "   #   ", "  ###  ", "#######", "  ###  ", "   #   "],
 }
 
+# bottom half (light, mid, shadow): a second color per type, so they don't read as Poké Balls
+BOTTOMS = {
+    "normal": [(176, 164, 128), (136, 124, 96), (96, 86, 64)],
+    "fighting": [(232, 192, 136), (192, 148, 96), (144, 100, 56)],
+    "flying": [(176, 224, 248), (128, 192, 232), (80, 144, 200)],
+    "poison": [(184, 240, 80), (136, 200, 48), (88, 144, 24)],
+    "ground": [(168, 120, 64), (128, 88, 44), (88, 58, 28)],
+    "rock": [(184, 176, 160), (144, 136, 120), (100, 94, 82)],
+    "bug": [(120, 160, 48), (84, 120, 32), (52, 84, 20)],
+    "ghost": [(88, 76, 120), (64, 54, 92), (42, 34, 64)],
+    "steel": [(128, 144, 176), (96, 112, 144), (64, 76, 104)],
+    "fire": [(255, 224, 96), (240, 184, 40), (200, 136, 16)],
+    "water": [(104, 224, 224), (64, 184, 192), (36, 136, 152)],
+    "grass": [(184, 136, 80), (148, 100, 52), (108, 70, 34)],
+    "electric": [(96, 88, 80), (70, 62, 56), (44, 40, 36)],
+    "psychic": [(184, 128, 232), (144, 88, 200), (104, 56, 160)],
+    "ice": [(120, 168, 240), (88, 128, 216), (56, 88, 176)],
+    "dragon": [(248, 208, 80), (216, 168, 48), (168, 120, 20)],
+    "dark": [(216, 64, 56), (168, 40, 36), (116, 20, 20)],
+    "fairy": [(176, 236, 212), (128, 204, 180), (84, 164, 140)],
+}
+
 OUTLINE = (32, 32, 40)
 WHITE = [(255, 255, 255), (224, 224, 232), (168, 168, 184)]   # bottom half, light to shadow
 BAND = (48, 48, 56)
@@ -66,6 +88,7 @@ BAND = (48, 48, 56)
 
 def icon(t):
     ramp, emb, embs = TYPES[t]
+    low = BOTTOMS[t]
     px = [[None] * 24 for _ in range(24)]
     cx, cy, r = 11.5, 12.5, 10.9
     lx, ly = -0.55, -0.65          # light from the upper left
@@ -85,7 +108,7 @@ def icon(t):
             elif dy < 0:
                 px[y][x] = ramp[0] if lit < 0.2 else ramp[1] if lit < 0.62 else ramp[2] if lit < 1.05 else ramp[3]
             else:
-                px[y][x] = WHITE[2] if lit < 0.15 else WHITE[1] if lit < 0.45 else WHITE[0]
+                px[y][x] = low[2] if lit < 0.15 else low[1] if lit < 0.45 else low[0]
     # the button: band-colored ring, white middle
     for y in range(24):
         for x in range(24):
@@ -139,7 +162,16 @@ def battle_ball(t):
     ramp = TYPES[t][0]
     for i, c in zip((1, 2, 3, 4), ramp):
         pal[i * 3:i * 3 + 3] = list(c)
+    # the bottom half (5 light, 6 shadow) takes the type's second color; the button (the same two
+    # indices) keeps its white and gray, moved to 9 and 10
+    low = BOTTOMS[t]
+    pal[5 * 3:5 * 3 + 3] = list(low[0])
+    pal[6 * 3:6 * 3 + 3] = list(low[1])
+    pal[9 * 3:9 * 3 + 3] = [255, 255, 255]
+    pal[10 * 3:10 * 3 + 3] = [148, 148, 148]
     out = src.copy()
+    for (x, y) in ((7, 8), (8, 8), (7, 23), (8, 23)):    # the button, closed and opening frames
+        out.putpixel((x, y), {5: 9, 6: 10}[out.getpixel((x, y))])
     out.putpalette(pal)
     out.save(os.path.join(ROOT, f"graphics/balls/type_{t}.png"), bits=4)
     return out
