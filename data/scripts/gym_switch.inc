@@ -208,6 +208,7 @@ GymSwitch_EventScript_Confirmed::
 	msgbox GymSwitch_Text_NowType
 	waitfanfare
 	special GymBadge_HideIcon
+	call Outfits_EventScript_AllGymUniforms   @ (Pokémon Canvas: every gym uniform, the first time)
 	call_if_eq VAR_0x8007, TRUE, GymSwitch_EventScript_OldLegendLeaves
 	goto_if_eq VAR_0x8009, TRUE, GymSwitch_EventScript_NewTypeTips
 	msgbox GymSwitch_Text_BackToType

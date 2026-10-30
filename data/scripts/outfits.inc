@@ -66,6 +66,17 @@ Outfits_EventScript_GymUniform::
 Outfits_EventScript_Return::
 	return
 
+@ Changing the gym's type (after a mastery): every gym uniform, the first time
+Outfits_EventScript_AllGymUniforms::
+	special Outfit_UnlockAllGymUniforms
+	goto_if_eq VAR_RESULT, FALSE, Outfits_EventScript_Return
+	playfanfare MUS_RG_OBTAIN_KEY_ITEM
+	message Outfits_Text_ReceivedAllGymUniforms
+	waitmessage
+	waitfanfare
+	msgbox Outfits_Text_AllInWardrobe
+	return
+
 	.include "data/scripts/outfits_list.inc"
 
 @ (Placeholder lines: Nick writes the final ones)
@@ -101,6 +112,13 @@ Outfits_Text_PutInWardrobe:
 Outfits_Text_CratesEmpty:
 	.string "Wooden crates, nailed shut.\n"
 	.string "One of them is empty.$"
+
+Outfits_Text_ReceivedAllGymUniforms:
+	.string "{PLAYER} received a GYM UNIFORM\n"
+	.string "for every type!$"
+
+Outfits_Text_AllInWardrobe:
+	.string "They're in the wardrobe at home.$"
 
 Outfits_Text_ReceivedGymUniform:
 	.string "{PLAYER} received a\n"

@@ -8,7 +8,6 @@
 // offers it again in his lab, where the player can also switch back to any type the gym has had,
 // free. The rival's type never changes. Scripts: data/scripts/gym_switch.inc.
 #include "global.h"
-#include "outfits.h"
 #include "gym_switch.h"
 #include "event_data.h"
 #include "gym_badge.h"
@@ -267,7 +266,6 @@ void GymSwitch_SetType(void)
     CopyUppercase(gStringVar3, gStringVar3);
     gSpecialVar_Result = GymLegend_ChangeType(from, to);
     VarSet(VAR_PLAYER_TYPE, to);
-    Outfit_Unlock(Outfit_ForType(to));   // (Pokémon Canvas: the new type's gym uniform)
     GymSwitch_BufferTypeName(gStringVar1, to);
     StringCopy(gStringVar2, GymBadge_GetName(to));
     // The badge on the gym's pedestal

@@ -3645,3 +3645,25 @@ TEST("GymHack: outfits: each type has its gym uniform, and unlocking keeps the o
     VarSet(VAR_OUTFITS_UNLOCKED, before);
     VarSet(VAR_OUTFITS_UNLOCKED_2, before2);
 }
+
+TEST("GymHack: outfits: changing the gym's type gives every gym uniform (and saves that already changed catch up)")
+{
+    u32 t, before = VarGet(VAR_OUTFITS_UNLOCKED), before2 = VarGet(VAR_OUTFITS_UNLOCKED_2);
+    VarSet(VAR_OUTFITS_UNLOCKED, 0);
+    VarSet(VAR_OUTFITS_UNLOCKED_2, 0);
+    Outfit_UnlockAllGymUniforms();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    for (t = OUTFIT_NORMAL; t < OUTFIT_COUNT; t++)
+        EXPECT(Outfit_IsUnlocked(t));
+    EXPECT(!Outfit_IsUnlocked(OUTFIT_ROCKET));
+    Outfit_UnlockAllGymUniforms();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    VarSet(VAR_OUTFITS_UNLOCKED, 0);
+    VarSet(VAR_OUTFITS_UNLOCKED_2, 0);
+    FlagSet(FLAG_GYM_TYPE_OWNED + TYPE_FIRE);
+    Outfit_CatchUp();
+    EXPECT(Outfit_IsUnlocked(OUTFIT_DRAGON));
+    FlagClear(FLAG_GYM_TYPE_OWNED + TYPE_FIRE);
+    VarSet(VAR_OUTFITS_UNLOCKED, before);
+    VarSet(VAR_OUTFITS_UNLOCKED_2, before2);
+}

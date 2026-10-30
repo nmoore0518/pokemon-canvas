@@ -860,3 +860,4 @@ gSpecials::
 	def_special Outfit_GiveGymUniform
 	def_special Outfit_CatchUp
 	def_special Outfit_Wear
+	def_special Outfit_UnlockAllGymUniforms

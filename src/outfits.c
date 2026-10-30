@@ -45,6 +45,8 @@ u32 Outfit_Get(void)
     return outfit < OUTFIT_COUNT ? outfit : OUTFIT_CASUAL;
 }
 
+void Outfit_UnlockAllGymUniforms(void);
+
 static u32 ShownOutfit(void)
 {
     return sPreview > 0 && sPreview <= OUTFIT_COUNT ? sPreview - 1u : Outfit_Get();
@@ -154,8 +156,34 @@ void Outfit_GiveGymUniform(void)
 // gift (after Mt. Moon) has come
 void Outfit_CatchUp(void)
 {
+    u32 t;
     if (VarGet(VAR_MENTOR_STAGE) & MENTOR_GAVE_GUARD)
         Outfit_Unlock(Outfit_ForType(VarGet(VAR_PLAYER_TYPE)));
+    // ...and every one, once the gym's type has been changed (a type is owned only after a change)
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        if (FlagGet(FLAG_GYM_TYPE_OWNED + t))
+        {
+            Outfit_UnlockAllGymUniforms();
+            break;
+        }
+    }
+}
+
+// Every type's gym uniform (changing the gym's type, after a mastery). VAR_RESULT = whether any
+// were new.
+void Outfit_UnlockAllGymUniforms(void)
+{
+    u32 t, outfit;
+    gSpecialVar_Result = FALSE;
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        outfit = Outfit_ForType(t);
+        if (outfit == OUTFIT_CASUAL || Outfit_IsUnlocked(outfit))
+            continue;
+        Outfit_Unlock(outfit);
+        gSpecialVar_Result = TRUE;
+    }
 }
 
 // VAR_0x8004 = the outfit to wear (the player changes into it at once)

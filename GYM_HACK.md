@@ -201,8 +201,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   it's picked (`DYN_MULTICHOICE_CB_OUTFIT`).
   - CASUAL CLOTHES: always. ROCKET UNIFORM: Dad's, in the basement crates (`Outfits_EventScript_BasementCrates`).
   - The 18 gym uniforms (the clothes in the type's Type Ball colors): the player's type's comes with
-    the mentor's first gift after Mt. Moon (older saves get it at the wardrobe), and changing the
-    gym's type unlocks the new type's. The lines are placeholders.
+    the mentor's first gift after Mt. Moon (older saves get it at the wardrobe), and the first change of the
+    gym's type (after a mastery) gives every type's (`Outfits_EventScript_AllGymUniforms`). The lines are placeholders.
   - Chest marks: every outfit but the casual clothes has a 4x3 mark on the chest (the Rocket R, a
     gym uniform's type emblem in the Type Ball's emblem color, on a patch of the jacket's color),
     drawn on the walking and running frames that face the screen. Those frames are their own sheets
