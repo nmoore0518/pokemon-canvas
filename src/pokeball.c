@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_interface.h"
 #include "decompress.h"
 #include "graphics.h"
 #include "main.h"
@@ -77,7 +78,11 @@ static enum PokeBall GetBattlerPokeballItemId(enum BattlerId battler);
 #define GFX_TAG_PARK_BALL    55025
 #define GFX_TAG_BEAST_BALL   55026
 #define GFX_TAG_CHERISH_BALL 55027
-#define GFX_TAG_TYPE_BALL(n)  (55028 + (n))  // Pokémon Canvas: the Type Balls
+// Pokémon Canvas: the Type Balls. (Not 55028+: 55032-55033 are the trainer back-pic tags and 55039+
+// the healthboxes (battle_interface.h), so loading the balls broke the battle HUD.)
+#define GFX_TAG_TYPE_BALL(n)  (55200 + (n))
+STATIC_ASSERT(GFX_TAG_TYPE_BALL(0) > TAG_STATUS_SUMMARY_BALLS_TILE + 0x80
+              && GFX_TAG_TYPE_BALL(LAST_TYPE_BALL - FIRST_TYPE_BALL) < 0xDEDE, TypeBallTagsClearOfBattleTags)
 
 static const struct OamData sBallOamData =
 {
