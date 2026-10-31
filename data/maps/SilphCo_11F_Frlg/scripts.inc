@@ -7,7 +7,7 @@ SilphCo_11F_OnTransition::
 	call DadStory_EventScript_SilphTransition
 	end
 
-@ Pokémon Canvas: STRONG ACID by the boardroom door (enough for one run of Dad's Synthesizer)
+@ Pokémon Canvas: STRONG ACID just outside the boardroom door, before GIOVANNI sees the player (enough for one run of Dad's Synthesizer)
 SilphCo_11F_EventScript_ItemStrongAcid::
 	finditem ITEM_STRONG_ACID, 3
 	end

@@ -3,6 +3,8 @@
 #include "basement_machines.h"
 #include "battle_main.h"
 #include "event_data.h"
+#include "event_object_movement.h"
+#include "fieldmap.h"
 #include "item.h"
 #include "item_menu.h"
 #include "mail.h"
@@ -15,7 +17,10 @@
 #include "pokemon_storage_system.h"
 #include "random.h"
 #include "script.h"
+#include "sprite.h"
 #include "string_util.h"
+#include "task.h"
+#include "trig.h"
 #include "strings.h"
 #include "synthetic_abilities.h"
 #include "constants/abilities.h"
@@ -272,4 +277,94 @@ void BallChanger_Apply(void)
     CalculateMonStats(mon); // a Type Ball's boost comes or goes
     if (oldBall != BALL_STRANGE && gPokeBalls[oldBall].itemId != ITEM_NONE)
         AddBagItem(gPokeBalls[oldBall].itemId, 1);
+}
+
+// ---- The Ball Changer's pedestals: empty until the machine runs; then the Pokémon's ball (left) and
+//      the new one (right) appear on them and jump across (sprites, the real balls' pictures) ----
+#define CHANGER_LEFT_X     5           // the pedestals' dishes (map blocks; build_basement.py: art.CHANGER)
+#define CHANGER_RIGHT_X    8
+#define CHANGER_Y          6
+#define CHANGER_SWAP_FRAMES 36
+
+static EWRAM_DATA u8 sChangerSprites[2] = {0};
+static EWRAM_DATA u8 sChangerBalls[2] = {0};
+
+static const struct OamData sChangerBallOam =
+{
+    .shape = SPRITE_SHAPE(16x16),
+    .size = SPRITE_SIZE(16x16),
+    .priority = 2,
+};
+
+static u8 CreateChangerBall(enum PokeBall ball, s16 blockX)
+{
+    struct SpriteTemplate template = gPokeBalls[ball].spriteTemplate;
+    s16 x, y;
+    u8 spriteId;
+
+    template.oam = &sChangerBallOam;
+    template.affineAnims = gDummySpriteAffineAnimTable;
+    template.callback = SpriteCallbackDummy;
+    LoadBallGfx(ball);
+    SetSpritePosToMapCoords(blockX + MAP_OFFSET, CHANGER_Y + MAP_OFFSET, &x, &y);
+    spriteId = CreateSprite(&template, x + 8, y - 26, 0);  // (sitting in the dish; measured in the game)
+    if (spriteId != MAX_SPRITES)
+        StartSpriteAnim(&gSprites[spriteId], 0);           // (closed)
+    return spriteId;
+}
+
+// The Pokémon's ball on the left pedestal, the one picked from the bag (VAR_ITEM_ID) on the right
+void BallChanger_ShowBalls(void)
+{
+    sChangerBalls[0] = GetMonData(ChosenMon(), MON_DATA_POKEBALL);
+    sChangerBalls[1] = ItemIdToBallId(gSpecialVar_ItemId);
+    sChangerSprites[0] = CreateChangerBall(sChangerBalls[0], CHANGER_LEFT_X);
+    sChangerSprites[1] = CreateChangerBall(sChangerBalls[1], CHANGER_RIGHT_X);
+}
+
+#define tTimer data[0]
+
+static void Task_ChangerSwap(u8 taskId)
+{
+    s32 t = ++gTasks[taskId].tTimer;
+    s32 dx = (CHANGER_RIGHT_X - CHANGER_LEFT_X) * 16 * t / CHANGER_SWAP_FRAMES;
+    s32 arc = Sin(t * 128 / CHANGER_SWAP_FRAMES, 24);
+
+    if (sChangerSprites[0] != MAX_SPRITES)
+    {
+        gSprites[sChangerSprites[0]].x2 = dx;
+        gSprites[sChangerSprites[0]].y2 = -arc;          // (over the top)
+    }
+    if (sChangerSprites[1] != MAX_SPRITES)
+    {
+        gSprites[sChangerSprites[1]].x2 = -dx;
+        gSprites[sChangerSprites[1]].y2 = -arc / 3;      // (under it)
+    }
+    if (t >= CHANGER_SWAP_FRAMES)
+    {
+        DestroyTask(taskId);
+        ScriptContext_Enable();
+    }
+}
+
+// (use waitstate after it)
+void BallChanger_SwapBalls(void)
+{
+    CreateTask(Task_ChangerSwap, 80);
+}
+
+#undef tTimer
+
+void BallChanger_HideBalls(void)
+{
+    u32 i;
+
+    for (i = 0; i < 2; i++)
+    {
+        if (sChangerSprites[i] != MAX_SPRITES)
+            DestroySprite(&gSprites[sChangerSprites[i]]);
+        sChangerSprites[i] = MAX_SPRITES;
+    }
+    FreeBallGfx(sChangerBalls[0]);
+    FreeBallGfx(sChangerBalls[1]);
 }

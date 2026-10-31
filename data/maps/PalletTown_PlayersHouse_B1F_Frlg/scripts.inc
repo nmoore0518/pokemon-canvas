@@ -229,22 +229,24 @@ PlayersHouse_B1F_EventScript_BallChanger::
 	goto_if_eq VAR_RESULT, MACHINE_CHANGER_BAG_FULL, PlayersHouse_B1F_EventScript_ChangerBagFull
 	msgbox PlayersHouse_B1F_Text_ChangerConfirm, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PlayersHouse_B1F_EventScript_MachineEnd
+	closemessage
+	@ (the pedestals are empty until now: the Pokémon's ball appears on the left, the new one on the right)
+	special BallChanger_ShowBalls
+	playse SE_BALL
+	delay 24
 	special BallChanger_Apply
 	playse SE_SWITCH
 	call PlayersHouse_B1F_EventScript_Frame_changer1
 	special DrawWholeMapView
 	delay 20
 	playse SE_LEDGE
-	applymovement LOCALID_BASEMENT_BALL_LEFT, PlayersHouse_B1F_Movement_BallAcrossRight
-	applymovement LOCALID_BASEMENT_BALL_RIGHT, PlayersHouse_B1F_Movement_BallAcrossLeft
-	waitmovement 0
+	special BallChanger_SwapBalls
+	waitstate
 	delay 20
 	call PlayersHouse_B1F_EventScript_Frame_changer0
 	special DrawWholeMapView
-	@ (the two balls look alike: each back on its own pedestal)
-	setobjectxy LOCALID_BASEMENT_BALL_LEFT, 5, 6
-	setobjectxy LOCALID_BASEMENT_BALL_RIGHT, 8, 6
 	msgbox PlayersHouse_B1F_Text_ChangerDone
+	special BallChanger_HideBalls
 	releaseall
 	end
 
@@ -256,20 +258,6 @@ PlayersHouse_B1F_EventScript_ChangerSame::
 PlayersHouse_B1F_EventScript_ChangerBagFull::
 	msgbox PlayersHouse_B1F_Text_ChangerBagFull
 	releaseall
-	end
-
-PlayersHouse_B1F_Movement_BallAcrossRight:
-	jump_2_right
-	jump_right
-	step_end
-
-PlayersHouse_B1F_Movement_BallAcrossLeft:
-	jump_2_left
-	jump_left
-	step_end
-
-PlayersHouse_B1F_EventScript_Ball::
-	msgbox PlayersHouse_B1F_Text_Ball, MSGBOX_NPC
 	end
 
 @ ---- The wall switch: not there until the story puts it there. Up = Evil Mode, thrown = Nice Mode. ----
@@ -508,9 +496,6 @@ PlayersHouse_B1F_Text_ChangerDone::
 	.string "traded places!\p"
 	.string "{STR_VAR_1} is in the {STR_VAR_3} now.\n"
 	.string "{PLAYER} took back the {STR_VAR_2}.$"
-
-PlayersHouse_B1F_Text_Ball::
-	.string "A POKé BALL rests in the dish.$"
 
 PlayersHouse_B1F_Text_Wall::
 	.string "Cold concrete. It's damp to\n"

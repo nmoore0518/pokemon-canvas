@@ -451,7 +451,7 @@ knew him.</p>
 
 <h3>6. Pokémon Tower, Saffron City, Silph Co.</h3>
 <p>Your rival gives you a Gold Bottle Cap at the Pokémon Tower. Silph Co. as in FireRed up to 11F (Lapras is the gift on
-7F), but the boardroom is different: no President, 3 Strong Acid by the door, and after his defeat Giovanni gives you the
+7F), but the boardroom is different: no President, 3 Strong Acid just outside the boardroom door (grab it before you go in; you go straight home afterwards), and after his defeat Giovanni gives you the
 <b>Master Ball</b> and a Multivitamin ("consider it an investment"). Then your mom runs in, and takes you home.</p>
 <p>At home she moves the bookcase: behind it are stairs down to <b>your father's lab</b> (see <a href="#lab">Dad's
 lab</a>). His machines work from then on; read the four pages on the floor. Back in Saffron, the Rocket grunt finds you with
@@ -651,7 +651,7 @@ it loses 5 levels (moves kept) and comes back.</p>
 <h3>The Ball Changer</h3>
 <p>Choose a Pokémon and a ball from your bag: it moves into the new ball, and the old one goes back in your bag.</p>
 <h3>The wardrobe: outfits</h3>
-<p>The green cabinet in your room. It lists the outfits you have, and you change into each one as you scroll through them:
+<p>The dresser in your room (the yellow one beside the bookshelf). It lists the outfits you have, and you change into each one as you scroll through them:
 everything you do (walking, biking, surfing, fishing, battle) shows it.</p>
 <ul>
 <li><b>Casual clothes</b>: what you start in.</li>

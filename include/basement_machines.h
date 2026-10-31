@@ -25,5 +25,8 @@ void BallMaker_Apply(void);
 void BallChanger_CheckMon(void);
 void BallChanger_CheckBall(void);
 void BallChanger_Apply(void);
+void BallChanger_ShowBalls(void);
+void BallChanger_SwapBalls(void);
+void BallChanger_HideBalls(void);
 
 #endif // GUARD_BASEMENT_MACHINES_H

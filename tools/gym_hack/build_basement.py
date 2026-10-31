@@ -3,7 +3,7 @@
 
 A concrete room down a stairwell from the house's 1F: the Ability Synthesizer (a belt carrying a
 capsule into a glowing stream), the Ball Maker (a hopper and a hand crank), the Ball Changer (two
-pedestals and a console; the balls on them are people, so they can jump across), a wall switch
+pedestals and a console; the balls appear on them as sprites while it runs), a wall switch
 that appears later in the story, four loose pages, a workbench, a lab table, a desk, a bookshelf,
 a chalkboard, crates and a trash can. Art: tools/gym_hack/basement_art.py.
 
@@ -169,12 +169,7 @@ def write_basement_map(grid):
     sx, sy = art.STAIRS
     warps = [{"x": sx, "y": sy + 1, "elevation": 3, "dest_map": HOUSE_MAP, "dest_warp_id": "4"}]   # (the house's stairwell)
     cx, cy = art.CHANGER
-    objects = []
-    for k, x in (("LEFT", cx), ("RIGHT", cx + 3)):
-        o = obj("OBJ_EVENT_GFX_ITEM_BALL", x, cy, f"PlayersHouse_B1F_EventScript_Ball", "MOVEMENT_TYPE_NONE")
-        o["local_id"] = f"LOCALID_BASEMENT_BALL_{k}"
-        o["movement_range_x"] = o["movement_range_y"] = 0
-        objects.append(o)
+    objects = []    # (the Ball Changer's balls are sprites, there only while it runs: src/basement_machines.c)
     # Pokémon Canvas: MOM, for the scene when she first shows the player the basement (data/scripts/dad_story.inc)
     o = obj("OBJ_EVENT_GFX_MOM_FRLG", sx - 1, sy + 2, "0x0", "MOVEMENT_TYPE_FACE_RIGHT")
     o["local_id"], o["flag"] = "LOCALID_BASEMENT_MOM", "FLAG_HIDE_BASEMENT_MOM"
@@ -187,6 +182,7 @@ def write_basement_map(grid):
     bgs += [sign(mx + i, my + 2, "PlayersHouse_B1F_EventScript_BallMaker", N) for i in range(3)]
     bgs += [sign(cx + 1, cy + 1, "PlayersHouse_B1F_EventScript_BallChanger", N),
             sign(cx + 2, cy + 1, "PlayersHouse_B1F_EventScript_BallChanger", N)]
+    bgs += [sign(cx + dx, cy + dy, "PlayersHouse_B1F_EventScript_BallChanger") for dx in (0, 3) for dy in (0, 1)]
     bgs.append(sign(art.SWITCH[0], art.SWITCH[1], "PlayersHouse_B1F_EventScript_Switch", N))
     for k, (x, y) in enumerate(art.PAPERS, 1):
         bgs.append(sign(x, y, f"PlayersHouse_B1F_EventScript_Paper{k}"))

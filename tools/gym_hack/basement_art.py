@@ -60,7 +60,7 @@ SWITCH = (5, 1)         # 1x1, on the wall's lower row
 MAKER = (6, 1)          # 3x3: hopper on top, the body and its slot below, the crank on the right
 BOARD = (9, 0)          # 2x2 chalkboard
 SHELF = (11, 0)         # 1x2 bookshelf
-STAIRS = (12, 1)        # the stairs up: the warp (x, y+1) at their foot, the steps at x+1..x+2, rows 0..y+1
+STAIRS = (12, 1)        # the stairs up: the warp (x, y+1) at their foot, the steps at x+1..x+2, rows y..y+2
 LAMPS = (5, 12)         # caged lamps on the wall (x; row 0)
 BENCH = (0, 5)          # 2x2 workbench
 CHANGER = (5, 6)        # pedestals at x and x+3 (rows y..y+1), the console between (x+1..x+2, row y+1)
@@ -439,40 +439,43 @@ def draw_desk(s):
             s.rset(x, y0 + 10, LAMP)
 
 
+# FireRed's own stairs up (the house's 1F: the blocks at x 10-12, rows 1-3, the mat at their foot
+# left out), recolored into the room's palette: the treads wood, the wall under them concrete
+FRLG_STAIRS = [[0x028, 0x016, 0x017], [0x009, 0x01E, 0x01F], [0x001, 0x026, 0x027]]
+FRLG_STAIRS_BG = [[0x028, 0x028, 0x028], [0x009, 0x009, 0x009], [0x001, 0x001, 0x001]]
+FRLG_STAIRS_COLORS = {
+    (246, 238, 148): WD_L, (213, 197, 106): WD, (172, 148, 65): WD_D, (164, 148, 49): WD_D,
+    (131, 115, 16): WD_D, (82, 82, 106): O, (90, 90, 115): O,
+    (180, 180, 164): C3, (123, 123, 123): C2, (197, 189, 213): WEB,
+}
+
+
+def frlg_stairs():
+    """{(x, y): room color} for the stairs' pixels, x and y from the top-left of the 3x3 blocks"""
+    import render_map as rm
+    rm.set_version("frlg")
+    prim = rm.Tileset(rm.tileset_dir("gTileset_BuildingFrlg"))
+    sec = rm.Tileset(rm.tileset_dir("gTileset_GenericBuilding1"))
+    a, b = Image.new("RGB", (48, 48)), Image.new("RGB", (48, 48))
+    for y in range(3):
+        for x in range(3):
+            rm.draw_metatile(a, x * 16, y * 16, FRLG_STAIRS[y][x], prim, sec)
+            rm.draw_metatile(b, x * 16, y * 16, FRLG_STAIRS_BG[y][x], prim, sec)
+    out = {}
+    for y in range(40):                     # (below that it's only the floor's pattern)
+        for x in range(16, 48):
+            c = a.getpixel((x, y))
+            if c != b.getpixel((x, y)) and c in FRLG_STAIRS_COLORS:
+                out[(x, y)] = FRLG_STAIRS_COLORS[c]
+    return out
+
+
 def draw_stairs(s):
-    """wooden stairs up the right wall into the dark of the house above: the steps rise to the
-    upper right; a stringer and a railing on their open side; the warp block at their foot"""
-    x0, y0 = (STAIRS[0] + 1) * 16, 0
-    x1, y1 = x0 + 31, (STAIRS[1] + 2) * 16 - 1          # (32 wide, rows 0..y+1)
-    s.rrect(x0, y0, x1, y1, O)                           # the stairwell: dark
-    n = 9                                                # steps, bottom (left) to top (right)
-    for k in range(n):
-        sx = x0 + 2 + k * 3
-        top = y1 - 4 - k * 5
-        s.rrect(sx, top, x1, top + 1, WD_L)              # the tread's lit nose
-        s.rrect(sx, top + 2, x1, top + 4, WD)            # the tread
-        s.rrect(sx, top + 5, x1, min(top + 5, y1), WD_D)  # the riser's shadow
-    for y in range(y0, y1 + 1):                          # fading into the dark at the top
-        for x in range(x0, x1 + 1):
-            if y < 10 and s.r[x, y] != O and (y < 5 or (x + y) % 2):
-                s.rset(x, y, O if y < 5 else C0)
-    for k in range(n + 1):                               # the stringer along their open side
-        bx_, by_ = x0 + k * 3, y1 - k * 5
-        s.rrect(bx_, by_ - 2, bx_ + 3, by_, WD_D)
-    for y in range(4, y1 - 4, 1):                        # a railing above it, its posts
-        x = x0 + 1 + (y1 - y) * 3 // 5
-        if y > 8:
-            s.rset(x, y - 8, WD_L)
-            s.rset(x, y - 7, WD)
-    for k in range(0, n, 3):
-        px_, py_ = x0 + 1 + k * 3, y1 - 4 - k * 5
-        s.rrect(px_, py_ - 8, px_, py_ - 1, WD)
-    # the foot of the stairs: a worn patch of floor
-    fx, fy = STAIRS[0] * 16, (STAIRS[1] + 1) * 16
-    for y in range(fy + 3, fy + 13):
-        for x in range(fx + 3, fx + 13):
-            if h(x % 16, y % 16, 81) < 110:
-                s.rset(x, y, C3 if s.r[x, y] < C3 else s.r[x, y])
+    """ordinary stairs up the right wall (FireRed's, as in the house above), rising to the upper
+    right from the warp block at their foot"""
+    x0, y0 = STAIRS[0] * 16, STAIRS[1] * 16
+    for (x, y), c in frlg_stairs().items():
+        s.rset(x0 + x, y0 + y, c)
 
 
 def draw_trash(s):
