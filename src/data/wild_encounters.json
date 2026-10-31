@@ -13037,9 +13037,9 @@
                 "species": "SPECIES_TENTACOOL"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_MEW"
+                "min_level": 35,
+                "max_level": 40,
+                "species": "SPECIES_TENTACOOL"
               }
             ]
           },
@@ -34117,9 +34117,9 @@
                 "species": "SPECIES_TENTACOOL"
               },
               {
-                "min_level": 35,
-                "max_level": 40,
-                "species": "SPECIES_TENTACOOL"
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_MEW"
               }
             ]
           },

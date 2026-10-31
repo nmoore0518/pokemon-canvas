@@ -55,6 +55,9 @@ def main(si_path):
                 or "_Johto_" in e["base_label"]):
             continue
         for field in ("land_mons", "water_mons", "rock_smash_mons", "fishing_mons"):
+            # The S.S. Anne sails before the player has Surf, so its water is never reachable
+            if field == "water_mons" and e.get("map") == "MAP_SSANNE_EXTERIOR":
+                continue
             for m in e.get(field, {}).get("mons", []):
                 sp = m["species"]
                 wild.add("SPECIES_UNOWN" if sp.startswith("SPECIES_UNOWN") else sp)
