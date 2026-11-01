@@ -71,99 +71,99 @@ T["HeadmasterCandidates"] = """Candidates come here from JOHTO, HOENN, SINNOH, U
 Some are just starting out. Some could take a GYM tomorrow. All of them will battle you, as often as you like."""
 T["HeadmasterTeachers"] = """Each of my INSTRUCTORS is named for a flower, as I am. It's a tradition here.
 
-Their lecture halls are through the doors behind me. In A, LARKSPUR teaches speed and CAMELLIA setup. In B, FOXGLOVE hazards and VERBENA pivoting.
+Their lecture halls are through the doors behind me. In A, LARKSPUR teaches speed control and CAMELLIA setup. In B, FOXGLOVE spread moves and VERBENA positioning.
 
-In C, MARIGOLD weather and HYACINTH reading the opponent. In D, YARROW training and TANSY team building."""
+In C, MARIGOLD weather and HYACINTH targeting. In D, YARROW training and TANSY team building.
+
+All of it for double battles, mind you. That's where GYM battles are going."""
 T["HeadmasterBye"] = "Off you go, then. A GYM LEADER never stops learning."
 
-# ---------------------------------------------------------------- lectures (singles)
+# ---------------------------------------------------------------- lectures (doubles: the way GYM battles are going)
 LECTURES = {
-    "Larkspur": ["LARKSPUR: Speed and priority. Welcome!",
-        """In a singles battle, who moves first decides more games than anything else.
+    "Larkspur": ["LARKSPUR: Speed control. Welcome!",
+        """In a double battle, four POKéMON move every turn. Whoever controls the turn order controls the game.
 
-Know your speed tiers. Ask: what does my POKéMON outspeed, and what outspeeds it?
+TAILWIND doubles your side's speed for four turns. ICY WIND and ELECTROWEB hit both foes and slow them down.""",
+        """TRICK ROOM turns it all upside down: for five turns, the slowest move first. A slow, strong team loves it.
 
-A CHOICE SCARF lets a slower POKéMON jump ahead, at the price of being locked into one move.""",
-        """When you can't outspeed, use priority. EXTREME SPEED, BULLET PUNCH, ICE SHARD, AQUA JET and SUCKER PUNCH all strike first.
+And FAKE OUT! It strikes first and makes the target flinch, but only on the turn it comes in.""",
+        """Priority still matters: EXTREME SPEED, BULLET PUNCH and SUCKER PUNCH. But beware PSYCHIC TERRAIN and QUICK GUARD.
 
-Priority is how you finish off a weakened sweeper before it can move again.""",
-        """But SUCKER PUNCH fails if the target isn't attacking. Paralysis halves speed. And a FOCUS SASH means one hit won't do.
+Make the turn order yours. That's my whole lesson!"""],
+    "Camellia": ["CAMELLIA: Setting up, with a partner. Shall we begin?",
+        """Setting up is harder with two attackers aimed at you. So bring a friend.
 
-Count the turns. Count the speed. That's my whole lesson!"""],
-    "Camellia": ["CAMELLIA: Setting up, and winning. Shall we begin?",
-        """Every team needs a win condition: a POKéMON that can take over the endgame if its answers are gone.
+FOLLOW ME and RAGE POWDER pull every single-target attack onto the partner. That's a free turn for your sweeper.""",
+        """FAKE OUT stops one foe, PROTECT dodges the other, and your DRAGON DANCE goes off untouched.
 
-Setup moves make one. SWORDS DANCE, DRAGON DANCE, QUIVER DANCE, NASTY PLOT, SHELL SMASH, CALM MIND.""",
-        """Set up when the opponent can't punish you: when they're forced to switch, or when their attacks barely scratch you.
+INTIMIDATE on the partner softens physical attacks on both of you.""",
+        """Against setup? Hit the sweeper with both POKéMON at once, or strike past the redirection with a spread move.
 
-A FOCUS SASH or MULTISCALE buys a free turn. A LUM BERRY shrugs off the status meant to stop you.""",
-        """First, break the walls that check your sweeper. Then sweep.
+HAZE and CLEAR SMOG wipe the boosts away. A setup turn is only free if you make it free!"""],
+    "Foxglove": ["FOXGLOVE: Spread moves. My favorite subject.",
+        """EARTHQUAKE, ROCK SLIDE, HEAT WAVE, DAZZLING GLEAM, MUDDY WATER, HYPER VOICE: they hit both foes at once.
 
-And against setup? HAZE, ROAR, WHIRLWIND, UNAWARE, or simply hitting hard before it's too late."""],
-    "Foxglove": ["FOXGLOVE: Entry hazards. My favorite subject.",
-        """STEALTH ROCK hurts every POKéMON that switches in, more if it's weak to ROCK. A CHARIZARD loses half its HP!
+A spread move does three quarters of its damage to each target. Two hits for the price of one!""",
+        """Careful: EARTHQUAKE and SURF hit your partner too. Pair them with a FLYING type, a LEVITATE user, or a POKéMON that absorbs WATER.
 
-SPIKES stack up to three layers. TOXIC SPIKES poison. STICKY WEB slows the switch-in.""",
-        """Hazards turn every switch into damage. Over a long battle, that chip decides who survives.
+Or have the partner PROTECT on the turn you fire it.""",
+        """WIDE GUARD blocks spread moves for your whole side. And ROCK SLIDE's flinches add up fast.
 
-Lay them early, with a lead that can take a hit.""",
-        """Remove them with RAPID SPIN or DEFOG, or ignore them with HEAVY-DUTY BOOTS.
+In doubles, the best damage is damage everywhere!"""],
+    "Verbena": ["VERBENA: Positioning and switching. Let's go!",
+        """In doubles, what's on the field next to what matters as much as the POKéMON themselves.
 
-And a GHOST type can block a RAPID SPIN. Think about who removes hazards on your team!"""],
-    "Verbena": ["VERBENA: Pivoting and momentum. Let's go!",
-        """U-TURN, VOLT SWITCH, FLIP TURN and PARTING SHOT hit and switch out in the same turn.
+PARTING SHOT, U-TURN and VOLT SWITCH bring in the right partner. FAKE OUT can be used again each time a POKéMON comes back in.""",
+        """INTIMIDATE lowers both foes' Attack every time its POKéMON comes in. Switch it out and back to do it again.
 
-That means you get to choose your matchup after you've seen theirs.""",
-        """Momentum is forcing the opponent to react to you. Pivot into a threat, they switch, you pivot again.
+REGENERATOR heals on every switch. A POKéMON in the back is a POKéMON resting.""",
+        """PROTECT buys time for a switch on the other side. And watch for a slot the foe is about to double up on.
 
-REGENERATOR heals on every switch. INTIMIDATE weakens every attacker it meets.""",
-        """When you expect a switch, KNOCK OFF or a hazard punishes it.
-
-And if they pivot too… double switch to the POKéMON that beats what's coming in."""],
+Move your pieces before they move you!"""],
     "Marigold": ["MARIGOLD: Weather and terrain. Bring an umbrella!",
-        """DRIZZLE, DROUGHT, SAND STREAM and SNOW WARNING set the weather for five turns; eight with the right rock.
+        """Weather is even stronger in doubles: one setter powers up both its partners.
 
-Rain powers WATER moves and weakens FIRE. Sun does the reverse. THUNDER and HURRICANE never miss in rain.""",
-        """SWIFT SWIM, CHLOROPHYLL, SAND RUSH and SLUSH RUSH double a POKéMON's speed in their weather.
+DRIZZLE, DROUGHT, SAND STREAM and SNOW WARNING last five turns; eight with the right rock.""",
+        """SWIFT SWIM, CHLOROPHYLL, SAND RUSH and SLUSH RUSH double a POKéMON's speed in their weather. Rain makes THUNDER and HURRICANE never miss.
 
-Sand chips everyone but ROCK, GROUND and STEEL, and makes ROCK types sturdier.""",
-        """Terrains last five turns too. ELECTRIC stops sleep, PSYCHIC blocks priority, GRASSY heals, MISTY stops status.
+The setter's partner should be the abuser. Lead with them together!""",
+        """Terrains last five turns too. PSYCHIC TERRAIN blocks FAKE OUT and other priority. GRASSY TERRAIN weakens EARTHQUAKE.
 
-Count the turns, and remember: the last weather set wins."""],
-    "Hyacinth": ["HYACINTH: Reading your opponent. Sit down, please.",
-        """Before you choose a move, ask what your opponent wants to do. What's their best move? What do they fear?
+Remember: the last weather set wins. Keep the setter safe to bring it back!"""],
+    "Hyacinth": ["HYACINTH: Targeting and PROTECT. Sit down, please.",
+        """Two of you, two of them. The question every turn is: who do we hit?
 
-The obvious attack is coming. Switch in something that takes it.""",
-        """A hard read is risky: if you're wrong, you lose a POKéMON. The safe play does well against most of their options.
+Doubling up on one foe takes it out fast. But if it uses PROTECT, both your attacks are wasted.""",
+        """PROTECT is the most important move in doubles. It scouts, it stalls weather and TRICK ROOM, and it baits double attacks.
 
-Play safe when you're ahead. Read when you're behind.""",
-        """Watch everything they show you: items, moves, who outspeeds whom. A CHOICE-locked POKéMON is predictable.
+But it can fail if used twice in a row. Count them!""",
+        """Watch which slot they protect, who they target, which POKéMON they keep in the back.
 
-PROTECT and SUBSTITUTE scout for free. Information wins games."""],
+Spread your damage when you can't read them. Focus it when you can."""],
     "Yarrow": ["YARROW: Training. The numbers behind the battles.",
         """Every POKéMON has 510 EFFORT points to spend: 252 at most in one stat. Put them where the POKéMON needs them.
 
-A nature raises one stat ten percent and lowers another. MINTS, or my CILANTRO, change the nature's effect.""",
-        """IVs go up to 31. BOTTLE CAPS max one; a GOLD BOTTLE CAP maxes them all. A MULTIVITAMIN sets EFFORT points just so.
+In doubles, bulk matters more: two attackers come your way. Many trainers put more into HP than in singles.""",
+        """A nature raises one stat ten percent and lowers another. MINTS, or my CILANTRO, change the nature's effect.
 
-An ABILITY CAPSULE switches between abilities. An ABILITY PATCH unlocks a hidden one.""",
-        """Then the item. LEFTOVERS for staying power, LIFE ORB for raw damage, CHOICE items for speed or strength, ASSAULT VEST for special bulk.
+For a TRICK ROOM team, lower its Speed on purpose: a Speed-lowering nature, and Speed IVs at zero.""",
+        """Then the item. SITRUS BERRY for staying power, LIFE ORB for raw damage, FOCUS SASH to survive a double attack, ASSAULT VEST for special bulk.
 
 The SUPPLY shop and the EXCHANGE sell all of it."""],
-    "Tansy": ["TANSY: Team building! Six POKéMON, one plan.",
-        """Start with what you want to do: your win condition. Then add the POKéMON that make it work.
+    "Tansy": ["TANSY: Team building! Six POKéMON, three plans.",
+        """In doubles you lead with two. Build pairs that work together: FAKE OUT with a sweeper, a weather setter with its abuser.
 
-A hazard setter. A way to remove hazards. Something fast. Something that can take a hit.""",
-        """Check your weaknesses: if three of your six fear ICE, that's a problem.
+Give your team a second plan for when the first lead struggles.""",
+        """Check your weaknesses: if four of your six fear ROCK SLIDE, that's a problem.
 
-Check your coverage: can your attacks hit every type well?""",
-        """I keep a TEAM BUILDER right here. Pick six, choose their moves, and it shows you your weaknesses and coverage.
+Bring PROTECT on almost everyone, and something to deal with TRICK ROOM and TAILWIND.""",
+        """That PC next to me? I made a TEAM BUILDER for it myself. Pick six, choose their moves, and it shows you your weaknesses and coverage. It keeps up to eight teams.
 
-You can save up to eight teams in it!"""],
+Use it whenever you like: you don't have to ask me!"""],
 }
 
 T["TeacherMenu"] = "What shall we do?"
-T["DemoIntro"] = """{STR_VAR_1}: A demonstration! We both use rentals, three each.
+T["DemoIntro"] = """{STR_VAR_1}: A demonstration! A double battle, and we both use rentals, three each.
 
 My team shows off the lesson. Choose yours wisely!"""
 T["DemoWon"] = "{STR_VAR_1}: Wonderful! Here, you've earned it."
@@ -237,15 +237,16 @@ T["Statue"] = """A statue of ROSERADE, the ACADEMY's emblem.
 The plaque reads: “Grace. Thorns. Victory.”"""
 T["Reader1"] = "Shh! I'm reading about speed tiers. There's a whole shelf on POKéMON that move at exactly 100!"
 T["Reader2"] = "Every GYM in every region sends its battle records here. I could read in this library forever."
-T["LectureAStudent"] = "Speed decides everything… unless the other side has priority. Then it decides nothing! I'm so confused."
-T["LectureBStudent"] = "Since FOXGLOVE's lecture, I can't stop counting how much STEALTH ROCK has chipped off."
-T["LectureCStudent"] = "HYACINTH says the obvious attack is coming. But what if they know I know that?"
+T["LectureAStudent"] = "TAILWIND makes us faster, TRICK ROOM makes us slower is faster… I'm so confused."
+T["LectureBStudent"] = "Since FOXGLOVE's lecture, my EARTHQUAKE hasn't hit my own partner once. Well… twice."
+T["LectureCStudent"] = "HYACINTH says they'll PROTECT the slot I'm aiming at. But what if they know I know that?"
 T["LectureDStudent"] = "I've rebuilt my team in TANSY's TEAM BUILDER six times today. Seven's the charm!"
 T["Student1"] = "I came all the way from SINNOH for YARROW's lecture. I took notes on everything. Everything!"
 T["Student2"] = "I'm saving my BP for a CHOICE SCARF. Or I could just buy one… Hmm. Money's tight, though!"
 T["Student3"] = "A GOLD BOTTLE CAP maxes every stat at once. The candidates go crazy for them."
 
 T["TeamBuilderSoon"] = "The TEAM BUILDER is still being set up. Check back later!"
+T["TeamBuilderPC"] = "TANSY'S TEAM BUILDER\nbooted up."
 
 
 # ---------------------------------------------------------------- Mega Evolution (after the 8th badge)

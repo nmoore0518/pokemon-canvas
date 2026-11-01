@@ -340,6 +340,11 @@ valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berrie
 can register to SELECT) and Key Items.</li>
 <li><b>Terastallization.</b> Archer gives you the Tera Orb after Viridian. It never needs charging; one Pokémon a battle.
 See <a href="#tera">Terastallization</a>.</li>
+<li><b>Double battles.</b> Before your 4th badge battles are mostly singles (and FireRed's few twins and couples). From the
+4th badge on, about two in three are doubles: ordinary trainers, Koga, Sabrina, Giovanni at his gym and at Silph, Lorelei,
+Agatha, Lance and your rival's later battles (Blaine, Bruno and Giovanni in the Hideout and at the end stay singles). Your
+gym's challengers, the Convention, the Academy's candidates and Battle Hall are a mix; the tournament is doubles the first
+time, and Bill's simulator lets you choose. With only one Pokémon able to battle, you face both of theirs alone.</li>
 <li><b>A berry field.</b> 24 plots in Pallet Town; berries grow as you walk. See <a href="#berries">Tera berries</a>.</li>
 <li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
 Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
@@ -605,10 +610,11 @@ and Teo (Paldea, Steel). They'll battle as often as you like, against your own t
 below for rookies, above for experts), with items and smarter AI higher up. No money is lost, nobody whites out, and both
 sides are healed after.</p>
 <h3>The instructors and the lecture halls</h3>
-<p>Eight instructors teach one subject each: Larkspur (speed and priority), Camellia (setup and win conditions), Foxglove
-(entry hazards), Verbena (pivoting), Marigold (weather and terrain), Hyacinth (reading the opponent), Yarrow (EVs, natures and
-items) and Tansy (team building). Each gives a short lecture and then a demonstration battle: their three level-100 Pokémon
-that show the lesson, against three rentals you pick.</p>
+<p>Eight instructors teach one subject each, all for double battles: Larkspur (speed control: Tailwind, Trick Room, Fake
+Out), Camellia (setting up with a partner: Follow Me, Rage Powder), Foxglove (spread moves), Verbena (positioning and
+switching), Marigold (weather and terrain), Hyacinth (targeting and Protect), Yarrow (EVs, natures and items) and Tansy
+(team building). Each gives a short lecture and then a demonstration double battle: their three level-100 Pokémon that show
+the lesson, against three rentals you pick.</p>
 <h3>The Battle Hall</h3>
 <p>Rental battles: pick 3 of 6 offered Pokémon (each shown with its item and moves), then battle candidates with rentals of their
 own, the AI getting smarter as your streak grows. Keep going or stop after each win. Your own party is set aside and given

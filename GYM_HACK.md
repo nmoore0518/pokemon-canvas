@@ -216,6 +216,26 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     Oak's mastery visit explains it (`GymSwitch_EventScript_OakTeraTip`).
   - Getting there: at the Chansey statue Oak says Viridian's new leader asked for the player and
     has something of Dad's; Mom repeats it at home until the player has met Archer.
+- **Double battles** (`tools/gym_hack/assign_doubles.py`, `GymChallenge_SetFormat`):
+  - Before the 4th badge: FireRed's battles as they were (singles, its twins and couples doubles).
+  - From the 4th badge on, two in three battles are doubles. Ordinary trainers on the maps reached after
+    it (`POST_HALFWAY`): every third one (counted map by map, in object order) stays singles; one with
+    a single Pokémon got a partner from its trainer class (`Double Battle: Yes` in
+    `trainers_frlg.party`; re-run after editing it). The big battles by hand (`MAJOR`): doubles for
+    Koga, Sabrina, Giovanni at his gym and at Silph, Lorelei, Agatha, Lance (and rematches), and the
+    rival at Silph, Route 22 and both Champion battles (`gen_rival_teams.py: DOUBLES_STAGES`);
+    singles for Blaine, Bruno, Giovanni in the Hideout and his last battle, the rival at the Tower.
+  - TRAINER_GYM_CHALLENGER battles decide when the battle first asks (`GymChallenge_GetTrainer`):
+    `GYM_FORMAT_MIX` (the default: two in three doubles once FLAG_BADGE04_GET is set, singles before;
+    gym challengers, the Convention, guest leaders, practice, the Academy's candidates and Battle Hall,
+    events), `GYM_FORMAT_DOUBLES` (Oak's battle for the gym, the mentor's mastery battle, the Academy
+    instructors' demonstrations, the tournament and Bill until the simulator), or the simulator's
+    choice (`Tourney_Format`, `FLAG_TOURNEY_SIM_DOUBLES`, asked on entering). Doubles need two
+    Pokémon on their side; the player with one able Pokémon fights both (1 vs 2).
+  - The Academy's lectures and demonstration teams are about doubles now (speed control, redirection,
+    spread moves, positioning, weather, targeting and Protect, training, team building).
+  - Synthetic abilities for doubles: Togepi's line Friend Guard (was Magic Bounce), Chinchou's Storm
+    Drain (was Regenerator).
 - **Tera berries and the berry field** (`src/berry_field.c`, `include/berry_field.h`,
   `data/scripts/berry_field.inc`):
   - The 18 type-resist berries are the Tera berries (`GetTeraBerry`: Chilan Normal, Chople

@@ -380,6 +380,7 @@ void Tourney_SetupNext(void)
                                e.intro, e.defeat, e.after, e.win);
     GymChallenge_SetChallengerLevel(MAX_LEVEL);
     GymChallenge_SetTeraMode(GYM_TERA_TEAM);   // (a free battle: the ace Terastallizes into the team's type)
+    GymChallenge_SetFormat(Tourney_Format());
     VarSet(VAR_OBJ_GFX_ID_0, e.gfx);
     StringCopy(gStringVar1, e.name);
     StringCopy(gStringVar2, sRoundNames[round]);
@@ -561,4 +562,21 @@ bool32 Tourney_KalosBeaten(void)
 bool32 Tourney_AzBeaten(void)
 {
     return FlagGet(FLAG_TOURNEY_BEAT_AZ) || VarGet(VAR_GAUNTLET_STATE) >= GAUNTLET_ALL_BEATEN;
+}
+
+// Pokémon Canvas: the tournament's battles are doubles; Bill's simulator asks which (FLAG_TOURNEY_SIM_DOUBLES)
+u32 Tourney_Format(void)
+{
+    if (VarGet(VAR_GAUNTLET_STATE) != GAUNTLET_SIMULATOR || FlagGet(FLAG_TOURNEY_SIM_DOUBLES))
+        return GYM_FORMAT_DOUBLES;
+    return GYM_FORMAT_SINGLES;
+}
+
+// Special (the simulator, entering): VAR_RESULT = 0 singles, 1 doubles
+void Tourney_SetSimFormat(void)
+{
+    if (gSpecialVar_Result == 1)
+        FlagSet(FLAG_TOURNEY_SIM_DOUBLES);
+    else
+        FlagClear(FLAG_TOURNEY_SIM_DOUBLES);
 }

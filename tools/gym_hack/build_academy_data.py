@@ -62,39 +62,39 @@ RENTALS = [
 ]
 
 # (key, name, lecture subject, battle class, pic, female, team)
-TEACHERS = [
+TEACHERS = [   # (demonstration battles are doubles: src/leader_academy.c)
     ("larkspur", "LARKSPUR", "SPEED", "TRAINER_PIC_GENTLEMAN_FRLG", False, [
-        "Dragonite @ Choice Band {Multiscale}: Extreme Speed / Outrage / Earthquake / Fire Punch",
-        "Scizor @ Life Orb {Technician}: Bullet Punch / U-turn / Swords Dance / Knock Off",
-        "Weavile @ Focus Sash {Pressure}: Ice Shard / Knock Off / Triple Axel / Low Kick"]),
+        "Whimsicott @ Focus Sash {Prankster}: Tailwind / Moonblast / Encore / Protect",
+        "Talonflame @ Life Orb {Gale Wings}: Brave Bird / Flare Blitz / Tailwind / Protect",
+        "Weavile @ Focus Sash {Pressure}: Fake Out / Ice Shard / Knock Off / Icicle Crash"]),
     ("camellia", "CAMELLIA", "SETUP", "TRAINER_PIC_BEAUTY_FRLG", True, [
-        "Volcarona @ Heavy-Duty Boots {Flame Body}: Quiver Dance / Fiery Dance / Bug Buzz / Giga Drain",
-        "Gyarados @ Lum Berry {Intimidate}: Dragon Dance / Waterfall / Earthquake / Ice Fang",
-        "Cloyster @ Focus Sash {Skill Link}: Shell Smash / Icicle Spear / Rock Blast / Ice Shard"]),
-    ("foxglove", "FOXGLOVE", "HAZARDS", "TRAINER_PIC_SCIENTIST_FRLG", False, [
-        "Skarmory @ Rocky Helmet: Spikes / Roost / Brave Bird / Whirlwind",
-        "Garchomp @ Rocky Helmet {Rough Skin}: Stealth Rock / Earthquake / Dragon Tail / Fire Fang",
-        "Excadrill @ Leftovers {Mold Breaker}: Rapid Spin / Earthquake / Iron Head / Swords Dance"]),
-    ("verbena", "VERBENA", "PIVOTS", "TRAINER_PIC_COOLTRAINER_M_FRLG", False, [
-        "Rotom-Wash @ Leftovers: Volt Switch / Hydro Pump / Will-O-Wisp / Pain Split",
-        "Corviknight @ Leftovers {Pressure}: U-turn / Brave Bird / Roost / Bulk Up",
-        "Incineroar @ Assault Vest {Intimidate}: Flare Blitz / Knock Off / Parting Shot / Fake Out"]),
+        "Amoonguss @ Rocky Helmet {Regenerator}: Rage Powder / Spore / Pollen Puff / Protect",
+        "Volcarona @ Heavy-Duty Boots {Flame Body}: Quiver Dance / Heat Wave / Bug Buzz / Protect",
+        "Gyarados @ Lum Berry {Intimidate}: Dragon Dance / Waterfall / Ice Fang / Protect"]),
+    ("foxglove", "FOXGLOVE", "SPREAD", "TRAINER_PIC_SCIENTIST_FRLG", False, [
+        "Garchomp @ Life Orb {Rough Skin}: Earthquake / Rock Slide / Dragon Claw / Protect",
+        "Hydreigon @ Choice Specs {Levitate}: Draco Meteor / Dark Pulse / Heat Wave / Flash Cannon",
+        "Corviknight @ Leftovers {Pressure}: Brave Bird / Tailwind / Roost / Iron Head"]),
+    ("verbena", "VERBENA", "POSITION", "TRAINER_PIC_COOLTRAINER_M_FRLG", False, [
+        "Incineroar @ Sitrus Berry {Intimidate}: Fake Out / Flare Blitz / Knock Off / Parting Shot",
+        "Rotom-Wash @ Sitrus Berry: Volt Switch / Hydro Pump / Will-O-Wisp / Protect",
+        "Arcanine @ Sitrus Berry {Intimidate}: Flare Blitz / Extreme Speed / Snarl / Protect"]),
     ("marigold", "MARIGOLD", "WEATHER", "TRAINER_PIC_AROMA_LADY_FRLG", True, [
-        "Pelipper @ Damp Rock {Drizzle}: Scald / Hurricane / U-turn / Roost",
-        "Kingdra @ Life Orb {Swift Swim}: Hydro Pump / Draco Meteor / Ice Beam / Rain Dance",
-        "Ferrothorn @ Leftovers: Leech Seed / Power Whip / Gyro Ball / Stealth Rock"]),
-    ("hyacinth", "HYACINTH", "READS", "TRAINER_PIC_COOLTRAINER_F_FRLG", True, [
-        "Clefable @ Leftovers {Magic Guard}: Moonblast / Calm Mind / Moonlight / Flamethrower",
-        "Toxapex @ Black Sludge {Regenerator}: Scald / Toxic / Recover / Haze",
-        "Gengar @ Life Orb: Shadow Ball / Sludge Bomb / Focus Blast / Destiny Bond"]),
+        "Pelipper @ Damp Rock {Drizzle}: Hurricane / Scald / Tailwind / Protect",
+        "Kingdra @ Life Orb {Swift Swim}: Muddy Water / Draco Meteor / Ice Beam / Protect",
+        "Ludicolo @ Life Orb {Swift Swim}: Hydro Pump / Giga Drain / Fake Out / Protect"]),
+    ("hyacinth", "HYACINTH", "TARGETS", "TRAINER_PIC_COOLTRAINER_F_FRLG", True, [
+        "Togekiss @ Sitrus Berry {Serene Grace}: Follow Me / Air Slash / Dazzling Gleam / Protect",
+        "Hitmontop @ Sitrus Berry {Intimidate}: Fake Out / Close Combat / Wide Guard / Feint",
+        "Gengar @ Focus Sash: Shadow Ball / Sludge Bomb / Icy Wind / Protect"]),
     ("yarrow", "YARROW", "BUILDS", "TRAINER_PIC_GENTLEMAN_FRLG", False, [
-        "Azumarill @ Choice Band {Huge Power}: Aqua Jet / Play Rough / Liquidation / Knock Off",
-        "Tyranitar @ Assault Vest {Sand Stream}: Crunch / Stone Edge / Earthquake / Fire Punch",
-        "Amoonguss @ Rocky Helmet {Regenerator}: Spore / Giga Drain / Clear Smog / Sludge Bomb"]),
+        "Hatterene @ Life Orb {Magic Bounce}: Trick Room / Dazzling Gleam / Psychic / Protect",
+        "Torkoal @ Charcoal {Drought}: Eruption / Heat Wave / Earth Power / Protect",
+        "Snorlax @ Leftovers {Thick Fat}: Body Slam / High Horsepower / Curse / Protect"]),
     ("tansy", "TANSY", "TEAMS", "TRAINER_PIC_LASS_FRLG", True, [
-        "Gliscor @ Toxic Orb {Poison Heal}: Earthquake / Knock Off / Toxic / Protect",
-        "Primarina @ Leftovers {Torrent}: Moonblast / Surf / Calm Mind / Draining Kiss",
-        "Heatran @ Leftovers {Flash Fire}: Magma Storm / Earth Power / Taunt / Stealth Rock"]),
+        "Tyranitar @ Assault Vest {Sand Stream}: Rock Slide / Crunch / High Horsepower / Fire Punch",
+        "Excadrill @ Life Orb {Sand Rush}: High Horsepower / Iron Head / Rock Slide / Protect",
+        "Gliscor @ Toxic Orb {Poison Heal}: High Horsepower / Knock Off / Tailwind / Protect"]),
 ]
 
 # (key, name, region, type, skill 0-3, battle pic, female, base species)

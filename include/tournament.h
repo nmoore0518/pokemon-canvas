@@ -80,6 +80,8 @@ struct TourneySave
 };
 
 extern struct TourneySave gTourneySave;
+u32 Tourney_Format(void);
+void Tourney_SetSimFormat(void);
 
 void Tourney_ClearSave(void);
 void Tourney_ValidateSave(void);

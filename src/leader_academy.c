@@ -433,6 +433,7 @@ void Academy_SetupTeacher(void)
                         AI_FLAG_SMART_TRAINER | AI_FLAG_PREDICTION,
                         COMPOUND_STRING("Class is in session!"),
                         COMPOUND_STRING("Excellent! You were\nlistening after all."));
+    GymChallenge_SetFormat(GYM_FORMAT_DOUBLES);   // (the lectures are about double battles)
     StringCopy(gStringVar1, t->name);
 }
 

@@ -58,7 +58,7 @@ Academy_Text_HeadmasterCandidates::
 	.string "Candidates come here from JOHTO,\nHOENN, SINNOH, UNOVA, KALOS,\pALOLA, GALAR and PALDEA.\pSome are just starting out. Some\ncould take a GYM tomorrow. All\pof them will battle you, as\noften as you like.$"
 
 Academy_Text_HeadmasterTeachers::
-	.string "Each of my INSTRUCTORS is named\nfor a flower, as I am. It's a\ptradition here.\pTheir lecture halls are through\nthe doors behind me. In A,\pLARKSPUR teaches speed and\nCAMELLIA setup. In B, FOXGLOVE\phazards and VERBENA pivoting.\pIn C, MARIGOLD weather and\nHYACINTH reading the opponent.\pIn D, YARROW training and TANSY\nteam building.$"
+	.string "Each of my INSTRUCTORS is named\nfor a flower, as I am. It's a\ptradition here.\pTheir lecture halls are through\nthe doors behind me. In A,\pLARKSPUR teaches speed control\nand CAMELLIA setup. In B,\pFOXGLOVE spread moves and\nVERBENA positioning.\pIn C, MARIGOLD weather and\nHYACINTH targeting. In D, YARROW\ptraining and TANSY team\nbuilding.\pAll of it for double battles,\nmind you. That's where GYM\pbattles are going.$"
 
 Academy_Text_HeadmasterBye::
 	.string "Off you go, then. A GYM LEADER\nnever stops learning.$"
@@ -67,7 +67,7 @@ Academy_Text_TeacherMenu::
 	.string "What shall we do?$"
 
 Academy_Text_DemoIntro::
-	.string "{STR_VAR_1}: A demonstration! We\nboth use rentals, three each.\pMy team shows off the lesson.\nChoose yours wisely!$"
+	.string "{STR_VAR_1}: A demonstration! A\ndouble battle, and we both use\prentals, three each.\pMy team shows off the lesson.\nChoose yours wisely!$"
 
 Academy_Text_DemoWon::
 	.string "{STR_VAR_1}: Wonderful! Here,\nyou've earned it.$"
@@ -151,13 +151,13 @@ Academy_Text_Reader2::
 	.string "Every GYM in every region sends\nits battle records here. I could\pread in this library forever.$"
 
 Academy_Text_LectureAStudent::
-	.string "Speed decides everything… unless\nthe other side has priority.\pThen it decides nothing! I'm so\nconfused.$"
+	.string "TAILWIND makes us faster, TRICK\nROOM makes us slower is faster…\pI'm so confused.$"
 
 Academy_Text_LectureBStudent::
-	.string "Since FOXGLOVE's lecture, I\ncan't stop counting how much\pSTEALTH ROCK has chipped off.$"
+	.string "Since FOXGLOVE's lecture, my\nEARTHQUAKE hasn't hit my own\ppartner once. Well… twice.$"
 
 Academy_Text_LectureCStudent::
-	.string "HYACINTH says the obvious attack\nis coming. But what if they know\pI know that?$"
+	.string "HYACINTH says they'll PROTECT\nthe slot I'm aiming at. But what\pif they know I know that?$"
 
 Academy_Text_LectureDStudent::
 	.string "I've rebuilt my team in TANSY's\nTEAM BUILDER six times today.\pSeven's the charm!$"
@@ -173,6 +173,9 @@ Academy_Text_Student3::
 
 Academy_Text_TeamBuilderSoon::
 	.string "The TEAM BUILDER is still being\nset up. Check back later!$"
+
+Academy_Text_TeamBuilderPC::
+	.string "TANSY'S TEAM BUILDER booted up.$"
 
 Academy_Text_BraceletCall::
 	.string "WISTERIA: {PLAYER}! A moment, if\nyou please. Come up to my desk.$"
@@ -243,104 +246,104 @@ Academy_Text_OptDemo::
 Academy_Text_OptLecture::
 	.string "THE LECTURE$"
 
+Academy_Text_OptBuilder::
+	.string "TEAM BUILDER$"
+
 Academy_Text_LarkspurLecture0::
-	.string "LARKSPUR: Speed and priority.\nWelcome!$"
+	.string "LARKSPUR: Speed control.\nWelcome!$"
 
 Academy_Text_LarkspurLecture1::
-	.string "In a singles battle, who moves\nfirst decides more games than\panything else.\pKnow your speed tiers. Ask: what\ndoes my POKéMON outspeed, and\pwhat outspeeds it?\pA CHOICE SCARF lets a slower\nPOKéMON jump ahead, at the price\pof being locked into one move.$"
+	.string "In a double battle, four POKéMON\nmove every turn. Whoever\pcontrols the turn order controls\nthe game.\pTAILWIND doubles your side's\nspeed for four turns. ICY WIND\pand ELECTROWEB hit both foes and\nslow them down.$"
 
 Academy_Text_LarkspurLecture2::
-	.string "When you can't outspeed, use\npriority. EXTREME SPEED, BULLET\pPUNCH, ICE SHARD, AQUA JET and\nSUCKER PUNCH all strike first.\pPriority is how you finish off a\nweakened sweeper before it can\pmove again.$"
+	.string "TRICK ROOM turns it all upside\ndown: for five turns, the\pslowest move first. A slow,\nstrong team loves it.\pAnd FAKE OUT! It strikes first\nand makes the target flinch, but\ponly on the turn it comes in.$"
 
 Academy_Text_LarkspurLecture3::
-	.string "But SUCKER PUNCH fails if the\ntarget isn't attacking.\pParalysis halves speed. And a\nFOCUS SASH means one hit won't\pdo.\pCount the turns. Count the\nspeed. That's my whole lesson!$"
+	.string "Priority still matters: EXTREME\nSPEED, BULLET PUNCH and SUCKER\pPUNCH. But beware PSYCHIC\nTERRAIN and QUICK GUARD.\pMake the turn order yours.\nThat's my whole lesson!$"
 
 Academy_Text_CamelliaLecture0::
-	.string "CAMELLIA: Setting up, and\nwinning. Shall we begin?$"
+	.string "CAMELLIA: Setting up, with a\npartner. Shall we begin?$"
 
 Academy_Text_CamelliaLecture1::
-	.string "Every team needs a win\ncondition: a POKéMON that can\ptake over the endgame if its\nanswers are gone.\pSetup moves make one. SWORDS\nDANCE, DRAGON DANCE, QUIVER\pDANCE, NASTY PLOT, SHELL SMASH,\nCALM MIND.$"
+	.string "Setting up is harder with two\nattackers aimed at you. So bring\pa friend.\pFOLLOW ME and RAGE POWDER pull\nevery single-target attack onto\pthe partner. That's a free turn\nfor your sweeper.$"
 
 Academy_Text_CamelliaLecture2::
-	.string "Set up when the opponent can't\npunish you: when they're forced\pto switch, or when their attacks\nbarely scratch you.\pA FOCUS SASH or MULTISCALE buys\na free turn. A LUM BERRY shrugs\poff the status meant to stop\nyou.$"
+	.string "FAKE OUT stops one foe, PROTECT\ndodges the other, and your\pDRAGON DANCE goes off untouched.\pINTIMIDATE on the partner\nsoftens physical attacks on both\pof you.$"
 
 Academy_Text_CamelliaLecture3::
-	.string "First, break the walls that\ncheck your sweeper. Then sweep.\pAnd against setup? HAZE, ROAR,\nWHIRLWIND, UNAWARE, or simply\phitting hard before it's too\nlate.$"
+	.string "Against setup? Hit the sweeper\nwith both POKéMON at once, or\pstrike past the redirection with\na spread move.\pHAZE and CLEAR SMOG wipe the\nboosts away. A setup turn is\ponly free if you make it free!$"
 
 Academy_Text_FoxgloveLecture0::
-	.string "FOXGLOVE: Entry hazards. My\nfavorite subject.$"
+	.string "FOXGLOVE: Spread moves. My\nfavorite subject.$"
 
 Academy_Text_FoxgloveLecture1::
-	.string "STEALTH ROCK hurts every POKéMON\nthat switches in, more if it's\pweak to ROCK. A CHARIZARD loses\nhalf its HP!\pSPIKES stack up to three layers.\nTOXIC SPIKES poison. STICKY WEB\pslows the switch-in.$"
+	.string "EARTHQUAKE, ROCK SLIDE, HEAT\nWAVE, DAZZLING GLEAM, MUDDY\pWATER, HYPER VOICE: they hit\nboth foes at once.\pA spread move does three\nquarters of its damage to each\ptarget. Two hits for the price\nof one!$"
 
 Academy_Text_FoxgloveLecture2::
-	.string "Hazards turn every switch into\ndamage. Over a long battle, that\pchip decides who survives.\pLay them early, with a lead that\ncan take a hit.$"
+	.string "Careful: EARTHQUAKE and SURF hit\nyour partner too. Pair them with\pa FLYING type, a LEVITATE user,\nor a POKéMON that absorbs WATER.\pOr have the partner PROTECT on\nthe turn you fire it.$"
 
 Academy_Text_FoxgloveLecture3::
-	.string "Remove them with RAPID SPIN or\nDEFOG, or ignore them with\pHEAVY-DUTY BOOTS.\pAnd a GHOST type can block a\nRAPID SPIN. Think about who\premoves hazards on your team!$"
+	.string "WIDE GUARD blocks spread moves\nfor your whole side. And ROCK\pSLIDE's flinches add up fast.\pIn doubles, the best damage is\ndamage everywhere!$"
 
 Academy_Text_VerbenaLecture0::
-	.string "VERBENA: Pivoting and momentum.\nLet's go!$"
+	.string "VERBENA: Positioning and\nswitching. Let's go!$"
 
 Academy_Text_VerbenaLecture1::
-	.string "U-TURN, VOLT SWITCH, FLIP TURN\nand PARTING SHOT hit and switch\pout in the same turn.\pThat means you get to choose\nyour matchup after you've seen\ptheirs.$"
+	.string "In doubles, what's on the field\nnext to what matters as much as\pthe POKéMON themselves.\pPARTING SHOT, U-TURN and VOLT\nSWITCH bring in the right\ppartner. FAKE OUT can be used\nagain each time a POKéMON comes\pback in.$"
 
 Academy_Text_VerbenaLecture2::
-	.string "Momentum is forcing the opponent\nto react to you. Pivot into a\pthreat, they switch, you pivot\nagain.\pREGENERATOR heals on every\nswitch. INTIMIDATE weakens every\pattacker it meets.$"
+	.string "INTIMIDATE lowers both foes'\nAttack every time its POKéMON\pcomes in. Switch it out and back\nto do it again.\pREGENERATOR heals on every\nswitch. A POKéMON in the back is\pa POKéMON resting.$"
 
 Academy_Text_VerbenaLecture3::
-	.string "When you expect a switch, KNOCK\nOFF or a hazard punishes it.\pAnd if they pivot too… double\nswitch to the POKéMON that beats\pwhat's coming in.$"
+	.string "PROTECT buys time for a switch\non the other side. And watch for\pa slot the foe is about to\ndouble up on.\pMove your pieces before they\nmove you!$"
 
 Academy_Text_MarigoldLecture0::
 	.string "MARIGOLD: Weather and terrain.\nBring an umbrella!$"
 
 Academy_Text_MarigoldLecture1::
-	.string "DRIZZLE, DROUGHT, SAND STREAM\nand SNOW WARNING set the weather\pfor five turns; eight with the\nright rock.\pRain powers WATER moves and\nweakens FIRE. Sun does the\preverse. THUNDER and HURRICANE\nnever miss in rain.$"
+	.string "Weather is even stronger in\ndoubles: one setter powers up\pboth its partners.\pDRIZZLE, DROUGHT, SAND STREAM\nand SNOW WARNING last five\pturns; eight with the right\nrock.$"
 
 Academy_Text_MarigoldLecture2::
-	.string "SWIFT SWIM, CHLOROPHYLL, SAND\nRUSH and SLUSH RUSH double a\pPOKéMON's speed in their\nweather.\pSand chips everyone but ROCK,\nGROUND and STEEL, and makes ROCK\ptypes sturdier.$"
+	.string "SWIFT SWIM, CHLOROPHYLL, SAND\nRUSH and SLUSH RUSH double a\pPOKéMON's speed in their\nweather. Rain makes THUNDER and\pHURRICANE never miss.\pThe setter's partner should be\nthe abuser. Lead with them\ptogether!$"
 
 Academy_Text_MarigoldLecture3::
-	.string "Terrains last five turns too.\nELECTRIC stops sleep, PSYCHIC\pblocks priority, GRASSY heals,\nMISTY stops status.\pCount the turns, and remember:\nthe last weather set wins.$"
+	.string "Terrains last five turns too.\nPSYCHIC TERRAIN blocks FAKE OUT\pand other priority. GRASSY\nTERRAIN weakens EARTHQUAKE.\pRemember: the last weather set\nwins. Keep the setter safe to\pbring it back!$"
 
 Academy_Text_HyacinthLecture0::
-	.string "HYACINTH: Reading your opponent.\nSit down, please.$"
+	.string "HYACINTH: Targeting and PROTECT.\nSit down, please.$"
 
 Academy_Text_HyacinthLecture1::
-	.string "Before you choose a move, ask\nwhat your opponent wants to do.\pWhat's their best move? What do\nthey fear?\pThe obvious attack is coming.\nSwitch in something that takes\pit.$"
+	.string "Two of you, two of them. The\nquestion every turn is: who do\pwe hit?\pDoubling up on one foe takes it\nout fast. But if it uses\pPROTECT, both your attacks are\nwasted.$"
 
 Academy_Text_HyacinthLecture2::
-	.string "A hard read is risky: if you're\nwrong, you lose a POKéMON. The\psafe play does well against most\nof their options.\pPlay safe when you're ahead.\nRead when you're behind.$"
+	.string "PROTECT is the most important\nmove in doubles. It scouts, it\pstalls weather and TRICK ROOM,\nand it baits double attacks.\pBut it can fail if used twice in\na row. Count them!$"
 
 Academy_Text_HyacinthLecture3::
-	.string "Watch everything they show you:\nitems, moves, who outspeeds\pwhom. A CHOICE-locked POKéMON is\npredictable.\pPROTECT and SUBSTITUTE scout for\nfree. Information wins games.$"
+	.string "Watch which slot they protect,\nwho they target, which POKéMON\pthey keep in the back.\pSpread your damage when you\ncan't read them. Focus it when\pyou can.$"
 
 Academy_Text_YarrowLecture0::
 	.string "YARROW: Training. The numbers\nbehind the battles.$"
 
 Academy_Text_YarrowLecture1::
-	.string "Every POKéMON has 510 EFFORT\npoints to spend: 252 at most in\pone stat. Put them where the\nPOKéMON needs them.\pA nature raises one stat ten\npercent and lowers another.\pMINTS, or my CILANTRO, change\nthe nature's effect.$"
+	.string "Every POKéMON has 510 EFFORT\npoints to spend: 252 at most in\pone stat. Put them where the\nPOKéMON needs them.\pIn doubles, bulk matters more:\ntwo attackers come your way.\pMany trainers put more into HP\nthan in singles.$"
 
 Academy_Text_YarrowLecture2::
-	.string "IVs go up to 31. BOTTLE CAPS max\none; a GOLD BOTTLE CAP maxes\pthem all. A MULTIVITAMIN sets\nEFFORT points just so.\pAn ABILITY CAPSULE switches\nbetween abilities. An ABILITY\pPATCH unlocks a hidden one.$"
+	.string "A nature raises one stat ten\npercent and lowers another.\pMINTS, or my CILANTRO, change\nthe nature's effect.\pFor a TRICK ROOM team, lower its\nSpeed on purpose: a\pSpeed-lowering nature, and Speed\nIVs at zero.$"
 
 Academy_Text_YarrowLecture3::
-	.string "Then the item. LEFTOVERS for\nstaying power, LIFE ORB for raw\pdamage, CHOICE items for speed\nor strength, ASSAULT VEST for\pspecial bulk.\pThe SUPPLY shop and the EXCHANGE\nsell all of it.$"
+	.string "Then the item. SITRUS BERRY for\nstaying power, LIFE ORB for raw\pdamage, FOCUS SASH to survive a\ndouble attack, ASSAULT VEST for\pspecial bulk.\pThe SUPPLY shop and the EXCHANGE\nsell all of it.$"
 
 Academy_Text_TansyLecture0::
-	.string "TANSY: Team building! Six\nPOKéMON, one plan.$"
+	.string "TANSY: Team building! Six\nPOKéMON, three plans.$"
 
 Academy_Text_TansyLecture1::
-	.string "Start with what you want to do:\nyour win condition. Then add the\pPOKéMON that make it work.\pA hazard setter. A way to remove\nhazards. Something fast.\pSomething that can take a hit.$"
+	.string "In doubles you lead with two.\nBuild pairs that work together:\pFAKE OUT with a sweeper, a\nweather setter with its abuser.\pGive your team a second plan for\nwhen the first lead struggles.$"
 
 Academy_Text_TansyLecture2::
-	.string "Check your weaknesses: if three\nof your six fear ICE, that's a\pproblem.\pCheck your coverage: can your\nattacks hit every type well?$"
+	.string "Check your weaknesses: if four\nof your six fear ROCK SLIDE,\pthat's a problem.\pBring PROTECT on almost\neveryone, and something to deal\pwith TRICK ROOM and TAILWIND.$"
 
 Academy_Text_TansyLecture3::
-	.string "That PC next to me? I made a\nTEAM BUILDER for it myself.\pPick six, choose their moves,\nand it shows you your weaknesses\pand coverage. It keeps up to\neight teams.\pUse it whenever you like: you\ndon't have to ask me!$"
-
-Academy_Text_TeamBuilderPC::
-	.string "TANSY'S TEAM BUILDER\nbooted up.$"
+	.string "That PC next to me? I made a\nTEAM BUILDER for it myself. Pick\psix, choose their moves, and it\nshows you your weaknesses and\pcoverage. It keeps up to eight\nteams.\pUse it whenever you like: you\ndon't have to ask me!$"
 
 Academy_Text_KojiHello::
 	.string "KOJI: I'm from CIANWOOD, in\nJOHTO. CHUCK trained me himself…\pmostly by throwing me into the\nsea.\pHe says when I can beat him\nwithout shouting, the GYM is\pmine. I'm working on the quiet\npart.$"

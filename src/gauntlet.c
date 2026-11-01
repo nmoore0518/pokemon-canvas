@@ -182,6 +182,7 @@ void Gauntlet_SetupBill(void)
     GymChallenge_SetupGauntlet(t->trainerClass, t->pic, t->female, t->battleName, t->party, PARTY_SIZE,
                                t->intro, t->defeat, t->after, t->win);
     GymChallenge_SetTeraMode(GYM_TERA_TEAM);
+    GymChallenge_SetFormat(Tourney_Format());
     VarSet(VAR_OBJ_GFX_ID_0, t->gfx);
     StringCopy(gStringVar1, t->name);
     sBillUp = TRUE;     // (after the setup, which clears it)

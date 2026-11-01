@@ -73,6 +73,14 @@ struct TrainerMon;
 void GymChallenge_RetireStreak(void);
 bool32 GymChallenge_WasBoss(void);
 void GymChallenge_SetTeraMode(u32 mode);
+enum GymChallengeFormat
+{
+    GYM_FORMAT_MIX,         // two in three doubles from the 4th badge on, singles before
+    GYM_FORMAT_SINGLES,
+    GYM_FORMAT_DOUBLES,
+    GYM_FORMAT_DECIDED,
+};
+void GymChallenge_SetFormat(u32 format);
 u32 GymChallenge_TeraMode(void);
 bool32 GymChallenge_IsOneTypeBattle(void);
 void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const u8 *name,

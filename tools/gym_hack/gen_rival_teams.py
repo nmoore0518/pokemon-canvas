@@ -125,6 +125,9 @@ HEADER_CHAMP = "Class: Champion Frlg\nPic: Champion Rival Frlg"
 
 # (stage id, original trainers it replaces, class/pic header, extra header lines,
 #  [(line, level, iv), ...] in party order) -- mirrors the original rival's teams.
+# Pokémon Canvas: the rival battles after the 4th badge that are doubles (tools/gym_hack/assign_doubles.py)
+DOUBLES_STAGES = {"SILPH", "ROUTE22_LATE", "CHAMPION_FIRST", "CHAMPION_REMATCH"}
+
 STAGES = [
     ("LAB", "OAKS_LAB", HEADER_EARLY, "", [(ACE, 5, 0)]),
     ("ROUTE22_EARLY", "ROUTE22_EARLY", HEADER_EARLY, "", [(0, 9, 6), (ACE, 9, 6)]),
@@ -177,7 +180,7 @@ def main():
             party.append("Music: Serious")
             if extra:
                 party.append(extra.rstrip("\n"))
-            party.append("Double Battle: No")
+            party.append("Double Battle: " + ("Yes" if stage in DOUBLES_STAGES else "No"))
             party.append("AI: Check Bad Move / Try To Faint / Check Viability")
             if stage.startswith("CHAMPION"):
                 party.append("Mugshot: Yellow")

@@ -126,11 +126,11 @@ SENTRET FURRET : Adaptability : Normal STAB 2x on a weak Normal type
 HOOTHOOT NOCTOWL : Magic Bounce : reflects status and hazards
 LEDYBA LEDIAN : Prankster : screens and Tailwind go first
 SPINARAK ARIADOS : Merciless : always crits poisoned foes (Toxic Thread, Toxic)
-CHINCHOU LANTURN : Regenerator : heals on Volt Switch out (sidegrade: gives up an absorb ability)
+CHINCHOU LANTURN : Storm Drain : pulls Water moves off its partner and turns them into Special Attack: for doubles (Oct 31: was Regenerator)
 PICHU PIKACHU RAICHU : Transistor : Electric moves 1.3x
 PICHU_SPIKY_EARED : Transistor : as Pikachu
 RAICHU_ALOLA : Transistor : Electric moves 1.3x
-TOGEPI TOGETIC TOGEKISS : Magic Bounce : reflects status and hazards (sidegrade: gives up Serene Grace)
+TOGEPI TOGETIC TOGEKISS : Friend Guard : its partner takes 25% less damage: a Follow Me supporter's ability (Oct 31: was Magic Bounce)
 NATU XATU : Magic Guard : only direct attacks hurt it
 MAREEP FLAAFFY AMPHAROS : Electric Surge : Electric Terrain on entry
 HOPPIP SKIPLOOM JUMPLUFF : Unburden : Speed doubles once its item is used (Acrobatics)

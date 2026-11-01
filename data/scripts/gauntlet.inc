@@ -65,6 +65,15 @@ Tourney_EventScript_NotNow::
 	release
 	end
 
+@ Pokémon Canvas: the simulator runs singles or doubles (the real tournament is doubles)
+Tourney_EventScript_SimFormat::
+	message Gauntlet_Text_SimFormat
+	waitmessage
+	dynmultichoice 0, 0, TRUE, 2, 1, DYN_MULTICHOICE_CB_NONE, Gauntlet_Text_OptSingles, Gauntlet_Text_OptDoubles
+	special Tourney_SetSimFormat
+	closemessage
+	return
+
 Tourney_EventScript_Board::
 	fadescreen FADE_TO_BLACK
 	special Tourney_ShowBoard
@@ -80,6 +89,7 @@ Tourney_EventScript_LastResults::
 Tourney_EventScript_Enter::
 	call Tourney_EventScript_SayRules
 	goto_if_eq VAR_RESULT, NO, Tourney_EventScript_NotNow
+	call_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_SimFormat
 	special Tourney_Begin
 	call Tourney_EventScript_SayDraw
 	fadescreen FADE_TO_BLACK
@@ -898,3 +908,12 @@ Gauntlet_Text_SimBillLost:
 Gauntlet_Text_SimComplete:
 	.string "SIMULATION COMPLETE!\n"
 	.string "A WITHDRAW is ready.$"
+
+Gauntlet_Text_SimFormat:
+	.string "PALM PILOT: SINGLES or DOUBLES?$"
+
+Gauntlet_Text_OptSingles:
+	.string "SINGLES$"
+
+Gauntlet_Text_OptDoubles:
+	.string "DOUBLES$"

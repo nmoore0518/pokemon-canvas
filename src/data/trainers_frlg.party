@@ -1507,7 +1507,7 @@ Class: Super Nerd Frlg
 Pic: Super Nerd Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Vulpix
@@ -1528,7 +1528,7 @@ Class: Super Nerd Frlg
 Pic: Super Nerd Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Ponyta
@@ -1885,7 +1885,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -1918,7 +1918,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -1943,7 +1943,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -1992,7 +1992,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -2025,7 +2025,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Grimer
@@ -2050,10 +2050,14 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Weezing
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Grimer
 Level: 33
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -2063,7 +2067,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Weezing
@@ -2109,7 +2113,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Voltorb
@@ -2134,7 +2138,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Weezing
@@ -2159,7 +2163,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -2208,7 +2212,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -2249,7 +2253,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Grimer
@@ -2358,7 +2362,7 @@ Class: Burglar Frlg
 Pic: Burglar Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Charmander
@@ -2519,7 +2523,7 @@ Class: Fisherman Frlg
 Pic: Fisherman Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Tentacool
@@ -2536,10 +2540,14 @@ Class: Fisherman Frlg
 Pic: Fisherman Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Goldeen
+Level: 27
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Cloyster
 Level: 27
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -2599,7 +2607,7 @@ Class: Fisherman Frlg
 Pic: Fisherman Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Shellder
@@ -2616,7 +2624,7 @@ Class: Fisherman Frlg
 Pic: Fisherman Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Magikarp
@@ -2649,7 +2657,7 @@ Class: Fisherman Frlg
 Pic: Fisherman Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Seaking
@@ -2700,7 +2708,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Tentacool
@@ -2755,7 +2763,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Horsea
@@ -2780,7 +2788,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Goldeen
@@ -2801,7 +2809,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Horsea
@@ -2847,7 +2855,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Shellder
@@ -2902,7 +2910,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Seadra
@@ -2932,7 +2940,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Staryu
@@ -2949,7 +2957,7 @@ Class: Swimmer M Frlg
 Pic: Swimmer M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Poliwhirl
@@ -2970,7 +2978,7 @@ Class: Cue Ball Frlg
 Pic: Cue Ball Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machop
@@ -3025,7 +3033,7 @@ Class: Cue Ball Frlg
 Pic: Cue Ball Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Mankey
@@ -3059,10 +3067,14 @@ Class: Cue Ball Frlg
 Pic: Cue Ball Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machoke
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Muk
 Level: 33
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -3072,7 +3084,7 @@ Class: Cue Ball Frlg
 Pic: Cue Ball Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Mankey
@@ -3317,7 +3329,7 @@ Class: Beauty Frlg
 Pic: Beauty Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Clefairy
@@ -3334,10 +3346,14 @@ Class: Swimmer F Frlg
 Pic: Swimmer F Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Seaking
+Level: 35
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Chinchou
 Level: 35
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -3347,7 +3363,7 @@ Class: Swimmer F Frlg
 Pic: Swimmer F Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Shellder
@@ -3368,7 +3384,7 @@ Class: Swimmer F Frlg
 Pic: Swimmer F Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Poliwag
@@ -3385,7 +3401,7 @@ Class: Beauty Frlg
 Pic: Beauty Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Pidgeotto
@@ -3469,7 +3485,7 @@ Class: Swimmer F Frlg
 Pic: Swimmer F Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Goldeen
@@ -3486,7 +3502,7 @@ Class: Swimmer F Frlg
 Pic: Swimmer F Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Staryu
@@ -3507,7 +3523,7 @@ Class: Swimmer F Frlg
 Pic: Swimmer F Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Seadra
@@ -3553,7 +3569,7 @@ Class: Psychic Frlg
 Pic: Psychic M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Mr Mime
@@ -3570,7 +3586,7 @@ Class: Psychic Frlg
 Pic: Psychic M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Slowpoke
@@ -3591,10 +3607,14 @@ Class: Psychic Frlg
 Pic: Psychic M Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Slowbro
+Level: 38
+IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
+
+Natu
 Level: 38
 IVs: 6 HP / 6 Atk / 6 Def / 6 SpA / 6 SpD / 6 Spe
 
@@ -3625,7 +3645,7 @@ Class: Rocker Frlg
 Pic: Rocker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Voltorb
@@ -3642,7 +3662,7 @@ Class: Juggler Frlg
 Pic: Juggler Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Kadabra
@@ -3659,7 +3679,7 @@ Class: Juggler Frlg
 Pic: Juggler Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Drowzee
@@ -3684,7 +3704,7 @@ Class: Juggler Frlg
 Pic: Juggler Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Drowzee
@@ -3709,7 +3729,7 @@ Class: Juggler Frlg
 Pic: Juggler Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Drowzee
@@ -3797,7 +3817,7 @@ Class: Juggler Frlg
 Pic: Juggler Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Drowzee
@@ -3814,7 +3834,7 @@ Class: Tamer Frlg
 Pic: Tamer Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Sandslash
@@ -3852,10 +3872,14 @@ Class: Tamer Frlg
 Pic: Tamer Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Rhyhorn
+Level: 43
+IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
+
+Primeape
 Level: 43
 IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 
@@ -3882,7 +3906,7 @@ Class: Tamer Frlg
 Pic: Tamer Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Persian
@@ -3941,7 +3965,7 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Spearow
@@ -3995,10 +4019,14 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Farfetchd
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Doduo
 Level: 33
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -4050,7 +4078,7 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Dodrio
@@ -4071,7 +4099,7 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Spearow
@@ -4088,10 +4116,14 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Dodrio
+Level: 34
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Farfetchd
 Level: 34
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -4126,7 +4158,7 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Fearow
@@ -4189,7 +4221,7 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Pidgey
@@ -4235,7 +4267,7 @@ Class: Bird Keeper Frlg
 Pic: Bird Keeper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Pidgeotto
@@ -4273,7 +4305,7 @@ Class: Black Belt Frlg
 Pic: Black Belt Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Hitmonlee @ Black Belt
@@ -4311,7 +4343,7 @@ Class: Black Belt Frlg
 Pic: Black Belt Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machop @ Black Belt
@@ -4328,10 +4360,14 @@ Class: Black Belt Frlg
 Pic: Black Belt Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Primeape @ Black Belt
+Level: 36
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Machamp
 Level: 36
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
@@ -4362,7 +4398,7 @@ Class: Black Belt Frlg
 Pic: Black Belt Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machop @ Black Belt
@@ -4379,10 +4415,14 @@ Class: Black Belt Frlg
 Pic: Black Belt Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machoke @ Black Belt
+Level: 43
+IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
+
+Hitmonlee
 Level: 43
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
@@ -4392,7 +4432,7 @@ Class: Black Belt Frlg
 Pic: Black Belt Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machoke @ Black Belt
@@ -4711,7 +4751,7 @@ Class: Scientist Frlg
 Pic: Scientist Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Magnemite
@@ -4965,7 +5005,7 @@ Class: Scientist Frlg
 Pic: Scientist Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Magnemite
@@ -5003,7 +5043,7 @@ Class: Boss Frlg
 Pic: Leader Giovanni Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Nidorino
@@ -5029,7 +5069,7 @@ Pic: Leader Giovanni Frlg
 Gender: Male
 Music: Dangerous
 Items: Hyper Potion / Hyper Potion / Full Heal
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Rhyhorn
@@ -5201,7 +5241,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Drowzee
@@ -5266,7 +5306,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Rattata
@@ -5291,7 +5331,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Grimer
@@ -5385,7 +5425,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machop
@@ -5402,7 +5442,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Sandshrew
@@ -5423,7 +5463,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Ekans
@@ -5482,7 +5522,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Koffing
@@ -5499,7 +5539,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Zubat
@@ -5541,7 +5581,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Cubone
@@ -5587,7 +5627,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Raticate
@@ -5625,7 +5665,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Ekans
@@ -5646,10 +5686,14 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Arbok
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Houndoom
 Level: 33
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -5659,10 +5703,14 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Hypno
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Rattata
 Level: 33
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -5672,7 +5720,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Machop
@@ -5710,7 +5758,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Raticate
@@ -5751,7 +5799,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Cubone
@@ -5768,7 +5816,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Sandshrew
@@ -5810,7 +5858,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Weezing
@@ -5831,7 +5879,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Drowzee
@@ -5886,7 +5934,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Rattata
@@ -5915,7 +5963,7 @@ Class: Team Rocket Frlg
 Pic: Rocket Grunt M Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Cubone
@@ -5937,7 +5985,7 @@ Pic: Cooltrainer M Frlg
 Gender: Male
 Music: Serious
 Items: Super Potion
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Sandslash
@@ -6037,7 +6085,7 @@ Pic: Cooltrainer M Frlg
 Gender: Male
 Music: Serious
 Items: Hyper Potion
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Kingler
@@ -6137,7 +6185,7 @@ Pic: Cooltrainer M Frlg
 Gender: Male
 Music: Serious
 Items: Hyper Potion
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Raticate
@@ -6537,7 +6585,7 @@ Pic: Cooltrainer F Frlg
 Gender: Male
 Music: Serious
 Items: Full Restore
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Clefairy
@@ -6837,7 +6885,7 @@ Pic: Elite Four Lorelei Frlg
 Gender: Male
 Music: Serious
 Items: Full Restore / Full Restore
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 Mugshot: Purple
 
@@ -6939,7 +6987,7 @@ Pic: Elite Four Agatha Frlg
 Gender: Male
 Music: Serious
 Items: Full Restore / Full Restore
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 Mugshot: Pink
 
@@ -6990,7 +7038,7 @@ Pic: Elite Four Lance Frlg
 Gender: Male
 Music: Serious
 Items: Full Restore / Full Restore
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 Mugshot: Blue
 
@@ -7157,7 +7205,7 @@ Pic: Leader Koga Frlg
 Gender: Male
 Music: Serious
 Items: Hyper Potion / Hyper Potion / Full Heal
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Koffing
@@ -7241,7 +7289,7 @@ Pic: Leader Sabrina Frlg
 Gender: Male
 Music: Cute
 Items: Hyper Potion / Hyper Potion / Full Heal
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 
 Kadabra
@@ -7966,10 +8014,14 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Haunter
 Level: 24
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8005,7 +8057,7 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
@@ -8022,10 +8074,14 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
+Level: 22
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Haunter
 Level: 22
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8035,10 +8091,14 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Haunter
+Level: 23
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Gastly
 Level: 23
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8061,10 +8121,14 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Haunter
 Level: 24
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8108,10 +8172,14 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Haunter
 Level: 24
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8121,10 +8189,14 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
+Level: 24
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Haunter
 Level: 24
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8134,7 +8206,7 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
@@ -8164,7 +8236,7 @@ Class: Channeler Frlg
 Pic: Channeler Frlg
 Gender: Male
 Music: Dangerous
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gastly
@@ -8202,7 +8274,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Goldeen
@@ -8223,7 +8295,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Pidgey
@@ -8252,7 +8324,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Poliwag
@@ -8269,7 +8341,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Pidgey
@@ -8294,7 +8366,7 @@ Class: Biker Frlg
 Pic: Biker Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Weezing
@@ -8361,7 +8433,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Tentacool
@@ -8445,7 +8517,7 @@ Class: Camper Frlg
 Pic: Camper Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Nidoran M
@@ -8462,7 +8534,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Bellsprout
@@ -8483,7 +8555,7 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Gloom
@@ -8521,10 +8593,14 @@ Class: Picnicker Frlg
 Pic: Picnicker Frlg
 Gender: Male
 Music: Cute
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Clefairy
+Level: 33
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+Bulbasaur
 Level: 33
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
@@ -8640,7 +8716,7 @@ Class: Crush Kin Frlg
 Pic: Crush Kin Frlg
 Gender: Male
 Music: Serious
-Double Battle: Yes
+Double Battle: No
 AI: Check Bad Move
 
 Hitmonchan @ Black Belt
@@ -8691,7 +8767,7 @@ Class: Sis And Bro Frlg
 Pic: Sis And Bro Frlg
 Gender: Male
 Music: Serious
-Double Battle: Yes
+Double Battle: No
 AI: Check Bad Move
 
 Seadra
@@ -9298,7 +9374,7 @@ Class: Youngster Frlg
 Pic: Youngster Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move
 
 Ekans
@@ -13393,7 +13469,7 @@ Class: Elite Four Frlg
 Pic: Elite Four Lorelei Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 Mugshot: Purple
 
@@ -13493,7 +13569,7 @@ Class: Elite Four Frlg
 Pic: Elite Four Agatha Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 Mugshot: Pink
 
@@ -13543,7 +13619,7 @@ Class: Elite Four Frlg
 Pic: Elite Four Lance Frlg
 Gender: Male
 Music: Serious
-Double Battle: No
+Double Battle: Yes
 AI: Check Bad Move / Try To Faint / Check Viability
 Mugshot: Blue
 
@@ -14667,3 +14743,4 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Sludge Wave
 - Ice Beam
 - Thunderbolt
+

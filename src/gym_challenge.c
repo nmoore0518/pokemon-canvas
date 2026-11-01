@@ -51,6 +51,7 @@ EWRAM_DATA static u8 sKind;
 EWRAM_DATA static u16 sLastStreak;
 EWRAM_DATA static u8 sTeraMode;        // enum GymTeraMode: whose ace Terastallizes, into what (src/gym_tera.c)
 EWRAM_DATA static bool8 sOneType;      // a battle under the League's one-type rule
+EWRAM_DATA static u8 sFormat;          // enum GymChallengeFormat: singles or doubles (decided once a challenger's set up)
 EWRAM_DATA u8 gGymChallengeIntroText[320];
 EWRAM_DATA u8 gGymChallengeDefeatText[120];  // in battle, when the challenger loses
 EWRAM_DATA u8 gGymChallengeAfterText[160];   // after losing to the player
@@ -74,11 +75,35 @@ struct GymChallengeSave *GymChallenge_GetSave(void)
     return save;
 }
 
+// Pokémon Canvas: singles or doubles. Unless a challenger's setup says (GymChallenge_SetFormat),
+// from the 4th badge on two in three are doubles (tools/gym_hack/assign_doubles.py says why),
+// singles before it; rolled once, the first time the battle asks. Doubles need two Pokémon.
+static void DecideFormat(void)
+{
+    bool32 doubles;
+
+    if (sFormat == GYM_FORMAT_MIX)
+        doubles = FlagGet(FLAG_BADGE04_GET) && Random() % 3 != 0;
+    else
+        doubles = (sFormat == GYM_FORMAT_DOUBLES);
+    sChallenger.battleType = (doubles && sChallenger.partySize >= 2) ? TRAINER_BATTLE_TYPE_DOUBLES : TRAINER_BATTLE_TYPE_SINGLES;
+    sFormat = GYM_FORMAT_DECIDED;
+}
+
+void GymChallenge_SetFormat(u32 format)
+{
+    sFormat = format;
+}
+
 const struct Trainer *GymChallenge_GetTrainer(u16 trainerId)
 {
 #if IS_FRLG
     if (trainerId == TRAINER_GYM_CHALLENGER)
+    {
+        if (sFormat != GYM_FORMAT_DECIDED)
+            DecideFormat();
         return &sChallenger;
+    }
 #endif
     return NULL;
 }
@@ -452,6 +477,7 @@ static void SetupTrainer(u32 trainerClass, u32 pic, bool32 female, const u8 *nam
     memset(&sChallenger, 0, sizeof(sChallenger));
     sTeraMode = GYM_TERA_NONE;
     sOneType = FALSE;
+    sFormat = GYM_FORMAT_MIX;
     sChallenger.aiFlags = AI_FLAG_SMART_TRAINER;
     sChallenger.party = sChallengerMons;
     sChallenger.partySize = partySize;
@@ -1000,6 +1026,7 @@ void GymChallenge_GenerateOakFinale(void)
     sKind = GYM_CHALLENGER_FAMOUS;
     sOneType = TRUE;
     sTeraMode = GYM_TERA_COUNTER;
+    sFormat = GYM_FORMAT_DOUBLES;
     StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ho… ho ho…\nSplendid. Truly splendid."));
 }
 
@@ -1095,6 +1122,8 @@ void GymChallenge_NextChallenger(void)
     // (the gym's challengers: the one-type rule; the famous ones and the mentor Terastallize)
     sOneType = TRUE;
     sTeraMode = (sKind == GYM_CHALLENGER_FAMOUS || sKind == GYM_CHALLENGER_BOSS) ? GYM_TERA_COUNTER : GYM_TERA_NONE;
+    if (sKind == GYM_CHALLENGER_BOSS)
+        sFormat = GYM_FORMAT_DOUBLES;   // (the mentor's mastery battle: a big one)
     gSpecialVar_Result = sKind;
 }
 
