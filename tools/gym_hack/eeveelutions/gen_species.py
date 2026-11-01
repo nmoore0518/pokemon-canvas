@@ -67,7 +67,7 @@ SPECIES = [
       "have been built on top of them without",
       "anyone noticing. Its huge ears hear",
       "footsteps far above it."],
-     "MUD_SLAP", ["BULLDOZE", "SAND_TOMB", "DIG", "STEALTH_ROCK", "HIGH_HORSEPOWER", "SANDSTORM", "EARTHQUAKE"],
+     "MUD_SLAP", ["BULLDOZE", "SAND_TOMB", "DIG", "STEALTH_ROCK", "HIGH_HORSEPOWER", "ROCK_SLIDE", "EARTHQUAKE"],   # (Rock Slide: so it can hit Flying types)
      ["EARTHQUAKE", "SANDSTORM", "ROCK_TOMB", "STRENGTH", "STEALTH_ROCK", "HIGH_HORSEPOWER", "BULLDOZE",
       "ROCK_SLIDE", "STONE_EDGE", "STOMPING_TANTRUM", "SCORCHING_SANDS", "EARTH_POWER"]),
     ("obsideon", "Obsideon", "ROCK", (70, 130, 110, 60, 65, 90), ("STURDY", "STURDY", "SOLID_ROCK"), "GLACEON", "GRAY",
@@ -94,7 +94,7 @@ SPECIES = [
       "nights. Those who follow it into the dark",
       "find themselves back where they started,",
       "with no memory of the way."],
-     "ASTONISH", ["SHADOW_SNEAK", "CONFUSE_RAY", "HEX", "WILL_O_WISP", "SHADOW_BALL", "NASTY_PLOT", "MOONLIGHT"],
+     "ASTONISH", ["SHADOW_SNEAK", "WILL_O_WISP", "HEX", "MOONLIGHT", "SHADOW_BALL", "PSYCHIC", "NASTY_PLOT"],   # (Psychic: so it can hit Normal types)
      ["SHADOW_BALL", "PSYCHIC", "TAUNT", "WILL_O_WISP", "HEX", "NASTY_PLOT", "DARK_PULSE", "ENERGY_BALL",
       "THUNDERBOLT", "PAIN_SPLIT", "SHADOW_CLAW"]),
     ("automateon", "Automateon", "STEEL", (65, 110, 130, 60, 95, 65), ("CLEAR_BODY", "CLEAR_BODY", "HEAVY_METAL"), "GLACEON", "GRAY",

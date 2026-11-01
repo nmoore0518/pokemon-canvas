@@ -1067,7 +1067,8 @@ TEST("GymHack: challenge: random challengers bring 4-6 different strong Pokemon 
         for (i = 0; i < t->partySize; i++)
         {
             EXPECT_GE(t->party[i].species, 1);
-            EXPECT_LE(t->party[i].species, SPECIES_DEOXYS);
+            EXPECT(t->party[i].species <= SPECIES_DEOXYS   // (or one of the new eeveelutions)
+                || (t->party[i].species >= SPECIES_ODEON && t->party[i].species <= SPECIES_VALYREON));
             EXPECT_GE(GetSpeciesBaseStatTotal(t->party[i].species), 420);
             for (j = 0; j < i; j++)
                 EXPECT_NE(t->party[i].species, t->party[j].species);
@@ -3883,4 +3884,50 @@ TEST("GymHack: Penny: her lines fit the message box")
         }
     }
     Free(buf);
+}
+
+#include "battle.h"
+// Wild holders (src/pokemon.c SetWildMonHeldItem): a clover or an old coin (item_upgrades.c), else
+// the type's Tera berry (berry_field.c), at about their rates
+static void CountWildHeldItems(u32 species, u32 n, u16 *items, u32 *counts, u32 numItems)
+{
+    u32 i, k;
+    u16 none = ITEM_NONE;
+    ZeroEnemyPartyMons();
+    CreateMon(&gParties[B_TRAINER_OPPONENT_A][0], species, 20, 0, OTID_STRUCT_RANDOM_NO_SHINY);
+    for (i = 0; i < n; i++)
+    {
+        SetMonData(&gParties[B_TRAINER_OPPONENT_A][0], MON_DATA_HELD_ITEM, &none);
+        SetWildMonHeldItem();
+        for (k = 0; k < numItems; k++)
+            if (GetMonData(&gParties[B_TRAINER_OPPONENT_A][0], MON_DATA_HELD_ITEM) == items[k])
+                counts[k]++;
+    }
+}
+
+TEST("GymHack: wild Pokemon hold clovers, coins and Tera berries at about their rates")
+{
+    u16 meowth[] = {ITEM_COPPER_COIN, ITEM_CHILAN_BERRY};
+    u16 persian[] = {ITEM_SILVER_COIN, ITEM_GOLD_COIN};
+    u16 chansey[] = {ITEM_FOUR_LEAF_CLOVER, ITEM_GOLDEN_CLOVER};
+    u16 oddish[] = {ITEM_LUCKY_CLOVER};
+    u32 c[2];
+    gBattleTypeFlags = 0;
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_RATTATA, 20, 0, OTID_STRUCT_RANDOM_NO_SHINY);   // (no Compound Eyes)
+    c[0] = c[1] = 0;
+    CountWildHeldItems(SPECIES_MEOWTH, 4000, meowth, c, 2);          // 5%, then 5% of the rest
+    EXPECT_GE(c[0], 120); EXPECT_LE(c[0], 290);
+    EXPECT_GE(c[1], 110); EXPECT_LE(c[1], 280);
+    c[0] = c[1] = 0;
+    CountWildHeldItems(SPECIES_PERSIAN, 4000, persian, c, 2);        // 5% silver, 1% gold
+    EXPECT_GE(c[0], 120); EXPECT_LE(c[0], 290);
+    EXPECT_GE(c[1], 15); EXPECT_LE(c[1], 75);
+    c[0] = c[1] = 0;
+    CountWildHeldItems(SPECIES_CHANSEY, 4000, chansey, c, 2);        // 5% four-leaf, 1% golden
+    EXPECT_GE(c[0], 120); EXPECT_LE(c[0], 290);
+    EXPECT_GE(c[1], 15); EXPECT_LE(c[1], 75);
+    c[0] = 0;
+    CountWildHeldItems(SPECIES_ODDISH, 4000, oddish, c, 1);          // 5% of what the lab's Strong Acid
+    EXPECT_GE(c[0], 60); EXPECT_LE(c[0], 200);                         //   and Apple Juice leave (about 3%)
 }

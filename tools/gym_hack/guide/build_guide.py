@@ -377,7 +377,10 @@ tells you how: show her an Eevee and she gives you the item for your gym's type.
 Eevee for any other type. The new eeveelutions evolve by levelling up while holding the type's power-up item: Silk Scarf
 (Odeon, Normal), Black Belt (Assasseon, Fighting), Sharp Beak (Hypereon, Flying), Poison Barb (Poiseon, Poison), Soft Sand
 (Subterraneon, Ground), Hard Stone (Obsideon, Rock), Silver Powder (Lenneon, Bug), Spell Tag (Appariteon, Ghost), Metal Coat
-(Automateon, Steel) and Dragon Fang (Valyreon, Dragon).</p>
+(Automateon, Steel) and Dragon Fang (Valyreon, Dragon). A few trainers have one: a Beauty on Route 13 (Odeon) and a Bird
+Keeper there (Hypereon), a Lass at the far end of Route 4 (Lenneon), a Biker on Route 16 (Poiseon), the Fighting Dojo
+(Assasseon), Sabrina's gym (Appariteon), the Pokémon Mansion (Automateon), Giovanni's gym (Subterraneon) and Victory Road
+(Obsideon, Valyreon); gym challengers can bring them too.</p>
 <h3>EXP and money</h3>
 <ul>
 <li><b>Lucky Egg</b> (held: 1.5x EXP): at the base of the Chansey statue in Pallet Town, west of the Pokémon Center.

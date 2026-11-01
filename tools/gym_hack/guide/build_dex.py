@@ -46,8 +46,8 @@ def species_numbers():
 
 def preprocess(src):
     out = OUT_DIR / (Path(src).stem + ".i")
-    if not out.exists() or out.stat().st_mtime < (ROOT / src).stat().st_mtime:
-        subprocess.run(CPP + [src, "-o", str(out)], cwd=ROOT, check=True)
+    # (always: the file's own date says nothing about the headers it includes, like the learnsets)
+    subprocess.run(CPP + [src, "-o", str(out)], cwd=ROOT, check=True)
     return out.read_text(errors="replace")
 
 

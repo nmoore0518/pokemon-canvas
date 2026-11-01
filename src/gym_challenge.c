@@ -400,6 +400,15 @@ static bool32 HasEvolution(u32 species)
     return evos != NULL && evos[0].method != EVOLUTIONS_END;
 }
 
+// The species random trainers draw from: the first three generations, then the new eeveelutions
+// (Pokémon Canvas; at the same odds as any other)
+#define POOL_SIZE (SPECIES_DEOXYS + (SPECIES_VALYREON - SPECIES_ODEON + 1))
+
+static u32 PoolSpecies(u32 i)
+{
+    return i <= SPECIES_DEOXYS ? i : SPECIES_ODEON + (i - SPECIES_DEOXYS - 1);
+}
+
 // Random trainers use fully evolved Pokémon (and legendaries) from the first three generations
 static bool32 IsStrongSpecies(u32 species)
 {
@@ -516,7 +525,7 @@ static void GenerateTrainer(u32 level)
         u32 species;
         do
         {
-            species = 1 + Random() % SPECIES_DEOXYS;
+            species = PoolSpecies(1 + Random() % POOL_SIZE);
             for (j = 0; j < i; j++)
             {
                 if (sChallengerMons[j].species == species)
@@ -677,6 +686,8 @@ static const struct PracticeTier sPracticeTiers[PRACTICE_TIERS] =
 static u32 EvolutionStage(const u16 *pre, u32 species)
 {
     u32 stage = 0;
+    if (species > SPECIES_DEOXYS)
+        return 1;   // (the new eeveelutions: Eevee's evolutions)
     while (stage < 3 && (species = pre[species]) != SPECIES_NONE)
         stage++;
     return stage;
@@ -743,9 +754,10 @@ static u32 BuildTeam(u32 tier, u32 type, u32 level, u32 count)
 
     BuildPreEvolutions(pre);
     for (k = 0; k < 3; k++)
-        lists[k] = Alloc(SPECIES_DEOXYS * sizeof(u16));
-    for (species = 1; species <= SPECIES_DEOXYS; species++)
+        lists[k] = Alloc(POOL_SIZE * sizeof(u16));
+    for (i = 1; i <= POOL_SIZE; i++)
     {
+        species = PoolSpecies(i);
         if (IsPracticeSpecies(species, type))
         {
             k = PracticePreference(pre, species, tier);

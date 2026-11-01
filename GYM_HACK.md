@@ -483,11 +483,13 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 
   Level-up moves follow the official eeveelutions' pattern (Eevee's moves, then the type's from 20
   to 50, Last Resort at 55); TM and tutor moves are what every official eeveelution can learn plus
-  the type's own. Synthetic abilities are in `tools/gym_hack/synthetic_abilities.txt`. The Pokédex
+  the type's own (Appariteon also gets Psychic and Subterraneon Rock Slide, so each can hit the
+  type that's immune to its own). Ten story trainers carry one each, in place of one of their
+  Pokémon (`tools/gym_hack/eeveelutions/trainers.py`), and random trainers draw them from the same
+  pool as Kanto-to-Hoenn's (`src/gym_challenge.c` `PoolSpecies`). Synthetic abilities are in `tools/gym_hack/synthetic_abilities.txt`. The Pokédex
   numbers follow Pecharunt. The save's dex bytes end at 1032, so 1033-1035 keep seen/caught in flags
   `FLAG_DEX_EXTRA_SEEN` 0x8E7 and `FLAG_DEX_EXTRA_CAUGHT` 0x8EF (`GetSetPokedexFlag`). Front sprites:
-  a community chart (`tools/gym_hack/eeveelutions/source/`, see CREDITS.md). How the player learns
-  of them (a side quest) is still to come.
+  a community chart (`tools/gym_hack/eeveelutions/source/`, see CREDITS.md).
 - **Penny's house** (Viridian City, in the flower garden east of the Pokémon Center;
   `tools/gym_hack/build_pennys_house.py` builds the house, its interior map
   `ViridianCity_PennysHouse_Frlg` and the warp; `src/penny.c`; draft lines). Penny (Scarlet/Violet's
