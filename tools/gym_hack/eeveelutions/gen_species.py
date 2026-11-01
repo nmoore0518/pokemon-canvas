@@ -197,13 +197,29 @@ def species_entry(sp, dexnum_const):
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(0, 2, SHADOW_SIZE_M)
         FOOTPRINT({C})
-        .levelUpLearnset = s{C}LevelUpLearnset,
+{overworld_block(key, C)}        .levelUpLearnset = s{C}LevelUpLearnset,
         .teachableLearnset = s{C}TeachableLearnset,
     }},
 """
 
 
 ICON_PAL = {}
+
+
+def overworld_block(key, C):
+    """OVERWORLD(...) for the ones with an overworld sprite (overworld.py)"""
+    from overworld import OVERWORLD_SPECIES
+    if key not in OVERWORLD_SPECIES:
+        return ""
+    return (f"        OVERWORLD(\n"
+            f"            sPicTable_{C},\n"
+            f"            SIZE_32x32,\n"
+            f"            SHADOW_SIZE_M,\n"
+            f"            TRACKS_FOOT,\n"
+            f"            sAnimTable_Following,\n"
+            f"            gOverworldPalette_{C},\n"
+            f"            gShinyOverworldPalette_{C}\n"
+            f"        )\n")
 
 
 def icon_pal_of(path):
@@ -267,6 +283,15 @@ def main():
                   f'#if P_FOOTPRINTS\n'
                   f'    const u8 gMonFootprint_{C}[] = INCGFX_U8("graphics/pokemon/{k}/footprint.png", ".1bpp");\n'
                   f'#endif //P_FOOTPRINTS\n')
+        from overworld import OVERWORLD_SPECIES
+        if k in OVERWORLD_SPECIES:
+            block += (f'#if OW_POKEMON_OBJECT_EVENTS\n'
+                      f'    const u32 gObjectEventPic_{C}[] = INCGFX_COMP("graphics/pokemon/{k}/overworld.png", ".4bpp", "-mwidth 4 -mheight 4");\n'
+                      f'#if OW_PKMN_OBJECTS_SHARE_PALETTES == FALSE\n'
+                      f'    const u16 gOverworldPalette_{C}[] = INCGFX_U16("graphics/pokemon/{k}/overworld_normal.pal", ".gbapal");\n'
+                      f'    const u16 gShinyOverworldPalette_{C}[] = INCGFX_U16("graphics/pokemon/{k}/overworld_shiny.pal", ".gbapal");\n'
+                      f'#endif //OW_PKMN_OBJECTS_SHARE_PALETTES\n'
+                      f'#endif //OW_POKEMON_OBJECT_EVENTS\n')
     block += end
     if begin in text:
         text = text[:text.index(begin)] + block + text[text.index(end) + len(end):]
@@ -274,6 +299,21 @@ def main():
         anchor = "// Gym Trainer hack: Bill's hybrid"
         text = text.replace(anchor, block + "\n" + anchor, 1)
     g.write_text(text)
+
+    # their overworld sprites' frame tables (the followers' file)
+    from overworld import OVERWORLD_SPECIES
+    f = ROOT / 'src/data/object_events/object_event_pic_tables_followers.h'
+    text = f.read_text()
+    begin, end = "// Pokémon Canvas: the new eeveelutions' overworld sprites (tools/gym_hack/eeveelutions)\n", "// (end of the new eeveelutions' overworld sprites)\n"
+    block = begin + "".join(f"static const struct SpriteFrameImage sPicTable_{camel(k)}[] = {{\n"
+                            f"    overworld_ascending_frames(gObjectEventPic_{camel(k)}, 4, 4),\n}};\n" for k in OVERWORLD_SPECIES) + end
+    if begin in text:
+        text = text[:text.index(begin)] + block + text[text.index(end) + len(end):]
+    else:
+        anchor = "\n#endif //OW_POKEMON_OBJECT_EVENTS"
+        i = text.rindex(anchor)
+        text = text[:i] + "\n\n" + block + text[i:]
+    f.write_text(text)
 
 
 if __name__ == '__main__':

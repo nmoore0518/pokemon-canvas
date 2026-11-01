@@ -3847,7 +3847,7 @@ extern const u8 ViridianCity_PennysHouse_Text_Intro[], ViridianCity_PennysHouse_
     ViridianCity_PennysHouse_Text_HowHold[], ViridianCity_PennysHouse_Text_HowUse[], ViridianCity_PennysHouse_Text_HowFairy[],
     ViridianCity_PennysHouse_Text_BagFull[], ViridianCity_PennysHouse_Text_ComeBackLater[], ViridianCity_PennysHouse_Text_NotYet[],
     ViridianCity_PennysHouse_Text_BringAnother[], ViridianCity_PennysHouse_Text_AnotherEevee[],
-    ViridianCity_PennysHouse_Text_Already[], ViridianCity_PennysHouse_Text_Plush[];
+    ViridianCity_PennysHouse_Text_Already[], ViridianCity_PennysHouse_Text_Plush[], ViridianCity_PennysHouse_Text_PlushNew[];
 
 TEST("GymHack: Penny: her lines fit the message box")
 {
@@ -3856,7 +3856,7 @@ TEST("GymHack: Penny: her lines fit the message box")
         ViridianCity_PennysHouse_Text_ForThisType, ViridianCity_PennysHouse_Text_HowHold, ViridianCity_PennysHouse_Text_HowUse,
         ViridianCity_PennysHouse_Text_HowFairy, ViridianCity_PennysHouse_Text_BagFull, ViridianCity_PennysHouse_Text_ComeBackLater,
         ViridianCity_PennysHouse_Text_NotYet, ViridianCity_PennysHouse_Text_BringAnother, ViridianCity_PennysHouse_Text_AnotherEevee,
-        ViridianCity_PennysHouse_Text_Already, ViridianCity_PennysHouse_Text_Plush,
+        ViridianCity_PennysHouse_Text_Already, ViridianCity_PennysHouse_Text_Plush, ViridianCity_PennysHouse_Text_PlushNew,
     };
     u8 *buf = Alloc(1000);
     u32 i;

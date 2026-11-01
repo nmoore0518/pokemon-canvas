@@ -21,9 +21,11 @@ MAP_ID = "MAP_VIRIDIAN_CITY_PENNYS_HOUSE"
 SRC, DST, SIZE = (24, 8), (34, 23), (5, 4)
 DOOR = (35, 26)
 
-PLUSHES = [   # (species, x, y)
+PLUSHES = [   # (species, x, y). At most 8: each is its own sprite palette, and a room only has so many
+    # (with 9, the last one came out in pieces)
+    ("VALYREON", 7, 2),   # (one of the new ones: so the player learns there are more)
     ("EEVEE", 1, 2), ("VAPOREON", 0, 3), ("JOLTEON", 0, 5), ("FLAREON", 2, 6), ("ESPEON", 9, 2),
-    ("UMBREON", 10, 3), ("LEAFEON", 10, 5), ("GLACEON", 9, 6), ("SYLVEON", 6, 2),
+    ("UMBREON", 10, 3), ("SYLVEON", 10, 5),
 ]
 PENNY = (8, 3)
 
@@ -60,7 +62,7 @@ def house(city_warp):
             "type": "object", "graphics_id": f"OBJ_EVENT_GFX_SPECIES({sp})", "x": x, "y": y, "elevation": 3,
             "movement_type": "MOVEMENT_TYPE_FACE_DOWN", "movement_range_x": 0, "movement_range_y": 0,
             "trainer_type": "TRAINER_TYPE_NONE", "trainer_sight_or_berry_tree_id": "0",
-            "script": "ViridianCity_PennysHouse_EventScript_Plush", "flag": "0"})
+            "script": "ViridianCity_PennysHouse_EventScript_Plush" + ("New" if sp == "VALYREON" else ""), "flag": "0"})
     m["object_events"] = objs
     m["bg_events"] = []
     d = ROOT / "data/maps" / NAME

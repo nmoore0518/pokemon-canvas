@@ -134,6 +134,11 @@ ViridianCity_PennysHouse_EventScript_Plush::
 	msgbox ViridianCity_PennysHouse_Text_Plush, MSGBOX_SIGN
 	end
 
+@ (Valyreon: one of the eeveelutions new to this game)
+ViridianCity_PennysHouse_EventScript_PlushNew::
+	msgbox ViridianCity_PennysHouse_Text_PlushNew, MSGBOX_SIGN
+	end
+
 @ ---- Penny (drafts) ----
 ViridianCity_PennysHouse_Text_Intro::
 	.string "Oh! Um… hi. Sorry. I don't really\n"
@@ -225,6 +230,11 @@ ViridianCity_PennysHouse_Text_Already::
 
 ViridianCity_PennysHouse_Text_Maybe::
 	.string "Okay. Maybe later, then.$"
+
+ViridianCity_PennysHouse_Text_PlushNew::
+	.string "It's a VALYREON plush.\p"
+	.string "…VALYREON? It looks like an EEVEE\n"
+	.string "evolution you've never seen before!$"
 
 ViridianCity_PennysHouse_Text_Plush::
 	.string "It's an EEVEE-family plush.\n"

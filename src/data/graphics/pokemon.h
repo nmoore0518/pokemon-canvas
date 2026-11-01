@@ -27762,6 +27762,13 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #if P_FOOTPRINTS
     const u8 gMonFootprint_Valyreon[] = INCGFX_U8("graphics/pokemon/valyreon/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
+#if OW_POKEMON_OBJECT_EVENTS
+    const u32 gObjectEventPic_Valyreon[] = INCGFX_COMP("graphics/pokemon/valyreon/overworld.png", ".4bpp", "-mwidth 4 -mheight 4");
+#if OW_PKMN_OBJECTS_SHARE_PALETTES == FALSE
+    const u16 gOverworldPalette_Valyreon[] = INCGFX_U16("graphics/pokemon/valyreon/overworld_normal.pal", ".gbapal");
+    const u16 gShinyOverworldPalette_Valyreon[] = INCGFX_U16("graphics/pokemon/valyreon/overworld_shiny.pal", ".gbapal");
+#endif //OW_PKMN_OBJECTS_SHARE_PALETTES
+#endif //OW_POKEMON_OBJECT_EVENTS
 // (end of the new eeveelutions)
 
 // Gym Trainer hack: Bill's hybrid (tools/gym_hack/bill_art.py)

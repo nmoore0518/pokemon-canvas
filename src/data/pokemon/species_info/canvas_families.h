@@ -587,6 +587,15 @@
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(0, 2, SHADOW_SIZE_M)
         FOOTPRINT(Valyreon)
+        OVERWORLD(
+            sPicTable_Valyreon,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Valyreon,
+            gShinyOverworldPalette_Valyreon
+        )
         .levelUpLearnset = sValyreonLevelUpLearnset,
         .teachableLearnset = sValyreonTeachableLearnset,
     },

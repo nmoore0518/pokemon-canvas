@@ -24,6 +24,7 @@ from PIL import Image
 from backs import DESIGNS, make
 from icons import icon, save as save_icon
 from shiny import shiny
+from overworld import OVERWORLD_SPECIES, overworld, save as save_overworld
 
 ROOT = HERE.parents[2]
 
@@ -59,6 +60,10 @@ def main():
         ig, pi = icon(get(front), front)
         save_icon(ig, pi, d / 'icon.png')
         shutil.copy(ROOT / 'graphics/pokemon/eevee/footprint.png', d / 'footprint.png')
+        if species in OVERWORLD_SPECIES:
+            save_overworld(overworld(fg, bg, pal), pal, d / 'overworld.png')
+            write_pal(pal, d / 'overworld_normal.pal')
+            write_pal(shiny(pal, front), d / 'overworld_shiny.pal')
         fx0, fx1, fy0, fy1 = bbox(fg); bx0, bx1, by0, by1 = bbox(bg)
         print(f"{species:13} front {fx1 - fx0 + 1}x{fy1 - fy0 + 1} yoff {63 - fy1}  back {bx1 - bx0 + 1}x{by1 - by0 + 1} yoff {63 - by1}  icon pal {pi}")
 

@@ -6693,4 +6693,11 @@ static const struct SpriteFrameImage sPicTable_Pecharunt[] = {
 };
 #endif //P_FAMILY_PECHARUNT
 
+
+// Pokémon Canvas: the new eeveelutions' overworld sprites (tools/gym_hack/eeveelutions)
+static const struct SpriteFrameImage sPicTable_Valyreon[] = {
+    overworld_ascending_frames(gObjectEventPic_Valyreon, 4, 4),
+};
+// (end of the new eeveelutions' overworld sprites)
+
 #endif //OW_POKEMON_OBJECT_EVENTS

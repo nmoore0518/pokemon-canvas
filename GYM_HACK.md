@@ -491,8 +491,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 - **Penny's house** (Viridian City, in the flower garden east of the Pokémon Center;
   `tools/gym_hack/build_pennys_house.py` builds the house, its interior map
   `ViridianCity_PennysHouse_Frlg` and the warp; `src/penny.c`; draft lines). Penny (Scarlet/Violet's
-  Team Star boss, the Gauntlet's Penny) lives among Eevee-family plushes (the official eeveelutions'
-  overworld sprites). Optional: the first talk asks for an Eevee (Route 1); shown one (in the party),
+  Team Star boss, the Gauntlet's Penny) lives among Eevee-family plushes (the Pokémon's overworld
+  sprites; at most 8, each needs its own sprite palette): Eevee, six official ones, and Valyreon (its
+  overworld sprite: `tools/gym_hack/eeveelutions/overworld.py`), whose line tells the player there are
+  eeveelutions they've never seen. Optional: the first talk asks for an Eevee (Route 1); shown one (in the party),
   she gives the item for the player's gym type (`VAR_PLAYER_TYPE`) and says how it works (hold and
   level up, use it, or for Fairy no item). Once the gym is the player's (`VAR_GYM_FINALE` =
   `GYM_FINALE_DONE`), each Eevee shown gets a type menu: one item per type. Flags `FLAG_PENNY_MET`
