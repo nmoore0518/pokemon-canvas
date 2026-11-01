@@ -106,6 +106,7 @@ DESIGNS['automateon'] = ('metaleon', 'eevee', {3: (112, 126, 150), 1: (70, 82, 1
 
 def make(key):
     """front, back, palette. Which back each has:
+      REFS        adapted from a reference picture (ref_backs.py)
       TURNED      the design turned away (turned.py)
       DRAWN       a back sprite supplied for it (source/<key>_back.png, 1x)
       otherwise   an official eeveelution back repainted in its colours (official_back), with
@@ -113,7 +114,11 @@ def make(key):
     from turned import turned
     front = DESIGNS[key][0]
     fg, pal = to_gba(get(front))
-    if key in TURNED:
+    from ref_backs import REFS, ref_back, add_colours
+    if key in REFS:
+        pal = add_colours(key, pal, fg)
+        bg = ref_back(key, pal)
+    elif key in TURNED:
         bg = turned(fg, pal, key)
     elif key in DRAWN:
         bg = drawn_back(key, pal)
