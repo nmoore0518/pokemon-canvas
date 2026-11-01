@@ -1,5 +1,5 @@
 import colorsys
-SHINY = {'hiveon': -150, 'kirineon': -120, 'vitaleon': 140, 'nimbeon': 150, 'obliveon': 180, 'terreon': 180,
+SHINY = {'hiveon': -150, 'kirineon': -120, 'vitaleon': 140, 'nimbeon': -125, 'obliveon': 180, 'terreon': 180,
          'lumeon': None, 'toxeon': 180, 'zirconeon': 120, 'metaleon': 180}
 KEEP = {'hiveon': {(224, 184, 64)}}
 def shiny(pal, key):

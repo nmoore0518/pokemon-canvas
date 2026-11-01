@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """The ten new eeveelutions' graphics (Pokémon Canvas).
 
-Front sprites: the community "all-type eeveelutions" chart (source/, cut out of the chart by type),
-with edits in edits.py: the Light one recoloured as the Normal one (Eevee's colours reversed), round
-glasses on the Bug one, and the Steel one made mechanical (gunmetal plating, a brass gear collar,
-seams and rivets). Back sprites (backs.py) are official eeveelution backs repainted in each front's
-palette, with wings, bands and crystals added. Icons (icons.py) are shrunk fronts on the shared icon
-palettes; shiny palettes (shiny.py) are hue shifts.
+Front sprites: the community "all-type eeveelutions" chart (source/, cut out of the chart by type;
+Kirineon by Veterans, Nimbeon by PansygumPKMN - see CREDITS.md), with edits in edits.py: the Light
+one recoloured as the Normal one (Eevee's colours reversed), round glasses on the Bug one, and the
+Steel one made mechanical (gunmetal plating, a brass gear collar, seams and rivets). Back sprites
+(turned.py) are each design turned away: mirrored, its face painted over, enlarged and cut off at
+the bottom. Icons (icons.py) are shrunk fronts on the shared icon palettes; shiny palettes
+(shiny.py) are hue shifts.
 
     python3 tools/gym_hack/eeveelutions/build.py
 

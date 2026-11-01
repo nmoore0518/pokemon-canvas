@@ -14,9 +14,10 @@ This hack is built on community work. Thank you to everyone below.
   and overworld sprites of the later generations' leaders):
   https://github.com/Pokabbie/pokeemerald-rogue — see its credits for the sprite artists.
 - **The new eeveelutions' front sprites** — from a community "eeveelutions of every type" fan
-  chart (artist not yet identified; to be credited here). Edited for the hack: the Normal one
-  recoloured, glasses on the Bug one, mechanical details on the Steel one. Their back sprites,
-  icons and shiny colours were made for the hack from the official eeveelutions' sprites.
+  chart. Valyreon is **Kirineon** by **Veterans** (rebornevo.com); Hypereon is **Nimbeon** by
+  **PansygumPKMN** (DeviantArt). The other eight are from the same chart, artists not yet
+  identified. Edited for the hack: the Normal one recoloured, glasses on the Bug one, mechanical
+  details on the Steel one. Their back sprites, icons and shiny colours were made for the hack.
 
 ## AI disclosure
 

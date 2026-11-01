@@ -105,13 +105,21 @@ DESIGNS['automateon'] = ('metaleon', 'eevee', {3: (112, 126, 150), 1: (70, 82, 1
     8: (214, 164, 64), 10: (252, 220, 120), 7: (150, 104, 40), 11: (214, 164, 64), 9: (236, 244, 255)}, gearback)
 
 def make(key):
+    """front, back, palette. The back is the design itself turned away (turned.py); the older
+    repaints of the official backs (official_back) are kept only for reference."""
+    from turned import turned
+    front = DESIGNS[key][0]
+    fg, pal = to_gba(get(front))
+    return fg, turned(fg, pal, key), pal
+
+def official_back(key):
     front, b, m, feat = DESIGNS[key]
     fg, pal = to_gba(get(front))
     src = base(b)
     lut = {i: nearest(pal, c) for i, c in m.items()}
     g = [[(lut.get(v, nearest(pal, BLACK)) if v else 0) for v in row] for row in src]
     if feat: feat(g, lambda c: nearest(pal, c))
-    return fg, g, pal
+    return g
 
 def render(g, pal, s):
     im = Image.new('RGB', (64, 64), (255, 255, 255))
