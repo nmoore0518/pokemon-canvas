@@ -463,6 +463,31 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   held items. Each trainer keeps the same name. No prize money (`gGymPracticeBattle` skips it in
   `data/battle_scripts_1.s`), losing doesn't white out, and your team is healed after.
   `GymChallenge_GeneratePractice` in `src/gym_challenge.c`.
+- **The new eeveelutions** (Pokémon Canvas; `src/data/pokemon/species_info/canvas_families.h`,
+  generated with their learnsets by `tools/gym_hack/eeveelutions/gen_species.py`; graphics by
+  `tools/gym_hack/eeveelutions/build.py`): one for each type Eevee had none for. Eevee becomes each
+  by levelling up holding that type's power-up item:
+
+  | # | Name | Type | HP/Atk/Def/SpA/SpD/Spe | Abilities (hidden) | Item |
+  |---|---|---|---|---|---|
+  | 1026 | Odeon | Normal | 90/90/85/90/85/85 | Adaptability (Protean) | Silk Scarf |
+  | 1027 | Assasseon | Fighting | 65/130/65/60/95/110 | Inner Focus (Technician) | Black Belt |
+  | 1028 | Hypereon | Flying | 65/110/60/65/95/130 | Keen Eye (Aerilate) | Sharp Beak |
+  | 1029 | Poiseon | Poison | 95/60/80/95/130/65 | Poison Point (Corrosion) | Poison Barb |
+  | 1030 | Subterraneon | Ground | 95/115/110/60/65/80 | Sand Veil (Sand Force) | Soft Sand |
+  | 1031 | Obsideon | Rock | 70/130/110/60/65/90 | Sturdy (Solid Rock) | Hard Stone |
+  | 1032 | Lenneon | Bug | 75/60/70/130/115/75 | Swarm (Punk Rock) | Silver Powder |
+  | 1033 | Appariteon | Ghost | 65/60/70/130/95/105 | Cursed Body (Infiltrator) | Spell Tag |
+  | 1034 | Automateon | Steel | 65/110/130/60/95/65 | Clear Body (Heavy Metal) | Metal Coat |
+  | 1035 | Valyreon | Dragon | 75/65/65/125/95/100 | Marvel Scale (Dragon's Maw) | Dragon Fang |
+
+  Level-up moves follow the official eeveelutions' pattern (Eevee's moves, then the type's from 20
+  to 50, Last Resort at 55); TM and tutor moves are what every official eeveelution can learn plus
+  the type's own. Synthetic abilities are in `tools/gym_hack/synthetic_abilities.txt`. The Pokédex
+  numbers follow Pecharunt. The save's dex bytes end at 1032, so 1033-1035 keep seen/caught in flags
+  `FLAG_DEX_EXTRA_SEEN` 0x8E7 and `FLAG_DEX_EXTRA_CAUGHT` 0x8EF (`GetSetPokedexFlag`). Front sprites:
+  a community chart (`tools/gym_hack/eeveelutions/source/`, see CREDITS.md). How the player learns
+  of them (a side quest) is still to come.
 - **Lucky Egg and Amulet Coin levels** (`src/item_upgrades.c`): both have a level, 1-10, kept
   for the player (`VAR_LUCKY_EGG_LEVEL` 0x4092, `VAR_AMULET_COIN_LEVEL` 0x4093; 0 counts as 1).
   Each level adds 0.5x: the Lucky Egg 1.5x EXP at level 1 up to 6x at 10, the Amulet Coin 2x

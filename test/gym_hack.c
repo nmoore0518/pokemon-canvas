@@ -3765,3 +3765,50 @@ TEST("GymHack: outfits: changing the gym's type gives every gym uniform (and sav
     VarSet(VAR_OUTFITS_UNLOCKED, before);
     VarSet(VAR_OUTFITS_UNLOCKED_2, before2);
 }
+
+// Pokémon Canvas: the new eeveelutions (src/data/pokemon/species_info/canvas_families.h)
+TEST("GymHack: eeveelutions: Eevee becomes each new one by levelling up holding its type's item")
+{
+    static const u16 evo[][3] = {
+        {ITEM_SILK_SCARF, SPECIES_ODEON, TYPE_NORMAL},          {ITEM_BLACK_BELT, SPECIES_ASSASSEON, TYPE_FIGHTING},
+        {ITEM_SHARP_BEAK, SPECIES_HYPEREON, TYPE_FLYING},       {ITEM_POISON_BARB, SPECIES_POISEON, TYPE_POISON},
+        {ITEM_SOFT_SAND, SPECIES_SUBTERRANEON, TYPE_GROUND},    {ITEM_HARD_STONE, SPECIES_OBSIDEON, TYPE_ROCK},
+        {ITEM_SILVER_POWDER, SPECIES_LENNEON, TYPE_BUG},        {ITEM_SPELL_TAG, SPECIES_APPARITEON, TYPE_GHOST},
+        {ITEM_METAL_COAT, SPECIES_AUTOMATEON, TYPE_STEEL},      {ITEM_DRAGON_FANG, SPECIES_VALYREON, TYPE_DRAGON},
+    };
+    struct Pokemon mon;
+    u32 i, item;
+    for (i = 0; i < ARRAY_COUNT(evo); i++)
+    {
+        const struct SpeciesInfo *info = &gSpeciesInfo[evo[i][1]];
+        CreateMon(&mon, SPECIES_EEVEE, 20, 0, OTID_STRUCT_PLAYER_ID);
+        item = evo[i][0];
+        SetMonData(&mon, MON_DATA_HELD_ITEM, &item);
+        EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), evo[i][1]);
+        EXPECT_EQ((u32)info->types[0], (u32)evo[i][2]);
+        EXPECT_EQ((u32)(info->baseHP + info->baseAttack + info->baseDefense + info->baseSpAttack + info->baseSpDefense + info->baseSpeed), 525);
+        EXPECT((u32)info->natDexNum != NATIONAL_DEX_NONE);
+        EXPECT(info->levelUpLearnset[0].move != MOVE_NONE);
+        EXPECT(info->teachableLearnset[0] != MOVE_UNAVAILABLE);
+        EXPECT(GetSpeciesSyntheticAbility(evo[i][1]) != ABILITY_NONE);
+    }
+    // (holding nothing it stays an Eevee)
+    CreateMon(&mon, SPECIES_EEVEE, 20, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), SPECIES_NONE);
+}
+
+TEST("GymHack: eeveelutions: the Pokédex keeps seen and caught for every new number")
+{
+    u32 n;
+    for (n = NATIONAL_DEX_ODEON; n <= NATIONAL_DEX_VALYREON; n++)
+    {
+        EXPECT(!GetSetPokedexFlag(n, FLAG_GET_SEEN));
+        GetSetPokedexFlag(n, FLAG_SET_SEEN);
+        EXPECT(GetSetPokedexFlag(n, FLAG_GET_SEEN));
+        EXPECT(!GetSetPokedexFlag(n, FLAG_GET_CAUGHT));
+        GetSetPokedexFlag(n, FLAG_SET_CAUGHT);
+        EXPECT(GetSetPokedexFlag(n, FLAG_GET_CAUGHT));
+        EXPECT(!GetSetPokedexFlag(n + 1 <= NATIONAL_DEX_VALYREON ? n + 1 : NATIONAL_DEX_ODEON, FLAG_GET_CAUGHT) || n == NATIONAL_DEX_VALYREON);
+    }
+    EXPECT_EQ(SpeciesToNationalPokedexNum(SPECIES_VALYREON), NATIONAL_DEX_VALYREON);
+}

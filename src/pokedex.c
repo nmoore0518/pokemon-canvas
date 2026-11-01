@@ -4485,6 +4485,8 @@ static u8* ConvertMeasurementToMetricString(u32 num, u32* index)
     return string;
 }
 
+STATIC_ASSERT(NATIONAL_DEX_COUNT <= NUM_DEX_FLAG_BYTES * 8 + DEX_EXTRA_FLAGS, DexExtraFlagsEnough);
+
 s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
 {
     u32 index, bit, mask;
@@ -4494,6 +4496,22 @@ s8 GetSetPokedexFlag(enum NationalDexOrder nationalDexNo, u8 caseID)
     index = nationalDexNo / 8;
     bit = nationalDexNo % 8;
     mask = 1 << bit;
+
+    // Pokémon Canvas: numbers past the save's dex bytes are in event flags
+    if (index >= NUM_DEX_FLAG_BYTES)
+    {
+        u32 extra = nationalDexNo - NUM_DEX_FLAG_BYTES * 8;
+        if (extra >= DEX_EXTRA_FLAGS)
+            return 0;
+        switch (caseID)
+        {
+        case FLAG_GET_SEEN:   return FlagGet(FLAG_DEX_EXTRA_SEEN + extra) != 0;
+        case FLAG_GET_CAUGHT: return FlagGet(FLAG_DEX_EXTRA_CAUGHT + extra) != 0;
+        case FLAG_SET_SEEN:   FlagSet(FLAG_DEX_EXTRA_SEEN + extra); break;
+        case FLAG_SET_CAUGHT: FlagSet(FLAG_DEX_EXTRA_CAUGHT + extra); break;
+        }
+        return 0;
+    }
 
     switch (caseID)
     {

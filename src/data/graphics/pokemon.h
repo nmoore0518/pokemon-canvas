@@ -27681,6 +27681,89 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #endif //OW_POKEMON_OBJECT_EVENTS
 #endif //P_FAMILY_PECHARUNT
 
+// Pokémon Canvas: the new eeveelutions (tools/gym_hack/eeveelutions)
+    const u32 gMonFrontPic_Odeon[] = INCGFX_U32("graphics/pokemon/odeon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Odeon[] = INCGFX_U16("graphics/pokemon/odeon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Odeon[] = INCGFX_U32("graphics/pokemon/odeon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Odeon[] = INCGFX_U16("graphics/pokemon/odeon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Odeon[] = INCGFX_U8("graphics/pokemon/odeon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Odeon[] = INCGFX_U8("graphics/pokemon/odeon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Assasseon[] = INCGFX_U32("graphics/pokemon/assasseon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Assasseon[] = INCGFX_U16("graphics/pokemon/assasseon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Assasseon[] = INCGFX_U32("graphics/pokemon/assasseon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Assasseon[] = INCGFX_U16("graphics/pokemon/assasseon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Assasseon[] = INCGFX_U8("graphics/pokemon/assasseon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Assasseon[] = INCGFX_U8("graphics/pokemon/assasseon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Hypereon[] = INCGFX_U32("graphics/pokemon/hypereon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Hypereon[] = INCGFX_U16("graphics/pokemon/hypereon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Hypereon[] = INCGFX_U32("graphics/pokemon/hypereon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Hypereon[] = INCGFX_U16("graphics/pokemon/hypereon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Hypereon[] = INCGFX_U8("graphics/pokemon/hypereon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Hypereon[] = INCGFX_U8("graphics/pokemon/hypereon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Poiseon[] = INCGFX_U32("graphics/pokemon/poiseon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Poiseon[] = INCGFX_U16("graphics/pokemon/poiseon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Poiseon[] = INCGFX_U32("graphics/pokemon/poiseon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Poiseon[] = INCGFX_U16("graphics/pokemon/poiseon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Poiseon[] = INCGFX_U8("graphics/pokemon/poiseon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Poiseon[] = INCGFX_U8("graphics/pokemon/poiseon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Subterraneon[] = INCGFX_U32("graphics/pokemon/subterraneon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Subterraneon[] = INCGFX_U16("graphics/pokemon/subterraneon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Subterraneon[] = INCGFX_U32("graphics/pokemon/subterraneon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Subterraneon[] = INCGFX_U16("graphics/pokemon/subterraneon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Subterraneon[] = INCGFX_U8("graphics/pokemon/subterraneon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Subterraneon[] = INCGFX_U8("graphics/pokemon/subterraneon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Obsideon[] = INCGFX_U32("graphics/pokemon/obsideon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Obsideon[] = INCGFX_U16("graphics/pokemon/obsideon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Obsideon[] = INCGFX_U32("graphics/pokemon/obsideon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Obsideon[] = INCGFX_U16("graphics/pokemon/obsideon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Obsideon[] = INCGFX_U8("graphics/pokemon/obsideon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Obsideon[] = INCGFX_U8("graphics/pokemon/obsideon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Lenneon[] = INCGFX_U32("graphics/pokemon/lenneon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Lenneon[] = INCGFX_U16("graphics/pokemon/lenneon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Lenneon[] = INCGFX_U32("graphics/pokemon/lenneon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Lenneon[] = INCGFX_U16("graphics/pokemon/lenneon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Lenneon[] = INCGFX_U8("graphics/pokemon/lenneon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Lenneon[] = INCGFX_U8("graphics/pokemon/lenneon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Appariteon[] = INCGFX_U32("graphics/pokemon/appariteon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Appariteon[] = INCGFX_U16("graphics/pokemon/appariteon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Appariteon[] = INCGFX_U32("graphics/pokemon/appariteon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Appariteon[] = INCGFX_U16("graphics/pokemon/appariteon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Appariteon[] = INCGFX_U8("graphics/pokemon/appariteon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Appariteon[] = INCGFX_U8("graphics/pokemon/appariteon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Automateon[] = INCGFX_U32("graphics/pokemon/automateon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Automateon[] = INCGFX_U16("graphics/pokemon/automateon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Automateon[] = INCGFX_U32("graphics/pokemon/automateon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Automateon[] = INCGFX_U16("graphics/pokemon/automateon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Automateon[] = INCGFX_U8("graphics/pokemon/automateon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Automateon[] = INCGFX_U8("graphics/pokemon/automateon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+    const u32 gMonFrontPic_Valyreon[] = INCGFX_U32("graphics/pokemon/valyreon/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Valyreon[] = INCGFX_U16("graphics/pokemon/valyreon/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Valyreon[] = INCGFX_U32("graphics/pokemon/valyreon/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Valyreon[] = INCGFX_U16("graphics/pokemon/valyreon/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Valyreon[] = INCGFX_U8("graphics/pokemon/valyreon/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Valyreon[] = INCGFX_U8("graphics/pokemon/valyreon/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+// (end of the new eeveelutions)
+
 // Gym Trainer hack: Bill's hybrid (tools/gym_hack/bill_art.py)
     const u32 gMonFrontPic_Cleffabill[] = INCGFX_U32("graphics/pokemon/cleffabill/anim_front.png", ".4bpp.smol");
     const u16 gMonPalette_Cleffabill[] = INCGFX_U16("graphics/pokemon/cleffabill/normal.pal", ".gbapal");

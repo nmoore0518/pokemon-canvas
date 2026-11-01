@@ -653,3 +653,15 @@ FEZANDIPITI : Tough Claws : Play Rough and Brave Bird 1.3x
 OGERPON_TEAL OGERPON_WELLSPRING OGERPON_HEARTHFLAME OGERPON_CORNERSTONE : Super Luck : Ivy Cudgel's high crit chance goes higher
 TERAPAGOS_NORMAL TERAPAGOS_TERASTAL : Tera Shell : at full HP every hit is not very effective (flag: gives up Tera Shift)
 PECHARUNT : Regenerator : heals on Parting Shot out (sidegrade: gives up Poison Puppeteer)
+
+# ------------------------------------------------------------------------- the new eeveelutions
+ODEON : Scrappy : its Normal moves (Adaptability, Extreme Speed) hit Ghosts too
+ASSASSEON : Unseen Fist : its punches and kicks go through Protect, like an assassin's
+HYPEREON : Gale Wings : Flying moves go first at full HP
+POISEON : Regenerator : a bulky poisoner that heals when it switches out
+SUBTERRANEON : Sand Rush : doubles its Speed in a sandstorm (it learns Sandstorm)
+OBSIDEON : Rock Head : Head Smash with no recoil
+LENNEON : Tinted Lens : its Bug moves still hit the many types that resist them
+APPARITEON : Levitate : a phantom floats over Ground moves
+AUTOMATEON : Steelworker : Steel moves 1.5x, as well as its own STAB
+VALYREON : Multiscale : halves the first hit at full HP (Dragonite's)

@@ -143,7 +143,9 @@
 
 #define ROUND_BITS_TO_BYTES(numBits) DIV_ROUND_UP(numBits, 8)
 
-#define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(POKEMON_SLOTS_NUMBER)
+// Pokémon Canvas: the save keeps its bytes for the official Pokédex (to Pecharunt); the new
+// eeveelutions past the last byte are kept in event flags (FLAG_DEX_EXTRA_SEEN, src/pokedex.c)
+#define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(NATIONAL_DEX_PECHARUNT + 1)
 #define NUM_FLAG_BYTES ROUND_BITS_TO_BYTES(FLAGS_COUNT)
 #define NUM_TRENDY_SAYING_BYTES ROUND_BITS_TO_BYTES(NUM_TRENDY_SAYINGS)
 

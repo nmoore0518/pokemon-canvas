@@ -18320,7 +18320,19 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .eggMoveLearnset = sEeveeEggMoveLearnset,
         .formSpeciesIdTable = sEeveeFormSpeciesIdTable,
         .formChangeTable = sEeveeFormChangeTable,
-        .evolutions = EVOLUTION({EVO_ITEM, ITEM_THUNDER_STONE, SPECIES_JOLTEON},
+        .evolutions = EVOLUTION(
+                                // Pokémon Canvas: the new eeveelutions, by levelling up holding the type's power-up item
+                                {EVO_LEVEL, 0, SPECIES_ODEON, CONDITIONS({IF_HOLD_ITEM, ITEM_SILK_SCARF})},
+                                {EVO_LEVEL, 0, SPECIES_ASSASSEON, CONDITIONS({IF_HOLD_ITEM, ITEM_BLACK_BELT})},
+                                {EVO_LEVEL, 0, SPECIES_HYPEREON, CONDITIONS({IF_HOLD_ITEM, ITEM_SHARP_BEAK})},
+                                {EVO_LEVEL, 0, SPECIES_POISEON, CONDITIONS({IF_HOLD_ITEM, ITEM_POISON_BARB})},
+                                {EVO_LEVEL, 0, SPECIES_SUBTERRANEON, CONDITIONS({IF_HOLD_ITEM, ITEM_SOFT_SAND})},
+                                {EVO_LEVEL, 0, SPECIES_OBSIDEON, CONDITIONS({IF_HOLD_ITEM, ITEM_HARD_STONE})},
+                                {EVO_LEVEL, 0, SPECIES_LENNEON, CONDITIONS({IF_HOLD_ITEM, ITEM_SILVER_POWDER})},
+                                {EVO_LEVEL, 0, SPECIES_APPARITEON, CONDITIONS({IF_HOLD_ITEM, ITEM_SPELL_TAG})},
+                                {EVO_LEVEL, 0, SPECIES_AUTOMATEON, CONDITIONS({IF_HOLD_ITEM, ITEM_METAL_COAT})},
+                                {EVO_LEVEL, 0, SPECIES_VALYREON, CONDITIONS({IF_HOLD_ITEM, ITEM_DRAGON_FANG})},
+                                {EVO_ITEM, ITEM_THUNDER_STONE, SPECIES_JOLTEON},
                                 {EVO_ITEM, ITEM_WATER_STONE, SPECIES_VAPOREON},
                                 {EVO_ITEM, ITEM_FIRE_STONE, SPECIES_FLAREON}
                                 ,{EVO_LEVEL, 0, SPECIES_SYLVEON, CONDITIONS({IF_MIN_FRIENDSHIP, FRIENDSHIP_EVO_THRESHOLD}, {IF_KNOWS_MOVE_TYPE, TYPE_FAIRY})} // Gym Trainer hack: unlocked

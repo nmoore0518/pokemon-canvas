@@ -2738,6 +2738,11 @@
 #define FLAG_BERRY_FIND_FAIRY      0x3EF
 #define FLAG_SPIRIT_WARD_ON        0x410   // (the SPIRIT WARD is held up: a Max Repel; src/wild_encounter.c)
 #define FLAG_TOURNEY_SIM_DOUBLES   0x3F8   // (Bill's simulator: the last tournament entered was doubles; src/tournament.c)
+// Pokédex numbers past the save's dex bytes (the last of the new eeveelutions; src/pokedex.c
+// GetSetPokedexFlag): seen, then caught, DEX_EXTRA_FLAGS each
+#define DEX_EXTRA_FLAGS            8
+#define FLAG_DEX_EXTRA_SEEN        0x8E7   // (to 0x8EE)
+#define FLAG_DEX_EXTRA_CAUGHT      0x8EF   // (to 0x8F6)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 

@@ -1694,6 +1694,17 @@ enum __attribute__((packed)) Species
     // Add any custom species between here and SPECIES_CUSTOM_END
     SPECIES_CLEFFABILL,      // Gym Trainer hack: Bill, gone wrong (the Gauntlet's finale; not obtainable)
     SPECIES_CHANSEY_DAD,     // Pokémon Canvas: DAD's CHANSEY (Attack and Sp. Atk 100; MOM gives it at VIRIDIAN)
+    // Pokémon Canvas: the ten new eeveelutions (src/data/pokemon/species_info/canvas_families.h)
+    SPECIES_ODEON,
+    SPECIES_ASSASSEON,
+    SPECIES_HYPEREON,
+    SPECIES_POISEON,
+    SPECIES_SUBTERRANEON,
+    SPECIES_OBSIDEON,
+    SPECIES_LENNEON,
+    SPECIES_APPARITEON,
+    SPECIES_AUTOMATEON,
+    SPECIES_VALYREON,
     SPECIES_CUSTOM_END,
 
     SPECIES_EGG = SPECIES_CUSTOM_END,

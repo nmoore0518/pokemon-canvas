@@ -13,6 +13,10 @@ This hack is built on community work. Thank you to everyone below.
 - **Pokémon Emerald Rogue** (Pokabbie) — the Gym Leader Convention's trainer sprites (front pictures
   and overworld sprites of the later generations' leaders):
   https://github.com/Pokabbie/pokeemerald-rogue — see its credits for the sprite artists.
+- **The new eeveelutions' front sprites** — from a community "eeveelutions of every type" fan
+  chart (artist not yet identified; to be credited here). Edited for the hack: the Normal one
+  recoloured, glasses on the Bug one, mechanical details on the Steel one. Their back sprites,
+  icons and shiny colours were made for the hack from the official eeveelutions' sprites.
 
 ## AI disclosure
 
