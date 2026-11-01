@@ -1,4 +1,5 @@
 #include "global.h"
+#include "berry_field.h"
 #include "mastery_hall.h"
 #include "archive.h"
 #include "team_builder.h"
@@ -204,6 +205,7 @@ void NewGameInitData(void)
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     MasteryHall_Clear();   // Gym Trainer hack
+    BerryField_Clear();    // Pokémon Canvas
     Archive_Clear();
     TeamBuilder_Clear();
     DeactivateAllRoamers();

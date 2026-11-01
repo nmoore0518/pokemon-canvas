@@ -1,4 +1,5 @@
 #include "global.h"
+#include "berry_field.h"
 #include "basement_machines.h"
 #include "synthetic_abilities.h"
 #include "event_mons.h"
@@ -5495,6 +5496,8 @@ void SetWildMonHeldItem(void)
             continue; // prevent overwriting previously set item
         if (TryGiveWildMonLabItem(&gParties[B_TRAINER_OPPONENT_A][i]))
             continue; // Pokémon Canvas: Strong Acid / Apple Juice
+        if (TryGiveWildMonTeraBerry(&gParties[B_TRAINER_OPPONENT_A][i]))
+            continue; // Pokémon Canvas: its type's Tera berry (src/berry_field.c)
 
         rnd = Random() % 100;
         species = GetMonData(&gParties[B_TRAINER_OPPONENT_A][i], MON_DATA_SPECIES, 0);

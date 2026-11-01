@@ -263,7 +263,8 @@ She handed you something.
 DAD's CHANSEY was sent to the PC.
 
 # ---- Dad's notes, on the basement floor (read as pages) ----
-# ---- Pallet Town: Mom and Oak at the CHANSEY statue, right after Viridian (Claude's draft) ----
+# ---- Pallet Town: Mom and Oak at the CHANSEY statue, right after Viridian (Claude's draft; Oct 31:
+#      Oak's last two boxes send the player to ARCHER) ----
 == DadStory_Text_MemorialOak1
 OAK: {PLAYER}! Your MOTHER called me from VIRIDIAN. I heard everything.
 |
@@ -302,6 +303,10 @@ After what happened at VIRIDIAN, they've agreed to count its LEADER's approval a
 VIRIDIAN's LEADER is gone, after all. And you beat him fair and square.
 |
 That makes eight, {PLAYER}. The ELITE FOUR are waiting for you.
+|
+But before you go… VIRIDIAN has a new LEADER already. He came by my lab this morning asking for you.
+|
+He said he has something that belonged to your father. I'd go and see him first.
 
 == DadStory_Text_MemorialMom3
 MOM: Go on, honey. Make us proud.
@@ -359,7 +364,7 @@ The LEAGUE has rules about it, of course. In GYM battles, LEAGUE battles and aga
 |
 Anywhere else, a POKéMON can use its own TERA TYPE, but only if it's a type you've mastered. Until then, it's your GYM's type everywhere.
 |
-Once you've mastered a type, come and see me. I can tune your POKéMON's TERA TYPES.
+Once you've mastered a type, come and see me. I can tune your POKéMON's TERA TYPES. It takes berries of the type: three a time.
 |
 And {PLAYER}… the strongest TRAINERS know how to use it too. Be ready.
 
@@ -388,6 +393,17 @@ ARCHER: Want me to tune one of your POKéMON's TERA TYPES?
 == DadStory_Text_ArcherTunePick
 ARCHER: {STR_VAR_1}'s TERA TYPE is {STR_VAR_2}. Which type should it be?
 
+== DadStory_Text_ArcherTunePrice
+ARCHER: The crystal needs something of the type to take it in. For {STR_VAR_2}, that's {STR_VAR_3}. Go ahead?
+
+== DadStory_Text_ArcherTuneAlready
+ARCHER: Its TERA TYPE is {STR_VAR_2} already.
+
+== DadStory_Text_ArcherTuneNoBerries
+ARCHER: The crystal needs something of the type to take it in. For {STR_VAR_2}, that's {STR_VAR_3}.
+|
+Wild POKéMON of the type carry them sometimes, and you can grow them. Come back when you have them.
+
 == DadStory_Text_ArcherTuned
 ARCHER: Done. Outside LEAGUE battles, {STR_VAR_1} will TERASTALLIZE into the {STR_VAR_2} type.
 |
@@ -404,6 +420,12 @@ ARCHER: Come back anytime.
 Oh… it's DAD's ROCKET uniform.
 
 # ---- Mom at home, after Viridian (Claude's draft) ----
+# (Claude's draft, Oct 31: until the player has met ARCHER)
+== DadStory_Text_MomArcherNudge
+MOM: Professor OAK said the new VIRIDIAN LEADER was asking for you. Something of your father's?
+|
+Go and see him, honey. Just… be careful.
+
 == DadStory_Text_MomAfterViridian
 MOM: {PLAYER}! How is CHANSEY doing?
 |

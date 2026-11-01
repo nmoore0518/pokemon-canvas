@@ -13,6 +13,7 @@
 //     Bill, the Gym Leader Convention) into the type their team is built around.
 #include "global.h"
 #include "gym_tera.h"
+#include "berry_field.h"
 #include "battle.h"
 #include "battle_setup.h"
 #include "battle_util.h"
@@ -25,6 +26,7 @@
 #include "party_menu.h"
 #include "pokemon.h"
 #include "string_util.h"
+#include "constants/characters.h"
 #include "constants/items.h"
 #include "constants/opponents.h"
 #include "constants/trainers.h"
@@ -242,13 +244,37 @@ void GymTera_IsTypeAllowed(void)
     gSpecialVar_Result = IsRealType(type) && (type == gym || FlagGet(FLAG_GYM_TYPE_MASTERED + type));
 }
 
-// VAR_0x8004 = the party slot, VAR_0x8005 = the type: sets its Tera type (STR_VAR_1, STR_VAR_2 as above)
+// VAR_0x8004 = the party slot, VAR_0x8005 = the type: VAR_RESULT = 0 if it's that type already,
+// 1 if the player has TERA_BERRY_PRICE of the type's berry, 2 if not; STR_VAR_3 = the berries
+// ("3 OCCA BERRIES"), STR_VAR_2 = the type
+void GymTera_CheckPrice(void)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gSpecialVar_0x8004];
+    enum Type type = gSpecialVar_0x8005;
+    enum Item berry = GetTeraBerry(type);
+    u8 *end;
+
+    GymSwitch_BufferTypeName(gStringVar2, type);
+    end = ConvertIntToDecimalStringN(gStringVar3, TERA_BERRY_PRICE, STR_CONV_MODE_LEFT_ALIGN, 1);
+    *end++ = CHAR_SPACE;
+    CopyItemNameHandlePlural(berry, end, TERA_BERRY_PRICE);
+    if (GymTera_FreeType(mon) == type)
+        gSpecialVar_Result = 0;
+    else if (berry != ITEM_NONE && CheckBagHasItem(berry, TERA_BERRY_PRICE))
+        gSpecialVar_Result = 1;
+    else
+        gSpecialVar_Result = 2;
+}
+
+// VAR_0x8004 = the party slot, VAR_0x8005 = the type: takes the berries and sets its Tera type
+// (STR_VAR_1, STR_VAR_2 as above)
 void GymTera_SetType(void)
 {
     struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gSpecialVar_0x8004];
     enum Type type = gSpecialVar_0x8005;
+    enum Item berry = GetTeraBerry(type);
 
-    if (IsRealType(type))
+    if (IsRealType(type) && berry != ITEM_NONE && RemoveBagItem(berry, TERA_BERRY_PRICE))
         SetMonData(mon, MON_DATA_TERA_TYPE, &type);
     GymTera_BufferMonTera();
 }

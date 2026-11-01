@@ -14,9 +14,25 @@ GymTera_EventScript_ArcherTune::
 	dynmultistack 0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, GymTera_EventScript_Later
 	copyvar VAR_0x8005, VAR_RESULT
+	closemessage
+	special GymTera_CheckPrice
+	goto_if_eq VAR_RESULT, 0, GymTera_EventScript_Already
+	goto_if_eq VAR_RESULT, 2, GymTera_EventScript_NoBerries
+	msgbox DadStory_Text_ArcherTunePrice, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, GymTera_EventScript_Later
 	special GymTera_SetType
 	playse SE_SHINY
 	msgbox DadStory_Text_ArcherTuned
+	release
+	end
+
+GymTera_EventScript_Already::
+	msgbox DadStory_Text_ArcherTuneAlready
+	release
+	end
+
+GymTera_EventScript_NoBerries::
+	msgbox DadStory_Text_ArcherTuneNoBerries
 	release
 	end
 

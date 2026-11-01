@@ -292,7 +292,12 @@ DadStory_Text_MemorialOak3::
 	.string "VIRIDIAN's LEADER is gone, after all. And\n"
 	.string "you beat him fair and square.\p"
 	.string "That makes eight, {PLAYER}. The ELITE\n"
-	.string "FOUR are waiting for you.$"
+	.string "FOUR are waiting for you.\p"
+	.string "But before you go… VIRIDIAN has a new\n"
+	.string "LEADER already. He came by my lab this\l"
+	.string "morning asking for you.\p"
+	.string "He said he has something that belonged\n"
+	.string "to your father. I'd go and see him first.$"
 
 DadStory_Text_MemorialMom3::
 	.string "MOM: Go on, honey. Make us proud.$"
@@ -369,7 +374,8 @@ DadStory_Text_ArcherTeraRules::
 	.string "type everywhere.\p"
 	.string "Once you've mastered a type, come and\n"
 	.string "see me. I can tune your POKéMON's TERA\l"
-	.string "TYPES.\p"
+	.string "TYPES. It takes berries of the type:\l"
+	.string "three a time.\p"
 	.string "And {PLAYER}… the strongest TRAINERS\n"
 	.string "know how to use it too. Be ready.$"
 
@@ -400,6 +406,23 @@ DadStory_Text_ArcherTunePick::
 	.string "ARCHER: {STR_VAR_1}'s TERA TYPE is\n"
 	.string "{STR_VAR_2}. Which type should it be?$"
 
+DadStory_Text_ArcherTunePrice::
+	.string "ARCHER: The crystal needs something of\n"
+	.string "the type to take it in. For {STR_VAR_2},\l"
+	.string "that's {STR_VAR_3}. Go ahead?$"
+
+DadStory_Text_ArcherTuneAlready::
+	.string "ARCHER: Its TERA TYPE is {STR_VAR_2}\n"
+	.string "already.$"
+
+DadStory_Text_ArcherTuneNoBerries::
+	.string "ARCHER: The crystal needs something of\n"
+	.string "the type to take it in. For {STR_VAR_2},\l"
+	.string "that's {STR_VAR_3}.\p"
+	.string "Wild POKéMON of the type carry them\n"
+	.string "sometimes, and you can grow them. Come\l"
+	.string "back when you have them.$"
+
 DadStory_Text_ArcherTuned::
 	.string "ARCHER: Done. Outside LEAGUE battles,\n"
 	.string "{STR_VAR_1} will TERASTALLIZE into the\l"
@@ -416,6 +439,12 @@ DadStory_Text_ArcherTuneLater::
 
 DadStory_Text_CrateIsDads::
 	.string "Oh… it's DAD's ROCKET uniform.$"
+
+DadStory_Text_MomArcherNudge::
+	.string "MOM: Professor OAK said the new\n"
+	.string "VIRIDIAN LEADER was asking for you.\l"
+	.string "Something of your father's?\p"
+	.string "Go and see him, honey. Just… be careful.$"
 
 DadStory_Text_MomAfterViridian::
 	.string "MOM: {PLAYER}! How is CHANSEY doing?\p"

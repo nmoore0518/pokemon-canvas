@@ -856,6 +856,12 @@ gSpecials::
 	def_special GymTera_BufferMonTera
 	def_special GymTera_IsTypeAllowed
 	def_special GymTera_SetType
+	def_special GymTera_CheckPrice
+	def_special BerryField_DrawPlots
+	def_special BerryField_GetFacingPlot
+	def_special BerryField_Plant
+	def_special BerryField_Harvest
+	def_special BerryField_PullUp
 	def_special ShowNotePage, waitstate=1
 	def_special DadStory_BufferAce
 	def_special DadStory_GetGymTypeBall

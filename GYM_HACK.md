@@ -212,7 +212,31 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Everywhere else a Pokémon uses its own Tera type (its "free" Tera type), but only if that's a
     mastered type (`FLAG_GYM_TYPE_MASTERED` + type) or the gym's type; otherwise the gym's type
     (`GymTera_FreeType`). Archer sets it, from the gym's type and the mastered ones, once the player
-    has mastered one. Oak's mastery visit explains it (`GymSwitch_EventScript_OakTeraTip`).
+    has mastered one, for `TERA_BERRY_PRICE` (3) of the type's Tera berry (`GymTera_CheckPrice`).
+    Oak's mastery visit explains it (`GymSwitch_EventScript_OakTeraTip`).
+  - Getting there: at the Chansey statue Oak says Viridian's new leader asked for the player and
+    has something of Dad's; Mom repeats it at home until the player has met Archer.
+- **Tera berries and the berry field** (`src/berry_field.c`, `include/berry_field.h`,
+  `data/scripts/berry_field.inc`):
+  - The 18 type-resist berries are the Tera berries (`GetTeraBerry`: Chilan Normal, Chople
+    Fighting, Coba Flying, Kebia Poison, Shuca Ground, Charti Rock, Tanga Bug, Kasib Ghost, Babiri
+    Steel, Occa Fire, Passho Water, Rindo Grass, Wacan Electric, Payapa Psychic, Yache Ice, Haban
+    Dragon, Colbur Dark, Roseli Fairy).
+  - A wild Pokémon holds its primary type's berry 5% of the time (`TryGiveWildMonTeraBerry`, in
+    `SetWildMonHeldItem` after the lab items, before the species' own).
+  - One of each is found once, in an item ball (`FLAG_BERRY_FIND_*`: FireRed's unused Wonder Card
+    flags 0x2AA-0x2BA and 0x3EF): Route 1, Viridian Forest, Route 3, Mt. Moon 1F, Route 24, Route 25,
+    Route 4, Route 6, Diglett's Cave B1F, Route 5, Pokémon Tower 6F, Celadon City, Rocket Hideout B1F,
+    Route 13, Silph Co. 7F, Pokémon Mansion 1F, Seafoam Islands 1F, Victory Road 2F
+    (`tools/gym_hack/place_berry_finds.py` picks reachable dead ends that block nothing).
+  - The berry field: 24 plots below the sea east of the player's house, two rows of 12 with a path
+    between (`build_pallet_town.py`; metatiles from `tools/gym_hack/berry_field_art.py`, in primary
+    palette 0 and Pallet's palette 11, whose unused slots got the colors). Any berry can be planted;
+    it grows by steps (`BERRY_STEPS_PER_STAGE` = 100: seed, sprout, young, flowering in the berry's
+    color, ripe: 400 steps), waits until picked (2-5 berries) and the plot is bare again; a growing
+    plant can be pulled up (the berry comes back). `BerryField_OnStep` from `TryStartStepCountScript`;
+    Pallet's ON_LOAD draws the plots. Saved after the tournament in sector 31 (`struct
+    BerryFieldSave`, 100 bytes, own magic and checksum).
   - The summary's SKILLS page: the RIBBON box is the TERA box (`tools/gym_hack/tera_label_art.py`
     redrew the label), showing the free Tera type once the player has the Orb.
   - Opponents only Terastallize once the player has the Orb, and only the important ones, with their

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "berry_field.h"
 #include "tournament.h"
 #include "mastery_hall.h"
 #include "archive.h"
@@ -728,6 +729,9 @@ static void UpdateSaveAddresses(void)
 // still the storage's alone, so older saves load as before; the tournament has its own.)
 #define TOURNEY_SAVE_OFFSET ((STORAGE_EXTRA_SIZE + 3) & ~3)
 STATIC_ASSERT(TOURNEY_SAVE_OFFSET + sizeof(struct TourneySave) <= SECTOR_DATA_SIZE, TourneySaveFreeSpace);
+// (and after the tournament: the berry field, src/berry_field.c)
+#define BERRY_FIELD_SAVE_OFFSET ((TOURNEY_SAVE_OFFSET + sizeof(struct TourneySave) + 3) & ~3)
+STATIC_ASSERT(BERRY_FIELD_SAVE_OFFSET + sizeof(struct BerryFieldSave) <= SECTOR_DATA_SIZE, BerryFieldSaveFreeSpace);
 
 static void SaveExtraSectors(void)
 {
@@ -742,6 +746,8 @@ static void SaveExtraSectors(void)
     for (i = 0; i < STORAGE_EXTRA_SIZE; i++)
         sector->data[i] = storage[i];
     memcpy(&sector->data[TOURNEY_SAVE_OFFSET], &gTourneySave, sizeof(gTourneySave));
+    BerryField_SealSave();
+    memcpy(&sector->data[BERRY_FIELD_SAVE_OFFSET], &gBerryFieldSave, sizeof(gBerryFieldSave));
     sector->id = CalculateChecksum((void *)storage, STORAGE_EXTRA_SIZE);
     TryWriteSector(SECTOR_ID_EXTRA_STORAGE, sector->data);
     HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave));
@@ -757,6 +763,7 @@ static void LoadExtraSectors(u8 status)
         Archive_Clear();
         TeamBuilder_Clear();
         Tourney_ClearSave();
+        BerryField_Clear();
         return;
     }
     Bag_UpgradeLayout();
@@ -767,6 +774,8 @@ static void LoadExtraSectors(u8 status)
     // (the sector's still in the buffer: the tournament after the storage)
     memcpy(&gTourneySave, &gSaveDataBuffer.data[TOURNEY_SAVE_OFFSET], sizeof(gTourneySave));
     Tourney_ValidateSave();
+    memcpy(&gBerryFieldSave, &gSaveDataBuffer.data[BERRY_FIELD_SAVE_OFFSET], sizeof(gBerryFieldSave));
+    BerryField_Validate();
     // (sector 30: the Type Mastery Hall of Fame and BILL'S ARCHIVE - or, from before the archive,
     // the Hall alone)
     // (and, from before the team builder, the two without it)

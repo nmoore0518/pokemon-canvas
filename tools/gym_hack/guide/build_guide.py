@@ -340,6 +340,7 @@ valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berrie
 can register to SELECT) and Key Items.</li>
 <li><b>Terastallization.</b> Archer gives you the Tera Orb after Viridian. It never needs charging; one Pokémon a battle.
 See <a href="#tera">Terastallization</a>.</li>
+<li><b>A berry field.</b> 24 plots in Pallet Town; berries grow as you walk. See <a href="#berries">Tera berries</a>.</li>
 <li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
 Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
 <li><b>Summary screen.</b> On the skills page, A switches between stats, IVs (exact values) and EVs; the TERA box (where
@@ -475,8 +476,8 @@ again. Win, and your mom arrives with her Chansey, and Giovanni is gone. She giv
 Chansey with 100 Attack and Special Attack, Triage, perfect IVs, in a Normal Ball; it can't evolve, breed or be traded),
 holding <b>Dad's Notebook</b>, and tells you what she knew. Then she takes you home: she and Oak are waiting by the Chansey
 statue to remember your father, and Oak has talked to the League: Giovanni's approval counts. After this, Archer, once a
-Rocket executive, runs the Viridian Gym, and the grunt gives you the last Move Extractor in Viridian City. Talk to Archer:
-he owed your father, and he gives you the <b>Tera Orb</b> your father started (see <a href="#tera">Terastallization</a>).
+Rocket executive, runs the Viridian Gym, and the grunt gives you the last Move Extractor in Viridian City. Oak tells you at the statue that Archer is
+asking for you. Go and see him: he owed your father, and he gives you the <b>Tera Orb</b> your father started (see <a href="#tera">Terastallization</a>).
 From here on the strongest trainers Terastallize too.</p>
 <p>The League's front door turns you back until all eight Gym Leaders have approved. Moltres waits on
 Victory Road 2F. Each member of the Elite Four approves you after losing.</p>
@@ -668,10 +669,24 @@ Convention, ordinary trainers, wild Pokémon) a Pokémon uses its own Tera type,
 (or your gym's type). Until you master a type, it's your gym's type everywhere. A mastered type stays yours when your gym
 changes type.</li>
 <li><b>Changing a Tera type.</b> Once you've mastered a type, Archer can set any party Pokémon's Tera type to your gym's type
-or any type you've mastered. It's free.</li>
+or any type you've mastered. It costs 3 of that type's Tera berry (below).</li>
 <li><b>Who else Terastallizes.</b> From the moment you have the Orb, the important opponents' aces do too. In League battles
 they pick a type that resists your gym's type; in the tournament, Bill's battles and the Convention, they go for the
 type their team is built around. Ordinary trainers never do.</li>
+</ul>
+<h3 id="berries">Tera berries and the berry field</h3>
+<p>Each type has a berry: Chilan (Normal), Chople (Fighting), Coba (Flying), Kebia (Poison), Shuca (Ground), Charti (Rock),
+Tanga (Bug), Kasib (Ghost), Babiri (Steel), Occa (Fire), Passho (Water), Rindo (Grass), Wacan (Electric), Payapa (Psychic),
+Yache (Ice), Haban (Dragon), Colbur (Dark) and Roseli (Fairy). Three of a type's berry pay for a Tera type change to it.</p>
+<ul>
+<li><b>Wild Pokémon</b> hold their (primary) type's berry 5% of the time: catch them, or take it with Thief or Covet.</li>
+<li><b>One of each is lying around Kanto</b> in an item ball: Route 1 (Chilan), Viridian Forest (Tanga), Route 3 (Chople),
+Mt. Moon 1F (Charti), Route 24 (Rindo), Route 25 (Passho), Route 4 (Kebia), Route 6 (Wacan), Diglett's Cave (Shuca), Route 5
+(Payapa), Pokémon Tower 6F (Kasib), Celadon City (Roseli), Rocket Hideout B1F (Colbur), Route 13 (Coba), Silph Co. 7F (Babiri),
+Pokémon Mansion 1F (Occa), Seafoam Islands 1F (Yache) and Victory Road 2F (Haban).</li>
+<li><b>The berry field</b> in Pallet Town, east of your house below the water: 24 plots. Plant any berry (A on the soil); it
+grows as you walk, about 400 steps from seed to ripe, and waits for you. Picking it gives 2-5 berries. Changed your mind? Pull a
+growing plant up and you get the berry back.</li>
 </ul>
 <h3>The wardrobe: outfits</h3>
 <p>The dresser in your room (the yellow one beside the bookshelf). It lists the outfits you have, and you change into each one as you scroll through them:

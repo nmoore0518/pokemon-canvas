@@ -2716,6 +2716,26 @@
 #define FLAG_TOURNEY_BEAT_KALOS               0x4F5   // (the tournament, src/tournament.c: a Kalos trainer beaten)
 #define FLAG_TOURNEY_BEAT_AZ                  0x4F6   // (... AZ beaten)
 
+// The Tera berries' one-time finds (src/berry_field.c, tools/gym_hack/place_berry_finds.py): FireRed's
+// unused Wonder Card flags 0x2AA-0x2BA (Mystery Gift is off), and a gap among the hidden items
+#define FLAG_BERRY_FIND_NORMAL     0x2AA
+#define FLAG_BERRY_FIND_FIGHTING   0x2AB
+#define FLAG_BERRY_FIND_FLYING     0x2AC
+#define FLAG_BERRY_FIND_POISON     0x2AD
+#define FLAG_BERRY_FIND_GROUND     0x2AE
+#define FLAG_BERRY_FIND_ROCK       0x2AF
+#define FLAG_BERRY_FIND_BUG        0x2B0
+#define FLAG_BERRY_FIND_GHOST      0x2B1
+#define FLAG_BERRY_FIND_STEEL      0x2B2
+#define FLAG_BERRY_FIND_FIRE       0x2B3
+#define FLAG_BERRY_FIND_WATER      0x2B4
+#define FLAG_BERRY_FIND_GRASS      0x2B5
+#define FLAG_BERRY_FIND_ELECTRIC   0x2B6
+#define FLAG_BERRY_FIND_PSYCHIC    0x2B7
+#define FLAG_BERRY_FIND_ICE        0x2B8
+#define FLAG_BERRY_FIND_DRAGON     0x2B9
+#define FLAG_BERRY_FIND_DARK       0x2BA
+#define FLAG_BERRY_FIND_FAIRY      0x3EF
 
 #if TESTING
 #define TESTING_FLAGS_START                     0x5000

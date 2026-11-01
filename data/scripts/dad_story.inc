@@ -91,6 +91,11 @@ DadStory_EventScript_MemorialGoThere::
 @ MOM at home after VIRIDIAN (then her usual rest)
 DadStory_EventScript_MomAtHome::
 	msgbox DadStory_Text_MomAfterViridian
+	call_if_lt VAR_DAD_STORY, DAD_STORY_MET_ARCHER, DadStory_EventScript_MomArcherNudge
+	return
+
+DadStory_EventScript_MomArcherNudge::
+	msgbox DadStory_Text_MomArcherNudge
 	return
 
 DadStory_EventScript_Sendoff::

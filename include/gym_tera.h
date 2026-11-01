@@ -22,5 +22,6 @@ void GymTera_CountMasteredTypes(void);
 void GymTera_BufferMonTera(void);
 void GymTera_IsTypeAllowed(void);
 void GymTera_SetType(void);
+void GymTera_CheckPrice(void);
 
 #endif // GUARD_GYM_TERA_H

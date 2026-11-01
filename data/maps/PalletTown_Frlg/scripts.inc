@@ -9,6 +9,7 @@ PalletTown_Frlg_MapScripts::
 
 @ The gym stays shut until Oak has shown it to the player
 PalletTown_OnLoad::
+	special BerryField_DrawPlots   @ Pokémon Canvas: the berry field (src/berry_field.c)
 	call_if_unset FLAG_PALLET_GYM_OPEN, PalletTown_EventScript_LockGymDoor
 	end
 
