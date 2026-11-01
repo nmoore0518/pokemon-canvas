@@ -2736,6 +2736,7 @@
 #define FLAG_BERRY_FIND_DRAGON     0x2B9
 #define FLAG_BERRY_FIND_DARK       0x2BA
 #define FLAG_BERRY_FIND_FAIRY      0x3EF
+#define FLAG_SPIRIT_WARD_ON        0x410   // (the SPIRIT WARD is held up: a Max Repel; src/wild_encounter.c)
 #define FLAG_TOURNEY_SIM_DOUBLES   0x3F8   // (Bill's simulator: the last tournament entered was doubles; src/tournament.c)
 
 #if TESTING

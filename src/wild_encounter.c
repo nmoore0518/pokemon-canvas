@@ -1117,7 +1117,7 @@ bool8 IsWildLevelAllowedByRepel(u8 wildLevel)
 {
     u8 i;
 
-    if (!REPEL_STEP_COUNT)
+    if (!REPEL_STEP_COUNT && !FlagGet(FLAG_SPIRIT_WARD_ON))   // (Pokémon Canvas: the SPIRIT WARD)
         return TRUE;
 
     for (i = 0; i < PARTY_SIZE; i++)

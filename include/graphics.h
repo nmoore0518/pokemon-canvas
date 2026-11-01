@@ -1026,6 +1026,7 @@ extern const u32 gItemIcon_CapCase[];
 extern const u16 gItemIconPalette_CapCase[];
 extern const u32 gItemIcon_Incense[];
 extern const u16 gItemIconPalette_Incense[];
+extern const u16 gItemIconPalette_SpiritWard[];
 extern const u32 gItemIcon_StrongAcid[];
 extern const u16 gItemIconPalette_StrongAcid[];
 extern const u32 gItemIcon_AppleJuice[];

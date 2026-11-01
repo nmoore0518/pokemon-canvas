@@ -2297,3 +2297,4 @@ const u32 gItemIcon_ExoticPass[] = INCGFX_U32("graphics/items/icons/gym/exotic_p
 const u16 gItemIconPalette_ExoticPass[] = INCGFX_U16("graphics/items/icon_palettes/gym/exotic_pass.pal", ".gbapal");
 const u32 gItemIcon_GymCharm[] = INCGFX_U32("graphics/items/icons/gym/gym_charm.png", ".4bpp.smol");
 const u16 gItemIconPalette_GymCharm[] = INCGFX_U16("graphics/items/icon_palettes/gym/gym_charm.pal", ".gbapal");
+const u16 gItemIconPalette_SpiritWard[] = INCGFX_U16("graphics/items/icon_palettes/gym/spirit_ward.pal", ".gbapal");   // (the Cleanse Tag's picture)

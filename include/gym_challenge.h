@@ -81,6 +81,7 @@ enum GymChallengeFormat
     GYM_FORMAT_DECIDED,
 };
 void GymChallenge_SetFormat(u32 format);
+void GymChallenge_SetupFuji(void);
 u32 GymChallenge_TeraMode(void);
 bool32 GymChallenge_IsOneTypeBattle(void);
 void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const u8 *name,

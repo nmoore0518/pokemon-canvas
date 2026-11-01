@@ -1056,6 +1056,32 @@ static void Task_StartUseIncense(u8 taskId)
     }
 }
 
+// Pokémon Canvas: the SPIRIT WARD, a Max Repel that's switched on and off (src/wild_encounter.c)
+static const u8 sText_SpiritWardOn[] = _("{PLAYER} held up the SPIRIT WARD.\nWeak wild POKéMON will stay away.");
+static const u8 sText_SpiritWardOff[] = _("{PLAYER} put the SPIRIT WARD away.\nWild POKéMON can approach again.");
+
+void ItemUseOutOfBattle_SpiritWard(u8 taskId)
+{
+    const u8 *text;
+
+    if (FlagGet(FLAG_SPIRIT_WARD_ON))
+    {
+        FlagClear(FLAG_SPIRIT_WARD_ON);
+        text = sText_SpiritWardOff;
+    }
+    else
+    {
+        FlagSet(FLAG_SPIRIT_WARD_ON);
+        text = sText_SpiritWardOn;
+        PlaySE(SE_REPEL);
+    }
+    StringExpandPlaceholders(gStringVar4, text);
+    if (!gTasks[taskId].tUsingRegisteredKeyItem)
+        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+    else
+        DisplayItemMessageOnField(taskId, gStringVar4, Task_CloseCantUseKeyItemMessage);
+}
+
 void ItemUseOutOfBattle_Incense(u8 taskId)
 {
     if (!Incense_IsActive())

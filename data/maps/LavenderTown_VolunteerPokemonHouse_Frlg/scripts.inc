@@ -4,13 +4,47 @@ LavenderTown_VolunteerPokemonHouse_Frlg_MapScripts::
 LavenderTown_VolunteerPokemonHouse_EventScript_MrFuji::
 	lock
 	faceplayer
-	goto_if_set FLAG_GOT_POKE_FLUTE, LavenderTown_VolunteerPokemonHouse_EventScript_AlreadyHavePokeFlute
+	goto_if_set FLAG_GOT_POKE_FLUTE, LavenderTown_VolunteerPokemonHouse_EventScript_FujiWardOrFlute
 	msgbox LavenderTown_VolunteerPokemonHouse_Text_IdLikeYouToHaveThis
 	checkitemspace ITEM_POKE_FLUTE
 	goto_if_eq VAR_RESULT, FALSE, LavenderTown_VolunteerPokemonHouse_EventScript_NoRoomForPokeFlute
 	setflag FLAG_GOT_POKE_FLUTE
 	giveitem_msg LavenderTown_VolunteerPokemonHouse_Text_ReceivedPokeFluteFromMrFuji, ITEM_POKE_FLUTE, 1, MUS_RG_OBTAIN_KEY_ITEM
 	msgbox LavenderTown_VolunteerPokemonHouse_Text_ExplainPokeFlute
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiSomethingElse
+	goto LavenderTown_VolunteerPokemonHouse_EventScript_FujiAskBattle
+
+@ Pokémon Canvas: MR. FUJI's SPIRIT WARD, for a trainer who beats him (src/gym_challenge.c: GymChallenge_SetupFuji)
+LavenderTown_VolunteerPokemonHouse_EventScript_FujiWardOrFlute::
+	checkitem ITEM_SPIRIT_WARD
+	goto_if_eq VAR_RESULT, TRUE, LavenderTown_VolunteerPokemonHouse_EventScript_AlreadyHavePokeFlute
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiStillWaiting
+LavenderTown_VolunteerPokemonHouse_EventScript_FujiAskBattle::
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiAskBattle, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LavenderTown_VolunteerPokemonHouse_EventScript_FujiLater
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiBattleIntro
+	closemessage
+	special GymChallenge_SetupFuji
+	cleartrainerflag TRAINER_GYM_CHALLENGER
+	setflag FLAG_GYM_CHALLENGE_BATTLE
+	trainerbattle_no_intro TRAINER_GYM_CHALLENGER, gGymChallengeDefeatText
+	clearflag FLAG_GYM_CHALLENGE_BATTLE
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, LavenderTown_VolunteerPokemonHouse_EventScript_FujiLost
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiWon
+	giveitem ITEM_SPIRIT_WARD
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_ExplainSpiritWard
+	release
+	end
+
+LavenderTown_VolunteerPokemonHouse_EventScript_FujiLost::
+	special HealPlayerParty
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiLost
+	release
+	end
+
+LavenderTown_VolunteerPokemonHouse_EventScript_FujiLater::
+	msgbox LavenderTown_VolunteerPokemonHouse_Text_FujiLater
 	release
 	end
 
@@ -147,3 +181,52 @@ LavenderTown_VolunteerPokemonHouse_Text_PokemonMagazinesLineShelf::
 	.string "POKéMON INSIDER…\p"
 	.string "POKéMON FAN…$"
 
+
+@ (Claude's draft, Oct 31)
+LavenderTown_VolunteerPokemonHouse_Text_FujiSomethingElse::
+	.string "MR. FUJI: There is one more thing.\p"
+	.string "When I cared for the orphans up in\n"
+	.string "the TOWER, I carried a charm to\l"
+	.string "keep the wild POKéMON away.\p"
+	.string "It is called the SPIRIT WARD. It\n"
+	.string "never wears out. I can hold it up,\l"
+	.string "or put it away, as I please.\p"
+	.string "But it is not a thing to give\n"
+	.string "lightly. You must earn it.$"
+
+LavenderTown_VolunteerPokemonHouse_Text_FujiStillWaiting::
+	.string "MR. FUJI: The SPIRIT WARD is still\n"
+	.string "waiting for its next keeper.$"
+
+LavenderTown_VolunteerPokemonHouse_Text_FujiAskBattle::
+	.string "Show me how you and your POKéMON\n"
+	.string "stand together. Will you battle\l"
+	.string "an old man?$"
+
+LavenderTown_VolunteerPokemonHouse_Text_FujiBattleIntro::
+	.string "MR. FUJI: These POKéMON watch over\n"
+	.string "the little ones here. They will not\l"
+	.string "go easy on you.$"
+
+LavenderTown_VolunteerPokemonHouse_Text_FujiWon::
+	.string "MR. FUJI: Your POKéMON fought for\n"
+	.string "you, and you fought for them.\p"
+	.string "That is all the SPIRIT WARD has\n"
+	.string "ever asked of its keeper.$"
+
+LavenderTown_VolunteerPokemonHouse_Text_ExplainSpiritWard::
+	.string "Hold it up, and wild POKéMON weaker\n"
+	.string "than your lead will stay away.\p"
+	.string "Put it away when you want to meet\n"
+	.string "them again. It never runs out.\p"
+	.string "You'll find it with your TOOLS. You\n"
+	.string "can register it to SELECT, too.$"
+
+LavenderTown_VolunteerPokemonHouse_Text_FujiLost::
+	.string "MR. FUJI: Not yet, I think.\p"
+	.string "Let me tend to your POKéMON. Come\n"
+	.string "back when you are ready.$"
+
+LavenderTown_VolunteerPokemonHouse_Text_FujiLater::
+	.string "MR. FUJI: Whenever you are ready.\n"
+	.string "I am not going anywhere.$"

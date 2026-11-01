@@ -236,6 +236,12 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     spread moves, positioning, weather, targeting and Protect, training, team building).
   - Synthetic abilities for doubles: Togepi's line Friend Guard (was Magic Bounce), Chinchou's Storm
     Drain (was Regenerator).
+- **The Spirit Ward** (`ITEM_SPIRIT_WARD`, Tools; `ItemUseOutOfBattle_SpiritWard` in `src/item_use.c`):
+  a Max Repel switched on and off (`FLAG_SPIRIT_WARD_ON`, checked in `IsWildLevelAllowedByRepel`).
+  Its icon is the Cleanse Tag's picture in lavender. Mr. Fuji offers it after the Poké Flute and
+  gives it for beating him (`GymChallenge_SetupFuji`: a double battle, Haunter 30, Slowbro 30,
+  Hypno 31, Marowak 33 @ Thick Club; no white-out, healed after a loss; anyone who got the flute
+  before is asked the next time they talk to him).
 - **Tera berries and the berry field** (`src/berry_field.c`, `include/berry_field.h`,
   `data/scripts/berry_field.inc`):
   - The 18 type-resist berries are the Tera berries (`GetTeraBerry`: Chilan Normal, Chople
@@ -259,6 +265,8 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     BerryFieldSave`, 100 bytes, own magic and checksum).
   - The summary's SKILLS page: the RIBBON box is the TERA box (`tools/gym_hack/tera_label_art.py`
     redrew the label), showing the free Tera type once the player has the Orb.
+  - Every opponent's Pokémon is set to `TYPE_MYSTERY` first: a smart AI (`AI_FLAG_SMART_TERA`, in
+    `AI_FLAG_SMART_TRAINER`) would otherwise let all of them Terastallize.
   - Opponents only Terastallize once the player has the Orb, and only the important ones, with their
     ace (highest level; the later slot on a tie): in one-type battles (the rival, leaders, Elite Four,
     Champion, the gym's famous challengers and mentor, Oak) into a type that resists the gym's type

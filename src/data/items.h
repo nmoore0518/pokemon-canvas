@@ -16995,6 +16995,23 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_GymCharm,
     },
 
+    [ITEM_SPIRIT_WARD] =
+    {
+        // Pokémon Canvas: MR. FUJI's, after a battle (src/item_use.c; FLAG_SPIRIT_WARD_ON)
+        .name = ITEM_NAME("Spirit Ward"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "A charm that keeps\n"
+            "weak wild Pokémon\n"
+            "away. On or off."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_SpiritWard,
+        .iconPic = gItemIcon_CleanseTag,
+        .iconPalette = gItemIconPalette_SpiritWard,
+    },
+
     [ITEM_RAYQUAZITE] =
     {
         // Pokémon Canvas: Rayquaza needs a stone like every other Mega (Primrose's trial)

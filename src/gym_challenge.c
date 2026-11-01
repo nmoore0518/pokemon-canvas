@@ -1030,6 +1030,33 @@ void GymChallenge_GenerateOakFinale(void)
     StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ho… ho ho…\nSplendid. Truly splendid."));
 }
 
+// Pokémon Canvas: MR. FUJI's battle for the SPIRIT WARD, after the POKé FLUTE (his house in
+// Lavender Town). The player's around level 30 then: his orphans' guardians, a double battle.
+static const struct { u16 species, item; u8 level; } sFujiWardTeam[] =
+{
+    {SPECIES_HAUNTER, ITEM_NONE, 30},
+    {SPECIES_SLOWBRO, ITEM_NONE, 30},
+    {SPECIES_HYPNO, ITEM_NONE, 31},
+    {SPECIES_MAROWAK, ITEM_THICK_CLUB, 33},
+};
+
+void GymChallenge_SetupFuji(void)
+{
+    u32 i;
+    gGymPracticeBattle = FALSE;
+    gGymGuestBattle = FALSE;
+    SetupTrainer(TRAINER_CLASS_MR, TRAINER_PIC_GENTLEMAN_FRLG, FALSE, COMPOUND_STRING("FUJI"), ARRAY_COUNT(sFujiWardTeam));
+    for (i = 0; i < ARRAY_COUNT(sFujiWardTeam); i++)
+    {
+        InitMon(&sChallengerMons[i], sFujiWardTeam[i].species, sFujiWardTeam[i].level, 20);
+        sChallengerMons[i].heldItem = sFujiWardTeam[i].item;
+    }
+    sChallenger.aiFlags = AI_FLAG_SMART_TRAINER;
+    sKind = GYM_CHALLENGER_FAMOUS;
+    sFormat = GYM_FORMAT_DOUBLES;
+    StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("…Yes. You've earned it."));
+}
+
 // The mastery battle (src/gym_switch.c): the player's mentor, with their full team from the Gym
 // Leader Convention, at least 3 levels above the player's average
 static void GenerateBoss(u32 streak)

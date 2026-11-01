@@ -863,6 +863,7 @@ gSpecials::
 	def_special BerryField_Harvest
 	def_special BerryField_PullUp
 	def_special Tourney_SetSimFormat
+	def_special GymChallenge_SetupFuji
 	def_special ShowNotePage, waitstate=1
 	def_special DadStory_BufferAce
 	def_special DadStory_GetGymTypeBall

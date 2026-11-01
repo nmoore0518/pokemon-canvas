@@ -340,6 +340,8 @@ valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berrie
 can register to SELECT) and Key Items.</li>
 <li><b>Terastallization.</b> Archer gives you the Tera Orb after Viridian. It never needs charging; one Pokémon a battle.
 See <a href="#tera">Terastallization</a>.</li>
+<li><b>The Spirit Ward.</b> A Max Repel that never runs out: hold it up or put it away from the Tools pocket (or register
+it to SELECT). Mr. Fuji gives it to you after a battle, once you have the Poké Flute.</li>
 <li><b>Double battles.</b> Before your 4th badge battles are mostly singles (and FireRed's few twins and couples). From the
 4th badge on, about two in three are doubles: ordinary trainers, Koga, Sabrina, Giovanni at his gym and at Silph, Lorelei,
 Agatha, Lance and your rival's later battles (Blaine, Bruno and Giovanni in the Hideout and at the end stay singles). Your
@@ -459,7 +461,9 @@ at the bottom of the hideout, Giovanni says you remind him of your father, and w
 knew him.</p>
 
 <h3>6. Pokémon Tower, Saffron City, Silph Co.</h3>
-<p>Your rival gives you a Gold Bottle Cap at the Pokémon Tower. Silph Co. as in FireRed up to 11F (Lapras is the gift on
+<p>Your rival gives you a Gold Bottle Cap at the Pokémon Tower. Back in Lavender, after the Poké Flute, Mr. Fuji
+offers you his <b>Spirit Ward</b> if you can beat him: a double battle against Haunter, Slowbro, Hypno (levels 30-31) and a
+level 33 Marowak with a Thick Club. Losing costs nothing; he heals you and waits. Silph Co. as in FireRed up to 11F (Lapras is the gift on
 7F), but the boardroom is different: no President, 3 Strong Acid just outside the boardroom door (grab it before you go in; you go straight home afterwards), and after his defeat Giovanni gives you the
 <b>Master Ball</b> and a Multivitamin ("consider it an investment"). Then your mom runs in, and takes you home.</p>
 <p>At home she moves the bookcase: behind it are stairs down to <b>your father's lab</b> (see <a href="#lab">Dad's

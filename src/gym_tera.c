@@ -168,6 +168,14 @@ void GymTera_SetUpTrainerParty(struct Pokemon *party, u16 trainerId)
 
     sOneTypeBattle = GymTera_IsOneTypeTrainer(TRAINER_BATTLE_PARAM.opponentA)
                   || ((gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS) && GymTera_IsOneTypeTrainer(TRAINER_BATTLE_PARAM.opponentB));
+    // (a smart AI's trainer would let every Pokémon Terastallize - AI_FLAG_SMART_TERA - so nobody
+    // does unless chosen here)
+    type = TYPE_MYSTERY;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE)
+            SetMonData(&party[i], MON_DATA_TERA_TYPE, &type);
+    }
     mode = OpponentMode(trainerId);
     if (mode == GYM_TERA_NONE || !GymTera_HasOrb())
         return;
