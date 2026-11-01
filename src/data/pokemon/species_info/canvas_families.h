@@ -46,7 +46,7 @@
         ),
         .frontAnimId = ANIM_V_STRETCH,
         .backPic = gMonBackPic_Odeon,
-        .backPicSize = MON_COORDS_SIZE(56, 64),
+        .backPicSize = MON_COORDS_SIZE(64, 64),
         .backPicYOffset = 0,
         .backAnimId = BACK_ANIM_CONCAVE_ARC_SMALL,
         .palette = gMonPalette_Odeon,

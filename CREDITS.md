@@ -17,7 +17,9 @@ This hack is built on community work. Thank you to everyone below.
   chart. Valyreon is **Kirineon** by **Veterans** (rebornevo.com); Hypereon is **Nimbeon** by
   **PansygumPKMN** (DeviantArt). The other eight are from the same chart, artists not yet
   identified. Edited for the hack: the Normal one recoloured, glasses on the Bug one, mechanical
-  details on the Steel one. Their back sprites, icons and shiny colours were made for the hack.
+  details on the Steel one. Their back sprites were adapted from
+  AI-generated reference pictures (Google's Nano Banana, made by Nick) and, for Obsideon and
+  Subterraneon, from their own fronts; their icons and shiny colours were made for the hack.
 
 ## AI disclosure
 

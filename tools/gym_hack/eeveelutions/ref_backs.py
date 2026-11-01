@@ -1,5 +1,5 @@
-"""Back sprites adapted from reference pictures Nick supplied (source/<key>_back_ref.png: not
-GBA-sized; some painted, some pixel art): the background is cut away, the picture shrunk to the
+"""Back sprites adapted from reference pictures Nick supplied (source/<key>_back_ref.png, made
+with Google's Nano Banana: not GBA-sized; some painted, some pixel art): the background is cut away, the picture shrunk to the
 back sprite's size (its bottom running off the frame) and put in the design's palette, with an
 outline.
 
@@ -16,10 +16,9 @@ REFS = {
     'appariteon': dict(crop=None, tol=40, height=80, off=14, extra=(), avoid={(127, 127, 127)}, thicken=True),
     'automateon': dict(crop=(25, 0, 259, 294), tol=38, height=84, off=20, extra=(), avoid=set(), thicken=False,
                        frame=((40, 41, 42), (22, 23, 24, 259, 260, 261))),
-    'assasseon':  dict(crop=(0, 0, 258, 235), tol=38, height=72, off=8, extra=(), avoid=set(), thicken=False),
+    'assasseon':  dict(crop=(0, 0, 258, 235), tol=38, height=80, off=16, extra=(), avoid=set(), thicken=False),
     'hypereon':   dict(crop=(0, 0, 262, 350), tol=34, height=72, off=8, extra=(), avoid=set(), thicken=False),
-    'odeon':      dict(crop=(5, 52, 265, 282), tol=38, height=72, off=8, extra=(), avoid=set(), thicken=False,
-                       mane=((204, 144, 76), (152, 98, 56), (92, 56, 36))),
+    'odeon':      dict(crop=None, tol=38, height=84, off=18, extra=(), avoid=set(), thicken=False),
     'poiseon':    dict(crop=None, tol=30, height=72, off=8, extra=(), avoid=set(), thicken=False),
     'lenneon':    dict(crop=(0, 0, 220, 248), tol=40, height=72, off=8, extra=((175, 208, 108),), avoid=set(), thicken=False),
 }
