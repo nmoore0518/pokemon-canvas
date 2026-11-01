@@ -852,6 +852,10 @@ gSpecials::
 	def_special BallChanger_ShowBalls
 	def_special BallChanger_SwapBalls
 	def_special BallChanger_HideBalls
+	def_special GymTera_CountMasteredTypes
+	def_special GymTera_BufferMonTera
+	def_special GymTera_IsTypeAllowed
+	def_special GymTera_SetType
 	def_special ShowNotePage, waitstate=1
 	def_special DadStory_BufferAce
 	def_special DadStory_GetGymTypeBall

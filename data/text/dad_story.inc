@@ -310,18 +310,109 @@ DadStory_Text_ArcherIntro::
 	.string "They made me an offer. VIRIDIAN needed\n"
 	.string "a LEADER, and the BOSS's POKéMON needed\l"
 	.string "a TRAINER.\p"
-	.string "So here I am. LEADER of the VIRIDIAN\n"
-	.string "GYM, with GIOVANNI's old team… and the\l"
-	.string "LEAGUE watching my every move.\p"
-	.string "Your father was the only one of us who\n"
-	.string "ever stood up to GIOVANNI. I didn't\l"
-	.string "understand it back then.\p"
-	.string "I think I'm starting to.$"
+	.string "I'm on probation. One step out of line\n"
+	.string "and the LEAGUE takes the GYM, and the\l"
+	.string "POKéMON with it.\p"
+	.string "And the ones still loyal to GIOVANNI call\n"
+	.string "me a traitor. Maybe they're right.$"
+
+DadStory_Text_ArcherSomethingElse::
+	.string "ARCHER: {PLAYER}. Wait.\p"
+	.string "There's something I didn't tell you last\n"
+	.string "time.$"
+
+DadStory_Text_ArcherOwedDad::
+	.string "ARCHER: I owe your father more than I\n"
+	.string "can ever pay back.\p"
+	.string "I was just a GRUNT who was good with\n"
+	.string "machines. He's the one who brought me\l"
+	.string "into the labs. He taught me everything I\l"
+	.string "know.\p"
+	.string "The night he walked out on the BOSS, I\n"
+	.string "was the one guarding the door. I had\l"
+	.string "orders to stop him.\p"
+	.string "I looked the other way. It's the only\n"
+	.string "good thing I ever did in TEAM ROCKET.\p"
+	.string "The BOSS never found out it was me. He\n"
+	.string "just had your father's lab cleared out.\l"
+	.string "Every note. Every prototype.\p"
+	.string "One of them was a crystal.\p"
+	.string "Your father found that it could make a\n"
+	.string "POKéMON shine like a gem and take on a\l"
+	.string "new type. He called it\l"
+	.string "TERASTALLIZATION.\p"
+	.string "He never got to finish it. The BOSS\n"
+	.string "ordered me to.\p"
+	.string "I told myself I was protecting his work.\n"
+	.string "That if I finished it, nobody worse would\l"
+	.string "get the chance.\p"
+	.string "I don't know if that's true. But it took\n"
+	.string "me years, and this is the only one that\l"
+	.string "works.$"
+
+DadStory_Text_ArcherGiveOrb::
+	.string "ARCHER: It was always his. It's yours\n"
+	.string "now.$"
+
+DadStory_Text_ArcherTeraRules::
+	.string "ARCHER: Hold it up in battle and one of\n"
+	.string "your POKéMON will TERASTALLIZE. One a\l"
+	.string "battle. It never runs out.\p"
+	.string "The LEAGUE has rules about it, of\n"
+	.string "course. In GYM battles, LEAGUE battles\l"
+	.string "and against your rival, a GYM LEADER's\l"
+	.string "POKéMON can only TERASTALLIZE into the\l"
+	.string "GYM's type.\p"
+	.string "Anywhere else, a POKéMON can use its own\n"
+	.string "TERA TYPE, but only if it's a type you've\l"
+	.string "mastered. Until then, it's your GYM's\l"
+	.string "type everywhere.\p"
+	.string "Once you've mastered a type, come and\n"
+	.string "see me. I can tune your POKéMON's TERA\l"
+	.string "TYPES.\p"
+	.string "And {PLAYER}… the strongest TRAINERS\n"
+	.string "know how to use it too. Be ready.$"
+
+DadStory_Text_ArcherAskForgiveness::
+	.string "ARCHER: I know I don't have the right to\n"
+	.string "ask. But…\p"
+	.string "Can you forgive me?$"
+
+DadStory_Text_ArcherForgiven::
+	.string "ARCHER: …Thank you.\p"
+	.string "I'll make this a GYM your father would\n"
+	.string "have respected.$"
+
+DadStory_Text_ArcherNotForgiven::
+	.string "ARCHER: …I understand.\p"
+	.string "Then I'll earn it. However long it takes.$"
 
 DadStory_Text_ArcherAgain::
 	.string "ARCHER: The BOSS's POKéMON answer to me\n"
 	.string "now. I'll make this a GYM your father\l"
 	.string "would have respected.$"
+
+DadStory_Text_ArcherTuneOffer::
+	.string "ARCHER: Want me to tune one of your\n"
+	.string "POKéMON's TERA TYPES?$"
+
+DadStory_Text_ArcherTunePick::
+	.string "ARCHER: {STR_VAR_1}'s TERA TYPE is\n"
+	.string "{STR_VAR_2}. Which type should it be?$"
+
+DadStory_Text_ArcherTuned::
+	.string "ARCHER: Done. Outside LEAGUE battles,\n"
+	.string "{STR_VAR_1} will TERASTALLIZE into the\l"
+	.string "{STR_VAR_2} type.\p"
+	.string "In a LEAGUE battle, it's still your GYM's\n"
+	.string "type. Those are the rules.$"
+
+DadStory_Text_ArcherTuneEgg::
+	.string "ARCHER: That's an EGG. Let it hatch\n"
+	.string "first.$"
+
+DadStory_Text_ArcherTuneLater::
+	.string "ARCHER: Come back anytime.$"
 
 DadStory_Text_CrateIsDads::
 	.string "Oh… it's DAD's ROCKET uniform.$"
@@ -406,4 +497,11 @@ DadStory_Text_Notebook::
 	.string "painlessly extract a small amount of\n"
 	.string "a POKéMON's DNA to apply to the ball.\p"
 	.string "Operate SWITCH in lab to toggle\n"
-	.string "modes for these two machines.$"
+	.string "modes for these two machines.\p"
+	.string "3. Still thinking about the crystal.\n"
+	.string "TEAM ROCKET took my prototype the\n"
+	.string "night I left.\p"
+	.string "Without it I can't finish. A POKéMON\n"
+	.string "that can change its type at will… in\n"
+	.string "his hands.\p"
+	.string "Maybe it's better this way.$"

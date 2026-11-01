@@ -56,6 +56,8 @@ GymSwitch_EventScript_OakComes::
 GymSwitch_EventScript_OakHere::
 	special GymSwitch_BufferStatus
 	msgbox GymSwitch_Text_OakMastered
+	checkitem ITEM_TERA_ORB
+	call_if_eq VAR_RESULT, TRUE, GymSwitch_EventScript_OakTeraTip
 	special GymSwitch_CanTakeNewType
 	goto_if_eq VAR_RESULT, FALSE, GymSwitch_EventScript_OakNothingToOffer
 	msgbox GymSwitch_Text_OakTryAnother, MSGBOX_YESNO
@@ -75,6 +77,12 @@ GymSwitch_EventScript_OakHere::
 	fadedefaultbgm
 	release
 	end
+
+@ Pokémon Canvas: what a mastered type means for TERASTALLIZATION (src/gym_tera.c)
+GymSwitch_EventScript_OakTeraTip::
+	special GymSwitch_BufferStatus
+	msgbox GymSwitch_Text_OakTeraTip
+	return
 
 GymSwitch_EventScript_OakAppears::
 	fadescreen FADE_TO_BLACK
@@ -271,6 +279,25 @@ GymSwitch_Text_OakMastered::
 	.string "You've truly mastered {STR_VAR_3}-type\n"
 	.string "POKéMON. At this rate, nobody will\l"
 	.string "ever earn your badge again!$"
+
+@ (Claude's draft, Oct 31)
+GymSwitch_Text_OakTeraTip::
+	.string "Oh, and your TERA ORB! {STR_VAR_3} is\n"
+	.string "yours for good now. Even when your\l"
+	.string "GYM changes type, your POKéMON can\l"
+	.string "TERASTALLIZE into it.\p"
+	.string "Not in LEAGUE battles, mind you. In\n"
+	.string "a GYM, against the ELITE FOUR or your\l"
+	.string "rival, the rules say a LEADER's\l"
+	.string "POKéMON TERASTALLIZE into the GYM's\l"
+	.string "type, whatever their TERA TYPE is.\p"
+	.string "Everywhere else, each POKéMON uses\n"
+	.string "its own TERA TYPE, as long as it's a\l"
+	.string "type you've mastered.\p"
+	.string "ARCHER in VIRIDIAN can change your\n"
+	.string "POKéMON's TERA TYPES. Go and see him!\p"
+	.string "You can check a POKéMON's TERA TYPE\n"
+	.string "on its SKILLS page.$"
 
 GymSwitch_Text_OakTryAnother::
 	.string "So how about a new challenge?\n"

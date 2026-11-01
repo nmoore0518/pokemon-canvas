@@ -50,6 +50,7 @@ SHARED = OrderedDict([
     ("data/text/dad_story.inc", (1, "Dad's story: the basement notes and Dad's Notebook")),
     ("data/text/mentor_story.inc", (1, "Your gym: mentors' greetings before their gym battle")),
     ("data/scripts/outfits.inc", (1, "Outfits: the wardrobe, Dad's Rocket uniform, the gym uniforms")),
+    ("data/scripts/gym_tera.inc", (1, "Terastallization: Archer's Tera type changes")),
     ("data/scripts/gym_hack.inc", (1, "Your gym: choosing a type, the gym's basics")),
     ("data/scripts/gym_candidate.inc", (1, "Your gym: candidacy, approvals and recruits")),
     ("data/scripts/gym_challenge.inc", (1, "Your gym: challengers")),

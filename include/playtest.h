@@ -64,6 +64,8 @@ enum
                             //       training items do (Gold Bottle Cap, Multivitamin, Cilantro)
     PLAYTEST_SET_MOVE,      // args: party slot, move slot (0-3), move (its full PP)
     PLAYTEST_PLACE_DECOR,   // args: gym decoration (0: none): puts everything away, then places it -> result: placed
+    PLAYTEST_TERA,          // args: which (0: an opponent's stored Tera type, 1: the player's in the last battle,
+                            //       2: the player's free one), party slot -> result: the type
 };
 
 // EV spreads for PLAYTEST_TRAIN_MON (252 / 252 / 4)

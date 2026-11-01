@@ -7,6 +7,7 @@
 #include "battle_gimmick.h"
 #include "battle_scripts.h"
 #include "event_data.h"
+#include "gym_tera.h"
 #include "item.h"
 #include "palette.h"
 #include "pokemon.h"
@@ -113,6 +114,9 @@ bool32 CanTerastallize(enum BattlerId battler)
 // Returns a battler's Tera type.
 enum Type GetBattlerTeraType(enum BattlerId battler)
 {
+    // Pokémon Canvas: the player's Pokémon are held to the gym's type in one-type battles (src/gym_tera.c)
+    if (!TESTING && GetBattlerTrainer(battler) == B_TRAINER_PLAYER)
+        return GymTera_PlayerBattleType(GetBattlerMon(battler));
     return GetMonData(GetBattlerMon(battler), MON_DATA_TERA_TYPE);
 }
 

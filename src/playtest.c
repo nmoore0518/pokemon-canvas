@@ -1,6 +1,7 @@
 // Pokémon Canvas: hooks for automated playtests (see include/playtest.h). Built only with
 // `make firered PLAYTEST=1`.
 #include "global.h"
+#include "gym_tera.h"
 #include "playtest.h"
 
 #if PLAYTEST
@@ -155,6 +156,8 @@ u32 Playtest_ChooseSwitchIn(u32 battler)
     return best;
 }
 
+static EWRAM_DATA u8 sOpponentTera[PARTY_SIZE] = {0};
+
 void Playtest_BattleStart(void)
 {
     u32 i;
@@ -174,6 +177,7 @@ void Playtest_FirstTurn(void)
     {
         sOpponentSpecies[i] = GetMonData(&gEnemyParty[i], MON_DATA_SPECIES);
         sOpponentLevel[i] = GetMonData(&gEnemyParty[i], MON_DATA_LEVEL);
+        sOpponentTera[i] = GetMonData(&gEnemyParty[i], MON_DATA_TERA_TYPE);
     }
 }
 
@@ -388,6 +392,17 @@ void Playtest_Update(void)
     case PLAYTEST_SET_MOVE:
         if (a[0] < PARTY_SIZE && a[1] < MAX_MON_MOVES && a[2] < MOVES_COUNT)
             SetMonMoveSlot(&gPlayerParty[a[0]], a[2], a[1]);
+        break;
+    case PLAYTEST_TERA:
+        if (a[1] < PARTY_SIZE)
+        {
+            if (a[0] == 0)
+                gPlaytest.result = sOpponentTera[a[1]];   // (as the battle started)
+            else if (a[0] == 1)
+                gPlaytest.result = GymTera_PlayerBattleType(&gPlayerParty[a[1]]);
+            else
+                gPlaytest.result = GymTera_FreeType(&gPlayerParty[a[1]]);
+        }
         break;
     case PLAYTEST_PLACE_DECOR:
         GymDecor_PutAllAway();   // (room for it)

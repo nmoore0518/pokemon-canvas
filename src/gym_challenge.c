@@ -24,6 +24,7 @@
 #include "gym_candidate.h"
 #include "gym_convention.h"
 #include "gym_switch.h"
+#include "gym_tera.h"
 #include "money.h"
 #include "pokemon.h"
 #include "random.h"
@@ -48,6 +49,8 @@ EWRAM_DATA static struct TrainerMon sChallengerMons[PARTY_SIZE];
 EWRAM_DATA static u8 sLastFamous;
 EWRAM_DATA static u8 sKind;
 EWRAM_DATA static u16 sLastStreak;
+EWRAM_DATA static u8 sTeraMode;        // enum GymTeraMode: whose ace Terastallizes, into what (src/gym_tera.c)
+EWRAM_DATA static bool8 sOneType;      // a battle under the League's one-type rule
 EWRAM_DATA u8 gGymChallengeIntroText[320];
 EWRAM_DATA u8 gGymChallengeDefeatText[120];  // in battle, when the challenger loses
 EWRAM_DATA u8 gGymChallengeAfterText[160];   // after losing to the player
@@ -447,6 +450,8 @@ static void SetupTrainer(u32 trainerClass, u32 pic, bool32 female, const u8 *nam
 {
     Gauntlet_ClearBillUp();     // (whoever this is, it isn't Bill: his battle music is for him)
     memset(&sChallenger, 0, sizeof(sChallenger));
+    sTeraMode = GYM_TERA_NONE;
+    sOneType = FALSE;
     sChallenger.aiFlags = AI_FLAG_SMART_TRAINER;
     sChallenger.party = sChallengerMons;
     sChallenger.partySize = partySize;
@@ -916,6 +921,7 @@ void GymChallenge_GenerateGuest(u32 baseLevel, u32 partySize, u32 tier, bool32 r
              sGuestWins[Random() % ARRAY_COUNT(sGuestWins)]);
     gGymPracticeBattle = FALSE;
     gGymGuestBattle = repeat ? 1 : 2;   // the challenger pays the stand-in a Gym Leader's prize (doubled the first time)
+    sOneType = TRUE;
 }
 
 // A trainer with a set team (the Gym Leader Convention's, src/gym_convention.c)
@@ -992,6 +998,8 @@ void GymChallenge_GenerateOakFinale(void)
         memcpy(sChallengerMons[i].moves, oak->moves, sizeof(oak->moves));
     }
     sKind = GYM_CHALLENGER_FAMOUS;
+    sOneType = TRUE;
+    sTeraMode = GYM_TERA_COUNTER;
     StringExpandPlaceholders(gGymChallengeDefeatText, COMPOUND_STRING("Ho… ho ho…\nSplendid. Truly splendid."));
 }
 
@@ -1084,6 +1092,9 @@ void GymChallenge_NextChallenger(void)
     {
         GymChallenge_Generate(GYM_CHALLENGER_TRAINER, 0);
     }
+    // (the gym's challengers: the one-type rule; the famous ones and the mentor Terastallize)
+    sOneType = TRUE;
+    sTeraMode = (sKind == GYM_CHALLENGER_FAMOUS || sKind == GYM_CHALLENGER_BOSS) ? GYM_TERA_COUNTER : GYM_TERA_NONE;
     gSpecialVar_Result = sKind;
 }
 
@@ -1380,4 +1391,24 @@ void GymChallenge_BufferVictorList(void)
     }
     *end = EOS;
     gSpecialVar_Result = n;
+}
+
+// ---------------------------------------------------------------------------
+// Terastallization (src/gym_tera.c)
+// ---------------------------------------------------------------------------
+
+// After setting up a challenger: their ace Terastallizes (the tournament, Bill, the Convention: GYM_TERA_TEAM)
+void GymChallenge_SetTeraMode(u32 mode)
+{
+    sTeraMode = mode;
+}
+
+u32 GymChallenge_TeraMode(void)
+{
+    return sTeraMode;
+}
+
+bool32 GymChallenge_IsOneTypeBattle(void)
+{
+    return sOneType;
 }

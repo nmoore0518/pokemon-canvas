@@ -338,10 +338,13 @@ offers RENAME (press A) for your own Pokémon in your party.</li>
 <li><b>A bag with ten pockets</b>, with room for one of every item in the game (and 46 kinds of Poké Ball): Items (evolution items, training items,
 valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berries, TMs &amp; HMs, Tools (the key items you use, and
 can register to SELECT) and Key Items.</li>
+<li><b>Terastallization.</b> Archer gives you the Tera Orb after Viridian. It never needs charging; one Pokémon a battle.
+See <a href="#tera">Terastallization</a>.</li>
 <li><b>Mega Evolution.</b> The Leader Academy's headmaster gives you the Mega Bracelet after your 8th badge, and each Mega
 Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
-<li><b>Summary screen.</b> On the skills page, A switches between stats, IVs (exact values) and EVs. A new LEVEL-UP MOVES page
-lists every move the species learns and when.</li>
+<li><b>Summary screen.</b> On the skills page, A switches between stats, IVs (exact values) and EVs; the TERA box (where
+FireRed had RIBBON) shows the Pokémon's Tera type once you have the Tera Orb. A new LEVEL-UP MOVES page lists every move the
+species learns and when.</li>
 <li><b>Gym type finder.</b> On the Town Map, SELECT marks every area where a Pokémon of your type can be found.</li>
 <li><b>The Sevii Islands are gone.</b> Johto replaces them as the post-game area, and Moltres now waits on Victory Road 2F
 (level 50), as in Red and Blue.</li>
@@ -472,7 +475,9 @@ again. Win, and your mom arrives with her Chansey, and Giovanni is gone. She giv
 Chansey with 100 Attack and Special Attack, Triage, perfect IVs, in a Normal Ball; it can't evolve, breed or be traded),
 holding <b>Dad's Notebook</b>, and tells you what she knew. Then she takes you home: she and Oak are waiting by the Chansey
 statue to remember your father, and Oak has talked to the League: Giovanni's approval counts. After this, Archer, once a
-Rocket executive, runs the Viridian Gym, and the grunt gives you the last Move Extractor in Viridian City.</p>
+Rocket executive, runs the Viridian Gym, and the grunt gives you the last Move Extractor in Viridian City. Talk to Archer:
+he owed your father, and he gives you the <b>Tera Orb</b> your father started (see <a href="#tera">Terastallization</a>).
+From here on the strongest trainers Terastallize too.</p>
 <p>The League's front door turns you back until all eight Gym Leaders have approved. Moltres waits on
 Victory Road 2F. Each member of the Elite Four approves you after losing.</p>
 <p>With the 8th badge, the Leader Academy's headmaster has something for you: the <b>Mega Bracelet</b>. Walk into the
@@ -650,6 +655,24 @@ come back (its held item goes to your bag, and it won't take your last Pokémon)
 it loses 5 levels (moves kept) and comes back.</p>
 <h3>The Ball Changer</h3>
 <p>Choose a Pokémon and a ball from your bag: it moves into the new ball, and the old one goes back in your bag.</p>
+<h3 id="tera">Terastallization</h3>
+<p>Archer, the Viridian Gym's new leader, gives you the <b>Tera Orb</b> after the Viridian finale. In battle, press START on
+the move list to Terastallize the Pokémon in front: it becomes a single type and its moves of that type hit harder. One
+Pokémon a battle; the Orb never needs charging.</p>
+<ul>
+<li><b>League battles: your gym's type.</b> In every battle under the League's one-type rule (gym leaders, your rival, the
+Elite Four and Champion, Oak, and your gym's challengers) your Pokémon Terastallize into your gym's type, whatever their
+own Tera type is.</li>
+<li><b>Everywhere else: its own Tera type, if you've mastered it.</b> In any other battle (the tournament, the Gym Leader
+Convention, ordinary trainers, wild Pokémon) a Pokémon uses its own Tera type, but only if it's a type you've mastered
+(or your gym's type). Until you master a type, it's your gym's type everywhere. A mastered type stays yours when your gym
+changes type.</li>
+<li><b>Changing a Tera type.</b> Once you've mastered a type, Archer can set any party Pokémon's Tera type to your gym's type
+or any type you've mastered. It's free.</li>
+<li><b>Who else Terastallizes.</b> From the moment you have the Orb, the important opponents' aces do too. In League battles
+they pick a type that resists your gym's type; in the tournament, Bill's battles and the Convention, they go for the
+type their team is built around. Ordinary trainers never do.</li>
+</ul>
 <h3>The wardrobe: outfits</h3>
 <p>The dresser in your room (the yellow one beside the bookshelf). It lists the outfits you have, and you change into each one as you scroll through them:
 everything you do (walking, biking, surfing, fishing, battle) shows it.</p>

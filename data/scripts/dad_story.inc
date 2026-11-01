@@ -537,13 +537,42 @@ DadStory_EventScript_ViridianGymTransition::
 DadStory_EventScript_Archer::
 	lock
 	faceplayer
-	goto_if_ge VAR_DAD_STORY, DAD_STORY_MET_ARCHER, DadStory_EventScript_ArcherAgain
+	goto_if_ge VAR_DAD_STORY, DAD_STORY_MET_ARCHER, DadStory_EventScript_ArcherMet
 	msgbox DadStory_Text_ArcherIntro
+	call DadStory_EventScript_ArcherOrb
 	setvar VAR_DAD_STORY, DAD_STORY_MET_ARCHER
 	release
 	end
 
+DadStory_EventScript_ArcherMet::
+	checkitem ITEM_TERA_ORB
+	goto_if_eq VAR_RESULT, FALSE, DadStory_EventScript_ArcherOrbLate
+	special GymTera_CountMasteredTypes
+	goto_if_ne VAR_RESULT, 0, GymTera_EventScript_ArcherTune
 DadStory_EventScript_ArcherAgain::
 	msgbox DadStory_Text_ArcherAgain
 	release
 	end
+
+@ (a save from before the TERA ORB: he met the player already)
+DadStory_EventScript_ArcherOrbLate::
+	msgbox DadStory_Text_ArcherSomethingElse
+	call DadStory_EventScript_ArcherOrb
+	release
+	end
+
+@ Pokémon Canvas: he owed DAD; he finished DAD's crystal (the TERA ORB) and gives it back; he asks
+@ to be forgiven (src/gym_tera.c)
+DadStory_EventScript_ArcherOrb::
+	msgbox DadStory_Text_ArcherOwedDad
+	msgbox DadStory_Text_ArcherGiveOrb
+	giveitem ITEM_TERA_ORB
+	msgbox DadStory_Text_ArcherTeraRules
+	msgbox DadStory_Text_ArcherAskForgiveness, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, DadStory_EventScript_ArcherNotForgiven
+	msgbox DadStory_Text_ArcherForgiven
+	return
+
+DadStory_EventScript_ArcherNotForgiven::
+	msgbox DadStory_Text_ArcherNotForgiven
+	return

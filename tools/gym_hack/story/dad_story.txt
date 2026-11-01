@@ -306,7 +306,8 @@ That makes eight, {PLAYER}. The ELITE FOUR are waiting for you.
 == DadStory_Text_MemorialMom3
 MOM: Go on, honey. Make us proud.
 
-# ---- Viridian Gym after the story: ARCHER, its new LEADER (Claude's draft) ----
+# ---- Viridian Gym after the story: ARCHER, its new LEADER (Claude's draft; Oct 31: he owed Dad,
+#      finished Dad's crystal - the TERA ORB - and asks to be forgiven) ----
 == DadStory_Text_ArcherIntro
 ARCHER: …So you're the one. The kid who beat the BOSS. More than once.
 |
@@ -318,14 +319,85 @@ Not me. I turned myself in to the LEAGUE.
 |
 They made me an offer. VIRIDIAN needed a LEADER, and the BOSS's POKéMON needed a TRAINER.
 |
-So here I am. LEADER of the VIRIDIAN GYM, with GIOVANNI's old team… and the LEAGUE watching my every move.
+I'm on probation. One step out of line and the LEAGUE takes the GYM, and the POKéMON with it.
 |
-Your father was the only one of us who ever stood up to GIOVANNI. I didn't understand it back then.
+And the ones still loyal to GIOVANNI call me a traitor. Maybe they're right.
+
+== DadStory_Text_ArcherSomethingElse
+ARCHER: {PLAYER}. Wait.
 |
-I think I'm starting to.
+There's something I didn't tell you last time.
+
+== DadStory_Text_ArcherOwedDad
+ARCHER: I owe your father more than I can ever pay back.
+|
+I was just a GRUNT who was good with machines. He's the one who brought me into the labs. He taught me everything I know.
+|
+The night he walked out on the BOSS, I was the one guarding the door. I had orders to stop him.
+|
+I looked the other way. It's the only good thing I ever did in TEAM ROCKET.
+|
+The BOSS never found out it was me. He just had your father's lab cleared out. Every note. Every prototype.
+|
+One of them was a crystal.
+|
+Your father found that it could make a POKéMON shine like a gem and take on a new type. He called it TERASTALLIZATION.
+|
+He never got to finish it. The BOSS ordered me to.
+|
+I told myself I was protecting his work. That if I finished it, nobody worse would get the chance.
+|
+I don't know if that's true. But it took me years, and this is the only one that works.
+
+== DadStory_Text_ArcherGiveOrb
+ARCHER: It was always his. It's yours now.
+
+== DadStory_Text_ArcherTeraRules
+ARCHER: Hold it up in battle and one of your POKéMON will TERASTALLIZE. One a battle. It never runs out.
+|
+The LEAGUE has rules about it, of course. In GYM battles, LEAGUE battles and against your rival, a GYM LEADER's POKéMON can only TERASTALLIZE into the GYM's type.
+|
+Anywhere else, a POKéMON can use its own TERA TYPE, but only if it's a type you've mastered. Until then, it's your GYM's type everywhere.
+|
+Once you've mastered a type, come and see me. I can tune your POKéMON's TERA TYPES.
+|
+And {PLAYER}… the strongest TRAINERS know how to use it too. Be ready.
+
+== DadStory_Text_ArcherAskForgiveness
+ARCHER: I know I don't have the right to ask. But…
+|
+Can you forgive me?
+
+== DadStory_Text_ArcherForgiven
+ARCHER: …Thank you.
+|
+I'll make this a GYM your father would have respected.
+
+== DadStory_Text_ArcherNotForgiven
+ARCHER: …I understand.
+|
+Then I'll earn it. However long it takes.
 
 == DadStory_Text_ArcherAgain
 ARCHER: The BOSS's POKéMON answer to me now. I'll make this a GYM your father would have respected.
+
+# ---- ARCHER, once the player has mastered a type: a POKéMON's TERA TYPE (Claude's draft) ----
+== DadStory_Text_ArcherTuneOffer
+ARCHER: Want me to tune one of your POKéMON's TERA TYPES?
+
+== DadStory_Text_ArcherTunePick
+ARCHER: {STR_VAR_1}'s TERA TYPE is {STR_VAR_2}. Which type should it be?
+
+== DadStory_Text_ArcherTuned
+ARCHER: Done. Outside LEAGUE battles, {STR_VAR_1} will TERASTALLIZE into the {STR_VAR_2} type.
+|
+In a LEAGUE battle, it's still your GYM's type. Those are the rules.
+
+== DadStory_Text_ArcherTuneEgg
+ARCHER: That's an EGG. Let it hatch first.
+
+== DadStory_Text_ArcherTuneLater
+ARCHER: Come back anytime.
 
 # ---- The basement crates, once the player knows (Nick, Oct 30) ----
 == DadStory_Text_CrateIsDads
@@ -372,6 +444,7 @@ Thinks this type of work will get me caught up with the wrong people. Thinks I s
 |
 He even mentioned trying to become a POKéMON. Lunatic…
 
+# (item 3, the crystal: Claude's draft, Oct 31)
 == DadStory_Text_Notebook [page]
 MODIFICATIONS TO MACHINES
 1. APPLE JUICE has the same effect as STRONG ACID in removing a POKéMON's current ability.
@@ -383,3 +456,9 @@ They also appear to enjoy the taste so much that implantation of synthetic abili
 BALL MAKER has been modified to painlessly extract a small amount of a POKéMON's DNA to apply to the ball.
 |
 Operate SWITCH in lab to toggle modes for these two machines.
+|
+3. Still thinking about the crystal. TEAM ROCKET took my prototype the night I left.
+|
+Without it I can't finish. A POKéMON that can change its type at will… in his hands.
+|
+Maybe it's better this way.

@@ -5660,7 +5660,7 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
             if (state == MON_IN_BATTLE)
             {
                 enum Type teraType;
-                if (gimmick == GIMMICK_TERA && ((teraType = GetMonData(mon, MON_DATA_TERA_TYPE)) != TYPE_STELLAR))
+                if (gimmick == GIMMICK_TERA && ((teraType = GetBattlerTeraType(battler)) != TYPE_STELLAR))
                     return teraType;
                 if (types[0] != TYPE_MYSTERY && !(gBattleMons[battler].volatiles.roostActive && types[0] == TYPE_FLYING))
                     return types[0];
@@ -5734,7 +5734,7 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
         break;
     case EFFECT_TERA_BLAST:
         if (gimmick == GIMMICK_TERA)
-            return GetMonData(mon, MON_DATA_TERA_TYPE);
+            return GetBattlerTeraType(battler);
         break;
     case EFFECT_TERA_STARSTORM:
         if (species == SPECIES_TERAPAGOS_STELLAR)

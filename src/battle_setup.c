@@ -52,6 +52,7 @@
 #include "vs_seeker.h"
 #include "wild_encounter_ow.h"
 #include "window.h"
+#include "gym_tera.h"
 #include "constants/battle_frontier.h"
 #include "constants/battle_special.h"
 #include "constants/event_objects.h"
@@ -2225,6 +2226,7 @@ static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
         CreateNPCTrainerPartyFromTrainer(party, GetTrainerStructFromId(trainerNum));
         if (trainerNum == TRAINER_GIOVANNI_DAD_FINAL)
             DadStory_SynthesizeParty(party);   // Pokémon Canvas: Dad's inventions, in GIOVANNI's hands
+        GymTera_SetUpTrainerParty(party, trainerNum);   // Pokémon Canvas: who Terastallizes (src/gym_tera.c)
         return;
     }
 
@@ -2238,6 +2240,7 @@ static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
     if (tempTrainer.partySize == 0)
         tempTrainer.partySize = origTrainer->partySize;
     CreateNPCTrainerPartyFromTrainer(party, (const struct Trainer *)(&tempTrainer));
+    GymTera_SetUpTrainerParty(party, trainerNum);
 }
 
 void CreateTrainerPartyForPlayer(void)

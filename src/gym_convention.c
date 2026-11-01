@@ -10,6 +10,7 @@
 #include "global.h"
 #include "gym_convention.h"
 #include "tournament.h"
+#include "gym_tera.h"
 #include "gym_challenge.h"
 #include "data.h"
 #include "pokeball.h"
@@ -241,6 +242,7 @@ void Convention_SetupTrainer(void)
     for (n = 0; n < PARTY_SIZE && t->party[n].species != SPECIES_NONE; n++)
         ;
     GymChallenge_SetupFixed(t->trainerClass, sConventionPics[index], t->female, TrainerName(index), t->party, n);
+    GymChallenge_SetTeraMode(GYM_TERA_TEAM);
     StringCopy(gStringVar1, TrainerName(index));
     StringExpandPlaceholders(gGymChallengeIntroText, t->intro);
     StringExpandPlaceholders(gGymChallengeDefeatText, t->defeat);

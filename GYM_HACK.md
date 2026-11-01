@@ -191,11 +191,36 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     him) and that the League counts Viridian's approval as given (`DadStory_EventScript_Memorial`,
     `DAD_STORY_REMEMBERED`; an older save at `DAD_STORY_DONE` gets it the next time it enters Pallet).
     From then on ARCHER is the Viridian Gym's leader (`LOCALID_VIRIDIAN_GYM_ARCHER`): he tells the
-    player where he came from once (`DAD_STORY_MET_ARCHER`). Mom's talk at home changes after Viridian.
+    player where he came from once (`DAD_STORY_MET_ARCHER`): he's on probation with the League; Dad
+    brought him into Rocket's labs and he let Dad walk out the night he left; Rocket took Dad's
+    unfinished crystal and Archer finished it - the TERA ORB, which he gives the player - and he asks
+    to be forgiven (YES/NO). A save that met him before the Orb gets that part on its next visit.
+    Mom's talk at home changes after Viridian. Dad's Notebook has a third page: the crystal.
   - Saves already past a step skip its scene (e.g. past Silph: the stairs are simply there).
   - Giovanni isn't one of the famous gym challengers any more.
   - In the Gym Leader Convention, ARCHER (a former Team Rocket executive) holds Giovanni's place in
     the Ground hall with Giovanni's old team: the League let him take over the Viridian Gym.
+- **Terastallization** (`src/gym_tera.c`, `include/gym_tera.h`, `data/scripts/gym_tera.inc`):
+  - The TERA ORB (from Archer, above) never needs charging (`B_TERA_ORB_ALWAYS_CHARGED`); one
+    Pokémon a battle, as usual.
+  - The player's Pokémon Terastallize into the gym's type (`VAR_PLAYER_TYPE`) in every one-type
+    battle: the gym leaders and rival (`GymHack_IsRuleBattleTrainer`), the Elite Four and Champion,
+    and TRAINER_GYM_CHALLENGER battles set up as one-type (`GymChallenge_IsOneTypeBattle`: the gym's
+    challengers and mentor, guest-leader challengers, Oak). Decided when the trainer's party is made
+    (`GymTera_SetUpTrainerParty`, from `CreateNPCTrainerParty`); `GetBattlerTeraType` asks
+    `GymTera_PlayerBattleType` for the player's side (not in tests).
+  - Everywhere else a Pokémon uses its own Tera type (its "free" Tera type), but only if that's a
+    mastered type (`FLAG_GYM_TYPE_MASTERED` + type) or the gym's type; otherwise the gym's type
+    (`GymTera_FreeType`). Archer sets it, from the gym's type and the mastered ones, once the player
+    has mastered one. Oak's mastery visit explains it (`GymSwitch_EventScript_OakTeraTip`).
+  - The summary's SKILLS page: the RIBBON box is the TERA box (`tools/gym_hack/tera_label_art.py`
+    redrew the label), showing the free Tera type once the player has the Orb.
+  - Opponents only Terastallize once the player has the Orb, and only the important ones, with their
+    ace (highest level; the later slot on a tie): in one-type battles (the rival, leaders, Elite Four,
+    Champion, the gym's famous challengers and mentor, Oak) into a type that resists the gym's type
+    (one of its own if it can, else one it has moves of, better if it hits the gym's type hard:
+    `CounterType`); in free battles (the tournament, Bill, the Convention: `GymChallenge_SetTeraMode
+    (GYM_TERA_TEAM)`) into the type its team is built around. Everyone else stays `TYPE_MYSTERY`.
 - **Outfits** (`src/outfits.c`, `include/constants/outfits.h`, `data/scripts/outfits.inc`; colors from
   `tools/gym_hack/outfit_art.py`). An outfit is a set of colors for the player's own sprites, so it
   covers every one of them (walking, running, bike, surf, fishing, field moves, reflections and the

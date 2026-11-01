@@ -18,6 +18,7 @@
 #include "dex_forms.h"
 #include "data.h"
 #include "event_data.h"
+#include "gym_tera.h"
 #include "gym_challenge.h"
 #include "gym_convention.h"
 #include "gym_switch.h"
@@ -180,6 +181,7 @@ void Gauntlet_SetupBill(void)
     const struct GauntletTrainer *t = &sGauntletTrainers[GAUNTLET_COUNT];
     GymChallenge_SetupGauntlet(t->trainerClass, t->pic, t->female, t->battleName, t->party, PARTY_SIZE,
                                t->intro, t->defeat, t->after, t->win);
+    GymChallenge_SetTeraMode(GYM_TERA_TEAM);
     VarSet(VAR_OBJ_GFX_ID_0, t->gfx);
     StringCopy(gStringVar1, t->name);
     sBillUp = TRUE;     // (after the setup, which clears it)

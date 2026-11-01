@@ -18,6 +18,7 @@
 #include "data.h"
 #include "event_data.h"
 #include "gauntlet.h"
+#include "gym_tera.h"
 #include "gym_challenge.h"
 #include "main.h"
 #include "malloc.h"
@@ -378,6 +379,7 @@ void Tourney_SetupNext(void)
     GymChallenge_SetupGauntlet(e.trainerClass, e.pic, e.female, e.battleName, e.party, e.partySize,
                                e.intro, e.defeat, e.after, e.win);
     GymChallenge_SetChallengerLevel(MAX_LEVEL);
+    GymChallenge_SetTeraMode(GYM_TERA_TEAM);   // (a free battle: the ace Terastallizes into the team's type)
     VarSet(VAR_OBJ_GFX_ID_0, e.gfx);
     StringCopy(gStringVar1, e.name);
     StringCopy(gStringVar2, sRoundNames[round]);

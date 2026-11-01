@@ -72,6 +72,9 @@ void GymChallenge_EndPractice(void);
 struct TrainerMon;
 void GymChallenge_RetireStreak(void);
 bool32 GymChallenge_WasBoss(void);
+void GymChallenge_SetTeraMode(u32 mode);
+u32 GymChallenge_TeraMode(void);
+bool32 GymChallenge_IsOneTypeBattle(void);
 void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const u8 *name,
                                 const struct TrainerMon *party, u32 partySize,
                                 const u8 *intro, const u8 *defeat, const u8 *after, const u8 *win);

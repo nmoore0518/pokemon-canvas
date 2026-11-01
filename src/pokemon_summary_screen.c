@@ -44,6 +44,8 @@
 #include "text.h"
 #include "tv.h"
 #include "window.h"
+#include "gym_switch.h"
+#include "gym_tera.h"
 #include "constants/battle_move_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
@@ -1585,7 +1587,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         break;
     default:
         sum->ribbonCount = GetMonData(mon, MON_DATA_RIBBON_COUNT);
-        sum->teraType = GetMonData(mon, MON_DATA_TERA_TYPE);
+        sum->teraType = GymTera_FreeType(mon);   // Pokémon Canvas: its free Tera type (src/gym_tera.c)
         sum->isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
         return TRUE;
     }
@@ -3843,19 +3845,20 @@ static void PrintHeldItemName(void)
     PrintTextOnWindowWithFont(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_HELD_ITEM), text, x, 1, 0, 0, fontId);
 }
 
+// Pokémon Canvas: the RIBBON box is the TERA box (tools/gym_hack/tera_label_art.py): the Pokémon's
+// free Tera type, once the player has the TERA ORB (src/gym_tera.c)
 static void PrintRibbonCount(void)
 {
     const u8 *text;
     int x;
 
-    if (sMonSummaryScreen->summary.ribbonCount == 0)
+    if (!GymTera_HasOrb() || sMonSummaryScreen->summary.isEgg)
     {
-        text = gText_None;
+        text = COMPOUND_STRING("---");
     }
     else
     {
-        ConvertIntToDecimalStringN(gStringVar1, sMonSummaryScreen->summary.ribbonCount, STR_CONV_MODE_RIGHT_ALIGN, 2);
-        StringExpandPlaceholders(gStringVar4, gText_RibbonsVar1);
+        GymSwitch_BufferTypeName(gStringVar4, sMonSummaryScreen->summary.teraType);
         text = gStringVar4;
     }
 
