@@ -37,7 +37,7 @@ def leaf(r, t, w, k=12):
 DESIGNS = {}
 
 def lenneon_feat(g, P):
-    for r, t, w in (((22, 44), (2, 10), 7), ((26, 46), (8, 22), 5), ((42, 44), (62, 8), 7), ((40, 46), (58, 22), 5)):
+    for r, t, w in (((22, 44), (2, 10), 7), ((26, 46), (8, 22), 5), ((26, 40), (10, 0), 6), ((28, 42), (16, 6), 4)):   # (both behind it)
         poly = leaf(r, t, w)
         m = mask(lambda d: d.polygon(poly, fill=255))
         fill(g, m, P((190, 185, 182)), outline=P((71, 80, 93)), behind=True)
@@ -66,7 +66,7 @@ def wings_cyan(g, P):
                 if g[y][x] == P((164, 230, 230)): g[y][x] = P((98, 180, 172))
 DESIGNS['hypereon'] = ('nimbeon', 'espeon', {2: (255, 255, 255), 5: (255, 255, 255), 4: (205, 205, 213), 13: (148, 148, 172), 1: (82, 82, 90),
     10: (164, 230, 230), 8: (180, 32, 16), 11: (115, 16, 8), 6: (156, 49, 98), 7: (215, 104, 94), 12: (205, 205, 213), 3: BLACK,
-    14: (180, 32, 16), 15: (215, 104, 94), 9: (255, 255, 255)}, wings_cyan)
+    14: (180, 32, 16), 15: (215, 104, 94), 9: (255, 255, 255)}, None)   # (its wings: wing_ears, wing_tail)
 
 def bands(g, P):
     dark, mid = P((125, 95, 121)), P((173, 133, 156))
@@ -118,26 +118,31 @@ def make(key):
     elif key in DRAWN:
         bg = drawn_back(key, pal)
     else:
+        from back_fixes import FIXES
         bg = official_back(key)
         if key == 'hypereon':
             wing_ears(bg, lambda c: nearest(pal, c))
+        if key in FIXES:
+            FIXES[key](bg, lambda c: nearest(pal, c))
     return fg, bg, pal
 
 TURNED = {'obsideon', 'subterraneon'}
-DRAWN = {'valyreon'}
+DRAWN = {'valyreon': 6}   # (rows of it below the frame: less of the legs showing)
 
 def drawn_back(key, pal):
+    drop = DRAWN[key]
     """source/<key>_back.png: 64x64 at most once the bottom runs off the frame"""
     im = Image.open(Path(__file__).resolve().parent / 'source' / f'{key}_back.png').convert('RGBA')
     im = im.crop(im.getchannel('A').getbbox())
     w, h = im.size
     g = [[0] * 64 for _ in range(64)]
     ox = (64 - w) // 2
-    for y in range(min(h, 64)):
+    oy = 64 - h + drop
+    for y in range(h):
         for x in range(w):
             p = im.getpixel((x, y))
-            if p[3] >= 128 and 0 <= ox + x < 64:
-                g[y + max(0, 64 - h)][ox + x] = nearest(pal, p[:3])
+            if p[3] >= 128 and 0 <= ox + x < 64 and 0 <= oy + y < 64:
+                g[oy + y][ox + x] = nearest(pal, p[:3])
     return g
 
 def wing_ears(g, P):
