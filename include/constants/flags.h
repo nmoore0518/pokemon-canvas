@@ -2775,6 +2775,10 @@
 #define FLAG_UPGRADE_FIND_30       0x8E0   // (silver coin: CeruleanCave_1F)
 #define FLAG_UPGRADE_FIND_31       0x8E1   // (gold coin: PokemonMansion_B1F)
 #define FLAG_UPGRADE_FIND_32       0x8E2   // (gold coin: CeruleanCave_B1F)
+#define FLAG_UPGRADE_FIND_33       0x8E3   // (golden clover: SafariZone_West)
+#define FLAG_UPGRADE_FIND_34       0x8E4   // (golden clover: SafariZone_Center)
+#define FLAG_UPGRADE_FIND_35       0x8E5   // (gold coin: PokemonMansion_3F)
+#define FLAG_UPGRADE_FIND_36       0x8E6   // (gold coin: CeruleanCave_2F)
 // (end of the upgrade finds)
 
 #if TESTING

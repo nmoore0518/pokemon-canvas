@@ -172,6 +172,16 @@
       "flag": "FLAG_HIDDEN_ITEM_POKEMON_MANSION_3F_RARE_CANDY",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 36,
+      "y": 9,
+      "elevation": 0,
+      "item": "ITEM_GOLD_COIN",
+      "flag": "FLAG_UPGRADE_FIND_35",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

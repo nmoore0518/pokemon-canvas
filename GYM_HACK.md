@@ -475,12 +475,12 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   - Amulet Coin: Copper Coin, Silver Coin, Gold Coin, set in by Daisy (`..._EventScript_DaisyCoins`
     in the rival's house: she tells the story of Grandpa Oak's expedition coins once the player has an
     Amulet Coin, `FLAG_DAISY_TOLD_COINS` 0x413, then talks coins whenever the player carries any).
-  - Where they are: 32 hidden items (`tools/gym_hack/place_upgrade_finds.py`, flags
-    `FLAG_UPGRADE_FIND_01`-`32` = FireRed's spare system flags 0x8C3-0x8E2): clovers in route grass
+  - Where they are: 36 hidden items (enough of each for level 10) (`tools/gym_hack/place_upgrade_finds.py`, flags
+    `FLAG_UPGRADE_FIND_01`-`36` = FireRed's spare system flags 0x8C3-0x8E6): clovers in route grass
     (8 Lucky: Routes 1, 22, 2, 24, 25, 6, 11, 3; 6 Four-Leaf: Routes 10, 12, 14, 15, 21, Safari Zone
-    East; 2 Golden: Safari Zone North, Route 23), coins in caves and ruins (8 Copper: Mt. Moon x3,
+    East; 4 Golden: Safari Zone North, West and Center, Route 23), coins in caves and ruins (8 Copper: Mt. Moon x3,
     Diglett's Cave, Rock Tunnel x2, Pokémon Tower 4F, Power Plant; 6 Silver: Seafoam B1F and B3F,
-    Mansion 2F, Victory Road 1F and 3F, Cerulean Cave 1F; 2 Gold: Mansion B1F, Cerulean Cave B1F).
+    Mansion 2F, Victory Road 1F and 3F, Cerulean Cave 1F; 4 Gold: Mansion 3F and B1F, Cerulean Cave 2F and B1F).
   - Wild holders (`TryGiveWildMonUpgradeMaterial`, before the Tera berries; doubled by Compound Eyes
     and the like): Grass Pokémon (Oddish, Bellsprout, Paras, Exeggcute, Tangela, Hoppip, Sunkern lines)
     5% a Lucky Clover; Clefairy and Chansey lines 5% a Four-Leaf, Chansey's 1% a Golden; Meowth and

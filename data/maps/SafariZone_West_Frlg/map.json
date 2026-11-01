@@ -152,9 +152,7 @@
       "dest_warp_id": "1"
     }
   ],
-  "coord_events": [
-
-  ],
+  "coord_events": [],
   "bg_events": [
     {
       "type": "sign",
@@ -195,6 +193,16 @@
       "elevation": 3,
       "item": "ITEM_REVIVE",
       "flag": "FLAG_HIDDEN_ITEM_SAFARI_ZONE_WEST_REVIVE",
+      "quantity": 1,
+      "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 27,
+      "y": 27,
+      "elevation": 0,
+      "item": "ITEM_GOLDEN_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_33",
       "quantity": 1,
       "underfoot": false
     }

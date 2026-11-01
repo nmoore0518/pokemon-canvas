@@ -381,7 +381,7 @@ machines. Oak's aide in the Route 16 gate gives another once you've caught 40 ki
 <p>Both level up, to Lv. 10 (6x EXP, 6.5x prize money). Leave clovers at the Chansey statue's feet to make the Lucky Egg
 luckier; Daisy, in your rival's house, sets Grandpa Oak's old coins into the Amulet Coin. Levels 2-4 take 1, 2 and 3 of the
 common one (Lucky Clover, Copper Coin), 5-7 1, 2 and 3 of the rare one (Four-Leaf Clover, Silver Coin), and 8-10 1, 1 and 2
-of the very rare one (Golden Clover, Gold Coin). They're hidden items, so the Itemfinder helps: clovers in the grass of the
+of the very rare one (Golden Clover, Gold Coin). They're hidden items, enough of each to reach Lv. 10, so the Itemfinder helps: clovers in the grass of the
 routes (the rarer ones further along: Routes 10-15 and 21 and the Safari Zone, then Route 23), coins in caves and ruins (Mt.
 Moon, Rock Tunnel and the like, then Seafoam, the Mansion and Victory Road, then Cerulean Cave). Wild Pokémon hold them too:
 Grass Pokémon like Oddish and Bellsprout a Lucky Clover, Clefairy and Chansey a Four-Leaf (Chansey, rarely, a Golden),

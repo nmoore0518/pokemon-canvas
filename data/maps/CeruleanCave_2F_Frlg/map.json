@@ -244,5 +244,16 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "hidden_item",
+      "x": 12,
+      "y": 20,
+      "elevation": 0,
+      "item": "ITEM_GOLD_COIN",
+      "flag": "FLAG_UPGRADE_FIND_36",
+      "quantity": 1,
+      "underfoot": false
+    }
+  ]
 }

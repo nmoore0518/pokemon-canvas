@@ -58,12 +58,17 @@ FINDS = [   # (item, map) - the order is the flags' order: only add to the end
     ("SILVER_COIN", "CeruleanCave_1F_Frlg"),
     ("GOLD_COIN", "PokemonMansion_B1F_Frlg"),
     ("GOLD_COIN", "CeruleanCave_B1F_Frlg"),
+    # (v124: enough of the very rare ones to reach level 10 without wild Pokémon)
+    ("GOLDEN_CLOVER", "SafariZone_West_Frlg"),
+    ("GOLDEN_CLOVER", "SafariZone_Center_Frlg"),
+    ("GOLD_COIN", "PokemonMansion_3F_Frlg"),
+    ("GOLD_COIN", "CeruleanCave_2F_Frlg"),
 ]
 
 
 # (late maps, where the player has Surf: the search can cross water)
 SURF = {"Route21_North_Frlg", "SeafoamIslands_B1F_Frlg", "SeafoamIslands_B3F_Frlg", "CeruleanCave_1F_Frlg",
-        "CeruleanCave_B1F_Frlg"}
+        "CeruleanCave_B1F_Frlg", "CeruleanCave_2F_Frlg"}
 
 
 def flag_name(n):
