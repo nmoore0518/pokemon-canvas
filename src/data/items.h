@@ -17012,6 +17012,90 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SpiritWard,
     },
 
+    [ITEM_LUCKY_CLOVER] =
+    {
+        // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
+        .name = ITEM_NAME("Lucky Clover"),
+        .price = 0,
+        .description = COMPOUND_STRING("A lucky clover.\nChansey's statue\ntreasures them."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_SELLABLE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_LuckyClover,
+        .iconPalette = gItemIconPalette_LuckyClover,
+    },
+
+    [ITEM_FOUR_LEAF_CLOVER] =
+    {
+        // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
+        .name = ITEM_NAME("Four-Leaf Clover"),
+        .price = 0,
+        .description = COMPOUND_STRING("A rare four-leaf\nclover. Chansey's\nstatue treasures it."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_SELLABLE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_FourLeafClover,
+        .iconPalette = gItemIconPalette_FourLeafClover,
+    },
+
+    [ITEM_GOLDEN_CLOVER] =
+    {
+        // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
+        .name = ITEM_NAME("Golden Clover"),
+        .price = 0,
+        .description = COMPOUND_STRING("A clover that shines\nlike gold. Luck\nitself, they say."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_SELLABLE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_GoldenClover,
+        .iconPalette = gItemIconPalette_GoldenClover,
+    },
+
+    [ITEM_COPPER_COIN] =
+    {
+        // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
+        .name = ITEM_NAME("Copper Coin"),
+        .price = 0,
+        .description = COMPOUND_STRING("An old copper coin.\nDaisy can set it\ninto an Amulet Coin."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_SELLABLE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_CopperCoin,
+        .iconPalette = gItemIconPalette_CopperCoin,
+    },
+
+    [ITEM_SILVER_COIN] =
+    {
+        // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
+        .name = ITEM_NAME("Silver Coin"),
+        .price = 0,
+        .description = COMPOUND_STRING("A rare old silver\ncoin. Daisy can set\nit into an Amulet Coin."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_SELLABLE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_SilverCoin,
+        .iconPalette = gItemIconPalette_SilverCoin,
+    },
+
+    [ITEM_GOLD_COIN] =
+    {
+        // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
+        .name = ITEM_NAME("Gold Coin"),
+        .price = 0,
+        .description = COMPOUND_STRING("A very rare old gold\ncoin. Daisy can set\nit into an Amulet Coin."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_SELLABLE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_GoldCoin,
+        .iconPalette = gItemIconPalette_GoldCoin,
+    },
+
     [ITEM_RAYQUAZITE] =
     {
         // Pokémon Canvas: Rayquaza needs a stone like every other Mega (Primrose's trial)

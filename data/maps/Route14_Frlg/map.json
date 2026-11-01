@@ -239,12 +239,8 @@
       "flag": "0"
     }
   ],
-  "warp_events": [
-
-  ],
-  "coord_events": [
-
-  ],
+  "warp_events": [],
+  "coord_events": [],
   "bg_events": [
     {
       "type": "sign",
@@ -271,6 +267,16 @@
       "elevation": 3,
       "item": "ITEM_PINAP_BERRY",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE14_PINAP_BERRY",
+      "quantity": 1,
+      "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 11,
+      "y": 19,
+      "elevation": 0,
+      "item": "ITEM_FOUR_LEAF_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_11",
       "quantity": 1,
       "underfoot": false
     }

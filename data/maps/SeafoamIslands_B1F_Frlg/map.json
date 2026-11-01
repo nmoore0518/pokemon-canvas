@@ -153,5 +153,16 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "hidden_item",
+      "x": 3,
+      "y": 19,
+      "elevation": 0,
+      "item": "ITEM_SILVER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_25",
+      "quantity": 1,
+      "underfoot": false
+    }
+  ]
 }

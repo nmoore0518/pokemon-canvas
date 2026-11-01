@@ -243,6 +243,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route15_EventScript_RouteSign"
+    },
+    {
+      "type": "hidden_item",
+      "x": 37,
+      "y": 10,
+      "elevation": 0,
+      "item": "ITEM_FOUR_LEAF_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_12",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

@@ -302,6 +302,16 @@
       "flag": "FLAG_HIDDEN_ITEM_ROUTE11_ESCAPE_ROPE",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 33,
+      "y": 2,
+      "elevation": 0,
+      "item": "ITEM_LUCKY_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_07",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

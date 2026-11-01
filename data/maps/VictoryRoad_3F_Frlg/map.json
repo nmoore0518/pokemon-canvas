@@ -235,5 +235,16 @@
       "script": "VictoryRoad_3F_EventScript_FloorSwitch"
     }
   ],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "hidden_item",
+      "x": 3,
+      "y": 11,
+      "elevation": 0,
+      "item": "ITEM_SILVER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_29",
+      "quantity": 1,
+      "underfoot": false
+    }
+  ]
 }

@@ -467,8 +467,28 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   for the player (`VAR_LUCKY_EGG_LEVEL` 0x4092, `VAR_AMULET_COIN_LEVEL` 0x4093; 0 counts as 1).
   Each level adds 0.5x: the Lucky Egg 1.5x EXP at level 1 up to 6x at 10, the Amulet Coin 2x
   prize money up to 6.5x (battle prize money and Pay Day). The bag's description shows the level.
-  How to earn upgrades is still to be decided: scripts call `special ItemUpgrade_Upgrade` with
-  VAR_0x8004 = the item (VAR_RESULT = the new level, 0 if maxed) and `ItemUpgrade_BufferLevel`.
+  Each level costs materials (`sLuckyEggCosts`, `sAmuletCoinCosts`): levels 2-4 take 1, 2, 3 of the
+  common one, 5-7 1, 2, 3 of the rare one, 8-10 1, 1, 2 of the very rare one (15 of each line in all).
+  - Lucky Egg: Lucky Clover, Four-Leaf Clover, Golden Clover, left at the Chansey statue in Pallet
+    (`PalletTown_EventScript_ChanseyStatue`; its small print, `FLAG_CHANSEY_PLAQUE_READ` 0x414, the
+    first time the player has the egg).
+  - Amulet Coin: Copper Coin, Silver Coin, Gold Coin, set in by Daisy (`..._EventScript_DaisyCoins`
+    in the rival's house: she tells the story of Grandpa Oak's expedition coins once the player has an
+    Amulet Coin, `FLAG_DAISY_TOLD_COINS` 0x413, then talks coins whenever the player carries any).
+  - Where they are: 32 hidden items (`tools/gym_hack/place_upgrade_finds.py`, flags
+    `FLAG_UPGRADE_FIND_01`-`32` = FireRed's spare system flags 0x8C3-0x8E2): clovers in route grass
+    (8 Lucky: Routes 1, 22, 2, 24, 25, 6, 11, 3; 6 Four-Leaf: Routes 10, 12, 14, 15, 21, Safari Zone
+    East; 2 Golden: Safari Zone North, Route 23), coins in caves and ruins (8 Copper: Mt. Moon x3,
+    Diglett's Cave, Rock Tunnel x2, Pokémon Tower 4F, Power Plant; 6 Silver: Seafoam B1F and B3F,
+    Mansion 2F, Victory Road 1F and 3F, Cerulean Cave 1F; 2 Gold: Mansion B1F, Cerulean Cave B1F).
+  - Wild holders (`TryGiveWildMonUpgradeMaterial`, before the Tera berries; doubled by Compound Eyes
+    and the like): Grass Pokémon (Oddish, Bellsprout, Paras, Exeggcute, Tangela, Hoppip, Sunkern lines)
+    5% a Lucky Clover; Clefairy and Chansey lines 5% a Four-Leaf, Chansey's 1% a Golden; Meowth and
+    Diglett 5% a Copper Coin; Persian and Dugtrio 5% a Silver, 1% a Gold.
+  - Specials: `ItemUpgrade_HasItem` (bag or party), `ItemUpgrade_CheckCost` (VAR_RESULT
+    `ITEM_UPGRADE_MAXED`/`CAN_PAY`/`SHORT`, STR_VAR_1 "2 Copper Coins"), `ItemUpgrade_PayAndUpgrade`,
+    `ItemUpgrade_BufferLevel`. The six items are in the Items pocket (the bag's layout 0xB5 moved 3
+    slots there from Hold Items; `Bag_UpgradeLayout` re-sorts an older save's).
 - **Stat training items** (`src/stat_items.c`, `data/scripts/stat_items.inc`), all used up when
   used, all chosen from the bag and then a Pokémon:
   - Silver Bottle Cap (50,000): pick one stat; its IV becomes 31.

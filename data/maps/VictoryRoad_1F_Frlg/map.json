@@ -163,6 +163,16 @@
       "flag": "FLAG_HIDDEN_ITEM_VICTORY_ROAD_1F_FULL_RESTORE",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 18,
+      "y": 1,
+      "elevation": 0,
+      "item": "ITEM_SILVER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_28",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

@@ -135,6 +135,16 @@
       "flag": "FLAG_HIDDEN_ITEM_MT_MOON_B1F_BIG_MUSHROOM_3",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 44,
+      "y": 36,
+      "elevation": 0,
+      "item": "ITEM_COPPER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_18",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

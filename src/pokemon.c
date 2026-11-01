@@ -1,5 +1,6 @@
 #include "global.h"
 #include "berry_field.h"
+#include "item_upgrades.h"
 #include "basement_machines.h"
 #include "synthetic_abilities.h"
 #include "event_mons.h"
@@ -5496,6 +5497,8 @@ void SetWildMonHeldItem(void)
             continue; // prevent overwriting previously set item
         if (TryGiveWildMonLabItem(&gParties[B_TRAINER_OPPONENT_A][i]))
             continue; // Pokémon Canvas: Strong Acid / Apple Juice
+        if (TryGiveWildMonUpgradeMaterial(&gParties[B_TRAINER_OPPONENT_A][i], itemHeldBoost))
+            continue; // Gym Trainer hack: a clover or an old coin (src/item_upgrades.c)
         if (TryGiveWildMonTeraBerry(&gParties[B_TRAINER_OPPONENT_A][i]))
             continue; // Pokémon Canvas: its type's Tera berry (src/berry_field.c)
 

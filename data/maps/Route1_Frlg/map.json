@@ -80,6 +80,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route1_EventScript_RouteSign"
+    },
+    {
+      "type": "hidden_item",
+      "x": 21,
+      "y": 32,
+      "elevation": 0,
+      "item": "ITEM_LUCKY_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_01",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

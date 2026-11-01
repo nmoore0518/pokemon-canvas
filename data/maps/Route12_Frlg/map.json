@@ -320,6 +320,16 @@
       "flag": "FLAG_HIDDEN_ITEM_ROUTE12_RARE_CANDY",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 8,
+      "y": 118,
+      "elevation": 0,
+      "item": "ITEM_FOUR_LEAF_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_10",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

@@ -210,6 +210,16 @@
       "elevation": 3,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "RockTunnel_1F_EventScript_RouteSign"
+    },
+    {
+      "type": "hidden_item",
+      "x": 34,
+      "y": 19,
+      "elevation": 0,
+      "item": "ITEM_COPPER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_21",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

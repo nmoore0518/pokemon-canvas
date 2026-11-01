@@ -1132,6 +1132,13 @@ enum __attribute__((packed)) Item
     ITEM_FAIRY_BALL = 947,
     ITEM_DADS_NOTEBOOK = 948,   // Pokémon Canvas: DAD's CHANSEY holds it; read it from the BAG (src/dad_story.c)
     ITEM_SPIRIT_WARD = 949,     // Pokémon Canvas: a Max Repel you switch on and off (Mr. Fuji's; src/item_use.c)
+    // Pokémon Canvas: the Lucky Egg's and Amulet Coin's upgrades (src/item_upgrades.c)
+    ITEM_LUCKY_CLOVER = 950,
+    ITEM_FOUR_LEAF_CLOVER = 951,
+    ITEM_GOLDEN_CLOVER = 952,
+    ITEM_COPPER_COIN = 953,
+    ITEM_SILVER_COIN = 954,
+    ITEM_GOLD_COIN = 955,
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

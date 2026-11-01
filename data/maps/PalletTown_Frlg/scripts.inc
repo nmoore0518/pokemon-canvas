@@ -326,7 +326,39 @@ PalletTown_EventScript_GymDoorOpen::
 
 PalletTown_EventScript_ChanseyStatue::
 	goto_if_unset FLAG_HIDDEN_ITEM_PALLET_TOWN_LUCKY_EGG, PalletTown_EventScript_ChanseyStatueEgg
-	msgbox PalletTown_Text_ChanseyStatue, MSGBOX_SIGN
+	lockall
+	msgbox PalletTown_Text_ChanseyStatue
+	setvar VAR_0x8004, ITEM_LUCKY_EGG
+	special ItemUpgrade_HasItem
+	goto_if_eq VAR_RESULT, FALSE, PalletTown_EventScript_ChanseyStatueEnd
+	goto_if_set FLAG_CHANSEY_PLAQUE_READ, PalletTown_EventScript_ChanseyStatueWish
+	msgbox PalletTown_Text_ChanseyStatueLegend
+	setflag FLAG_CHANSEY_PLAQUE_READ
+@ Gym Trainer hack: the Lucky Egg's levels (src/item_upgrades.c): clovers left at the statue's feet
+PalletTown_EventScript_ChanseyStatueWish::
+	special ItemUpgrade_CheckCost
+	goto_if_eq VAR_RESULT, ITEM_UPGRADE_MAXED, PalletTown_EventScript_ChanseyStatueMaxed
+	goto_if_eq VAR_RESULT, ITEM_UPGRADE_SHORT, PalletTown_EventScript_ChanseyStatueShort
+	msgbox PalletTown_Text_ChanseyStatueLeaveClovers, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PalletTown_EventScript_ChanseyStatueEnd
+	special ItemUpgrade_PayAndUpgrade
+	goto_if_eq VAR_RESULT, 0, PalletTown_EventScript_ChanseyStatueEnd
+	playfanfare MUS_LEVEL_UP
+	message PalletTown_Text_ChanseyStatueEggGlows
+	waitfanfare
+	waitmessage
+	special ItemUpgrade_BufferLevel
+	msgbox PalletTown_Text_ChanseyStatueEggLevel
+	goto PalletTown_EventScript_ChanseyStatueEnd
+
+PalletTown_EventScript_ChanseyStatueShort::
+	msgbox PalletTown_Text_ChanseyStatueShort
+	goto PalletTown_EventScript_ChanseyStatueEnd
+
+PalletTown_EventScript_ChanseyStatueMaxed::
+	msgbox PalletTown_Text_ChanseyStatueMaxed
+PalletTown_EventScript_ChanseyStatueEnd::
+	releaseall
 	end
 
 @ Gym Trainer hack: a Lucky Egg left at the statue's base (also a hidden item there, for the Itemfinder)
@@ -434,6 +466,34 @@ PalletTown_Text_GymDoorLocked::
 	.string "The doors are locked tight.\p"
 	.string "A note is taped to the glass:\n"
 	.string "“Opening soon! - PROF. OAK”$"
+
+@ (draft lines: the Lucky Egg's levels)
+PalletTown_Text_ChanseyStatueLegend::
+	.string "There's smaller writing under it…\p"
+	.string "“CHANSEY shares her luck with any\n"
+	.string "who share theirs.\p"
+	.string "Leave a clover at her feet, and\n"
+	.string "her egg will grow luckier.”$"
+
+PalletTown_Text_ChanseyStatueLeaveClovers::
+	.string "Leave {STR_VAR_1}\n"
+	.string "at CHANSEY's feet?$"
+
+PalletTown_Text_ChanseyStatueEggGlows::
+	.string "The LUCKY EGG feels a little\n"
+	.string "warmer…$"
+
+PalletTown_Text_ChanseyStatueEggLevel::
+	.string "The LUCKY EGG is now Lv. {STR_VAR_1}!\n"
+	.string "It gives {STR_VAR_2}x the Exp. Points.$"
+
+PalletTown_Text_ChanseyStatueShort::
+	.string "To make the LUCKY EGG luckier,\n"
+	.string "CHANSEY wants {STR_VAR_1}.$"
+
+PalletTown_Text_ChanseyStatueMaxed::
+	.string "The LUCKY EGG can't get any\n"
+	.string "luckier than this!$"
 
 PalletTown_Text_ChanseyStatueEgg::
 	.string "Something is tucked under the\n"

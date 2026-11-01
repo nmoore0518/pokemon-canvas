@@ -3059,6 +3059,104 @@ TEST("GymHack: items: the Lucky Egg and Amulet Coin level up to 10")
     ItemUpgrade_SetLevel(ITEM_AMULET_COIN, 1);
 }
 
+TEST("GymHack: items: the Lucky Egg's and Amulet Coin's levels cost clovers and coins")
+{
+    u32 level, total[2] = {0}, i;
+    static const u16 items[] = {ITEM_LUCKY_EGG, ITEM_AMULET_COIN};
+    static const u16 tiers[2][3] = {
+        {ITEM_LUCKY_CLOVER, ITEM_FOUR_LEAF_CLOVER, ITEM_GOLDEN_CLOVER},
+        {ITEM_COPPER_COIN, ITEM_SILVER_COIN, ITEM_GOLD_COIN},
+    };
+    ClearBag();
+    for (i = 0; i < 2; i++)
+    {
+        ItemUpgrade_SetLevel(items[i], 1);
+        gSpecialVar_0x8004 = items[i];
+        for (level = 2; level <= ITEM_UPGRADE_MAX_LEVEL; level++)
+        {
+            u32 item = ItemUpgrade_GetCostItem(items[i], level), count = ItemUpgrade_GetCostCount(items[i], level);
+            EXPECT_EQ(item, tiers[i][(level - 2) / 3]);     // (common, rare, very rare)
+            EXPECT_GT(count, 0);
+            total[i] += count;
+            ItemUpgrade_CheckCost();
+            EXPECT_EQ(gSpecialVar_Result, ITEM_UPGRADE_SHORT);
+            ItemUpgrade_PayAndUpgrade();
+            EXPECT_EQ(gSpecialVar_Result, 0);               // (nothing to pay with: nothing changes)
+            EXPECT_EQ(ItemUpgrade_GetLevel(items[i]), level - 1);
+            AddBagItem(item, count + 1);
+            ItemUpgrade_CheckCost();
+            EXPECT_EQ(gSpecialVar_Result, ITEM_UPGRADE_CAN_PAY);
+            EXPECT_EQ(gSpecialVar_0x8005, item);
+            ItemUpgrade_PayAndUpgrade();
+            EXPECT_EQ(gSpecialVar_Result, level);
+            EXPECT(CheckBagHasItem(item, 1) && !CheckBagHasItem(item, 2));   // (it took `count`)
+            RemoveBagItem(item, 1);
+        }
+        ItemUpgrade_CheckCost();
+        EXPECT_EQ(gSpecialVar_Result, ITEM_UPGRADE_MAXED);
+        ItemUpgrade_SetLevel(items[i], 1);
+    }
+    EXPECT_EQ(total[0], 1 + 2 + 3 + 1 + 2 + 3 + 1 + 1 + 2);
+    EXPECT_EQ(total[1], total[0]);
+    ClearBag();
+}
+
+extern const u8 PalletTown_Text_ChanseyStatueLegend[], PalletTown_Text_ChanseyStatueLeaveClovers[],
+    PalletTown_Text_ChanseyStatueEggGlows[], PalletTown_Text_ChanseyStatueEggLevel[], PalletTown_Text_ChanseyStatueShort[],
+    PalletTown_Text_ChanseyStatueMaxed[], PalletTown_RivalsHouse_Text_DaisyGrandpasCoins[],
+    PalletTown_RivalsHouse_Text_DaisySetCoins[], PalletTown_RivalsHouse_Text_DaisyLetMeSee[],
+    PalletTown_RivalsHouse_Text_DaisyCoinLevel[], PalletTown_RivalsHouse_Text_DaisyNeedMoreCoins[],
+    PalletTown_RivalsHouse_Text_DaisyCoinMaxed[], PalletTown_RivalsHouse_Text_DaisyKeepThem[];
+
+TEST("GymHack: items: the Chansey statue's and Daisy's upgrade lines fit the message box")
+{
+    static const u8 *const texts[] = {
+        PalletTown_Text_ChanseyStatueLegend, PalletTown_Text_ChanseyStatueLeaveClovers,
+        PalletTown_Text_ChanseyStatueEggGlows, PalletTown_Text_ChanseyStatueEggLevel, PalletTown_Text_ChanseyStatueShort,
+        PalletTown_Text_ChanseyStatueMaxed, PalletTown_RivalsHouse_Text_DaisyGrandpasCoins,
+        PalletTown_RivalsHouse_Text_DaisySetCoins, PalletTown_RivalsHouse_Text_DaisyLetMeSee,
+        PalletTown_RivalsHouse_Text_DaisyCoinLevel, PalletTown_RivalsHouse_Text_DaisyNeedMoreCoins,
+        PalletTown_RivalsHouse_Text_DaisyCoinMaxed, PalletTown_RivalsHouse_Text_DaisyKeepThem,
+    };
+    u8 *buf = Alloc(1000);
+    u32 i;
+    // (the longest: "3 Four-Leaf Clovers", level 10, "6.5")
+    u8 *s = StringCopy(gStringVar1, COMPOUND_STRING("3 "));
+    CopyItemNameHandlePlural(ITEM_FOUR_LEAF_CLOVER, s, 3);
+    StringCopy(gStringVar2, COMPOUND_STRING("10"));
+    StringCopy(gStringVar3, COMPOUND_STRING("6.5"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        if (texts[i] == PalletTown_Text_ChanseyStatueEggLevel || texts[i] == PalletTown_RivalsHouse_Text_DaisyCoinLevel)
+        {
+            // (these show the level in STR_VAR_1 and the multiplier in STR_VAR_2)
+            StringCopy(gStringVar1, COMPOUND_STRING("10"));
+            StringCopy(gStringVar2, COMPOUND_STRING("6.5"));
+            StringExpandPlaceholders(buf, texts[i]);
+            s = StringCopy(gStringVar1, COMPOUND_STRING("3 "));
+            CopyItemNameHandlePlural(ITEM_FOUR_LEAF_CLOVER, s, 3);
+            StringCopy(gStringVar2, COMPOUND_STRING("10"));
+        }
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("text %d: line too wide: %S", i, line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}
+
 TEST("GymHack: challenges: random challengers have at most one legendary")
 {
     u32 run, i, teamsWithOne = 0;

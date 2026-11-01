@@ -145,6 +145,16 @@
       "flag": "FLAG_HIDDEN_ITEM_POKEMON_MANSION_B1F_ELIXIR",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 1,
+      "y": 31,
+      "elevation": 0,
+      "item": "ITEM_GOLD_COIN",
+      "flag": "FLAG_UPGRADE_FIND_31",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

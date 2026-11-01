@@ -120,14 +120,14 @@ enum Language
 //   the end of SaveBlock2: the rest of the Poké Balls (Pokémon Canvas: room for the Type Balls)
 // src/item.c Bag_UpgradeLayout moves an older save's bag over.
 #define BAG_ITEMS_COUNT_1       204     // (in SaveBlock3)
-#define BAG_ITEMS_COUNT_2        23     // (after the hold items)
+#define BAG_ITEMS_COUNT_2        26     // (after the hold items)
 #define BAG_ITEMS_COUNT         (BAG_ITEMS_COUNT_1 + BAG_ITEMS_COUNT_2)
 #define BAG_MEDICINE_COUNT       80
 #define BAG_POKEBALLS_COUNT_1    28     // (in SaveBlock1's bag)
 #define BAG_POKEBALLS_COUNT_2    18     // (Pokémon Canvas: the Type Balls' room, at the end of SaveBlock2)
 #define BAG_POKEBALLS_COUNT     (BAG_POKEBALLS_COUNT_1 + BAG_POKEBALLS_COUNT_2)
 #define BAG_BATTLE_ITEMS_COUNT   29
-#define BAG_HOLD_ITEMS_COUNT    233
+#define BAG_HOLD_ITEMS_COUNT    230
 #define BAG_MEGA_STONES_COUNT    93
 #define BAG_BERRIES_COUNT        68
 #define BAG_TMHM_COUNT          108
@@ -146,7 +146,8 @@ enum Language
 #define BAG_V99_BERRIES_COUNT 68
 #define BAG_LAYOUT_SPLIT   0xB2   // SaveBlock3's bagLayout: v99's five big pockets
 #define BAG_LAYOUT_POCKETS_V100 0xB3   // v100's ten pockets (239 hold items, then 17 items)
-#define BAG_LAYOUT_POCKETS 0xB4   //   and now (233 and 23: room for the Incense)
+#define BAG_LAYOUT_POCKETS_V122 0xB4   // v101-v122 (233 and 23: room for the Incense)
+#define BAG_LAYOUT_POCKETS 0xB5   //   and now (230 and 26: room for the clovers and coins)
 
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.

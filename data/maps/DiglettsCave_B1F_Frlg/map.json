@@ -48,5 +48,16 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [
+    {
+      "type": "hidden_item",
+      "x": 39,
+      "y": 40,
+      "elevation": 0,
+      "item": "ITEM_COPPER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_20",
+      "quantity": 1,
+      "underfoot": false
+    }
+  ]
 }

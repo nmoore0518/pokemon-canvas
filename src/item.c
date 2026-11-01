@@ -588,7 +588,7 @@ void Bag_UpgradeLayout(void)
 
     if (oldLayout == BAG_LAYOUT_POCKETS)
         return;
-    if (oldLayout == BAG_LAYOUT_POCKETS_V100)
+    if (oldLayout == BAG_LAYOUT_POCKETS_V100 || oldLayout == BAG_LAYOUT_POCKETS_V122)
     {
         // (only the berry trees' bytes moved: the hold items, then the items that didn't fit in
         // SaveBlock3 - take them out and put them back)

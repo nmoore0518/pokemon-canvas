@@ -278,6 +278,16 @@
       "flag": "FLAG_HIDDEN_ITEM_ROUTE10_NANAB_BERRY",
       "quantity": 1,
       "underfoot": false
+    },
+    {
+      "type": "hidden_item",
+      "x": 16,
+      "y": 6,
+      "elevation": 0,
+      "item": "ITEM_FOUR_LEAF_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_09",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

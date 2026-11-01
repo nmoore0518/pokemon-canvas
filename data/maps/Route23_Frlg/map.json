@@ -631,6 +631,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route23_EventScript_VictoryRoadGateSign"
+    },
+    {
+      "type": "hidden_item",
+      "x": 21,
+      "y": 74,
+      "elevation": 0,
+      "item": "ITEM_GOLDEN_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_16",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

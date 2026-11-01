@@ -6,6 +6,7 @@
 #include "constants/apricorn_tree.h"
 #include "constants/battle.h"
 #include "constants/berry_field.h"
+#include "constants/item_upgrades.h"
 #include "constants/battle_arena.h"
 #include "constants/battle_dome.h"
 #include "constants/battle_factory.h"

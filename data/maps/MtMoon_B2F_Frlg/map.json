@@ -233,6 +233,16 @@
       "elevation": 3,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "EventMons_EventScript_Cap1"
+    },
+    {
+      "type": "hidden_item",
+      "x": 19,
+      "y": 14,
+      "elevation": 0,
+      "item": "ITEM_COPPER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_19",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

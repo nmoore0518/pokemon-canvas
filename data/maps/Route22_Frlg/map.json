@@ -123,6 +123,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route22_EventScript_LeagueGateSign"
+    },
+    {
+      "type": "hidden_item",
+      "x": 21,
+      "y": 9,
+      "elevation": 0,
+      "item": "ITEM_LUCKY_CLOVER",
+      "flag": "FLAG_UPGRADE_FIND_02",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }

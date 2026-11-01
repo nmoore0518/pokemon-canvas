@@ -110,9 +110,7 @@
       "dest_warp_id": "5"
     }
   ],
-  "coord_events": [
-
-  ],
+  "coord_events": [],
   "bg_events": [
     {
       "type": "sign",
@@ -137,6 +135,16 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "PokemonMansion_2F_EventScript_DiaryJuly5th"
+    },
+    {
+      "type": "hidden_item",
+      "x": 36,
+      "y": 3,
+      "elevation": 0,
+      "item": "ITEM_SILVER_COIN",
+      "flag": "FLAG_UPGRADE_FIND_27",
+      "quantity": 1,
+      "underfoot": false
     }
   ]
 }
