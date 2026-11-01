@@ -3812,3 +3812,75 @@ TEST("GymHack: eeveelutions: the Pokédex keeps seen and caught for every new nu
     }
     EXPECT_EQ(SpeciesToNationalPokedexNum(SPECIES_VALYREON), NATIONAL_DEX_VALYREON);
 }
+
+#include "penny.h"
+TEST("GymHack: Penny: every type has an Eevee evolution, and the item really evolves it")
+{
+    u32 type;
+    struct Pokemon mon;
+    for (type = TYPE_NORMAL; type < NUMBER_OF_MON_TYPES; type++)
+    {
+        u32 item = Penny_GetItem(type), species = Penny_GetSpecies(type);
+        if (type == TYPE_MYSTERY || type == TYPE_STELLAR)
+            continue;
+        EXPECT_EQ((u32)gSpeciesInfo[species].types[0], type);
+        CreateMon(&mon, SPECIES_EEVEE, 30, 0, OTID_STRUCT_PLAYER_ID);
+        if (type == TYPE_FAIRY)
+        {
+            EXPECT_EQ(item, ITEM_NONE);
+            continue;
+        }
+        if (GetItemPocket(item) == POCKET_HOLD_ITEMS)
+        {
+            SetMonData(&mon, MON_DATA_HELD_ITEM, &item);
+            EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_NORMAL, ITEM_NONE, NULL, NULL, CHECK_EVO), species);
+        }
+        else
+        {
+            EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, item, NULL, NULL, CHECK_EVO), species);
+        }
+    }
+}
+
+extern const u8 ViridianCity_PennysHouse_Text_Intro[], ViridianCity_PennysHouse_Text_StillLooking[],
+    ViridianCity_PennysHouse_Text_YouFoundOne[], ViridianCity_PennysHouse_Text_ForThisType[],
+    ViridianCity_PennysHouse_Text_HowHold[], ViridianCity_PennysHouse_Text_HowUse[], ViridianCity_PennysHouse_Text_HowFairy[],
+    ViridianCity_PennysHouse_Text_BagFull[], ViridianCity_PennysHouse_Text_ComeBackLater[], ViridianCity_PennysHouse_Text_NotYet[],
+    ViridianCity_PennysHouse_Text_BringAnother[], ViridianCity_PennysHouse_Text_AnotherEevee[],
+    ViridianCity_PennysHouse_Text_Already[], ViridianCity_PennysHouse_Text_Plush[];
+
+TEST("GymHack: Penny: her lines fit the message box")
+{
+    static const u8 *const texts[] = {
+        ViridianCity_PennysHouse_Text_Intro, ViridianCity_PennysHouse_Text_StillLooking, ViridianCity_PennysHouse_Text_YouFoundOne,
+        ViridianCity_PennysHouse_Text_ForThisType, ViridianCity_PennysHouse_Text_HowHold, ViridianCity_PennysHouse_Text_HowUse,
+        ViridianCity_PennysHouse_Text_HowFairy, ViridianCity_PennysHouse_Text_BagFull, ViridianCity_PennysHouse_Text_ComeBackLater,
+        ViridianCity_PennysHouse_Text_NotYet, ViridianCity_PennysHouse_Text_BringAnother, ViridianCity_PennysHouse_Text_AnotherEevee,
+        ViridianCity_PennysHouse_Text_Already, ViridianCity_PennysHouse_Text_Plush,
+    };
+    u8 *buf = Alloc(1000);
+    u32 i;
+    StringCopy(gStringVar1, COMPOUND_STRING("Fighting"));
+    StringCopy(gStringVar2, COMPOUND_STRING("Silver Powder"));
+    StringCopy(gStringVar3, COMPOUND_STRING("Subterraneon"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+    {
+        u8 *line, *p;
+        StringExpandPlaceholders(buf, texts[i]);
+        for (line = p = buf; ; p++)
+        {
+            u8 c = *p;
+            if (c == CHAR_NEWLINE || c == CHAR_PROMPT_SCROLL || c == CHAR_PROMPT_CLEAR || c == EOS)
+            {
+                *p = EOS;
+                if (GetStringWidth(FONT_NORMAL, line, 0) > 27 * 8 - 4)
+                    DebugPrintf("text %d: line too wide: %S", i, line);
+                EXPECT_LE(GetStringWidth(FONT_NORMAL, line, 0), 27 * 8 - 4);
+                if (c == EOS)
+                    break;
+                line = p + 1;
+            }
+        }
+    }
+    Free(buf);
+}

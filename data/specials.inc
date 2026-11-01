@@ -858,6 +858,10 @@ gSpecials::
 	def_special GymTera_SetType
 	def_special GymTera_CheckPrice
 	def_special ItemUpgrade_BufferLevel
+	def_special Penny_HasEevee
+	def_special Penny_BufferEvo
+	def_special Penny_WasGiven
+	def_special Penny_MarkGiven
 	def_special ItemUpgrade_HasItem
 	def_special ItemUpgrade_CheckCost
 	def_special ItemUpgrade_PayAndUpgrade

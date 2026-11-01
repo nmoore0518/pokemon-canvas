@@ -2738,6 +2738,10 @@
 #define FLAG_BERRY_FIND_FAIRY      0x3EF
 #define FLAG_SPIRIT_WARD_ON        0x410   // (the SPIRIT WARD is held up: a Max Repel; src/wild_encounter.c)
 #define FLAG_TOURNEY_SIM_DOUBLES   0x3F8   // (Bill's simulator: the last tournament entered was doubles; src/tournament.c)
+// Penny's Eevee lessons (Viridian City, src/penny.c): FireRed's spare system flags 0x809 on
+#define FLAG_PENNY_MET             0x809   // (she's asked for an Eevee)
+#define FLAG_PENNY_FIRST_GIFT      0x80A   // (she's told the player about their gym's type)
+#define FLAG_PENNY_GAVE_TYPE       0x80A   // + a type (TYPE_NORMAL 1 .. TYPE_FAIRY 19): that type's item given (to 0x81D)
 // Pokédex numbers past the save's dex bytes (the last of the new eeveelutions; src/pokedex.c
 // GetSetPokedexFlag): seen, then caught, DEX_EXTRA_FLAGS each
 #define DEX_EXTRA_FLAGS            8

@@ -371,6 +371,13 @@ ITEMS = """
 Sabrina's, Cilantro after Blaine's, and the Gold Bottle Cap and Multivitamin after the Elite Four. Every Gym Leader also gives
 a Silver Bottle Cap with their TM; Erika adds Cilantro and Koga an Ability Capsule; your rival gives a Gold Bottle Cap at the
 Pokémon Tower, and Giovanni a Multivitamin at Silph Co. (along with the Master Ball).</p>
+<h3>Eevee and Penny</h3>
+<p>Eevee (rare on Route 1) can evolve into a Pokémon of every type. Penny, in the house in Viridian City's flower garden,
+tells you how: show her an Eevee and she gives you the item for your gym's type. Once the gym is yours, bring her another
+Eevee for any other type. The new eeveelutions evolve by levelling up while holding the type's power-up item: Silk Scarf
+(Odeon, Normal), Black Belt (Assasseon, Fighting), Sharp Beak (Hypereon, Flying), Poison Barb (Poiseon, Poison), Soft Sand
+(Subterraneon, Ground), Hard Stone (Obsideon, Rock), Silver Powder (Lenneon, Bug), Spell Tag (Appariteon, Ghost), Metal Coat
+(Automateon, Steel) and Dragon Fang (Valyreon, Dragon).</p>
 <h3>EXP and money</h3>
 <ul>
 <li><b>Lucky Egg</b> (held: 1.5x EXP): at the base of the Chansey statue in Pallet Town, west of the Pokémon Center.

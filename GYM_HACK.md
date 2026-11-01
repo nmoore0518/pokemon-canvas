@@ -488,6 +488,16 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   `FLAG_DEX_EXTRA_SEEN` 0x8E7 and `FLAG_DEX_EXTRA_CAUGHT` 0x8EF (`GetSetPokedexFlag`). Front sprites:
   a community chart (`tools/gym_hack/eeveelutions/source/`, see CREDITS.md). How the player learns
   of them (a side quest) is still to come.
+- **Penny's house** (Viridian City, in the flower garden east of the Pokémon Center;
+  `tools/gym_hack/build_pennys_house.py` builds the house, its interior map
+  `ViridianCity_PennysHouse_Frlg` and the warp; `src/penny.c`; draft lines). Penny (Scarlet/Violet's
+  Team Star boss, the Gauntlet's Penny) lives among Eevee-family plushes (the official eeveelutions'
+  overworld sprites). Optional: the first talk asks for an Eevee (Route 1); shown one (in the party),
+  she gives the item for the player's gym type (`VAR_PLAYER_TYPE`) and says how it works (hold and
+  level up, use it, or for Fairy no item). Once the gym is the player's (`VAR_GYM_FINALE` =
+  `GYM_FINALE_DONE`), each Eevee shown gets a type menu: one item per type. Flags `FLAG_PENNY_MET`
+  0x809, `FLAG_PENNY_FIRST_GIFT` 0x80A, `FLAG_PENNY_GAVE_TYPE` + type 0x80B-0x81D. The type's
+  evolution: `sEvos` in `src/penny.c` (stones and shards for the official ones).
 - **Lucky Egg and Amulet Coin levels** (`src/item_upgrades.c`): both have a level, 1-10, kept
   for the player (`VAR_LUCKY_EGG_LEVEL` 0x4092, `VAR_AMULET_COIN_LEVEL` 0x4093; 0 counts as 1).
   Each level adds 0.5x: the Lucky Egg 1.5x EXP at level 1 up to 6x at 10, the Amulet Coin 2x
