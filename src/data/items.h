@@ -17008,7 +17008,7 @@ const struct ItemInfo gItemsInfo[] =
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_SpiritWard,
-        .iconPic = gItemIcon_CleanseTag,
+        .iconPic = gItemIcon_SpiritWard,
         .iconPalette = gItemIconPalette_SpiritWard,
     },
 

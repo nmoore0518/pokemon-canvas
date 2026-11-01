@@ -238,7 +238,7 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     Drain (was Regenerator).
 - **The Spirit Ward** (`ITEM_SPIRIT_WARD`, Tools; `ItemUseOutOfBattle_SpiritWard` in `src/item_use.c`):
   a Max Repel switched on and off (`FLAG_SPIRIT_WARD_ON`, checked in `IsWildLevelAllowedByRepel`).
-  Its icon is the Cleanse Tag's picture in lavender. Mr. Fuji offers it after the Poké Flute and
+  Its icon is a little burlap scarecrow doll with a pin through its head (`tools/gym_hack/spirit_ward_art.py`). Mr. Fuji offers it after the Poké Flute and
   gives it for beating him (`GymChallenge_SetupFuji`: a double battle, Haunter 30, Slowbro 30,
   Hypno 31, Marowak 33 @ Thick Club; no white-out, healed after a loss; anyone who got the flute
   before is asked the next time they talk to him).

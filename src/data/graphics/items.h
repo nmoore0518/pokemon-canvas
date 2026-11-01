@@ -2309,4 +2309,5 @@ const u32 gItemIcon_SilverCoin[] = INCGFX_U32("graphics/items/icons/gym/silver_c
 const u16 gItemIconPalette_SilverCoin[] = INCGFX_U16("graphics/items/icon_palettes/gym/silver_coin.pal", ".gbapal");
 const u32 gItemIcon_GoldCoin[] = INCGFX_U32("graphics/items/icons/gym/gold_coin.png", ".4bpp.smol");
 const u16 gItemIconPalette_GoldCoin[] = INCGFX_U16("graphics/items/icon_palettes/gym/gold_coin.pal", ".gbapal");
-const u16 gItemIconPalette_SpiritWard[] = INCGFX_U16("graphics/items/icon_palettes/gym/spirit_ward.pal", ".gbapal");   // (the Cleanse Tag's picture)
+const u32 gItemIcon_SpiritWard[] = INCGFX_U32("graphics/items/icons/gym/spirit_ward.png", ".4bpp.smol");   // (tools/gym_hack/spirit_ward_art.py)
+const u16 gItemIconPalette_SpiritWard[] = INCGFX_U16("graphics/items/icon_palettes/gym/spirit_ward.pal", ".gbapal");
