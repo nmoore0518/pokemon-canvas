@@ -1,4 +1,4 @@
-"""Back sprites drawn from each design's own front (not the official eeveelutions' backs): the
+"""Back sprites drawn from a design's own front (Obsideon and Subterraneon; backs.py make) (not the official eeveelutions' backs): the
 Pokémon turned away from the camera. The front is mirrored (so it faces into the battle), its face
 is painted over with the fur around it (eyes, mouth, blush, Lenneon's glasses: what you'd only see
 from the front), and it's drawn a third bigger with its feet off the bottom of the frame, as the

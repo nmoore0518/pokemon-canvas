@@ -5,8 +5,9 @@ Front sprites: the community "all-type eeveelutions" chart (source/, cut out of 
 Kirineon by Veterans, Nimbeon by PansygumPKMN - see CREDITS.md), with edits in edits.py: the Light
 one recoloured as the Normal one (Eevee's colours reversed), round glasses on the Bug one, and the
 Steel one made mechanical (gunmetal plating, a brass gear collar, seams and rivets). Back sprites
-(turned.py) are each design turned away: mirrored, its face painted over, enlarged and cut off at
-the bottom. Icons (icons.py) are shrunk fronts on the shared icon palettes; shiny palettes
+(backs.py make): Obsideon's and Subterraneon's are the design turned away (turned.py); Valyreon's
+is a supplied back sprite (source/valyreon_back.png); the rest are official eeveelution backs
+repainted in the design's colours (Hypereon's ears made into wings). Icons (icons.py) are shrunk fronts on the shared icon palettes; shiny palettes
 (shiny.py) are hue shifts.
 
     python3 tools/gym_hack/eeveelutions/build.py

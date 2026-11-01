@@ -105,12 +105,55 @@ DESIGNS['automateon'] = ('metaleon', 'eevee', {3: (112, 126, 150), 1: (70, 82, 1
     8: (214, 164, 64), 10: (252, 220, 120), 7: (150, 104, 40), 11: (214, 164, 64), 9: (236, 244, 255)}, gearback)
 
 def make(key):
-    """front, back, palette. The back is the design itself turned away (turned.py); the older
-    repaints of the official backs (official_back) are kept only for reference."""
+    """front, back, palette. Which back each has:
+      TURNED      the design turned away (turned.py)
+      DRAWN       a back sprite supplied for it (source/<key>_back.png, 1x)
+      otherwise   an official eeveelution back repainted in its colours (official_back), with
+                  Hypereon's ears made into wings"""
     from turned import turned
     front = DESIGNS[key][0]
     fg, pal = to_gba(get(front))
-    return fg, turned(fg, pal, key), pal
+    if key in TURNED:
+        bg = turned(fg, pal, key)
+    elif key in DRAWN:
+        bg = drawn_back(key, pal)
+    else:
+        bg = official_back(key)
+        if key == 'hypereon':
+            wing_ears(bg, lambda c: nearest(pal, c))
+    return fg, bg, pal
+
+TURNED = {'obsideon', 'subterraneon'}
+DRAWN = {'valyreon'}
+
+def drawn_back(key, pal):
+    """source/<key>_back.png: 64x64 at most once the bottom runs off the frame"""
+    im = Image.open(Path(__file__).resolve().parent / 'source' / f'{key}_back.png').convert('RGBA')
+    im = im.crop(im.getchannel('A').getbbox())
+    w, h = im.size
+    g = [[0] * 64 for _ in range(64)]
+    ox = (64 - w) // 2
+    for y in range(min(h, 64)):
+        for x in range(w):
+            p = im.getpixel((x, y))
+            if p[3] >= 128 and 0 <= ox + x < 64:
+                g[y + max(0, 64 - h)][ox + x] = nearest(pal, p[:3])
+    return g
+
+def wing_ears(g, P):
+    """Hypereon: its ears (the official back's) turned into small cyan wings, feathered"""
+    cy, dcy, edge, light = P((164, 230, 230)), P((98, 180, 172)), P((24, 98, 90)), P((152, 238, 213))
+    white, grey, line, black = P((255, 255, 255)), P((205, 205, 213)), P((82, 82, 90)), P((16, 16, 16))
+    def ear(x, y):
+        return (17 <= x <= 44 and y < 17 + (40 - x) * 5 / 21) or (x >= 46 and y < 17 + (x - 46) * 15 / 12)
+    for y in range(64):
+        for x in range(64):
+            v = g[y][x]
+            if v and ear(x, y):
+                g[y][x] = {white: light, grey: cy, line: edge, black: edge}.get(v, v)
+    for (x0, y0, x1, y1) in ((20, 12, 34, 16), (24, 11, 36, 15), (48, 12, 58, 24), (50, 10, 60, 18)):
+        for (x, y) in mask(lambda d: d.line([(x0, y0), (x1, y1)], fill=255)):
+            if g[y][x] in (cy, light): g[y][x] = dcy
 
 def official_back(key):
     front, b, m, feat = DESIGNS[key]
