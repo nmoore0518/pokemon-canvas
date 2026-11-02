@@ -2749,6 +2749,7 @@
 #define FLAG_DEX_EXTRA_CAUGHT      0x8EF   // (to 0x8F6)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
+#define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)
 
 // (generated: tools/gym_hack/place_upgrade_finds.py)
 // The upgrade materials' hidden items (src/item_upgrades.c): FireRed's spare system flags 0x8C3 on

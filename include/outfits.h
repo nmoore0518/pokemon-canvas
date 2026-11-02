@@ -16,6 +16,7 @@ u32 Outfit_ForType(u32 type);
 void Outfit_RefreshPalettes(void);
 void Outfit_UnlockAllGymUniforms(void);
 void Outfit_CatchUp(void);
+void Outfit_FixOldSave(void);
 const u16 *Outfit_GetBackPicPalette(bool32 female);
 void Outfit_ListOnInit(struct DynamicListMenuEventArgs *eventArgs);
 void Outfit_ListOnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);

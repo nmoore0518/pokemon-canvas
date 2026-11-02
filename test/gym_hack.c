@@ -3914,7 +3914,7 @@ TEST("GymHack: wild Pokemon hold clovers, coins and Tera berries at about their 
     u32 c[2];
     gBattleTypeFlags = 0;
     ZeroPlayerPartyMons();
-    CreateMon(&gPlayerParty[0], SPECIES_RATTATA, 20, 0, OTID_STRUCT_RANDOM_NO_SHINY);   // (no Compound Eyes)
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_RATTATA, 20, 0, OTID_STRUCT_RANDOM_NO_SHINY);   // (no Compound Eyes)
     c[0] = c[1] = 0;
     CountWildHeldItems(SPECIES_MEOWTH, 4000, meowth, c, 2);          // 5%, then 5% of the rest
     EXPECT_GE(c[0], 120); EXPECT_LE(c[0], 290);
@@ -3930,4 +3930,91 @@ TEST("GymHack: wild Pokemon hold clovers, coins and Tera berries at about their 
     c[0] = 0;
     CountWildHeldItems(SPECIES_ODDISH, 4000, oddish, c, 1);          // 5% of what the lab's Strong Acid
     EXPECT_GE(c[0], 60); EXPECT_LE(c[0], 200);                         //   and Apple Juice leave (about 3%)
+}
+
+// Every item an evolution is used with works from the bag: the party menu (ExecuteTableBasedItemEffect,
+// CheckIfItemIsTMHMOrEvolutionStone) needs the item's EvoItem effect. (The Sun and Moon Shards had none.)
+TEST("GymHack: every evolution item can be used from the bag")
+{
+    u32 species, i;
+    for (species = 1; species < NUM_SPECIES; species++)
+    {
+        const struct Evolution *evos;
+        if (!IsSpeciesEnabled(species) || (evos = GetSpeciesEvolutions(species)) == NULL)
+            continue;
+        for (i = 0; evos[i].method != EVOLUTIONS_END; i++)
+        {
+            if (evos[i].method != EVO_ITEM || !IsSpeciesEnabled(evos[i].targetSpecies))
+                continue;
+            if (CheckIfItemIsTMHMOrEvolutionStone(evos[i].param) != ITEM_IS_EVOLUTION_STONE)
+                DebugPrintf("species %d: item %d has no EvoItem effect", species, evos[i].param);
+            EXPECT_EQ(CheckIfItemIsTMHMOrEvolutionStone(evos[i].param), ITEM_IS_EVOLUTION_STONE);
+        }
+    }
+}
+
+TEST("GymHack: the Sun and Moon Shards work on Eevee from the bag")
+{
+    ZeroPlayerPartyMons();
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_EEVEE, 20, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(CheckIfItemIsTMHMOrEvolutionStone(ITEM_SUN_SHARD), ITEM_IS_EVOLUTION_STONE);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&gParties[B_TRAINER_PLAYER][0], EVO_MODE_ITEM_CHECK, ITEM_SUN_SHARD, NULL, NULL, CHECK_EVO), SPECIES_ESPEON);
+    EXPECT_EQ(CheckIfItemIsTMHMOrEvolutionStone(ITEM_MOON_SHARD), ITEM_IS_EVOLUTION_STONE);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&gParties[B_TRAINER_PLAYER][0], EVO_MODE_ITEM_CHECK, ITEM_MOON_SHARD, NULL, NULL, CHECK_EVO), SPECIES_UMBREON);
+}
+
+// The hack's own vars and flags never share a number (VAR_ACADEMY_STATE and the outfits did: the
+// Mega Bracelet came early). Each list: every custom one, by its FireRed number.
+TEST("GymHack: the hack's vars don't share numbers")
+{
+    static const u16 vars[] =
+    {
+        VAR_PLAYER_TYPE, VAR_GAUNTLET_STATE, VAR_GAUNTLET_NEXT, VAR_GAUNTLET_WITHDRAWS, VAR_ACADEMY_STATE,
+        VAR_RIVAL_TYPE, VAR_MAP_SCENE_PALLET_TOWN_GYM, VAR_GYM_FINALE, VAR_MOVE_EXTRACTOR_STAGE, VAR_MENTOR_STAGE,
+        VAR_GYM_DECOR_SEEN, VAR_GYM_LEGEND_STATE, VAR_JOHTO_STATE, VAR_EVENT_CAPS, VAR_EVENT_VIVILLON_LO,
+        VAR_EVENT_VIVILLON_HI, VAR_LUCKY_EGG_LEVEL, VAR_AMULET_COIN_LEVEL, VAR_CHAMPION_LOSSES, VAR_INCENSE_STEPS,
+        VAR_OUTFITS_UNLOCKED, VAR_OUTFITS_UNLOCKED_2, VAR_PLAYER_OUTFIT, VAR_DAD_STORY,
+    };
+    u32 i, j;
+    for (i = 0; i < ARRAY_COUNT(vars); i++)
+        for (j = 0; j < i; j++)
+            EXPECT_NE(vars[i], vars[j]);
+}
+
+TEST("GymHack: an old save's outfits move out of the Academy's var (no early Mega Bracelet)")
+{
+    // (v135: Dad's uniform found after being admitted made the shared var 4 | 1 = 5, the bracelet's call;
+    // the call played and gave the bracelet before the 8th badge)
+    FlagClear(FLAG_OUTFIT_VARS_MOVED);
+    FlagClear(FLAG_BADGE08_GET);
+    FlagSet(FLAG_WORLD_MAP_LEADER_ACADEMY);
+    FlagSet(FLAG_HIDE_ACADEMY_GATE);
+    FlagSet(FLAG_GOT_MEGA_BRACELET);
+    AddBagItem(ITEM_MEGA_RING, 1);
+    VarSet(VAR_0x40E5, ACADEMY_ADMITTED | (1 << (OUTFIT_FIRE - 1)));
+    VarSet(VAR_OUTFITS_UNLOCKED, 0);
+    VarSet(VAR_OUTFITS_UNLOCKED_2, 0);
+    VarSet(VAR_MENTOR_STAGE, MENTOR_GAVE_GUARD);
+    VarSet(VAR_PLAYER_TYPE, TYPE_DRAGON);
+    VarSet(VAR_EVENT_CAPS, 1 << 0);   // (cap 0 "found": really the Dragon uniform)
+    Outfit_FixOldSave();
+    EXPECT_EQ(VarGet(VAR_ACADEMY_STATE), ACADEMY_ADMITTED);
+    EXPECT(!FlagGet(FLAG_GOT_MEGA_BRACELET));
+    EXPECT(!CheckBagHasItem(ITEM_MEGA_RING, 1));
+    EXPECT(Outfit_IsUnlocked(OUTFIT_FIRE));
+    EXPECT(Outfit_IsUnlocked(OUTFIT_DRAGON));
+    EXPECT_EQ(VarGet(VAR_EVENT_CAPS), 0);
+    EXPECT(FlagGet(FLAG_OUTFIT_VARS_MOVED));
+    // ...and only once
+    VarSet(VAR_ACADEMY_STATE, ACADEMY_BRACELET_CALL);
+    Outfit_FixOldSave();
+    EXPECT_EQ(VarGet(VAR_ACADEMY_STATE), ACADEMY_BRACELET_CALL);
+    // Invited, then the Normal uniform (outfit 2, bit 1): 1 | 2 = 3 would skip the escort; the
+    // invitation comes again instead
+    FlagClear(FLAG_OUTFIT_VARS_MOVED);
+    FlagClear(FLAG_HIDE_ACADEMY_GATE);
+    FlagClear(FLAG_WORLD_MAP_LEADER_ACADEMY);
+    VarSet(VAR_0x40E5, ACADEMY_INVITE | (1 << (OUTFIT_NORMAL - 1)));
+    Outfit_FixOldSave();
+    EXPECT_EQ(VarGet(VAR_ACADEMY_STATE), ACADEMY_NONE);
 }

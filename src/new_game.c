@@ -206,6 +206,7 @@ void NewGameInitData(void)
     ResetPokemonStorageSystem();
     MasteryHall_Clear();   // Gym Trainer hack
     BerryField_Clear();    // Pokémon Canvas
+    FlagSet(FLAG_OUTFIT_VARS_MOVED);   // (nothing to fix: src/outfits.c Outfit_FixOldSave)
     Archive_Clear();
     TeamBuilder_Clear();
     DeactivateAllRoamers();

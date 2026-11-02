@@ -39,12 +39,49 @@ def city():
     for dy in range(SIZE[1]):
         for dx in range(SIZE[0]):
             raw[(DST[1] + dy) * w + DST[0] + dx] = raw[(SRC[1] + dy) * w + SRC[0] + dx]
+    # The roof's top row has the street drawn behind it (the town's house stands against the
+    # street); here it's against grass, so: the same roof over grass (new metatiles, made once)
+    roof = roof_on_grass([raw[DST[1] * w + DST[0] + dx] & 0x3FF for dx in range(SIZE[0])])
+    for dx in range(SIZE[0]):
+        i = DST[1] * w + DST[0] + dx
+        raw[i] = (raw[i] & ~0x3FF) | roof[dx]
     path.write_bytes(struct.pack(f"<{w * h}H", *raw))
     warps = [wp for wp in m["warp_events"] if wp["dest_map"] != MAP_ID]
     warps.append({"x": DOOR[0], "y": DOOR[1], "elevation": 3, "dest_map": MAP_ID, "dest_warp_id": "1"})
     m["warp_events"] = warps
     CITY.write_text(json.dumps(m, indent=2) + "\n")
     return len(warps) - 1
+
+
+TILESET = ROOT / "data/tilesets/secondary/viridian_city_frlg"
+GRASS = 0x11          # (the general tileset's plain grass: its bottom layer goes behind the roof)
+SECONDARY_START = 0x280
+
+
+def roof_on_grass(roof):
+    """metatile ids of the roof-top row, each with grass behind it (appended to the tileset once;
+    roof ids that are already the grass versions are kept)"""
+    mt = bytearray((TILESET / "metatiles.bin").read_bytes())
+    attrs = bytearray((TILESET / "metatile_attributes.bin").read_bytes())
+    general = (ROOT / "data/tilesets/primary/general_frlg/metatiles.bin").read_bytes()
+    grass_bottom = general[GRASS * 16:GRASS * 16 + 8]
+    out = []
+    for mid in roof:
+        local = mid - SECONDARY_START
+        entry = grass_bottom + bytes(mt[local * 16 + 8:local * 16 + 16])
+        if bytes(mt[local * 16:local * 16 + 8]) == grass_bottom:
+            out.append(mid)
+            continue
+        n = len(mt) // 16
+        found = next((k for k in range(n) if bytes(mt[k * 16:k * 16 + 16]) == entry), None)
+        if found is None:
+            mt += entry
+            attrs += attrs[local * 4:local * 4 + 4]
+            found = n
+        out.append(SECONDARY_START + found)
+    (TILESET / "metatiles.bin").write_bytes(bytes(mt))
+    (TILESET / "metatile_attributes.bin").write_bytes(bytes(attrs))
+    return out
 
 
 def house(city_warp):

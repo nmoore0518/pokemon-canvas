@@ -158,7 +158,7 @@
 #define VAR_0x408E                 0x408E
 #define VAR_0x408F                 0x408F
 #define VAR_0x4090                 0x4090
-#define VAR_OUTFITS_UNLOCKED_2     0x4091   // Pokémon Canvas: outfits 17-32 unlocked
+#define VAR_0x4091                 0x4091   // (Pokémon Canvas: VAR_EVENT_CAPS, constants/vars.h)
 #define VAR_0x4092                 0x4092
 #define VAR_0x4093                 0x4093
 #define VAR_0x4094                 0x4094
@@ -204,8 +204,10 @@
 #define VAR_0x40BD                 0x40BD
 #define VAR_0x40BE                 0x40BE
 #define VAR_0x40BF                 0x40BF
-#define VAR_0x40C0                 0x40C0
-#define VAR_0x40C1                 0x40C1
+// Pokémon Canvas: outfits 1-16 and 17-32 unlocked (bit n-1). Until v136 these were 0x40E5 and 0x4091,
+// which VAR_ACADEMY_STATE and VAR_EVENT_CAPS had too (src/outfits.c Outfit_FixOldSave)
+#define VAR_OUTFITS_UNLOCKED       0x40C0
+#define VAR_OUTFITS_UNLOCKED_2     0x40C1
 #define VAR_0x40C2                 0x40C2
 #define VAR_0x40C3                 0x40C3
 #define VAR_0x40C4                 0x40C4
@@ -241,7 +243,7 @@
 #define VAR_0x40E2                 0x40E2
 #define VAR_0x40E3                 0x40E3
 #define VAR_0x40E4                 0x40E4
-#define VAR_OUTFITS_UNLOCKED       0x40E5   // Pokémon Canvas: outfits 1-16 unlocked (bit n-1)
+#define VAR_0x40E5                 0x40E5   // (Pokémon Canvas: VAR_ACADEMY_STATE, constants/vars.h)
 #define VAR_DAILY_SLOTS            0x40E6
 #define VAR_DAILY_WILDS            0x40E7
 #define VAR_DAILY_BLENDER          0x40E8

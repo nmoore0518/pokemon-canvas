@@ -20,6 +20,9 @@
 #include "constants/outfits.h"
 #include "constants/pokemon.h"
 #include "constants/vars.h"
+#include "constants/flags.h"
+#include "constants/items.h"
+#include "item.h"
 
 #include "data/outfits.h"
 
@@ -168,6 +171,53 @@ void Outfit_CatchUp(void)
             break;
         }
     }
+}
+
+// A save from before v136 kept the outfits in 0x40E5 and 0x4091, which VAR_ACADEMY_STATE and
+// VAR_EVENT_CAPS had too: each wrote over the other. (Finding Dad's uniform, outfit 1, made an
+// admitted player's Academy state 4 | 1 = 5, ACADEMY_BRACELET_CALL: the Mega Bracelet came early.)
+// Once, on loading such a save: the outfits move to their own vars (what can be told apart: bits the
+// Academy never used, and what the story has given), the Academy's state is worked out again from
+// its flags, a bracelet that came before the 8th badge goes back (it comes again with the badge),
+// and caps the uniforms marked as found are unmarked (found again where they're hidden).
+void Outfit_FixOldSave(void)
+{
+    u32 old = VarGet(VAR_0x40E5), caps = VarGet(VAR_EVENT_CAPS), state, k, before;
+
+    if (FlagGet(FLAG_OUTFIT_VARS_MOVED))
+        return;
+    FlagSet(FLAG_OUTFIT_VARS_MOVED);
+
+    // The outfits: bits 3 on of the old var are outfits (the Academy's states are 0-6), then the story's
+    VarSet(VAR_OUTFITS_UNLOCKED, VarGet(VAR_OUTFITS_UNLOCKED) | (old & ~7u));
+    before = VarGet(VAR_OUTFITS_UNLOCKED_2);
+    Outfit_CatchUp();
+    for (k = 0; k < OUTFIT_COUNT - 17; k++)        // (Dragon, Dark, Fairy: they were set in the caps' var)
+    {
+        if ((VarGet(VAR_OUTFITS_UNLOCKED_2) & ~before) & (1 << k) && !(caps & (1 << (8 + k))))
+            caps &= ~(1u << k);
+    }
+    VarSet(VAR_EVENT_CAPS, caps);
+
+    // The Academy. The outfits only ever added bits to its state (the Academy set it whole), so the
+    // low bits hold the real state plus maybe some outfits': what the flags say decides between them
+    k = old & 7;
+    if (FlagGet(FLAG_GOT_MEGA_BRACELET))
+        state = ACADEMY_ADMITTED;
+    else if (!FlagGet(FLAG_HIDE_ACADEMY_GATE))      // (not past the gate: 0, 1 or 2)
+        state = (k == ACADEMY_INVITE || k == ACADEMY_ESCORT) ? k : ACADEMY_NONE;   // (NONE: the invitation comes again)
+    else if (k == ACADEMY_WELCOME)
+        state = ACADEMY_WELCOME;
+    else if (k == 7)                                // (3 or 4, plus outfits)
+        state = FlagGet(FLAG_WORLD_MAP_LEADER_ACADEMY) ? ACADEMY_ADMITTED : ACADEMY_WELCOME;
+    else
+        state = ACADEMY_ADMITTED;                   // (4, 5 or 6: admitted; the bracelet's call comes again with the badge)
+    if (FlagGet(FLAG_GOT_MEGA_BRACELET) && !FlagGet(FLAG_BADGE08_GET))
+    {
+        FlagClear(FLAG_GOT_MEGA_BRACELET);
+        RemoveBagItem(ITEM_MEGA_RING, 1);
+    }
+    VarSet(VAR_ACADEMY_STATE, state);
 }
 
 // Every type's gym uniform (changing the gym's type, after a mastery). VAR_RESULT = whether any

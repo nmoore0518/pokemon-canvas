@@ -9,6 +9,7 @@
 #include "gba/flash_internal.h"
 #include "fieldmap.h"
 #include "save.h"
+#include "outfits.h"
 #include "item.h"
 #include "task.h"
 #include "decompress.h"
@@ -983,6 +984,8 @@ u8 LoadGameSave(u8 saveType)
         status = TryLoadSaveSlot(FULL_SAVE_SLOT, gRamSaveSectorLocations);
         LoadExtraSectors(status);
         CopyPartyAndObjectsFromSave();
+        if (status == SAVE_STATUS_OK || status == SAVE_STATUS_ERROR)
+            Outfit_FixOldSave();   // (Pokémon Canvas: a save from before v136)
         gSaveFileStatus = status;
         gGameContinueCallback = NULL;
         break;
