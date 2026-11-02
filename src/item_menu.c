@@ -1718,6 +1718,7 @@ static void OpenContextMenu(u8 taskId)
                 if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
                     gBagMenu->contextMenuItemsBuffer[0] = ACTION_CHECK;
                 if (GetItemImportance(gSpecialVar_ItemId)   // Gym Trainer hack: one-of-a-kind items
+                 || gSpecialVar_ItemId == ITEM_MOVE_EXTRACTOR    //   (and the rare Move Extractor: counted, not tossed)
                  || GetItemHoldEffect(gSpecialVar_ItemId) == HOLD_EFFECT_TYPE_GUARD
                  || GetItemHoldEffect(gSpecialVar_ItemId) == HOLD_EFFECT_TYPE_EDGE)
                     gBagMenu->contextMenuItemsBuffer[2] = ACTION_DUMMY;

@@ -439,6 +439,9 @@ DadStory_EventScript_GiovanniFinale::
 	playmoncry SPECIES_CHANSEY, CRY_MODE_NORMAL
 	waitmoncry
 	delay 20
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox DadStory_Text_ChanseyGlows
+	closemessage
 	setvar VAR_0x8004, 2   @ vertical pan
 	setvar VAR_0x8005, 2   @ horizontal pan
 	setvar VAR_0x8006, 16  @ num shakes
@@ -448,13 +451,21 @@ DadStory_EventScript_GiovanniFinale::
 	waitstate
 	applymovement LOCALID_VIRIDIAN_GYM_CHANSEY, DadStory_Movement_ChanseyAttacks
 	waitmovement 0
+	msgbox DadStory_Text_ChanseyUnleashes
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox DadStory_Text_GiovanniOverwhelmed
+	closemessage
 	playse SE_M_HYPER_BEAM
 	fadescreen FADE_TO_WHITE
 	removeobject LOCALID_VIRIDIAN_GIOVANNI
 	setflag FLAG_HIDE_VIRIDIAN_GIOVANNI
 	delay 60
 	fadescreen FADE_FROM_WHITE
-	delay 90
+	delay 60
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox DadStory_Text_GiovanniGone
+	closemessage
+	delay 30
 	playse SE_BALL_OPEN
 	removeobject LOCALID_VIRIDIAN_GYM_CHANSEY
 	setflag FLAG_HIDE_VIRIDIAN_GYM_CHANSEY
@@ -462,6 +473,7 @@ DadStory_EventScript_GiovanniFinale::
 	applymovement LOCALID_VIRIDIAN_GYM_MOM, Common_Movement_WalkInPlaceFasterLeft
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 	waitmovement 0
+	textcolor NPC_TEXT_COLOR_FEMALE
 	msgbox DadStory_Text_MomDadsChansey
 	special DadStory_GiveChansey
 	playfanfare MUS_RG_OBTAIN_KEY_ITEM

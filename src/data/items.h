@@ -16280,10 +16280,10 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_MOVE_EXTRACTOR] =
     {
         // Gym Trainer hack: in battle, takes the foe's last move for the player's Pokémon, as a
-        // move of its own primary type (src/move_extractor.c). Used up only once a move is learned.
+        // move of its own primary type (src/move_extractor.c). Used up only once a move is learned
+        // (not important: the bag shows how many there are).
         .name = ITEM_NAME("Move Extractor"),
         .price = 0,
-        .importance = 1,
         .description = COMPOUND_STRING(
             "Steals a foe's last\n"
             "move, turning it\n"

@@ -3579,6 +3579,7 @@ extern const u8 DadStory_Text_MomSendoff[], DadStory_Text_RivalMomHasSomething[]
     DadStory_Text_GiovanniTakeThese[], DadStory_Text_ReceivedEarthBadge[], DadStory_Text_GiovanniYourFather[],
     DadStory_Text_GiovanniRematch[], DadStory_Text_GiovanniFinalDefeat[], DadStory_Text_GiovanniYouLost[],
     DadStory_Text_GiovanniHow[], DadStory_Text_MomLastTime[], DadStory_Text_MomDadsChansey[],
+    DadStory_Text_ChanseyGlows[], DadStory_Text_ChanseyUnleashes[], DadStory_Text_GiovanniOverwhelmed[], DadStory_Text_GiovanniGone[],
     DadStory_Text_ReceivedDadsChansey[], DadStory_Text_ReceivedDadsNotebook[], DadStory_Text_ChanseySentToPC[],
     DadStory_Text_Note1[], DadStory_Text_Note2[], DadStory_Text_Note3[], DadStory_Text_Note4[], DadStory_Text_Notebook[],
     RocketHideout_B4F_Text_GiovanniIntro[], RocketHideout_B4F_Text_GiovanniPostBattle[], RocketHideout_B4F_Text_Grunt2Intro[],
@@ -3626,6 +3627,7 @@ TEST("GymHack: Dad story: every line fits the message box, and Dad's notes fit t
         DadStory_Text_GiovanniTakeThese, DadStory_Text_ReceivedEarthBadge, DadStory_Text_GiovanniYourFather,
         DadStory_Text_GiovanniRematch, DadStory_Text_GiovanniFinalDefeat, DadStory_Text_GiovanniYouLost,
         DadStory_Text_GiovanniHow, DadStory_Text_MomLastTime, DadStory_Text_MomDadsChansey,
+        DadStory_Text_ChanseyGlows, DadStory_Text_ChanseyUnleashes, DadStory_Text_GiovanniOverwhelmed, DadStory_Text_GiovanniGone,
         DadStory_Text_ReceivedDadsChansey, DadStory_Text_ReceivedDadsNotebook, DadStory_Text_ChanseySentToPC,
         RocketHideout_B4F_Text_GiovanniIntro, RocketHideout_B4F_Text_GiovanniPostBattle, RocketHideout_B4F_Text_Grunt2Intro,
         RocketHideout_B1F_Text_Grunt1Intro, RocketHideout_B1F_Text_Grunt5Intro, CeladonCity_GameCorner_Text_GruntPostBattle,
@@ -4017,4 +4019,9 @@ TEST("GymHack: an old save's outfits move out of the Academy's var (no early Meg
     VarSet(VAR_0x40E5, ACADEMY_INVITE | (1 << (OUTFIT_NORMAL - 1)));
     Outfit_FixOldSave();
     EXPECT_EQ(VarGet(VAR_ACADEMY_STATE), ACADEMY_NONE);
+}
+
+TEST("GymHack: the Move Extractor shows how many there are (it's used up)")
+{
+    EXPECT_EQ(GetItemImportance(ITEM_MOVE_EXTRACTOR), 0);
 }

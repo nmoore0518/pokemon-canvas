@@ -186,6 +186,30 @@ DadStory_Text_MomLastTime::
 	.string "family, GIOVANNI.\p"
 	.string "The last time!$"
 
+@ (Claude's drafts, Nov 1: the narration as CHANSEY attacks)
+DadStory_Text_ChanseyGlows::
+	.string "CHANSEY let out a cry that shook the\n"
+	.string "whole GYM.\p"
+	.string "It began to glow, brighter and\n"
+	.string "brighter, with all the power DAD\l"
+	.string "had built into it.$"
+
+DadStory_Text_ChanseyUnleashes::
+	.string "CHANSEY unleashed it all at once, in a\n"
+	.string "blinding beam of light aimed straight\l"
+	.string "at GIOVANNI!$"
+
+DadStory_Text_GiovanniOverwhelmed::
+	.string "GIOVANNI: Wh-what is this…?!\p"
+	.string "This power… it's… too much…!$"
+
+DadStory_Text_GiovanniGone::
+	.string "When the light faded, GIOVANNI was\n"
+	.string "gone.\p"
+	.string "The boss of TEAM ROCKET had been\n"
+	.string "overwhelmed by the very power DAD\l"
+	.string "created.$"
+
 DadStory_Text_MomDadsChansey::
 	.string "MOM: He created this POKéMON. This\n"
 	.string "CHANSEY.\p"
