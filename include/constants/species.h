@@ -1705,6 +1705,7 @@ enum __attribute__((packed)) Species
     SPECIES_APPARITEON,
     SPECIES_AUTOMATEON,
     SPECIES_VALYREON,
+    SPECIES_PIKACHU_SURFING, // Pokémon Canvas: Surfing Pikachu (the Stadium trainer's gift, Route 21's hidden cave)
     SPECIES_CUSTOM_END,
 
     SPECIES_EGG = SPECIES_CUSTOM_END,

@@ -541,6 +541,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletPen
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletHoodedFigure;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletBill;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletPalmPilot;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GoldDiglett;
 // END Gauntlet externs
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -1072,6 +1073,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_GAUNTLET_HOODED_FIGURE] = &gObjectEventGraphicsInfo_GauntletHoodedFigure,
     [OBJ_EVENT_GFX_GAUNTLET_BILL] = &gObjectEventGraphicsInfo_GauntletBill,
     [OBJ_EVENT_GFX_GAUNTLET_PALM_PILOT] = &gObjectEventGraphicsInfo_GauntletPalmPilot,
+    [OBJ_EVENT_GFX_GOLD_DIGLETT] = &gObjectEventGraphicsInfo_GoldDiglett,
 // END Gauntlet
 };
 

@@ -135,3 +135,77 @@
         .cannotBeTraded = TRUE,
     },
 
+    // Pokémon Canvas: Surfing Pikachu, as in Yellow (from Stadium's Master Ball Cup): a Pikachu on a
+    // surfboard that knows Surf. The Stadium trainer's gift in Route 21's hidden cave
+    // (data/scripts/surfing_pikachu.inc); with one in the party, Pikachu's Beach (src/surfing_minigame.c)
+    // opens on Route 19. One of a kind: no evolving, no eggs, not from Bill's Palm Pilot.
+    [SPECIES_PIKACHU_SURFING] =
+    {
+        .baseHP        = 35,
+        .baseAttack    = 55,
+        .baseDefense   = PIKACHU_DEFENSE,
+        .baseSpeed     = 90,
+        .baseSpAttack  = 50,
+        .baseSpDefense = P_UPDATED_STATS >= GEN_6 || P_UPDATED_STATS == GEN_1 ? 50 : 40,
+        .types = MON_TYPES(TYPE_ELECTRIC),
+        .catchRate = 190,
+        .expYield = PIKACHU_EXP_YIELD,
+        .evYield_Speed = 2,
+        .genderRatio = PERCENT_FEMALE(50),
+        .eggCycles = 10,
+        .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_FAST,
+        .eggGroups = MON_EGG_GROUPS(EGG_GROUP_NO_EGGS_DISCOVERED),
+        .abilities = { ABILITY_STATIC, ABILITY_NONE, ABILITY_LIGHTNING_ROD },
+        .bodyColor = BODY_COLOR_YELLOW,
+        .speciesName = _("Pikachu"),
+        .cryId = CRY_PIKACHU,
+        .natDexNum = NATIONAL_DEX_PIKACHU,
+        .categoryName = _("Mouse"),
+        .height = 4,
+        .weight = 60,
+        .description = COMPOUND_STRING(
+            "A Pikachu that loves the sea. It rides\n"
+            "the waves on its surfboard, and the\n"
+            "bigger the wave, the happier it is.\n"
+            "It learned to surf in a faraway stadium."),
+        .pokemonScale = 479,
+        .pokemonOffset = 19,
+        .trainerScale = 256,
+        .trainerOffset = 0,
+        .frontPic = gMonFrontPic_PikachuSurfing,
+        .frontPicSize = MON_COORDS_SIZE(64, 56),
+        .frontPicYOffset = 4,
+        .frontAnimFrames = ANIM_FRAMES(
+            ANIMCMD_FRAME(0, 15),
+            ANIMCMD_FRAME(1, 60),
+            ANIMCMD_FRAME(1, 20),
+            ANIMCMD_FRAME(0, 1),
+        ),
+        .frontAnimId = ANIM_H_SLIDE_WOBBLE,
+        .frontAnimDelay = 25,
+        .backPic = gMonBackPic_PikachuSurfing,
+        .backPicSize = MON_COORDS_SIZE(64, 64),
+        .backPicYOffset = 0,
+        .backAnimId = BACK_ANIM_SHAKE_FLASH_YELLOW,
+        .palette = gMonPalette_PikachuSurfing,
+        .shinyPalette = gMonShinyPalette_PikachuSurfing,
+        .iconSprite = gMonIcon_PikachuSurfing,
+        .iconPalIndex = 2,
+        .pokemonJumpType = PKMN_JUMP_TYPE_NORMAL,
+        SHADOW(-3, 5, SHADOW_SIZE_M)
+        OVERWORLD(
+            sPicTable_Pikachu,
+            SIZE_32x32,
+            SHADOW_SIZE_M,
+            TRACKS_FOOT,
+            sAnimTable_Following,
+            gOverworldPalette_Pikachu,
+            gShinyOverworldPalette_Pikachu
+        )
+        FOOTPRINT(Pikachu)
+        .levelUpLearnset = sPikachuLevelUpLearnset,
+        .teachableLearnset = sPikachuTeachableLearnset,
+        .isFrontierBanned = TRUE,
+        .cannotBeTraded = TRUE,
+    },

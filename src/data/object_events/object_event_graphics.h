@@ -898,4 +898,6 @@ const u16 gObjectEventPic_GauntletBill[] = INCGFX_U16("graphics/object_events/pi
 const u16 gObjectEventPal_GauntletBill[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/bill.png", ".gbapal");
 const u16 gObjectEventPic_GauntletPalmPilot[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/palm_pilot.png", ".4bpp", "-mwidth 2 -mheight 4");
 const u16 gObjectEventPal_GauntletPalmPilot[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/palm_pilot.png", ".gbapal");
+const u16 gObjectEventPic_GoldDiglett[] = INCGFX_U16("graphics/object_events/pics/misc/gold_diglett.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u16 gObjectEventPal_GoldDiglett[] = INCGFX_U16("graphics/object_events/pics/misc/gold_diglett.png", ".gbapal");
 // END Gauntlet

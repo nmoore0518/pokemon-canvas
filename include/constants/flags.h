@@ -2747,6 +2747,12 @@
 #define DEX_EXTRA_FLAGS            8
 #define FLAG_DEX_EXTRA_SEEN        0x8E7   // (to 0x8EE)
 #define FLAG_DEX_EXTRA_CAUGHT      0x8EF   // (to 0x8F6)
+// Surfing Pikachu (Route 21's hidden cave, src/surfing_pikachu.c): FireRed's spare system flags 0x8F7 on
+#define FLAG_STADIUM_MET           0x8F7   // (the Stadium trainer has told his story)
+#define FLAG_STADIUM_GAVE_SURFING  0x8F8   // (he gave the Surfing Pikachu: beaten with a Pikachu)
+#define FLAG_STADIUM_GAVE_SHINY    0x8F9   // (...and the shiny one: beaten with nothing but Pikachu)
+#define FLAG_STADIUM_OWES_SURFING  0x8FA   // (earned, but there was no room: he gives it next time)
+#define FLAG_STADIUM_OWES_SHINY    0x8FB
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)

@@ -3975,7 +3975,7 @@ TEST("GymHack: the hack's vars don't share numbers")
         VAR_RIVAL_TYPE, VAR_MAP_SCENE_PALLET_TOWN_GYM, VAR_GYM_FINALE, VAR_MOVE_EXTRACTOR_STAGE, VAR_MENTOR_STAGE,
         VAR_GYM_DECOR_SEEN, VAR_GYM_LEGEND_STATE, VAR_JOHTO_STATE, VAR_EVENT_CAPS, VAR_EVENT_VIVILLON_LO,
         VAR_EVENT_VIVILLON_HI, VAR_LUCKY_EGG_LEVEL, VAR_AMULET_COIN_LEVEL, VAR_CHAMPION_LOSSES, VAR_INCENSE_STEPS,
-        VAR_OUTFITS_UNLOCKED, VAR_OUTFITS_UNLOCKED_2, VAR_PLAYER_OUTFIT, VAR_DAD_STORY,
+        VAR_OUTFITS_UNLOCKED, VAR_OUTFITS_UNLOCKED_2, VAR_PLAYER_OUTFIT, VAR_DAD_STORY, VAR_SURFING_HIGH_SCORE,
     };
     u32 i, j;
     for (i = 0; i < ARRAY_COUNT(vars); i++)
@@ -4024,4 +4024,106 @@ TEST("GymHack: an old save's outfits move out of the Academy's var (no early Meg
 TEST("GymHack: the Move Extractor shows how many there are (it's used up)")
 {
     EXPECT_EQ(GetItemImportance(ITEM_MOVE_EXTRACTOR), 0);
+}
+
+// Surfing Pikachu (src/surfing_pikachu.c): the Stadium trainer's rewards
+#include "surfing_pikachu.h"
+extern const u8 Route21_StadiumCave_Text_Intro[], Route21_StadiumCave_Text_Again[], Route21_StadiumCave_Text_AgainAllGiven[],
+    Route21_StadiumCave_Text_Battle[], Route21_StadiumCave_Text_Start[], Route21_StadiumCave_Text_NotNow[],
+    Route21_StadiumCave_Text_Defeat[], Route21_StadiumCave_Text_BringPikachu[], Route21_StadiumCave_Text_WonNothingLeft[],
+    Route21_StadiumCave_Text_WithPikachu[], Route21_StadiumCave_Text_OnlyPikachu[], Route21_StadiumCave_Text_Received[],
+    Route21_StadiumCave_Text_ReceivedShiny[], Route21_StadiumCave_Text_SentToPC[], Route21_StadiumCave_Text_TakeCare[],
+    Route21_StadiumCave_Text_NoRoom[], Route21_StadiumCave_Text_GoldDiglett[],
+    Route19_BeachHouse_Text_NoSurfer[], Route19_BeachHouse_Text_WhoaASurfer[], Route19_BeachHouse_Text_Again[],
+    Route19_BeachHouse_Text_HangTen[], Route19_BeachHouse_Text_After[], Route19_BeachHouse_Text_NotToday[];
+void SurfingPikachu_CheckParty(void);
+void SurfingPikachu_Owed(void);
+void SurfingPikachu_Give(void);
+
+static void PartyOf(const u16 *species, u32 n)
+{
+    u32 i;
+    ZeroPlayerPartyMons();
+    for (i = 0; i < n; i++)
+        CreateMon(&gParties[B_TRAINER_PLAYER][i], species[i], 50, 0, OTID_STRUCT_PLAYER_ID);
+    gPartiesCount[B_TRAINER_PLAYER] = n;
+}
+
+TEST("GymHack: Surfing Pikachu: some Pikachu earn it, nothing but Pikachu the shiny one, one of each")
+{
+    static const u16 sNone[] = {SPECIES_RATTATA, SPECIES_PIDGEY};
+    static const u16 sSome[] = {SPECIES_RATTATA, SPECIES_PIKACHU};
+    static const u16 sAll[] = {SPECIES_PIKACHU, SPECIES_PIKACHU_PARTNER, SPECIES_PIKACHU_SURFING};
+    struct Pokemon *mon;
+    FlagClear(FLAG_STADIUM_GAVE_SURFING); FlagClear(FLAG_STADIUM_GAVE_SHINY);
+    FlagClear(FLAG_STADIUM_OWES_SURFING); FlagClear(FLAG_STADIUM_OWES_SHINY);
+
+    PartyOf(sNone, 2);
+    SurfingPikachu_CheckParty();
+    EXPECT_EQ(gSpecialVar_Result, STADIUM_PARTY_NO_PIKACHU);
+    SurfingPikachu_Owed();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+
+    PartyOf(sAll, 3);
+    SurfingPikachu_CheckParty();
+    EXPECT_EQ(gSpecialVar_Result, STADIUM_PARTY_ALL_PIKACHU);
+    SurfingPikachu_Owed();
+    EXPECT_EQ(gSpecialVar_Result, 2);
+    SurfingPikachu_Give();
+    EXPECT_EQ(gSpecialVar_Result, MON_GIVEN_TO_PARTY);
+    EXPECT_EQ(gSpecialVar_0x8004, TRUE);
+    mon = &gParties[B_TRAINER_PLAYER][3];
+    EXPECT_EQ(GetMonData(mon, MON_DATA_SPECIES), SPECIES_PIKACHU_SURFING);
+    EXPECT(GetMonData(mon, MON_DATA_IS_SHINY));
+    EXPECT_EQ(GetMonData(mon, MON_DATA_MOVE1), MOVE_SURF);
+    EXPECT(FlagGet(FLAG_STADIUM_GAVE_SHINY));
+    SurfingPikachu_Owed();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+
+    // nothing but Pikachu again: the shiny one's been given, so the plain one
+    PartyOf(sAll, 3);
+    SurfingPikachu_CheckParty();
+    SurfingPikachu_Owed();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    SurfingPikachu_Give();
+    EXPECT_EQ(gSpecialVar_0x8004, FALSE);
+    EXPECT(!GetMonData(&gParties[B_TRAINER_PLAYER][3], MON_DATA_IS_SHINY));
+    EXPECT(FlagGet(FLAG_STADIUM_GAVE_SURFING));
+
+    // and then nothing more
+    PartyOf(sSome, 2);
+    SurfingPikachu_CheckParty();
+    EXPECT_EQ(gSpecialVar_Result, STADIUM_PARTY_SOME_PIKACHU);
+    SurfingPikachu_Owed();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+}
+
+TEST("GymHack: Surfing Pikachu: not from Bill's Palm Pilot, and it knows Surf's in its own species")
+{
+    u32 i;
+    for (i = 0; i < DEX_FORM_COUNT; i++)
+        EXPECT_NE(gDexFormSpecies[i], SPECIES_PIKACHU_SURFING);
+    EXPECT(SurfingPikachu_IsPikachu(SPECIES_PIKACHU_SURFING));
+    EXPECT(SurfingPikachu_IsPikachu(SPECIES_PIKACHU_PARTNER));
+    EXPECT(!SurfingPikachu_IsPikachu(SPECIES_RAICHU));
+    EXPECT_EQ(GetSpeciesEvolutions(SPECIES_PIKACHU_SURFING), NULL);
+}
+
+TEST("GymHack: Surfing Pikachu: the Stadium trainer's and the Surfin' Dude's lines fit the message box")
+{
+    static const u8 *const texts[] = {
+        Route21_StadiumCave_Text_Intro, Route21_StadiumCave_Text_Again, Route21_StadiumCave_Text_AgainAllGiven,
+        Route21_StadiumCave_Text_Battle, Route21_StadiumCave_Text_Start, Route21_StadiumCave_Text_NotNow,
+        Route21_StadiumCave_Text_Defeat, Route21_StadiumCave_Text_BringPikachu, Route21_StadiumCave_Text_WonNothingLeft,
+        Route21_StadiumCave_Text_WithPikachu, Route21_StadiumCave_Text_OnlyPikachu, Route21_StadiumCave_Text_Received,
+        Route21_StadiumCave_Text_ReceivedShiny, Route21_StadiumCave_Text_SentToPC, Route21_StadiumCave_Text_TakeCare,
+        Route21_StadiumCave_Text_NoRoom, Route21_StadiumCave_Text_GoldDiglett,
+        Route19_BeachHouse_Text_NoSurfer, Route19_BeachHouse_Text_WhoaASurfer, Route19_BeachHouse_Text_Again,
+        Route19_BeachHouse_Text_HangTen, Route19_BeachHouse_Text_After, Route19_BeachHouse_Text_NotToday,
+    };
+    u32 i;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, COMPOUND_STRING("9999"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectStoryTextFits(texts[i], 27 * 8 - 4, 99);
 }

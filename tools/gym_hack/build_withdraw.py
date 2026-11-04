@@ -31,7 +31,7 @@ def preprocess(header, *extra):
         return out.read_text()
 
 
-EXCLUDE = {"SPECIES_CLEFFABILL", "SPECIES_CHANSEY_DAD"}
+EXCLUDE = {"SPECIES_CLEFFABILL", "SPECIES_CHANSEY_DAD", "SPECIES_PIKACHU_SURFING"}
 LABEL = {   # forms whose constant doesn't say it well
     "SPECIES_PIKACHU_PHD": "Pikachu Ph.D.",
     "SPECIES_PIKACHU_ORIGINAL": "Pikachu Orig. Cap",

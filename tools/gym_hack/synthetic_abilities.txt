@@ -665,3 +665,4 @@ LENNEON : Tinted Lens : its Bug moves still hit the many types that resist them
 APPARITEON : Levitate : a phantom floats over Ground moves
 AUTOMATEON : Steelworker : Steel moves 1.5x, as well as its own STAB
 VALYREON : Multiscale : halves the first hit at full HP (Dragonite's)
+PIKACHU_SURFING : Swift Swim : twice as fast in the rain (it lives for the water)

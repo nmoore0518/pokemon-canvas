@@ -27771,6 +27771,13 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
 #endif //OW_POKEMON_OBJECT_EVENTS
 // (end of the new eeveelutions)
 
+// Pokémon Canvas: Surfing Pikachu (tools/gym_hack/surfing_pikachu_art.py)
+    const u32 gMonFrontPic_PikachuSurfing[] = INCGFX_U32("graphics/pokemon/pikachu/surfing/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_PikachuSurfing[] = INCGFX_U16("graphics/pokemon/pikachu/surfing/normal.pal", ".gbapal");
+    const u32 gMonBackPic_PikachuSurfing[] = INCGFX_U32("graphics/pokemon/pikachu/surfing/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_PikachuSurfing[] = INCGFX_U16("graphics/pokemon/pikachu/surfing/shiny.pal", ".gbapal");
+    const u8 gMonIcon_PikachuSurfing[] = INCGFX_U8("graphics/pokemon/pikachu/surfing/icon.png", ".4bpp");
+
 // Gym Trainer hack: Bill's hybrid (tools/gym_hack/bill_art.py)
     const u32 gMonFrontPic_Cleffabill[] = INCGFX_U32("graphics/pokemon/cleffabill/anim_front.png", ".4bpp.smol");
     const u16 gMonPalette_Cleffabill[] = INCGFX_U16("graphics/pokemon/cleffabill/normal.pal", ".gbapal");

@@ -554,6 +554,7 @@ enum
     OBJ_EVENT_GFX_GAUNTLET_BILL,
     OBJ_EVENT_GFX_GAUNTLET_PALM_PILOT,
 // END Gauntlet
+    OBJ_EVENT_GFX_GOLD_DIGLETT,    // Pokémon Canvas: Route 21's hidden cave (tools/gym_hack/gold_diglett_art.py)
     NUM_OBJ_EVENT_GFX,
 };
 
@@ -879,6 +880,7 @@ enum
 #define OBJ_EVENT_PAL_TAG_GAUNTLET_HOODED_FIGURE 0x1398
 #define OBJ_EVENT_PAL_TAG_GAUNTLET_BILL 0x1399
 #define OBJ_EVENT_PAL_TAG_GAUNTLET_PALM_PILOT 0x139a
+#define OBJ_EVENT_PAL_TAG_GOLD_DIGLETT 0x139b
 // END Gauntlet palette tags
 #define OBJ_EVENT_PAL_TAG_WHITE                   (OBJ_EVENT_PAL_TAG_NONE - 1)
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF

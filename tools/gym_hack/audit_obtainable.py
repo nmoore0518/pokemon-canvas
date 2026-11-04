@@ -74,7 +74,7 @@ blocks = re.split(r"\[(SPECIES_[A-Z0-9_]+)\]\s*=", src)
 S = {}
 for i in range(1, len(blocks), 2):
     sp, b = blocks[i], blocks[i+1]
-    if sp in S or sp in ('SPECIES_NONE', 'SPECIES_EGG', 'SPECIES_CLEFFABILL', 'SPECIES_CHANSEY_DAD'): continue   # (Bill's hybrid; DAD's CHANSEY, a gift: by design)
+    if sp in S or sp in ('SPECIES_NONE', 'SPECIES_EGG', 'SPECIES_CLEFFABILL', 'SPECIES_CHANSEY_DAD', 'SPECIES_PIKACHU_SURFING'): continue   # (Bill's hybrid; DAD's CHANSEY, a gift: by design)
     n = re.search(r'\.speciesName\s*=\s*_\("(.*?)"\)', b)
     if not n: continue
     nd = re.search(r'\.natDexNum\s*=\s*(\w+)', b)

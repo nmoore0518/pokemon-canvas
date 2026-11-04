@@ -902,6 +902,22 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
     don't evolve into them (`P_GEN_x_CROSS_EVOS` FALSE gates only the evolution links).
     `tools/gym_hack/check_convention.py` checks every team's species is in the built ROM.
 
+## Surfing Pikachu and Pikachu's Beach (v139)
+
+- Route 21 South has a small islet with a cave door (tools/gym_hack/build_stadium_cave.py). Inside:
+  a solid-gold Diglett statue (the clue) and COOLTRAINER KOJI, the "Cool" trainer from Pokémon
+  Stadium's Master Ball Cup round 2, with his Stadium team at Lv100 (Mew, Tauros, Starmie, Rhydon,
+  Exeggutor, Jolteon). Not gated; rematchable any time (YES/NO before each battle).
+- Beat him with a Pikachu in the party: a Lv50 SURFING PIKACHU (SPECIES_PIKACHU_SURFING; Surf,
+  Thunderbolt, Quick Attack, Agility). Beat him with nothing but Pikachu: a shiny one (never hinted).
+  One of each, ever (FLAG_STADIUM_GAVE_*; an OWES flag keeps a reward if the party and PC are full).
+  Beat him without one: he says to bring a Pikachu. Not in Bill's withdraw list or the archive.
+- Route 19's beach house (Route19_UnusedHouse_Frlg, tools/gym_hack/build_beach_house.py): the
+  Surfin' Dude runs Pikachu's Beach when a Surfing Pikachu is in the party. src/surfing_minigame.c
+  is a port of Yellow's minigame from the pret/pokeyellow disassembly (same course, physics, scoring
+  and graphics; the Game Boy screen centred on the GBA's, its sides filled in). FRLG's Surf music.
+  The best score is VAR_SURFING_HIGH_SCORE. SELECT quits.
+
 ## Code map
 
 | File | What |

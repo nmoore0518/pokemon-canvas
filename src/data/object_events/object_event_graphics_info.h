@@ -9813,4 +9813,24 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletPalmPilot 
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
+// Pokémon Canvas: the solid gold Diglett in Route 21's hidden cave
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GoldDiglett = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_GOLD_DIGLETT,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 512,
+    .width = 32,
+    .height = 32,
+    .paletteSlot = PALSLOT_NPC_1,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = TRUE,
+    .compressed = FALSE,
+    .tracks = TRACKS_NONE,
+    .oam = &gObjectEventBaseOam_32x32,
+    .subspriteTables = sOamTables_32x32,
+    .anims = sAnimTable_Inanimate,
+    .images = sPicTable_GoldDiglett,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
 // END Gauntlet

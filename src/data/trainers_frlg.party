@@ -14736,3 +14736,65 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Ice Beam
 - Thunderbolt
 
+=== TRAINER_COOLTRAINER_STADIUM ===
+Name: KOJI
+Class: Cooltrainer Frlg
+Pic: Cooltrainer M Frlg
+Gender: Male
+Music: Serious
+Double Battle: No
+AI: Check Bad Move / Try To Faint / Check Viability / Smart Switching
+
+Mew
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 85 HP / 85 Atk / 85 Def / 85 SpA / 85 SpD / 85 Spe
+- Tri Attack
+- Thunder Wave
+- Psychic
+- Softboiled
+
+Tauros
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 85 HP / 85 Atk / 85 Def / 85 SpA / 85 SpD / 85 Spe
+- Body Slam
+- Earthquake
+- Fire Blast
+- Blizzard
+
+Starmie
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 85 HP / 85 Atk / 85 Def / 85 SpA / 85 SpD / 85 Spe
+- Surf
+- Ice Beam
+- Swift
+- Recover
+
+Rhydon
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 85 HP / 85 Atk / 85 Def / 85 SpA / 85 SpD / 85 Spe
+- Earthquake
+- Rock Slide
+- Fire Blast
+- Surf
+
+Exeggutor
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 85 HP / 85 Atk / 85 Def / 85 SpA / 85 SpD / 85 Spe
+- Psychic
+- Mega Drain
+- Explosion
+- Leech Seed
+
+Jolteon
+Level: 100
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 85 HP / 85 Atk / 85 Def / 85 SpA / 85 SpD / 85 Spe
+- Thunderbolt
+- Thunder Wave
+- Hyper Beam
+- Reflect

@@ -616,6 +616,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_GauntletHoodedFigure, OBJ_EVENT_PAL_TAG_GAUNTLET_HOODED_FIGURE},
     {gObjectEventPal_GauntletBill, OBJ_EVENT_PAL_TAG_GAUNTLET_BILL},
     {gObjectEventPal_GauntletPalmPilot, OBJ_EVENT_PAL_TAG_GAUNTLET_PALM_PILOT},
+    {gObjectEventPal_GoldDiglett, OBJ_EVENT_PAL_TAG_GOLD_DIGLETT},
 // END Gauntlet
 // BEGIN Convention (tools/gym_hack/import_convention_sprites.py)
     {gObjectEventPal_ConvWhitney, OBJ_EVENT_PAL_TAG_CONV_WHITNEY},

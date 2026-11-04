@@ -365,6 +365,8 @@
 #define VAR_CHAMPION_LOSSES                              0x4094
 // The Incense's steps left (src/incense.c). FireRed's scripts never use it (Emerald's Briney did).
 #define VAR_INCENSE_STEPS                                0x4096
+// Pikachu's Beach's high score (src/surfing_minigame.c). FireRed's scripts never use it.
+#define VAR_SURFING_HIGH_SCORE                           0x40C3
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

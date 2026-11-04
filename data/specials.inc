@@ -876,6 +876,12 @@ gSpecials::
 	def_special DadStory_BufferAce
 	def_special DadStory_GetGymTypeBall
 	def_special DadStory_GiveChansey
+	def_special SurfingPikachu_CheckParty
+	def_special SurfingPikachu_Owed
+	def_special SurfingPikachu_AllGiven
+	def_special SurfingPikachu_Give
+	def_special SurfingPikachu_CheckInParty
+	def_special SurfingMinigame_Start
 	def_special BufferItemPocketName
 	def_special Outfit_CheckUnlocked
 	def_special Outfit_CountUnlocked
