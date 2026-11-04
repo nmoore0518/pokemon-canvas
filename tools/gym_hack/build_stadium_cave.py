@@ -5,7 +5,7 @@
     python3 tools/gym_hack/build_stadium_cave.py
 
 - Route 21 (south): a tiny rock islet behind the line of rocks on the east side (one rock taken out
-  to let the player surf through), its cave mouth at CAVE_DOOR.
+  to let the player surf through, more rocks closing it in), its cave mouth at CAVE_DOOR.
 - Route21_StadiumCave_Frlg: the Lost Cave entrance's room, cut down to a small one, the trainer and a
   solid gold Diglett (OBJ_EVENT_GFX_GOLD_DIGLETT: tools/gym_hack/gold_diglett_art.py).
 Re-running is safe (the route part expects the route as it shipped: restore its map.bin first).
@@ -17,18 +17,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 ROUTE = ROOT / "data/maps/Route21_South_Frlg/map.json"
 NAME, MAP_ID, LAYOUT_ID = "Route21_StadiumCave_Frlg", "MAP_ROUTE21_STADIUM_CAVE", "LAYOUT_ROUTE21_STADIUM_CAVE"
-# A tiny islet tucked behind the rocks on the route's east side, in the sea pocket between the line of
-# rocks and Cinnabar: one rock (GAP) is taken out so the player can surf through to it. Its rock is
-# built from Route 20's mound pieces (same tileset): a rounded top, the cave mouth, a strip of sand.
-ISLET = (20, 42)                      # (its rock's top-left)
+# A tiny islet tucked behind the line of rocks on the route's east side, in the sea pocket between
+# the rocks and Cinnabar (out of reach as the route shipped): one rock (GAP) is taken out so the
+# player can surf through, and more rocks (ROCKS) close the pocket round the islet, so all that's
+# reachable is the gap, a little water beside the islet and its sand. Its rock is built from Route
+# 20's mound pieces (same tileset): a rounded top, the cave mouth, a strip of sand.
+ISLET = (19, 42)                      # (its rock's top-left)
 GAP = [(17, 41), (18, 41), (17, 42), (18, 42)]
 WATER = 0x112B
 ROCK = [[0x517, 0x46C, 0x51F],        # (from Route 20: collision on)
         [0x4A8, 0x30A9, 0x4AA]]       # (the door in the middle)
 SHORE = [0x311C, 0x311D, 0x311E]      # (Route 21's sandbars' bottom edge)
+ROCK_STYLES = [[0x510, 0x511, 0x518, 0x519], [0x5CB, 0x5CC, 0x5D3, 0x5D4]]   # (the route's own rocks)
+ROCKS = [(20, 40, 1), (22, 40, 0), (22, 42, 1), (22, 44, 0), (22, 46, 1), (18, 45, 1), (20, 45, 0)]
+SEA = [(x, y) for y in range(41, 45) for x in range(18, 22)]
+DEEP_EDGES = {(20, 47): 0x1D0, (21, 47): 0x1D1}     # (the deep water below now meets the rocks)
 CAVE_DOOR = (ISLET[0] + 1, ISLET[1] + 1)
-DEEP_EDGES = {**{(23, y): 0x1D8 for y in range(41, 46)},     # (the deep water past the map's edge, its left edge)
-              (20, 46): 0x1D0, (21, 46): 0x1D1, (22, 46): 0x1D1}
 TRAINER, DIGLETT, EXIT = (4, 2), (6, 2), (4, 5)
 # (the cave: the Lost Cave entrance's room cut down to a 5x4 floor: its rows and columns kept)
 CAVE_ROWS, CAVE_COLS = [0, 1, 2, 3, 4, 8, 9, 10], [0, 1, 2, 3, 5, 7, 8, 9, 10]
@@ -53,11 +57,12 @@ def island():
     for x, y in GAP:
         raw[y * w + x] = WATER
     x0, y0 = ISLET
-    for y in range(y0 - 1, y0 + 4):           # (light sea around it)
-        for x in range(x0 - 1, x0 + 3):
-            raw[y * w + x] = WATER
-    # (the deep water's edges where it now meets that sea: the strip down the map's edge above, the
-    # pocket's deep water below)
+    for x, y in SEA:
+        raw[y * w + x] = WATER
+    for x, y, style in ROCKS:
+        tl, tr, bl, br = ROCK_STYLES[style]
+        raw[y * w + x], raw[y * w + x + 1] = tl, tr
+        raw[(y + 1) * w + x], raw[(y + 1) * w + x + 1] = bl, br
     for (x, y), v in DEEP_EDGES.items():
         raw[y * w + x] = v
     for dy, row in enumerate(ROCK):

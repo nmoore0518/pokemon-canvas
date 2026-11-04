@@ -100,7 +100,7 @@
   ],
   "warp_events": [
     {
-      "x": 21,
+      "x": 20,
       "y": 43,
       "elevation": 3,
       "dest_map": "MAP_ROUTE21_STADIUM_CAVE",
