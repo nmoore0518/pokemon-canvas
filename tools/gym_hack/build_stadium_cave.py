@@ -4,11 +4,11 @@
 
     python3 tools/gym_hack/build_stadium_cave.py
 
-- Route 21 (south): a rocky islet out on the open water on the east side, a copy of one of the
-  Seafoam Islands' mounds (Route 20's, same tileset), its cave mouth at CAVE_DOOR.
-- Route21_StadiumCave_Frlg: the Lost Cave entrance's room (its ladder filled in), the trainer and a
+- Route 21 (south): a tiny rock islet behind the line of rocks on the east side (one rock taken out
+  to let the player surf through), its cave mouth at CAVE_DOOR.
+- Route21_StadiumCave_Frlg: the Lost Cave entrance's room, cut down to a small one, the trainer and a
   solid gold Diglett (OBJ_EVENT_GFX_GOLD_DIGLETT: tools/gym_hack/gold_diglett_art.py).
-Re-running is safe.
+Re-running is safe (the route part expects the route as it shipped: restore its map.bin first).
 """
 import json
 import struct
@@ -17,18 +17,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 ROUTE = ROOT / "data/maps/Route21_South_Frlg/map.json"
 NAME, MAP_ID, LAYOUT_ID = "Route21_StadiumCave_Frlg", "MAP_ROUTE21_STADIUM_CAVE", "LAYOUT_ROUTE21_STADIUM_CAVE"
-SRC_MAP, SRC, SIZE = "Route20_Frlg", (67, 6), (11, 9)    # (Route 20's east mound: its rock only)
-DST = (9, 25)
-# (its east side runs into the sea on Route 20: here it gets a wall and corners like its west side's)
-FIX = {(77, 10): 0x0A2, (77, 11): 0x0A2, (77, 12): 0x0AA, (76, 13): 0x0AA, (77, 13): 0x115,
-       (75, 14): 0x0AA, (76, 14): 0x115, (77, 14): 0x115}
-MOVE_SWIMMERS = {(10, 29): (6, 30), (15, 24): (15, 22)}     # (swimmers who'd be on the new sand)
-CAVE_DOOR = (DST[0] + 72 - SRC[0], DST[1] + 14 - SRC[1])
-# Route 21's own sand and shore metatiles (its sandbars): plain sand, then the shore's edges and corners
-SAND, TOP, BOTTOM, LEFT, RIGHT = 0x115, 0x10D, 0x11D, 0x114, 0x116
-TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT = 0x10C, 0x10E, 0x11C, 0x11E
-NOT_ROCK = {0x115, 0x120, 0x121, 0x123, 0x128, 0x129, 0x12A, 0x12B, 0x12C, 0x130, 0x131, 0x280, 0x2C, 0x113, 0x11B, 0x002}
-TRAINER, DIGLETT, EXIT = (5, 3), (8, 2), (5, 8)
+# A tiny islet tucked behind the rocks on the route's east side, in the sea pocket between the line of
+# rocks and Cinnabar: one rock (GAP) is taken out so the player can surf through to it. Its rock is
+# built from Route 20's mound pieces (same tileset): a rounded top, the cave mouth, a strip of sand.
+ISLET = (20, 42)                      # (its rock's top-left)
+GAP = [(17, 41), (18, 41), (17, 42), (18, 42)]
+WATER = 0x112B
+ROCK = [[0x517, 0x46C, 0x51F],        # (from Route 20: collision on)
+        [0x4A8, 0x30A9, 0x4AA]]       # (the door in the middle)
+SHORE = [0x311C, 0x311D, 0x311E]      # (Route 21's sandbars' bottom edge)
+CAVE_DOOR = (ISLET[0] + 1, ISLET[1] + 1)
+DEEP_EDGES = {**{(23, y): 0x1D8 for y in range(41, 46)},     # (the deep water past the map's edge, its left edge)
+              (20, 46): 0x1D0, (21, 46): 0x1D1, (22, 46): 0x1D1}
+TRAINER, DIGLETT, EXIT = (4, 2), (6, 2), (4, 5)
+# (the cave: the Lost Cave entrance's room cut down to a 5x4 floor: its rows and columns kept)
+CAVE_ROWS, CAVE_COLS = [0, 1, 2, 3, 4, 8, 9, 10], [0, 1, 2, 3, 5, 7, 8, 9, 10]
+CAVE_COLS_BOTTOM = [0, 1, 2, 4, 5, 6, 8, 9, 10]
 
 
 def layouts():
@@ -42,38 +46,29 @@ def grid(layout):
 
 
 def island():
+    """(Run on the route as it shipped: the pocket's sea is plain open water.)"""
     L = {l["id"]: l for l in layouts()["layouts"] if "id" in l}
     m = json.loads(ROUTE.read_text())
-    sw, _, _, src = grid(L[json.loads((ROOT / "data/maps" / SRC_MAP / "map.json").read_text())["layout"]])
     w, h, path, raw = grid(L[m["layout"]])
-    rock = {}
-    for dy in range(SIZE[1]):
-        for dx in range(SIZE[0]):
-            v = src[(SRC[1] + dy) * sw + SRC[0] + dx]
-            if (SRC[0] + dx, SRC[1] + dy) in FIX:
-                v = (v & ~0x3FF) | FIX[(SRC[0] + dx, SRC[1] + dy)]
-            if v & 0x3FF not in NOT_ROCK:
-                rock[(DST[0] + dx, DST[1] + dy)] = v
-    # a sandy islet around the rock (a tile of sand on every side, two under the cave mouth), then
-    # its shore
-    xs, ys = [x for x, _ in rock], [y for _, y in rock]
-    x0, x1, y0, y1 = min(xs) - 1, max(xs) + 1, min(ys) - 1, max(ys) + 2
-    for y in range(y0, y1 + 1):
-        for x in range(x0, x1 + 1):
-            top, bottom, left, right = y == y0, y == y1, x == x0, x == x1
-            v = (TOP_LEFT if top and left else TOP_RIGHT if top and right else BOTTOM_LEFT if bottom and left
-                 else BOTTOM_RIGHT if bottom and right else TOP if top else BOTTOM if bottom else LEFT if left
-                 else RIGHT if right else SAND)
-            raw[y * w + x] = v
-    for (x, y), v in rock.items():
+    for x, y in GAP:
+        raw[y * w + x] = WATER
+    x0, y0 = ISLET
+    for y in range(y0 - 1, y0 + 4):           # (light sea around it)
+        for x in range(x0 - 1, x0 + 3):
+            raw[y * w + x] = WATER
+    # (the deep water's edges where it now meets that sea: the strip down the map's edge above, the
+    # pocket's deep water below)
+    for (x, y), v in DEEP_EDGES.items():
         raw[y * w + x] = v
+    for dy, row in enumerate(ROCK):
+        for dx, v in enumerate(row):
+            raw[(y0 + dy) * w + x0 + dx] = v
+    for dx, v in enumerate(SHORE):
+        raw[(y0 + 2) * w + x0 + dx] = v
     path.write_bytes(struct.pack(f"<{w * h}H", *raw))
     warps = [wp for wp in m["warp_events"] if wp["dest_map"] != MAP_ID]
     warps.append({"x": CAVE_DOOR[0], "y": CAVE_DOOR[1], "elevation": 3, "dest_map": MAP_ID, "dest_warp_id": "0"})
     m["warp_events"] = warps
-    for o in m["object_events"]:
-        if (o["x"], o["y"]) in MOVE_SWIMMERS:
-            o["x"], o["y"] = MOVE_SWIMMERS[(o["x"], o["y"])]
     ROUTE.write_text(json.dumps(m, indent=2) + "\n")
     return len(warps) - 1
 
@@ -84,13 +79,15 @@ def cave(route_warp):
     src = L["LAYOUT_FIVE_ISLAND_LOST_CAVE_ENTRANCE"]
     d = ROOT / "data/layouts" / NAME
     d.mkdir(exist_ok=True)
-    w, h, _, raw = grid(src)
-    ladder = (5, 5)
-    raw[ladder[1] * w + ladder[0]] = raw[ladder[1] * w + ladder[0] - 1]   # (floor where the ladder was)
+    sw, _, _, src_raw = grid(src)
+    rows = [[src_raw[r * sw + c] for c in (CAVE_COLS_BOTTOM if r == 9 else CAVE_COLS)] for r in CAVE_ROWS]
+    w, h = len(CAVE_COLS), len(CAVE_ROWS)
+    raw = [v for row in rows for v in row]
     (d / "map.bin").write_bytes(struct.pack(f"<{w * h}H", *raw))
     (d / "border.bin").write_bytes((ROOT / src["border_filepath"]).read_bytes())
-    if LAYOUT_ID not in L:
-        entry = dict(src, id=LAYOUT_ID, name=NAME.replace("_Frlg", "") + "_Layout",
+    data["layouts"] = [l for l in data["layouts"] if l.get("id") != LAYOUT_ID]
+    if True:
+        entry = dict(src, id=LAYOUT_ID, width=w, height=h, name=NAME.replace("_Frlg", "") + "_Layout",
                      border_filepath=f"data/layouts/{NAME}/border.bin", blockdata_filepath=f"data/layouts/{NAME}/map.bin")
         data["layouts"].append(entry)
         (ROOT / "data/layouts/layouts.json").write_text(json.dumps(data, indent=2) + "\n")

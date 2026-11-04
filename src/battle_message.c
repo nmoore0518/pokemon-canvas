@@ -3306,8 +3306,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                     textStart[classLength] = classString[classLength];
                     classLength++;
                 }
-                textStart[classLength] = CHAR_SPACE;
-                textStart += classLength + 1;
+                // Pokémon Canvas: a class with no name (TRAINER_CLASS_STADIUM) gets no space either
+                if (classLength != 0)
+                    textStart[classLength++] = CHAR_SPACE;
+                textStart += classLength;
                 nameString = BattleStringGetOpponentNameByTrainerId(TRAINER_BATTLE_PARAM.opponentA, textStart, multiplayerId, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
                 if (nameString != textStart)
                 {

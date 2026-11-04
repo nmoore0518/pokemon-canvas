@@ -904,8 +904,10 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
 
 ## Surfing Pikachu and Pikachu's Beach (v139)
 
-- Route 21 South has a small islet with a cave door (tools/gym_hack/build_stadium_cave.py). Inside:
-  a solid-gold Diglett statue (the clue) and COOLTRAINER KOJI, the "Cool" trainer from Pokémon
+- Route 21 South: a tiny islet tucked behind the line of rocks on the east side, near Cinnabar (one
+  rock taken out to surf through), with a cave mouth (tools/gym_hack/build_stadium_cave.py). Inside,
+  a small room: a solid-gold Diglett statue (the clue) and COOL♂ (TRAINER_CLASS_STADIUM: no class
+  name shown, as in Stadium), the "Cool" trainer from Pokémon
   Stadium's Master Ball Cup round 2, with his Stadium team at Lv100 (Mew, Tauros, Starmie, Rhydon,
   Exeggutor, Jolteon). Not gated; rematchable any time (YES/NO before each battle).
 - Beat him with a Pikachu in the party: a Lv50 SURFING PIKACHU (SPECIES_PIKACHU_SURFING; Surf,

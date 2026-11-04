@@ -696,6 +696,7 @@ enum TrainerClassID
     TRAINER_CLASS_MR,
     TRAINER_CLASS_CANDIDATE,    // Gym Trainer hack: the Leader Academy
     TRAINER_CLASS_INSTRUCTOR,
+    TRAINER_CLASS_STADIUM,      // Pokémon Canvas: the Route 21 cave's "COOL♂" (no class shown, as in Stadium)
 
     TRAINER_CLASS_COUNT,
 };

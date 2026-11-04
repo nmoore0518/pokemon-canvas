@@ -11537,8 +11537,8 @@
     {
       "id": "LAYOUT_ROUTE21_STADIUM_CAVE",
       "name": "Route21_StadiumCave_Layout",
-      "width": 11,
-      "height": 11,
+      "width": 9,
+      "height": 8,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
