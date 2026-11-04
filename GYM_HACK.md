@@ -920,20 +920,27 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   and graphics; the Game Boy screen centred on the GBA's, its sides filled in). FRLG's Surf music.
   The best score is VAR_SURFING_HIGH_SCORE. SELECT quits.
 
-## The opening (v142)
+## The opening (v142-v143)
 
-- After the copyright and Game Freak screens, FireRed's Nidorino-vs-Gengar is replaced by
-  src/intro_canvas.c (`INTRO_CANVAS` in include/intro_canvas.h: FALSE brings FireRed's back). Timed
-  to FireRed's intro music (about 12 seconds); A, START or SELECT skip to the title as before.
+- The copyright screen carries a small credit line for pokeemerald (pret) and pokeemerald-expansion
+  (RHH) (tools/gym_hack/copyright_credit.py), in place of the "Powered by" splash
+  (`EXPANSION_INTRO` FALSE in include/config/general.h).
+- After the Game Freak screen, FireRed's Nidorino-vs-Gengar is replaced by src/intro_canvas.c
+  (`INTRO_CANVAS` in include/intro_canvas.h: FALSE brings FireRed's back). About 16 seconds; A,
+  START or SELECT skip to the title as before.
   1. A gym's battlefield at night: the player (Red or Leaf, from the save) sends out Raichu against a
      gym trainer's silhouette; three Thunderbolts; a white-out.
-  2. The eight Kanto badges flash by one at a time over light rays in each badge's colour, then all
-     eight drop into a row.
-  3. The player walks up the plateau to their own gym in Pallet Town and goes in.
-  4. A paintbrush sweeps a rainbow across the screen; it fades to white and the title screen.
+  2. The eight Kanto badges flash by one at a time over light rays in each badge's colours (the
+     Rainbow Badge's petals round the rainbow), then all eight drop into a row. FireRed's intro
+     music ends about here.
+  3. The player walks up the plateau to their own gym in Pallet Town; its door slides open (with the
+     field's sound and frames), they go in, it slides shut.
+  4. An artist's brush zigzags across, painting a rainbow line by line (WIN0's width per line by
+     HBlank DMA), its tip the colour of the band it's in; white, then the title screen.
 - Graphics: tools/gym_hack/intro_canvas_gfx.py -> graphics/intro_canvas/ (the arena, rays, rainbow,
-  the gym (rendered from the Pallet Town map itself, so it follows edits to the map once re-run), the
-  badges in colour, the brush, the bolt). The player, Raichu, the trainer and the ball are the game's.
+  the gym and its door (rendered from the Pallet Town map and tilesets, so re-run after editing
+  them), the badges in colour, the brush, the bolt). The player, Raichu, the trainer and the ball
+  are the game's.
 
 ## Code map
 

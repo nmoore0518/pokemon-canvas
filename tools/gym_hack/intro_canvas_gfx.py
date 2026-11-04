@@ -12,6 +12,8 @@ Writes graphics/intro_canvas/:
   badges_small.png             the same at 32x32 (the line-up: affine sprites that wide would be too many for a line)
   brush.png                    the paintbrush (sprite, 64x64)
   bolt.png                     Raichu's lightning (sprite, 64x64)
+  door.png                     the gym's door sliding open, 3 frames (sprite, 16x16 each)
+  badge_N.pal, rays_N.pal      each badge's colours, and its montage backdrop's
 A BG's .png is its unique tiles (a 128-pixel-wide sheet); its .bin a 32x32 tilemap.
 """
 import json
@@ -198,6 +200,35 @@ def gym():
     return out
 
 
+def door():
+    """The gym's door opening (its three frames, as the field's door animation draws them: the
+    sliding double door's tiles in palette 3, the metatile's top layer blank): a 16x48 sprite sheet."""
+    sys.path.insert(0, str(ROOT / "tools/gym_hack"))
+    import render_map as r
+    L = {l.get("id"): l for l in json.loads((ROOT / "data/layouts/layouts.json").read_text())["layouts"] if "id" in l}
+    l = L[json.loads((ROOT / "data/maps/PalletTown_Frlg/map.json").read_text())["layout"]]
+    prim = r.Tileset(r.tileset_dir(l["primary_tileset"]))
+    sec = r.Tileset(r.tileset_dir(l["secondary_tileset"]))
+    anim = Image.open(ROOT / "graphics/door_anims/sliding_double.png")
+    pal = prim.pals[3]
+    sheet = Image.new("RGB", (16, 48))
+    for f in range(3):
+        frame = Image.new("RGB", (16, 16))
+        for k in range(4):
+            t = anim.crop(((k % 2) * 8, f * 16 + (k // 2) * 8, (k % 2) * 8 + 8, f * 16 + (k // 2) * 8 + 8))
+            for y in range(8):
+                for x in range(8):
+                    frame.putpixel(((k % 2) * 8 + x, (k // 2) * 8 + y), tuple(pal[t.getpixel((x, y))][:3]))
+        # (the metatile's top layer is blanked while the door moves, as in the field)
+        sheet.paste(frame, (0, f * 16))
+    q = sheet.quantize(colors=15, dither=Image.Dither.NONE)
+    out = Image.new("P", sheet.size)
+    qp = q.getpalette()[:45]
+    out.putpalette([255, 0, 255] + qp + [0] * (768 - 48))
+    out.putdata([v + 1 for v in q.get_flattened_data()])
+    return out
+
+
 GYM_VIEW = (13, 15)       # (Pallet Town's blocks: its gym's door at (20, 21) is 7 across, 6 down)
 
 
@@ -236,19 +267,61 @@ def scale2x(im):
     return out
 
 
+RAY_COLOURS = [   # (the montage's backdrop for each badge: dark, rays, the glow behind it)
+    [(56, 56, 64), (96, 96, 104), (200, 200, 208)],
+    [(24, 56, 128), (48, 104, 200), (152, 200, 248)],
+    [(136, 64, 8), (216, 120, 24), (248, 216, 112)],
+    [(72, 40, 128), (136, 88, 200), (248, 232, 255)],     # (the Rainbow Badge's: violet)
+    [(136, 32, 96), (200, 80, 152), (248, 176, 216)],
+    [(128, 96, 16), (200, 152, 32), (248, 224, 96)],
+    [(136, 24, 24), (208, 56, 40), (248, 168, 104)],
+    [(24, 88, 48), (56, 144, 80), (152, 224, 160)],
+]
+
+
+def rainbow_badge(img):
+    """(the Rainbow Badge: its petals coloured round the rainbow by their angle; light where the
+    original is light, a pale centre)"""
+    w, h = img.size
+    out = Image.new("P", (w, h))
+    p, o = img.load(), out.load()
+    cx = cy = (w - 1) / 2
+    for y in range(h):
+        for x in range(w):
+            v = p[x, y]
+            if v in (0, 1):
+                o[x, y] = v
+                continue
+            r = math.hypot(x - cx, y - cy)
+            if r < w * 0.15:
+                o[x, y] = 9 + 2 if v >= 4 else 2 + 2      # (the centre: yellow)
+                continue
+            a = (math.degrees(math.atan2(y - cy, x - cx)) + 90 + 360) % 360
+            hue = int(a / (360 / 7)) % 7
+            o[x, y] = (9 + hue) if v >= 4 else (2 + hue)
+    return out
+
+
 def badges():
     src = Image.open(ROOT / "graphics/trainer_card/frlg/badges.png")
     sheet = Image.new("P", (64, 64 * 8))
     small = Image.new("P", (32, 32 * 8))
     for i in range(8):
         b = src.crop((i * 16, 0, i * 16 + 16, 16))
-        big = scale2x(scale2x(b))
         # grey levels 1 (white) 2 3 4 (darker) 15 (outline) -> the badge's colours
         remap = {0: 0, 1: 5, 2: 4, 3: 3, 4: 2, 15: 1}
-        sheet.paste(big.point(lambda v: remap.get(v, 1)), (0, i * 64))
-        small.paste(scale2x(b).point(lambda v: remap.get(v, 1)), (0, i * 32))
-        cols = [(255, 0, 255), (16, 16, 24)] + BADGE_COLOURS[i] + [(255, 255, 255)] + [(0, 0, 0)] * 9
+        big = scale2x(scale2x(b)).point(lambda v: remap.get(v, 1))
+        little = scale2x(b).point(lambda v: remap.get(v, 1))
+        if i == 3:
+            big, little = rainbow_badge(big), rainbow_badge(little)
+            light = [tuple(min(255, c + 96) for c in col) for col in RAINBOW]
+            cols = [(255, 0, 255), (16, 16, 24)] + RAINBOW + light
+        else:
+            cols = [(255, 0, 255), (16, 16, 24)] + BADGE_COLOURS[i] + [(255, 255, 255)] + [(0, 0, 0)] * 9
+        sheet.paste(big, (0, i * 64))
+        small.paste(little, (0, i * 32))
         write_pal(OUT / f"badge_{i}.pal", [gba(c) for c in cols])
+        write_pal(OUT / f"rays_{i}.pal", [gba(c) for c in [(0, 0, 0)] + RAY_COLOURS[i]])
     cols = [(255, 0, 255), (16, 16, 24)] + BADGE_COLOURS[0] + [(255, 255, 255)] + [(0, 0, 0)] * 9
     sheet.putpalette([v for c in cols for v in c] + [0] * (768 - 48))
     sheet.save(OUT / "badges.png")
@@ -258,31 +331,61 @@ def badges():
 
 # ------------------------------------------------------------------------------------------ brush
 def brush():
-    """A broad paintbrush, dragged to the right: bristles (dipped in the rainbow, top to bottom) on the
-    left, the ferrule, the handle out to the right."""
-    cols = [(255, 0, 255), (24, 16, 16), (112, 64, 32), (160, 104, 48), (208, 160, 96), (120, 128, 144),
-            (176, 184, 200), (240, 240, 248), (96, 72, 48)] + RAINBOW
-    im = Image.new("RGB", (64, 64), cols[0])
-    d = ImageDraw.Draw(im)
-    # handle (tapering), with a highlight
-    d.polygon([(24, 22), (60, 27), (62, 31), (60, 36), (24, 42)], fill=cols[3], outline=cols[1])
-    d.line([(26, 26), (58, 29)], fill=cols[4])
-    d.line([(26, 39), (58, 34)], fill=cols[2])
-    # ferrule
-    d.rectangle([14, 6, 25, 57], fill=cols[6], outline=cols[1])
-    d.line([(17, 8), (17, 55)], fill=cols[7])
-    d.line([(23, 8), (23, 55)], fill=cols[5])
-    for y in (18, 46):
-        d.line([(15, y), (24, y)], fill=cols[5])
-    # bristles: the wood-brown root, then the paint, a band of the rainbow each
-    d.rectangle([3, 4, 13, 59], fill=cols[8], outline=cols[1])
-    n = len(RAINBOW)
-    for i, c in enumerate(RAINBOW):
-        y0 = 5 + i * 54 // n
-        y1 = 5 + (i + 1) * 54 // n - 1
-        d.rectangle([1, y0, 9, y1], fill=c)
-        d.line([(0, y0 + 1), (0, y1 - 1)], fill=c)
-    d.line([(10, 5), (10, 58)], fill=cols[1])
+    """An artist's round brush, tip down-left: a long lacquered handle, a crimped ferrule, a tuft of
+    bristles coming to a point, its tip loaded with paint (colour 15: the C code sets it to whichever
+    band of the rainbow the tip is painting)."""
+    cols = [(255, 0, 255), (24, 16, 24), (120, 24, 32), (184, 48, 48), (232, 112, 96), (104, 112, 128),
+            (168, 176, 192), (232, 236, 244), (96, 64, 32), (152, 104, 56), (200, 152, 96), (0, 0, 0),
+            (0, 0, 0), (0, 0, 0), (0, 0, 0), (232, 48, 48)]
+    big = Image.new("RGB", (256, 256), cols[0])
+    d = ImageDraw.Draw(big)
+    # (drawn at 4x along the diagonal, then shrunk without smoothing)
+    def along(t, off):
+        # a point t of the way from the tip (bottom-left) to the handle's end (top-right), off to its side
+        x0, y0, x1, y1 = 14, 242, 246, 10
+        ux, uy = (x1 - x0), (y1 - y0)
+        n = math.hypot(ux, uy)
+        ux, uy = ux / n, uy / n
+        return (x0 + ux * t * n - uy * off, y0 + uy * t * n + ux * off)
+
+    def band(t0, t1, w0, w1, colour, outline=True):
+        poly = [along(t0, -w0), along(t1, -w1), along(t1, w1), along(t0, w0)]
+        d.polygon(poly, fill=colour, outline=cols[1] if outline else None)
+    # handle: lacquered red, rounded end, a highlight down one side
+    band(0.47, 0.97, 18, 13, cols[3])
+    d.line([along(0.49, -9), along(0.95, -6)], fill=cols[4], width=6)
+    d.line([along(0.49, 11), along(0.95, 8)], fill=cols[2], width=6)
+    d.ellipse([*[v - 13 for v in along(0.97, 0)], *[v + 13 for v in along(0.97, 0)]], fill=cols[3], outline=cols[1])
+    # ferrule: silver, crimped
+    band(0.34, 0.48, 24, 20, cols[6])
+    d.line([along(0.35, -13), along(0.47, -11)], fill=cols[7], width=6)
+    for t in (0.39, 0.44):
+        d.line([along(t, -23), along(t, 22)], fill=cols[5], width=4)
+    # bristles: a tuft swelling from the ferrule then coming to a point
+    pts = []
+    for k in range(11):
+        t = 0.34 - 0.34 * k / 10
+        w = 21 * (1 - (k / 10) ** 1.8) ** 0.7 + 4 * math.sin(math.pi * k / 10)
+        pts.append(along(t, -max(2, w)))
+    for k in range(10, -1, -1):
+        t = 0.34 - 0.34 * k / 10
+        w = 21 * (1 - (k / 10) ** 1.8) ** 0.7 + 4 * math.sin(math.pi * k / 10)
+        pts.append(along(t, max(2, w)))
+    d.polygon(pts, fill=cols[9], outline=cols[1])
+    for off in (-12, 0, 12):
+        d.line([along(0.32, off), along(0.16, off * 0.6)], fill=cols[10], width=4)
+    # the paint on its tip
+    tip = [p for p in pts if True]
+    paint = Image.new("L", (256, 256), 0)
+    ImageDraw.Draw(paint).polygon(pts, fill=255)
+    cut = Image.new("L", (256, 256), 0)
+    ImageDraw.Draw(cut).polygon([along(0.16, -40), along(0.16, 40), along(-0.2, 40), along(-0.2, -40)], fill=255)
+    from PIL import ImageChops
+    mask = ImageChops.multiply(paint, cut)
+    big.paste(Image.new("RGB", (256, 256), cols[15]), (0, 0), mask)
+    d.polygon(pts, outline=cols[1])
+    d.line(pts + [pts[0]], fill=cols[1], width=4)
+    im = big.resize((64, 64), Image.NEAREST)
     return indexed(im, cols)
 
 
@@ -309,6 +412,7 @@ def main():
     badges()
     brush().save(OUT / "brush.png")
     bolt().save(OUT / "bolt.png")
+    door().save(OUT / "door.png")
     print("tiles:", counts)
     if len(sys.argv) > 1:
         imgs = [globals()[f"_img_{n}"].convert("RGB") for n in ("arena", "rays", "rainbow", "gym")]

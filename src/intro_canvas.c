@@ -1,7 +1,8 @@
 // Pokémon Canvas: the opening (after the copyright and Game Freak screens), in place of FireRed's
 // Nidorino and Gengar. The player sends out Raichu against a gym trainer's silhouette; the eight
 // Kanto badges flash by; the player walks up to their own gym in Pallet Town; a paintbrush sweeps a
-// rainbow across the screen, and on to the title screen. Timed to FireRed's intro music.
+// rainbow across the screen, and on to the title screen. FireRed's intro music plays under the first
+// two (it ends about the badges' line-up); the gym's door and the brush follow in the quiet.
 //
 // Graphics: tools/gym_hack/intro_canvas_gfx.py -> graphics/intro_canvas/ (the backgrounds, the badges
 // in colour, the brush); the player, Raichu, the trainer and the Poké Ball are the game's own.
@@ -49,6 +50,17 @@ static const u16 sBadge5_Pal[] = INCGFX_U16("graphics/intro_canvas/badge_5.pal",
 static const u16 sBadge6_Pal[] = INCGFX_U16("graphics/intro_canvas/badge_6.pal", ".gbapal");
 static const u16 sBadge7_Pal[] = INCGFX_U16("graphics/intro_canvas/badge_7.pal", ".gbapal");
 static const u16 *const sBadge_Pals[8] = {sBadge0_Pal, sBadge1_Pal, sBadge2_Pal, sBadge3_Pal, sBadge4_Pal, sBadge5_Pal, sBadge6_Pal, sBadge7_Pal};
+static const u16 sRays0_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_0.pal", ".gbapal");
+static const u16 sRays1_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_1.pal", ".gbapal");
+static const u16 sRays2_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_2.pal", ".gbapal");
+static const u16 sRays3_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_3.pal", ".gbapal");
+static const u16 sRays4_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_4.pal", ".gbapal");
+static const u16 sRays5_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_5.pal", ".gbapal");
+static const u16 sRays6_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_6.pal", ".gbapal");
+static const u16 sRays7_Pal[] = INCGFX_U16("graphics/intro_canvas/rays_7.pal", ".gbapal");
+static const u16 *const sRays_Pals[8] = {sRays0_Pal, sRays1_Pal, sRays2_Pal, sRays3_Pal, sRays4_Pal, sRays5_Pal, sRays6_Pal, sRays7_Pal};
+static const u32 sDoor_Gfx[] = INCGFX_U32("graphics/intro_canvas/door.png", ".4bpp");
+static const u16 sDoor_Pal[] = INCGFX_U16("graphics/intro_canvas/door.png", ".gbapal");
 static const u32 sBolt_Gfx[] = INCGFX_U32("graphics/intro_canvas/bolt.png", ".4bpp");
 static const u16 sBolt_Pal[] = INCGFX_U16("graphics/intro_canvas/bolt.png", ".gbapal");
 static const u32 sBrush_Gfx[] = INCGFX_U32("graphics/intro_canvas/brush.png", ".4bpp");
@@ -84,29 +96,38 @@ static const u16 sWalk_Pal[] = INCGFX_U16("graphics/object_events/palettes/playe
 #define TILE_BADGES_SMALL 512   // (and 8 of 16)
 #define TILE_WALK   0       // (the gym's: the player walking, 9 frames of 8)
 #define TILE_BRUSH  128
-enum { P_BACK, P_RAICHU, P_TRAINER, P_BALL, P_WALK, P_BRUSH, P_BOLT, P_BADGE0 };
+#define TILE_DOOR   192     // (3 frames of 4)
+enum { P_BACK, P_RAICHU, P_TRAINER, P_BALL, P_WALK, P_BRUSH, P_BOLT, P_DOOR, P_BADGE0 };
 
 // ---------------------------------------------------------------------------------------------
 // The timeline (frames from the music's start)
 // ---------------------------------------------------------------------------------------------
-#define T_THROW         40      // the player's throw (back pic frames 1-4, 6 frames each)
-#define T_BALL_OUT      58
-#define T_BALL_OPEN     78
-#define T_ZAP1          112
-#define T_ZAP2          124
-#define T_ZAP3          136
-#define T_KO            176     // the white-out to the badges
-#define T_BADGES        192
-#define BADGE_TIME      26
+#define T_THROW         50      // the player's throw (back pic frames 1-4, 6 frames each)
+#define T_PLAYER_OUT    82
+#define T_BALL_OUT      72
+#define T_BALL_OPEN     96
+#define T_ZAP1          140
+#define T_ZAP2          160
+#define T_ZAP3          180
+#define T_SHAKE         150
+#define T_KO            216     // the white-out to the badges
+#define T_BADGES        232
+#define BADGE_TIME      36
 #define T_LINEUP        (T_BADGES + 8 * BADGE_TIME)
-#define T_GYM           470
-#define T_WALK_END      (T_GYM + 80)
-#define T_ENTER         566
-#define T_BRUSH_START   584
-#define BRUSH_TIME      90
+#define T_GYM           610
+#define T_WALK          (T_GYM + 20)    // up to the door, a pixel a frame
+#define T_WALK_END      (T_WALK + 64)
+#define T_DOOR_OPEN     (T_WALK_END + 12)
+#define DOOR_FRAME_TIME 5
+#define T_STEP_IN       (T_DOOR_OPEN + 3 * DOOR_FRAME_TIME + 3)
+#define T_INSIDE        (T_STEP_IN + 16)
+#define T_DOOR_CLOSE    (T_INSIDE + 4)
+#define T_BRUSH_START   (T_DOOR_CLOSE + 3 * DOOR_FRAME_TIME + 22)
+#define BRUSH_TIME      110
+#define STROKE_TIME     40      // (one down and one up)
 #define T_RAINBOW_FULL  (T_BRUSH_START + BRUSH_TIME)
-#define T_FADE_WHITE    690
-#define T_END           708
+#define T_FADE_WHITE    (T_RAINBOW_FULL + 30)
+#define T_END           (T_FADE_WHITE + 18)
 
 enum { SCENE_NONE, SCENE_BATTLE, SCENE_BADGES, SCENE_GYM };
 
@@ -120,7 +141,8 @@ struct IntroCanvas
     s16 walkY;
     u16 shownBadges;
     bool8 windowOn;
-    s16 windowRight;
+    u8 painted[DISPLAY_HEIGHT];
+    bool8 scanlinesOn;     // (the rainbow's right edge on each line)
     u8 oamCount;
 };
 
@@ -259,17 +281,17 @@ static void DrawBattle(u32 t)
         if (t >= sZaps[i] && t < sZaps[i] + 8 && !(t & 2))
             PutSprite(126, 84, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BOLT, P_BOLT, 512, FALSE);
     // the trainer slides in from the right, the player from the left
-    trainerX = Approach(DISPLAY_WIDTH + 40, 176, t, 30);
-    if (t >= 140 && t < T_KO)
+    trainerX = Approach(DISPLAY_WIDTH + 40, 176, t, 40);
+    if (t >= T_SHAKE && t < T_KO)
         shake = ((t / 2) & 1) ? 3 : -3;
     PutSprite(trainerX - 32 + shake, 94 - 60, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_TRAINER, P_TRAINER, 0, FALSE);
 
-    playerX = Approach(-40, 64, t, 30);
-    if (t >= 66)
-        playerX = Approach(64, -48, t - 66, 16);
+    playerX = Approach(-40, 64, t, 40);
+    if (t >= T_PLAYER_OUT)
+        playerX = Approach(64, -48, t - T_PLAYER_OUT, 20);
     frame = 0;
     if (t >= T_THROW)
-        frame = 1 + min((t - T_THROW) / 6, 3);
+        frame = 1 + min((t - T_THROW) / 7, 3);
     if (playerX > -40)
         PutSprite(playerX - 32, DISPLAY_HEIGHT - 64, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BACK + frame * 64, P_BACK, 0, FALSE);
 
@@ -285,11 +307,11 @@ static void DrawBattle(u32 t)
     if (t >= T_BALL_OPEN)
     {
         s32 k = t - T_BALL_OPEN;
-        u32 scale = Approach(48, 256, k, 10);
-        s32 x = 72, y = 124;
+        u32 scale = Approach(48, 256, k, 12);
+        s32 x = 72, y = DISPLAY_HEIGHT - 32;    // (its bottom on the screen's: back pics stop there)
         if ((t >= T_ZAP1 - 6 && t < T_ZAP1) || (t >= T_ZAP2 - 6 && t < T_ZAP2) || (t >= T_ZAP3 - 6 && t < T_ZAP3))
-            x += 6, y -= 4;
-        else if (t > T_BALL_OPEN + 12)
+            x += 6;
+        else if (t > T_BALL_OPEN + 14)
             y += ((t / 10) & 1);
         PutSprite(x, y, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_RAICHU, P_RAICHU, scale, FALSE);
     }
@@ -300,7 +322,7 @@ static void DrawBattle(u32 t)
     else if ((t >= T_ZAP1 && t < T_ZAP1 + 3) || (t >= T_ZAP2 && t < T_ZAP2 + 3) || (t >= T_ZAP3 && t < T_ZAP3 + 3))
         SetBrightness(9);
     else if (t >= T_KO)
-        SetBrightness(Approach(0, 16, t - T_KO, 8));
+        SetBrightness(Approach(0, 16, t - T_KO, 12));
     else if (t < 16)
         SetBrightness(-16 + t);
     else
@@ -309,13 +331,7 @@ static void DrawBattle(u32 t)
 
 static void ShowBadgeRays(u32 badge)
 {
-    u16 pal[4];
-    const u16 *badgePal = sBadge_Pals[badge];
-    pal[0] = 0;
-    pal[1] = badgePal[2];   // (its darkest, then lighter)
-    pal[2] = badgePal[3];
-    pal[3] = badgePal[4];
-    LoadPalette(pal, BG_PLTT_ID(0), sizeof(pal));
+    LoadPalette(sRays_Pals[badge], BG_PLTT_ID(0), 4 * sizeof(u16));
 }
 
 static void StartBadges(void)
@@ -339,24 +355,24 @@ static void DrawBadges(u32 t)
         if (k == 0)
             ShowBadgeRays(badge);
         PutSprite(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BADGES + badge * 64,
-                  P_BADGE0 + badge, Approach(512, 256, k, 7), FALSE);
-        SetBrightness(Approach(badge == 0 ? 16 : 10, 0, k, 6));
+                  P_BADGE0 + badge, Approach(512, 256, k, 9), FALSE);
+        SetBrightness(Approach(badge == 0 ? 16 : 10, 0, k, 8));
     }
     else
     {
         // all eight in a row, one after another
-        u32 k = t - T_LINEUP, i, shown = min(8, k / 3 + 1);
+        u32 k = t - T_LINEUP, i, shown = min(8, k / 4 + 1);
         if (k == 0)
             ShowBadgeRays(5);   // (gold)
         for (i = 0; i < shown; i++)
         {
             // (32x32, not scaled: eight affine sprites that wide would be too many for a line)
-            s32 drop = Approach(-12, 0, k - i * 3, 4);
+            s32 drop = Approach(-12, 0, k - i * 4, 5);
             PutSprite(22 + 28 * i - 16, DISPLAY_HEIGHT / 2 - 16 + drop, ST_OAM_SQUARE, ST_OAM_SIZE_2,
                       TILE_BADGES_SMALL + i * 16, P_BADGE0 + i, 0, FALSE);
         }
-        if (k < 30)
-            SetBrightness(Approach(10, 0, k % 3 == 0 ? 0 : k % 3, 3) * (k < 24));
+        if (k < 32)
+            SetBrightness(Approach(10, 0, k % 4, 4));
         else if (t >= T_GYM - 6)
             SetBrightness(Approach(0, 16, t - (T_GYM - 6), 6));
         else
@@ -376,35 +392,84 @@ static void StartGym(void)
     LoadPalette(sWalk_Pal, OBJ_PLTT_ID(P_WALK), PLTT_SIZE_4BPP);
     LoadObjTiles(sBrush_Gfx, TILE_BRUSH, 64);
     LoadPalette(sBrush_Pal, OBJ_PLTT_ID(P_BRUSH), PLTT_SIZE_4BPP);
+    LoadObjTiles(sDoor_Gfx, TILE_DOOR, 12);
+    LoadPalette(sDoor_Pal, OBJ_PLTT_ID(P_DOOR), PLTT_SIZE_4BPP);
     sCanvas->scene = SCENE_GYM;
+}
+
+// The gym's door, on the map at (20, 21): (7, 6) blocks into the view
+#define DOOR_X 112
+#define DOOR_Y 96
+
+// The brush's tip, and the rainbow it has painted so far: it zigzags down and up the screen as it
+// crosses, and each line is painted as far as the tip has reached on it
+static void PaintStroke(u32 k)
+{
+    s32 tipX = Approach(-8, DISPLAY_WIDTH + 8, k, BRUSH_TIME);
+    u32 phase = k % STROKE_TIME;
+    s32 tipY = 4 + (DISPLAY_HEIGHT - 8) * (phase < STROKE_TIME / 2 ? phase : STROKE_TIME - phase) / (STROKE_TIME / 2);
+    s32 y;
+    u16 paint;
+    for (y = max(0, tipY - 18); y < min(DISPLAY_HEIGHT, tipY + 18); y++)
+        if (tipX + 6 > sCanvas->painted[y])
+            sCanvas->painted[y] = max(0, min(DISPLAY_WIDTH, tipX + 6));
+    // (the brush at double size: its tip is 57 pixels down and left of its middle; the paint on the
+    // tip is whichever band it's in)
+    PutSprite(tipX + 57, tipY - 57, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BRUSH, P_BRUSH, 512, FALSE);
+    paint = sRainbow_Pal[1 + min(6, max(0, tipY) * 7 / DISPLAY_HEIGHT)];
+    LoadPalette(&paint, OBJ_PLTT_ID(P_BRUSH) + 15, sizeof(paint));
 }
 
 static void DrawGym(u32 t)
 {
-    // the player walks up the plateau to the gym's door (16 pixels a step), and goes in
+    // the player walks up the plateau to the gym's door (16 pixels a step); it slides open, they go
+    // in, and it slides shut behind them
     static const u8 sWalkUp[4] = {5, 1, 6, 1};
-    if (t < T_ENTER)
+    s32 doorFrame = -1;
+    if (t < T_INSIDE)
     {
-        s32 y = Approach(DISPLAY_HEIGHT, 80, t - T_GYM, T_WALK_END - T_GYM);
-        u32 frame = t < T_WALK_END ? sWalkUp[((t - T_GYM) / 8) % 4] : 1;
-        PutSprite(112, y, ST_OAM_V_RECTANGLE, ST_OAM_SIZE_2, TILE_WALK + frame * 8, P_WALK, 0, FALSE);
+        s32 y = DISPLAY_HEIGHT;
+        u32 frame = 1;
+        if (t >= T_STEP_IN)
+            y = DOOR_Y - Approach(0, 16, t - T_STEP_IN, 16), frame = sWalkUp[((t - T_STEP_IN) / 8) % 4];
+        else if (t >= T_WALK)
+            y = Approach(DISPLAY_HEIGHT, DOOR_Y, t - T_WALK, T_WALK_END - T_WALK), frame = t < T_WALK_END ? sWalkUp[((t - T_WALK) / 8) % 4] : 1;
+        PutSprite(DOOR_X, y, ST_OAM_V_RECTANGLE, ST_OAM_SIZE_2, TILE_WALK + frame * 8, P_WALK, 0, FALSE);
     }
-    // the brush: across the screen at double size, the rainbow behind it
-    if (t >= T_BRUSH_START && t < T_RAINBOW_FULL + 30)
+    if (t == T_DOOR_OPEN || t == T_DOOR_CLOSE)
+        PlaySE(SE_SLIDING_DOOR);
+    if (t >= T_DOOR_OPEN && t < T_DOOR_CLOSE)
+        doorFrame = min(2, (t - T_DOOR_OPEN) / DOOR_FRAME_TIME);
+    else if (t >= T_DOOR_CLOSE && t < T_DOOR_CLOSE + 3 * DOOR_FRAME_TIME)
+        doorFrame = 2 - (t - T_DOOR_CLOSE) / DOOR_FRAME_TIME;
+    if (doorFrame >= 0)
+        PutSprite(DOOR_X, DOOR_Y, ST_OAM_SQUARE, ST_OAM_SIZE_1, TILE_DOOR + doorFrame * 4, P_DOOR, 0, FALSE);
+
+    // the brush
+    if (t >= T_BRUSH_START && t < T_RAINBOW_FULL)
     {
-        s32 x = Approach(-70, DISPLAY_WIDTH + 140, t - T_BRUSH_START, BRUSH_TIME + 20);
-        PutSprite(x, DISPLAY_HEIGHT / 2, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BRUSH, P_BRUSH, 512, FALSE);
+        PaintStroke(t - T_BRUSH_START);
         sCanvas->windowOn = TRUE;
-        sCanvas->windowRight = max(0, min(DISPLAY_WIDTH, x - 46));
     }
-    if (t >= T_RAINBOW_FULL)
-        sCanvas->windowRight = DISPLAY_WIDTH;
-    if (t < T_GYM + 8)
-        SetBrightness(Approach(16, 0, t - T_GYM, 8));
+    else if (t >= T_RAINBOW_FULL)
+    {
+        memset(sCanvas->painted, DISPLAY_WIDTH, sizeof(sCanvas->painted));
+    }
+    if (t < T_GYM + 10)
+        SetBrightness(Approach(16, 0, t - T_GYM, 10));
     else if (t >= T_FADE_WHITE)
-        SetBrightness(Approach(0, 16, t - T_FADE_WHITE, 14));
+        SetBrightness(Approach(0, 16, t - T_FADE_WHITE, 16));
     else
         SetBrightness(0);
+}
+
+// (the rainbow's edge on each line, for the next frame: WIN0H by HBlank DMA)
+static void BuildWindowScanlines(void)
+{
+    u16 *buf = gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer];
+    u32 y;
+    for (y = 0; y < DISPLAY_HEIGHT; y++)
+        buf[y] = WIN_RANGE(0, sCanvas->painted[y]);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -436,6 +501,8 @@ static void CB2_Canvas(void)
     case SCENE_GYM:    DrawGym(t); break;
     }
     EndOam();
+    if (sCanvas->windowOn)
+        BuildWindowScanlines();
     sCanvas->t++;
 }
 
@@ -456,8 +523,20 @@ static void VBlankCB_Canvas(void)
     SetGpuReg(REG_OFFSET_BLDY, min(16, b < 0 ? -b : b));
     if (sCanvas->windowOn)
     {
-        // (the rainbow, BG2, only left of the brush; the gym, BG1, right of it)
-        SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, sCanvas->windowRight));
+        // (the rainbow, BG2, only where it's been painted (WIN0, its width on each line by HBlank
+        // DMA); the gym, BG1, elsewhere)
+        if (!sCanvas->scanlinesOn)
+        {
+            struct ScanlineEffectParams params;
+            ScanlineEffect_Clear();
+            params.dmaDest = &REG_WIN0H;
+            params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
+            params.initState = 1;
+            params.unused9 = 0;
+            ScanlineEffect_SetParams(params);
+            sCanvas->scanlinesOn = TRUE;
+        }
+        ScanlineEffect_InitHBlankDmaTransfer();
         SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(0, DISPLAY_HEIGHT));
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG2 | WININ_WIN0_OBJ | WININ_WIN0_CLR);
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
@@ -501,6 +580,7 @@ void CB2_IntroCanvas(void)
 static void CanvasExit(void)
 {
     SetVBlankCallback(NULL);
+    ScanlineEffect_Stop();
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     SetGpuReg(REG_OFFSET_BLDY, 0);
