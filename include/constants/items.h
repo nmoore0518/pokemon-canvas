@@ -1139,6 +1139,7 @@ enum __attribute__((packed)) Item
     ITEM_COPPER_COIN = 953,
     ITEM_SILVER_COIN = 954,
     ITEM_GOLD_COIN = 955,
+    ITEM_SMEARGLITE = 956,      // Pokémon Canvas: Canvas Smeargle's Mega Stone, a key item (src/painter.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "painter.h"
 #include "playtest.h"
 #include "regions.h"
 #include "gym_challenge.h"
@@ -6325,7 +6326,8 @@ static void Cmd_copymovepermanently(void)
 
     if (!(gBattleMons[gBattlerAttacker].volatiles.transformed)
         && gLastPrintedMoves[gBattlerTarget] != MOVE_UNAVAILABLE
-        && !IsMoveSketchBanned(gLastPrintedMoves[gBattlerTarget]))
+        && !IsMoveSketchBanned(gLastPrintedMoves[gBattlerTarget])
+        && Painter_SketchAllowed(gLastPrintedMoves[gBattlerTarget]))   // (Pokémon Canvas: a Sketch quest's moves only)
     {
         s32 i;
 

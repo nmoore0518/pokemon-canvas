@@ -882,6 +882,19 @@ gSpecials::
 	def_special SurfingPikachu_Give
 	def_special SurfingPikachu_CheckInParty
 	def_special SurfingMinigame_Start
+	def_special Painter_GetOffer
+	def_special Painter_CheckRoom
+	def_special Painter_GetPending
+	def_special Painter_PrepareFirst
+	def_special Painter_FindSmeargle
+	def_special Painter_PrepareSketch
+	def_special Painter_PrepareMega
+	def_special Painter_CanEnter
+	def_special Painter_Enter
+	def_special Painter_SetupFigure
+	def_special Painter_Return
+	def_special Painter_GiveSmeargle
+	def_special Painter_RecordBattle
 	def_special BufferItemPocketName
 	def_special Outfit_CheckUnlocked
 	def_special Outfit_CountUnlocked

@@ -2753,6 +2753,10 @@
 #define FLAG_STADIUM_GAVE_SHINY    0x8F9   // (...and the shiny one: beaten with nothing but Pikachu)
 #define FLAG_STADIUM_OWES_SURFING  0x8FA   // (earned, but there was no room: he gives it next time)
 #define FLAG_STADIUM_OWES_SHINY    0x8FB
+// The painter's Smeargle (Pewter City, src/painter.c): FireRed's spare system flags 0x8FC on
+#define FLAG_IN_PAINTING           0x8FC   // (the player is inside one of her paintings)
+#define FLAG_PAINTER_GAVE_SMEARGLE 0x8FD   // (she's given the player their Canvas Smeargle; hides hers)
+#define FLAG_PAINTER_MEGA_DONE     0x8FE   // (she's given the SMEARGLITE)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)

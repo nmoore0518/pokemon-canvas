@@ -900,4 +900,11 @@ const u16 gObjectEventPic_GauntletPalmPilot[] = INCGFX_U16("graphics/object_even
 const u16 gObjectEventPal_GauntletPalmPilot[] = INCGFX_U16("graphics/object_events/pics/people/gauntlet/palm_pilot.png", ".gbapal");
 const u16 gObjectEventPic_GoldDiglett[] = INCGFX_U16("graphics/object_events/pics/misc/gold_diglett.png", ".4bpp", "-mwidth 4 -mheight 4");
 const u16 gObjectEventPal_GoldDiglett[] = INCGFX_U16("graphics/object_events/pics/misc/gold_diglett.png", ".gbapal");
+// Pokémon Canvas: the painter's loft (tools/gym_hack/painter_art.py)
+const u16 gObjectEventPic_Painter[] = INCGFX_U16("graphics/object_events/pics/people/painter.png", ".4bpp", "-mwidth 2 -mheight 4");
+const u16 gObjectEventPal_Painter[] = INCGFX_U16("graphics/object_events/pics/people/painter.pal", ".gbapal");
+const u16 gObjectEventPal_PaintFigure[] = INCGFX_U16("graphics/object_events/pics/people/paint_figure.pal", ".gbapal");
+const u16 gObjectEventPic_PainterDecor[] = INCGFX_U16("graphics/object_events/pics/misc/painter_decor.png", ".4bpp", "-mwidth 4 -mheight 4");
+const u16 gObjectEventPic_PainterDecorSmall[] = INCGFX_U16("graphics/object_events/pics/misc/painter_decor_small.png", ".4bpp", "-mwidth 2 -mheight 2");
+const u16 gObjectEventPal_PainterDecor[] = INCGFX_U16("graphics/object_events/pics/misc/painter_decor.pal", ".gbapal");
 // END Gauntlet

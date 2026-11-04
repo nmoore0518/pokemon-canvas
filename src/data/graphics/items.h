@@ -2311,3 +2311,5 @@ const u32 gItemIcon_GoldCoin[] = INCGFX_U32("graphics/items/icons/gym/gold_coin.
 const u16 gItemIconPalette_GoldCoin[] = INCGFX_U16("graphics/items/icon_palettes/gym/gold_coin.pal", ".gbapal");
 const u32 gItemIcon_SpiritWard[] = INCGFX_U32("graphics/items/icons/gym/spirit_ward.png", ".4bpp.smol");   // (tools/gym_hack/spirit_ward_art.py)
 const u16 gItemIconPalette_SpiritWard[] = INCGFX_U16("graphics/items/icon_palettes/gym/spirit_ward.pal", ".gbapal");
+const u32 gItemIcon_Smearglite[] = INCGFX_U32("graphics/items/icons/gym/smearglite.png", ".4bpp.smol");   // (tools/gym_hack/build_canvas_smeargle.py)
+const u16 gItemIconPalette_Smearglite[] = INCGFX_U16("graphics/items/icon_palettes/gym/smearglite.pal", ".gbapal");

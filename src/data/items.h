@@ -17014,6 +17014,24 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_SpiritWard,
     },
 
+    [ITEM_SMEARGLITE] =
+    {
+        // Pokémon Canvas: the painter's, for beating the Mega in her painting after the League
+        // (src/painter.c). A Canvas Smeargle Mega Evolves while it's in the bag: no need to hold it.
+        .name = ITEM_NAME("Smearglite"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "A Mega Stone in every\n"
+            "color. Canvas Smeargle\n"
+            "Mega Evolve with it."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_Smearglite,
+        .iconPalette = gItemIconPalette_Smearglite,
+    },
+
     [ITEM_LUCKY_CLOVER] =
     {
         // Pokémon Canvas: an upgrade material (src/item_upgrades.c)

@@ -2972,6 +2972,29 @@ static const struct SpriteFrameImage sPicTable_GoldDiglett[] = {
     overworld_frame(gObjectEventPic_GoldDiglett, 4, 4, 0),
 };
 
+// Pokémon Canvas: the painter's loft
+static const struct SpriteFrameImage sPicTable_Painter[] = {
+    overworld_ascending_frames(gObjectEventPic_Painter, 2, 4),
+};
+static const struct SpriteFrameImage sPicTable_PainterEasel[] = {
+    overworld_frame(gObjectEventPic_PainterDecor, 4, 4, 0),
+};
+static const struct SpriteFrameImage sPicTable_PainterCanvases[] = {
+    overworld_frame(gObjectEventPic_PainterDecor, 4, 4, 1),
+};
+static const struct SpriteFrameImage sPicTable_PaintSplotchRed[] = {
+    overworld_frame(gObjectEventPic_PainterDecorSmall, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_PaintSplotchBlue[] = {
+    overworld_frame(gObjectEventPic_PainterDecorSmall, 2, 2, 1),
+};
+static const struct SpriteFrameImage sPicTable_PaintSplotchYellow[] = {
+    overworld_frame(gObjectEventPic_PainterDecorSmall, 2, 2, 2),
+};
+static const struct SpriteFrameImage sPicTable_PaintPot[] = {
+    overworld_frame(gObjectEventPic_PainterDecorSmall, 2, 2, 3),
+};
+
 static const struct SpriteFrameImage sPicTable_GauntletPalmPilot[] = {
     overworld_ascending_frames(gObjectEventPic_GauntletPalmPilot, 2, 4),
 };

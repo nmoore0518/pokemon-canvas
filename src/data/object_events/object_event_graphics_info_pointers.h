@@ -542,6 +542,14 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletHoo
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletBill;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GauntletPalmPilot;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GoldDiglett;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Painter;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintFigure;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PainterEasel;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PainterCanvases;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotchRed;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotchBlue;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotchYellow;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintPot;
 // END Gauntlet externs
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -1074,6 +1082,14 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_GAUNTLET_BILL] = &gObjectEventGraphicsInfo_GauntletBill,
     [OBJ_EVENT_GFX_GAUNTLET_PALM_PILOT] = &gObjectEventGraphicsInfo_GauntletPalmPilot,
     [OBJ_EVENT_GFX_GOLD_DIGLETT] = &gObjectEventGraphicsInfo_GoldDiglett,
+    [OBJ_EVENT_GFX_PAINTER] = &gObjectEventGraphicsInfo_Painter,
+    [OBJ_EVENT_GFX_PAINT_FIGURE] = &gObjectEventGraphicsInfo_PaintFigure,
+    [OBJ_EVENT_GFX_PAINTER_EASEL] = &gObjectEventGraphicsInfo_PainterEasel,
+    [OBJ_EVENT_GFX_PAINTER_CANVASES] = &gObjectEventGraphicsInfo_PainterCanvases,
+    [OBJ_EVENT_GFX_PAINT_SPLOTCH_RED] = &gObjectEventGraphicsInfo_PaintSplotchRed,
+    [OBJ_EVENT_GFX_PAINT_SPLOTCH_BLUE] = &gObjectEventGraphicsInfo_PaintSplotchBlue,
+    [OBJ_EVENT_GFX_PAINT_SPLOTCH_YELLOW] = &gObjectEventGraphicsInfo_PaintSplotchYellow,
+    [OBJ_EVENT_GFX_PAINT_POT] = &gObjectEventGraphicsInfo_PaintPot,
 // END Gauntlet
 };
 

@@ -171,6 +171,7 @@ HOUNDOUR HOUNDOOM : Sheer Force : Flamethrower, Dark Pulse, Sludge Bomb 1.3x
 PHANPY DONPHAN : Solid Rock : takes less from Water, Grass and Ice
 STANTLER WYRDEER : Reckless : Double-Edge and Jump Kick 1.2x
 SMEARGLE : Magic Bounce : reflects status (sidegrade: gives up Moody; Prankster with Spore would be too strong)
+SMEARGLE_CANVAS SMEARGLE_CANVAS_NORMAL SMEARGLE_CANVAS_FIGHTING SMEARGLE_CANVAS_FLYING SMEARGLE_CANVAS_POISON SMEARGLE_CANVAS_GROUND SMEARGLE_CANVAS_ROCK SMEARGLE_CANVAS_BUG SMEARGLE_CANVAS_GHOST SMEARGLE_CANVAS_STEEL SMEARGLE_CANVAS_FIRE SMEARGLE_CANVAS_WATER SMEARGLE_CANVAS_GRASS SMEARGLE_CANVAS_ELECTRIC SMEARGLE_CANVAS_PSYCHIC SMEARGLE_CANVAS_ICE SMEARGLE_CANVAS_DRAGON SMEARGLE_CANVAS_DARK SMEARGLE_CANVAS_FAIRY : Adaptability : STAB 2x on Masterstroke and its type's moves (Canvas Smeargle, all its painted forms; the Megas keep Protean in battle)
 TYROGUE : Technician : Mach Punch and Fake Out 1.5x
 HITMONLEE : Tough Claws : High Jump Kick and Blaze Kick 1.3x
 HITMONCHAN : Technician : Mach Punch and Bullet Punch 1.5x

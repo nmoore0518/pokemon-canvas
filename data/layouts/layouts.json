@@ -11546,6 +11546,19 @@
       "border_filepath": "data/layouts/Route21_StadiumCave_Frlg/border.bin",
       "blockdata_filepath": "data/layouts/Route21_StadiumCave_Frlg/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_PEWTER_CITY_PAINTER_LOFT",
+      "name": "PewterCity_PainterLoft_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_GenericBuilding2",
+      "border_filepath": "data/layouts/PewterCity_PainterLoft_Frlg/border.bin",
+      "blockdata_filepath": "data/layouts/PewterCity_PainterLoft_Frlg/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

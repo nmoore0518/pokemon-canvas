@@ -2125,6 +2125,12 @@ void PlayerHandleChooseMove(enum BattlerId battler)
         {
             // (automated playtests: the autopilot's move, at its target)
             u32 target, slot = Playtest_ChooseMove(battler, &target);
+            // (and it Mega Evolves when it can)
+            if (gBattleStruct->gimmick.usableGimmick[battler] == GIMMICK_MEGA)
+            {
+                gBattleStruct->gimmick.playerSelect = TRUE;
+                slot |= RET_GIMMICK;
+            }
             BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_EXEC_SCRIPT, slot | (target << 8));
             BtlController_Complete(battler);
             return;

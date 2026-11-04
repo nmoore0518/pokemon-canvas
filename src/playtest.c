@@ -92,6 +92,22 @@ u32 Playtest_ChooseMove(u32 battler, u32 *target)
             best = i;   // (something usable, whatever the scores)
             break;
         }
+    // (the painter's Sketch quests: a Pokémon with Sketch waits for a foe's move, then sketches it)
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (gBattleMons[battler].moves[i] == MOVE_SKETCH && !(unusable & (1u << i)))
+        {
+            for (k = 0; k < gBattlersCount; k++)
+            {
+                if (!IsOnPlayerSide(k) && IsBattlerAlive(k) && gLastPrintedMoves[k] != MOVE_NONE && gLastPrintedMoves[k] != MOVE_UNAVAILABLE)
+                {
+                    *target = k;
+                    return i;
+                }
+            }
+            unusable |= 1u << i;    // (nothing to sketch yet: Sketch has 1 PP, so not now)
+        }
+    }
     for (k = 0; k < gBattlersCount; k++)
     {
         if (IsOnPlayerSide(k) || !IsBattlerAlive(k))

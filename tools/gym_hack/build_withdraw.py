@@ -31,7 +31,7 @@ def preprocess(header, *extra):
         return out.read_text()
 
 
-EXCLUDE = {"SPECIES_CLEFFABILL", "SPECIES_CHANSEY_DAD", "SPECIES_PIKACHU_SURFING"}
+EXCLUDE = {"SPECIES_CLEFFABILL", "SPECIES_CHANSEY_DAD", "SPECIES_PIKACHU_SURFING"}   # (and the painter's Canvas Smeargle)
 LABEL = {   # forms whose constant doesn't say it well
     "SPECIES_PIKACHU_PHD": "Pikachu Ph.D.",
     "SPECIES_PIKACHU_ORIGINAL": "Pikachu Orig. Cap",
@@ -89,7 +89,7 @@ def main():
 
     def keep(s):
         f = S[s]["flags"]
-        if s in EXCLUDE or not S[s]["nat"] or S[s]["nat"] == "NATIONAL_DEX_NONE":
+        if s in EXCLUDE or s.startswith("SPECIES_SMEARGLE_CANVAS") or not S[s]["nat"] or S[s]["nat"] == "NATIONAL_DEX_NONE":
             return False
         if f & {"isMegaEvolution", "isGigantamax", "isPrimalReversion", "isUltraBurst", "isTeraForm", "isTotem"}:
             return False

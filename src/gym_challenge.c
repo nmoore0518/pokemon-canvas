@@ -987,6 +987,24 @@ void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const 
     SetTexts(intro, defeat, after, win);
 }
 
+// Pokémon Canvas: the figure in the painter's paintings (src/painter.c): a double battle with a
+// practice team (of a type, or any: NUMBER_OF_MON_TYPES); the painter's code gives its moves
+void GymChallenge_SetupPaintFigure(u32 tier, u32 type, u32 level, u32 count, const u8 *name)
+{
+    gGymPracticeBattle = FALSE;
+    gGymGuestBattle = FALSE;
+    SetupTrainer(TRAINER_CLASS_STADIUM, TRAINER_PIC_PAINTER_FRLG, TRUE, name, 0);
+    sChallenger.partySize = BuildTeam(min(tier, (u32)PRACTICE_EXPERT), type, level, count);
+    sChallenger.encounterMusic = TRAINER_ENCOUNTER_MUSIC_FEMALE;
+    sKind = GYM_CHALLENGER_FAMOUS;
+    sFormat = GYM_FORMAT_DOUBLES;
+}
+
+struct TrainerMon *GymChallenge_GetChallengerMon(u32 i)
+{
+    return &sChallengerMons[i];
+}
+
 // The tournament (src/tournament.c): after SetupGauntlet, everyone at one level
 void GymChallenge_SetChallengerLevel(u32 level)
 {

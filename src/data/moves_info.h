@@ -22116,6 +22116,36 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .battleAnimScript = gBattleAnimMove_MalignantChain,
     },
 
+    // Pokémon Canvas: Canvas Smeargle's own move (src/painter.c). Its type is the user's (as
+    // Revelation Dance: the painter's unpainted Smeargle's is typeless); one in ten hits leaves a
+    // status, one of five (two in ten with Serene Grace).
+    [MOVE_MASTERSTROKE] =
+    {
+        .name = COMPOUND_STRING("Masterstroke"),
+        .description = COMPOUND_STRING(
+            "Paints in the user's colors.\n"
+            "May leave a status problem."),
+        .effect = EFFECT_REVELATION_DANCE,
+        .power = 60,
+        .type = TYPE_NORMAL,
+        .accuracy = 100,
+        .pp = 15,
+        .target = TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_SPECIAL,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_RANDOM_FROM_LIST,
+            .chance = 10,
+            // (and poison and sleep: src/battle_set_effect.c, HandleSetEffectRandomFromList)
+            .argument.randomMoveEffects = { MOVE_EFFECT_BURN, MOVE_EFFECT_FREEZE_OR_FROSTBITE, MOVE_EFFECT_PARALYSIS },
+        }),
+        .contestEffect = CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING,
+        .contestCategory = CONTEST_CATEGORY_BEAUTY,
+        .contestComboStarterId = 0,
+        .contestComboMoves = {0},
+        .battleAnimScript = gBattleAnimMove_TriAttack,
+    },
+
     // Z-Moves
     [MOVE_BREAKNECK_BLITZ] =
     {

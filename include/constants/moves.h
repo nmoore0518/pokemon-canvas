@@ -906,8 +906,10 @@ enum __attribute__((packed)) Move
     MOVES_COUNT_GEN9,
 
     // Add any custom moves here, not further down!
+    MOVE_MASTERSTROKE = MOVES_COUNT_GEN9,   // Pokémon Canvas: Canvas Smeargle's (its own type; src/painter.c)
+    MOVES_COUNT_CANVAS,
 
-    MOVES_COUNT = MOVES_COUNT_GEN9,
+    MOVES_COUNT = MOVES_COUNT_CANVAS,
 
     // Z Moves
     FIRST_Z_MOVE = MOVES_COUNT,

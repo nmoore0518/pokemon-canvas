@@ -88,6 +88,8 @@ void GymChallenge_SetupGauntlet(u32 trainerClass, u32 pic, bool32 female, const 
                                 const struct TrainerMon *party, u32 partySize,
                                 const u8 *intro, const u8 *defeat, const u8 *after, const u8 *win);
 void GymChallenge_SetChallengerLevel(u32 level);
+void GymChallenge_SetupPaintFigure(u32 tier, u32 type, u32 level, u32 count, const u8 *name);
+struct TrainerMon *GymChallenge_GetChallengerMon(u32 i);
 void GymChallenge_SetPracticeAI(u64 aiFlags);
 void GymChallenge_SetupFixed(u32 trainerClass, u32 pic, bool32 female, const u8 *name,
                              const struct TrainerMon *party, u32 partySize);

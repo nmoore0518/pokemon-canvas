@@ -1,6 +1,8 @@
 #ifndef GUARD_CONSTANTS_SPECIES_H
 #define GUARD_CONSTANTS_SPECIES_H
 
+#include "constants/canvas_smeargle.h"   // Pokémon Canvas: Canvas Smeargle's forms
+
 // NOTE: The defines here are named in order to match Pokémon Showdown's naming conventions. This is done to avoid issues with trainerproc parsing species names. If a Pokémon does not have an entry on Showdown, use your best judgement.
 // Additionally, we have tried to reduce down to as few defines as possible, because programs like porymap do not always properly handle having multiple defines.
 // Discussion: https://github.com/rh-hideout/pokeemerald-expansion/pull/5075#issuecomment-2384088602
@@ -1706,6 +1708,7 @@ enum __attribute__((packed)) Species
     SPECIES_AUTOMATEON,
     SPECIES_VALYREON,
     SPECIES_PIKACHU_SURFING, // Pokémon Canvas: Surfing Pikachu (the Stadium trainer's gift, Route 21's hidden cave)
+    CANVAS_SMEARGLE_SPECIES  // Pokémon Canvas: the painter's Smeargle (src/painter.c; tools/gym_hack/build_canvas_smeargle.py)
     SPECIES_CUSTOM_END,
 
     SPECIES_EGG = SPECIES_CUSTOM_END,

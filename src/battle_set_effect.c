@@ -151,6 +151,17 @@ static void HandleSetEffectRandomFromList(struct BattleCalcValues *cv, struct Se
         return;
     }
 
+    // Pokémon Canvas: Masterstroke picks one of five (the list holds three)
+    static const enum MoveEffect sMasterstrokeEffects[] =
+    {
+        MOVE_EFFECT_BURN, MOVE_EFFECT_FREEZE_OR_FROSTBITE, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_POISON, MOVE_EFFECT_SLEEP,
+    };
+    if (gCurrentMove == MOVE_MASTERSTROKE)
+    {
+        sRandomFromListEffects = sMasterstrokeEffects;
+        validEffectCount = ARRAY_COUNT(sMasterstrokeEffects);
+    }
+
     u32 chosenMoveEffect = RandomUniform(RNG_RANDOM_FROM_LIST, 0, validEffectCount - 1);
     if (sRandomFromListEffects[chosenMoveEffect] == MOVE_EFFECT_BURN)
         gBattleStruct->triAttackBurn = TRUE;

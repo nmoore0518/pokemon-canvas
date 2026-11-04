@@ -178,6 +178,13 @@
       "elevation": 0,
       "dest_map": "MAP_PEWTER_CITY_HOUSE2",
       "dest_warp_id": "1"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "elevation": 0,
+      "dest_map": "MAP_PEWTER_CITY_PAINTER_LOFT",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [
@@ -288,7 +295,7 @@
     },
     {
       "type": "hidden_item",
-      "x": 6,
+      "x": 4,
       "y": 3,
       "elevation": 3,
       "item": "ITEM_POKE_BALL",

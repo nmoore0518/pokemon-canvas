@@ -1,4 +1,5 @@
 #include "global.h"
+#include "painter.h"
 #include "outfits.h"
 #include "gym_candidate.h"
 #include "form_items.h"
@@ -617,6 +618,9 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_GauntletBill, OBJ_EVENT_PAL_TAG_GAUNTLET_BILL},
     {gObjectEventPal_GauntletPalmPilot, OBJ_EVENT_PAL_TAG_GAUNTLET_PALM_PILOT},
     {gObjectEventPal_GoldDiglett, OBJ_EVENT_PAL_TAG_GOLD_DIGLETT},
+    {gObjectEventPal_Painter, OBJ_EVENT_PAL_TAG_PAINTER},
+    {gObjectEventPal_PaintFigure, OBJ_EVENT_PAL_TAG_PAINT_FIGURE},
+    {gObjectEventPal_PainterDecor, OBJ_EVENT_PAL_TAG_PAINTER_DECOR},
 // END Gauntlet
 // BEGIN Convention (tools/gym_hack/import_convention_sprites.py)
     {gObjectEventPal_ConvWhitney, OBJ_EVENT_PAL_TAG_CONV_WHITNEY},
@@ -3036,7 +3040,8 @@ void TrySpawnObjectEvents(s16 cameraX, s16 cameraY)
 
             if (top <= npcY && bottom >= npcY && left <= npcX && right >= npcX && !FlagGet(template->flagId)
              && !FormItems_ObjectWaits(template->flagId)   // (Pokémon Canvas: Genesect's Drives)
-             && !GymCandidate_IsPlacedRecruitScript(template->script))   // (Pokémon Canvas: recruit moved to the GYM)
+             && !GymCandidate_IsPlacedRecruitScript(template->script)   // (Pokémon Canvas: recruit moved to the GYM)
+             && !Painting_HidesObject(template->script))   // (Pokémon Canvas: the painter's paintings)
             {
                 if (template->graphicsId == OBJ_EVENT_GFX_LIGHT_SPRITE)
                     SpawnLightSprite(npcX, npcY, cameraX, cameraY, template->trainerRange_berryTreeId); // light sprite instead
@@ -6569,6 +6574,10 @@ enum Collision GetCollisionAtCoords(struct ObjectEvent *objectEvent, s16 x, s16 
     // Gym Trainer hack: nothing blocks the player while they decorate the gym
     if (objectEvent->isPlayer && GymDecor_IsEditing())
         return COLLISION_NONE;
+
+    // Pokémon Canvas: nobody walks off the edge of one of the painter's paintings
+    if (objectEvent->isPlayer && Painting_BlocksCoords(x, y))
+        return COLLISION_IMPASSABLE;
 
     objectEvent->directionOverwrite = DIR_NONE;
 

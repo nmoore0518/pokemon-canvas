@@ -1,4 +1,5 @@
 #include "global.h"
+#include "painter.h"
 #include "incense.h"
 #include "exotic_safari.h"
 #include "gym_legend.h"
@@ -710,6 +711,9 @@ bool8 AreLegendariesInSootopolisPreventingEncounters(void)
 
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
 {
+    if (Painting_IsActive())   // (Pokémon Canvas: nothing wild in the painter's paintings)
+        return FALSE;
+
     u32 headerId;
     enum TimeOfDay timeOfDay;
     struct Roamer *roamer;

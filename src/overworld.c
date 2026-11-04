@@ -1,4 +1,5 @@
 #include "global.h"
+#include "painter.h"
 #include "playtest.h"
 #include "event_mons.h"
 #include "overworld.h"
@@ -620,6 +621,7 @@ const struct MapLayout *GetMapLayout(u16 mapLayoutId)
 
 void ApplyCurrentWarp(void)
 {
+    Painting_RedirectWarp(&sWarpDestination);   // (Pokémon Canvas: every way out of a painting leads to the loft)
     gLastUsedWarp = gSaveBlock1Ptr->location;
     gSaveBlock1Ptr->location = sWarpDestination;
     sFixedDiveWarp = sDummyWarpData;

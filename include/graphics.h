@@ -1027,6 +1027,8 @@ extern const u16 gItemIconPalette_CapCase[];
 extern const u32 gItemIcon_Incense[];
 extern const u16 gItemIconPalette_Incense[];
 extern const u32 gItemIcon_SpiritWard[];
+extern const u32 gItemIcon_Smearglite[];
+extern const u16 gItemIconPalette_Smearglite[];
 extern const u16 gItemIconPalette_SpiritWard[];
 extern const u32 gItemIcon_LuckyClover[];
 extern const u16 gItemIconPalette_LuckyClover[];

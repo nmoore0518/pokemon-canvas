@@ -367,6 +367,17 @@
 #define VAR_INCENSE_STEPS                                0x4096
 // Pikachu's Beach's high score (src/surfing_minigame.c). FireRed's scripts never use it.
 #define VAR_SURFING_HIGH_SCORE                           0x40C3
+// The painter's Smeargle (Pewter City, src/painter.c). FireRed's scripts never use these.
+#define VAR_PAINTER_SKETCHES                             0x40A1 // (Sketch quests won: one per badge after the first)
+#define VAR_PAINTING_DEST                                0x40A8 // (the painting last entered: an index into sPaintingDestinations, + 1)
+#define VAR_PAINTING_MODE                                0x40AF // (what the painting's for: PAINTING_MODE_*)
+#define VAR_PAINTING_RESULT                              0x40B0 // (its battle: 0 none, 1 won, 2 lost)
+#define VAR_PAINTING_RETURN                              0x40B1 // (1: just back in the loft; its frame script runs)
+#define VAR_PAINTER_SKETCH                               0x40B2 // (a Sketch quest: the move slot | the type << 8)
+#define VAR_PAINTER_SKETCH_MOVE                          0x40BD // (...and the move that was in the slot)
+#define VAR_PAINTER_MON_LO                               0x40BE // (the Smeargle in the painting: its personality)
+#define VAR_PAINTER_MON_HI                               0x40BF
+#define VAR_PAINTING_SEED                                0x40C4 // (the painting's colours)
 
 #if TESTING
 #define TESTING_VARS_START                  0x9000

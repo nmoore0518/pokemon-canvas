@@ -38,6 +38,8 @@
 #include "data.h"
 #include "battle_setup.h"
 #include "test/overworld_script.h"
+#include "painter.h"
+#include "constants/painter.h"
 #include "constants/gym_hack.h"
 #include "constants/opponents.h"
 #include "constants/rival_teams.h"
@@ -3976,6 +3978,8 @@ TEST("GymHack: the hack's vars don't share numbers")
         VAR_GYM_DECOR_SEEN, VAR_GYM_LEGEND_STATE, VAR_JOHTO_STATE, VAR_EVENT_CAPS, VAR_EVENT_VIVILLON_LO,
         VAR_EVENT_VIVILLON_HI, VAR_LUCKY_EGG_LEVEL, VAR_AMULET_COIN_LEVEL, VAR_CHAMPION_LOSSES, VAR_INCENSE_STEPS,
         VAR_OUTFITS_UNLOCKED, VAR_OUTFITS_UNLOCKED_2, VAR_PLAYER_OUTFIT, VAR_DAD_STORY, VAR_SURFING_HIGH_SCORE,
+        VAR_PAINTER_SKETCHES, VAR_PAINTING_DEST, VAR_PAINTING_MODE, VAR_PAINTING_RESULT, VAR_PAINTING_RETURN,
+        VAR_PAINTER_SKETCH, VAR_PAINTER_SKETCH_MOVE, VAR_PAINTER_MON_LO, VAR_PAINTER_MON_HI, VAR_PAINTING_SEED,
     };
     u32 i, j;
     for (i = 0; i < ARRAY_COUNT(vars); i++)
@@ -4124,6 +4128,256 @@ TEST("GymHack: Surfing Pikachu: the Stadium trainer's and the Surfin' Dude's lin
     u32 i;
     StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
     StringCopy(gStringVar1, COMPOUND_STRING("9999"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectStoryTextFits(texts[i], 27 * 8 - 4, 99);
+}
+
+// ---- Canvas Smeargle and the painter (src/painter.c) ----
+static void Painter_ResetForTest(void)
+{
+    u32 i;
+    for (i = 0; i < NUM_BADGES; i++)
+        FlagClear(FLAG_BADGE01_GET + i);
+    FlagClear(FLAG_SYS_GAME_CLEAR);
+    FlagClear(FLAG_PAINTER_GAVE_SMEARGLE);
+    FlagClear(FLAG_PAINTER_MEGA_DONE);
+    FlagClear(FLAG_IN_PAINTING);
+    VarSet(VAR_PAINTER_SKETCHES, 0);
+    VarSet(VAR_PAINTING_MODE, PAINTING_MODE_NONE);
+    VarSet(VAR_PAINTING_RESULT, 0);
+    VarSet(VAR_PAINTER_SKETCH, 0);
+    ZeroPlayerPartyMons();
+}
+
+TEST("GymHack: Canvas Smeargle: 500 total (600 Mega), fast and special, typed by its paint")
+{
+    u32 t;
+    const struct SpeciesInfo *s = &gSpeciesInfo[SPECIES_SMEARGLE_CANVAS];
+    EXPECT_EQ(s->baseHP + s->baseAttack + s->baseDefense + s->baseSpeed + s->baseSpAttack + s->baseSpDefense, 500);
+    EXPECT_EQ(s->types[0], TYPE_MYSTERY);
+    EXPECT_EQ(s->abilities[0], ABILITY_SERENE_GRACE);
+    EXPECT_EQ(s->abilities[2], ABILITY_TECHNICIAN);
+    for (t = 0; t < NUMBER_OF_MON_TYPES; t++)
+    {
+        u32 sp;
+        if (t == TYPE_MYSTERY || t == TYPE_NONE || t == TYPE_STELLAR)
+            continue;
+        sp = Painter_SmeargleOfType(t);
+        EXPECT_NE(sp, SPECIES_SMEARGLE_CANVAS);
+        EXPECT(Painter_IsCanvasSmeargle(sp));
+        EXPECT_EQ(gSpeciesInfo[sp].types[0], t);
+        EXPECT_EQ(gSpeciesInfo[sp].types[1], t);
+        EXPECT_EQ(GetSpeciesSyntheticAbility(sp), ABILITY_ADAPTABILITY);
+    }
+    s = &gSpeciesInfo[SPECIES_SMEARGLE_CANVAS_FIRE_MEGA];
+    EXPECT_EQ(s->baseHP + s->baseAttack + s->baseDefense + s->baseSpeed + s->baseSpAttack + s->baseSpDefense, 600);
+    EXPECT_EQ(s->abilities[0], ABILITY_PROTEAN);
+    EXPECT_EQ(GetMovePower(MOVE_MASTERSTROKE), 60);
+    EXPECT_EQ(GetMoveCategory(MOVE_MASTERSTROKE), DAMAGE_CATEGORY_SPECIAL);
+    EXPECT_EQ(Painter_SmeargleOfType(TYPE_MYSTERY), SPECIES_SMEARGLE_CANVAS);
+}
+
+TEST("GymHack: the painter: a badge first, then her Smeargle; a Sketch quest once a badge; the Mega after the League")
+{
+    Painter_ResetForTest();
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_NO_BADGE);
+    FlagSet(FLAG_BADGE01_GET);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_FIRST);
+    FlagSet(FLAG_PAINTER_GAVE_SMEARGLE);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_NOTHING);       // (one badge: the gift was its painting)
+    FlagSet(FLAG_BADGE02_GET);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_NEED_SMEARGLE); // (not in the party)
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_SMEARGLE_CANVAS_FIRE, 20, 0, OTID_STRUCT_PLAYER_ID);
+    CalculatePlayerPartyCount();
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_SKETCH);
+    VarSet(VAR_PAINTER_SKETCHES, 1);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_NOTHING);
+    FlagSet(FLAG_BADGE03_GET);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_SKETCH);
+    VarSet(VAR_PAINTER_SKETCHES, 2);
+    FlagSet(FLAG_SYS_GAME_CLEAR);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_MEGA);
+    FlagSet(FLAG_BADGE04_GET);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_BOTH);
+    FlagSet(FLAG_PAINTER_MEGA_DONE);
+    VarSet(VAR_PAINTER_SKETCHES, 50);
+    EXPECT_EQ(Painter_Offer(), PAINTER_OFFER_SKETCH);         // (unlimited after both)
+    Painter_ResetForTest();
+}
+
+static void Painter_StartSketchForTest(u32 oldMove)
+{
+    u32 move = oldMove;
+    Painter_ResetForTest();
+    FlagSet(FLAG_BADGE01_GET);
+    FlagSet(FLAG_BADGE02_GET);
+    FlagSet(FLAG_PAINTER_GAVE_SMEARGLE);
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_PIKACHU, 20, 0, OTID_STRUCT_PLAYER_ID);
+    CreateMon(&gParties[B_TRAINER_PLAYER][1], SPECIES_SMEARGLE_CANVAS_FIRE, 20, 1234, OTID_STRUCT_PLAYER_ID);
+    SetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2, &move);
+    CalculatePlayerPartyCount();
+    gSpecialVar_0x8004 = 1;
+    gSpecialVar_0x8005 = 1;
+    gSpecialVar_0x8006 = 1;     // (FIRE in the script's list)
+    Painter_PrepareSketch();
+    // (as Painter_Enter does, without the warp)
+    VarSet(VAR_PAINTER_SKETCH_MOVE, oldMove);
+    move = MOVE_SKETCH;
+    SetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2, &move);
+    FlagSet(FLAG_IN_PAINTING);
+}
+
+TEST("GymHack: a Sketch quest: won, the move stays; lost, or a move from outside the quest, the old one's back")
+{
+    u32 move;
+    Painter_StartSketchForTest(MOVE_TACKLE);
+    EXPECT(Painter_SketchAllowed(MOVE_EMBER));
+    EXPECT(!Painter_SketchAllowed(MOVE_THUNDERBOLT));
+    move = MOVE_EMBER;
+    SetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2, &move);
+    VarSet(VAR_PAINTING_RESULT, 1);
+    Painter_Return();
+    EXPECT_EQ(gSpecialVar_Result, PAINTER_RETURN_SKETCHED);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2), MOVE_EMBER);
+    EXPECT_EQ(VarGet(VAR_PAINTER_SKETCHES), 1);
+    EXPECT(!FlagGet(FLAG_IN_PAINTING));
+
+    Painter_StartSketchForTest(MOVE_TACKLE);
+    move = MOVE_EMBER;
+    SetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2, &move);
+    VarSet(VAR_PAINTING_RESULT, 2);
+    Painter_Return();
+    EXPECT_EQ(gSpecialVar_Result, PAINTER_RETURN_SKETCH_LOST);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2), MOVE_TACKLE);
+    EXPECT_EQ(VarGet(VAR_PAINTER_SKETCHES), 0);       // (a lost one doesn't use the badge's go)
+
+    Painter_StartSketchForTest(MOVE_TACKLE);
+    VarSet(VAR_PAINTING_RESULT, 1);
+    Painter_Return();
+    EXPECT_EQ(gSpecialVar_Result, PAINTER_RETURN_NO_SKETCH);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2), MOVE_TACKLE);
+
+    Painter_StartSketchForTest(MOVE_TACKLE);
+    VarSet(VAR_PAINTING_RESULT, 0);                    // (left without the battle)
+    Painter_Return();
+    EXPECT_EQ(gSpecialVar_Result, PAINTER_RETURN_LEFT);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2), MOVE_TACKLE);
+    Painter_ResetForTest();
+}
+
+TEST("GymHack: every Sketch quest move exists, and the figure only knows moves of the quest's type")
+{
+    Painter_ResetForTest();
+    FlagSet(FLAG_SYS_GAME_CLEAR);
+    VarSet(VAR_PAINTER_SKETCH, 0 | (TYPE_ICE << 8));
+    VarSet(VAR_PAINTING_MODE, PAINTING_MODE_SKETCH);
+    FlagSet(FLAG_IN_PAINTING);
+    EXPECT(Painter_SketchAllowed(MOVE_ICE_BEAM));
+    EXPECT(!Painter_SketchAllowed(MOVE_FLAMETHROWER));
+    EXPECT(!Painter_SketchAllowed(MOVE_SKETCH));
+    VarSet(VAR_PAINTING_MODE, PAINTING_MODE_MEGA);
+    EXPECT(Painter_SketchAllowed(MOVE_FLAMETHROWER));   // (outside a Sketch quest, Sketch as usual)
+    Painter_ResetForTest();
+}
+
+TEST("GymHack: the lent Smeargle goes back after the first painting")
+{
+    struct Pokemon *mon;
+    Painter_ResetForTest();
+    FlagSet(FLAG_BADGE01_GET);
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_PIKACHU, 20, 0, OTID_STRUCT_PLAYER_ID);
+    CalculatePlayerPartyCount();
+    VarSet(VAR_PAINTING_MODE, PAINTING_MODE_FIRST);
+    mon = AllocZeroed(sizeof(struct Pokemon));
+    CreateRandomMon(mon, SPECIES_SMEARGLE_CANVAS, CANVAS_SMEARGLE_LEVEL);
+    VarSet(VAR_PAINTER_MON_LO, GetMonData(mon, MON_DATA_PERSONALITY) & 0xFFFF);
+    VarSet(VAR_PAINTER_MON_HI, GetMonData(mon, MON_DATA_PERSONALITY) >> 16);
+    GiveScriptedMonToPlayer(mon, PARTY_SIZE);
+    Free(mon);
+    EXPECT_EQ(CalculatePlayerPartyCount(), 2);
+    FlagSet(FLAG_IN_PAINTING);
+    VarSet(VAR_PAINTING_RESULT, 1);
+    Painter_Return();
+    EXPECT_EQ(gSpecialVar_Result, PAINTER_RETURN_FIRST_WON);
+    EXPECT_EQ(CalculatePlayerPartyCount(), 1);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIKACHU);
+    VarSet(VAR_PLAYER_TYPE, TYPE_WATER);
+    Painter_GiveSmeargle();
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_SPECIES), SPECIES_SMEARGLE_CANVAS_WATER);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_LEVEL), CANVAS_SMEARGLE_LEVEL);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE1), MOVE_MASTERSTROKE);
+    EXPECT_NE(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MAX_HP), 0);
+    EXPECT(FlagGet(FLAG_PAINTER_GAVE_SMEARGLE));
+    Painter_ResetForTest();
+}
+
+TEST("GymHack: Mega Smeargle needs the SMEARGLITE in the bag, not held")
+{
+    struct FormChangeContext ctx = {.method = FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE, .currentSpecies = SPECIES_SMEARGLE_CANVAS_FIRE};
+    RemoveBagItem(ITEM_SMEARGLITE, 99);
+    EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE);
+    AddBagItem(ITEM_SMEARGLITE, 1);
+    EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE_MEGA);
+    RemoveBagItem(ITEM_SMEARGLITE, 99);
+}
+
+extern const u8 PainterLoft_Text_NoBadge[], PainterLoft_Text_FirstIntro[], PainterLoft_Text_FirstAsk[], PainterLoft_Text_FirstGo[], PainterLoft_Text_NoRoom[], PainterLoft_Text_Later[], PainterLoft_Text_Ready[], PainterLoft_Text_NeedSmeargle[], PainterLoft_Text_TooFew[], PainterLoft_Text_Nothing[], PainterLoft_Text_SketchIntro[], PainterLoft_Text_SketchAsk[], PainterLoft_Text_WhichType[], PainterLoft_Text_WhichSlot[], PainterLoft_Text_ConfirmSlot[], PainterLoft_Text_SketchGo[], PainterLoft_Text_MegaIntro[], PainterLoft_Text_MegaAsk[], PainterLoft_Text_MegaGo[], PainterLoft_Text_BothAsk[], PainterLoft_Text_EaselBlank[], PainterLoft_Text_EaselAsk[], PainterLoft_Text_Lend[], PainterLoft_Text_Borrowed[], PainterLoft_Text_SteppingIn[], PainterLoft_Text_Smeargle[], PainterLoft_Text_Canvases[], PainterLoft_Text_Paint[], PainterLoft_Text_PaintPot[], PainterLoft_Text_CameBackEarly[], PainterLoft_Text_FirstWon[], PainterLoft_Text_ReceivedSmeargle[], PainterLoft_Text_GiftToPC[], PainterLoft_Text_GiftNoRoom[], PainterLoft_Text_FirstExplain[], PainterLoft_Text_FirstLost[], PainterLoft_Text_Sketched[], PainterLoft_Text_NoSketch[], PainterLoft_Text_SketchLost[], PainterLoft_Text_MegaWon[], PainterLoft_Text_MegaExplain[], PainterLoft_Text_MegaLost[], PaintWorld_Text_FigureFirst[], PaintWorld_Text_FigureSketch[], PaintWorld_Text_FigureMega[], PaintWorld_Text_FigureDefeat[], PaintWorld_Text_Dissolve[];
+
+TEST("GymHack: the painter's lines fit the message box")
+{
+    static const u8 *const texts[] = {
+        PainterLoft_Text_NoBadge,
+        PainterLoft_Text_FirstIntro,
+        PainterLoft_Text_FirstAsk,
+        PainterLoft_Text_FirstGo,
+        PainterLoft_Text_NoRoom,
+        PainterLoft_Text_Later,
+        PainterLoft_Text_Ready,
+        PainterLoft_Text_NeedSmeargle,
+        PainterLoft_Text_TooFew,
+        PainterLoft_Text_Nothing,
+        PainterLoft_Text_SketchIntro,
+        PainterLoft_Text_SketchAsk,
+        PainterLoft_Text_WhichType,
+        PainterLoft_Text_WhichSlot,
+        PainterLoft_Text_ConfirmSlot,
+        PainterLoft_Text_SketchGo,
+        PainterLoft_Text_MegaIntro,
+        PainterLoft_Text_MegaAsk,
+        PainterLoft_Text_MegaGo,
+        PainterLoft_Text_BothAsk,
+        PainterLoft_Text_EaselBlank,
+        PainterLoft_Text_EaselAsk,
+        PainterLoft_Text_Lend,
+        PainterLoft_Text_Borrowed,
+        PainterLoft_Text_SteppingIn,
+        PainterLoft_Text_Smeargle,
+        PainterLoft_Text_Canvases,
+        PainterLoft_Text_Paint,
+        PainterLoft_Text_PaintPot,
+        PainterLoft_Text_CameBackEarly,
+        PainterLoft_Text_FirstWon,
+        PainterLoft_Text_ReceivedSmeargle,
+        PainterLoft_Text_GiftToPC,
+        PainterLoft_Text_GiftNoRoom,
+        PainterLoft_Text_FirstExplain,
+        PainterLoft_Text_FirstLost,
+        PainterLoft_Text_Sketched,
+        PainterLoft_Text_NoSketch,
+        PainterLoft_Text_SketchLost,
+        PainterLoft_Text_MegaWon,
+        PainterLoft_Text_MegaExplain,
+        PainterLoft_Text_MegaLost,
+        PaintWorld_Text_FigureFirst,
+        PaintWorld_Text_FigureSketch,
+        PaintWorld_Text_FigureMega,
+        PaintWorld_Text_FigureDefeat,
+        PaintWorld_Text_Dissolve,
+    };
+    u32 i;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, COMPOUND_STRING("WWWWWWWWWW"));
+    StringCopy(gStringVar2, COMPOUND_STRING("WWWWWWWWWWWW"));
     for (i = 0; i < ARRAY_COUNT(texts); i++)
         ExpectStoryTextFits(texts[i], 27 * 8 - 4, 99);
 }
