@@ -9,9 +9,8 @@ Writes graphics/intro_canvas/:
   rainbow.png / rainbow.bin    the paintbrush's rainbow (BG, 16 colours)
   gym.png / gym.bin            Pallet Town's gym from the front, from the map itself (BG, 8bpp)
   badges.png                   the eight Kanto badges at 64x64, in colour (sprites; one palette each: badges_N.pal)
-  badges_small.png             the same at 32x32 (the line-up: affine sprites that wide would be too many for a line)
   brush.png                    the paintbrush (sprite, 64x64)
-  bolt.png                     Raichu's lightning (sprite, 64x64)
+  bolt.png                     Raichu's Thunder, from the sky (sprite, 32x64)
   door.png                     the gym's door sliding open, 3 frames (sprite, 16x16 each)
   badge_N.pal, rays_N.pal      each badge's colours, and its montage backdrop's
 A BG's .png is its unique tiles (a 128-pixel-wide sheet); its .bin a 32x32 tilemap.
@@ -305,28 +304,23 @@ def rainbow_badge(img):
 def badges():
     src = Image.open(ROOT / "graphics/trainer_card/frlg/badges.png")
     sheet = Image.new("P", (64, 64 * 8))
-    small = Image.new("P", (32, 32 * 8))
     for i in range(8):
         b = src.crop((i * 16, 0, i * 16 + 16, 16))
         # grey levels 1 (white) 2 3 4 (darker) 15 (outline) -> the badge's colours
         remap = {0: 0, 1: 5, 2: 4, 3: 3, 4: 2, 15: 1}
         big = scale2x(scale2x(b)).point(lambda v: remap.get(v, 1))
-        little = scale2x(b).point(lambda v: remap.get(v, 1))
         if i == 3:
-            big, little = rainbow_badge(big), rainbow_badge(little)
+            big = rainbow_badge(big)
             light = [tuple(min(255, c + 96) for c in col) for col in RAINBOW]
             cols = [(255, 0, 255), (16, 16, 24)] + RAINBOW + light
         else:
             cols = [(255, 0, 255), (16, 16, 24)] + BADGE_COLOURS[i] + [(255, 255, 255)] + [(0, 0, 0)] * 9
         sheet.paste(big, (0, i * 64))
-        small.paste(little, (0, i * 32))
         write_pal(OUT / f"badge_{i}.pal", [gba(c) for c in cols])
         write_pal(OUT / f"rays_{i}.pal", [gba(c) for c in [(0, 0, 0)] + RAY_COLOURS[i]])
     cols = [(255, 0, 255), (16, 16, 24)] + BADGE_COLOURS[0] + [(255, 255, 255)] + [(0, 0, 0)] * 9
     sheet.putpalette([v for c in cols for v in c] + [0] * (768 - 48))
     sheet.save(OUT / "badges.png")
-    small.putpalette(sheet.getpalette())
-    small.save(OUT / "badges_small.png")
 
 
 # ------------------------------------------------------------------------------------------ brush
@@ -390,15 +384,21 @@ def brush():
 
 
 def bolt():
-    """Raichu's lightning: a jagged bolt from bottom-left to top-right (shown at double size)."""
-    cols = [(255, 0, 255), (40, 32, 8), (248, 200, 32), (255, 240, 120), (255, 255, 255)] + [(0, 0, 0)] * 11
-    im = Image.new("RGB", (64, 64), cols[0])
+    """Raichu's Thunder: a jagged bolt straight down from the sky, a branch off its side (32x64,
+    shown at double size)."""
+    cols = [(255, 0, 255), (48, 40, 96), (248, 216, 64), (255, 248, 168), (255, 255, 255)] + [(0, 0, 0)] * 11
+    im = Image.new("RGB", (32, 64), cols[0])
     d = ImageDraw.Draw(im)
-    pts = [(6, 50), (20, 38), (17, 33), (33, 26), (30, 21), (46, 16), (44, 12), (58, 8)]
-    d.line(pts, fill=cols[1], width=7, joint="curve")
-    d.line(pts, fill=cols[2], width=5, joint="curve")
-    d.line(pts, fill=cols[3], width=3)
-    d.line(pts, fill=cols[4], width=1)
+    main = [(18, 0), (13, 10), (19, 17), (11, 28), (18, 35), (12, 46), (17, 53), (15, 63)]
+    branch = [(19, 17), (25, 24), (23, 29), (29, 36)]
+    for pts, wide in ((main, 7), (branch, 4)):
+        d.line(pts, fill=cols[1], width=wide + 2)
+    for pts, wide in ((main, 7), (branch, 4)):
+        d.line(pts, fill=cols[2], width=wide)
+    for pts, wide in ((main, 4), (branch, 2)):
+        d.line(pts, fill=cols[3], width=wide)
+    d.line(main, fill=cols[4], width=2)
+    d.line(branch, fill=cols[4], width=1)
     return indexed(im, cols)
 
 

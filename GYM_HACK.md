@@ -920,19 +920,20 @@ PalletTown_ProfessorOaksLab_Text_ThoseArePokeBalls::
   and graphics; the Game Boy screen centred on the GBA's, its sides filled in). FRLG's Surf music.
   The best score is VAR_SURFING_HIGH_SCORE. SELECT quits.
 
-## The opening (v142-v143)
+## The opening (v142-v144)
 
 - The copyright screen carries a small credit line for pokeemerald (pret) and pokeemerald-expansion
   (RHH) (tools/gym_hack/copyright_credit.py), in place of the "Powered by" splash
   (`EXPANSION_INTRO` FALSE in include/config/general.h).
 - After the Game Freak screen, FireRed's Nidorino-vs-Gengar is replaced by src/intro_canvas.c
-  (`INTRO_CANVAS` in include/intro_canvas.h: FALSE brings FireRed's back). About 16 seconds; A,
-  START or SELECT skip to the title as before.
+  (`INTRO_CANVAS` in include/intro_canvas.h: FALSE brings FireRed's back). Timed to FireRed's intro
+  music (it ends about frame 725; the opening, 731). A, START or SELECT skip to the title as before.
   1. A gym's battlefield at night: the player (Red or Leaf, from the save) sends out Raichu against a
-     gym trainer's silhouette; three Thunderbolts; a white-out.
+     gym trainer's silhouette; twice, Thunder comes down from the sky onto the trainer and washes the
+     screen out white (the backgrounds only, the bolt and the silhouette standing out); the second
+     stays white.
   2. The eight Kanto badges flash by one at a time over light rays in each badge's colours (the
-     Rainbow Badge's petals round the rainbow), then all eight drop into a row. FireRed's intro
-     music ends about here.
+     Rainbow Badge's petals round the rainbow).
   3. The player walks up the plateau to their own gym in Pallet Town; its door slides open (with the
      field's sound and frames), they go in, it slides shut.
   4. An artist's brush zigzags across, painting a rainbow line by line (WIN0's width per line by

@@ -1,8 +1,7 @@
 // Pokémon Canvas: the opening (after the copyright and Game Freak screens), in place of FireRed's
 // Nidorino and Gengar. The player sends out Raichu against a gym trainer's silhouette; the eight
 // Kanto badges flash by; the player walks up to their own gym in Pallet Town; a paintbrush sweeps a
-// rainbow across the screen, and on to the title screen. FireRed's intro music plays under the first
-// two (it ends about the badges' line-up); the gym's door and the brush follow in the quiet.
+// rainbow across the screen, and on to the title screen. Timed to FireRed's intro music.
 //
 // Graphics: tools/gym_hack/intro_canvas_gfx.py -> graphics/intro_canvas/ (the backgrounds, the badges
 // in colour, the brush); the player, Raichu, the trainer and the Poké Ball are the game's own.
@@ -40,7 +39,6 @@ static const u32 sGym_Gfx[] = INCGFX_U32("graphics/intro_canvas/gym.png", ".8bpp
 static const u16 sGym_Map[] = INCBIN_U16("graphics/intro_canvas/gym.bin");
 static const u16 sGym_Pal[] = INCGFX_U16("graphics/intro_canvas/gym.png", ".gbapal");
 static const u32 sBadges_Gfx[] = INCGFX_U32("graphics/intro_canvas/badges.png", ".4bpp");
-static const u32 sBadgesSmall_Gfx[] = INCGFX_U32("graphics/intro_canvas/badges_small.png", ".4bpp");
 static const u16 sBadge0_Pal[] = INCGFX_U16("graphics/intro_canvas/badge_0.pal", ".gbapal");
 static const u16 sBadge1_Pal[] = INCGFX_U16("graphics/intro_canvas/badge_1.pal", ".gbapal");
 static const u16 sBadge2_Pal[] = INCGFX_U16("graphics/intro_canvas/badge_2.pal", ".gbapal");
@@ -93,7 +91,6 @@ static const u16 sWalk_Pal[] = INCGFX_U16("graphics/object_events/palettes/playe
 #define TILE_BALL   448     // 3 frames of 4
 #define TILE_BOLT   460
 #define TILE_BADGES 0       // (the badges' scene: 8 of 64)
-#define TILE_BADGES_SMALL 512   // (and 8 of 16)
 #define TILE_WALK   0       // (the gym's: the player walking, 9 frames of 8)
 #define TILE_BRUSH  128
 #define TILE_DOOR   192     // (3 frames of 4)
@@ -106,28 +103,27 @@ enum { P_BACK, P_RAICHU, P_TRAINER, P_BALL, P_WALK, P_BRUSH, P_BOLT, P_DOOR, P_B
 #define T_PLAYER_OUT    82
 #define T_BALL_OUT      72
 #define T_BALL_OPEN     96
-#define T_ZAP1          140
-#define T_ZAP2          160
-#define T_ZAP3          180
-#define T_SHAKE         150
-#define T_KO            216     // the white-out to the badges
-#define T_BADGES        232
-#define BADGE_TIME      36
-#define T_LINEUP        (T_BADGES + 8 * BADGE_TIME)
-#define T_GYM           610
-#define T_WALK          (T_GYM + 20)    // up to the door, a pixel a frame
+#define T_ZAP1          140     // Thunder: a bolt from the sky onto the trainer, the screen washed white
+#define T_ZAP2          176     // (the second: it stays white, into the badges)
+#define CHARGE_TIME     12      // (Raichu bristling first)
+#define BOLT_TIME       10
+#define T_KO            T_ZAP2
+#define T_BADGES        (T_KO + 20)
+#define BADGE_TIME      24
+#define T_GYM           (T_BADGES + 8 * BADGE_TIME)
+#define T_WALK          (T_GYM + 16)    // up to the door, a pixel a frame
 #define T_WALK_END      (T_WALK + 64)
 #define T_DOOR_OPEN     (T_WALK_END + 12)
 #define DOOR_FRAME_TIME 5
 #define T_STEP_IN       (T_DOOR_OPEN + 3 * DOOR_FRAME_TIME + 3)
 #define T_INSIDE        (T_STEP_IN + 16)
 #define T_DOOR_CLOSE    (T_INSIDE + 4)
-#define T_BRUSH_START   (T_DOOR_CLOSE + 3 * DOOR_FRAME_TIME + 22)
+#define T_BRUSH_START   (T_DOOR_CLOSE + 3 * DOOR_FRAME_TIME + 18)
 #define BRUSH_TIME      110
 #define STROKE_TIME     40      // (one down and one up)
 #define T_RAINBOW_FULL  (T_BRUSH_START + BRUSH_TIME)
-#define T_FADE_WHITE    (T_RAINBOW_FULL + 30)
-#define T_END           (T_FADE_WHITE + 18)
+#define T_FADE_WHITE    (T_RAINBOW_FULL + 40)
+#define T_END           (T_FADE_WHITE + 30)     // (about 730: FireRed's intro music's length)
 
 enum { SCENE_NONE, SCENE_BATTLE, SCENE_BADGES, SCENE_GYM };
 
@@ -142,7 +138,8 @@ struct IntroCanvas
     u16 shownBadges;
     bool8 windowOn;
     u8 painted[DISPLAY_HEIGHT];
-    bool8 scanlinesOn;     // (the rainbow's right edge on each line)
+    bool8 scanlinesOn;
+    bool8 spritesUnlit;     // (the flash on the backgrounds only: the bolt and the two of them stand out)     // (the rainbow's right edge on each line)
     u8 oamCount;
 };
 
@@ -198,8 +195,13 @@ static void PutSprite(s32 x, s32 y, u32 shape, u32 size, u32 tile, u32 pal, u32 
     {
         // (the affine matrices sit in the OAM entries' fourth halfwords: matrix n uses entries 4n-4n+3)
         s16 inv = (s16)(0x10000 / scale);
-        u32 w = (shape == ST_OAM_SQUARE) ? (8 << size) : (shape == ST_OAM_H_RECTANGLE ? 16 << size : 8 << size);
-        u32 h = w;
+        static const u8 sDims[3][4][2] =    // ([shape][size]: width, height)
+        {
+            [ST_OAM_SQUARE]      = {{8, 8}, {16, 16}, {32, 32}, {64, 64}},
+            [ST_OAM_H_RECTANGLE] = {{16, 8}, {32, 8}, {32, 16}, {64, 32}},
+            [ST_OAM_V_RECTANGLE] = {{8, 16}, {8, 32}, {16, 32}, {32, 64}},
+        };
+        u32 w = sDims[shape][size][0], h = sDims[shape][size][1];
         oam->affineMode = ST_OAM_AFFINE_DOUBLE;
         oam->matrixNum = n;
         gMain.oamBuffer[4 * n + 0].affineParam = hflip ? -inv : inv;
@@ -266,7 +268,7 @@ static void StartBattle(void)
     LoadPalette(black, OBJ_PLTT_ID(P_TRAINER), PLTT_SIZE_4BPP);
     LoadObjTiles(sBall_Gfx, TILE_BALL, 12);
     LoadPalette(sBall_Pal, OBJ_PLTT_ID(P_BALL), PLTT_SIZE_4BPP);
-    LoadObjTiles(sBolt_Gfx, TILE_BOLT, 64);
+    LoadObjTiles(sBolt_Gfx, TILE_BOLT, 32);
     LoadPalette(sBolt_Pal, OBJ_PLTT_ID(P_BOLT), PLTT_SIZE_4BPP);
     sCanvas->scene = SCENE_BATTLE;
 }
@@ -274,15 +276,15 @@ static void StartBattle(void)
 static void DrawBattle(u32 t)
 {
     s32 trainerX, playerX, frame, shake = 0;
-    static const u16 sZaps[3] = {T_ZAP1, T_ZAP2, T_ZAP3};
+    static const u16 sZaps[2] = {T_ZAP1, T_ZAP2};
     u32 i;
-    // Raichu's Thunderbolts: a bolt flickering across to the trainer
-    for (i = 0; i < 3; i++)
-        if (t >= sZaps[i] && t < sZaps[i] + 8 && !(t & 2))
-            PutSprite(126, 84, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BOLT, P_BOLT, 512, FALSE);
+    // Thunder: the bolt comes down from the top of the screen onto the trainer, flickering
+    for (i = 0; i < 2; i++)
+        if (t >= sZaps[i] && t < sZaps[i] + BOLT_TIME && ((t - sZaps[i]) % 4) != 3)
+            PutSprite(176 + ((t & 4) ? 2 : -2), 30, ST_OAM_V_RECTANGLE, ST_OAM_SIZE_3, TILE_BOLT, P_BOLT, 512, FALSE);
     // the trainer slides in from the right, the player from the left
     trainerX = Approach(DISPLAY_WIDTH + 40, 176, t, 40);
-    if (t >= T_SHAKE && t < T_KO)
+    if (t >= T_ZAP1 && t < T_ZAP1 + 24)
         shake = ((t / 2) & 1) ? 3 : -3;
     PutSprite(trainerX - 32 + shake, 94 - 60, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_TRAINER, P_TRAINER, 0, FALSE);
 
@@ -308,21 +310,25 @@ static void DrawBattle(u32 t)
     {
         s32 k = t - T_BALL_OPEN;
         u32 scale = Approach(48, 256, k, 12);
-        s32 x = 72, y = DISPLAY_HEIGHT - 32;    // (its bottom on the screen's: back pics stop there)
-        if ((t >= T_ZAP1 - 6 && t < T_ZAP1) || (t >= T_ZAP2 - 6 && t < T_ZAP2) || (t >= T_ZAP3 - 6 && t < T_ZAP3))
-            x += 6;
+        s32 x = 72, y = DISPLAY_HEIGHT - 1 - 57 + 32;   // (its last row (57) on the screen's: back pics stop there)
+        if ((t >= T_ZAP1 - CHARGE_TIME && t < T_ZAP1) || (t >= T_ZAP2 - CHARGE_TIME && t < T_ZAP2))
+            x += (t & 2) ? 2 : -2;      // (bristling)
         else if (t > T_BALL_OPEN + 14)
             y += ((t / 10) & 1);
         PutSprite(x, y, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_RAICHU, P_RAICHU, scale, FALSE);
     }
 
-    // the flashes: the ball opening, each zap, the knockout
+    // the flashes: the ball opening, each Thunder (the sprites unlit at first: the bolt and the
+    // silhouette against the white), the knockout
+    sCanvas->spritesUnlit = (t >= T_ZAP1 && t < T_ZAP1 + 16) || (t >= T_ZAP2 && t < T_ZAP2 + BOLT_TIME);
     if (t >= T_BALL_OPEN && t < T_BALL_OPEN + 10)
         SetBrightness(12 - (t - T_BALL_OPEN) * 12 / 10);
-    else if ((t >= T_ZAP1 && t < T_ZAP1 + 3) || (t >= T_ZAP2 && t < T_ZAP2 + 3) || (t >= T_ZAP3 && t < T_ZAP3 + 3))
-        SetBrightness(9);
+    else if (t >= T_ZAP1 && t < T_ZAP1 + 2)
+        SetBrightness(6);
+    else if (t >= T_ZAP1 + 2 && t < T_ZAP1 + 26)
+        SetBrightness(Approach(16, 0, t - (T_ZAP1 + 2), 24));     // (washed out, then back)
     else if (t >= T_KO)
-        SetBrightness(Approach(0, 16, t - T_KO, 12));
+        SetBrightness(Approach(4, 16, t - T_KO, 14));
     else if (t < 16)
         SetBrightness(-16 + t);
     else
@@ -339,7 +345,6 @@ static void StartBadges(void)
     u32 i;
     LoadBg(sRays_Gfx, sizeof(sRays_Gfx), sRays_Map, 0, SCENE_MAP, 0);
     LoadObjTiles(sBadges_Gfx, TILE_BADGES, 8 * 64);
-    LoadObjTiles(sBadgesSmall_Gfx, TILE_BADGES_SMALL, 8 * 16);
     for (i = 0; i < 8; i++)
         LoadPalette(sBadge_Pals[i], OBJ_PLTT_ID(P_BADGE0 + i), PLTT_SIZE_4BPP);
     ShowBadgeRays(0);
@@ -348,36 +353,16 @@ static void StartBadges(void)
 
 static void DrawBadges(u32 t)
 {
-    if (t < T_LINEUP)
-    {
-        // one at a time: a flash, the badge swooping in from big
-        u32 badge = (t - T_BADGES) / BADGE_TIME, k = (t - T_BADGES) % BADGE_TIME;
-        if (k == 0)
-            ShowBadgeRays(badge);
-        PutSprite(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BADGES + badge * 64,
-                  P_BADGE0 + badge, Approach(512, 256, k, 9), FALSE);
-        SetBrightness(Approach(badge == 0 ? 16 : 10, 0, k, 8));
-    }
+    // one at a time: a flash, the badge swooping in from big; white after the last
+    u32 badge = (t - T_BADGES) / BADGE_TIME, k = (t - T_BADGES) % BADGE_TIME;
+    if (k == 0)
+        ShowBadgeRays(badge);
+    PutSprite(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, ST_OAM_SQUARE, ST_OAM_SIZE_3, TILE_BADGES + badge * 64,
+              P_BADGE0 + badge, Approach(512, 256, k, 8), FALSE);
+    if (badge == 7 && k >= BADGE_TIME - 6)
+        SetBrightness(Approach(0, 16, k - (BADGE_TIME - 6), 6));
     else
-    {
-        // all eight in a row, one after another
-        u32 k = t - T_LINEUP, i, shown = min(8, k / 4 + 1);
-        if (k == 0)
-            ShowBadgeRays(5);   // (gold)
-        for (i = 0; i < shown; i++)
-        {
-            // (32x32, not scaled: eight affine sprites that wide would be too many for a line)
-            s32 drop = Approach(-12, 0, k - i * 4, 5);
-            PutSprite(22 + 28 * i - 16, DISPLAY_HEIGHT / 2 - 16 + drop, ST_OAM_SQUARE, ST_OAM_SIZE_2,
-                      TILE_BADGES_SMALL + i * 16, P_BADGE0 + i, 0, FALSE);
-        }
-        if (k < 32)
-            SetBrightness(Approach(10, 0, k % 4, 4));
-        else if (t >= T_GYM - 6)
-            SetBrightness(Approach(0, 16, t - (T_GYM - 6), 6));
-        else
-            SetBrightness(0);
-    }
+        SetBrightness(Approach(badge == 0 ? 16 : 10, 0, k, 7));
 }
 
 static void StartGym(void)
@@ -515,7 +500,7 @@ static void VBlankCB_Canvas(void)
         return;
     b = sCanvas->brightness;
     if (b > 0)
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_ALL | BLDCNT_EFFECT_LIGHTEN);
+        SetGpuReg(REG_OFFSET_BLDCNT, (sCanvas->spritesUnlit ? (BLDCNT_TGT1_BG_ALL | BLDCNT_TGT1_BD) : BLDCNT_TGT1_ALL) | BLDCNT_EFFECT_LIGHTEN);
     else if (b < 0)
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
     else
