@@ -9,6 +9,7 @@
 #include "m4a.h"
 #include "main.h"
 #include "intro_frlg.h"
+#include "intro_canvas.h"
 #include "malloc.h"
 #include "menu.h"
 #include "new_game.h"
@@ -1271,6 +1272,14 @@ static void IntroCB_GF_RevealLogo(struct IntroSequenceData * this)
         if (++this->timer > 20)
         {
             SetGpuReg(REG_OFFSET_BLDCNT, 0);
+            if (INTRO_CANVAS)
+            {
+                // Pokémon Canvas: its own opening from here (src/intro_canvas.c)
+                DestroyTask(this->taskId);
+                Free(this);
+                SetMainCallback2(CB2_IntroCanvas);
+                return;
+            }
             SetIntroCB(this, IntroCB_Scene1);
         }
         break;
