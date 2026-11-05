@@ -125,8 +125,15 @@ def convert(box, size=64):
     return img
 
 
+BACK_DROP = 16   # (the back sprite sits low in its frame, its lower half cut off, as back sprites are)
 for name, box in boxes.items():
-    convert(box).save(f"{out}/{name}.png")
+    img = convert(box)
+    if name == "back":
+        low = Image.new("P", img.size)
+        low.putpalette(img.getpalette())
+        low.paste(img, (0, BACK_DROP))
+        img = low
+    img.save(f"{out}/{name}.png")
 with open(f"{out}/pal.txt", "w") as f:
     for c in palette:
         f.write("%d %d %d\n" % c)

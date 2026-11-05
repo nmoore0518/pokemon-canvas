@@ -309,7 +309,7 @@ def entry(species, key, mega):
         .frontAnimId = ANIM_H_JUMPS_V_STRETCH,
         .backPic = {back},
         .backPicSize = MON_COORDS_SIZE({64 if mega else 56}, {56 if mega else 48}),
-        .backPicYOffset = {7 if mega else 9},
+        .backPicYOffset = {0 if mega else 9},
         .backAnimId = BACK_ANIM_H_SLIDE,
         .palette = {pal},
         .shinyPalette = {shiny},
