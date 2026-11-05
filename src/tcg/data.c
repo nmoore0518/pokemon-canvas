@@ -7,3 +7,6 @@
 #include "../data/tcg/cards.h"
 #include "../data/tcg/decks.h"
 #include "../data/tcg/effect_commands.h"
+
+#include "constants/tcg_text.h"
+#include "../data/tcg/text.h"

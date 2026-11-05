@@ -42,25 +42,36 @@ on the GBA's with a border.
 - Link-duel calls (SetOppAction_SerialSendDuelData, ExchangeRNG, SendAttackDataToLinkOpponent) are
   dropped: only the AI opponent exists here.
 
+- src/tcg/duel_attack.c: the rest of home/duel.asm (GetPlayAreaCardAttachedEnergies through
+  CheckLoadedAttackFlag: ProcessPlayedPokemonCard, CopyAttackDataAndDamage*, UseAttackOrPokemonPower,
+  PlayAttackAnimation_DealAttackDamage, HandleAfterDamageEffects, confusion and recoil, PlayTrainerCard,
+  ApplyDamageModifiers_*, PlusPower/Defender, SubtractHP, knock-out text, DealDamageToPlayAreaPokemon,
+  PrintFailedEffectText, retreat cost), all of home/substatus.asm, card_color.asm, effect_commands.asm,
+  coin_toss.asm, and from engine/duel/core.asm: ApplyStatusConditionQueue, HandleDestinyBondAndBetweenTurnKnockOuts
+  (prizes, KO replacement, the win/lose/tie table), ClearNonTurnTemporaryDuelvars, UpdateArenaCardLastTurnDamage,
+  _TossCoin's logic, PrintThereWasNoEffectFromStatusText; AIPickPrizeCards (engine/duel/ai/core.asm).
+- The duel's text: tools/gym_hack/tcg/extract_text.py → include/constants/tcg_text.h (TCG_TEXT_<name>,
+  the game's label without "Text") and src/data/tcg/text.h (the 354 texts home/ and engine/duel/ use).
+  Tags kept in the strings: <RAMNAME>, <RAMTEXT> (gTcg->txRam2[0] then [1]; NULL: defaultText),
+  <RAMNUM> (txRam3[0], [1]), energy symbols. Routines that return a text id in hl set gTcg->hlText.
+- include/tcg_ui.h / src/tcg/ui.c: the screen hooks, under the game's names (no-ops for now).
+  src/tcg/ai.c: TcgAi_KOSwitch stand-in (weak) until the AI's ported.
+- test/tcg.c: damage math (weakness, resistance, PlusPower, Defender, Invisible Wall, the "sla d"
+  halving, Growl, double damage), SubtractHP, attached energy, a whole attack with knock-out, prize,
+  bench replacement and the win, the status queue.
+- Left out (cards not in our decks, so their checks can't be true): Muk's Toxic Gas, Kabuto Armor,
+  Mew Lv8's Neutralizing Shield, Haunter Lv17's Transparency, Venomoth's Shift, Dodrio's Retreat
+  Aid, Aerodactyl's Prehistoric Power, Omanyte's Clairvoyance, Clefairy Doll / Mysterious Fossil.
+
 ## Next session: start here
-- home/duel.asm 1339-1850 has been read (ProcessPlayedPokemonCard, CopyAttackDataAndDamage*,
-  UpdateArenaCardIDsAndClearTwoTurnDuelVars, UseAttackOrPokemonPower, PlayAttackAnimation_DealAttackDamage,
-  HandleAfterDamageEffects, HandleConfusionDamageToSelf, UsePokemonPower, ApplyTransparencyIfApplicable,
-  CheckSelfConfusionDamage, PlayTrainerCard, LoadNonPokemonCardEffectCommands,
-  DealRecoilDamageToSelf / DealConfusionDamageToSelf) but not yet ported. They need, from elsewhere:
-  TryExecuteEffectCommandFunction / CheckMatchingCommand (home), the substatus handlers
-  (HandleNoDamageOrEffectSubstatus, HandleTransparency, CheckSandAttackOrSmokescreenSubstatus,
-  HandleStrikesBack_AgainstResidualAttack, HandleDestinyBondAndBetweenTurnKnockOuts: engine/duel/core.asm),
-  ApplyStatusConditionQueue, UpdateArenaCardLastTurnDamage, ClearNonTurnTemporaryDuelvars(_CopyStatus),
-  TossCoin, CheckCantUseTrainerDueToEffect, CheckIsIncapableOfUsingPkmnPower, ClearChangedTypesIfMuk.
-- Then home/duel.asm 1848-2400 (damage modifiers, SubtractHP, knock-out text, DealDamageToPlayAreaPokemon,
-  retreat cost, CheckLoadedAttackFlag) and on through the list below.
+- engine/duel/core.asm: the duel loop. Start at MainDuelLoop / StartDuel / HandleDuelSetup
+  (deck shuffle, opening hands, mulligans, basic Pokémon placement, prizes, coin for who goes first),
+  then HandleTurn (draw, the duel menu: hand, attack, retreat, Pokémon Power, done), between turns
+  (poison, sleep and paralysis checks: HandleBetweenTurnsEvents), deck-out and sudden death.
+  The player's menus are UI hooks to add to tcg_ui.h; the AI's turn is TcgAi_*.
 
 ## To do (in order)
-1. home/duel.asm 1221-2400: GetPlayAreaCardAttachedEnergies, CountCardIDInLocation,
-   ProcessPlayedPokemonCard, CopyAttackDataAndDamage, UseAttackOrPokemonPower, damage and
-   knock-outs (DealDamageToPlayAreaPokemon, ApplyDamageModifiers_*, SubtractHP), confusion, recoil,
-   PlayTrainerCard, retreat cost, CheckLoadedAttackFlag.
+1. ~~home/duel.asm 1221-2400~~ (done).
 2. engine/duel/core.asm: the duel loop (MainDuelLoop, HandleTurn, HandleDuelSetup, between turns,
    prizes, knock-outs, sudden death), the player's menus (hand, attack, retreat, check).
 3. engine/duel/effect_functions.asm: the 189 routines in include/tcg_effect_functions.h.

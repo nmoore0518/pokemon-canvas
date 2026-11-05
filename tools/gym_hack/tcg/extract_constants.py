@@ -67,7 +67,7 @@ def main():
                 continue
             m = re.match(r"DEF\s+(\w+)\s+EQU\s+(.+)", s)
             if m and "EQUS" not in s:
-                v = expr(m[2], known)
+                v = re.sub(r"\bconst_value\b", lambda _: str(cval), expr(m[2], known))
                 if re.search(r"\b(LOW|HIGH|BANK|STRLEN|SIZEOF|DEF|STARTOF)\b|\bw[A-Z]", v):
                     continue
                 out.append(f"#define TCG_{m[1]} ({v})")
