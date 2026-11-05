@@ -254,9 +254,11 @@ for _i, (_k, _n, _p, _u, _d) in enumerate(_RA.WALLS):
                             category="GYM_DECOR_CAT_WALLS"))
 
 # --- Pokémon Canvas: the Drink Machine (src/drink_machine.c): the girl on the Celadon roof gives it.
-# Talking to it mixes drinks. (Last: decorations are numbered in this order, in saves.)
+# Talking to it mixes drinks. (Last: decorations are numbered in this order, in saves.) Solid all over:
+# standing behind its top row, the player could talk to it with the machine drawn over them.
 DECORATIONS.append(dict(key="DRINK_MACHINE", name="DRINK MACHINE", price=0, unlock="FLAG_GOT_DRINK_MACHINE",
-                        desc="Mixes drinks and berries.", art="drink_machine", category="GYM_DECOR_CAT_GENERAL"))
+                        desc="Mixes drinks and berries.", art="drink_machine", category="GYM_DECOR_CAT_GENERAL",
+                        solid=True))
 
 # --- The ways each piece can be turned (START, while decorating): its sides and back
 # (tools/gym_hack/decor_art_turned.py). The chairs turn into each other.
@@ -684,15 +686,16 @@ def metatile_look(ts, m, collides, water=False):
     return LOOKS.add(refs, attr, flags)
 
 
-def art_cell_looks(canvas, flat, trainer=False):
-    """Rows of (look, edit look) for a decor_art canvas, over the floor"""
+def art_cell_looks(canvas, flat, trainer=False, solid=False):
+    """Rows of (look, edit look) for a decor_art canvas, over the floor (solid: no walking behind its
+    top row either)"""
     refs = canvas_refs(canvas)
     rows = []
     for cy in range(canvas.ch):
         row = []
         for cx in range(canvas.cw):
             top = [refs[(cx * 2 + tx, cy * 2 + ty)] for ty in range(2) for tx in range(2)]
-            behind = not flat and not trainer and canvas.ch > 1 and cy == 0
+            behind = not flat and not trainer and not solid and canvas.ch > 1 and cy == 0
             layer = LAYER_NORMAL_TYPE if behind else LAYER_COVERED
             look = LOOKS.add([0, 0, 0, 0] + top, with_layer(MB_NORMAL, layer), LOOK_FLOOR_UNDER | (0 if (flat or behind) else LOOK_SOLID))
             if trainer:
@@ -724,7 +727,7 @@ def facing_looks(ts, d, facing):
     """A decoration's looks for one facing (0 down/front, 1 left, 2 up/back, 3 right), or None"""
     if facing == 0:
         if "art" in d:
-            return art_cell_looks(decor_art.PIECES[d["art"]](), d.get("flat", False), d.get("trainer", False))
+            return art_cell_looks(decor_art.PIECES[d["art"]](), d.get("flat", False), d.get("trainer", False), d.get("solid", False))
         return spec_looks(ts, d)
     alt = d.get("facings", {}).get(facing)
     if alt is None:
@@ -733,9 +736,9 @@ def facing_looks(ts, d, facing):
         src = facing_looks(ts, d, alt[1])
         return mirror_rows(src)
     if isinstance(alt, tuple) and alt[0] == "mirror-art":
-        return mirror_rows(art_cell_looks(decor_art.PIECES[alt[1]](), d.get("flat", False)))
+        return mirror_rows(art_cell_looks(decor_art.PIECES[alt[1]](), d.get("flat", False), solid=d.get("solid", False)))
     if isinstance(alt, str):
-        return art_cell_looks(decor_art.PIECES[alt](), d.get("flat", False))
+        return art_cell_looks(decor_art.PIECES[alt](), d.get("flat", False), solid=d.get("solid", False))
     return spec_looks(ts, dict(d, cells=alt))
 
 
