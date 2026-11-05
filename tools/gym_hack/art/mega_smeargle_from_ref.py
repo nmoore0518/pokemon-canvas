@@ -70,23 +70,29 @@ def nearest(c):
     return min(range(2, 16), key=lambda k: sum((a - b) ** 2 for a, b in zip(c, palette[k])))
 
 
-def convert(box, size=64):
+def convert(box, size=64, mult=1.0, cx=None, top=None):
+    """(the art in box, fitted into size x size; mult > 1: bigger, the frame a window onto it
+    centred on source x cx, its top at source y top, what's outside cut off)"""
     x0, y0, x1, y1 = box
-    s = max((x1 - x0) / size, (y1 - y0) / size)
-    w, h = int((x1 - x0) / s + 0.999), int((y1 - y0) / s + 0.999)
+    s = max((x1 - x0) / size, (y1 - y0) / size) / mult
     img = Image.new("P", (size, size))
     o = img.load()
-    ox, oy = (size - w) // 2, size - h       # (bottom, centred)
+    if mult == 1.0:
+        w, h = int((x1 - x0) / s + 0.999), int((y1 - y0) / s + 0.999)
+        left, ttop, ox, oy = x0, y0, (size - w) // 2, size - h
+    else:
+        w = h = size
+        left, ttop, ox, oy = (cx - size * s / 2), top, 0, 0
     for ty in range(h):
         for tx in range(w):
-            sx0, sy0 = x0 + tx * s, y0 + ty * s
+            sx0, sy0 = left + tx * s, ttop + ty * s
             cnt, dark, bgn, cols = 0, 0, 0, Counter()
             for yy in range(int(sy0), int(sy0 + s)):
                 for xx in range(int(sx0), int(sx0 + s)):
-                    if xx >= W or yy >= H:
+                    if xx >= W or yy >= H or xx < 0 or yy < 0:
                         continue
                     cnt += 1
-                    if bg[yy * W + xx]:
+                    if bg[yy * W + xx] or not (y0 <= yy < y1):
                         bgn += 1
                         continue
                     c = p[xx, yy]
@@ -115,7 +121,8 @@ def convert(box, size=64):
     edge = []
     for y in range(size):
         for x in range(size):
-            if o[x, y] and any(not (0 <= x + dx < size and 0 <= y + dy < size) or not o[x + dx, y + dy]
+            if o[x, y] and any(((0 <= x + dx < size and 0 <= y + dy < size) and not o[x + dx, y + dy])
+                               or (mult == 1.0 and not (0 <= x + dx < size and 0 <= y + dy < size))
                                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                 edge.append((x, y))
     for q in edge:
@@ -125,16 +132,12 @@ def convert(box, size=64):
     return img
 
 
-BACK_DROP = 16   # (the back sprite sits low in its frame, its lower half cut off, as back sprites are)
-for name, box in boxes.items():
-    img = convert(box)
-    if name == "back":
-        low = Image.new("P", img.size)
-        low.putpalette(img.getpalette())
-        low.paste(img, (0, BACK_DROP))
-        img = low
-    img.save(f"{out}/{name}.png")
-with open(f"{out}/pal.txt", "w") as f:
-    for c in palette:
-        f.write("%d %d %d\n" % c)
-print(palette)
+import os
+# The back sprite: drawn 1.4x as big (Smeargle's own size), the frame a window onto its top half
+# (the lower body cut off, as back sprites are; the outstretched arm off the left edge). 1.4 is
+# as big as it goes with the whole head and brush in the frame.
+BACK_SCALE = float(os.environ.get("BACK_SCALE", "1.4"))
+BACK_CX = float(os.environ.get("BACK_CX", "598"))      # (source x at the frame's centre)
+convert(boxes["front"]).save(f"{out}/front.png")
+bx = boxes["back"]
+convert(bx, mult=BACK_SCALE, cx=BACK_CX, top=bx[1] - float(os.environ.get("BACK_TOP", "16"))).save(f"{out}/back.png")
