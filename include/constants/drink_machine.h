@@ -14,7 +14,6 @@
 #define DRINK_SODA_ALREADY     2   // (it's already that type)
 #define DRINK_SODA_CANT        3   // (an Egg, or no Pokémon chosen)
 
-#define DRINK_NUM_TYPES 18          // (the types there are to master: NORMAL..FAIRY but MYSTERY)
 #define DRINK_TOURNEY_SODA_ODDS 50  // (a tournament win: 1 in this, once unlocked)
 
 #endif // GUARD_CONSTANTS_DRINK_MACHINE_H

@@ -4560,3 +4560,13 @@ TEST("GymHack: a soda's second type is the battler's")
     EXPECT_EQ(bm.types[0], TYPE_FIRE);
     EXPECT_EQ(bm.types[1], TYPE_WATER);
 }
+
+TEST("GymHack: tournament wins can give a LIMITED EDITION SODA once the player has the Drink Machine")
+{
+    FlagClear(FLAG_GOT_DRINK_MACHINE);
+    VarSet(VAR_SODAS_FOR_MASTERY, 0);
+    EXPECT(!DrinkMachine_TournamentSodaUnlocked());
+    FlagSet(FLAG_GOT_DRINK_MACHINE);
+    EXPECT(DrinkMachine_TournamentSodaUnlocked());     // (whether or not the girl's sodas were collected)
+    FlagClear(FLAG_GOT_DRINK_MACHINE);
+}

@@ -13,8 +13,8 @@
 //   LIMITED EDITION SODA + a type berry (the Tera berries: src/berry_field.c): a POKéMON in the party
 //     gets that type as its second type (MON_DATA_SECOND_TYPE: GetMonType, src/pokemon.c) for good,
 //     through evolution and Mega Evolution; not its first type (refused, nothing used up).
-// The girl gives a soda for each type mastered after that (VAR_SODAS_FOR_MASTERY); once every type's
-// been mastered and she's given them all, the tournament can give one, rarely (src/tournament.c).
+// The girl gives a soda for each type mastered (VAR_SODAS_FOR_MASTERY: how many she's given), and
+// tournament wins can give one, rarely (src/tournament.c).
 #include "global.h"
 #include "drink_machine.h"
 #include "battle_main.h"
@@ -287,8 +287,9 @@ void DrinkGirl_GaveMasterySoda(void)
     VarSet(VAR_SODAS_FOR_MASTERY, VarGet(VAR_SODAS_FOR_MASTERY) + 1);
 }
 
-// (src/tournament.c) whether a tournament win can give a soda: once she's given one for every type
+// (src/tournament.c) whether a tournament win can give a soda: once the player has the machine
+// (the tournament itself only opens once every type's been mastered)
 bool32 DrinkMachine_TournamentSodaUnlocked(void)
 {
-    return FlagGet(FLAG_GOT_DRINK_MACHINE) && VarGet(VAR_SODAS_FOR_MASTERY) >= DRINK_NUM_TYPES;
+    return FlagGet(FLAG_GOT_DRINK_MACHINE);
 }
