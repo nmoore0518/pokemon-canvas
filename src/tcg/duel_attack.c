@@ -33,8 +33,9 @@ void Tcg_LoadTxRam3(u16 n)
 }
 
 // _CopyCardNameAndLevel (engine/copy_card_name.asm): wLoadedCard1's name and level into
-// wDefaultText, padded with spaces to `length` (half-width text: half tiles)
-void Tcg_CopyCardNameAndLevelLength(u32 length)
+// wDefaultText, padded with spaces to `length` (half-width text: half tiles). Returns the game's hl:
+// where the padding starts (half-width), or the level's end (full-width)
+u8 *Tcg_CopyCardNameAndLevelLength(u32 length)
 {
     const struct TcgCard *card = gTcg->loadedCard1;
     u8 *hl = gTcg->defaultText;
@@ -61,12 +62,15 @@ void Tcg_CopyCardNameAndLevelLength(u32 length)
             *hl++ = '0' + lv % 10;
             b--;
         }
-        // (the game's loop: at least one space, and its count wraps if the name's longer)
-        do
-            *hl++ = ' ';
-        while (--b > 0 && hl < gTcg->defaultText + sizeof(gTcg->defaultText) - 1);
-        *hl = TCG_TX_END;
-        return;
+        {
+            // (the game's loop: at least one space, and its count wraps if the name's longer)
+            u8 *pad = hl;
+            do
+                *hl++ = ' ';
+            while (--b > 0 && hl < gTcg->defaultText + sizeof(gTcg->defaultText) - 1);
+            *hl = TCG_TX_END;
+            return pad;
+        }
     }
     // (full-width names: none of ours)
     if (level)
@@ -82,11 +86,14 @@ void Tcg_CopyCardNameAndLevelLength(u32 length)
         *hl++ = TCG_SYM_0 + card->level % 10;
     }
     *hl = TCG_TX_END;
+    return hl;
 }
 
+// (CopyCardNameAndLevel, then "ld [hl], TX_END", as every caller in the duel's rules does: the name
+// and level without the padding)
 void Tcg_CopyCardNameAndLevel(void)
 {
-    Tcg_CopyCardNameAndLevelLength(18);
+    *Tcg_CopyCardNameAndLevelLength(18) = TCG_TX_END;
 }
 
 // ---- home/duel.asm --------------------------------------------------------------------------

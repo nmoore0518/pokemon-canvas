@@ -924,3 +924,4 @@ gSpecials::
 	def_special Outfit_Wear
 	def_special Outfit_UnlockAllGymUniforms
 	def_special GymCandidate_BufferMentorPreBattle
+	def_special StartTcgDuel

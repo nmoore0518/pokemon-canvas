@@ -12,6 +12,7 @@
 #include "global.h"
 #include "tcg.h"
 #include "tcg_ui.h"
+#include "tcg_gbc.h"
 #include "constants/tcg_text.h"
 
 // what a duel menu routine does next (the game jumps to one of these)
@@ -921,6 +922,7 @@ static void HandleTurn(void)
 u32 Tcg_StartDuel(void)
 {
     gTcg->whoseTurn = TCG_PLAYER;
+    Tcg_SetupDuel();
     Tcg_InitVariablesToBeginDuel();
     Tcg_HandleDuelSetup();
     for (;;)

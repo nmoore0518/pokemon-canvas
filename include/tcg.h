@@ -203,7 +203,7 @@ u32 Tcg_Random(u32 n);
 void Tcg_LoadTxRam2(const u8 *text);
 void Tcg_LoadTxRam3(u16 n);
 void Tcg_CopyCardNameAndLevel(void);              // (length 18)
-void Tcg_CopyCardNameAndLevelLength(u32 length);
+u8 *Tcg_CopyCardNameAndLevelLength(u32 length);   // (returns the game's hl)
 void Tcg_GetPlayAreaCardAttachedEnergies(u32 location);
 u32 Tcg_CountCardIDInLocation(u32 location, u32 cardId);
 bool32 (*Tcg_CheckMatchingCommand(const struct TcgEffectCommand *commands, u32 type))(void);

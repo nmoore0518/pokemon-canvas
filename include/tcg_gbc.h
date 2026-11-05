@@ -99,6 +99,7 @@ struct TcgGbc
     u8 stringBuffer[32];            // wStringBuffer
     u8 labeledTextBoxTopBorder[48]; // wLabeledTextBoxTopBorder
     u8 textMaxLength;               // wTextMaxLength
+    u16 cardPalette[4];             // wCardPalette
     // the menus (home/menus.asm)
     u8 curMenuItem;                 // wCurMenuItem
     u8 hCurMenuItem;                // hCurMenuItem
@@ -258,5 +259,22 @@ bool32 Tcg_YesOrNoMenuWithText_LeftAligned(u16 textId);
 bool32 Tcg_HandleYesOrNoMenu(u32 cursorX);
 void Tcg_PrintYesOrNoItems(u32 x, u32 y);
 void Tcg_CopyOpponentName(u8 *dest);
+
+// src/tcg/duel_screens.c: engine/duel/core.asm's screens
+void Tcg_SetupDuel(void);
+void Tcg_ZeroObjectPositionsAndToggleOAMCopy(void);
+void Tcg_LoadSymbolsFont(void);
+void Tcg_SetDefaultConsolePalettes(void);
+void Tcg_LoadCardGfx(u32 gfx, u32 dest);
+void Tcg_LoadLoaded1CardGfx(u32 dest);
+void Tcg_LoadPlayAreaCardGfx(u32 deckIndex, u32 dest);
+void Tcg_SetBGP7OrSGB2ToCardPalette(void);
+void Tcg_SetBGP6OrSGB3ToCardPalette(void);
+void Tcg_SetOBP1OrSGB3ToCardPalette(void);
+void Tcg_FlushAllPalettesOrSendPal23Packet(void);
+void Tcg_ApplyBGP6OrSGB3ToCardImage(u32 x, u32 y);
+void Tcg_ApplyBGP7OrSGB2ToCardImage(u32 x, u32 y);
+void Tcg_PrintPlayAreaCardAttachedEnergies(u32 x, u32 y, u32 location);
+void Tcg_DrawHPBar(u32 maxHP, u32 hp);
 
 #endif // GUARD_TCG_GBC_H
