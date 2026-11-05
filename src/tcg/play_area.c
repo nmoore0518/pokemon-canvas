@@ -111,7 +111,7 @@ static void PrintPlayAreaCardHeader(void)
     }
 }
 
-static void PrintPlayAreaCardInformation(void)
+void Tcg_PrintPlayAreaCardInformation(void)
 {
     u32 slot = gTcgCurPlayAreaSlot, y = gTcgCurPlayAreaY, hp;
     PrintPlayAreaCardHeader();
@@ -132,7 +132,7 @@ void Tcg_PrintPlayAreaCardInformationAndLocation(void)
 {
     if (*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD + gTcgCurPlayAreaSlot) == 0xFF)
         return;
-    PrintPlayAreaCardInformation();
+    Tcg_PrintPlayAreaCardInformation();
     PrintPlayAreaCardLocation();
 }
 

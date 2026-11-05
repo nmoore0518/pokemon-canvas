@@ -350,3 +350,115 @@ void Tcg_DrawDuelMainScene(void)
         return;
     AS_PLAYER(DrawDuelMainScene_Draw);
 }
+
+// ---- the AI's turn ------------------------------------------------------------------------------------
+
+// ("<Duelist> is thinking.": the AI's delays count from here)
+void Tcg_DuelistIsThinking(void)
+{
+    if (gTcg->headless)
+        return;
+    G->vBlankCounter = 0;
+    Tcg_DrawWideTextBox_PrintTextNoDelay(TCG_TEXT_DuelistIsThinking);
+}
+
+// (AIMakeDecision's .delay_loop: a second since the "thinking" box, at least)
+void Tcg_AIThinkingDelay(void)
+{
+    if (gTcg->headless)
+        return;
+    do
+        Tcg_DoFrame();
+    while (G->vBlankCounter < 60);
+}
+
+void Tcg_DisplayOpponentUsedAttackScreen(void)
+{
+    if (gTcg->headless)
+        return;
+    Tcg_ZeroObjectPositionsAndToggleOAMCopy();
+    Tcg_EmptyScreen();
+    Tcg_LoadDuelCardSymbolTiles();
+    Tcg_LoadDuelFaceDownCardTiles();
+    gTcg->loadedCard1 = Tcg_Card(gTcg->tempCardId);
+    gTcg->loadedCard1Id = gTcg->tempCardId;
+    G->cardPageNumber = TCG_CARDPAGE_POKEMON_OVERVIEW;
+    Tcg_PrintAttackOrPkmnPowerInformation(&gTcg->loadedCard1->attacks[gTcg->selectedAttack ? 1 : 0], 1);
+    if (gTcg->loadedAttack.description[0])
+        Tcg_PrintAttackOrCardDescription(1, 4, gTcg->loadedAttack.description[0]);
+}
+
+void Tcg_PrintUsedTrainerCardDescription(void)
+{
+    if (gTcg->headless)
+        return;
+    Tcg_EmptyScreen();
+    Tcg_SetNoLineSeparation();
+    Tcg_InitTextPrinting_ProcessText(1, 1, gTcg->loadedCard1->name);
+    Tcg_InitTextPrintingInTextbox(1, 3, 19);
+    if (gTcg->loadedCard1->description)
+        Tcg_ProcessText(gTcg->loadedCard1->description);
+    Tcg_SetOneLineSeparation();
+    Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_Used);
+}
+
+// ---- the energy discard screen (retreat costs, attacks' discards) --------------------------------------
+
+static const struct TcgCardListParams sEnergyDiscardCardListParameters = {1, 5, 4, 14, 4, TCG_SYM_CURSOR_R, TCG_SYM_SPACE, NULL};
+
+void Tcg_DisplayEnergyDiscardMenu(void)
+{
+    if (gTcg->headless)
+        return;
+    Tcg_DrawRegularTextBox(0, 3, 20, 10);
+    Tcg_DrawWideTextBox_PrintTextNoDelay(TCG_TEXT_ChooseEnergyCardToDiscard);
+    Tcg_EnableLCD();
+    Tcg_PrintCardListItems(Tcg_CountCardsInDuelTempList(), 0, 0, &sEnergyDiscardCardListParameters);
+    G->cardListIndicatorYPosition = 4;
+}
+
+// the Pokémon at `location`'s row, and its energies (wDuelTempList) to choose from
+void Tcg_DisplayEnergyDiscardScreen(u32 location)
+{
+    gTcg->energyDiscardPlayAreaLocation = location;
+    gTcg->energyDiscardMenuNumerator = 0;
+    gTcg->energyDiscardMenuDenominator = 1;
+    if (gTcg->headless)
+        return;
+    Tcg_EmptyScreen();
+    Tcg_LoadDuelCardSymbolTiles();
+    Tcg_LoadDuelFaceDownCardTiles();
+    gTcgCurPlayAreaSlot = location;
+    gTcgCurPlayAreaY = 0;
+    Tcg_PrintPlayAreaCardInformation();
+    Tcg_DisplayEnergyDiscardMenu();
+}
+
+// the energy chosen (its deck index; hTempCardIndex_ff98), or TCG_SELECTION_CANCEL; "n/N" chosen so far
+u32 Tcg_HandleEnergyDiscardMenuInput(void)
+{
+    if (gTcg->headless)
+    {
+        if (gTcg->duelTempList[0] == 0xFF)
+            return TCG_SELECTION_CANCEL;
+        gTcg->tempCardIndex = gTcg->duelTempList[0];
+        return gTcg->duelTempList[0];
+    }
+    if (gTcg->energyDiscardMenuDenominator)
+    {
+        Tcg_WriteByteToBGMap0(16, 16, gTcg->energyDiscardMenuNumerator + TCG_SYM_0);
+        Tcg_WriteByteToBGMap0(17, 16, TCG_SYM_SLASH);
+        Tcg_WriteByteToBGMap0(18, 16, gTcg->energyDiscardMenuDenominator + TCG_SYM_0);
+    }
+    else
+    {
+        Tcg_WriteTwoDigitNumberInTxSymbol_PadSpace(17, 16, gTcg->energyDiscardMenuNumerator);
+    }
+    do
+        Tcg_DoFrame();
+    while (!Tcg_HandleCardListInput());
+    if (G->hCurMenuItem == 0xFF)
+        return TCG_SELECTION_CANCEL;
+    gTcg->tempCardIndex = gTcg->duelTempList[G->hCurMenuItem];
+    return gTcg->tempCardIndex;
+}

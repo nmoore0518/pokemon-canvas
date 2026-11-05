@@ -323,6 +323,7 @@ void Tcg_PrintAttackOrPkmnPowerInformation(const struct TcgAttack *attack, u32 y
 void Tcg_PrintAttackOrCardDescription(u32 x, u32 y, const u8 *text);
 void Tcg_PlaceCardImageOAM(u8 x, u8 y);
 void Tcg_PrintPlayAreaCardInformationAndLocation(void);     // (src/tcg/play_area.c)
+void Tcg_PrintPlayAreaCardInformation(void);
 void Tcg_OpenPlayAreaScreenForViewing(void);
 
 #endif // GUARD_TCG_GBC_H
