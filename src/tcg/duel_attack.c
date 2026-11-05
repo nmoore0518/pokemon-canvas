@@ -32,24 +32,61 @@ void Tcg_LoadTxRam3(u16 n)
     gTcg->txRam3[0] = n;
 }
 
-// (_CopyCardNameAndLevel: wLoadedCard1's, into wDefaultText)
-void Tcg_CopyCardNameAndLevel(void)
+// _CopyCardNameAndLevel (engine/copy_card_name.asm): wLoadedCard1's name and level into
+// wDefaultText, padded with spaces to `length` (half-width text: half tiles)
+void Tcg_CopyCardNameAndLevelLength(u32 length)
 {
     const struct TcgCard *card = gTcg->loadedCard1;
-    u8 *d = gTcg->defaultText, *end = gTcg->defaultText + sizeof(gTcg->defaultText) - 5;
+    u8 *hl = gTcg->defaultText;
     const u8 *s = card->name;
-    while (*s && d < end)
-        *d++ = *s++;
-    if (card->type < TCG_TYPE_ENERGY && card->level)
+    bool32 level = card->type < TCG_TYPE_ENERGY && card->level;
+    s32 b;
+    while ((*hl = *s++) != TCG_TX_END)
+        hl++;
+    if (gTcg->defaultText[0] == TCG_TX_HALFWIDTH)
     {
-        *d++ = ' ';
-        *d++ = 'L';
-        *d++ = 'v';
-        if (card->level >= 10)
-            *d++ = '0' + card->level / 10;
-        *d++ = '0' + card->level % 10;
+        b = (u8)((length + 1) * 2) - (hl - gTcg->defaultText) - 1;
+        if (level)
+        {
+            u32 lv = card->level;
+            *hl++ = ' ';
+            *hl++ = 'L';
+            *hl++ = 'v';
+            b -= 3;
+            if (lv >= 10)
+            {
+                *hl++ = '0' + lv / 10;
+                b--;
+            }
+            *hl++ = '0' + lv % 10;
+            b--;
+        }
+        // (the game's loop: at least one space, and its count wraps if the name's longer)
+        do
+            *hl++ = ' ';
+        while (--b > 0 && hl < gTcg->defaultText + sizeof(gTcg->defaultText) - 1);
+        *hl = TCG_TX_END;
+        return;
     }
-    *d = 0;
+    // (full-width names: none of ours)
+    if (level)
+    {
+        *hl++ = TCG_TX_SYMBOL;
+        *hl++ = TCG_SYM_Lv;
+        if (card->level >= 10)
+        {
+            *hl++ = TCG_TX_SYMBOL;
+            *hl++ = TCG_SYM_0 + card->level / 10;
+        }
+        *hl++ = TCG_TX_SYMBOL;
+        *hl++ = TCG_SYM_0 + card->level % 10;
+    }
+    *hl = TCG_TX_END;
+}
+
+void Tcg_CopyCardNameAndLevel(void)
+{
+    Tcg_CopyCardNameAndLevelLength(18);
 }
 
 // ---- home/duel.asm --------------------------------------------------------------------------

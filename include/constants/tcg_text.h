@@ -620,4 +620,54 @@ enum TcgText
     TCG_NUM_TEXTS,
 };
 
+#define TCG_SYM_SPACE 0x00
+#define TCG_SYM_FIRE 0x01
+#define TCG_SYM_GRASS 0x02
+#define TCG_SYM_LIGHTNING 0x03
+#define TCG_SYM_WATER 0x04
+#define TCG_SYM_FIGHTING 0x05
+#define TCG_SYM_PSYCHIC 0x06
+#define TCG_SYM_COLORLESS 0x07
+#define TCG_SYM_POISONED 0x08
+#define TCG_SYM_ASLEEP 0x09
+#define TCG_SYM_CONFUSED 0x0A
+#define TCG_SYM_PARALYZED 0x0B
+#define TCG_SYM_CURSOR_U 0x0C
+#define TCG_SYM_POKEMON 0x0D
+#define TCG_SYM_ATK_DESCR 0x0E
+#define TCG_SYM_CURSOR_R 0x0F
+#define TCG_SYM_HP 0x10
+#define TCG_SYM_Lv 0x11
+#define TCG_SYM_E 0x12
+#define TCG_SYM_No 0x13
+#define TCG_SYM_PLUSPOWER 0x14
+#define TCG_SYM_DEFENDER 0x15
+#define TCG_SYM_HP_OK 0x16
+#define TCG_SYM_HP_NOK 0x17
+#define TCG_SYM_BOX_TOP_L 0x18
+#define TCG_SYM_BOX_TOP_R 0x19
+#define TCG_SYM_BOX_BTM_L 0x1A
+#define TCG_SYM_BOX_BTM_R 0x1B
+#define TCG_SYM_BOX_TOP 0x1C
+#define TCG_SYM_BOX_BOTTOM 0x1D
+#define TCG_SYM_BOX_LEFT 0x1E
+#define TCG_SYM_BOX_RIGHT 0x1F
+#define TCG_SYM_0 0x20
+#define TCG_SYM_1 0x21
+#define TCG_SYM_2 0x22
+#define TCG_SYM_3 0x23
+#define TCG_SYM_4 0x24
+#define TCG_SYM_5 0x25
+#define TCG_SYM_6 0x26
+#define TCG_SYM_7 0x27
+#define TCG_SYM_8 0x28
+#define TCG_SYM_9 0x29
+#define TCG_SYM_DOT 0x2A
+#define TCG_SYM_PLUS 0x2B
+#define TCG_SYM_MINUS 0x2C
+#define TCG_SYM_CROSS 0x2D
+#define TCG_SYM_SLASH 0x2E
+#define TCG_SYM_CURSOR_D 0x2F
+#define TCG_SYM_PRIZE 0x30
+
 #endif // GUARD_CONSTANTS_TCG_TEXT_H

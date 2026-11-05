@@ -114,7 +114,7 @@ struct TcgDuel
     // txRam2[0] then [1] (NULL: defaultText), <RAMNUM>s txRam3[0] then [1]
     const u8 *txRam2[2];
     u16 txRam3[2];
-    u8 defaultText[24];             // wDefaultText
+    u8 defaultText[80];             // wDefaultText
     u16 hlText;                     // (the text id the game's routines return in hl, for their caller)
     u16 deText;                     // (and in de: a coin toss's text)
     u8 confusionRetreatCheckWasUnsuccessful;   // wConfusionRetreatCheckWasUnsuccessful
@@ -202,7 +202,8 @@ u32 Tcg_Random(u32 n);
 // home/card_color.asm, home/effect_commands.asm, home/coin_toss.asm, parts of engine/duel/core.asm)
 void Tcg_LoadTxRam2(const u8 *text);
 void Tcg_LoadTxRam3(u16 n);
-void Tcg_CopyCardNameAndLevel(void);
+void Tcg_CopyCardNameAndLevel(void);              // (length 18)
+void Tcg_CopyCardNameAndLevelLength(u32 length);
 void Tcg_GetPlayAreaCardAttachedEnergies(u32 location);
 u32 Tcg_CountCardIDInLocation(u32 location, u32 cardId);
 bool32 (*Tcg_CheckMatchingCommand(const struct TcgEffectCommand *commands, u32 type))(void);

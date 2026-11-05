@@ -67,7 +67,6 @@ void Tcg_PlaySFX_InvalidChoice(void);
 void Tcg_InitAndDrawCardListScreenLayout(bool32 withSelectCheckMenu);
 void Tcg_SetCardListHeaderText(u16 headerText, u16 deckText);
 void Tcg_SetCardListInfoBoxText(u16 textId);
-enum { TCG_SYM_SPACE, TCG_SYM_GRASS, TCG_SYM_HP_NOK };
 void Tcg_DrawSymbolOnPlayAreaCursor(u32 location, u32 symbol);
 void Tcg_EraseCursor(void);
 void Tcg_DrawAIPeekScreen(u32 param);
