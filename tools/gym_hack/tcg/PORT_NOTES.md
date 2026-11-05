@@ -128,11 +128,23 @@ on the GBA's with a border.
     stand-in, and returns at once (or the stand-in's choice) when gTcg->headless.
   - Not decided yet: the sound (the GBC game's music on the GBA's GB sound channels, or FireRed's).
 
+  - Screens ported so far: SetupDuel, the main scene and HUDs (duel_screens.c); the duel menu and
+    its shortcuts, box messages, the turn screen, the card lists (hand, placing Pokémon, discard
+    piles, Select/Check and Play/Check) and the graphics loaders of home/tiles.asm (duel_lists.c);
+    the card pages, the large card picture, DisplayCardDetailScreen (card_page.c).
+  - The way in: special StartTcgDuel (VAR_0x8004 the deck) -> CB2_TcgDuel (src/tcg/tcg_main.c).
+    To look at it in the emulator: boot, then poke gMain.callback2 = CB2_TcgDuel | 1 (the scratchpad's
+    tcg_run.py does that and takes screenshots from a key script).
+
 ## Next session: start here
-- The duel's screens: engine/duel/core.asm's display routines (DrawDuelMainScene, DrawDuelHUDs, the
-  box messages, the card page, hand and play area lists), engine/menus/duel.asm, play_area.asm,
-  engine/gfx/load_gfx.asm (card gfx, palettes) and color.asm; then the entry (a CB2 that runs
-  Tcg_StartDuel between Tcg_GbcInit and Tcg_GbcFree) to see them in the emulator.
+- Still stand-ins (src/tcg/ui.c, weak): the play area screens (engine/menus/play_area.asm and
+  core.asm's PrintPlayAreaCardList, OpenPlayAreaScreenForSelection/Viewing,
+  PrintPlayAreaCardInformationAndLocation, DrawYourOrOppPlayAreaScreen), the attack menu
+  (DuelMenu_Attack's screen, HandleAttackMenuInput, the attack pages), retreat/energy discard
+  screens, the duel check menu, prizes (DrawPlayAreaToPlacePrizeCards, SelectPrizeCards), the
+  draw-card and shuffle animations, the coin toss, the AI's "thinking" box and delays, the duel
+  result screen, and the attack/status animations (engine/duel/animations, engine/gfx sprite
+  animations). Then the sound, the Saffron house and Rod, the deck picker, the energy prizes.
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).
