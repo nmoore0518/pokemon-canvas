@@ -166,4 +166,5 @@ def main():
     print(len(fonts), "bytes of fonts and duel graphics,", len(gfx_ids), "card art")
 
 
-main()
+if __name__ == "__main__":
+    main()

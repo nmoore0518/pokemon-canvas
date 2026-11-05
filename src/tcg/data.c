@@ -12,3 +12,5 @@
 #include "../data/tcg/text.h"
 #include "constants/tcg_gfx.h"
 #include "../data/tcg/gfx.h"
+#include "tcg_anims.h"
+#include "../data/tcg/anims.h"

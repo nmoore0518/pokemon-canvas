@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[3]
 SRC = Path(sys.argv[1]) / "src"
 FILES = ["card_data_constants.asm", "duel_constants.asm", "deck_ai_constants.asm", "duel_interface_constants.asm",
          "text_constants.asm", "attack_animation_constants.asm",
-         "animation_constants.asm", "sfx_constants.asm", "music_constants.asm", "menu_constants.asm"]
+         "animation_constants.asm", "sfx_constants.asm", "music_constants.asm", "menu_constants.asm",
+         "sprite_constants.asm", "palette_constants.asm"]
 
 
 def num(tok):
