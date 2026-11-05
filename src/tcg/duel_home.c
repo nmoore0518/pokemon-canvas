@@ -68,7 +68,7 @@ u32 Tcg_CountPrizes(void)
 }
 
 // ShuffleCards: each card swapped with a random one (of the `count` from `cards`)
-static void ShuffleCards(u8 *cards, u32 count)
+void Tcg_ShuffleCards(u8 *cards, u32 count)
 {
     u32 i;
     for (i = 0; i < count; i++)
@@ -84,7 +84,7 @@ static void ShuffleCards(u8 *cards, u32 count)
 void Tcg_ShuffleDeck(void)
 {
     u32 notInDeck = *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_CARDS_NOT_IN_DECK);
-    ShuffleCards(Tcg_TurnVar(TCG_DUELVARS_DECK_CARDS + notInDeck), TCG_DECK_SIZE - notInDeck);
+    Tcg_ShuffleCards(Tcg_TurnVar(TCG_DUELVARS_DECK_CARDS + notInDeck), TCG_DECK_SIZE - notInDeck);
 }
 
 // The turn holder's top card, its location CARD_LOCATION_JUST_DRAWN (Tcg_AddCardToHand next).

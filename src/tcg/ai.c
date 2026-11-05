@@ -22,6 +22,12 @@ u32 __attribute__((weak)) TcgAi_KOSwitch(void)
     return TCG_PLAY_AREA_BENCH_1;
 }
 
+// (AIDoAction_ForcedSwitch: the first benched Pokémon with HP)
+u32 __attribute__((weak)) TcgAi_ForcedSwitch(void)
+{
+    return TcgAi_KOSwitch();
+}
+
 // (AIDoAction_StartDuel: the first Basic in the hand Active, the rest on the bench)
 void __attribute__((weak)) TcgAi_StartDuel(void)
 {

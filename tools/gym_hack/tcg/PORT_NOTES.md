@@ -78,15 +78,24 @@ on the GBA's with a border.
 - src/tcg/ai.c: a plain stand-in AI (weak symbols), enough to run whole duels headless: test/tcg.c
   plays each of the 7 player decks against Rod's, AI vs AI, to the end.
 
+- src/tcg/effects.c (engine/duel/effect_functions.asm): all 189 effect routines our cards use, and
+  the helpers they call (QueueStatusCondition with Snorlax's Thick Skinned, ApplyAndAnimateHPRecovery,
+  ApplyExtraWaterEnergyDamageBonus, LookForCardsInDeck, the AI picks for energy/Amnesia/bench targets,
+  HandlePokemonAndEnergySelectionScreen, HandlePlayerSelection2HandCards, Mirror Move...). The game's
+  HRAM union at $ffa0 (hTemp_ffa0, hTempPlayAreaLocation_ffa1, hTempRetreatCostCards, hTempList,
+  hAIPkmnPowerEffectParam...) is a union in struct TcgDuel too, since the routines rely on the aliasing.
+
 ## Next session: start here
-- engine/duel/effect_functions.asm: the 189 effect routines (include/tcg_effect_functions.h). They're
-  weak stubs now, so attacks do their base damage only and Trainers do nothing. Port them in the
-  file's order; each needs its own text, coin tosses, and player/AI selection hooks.
+- engine/duel/ai/: Rod's AI (and the player-deck AI used for headless AI-vs-AI runs). The game's AI
+  is generic (engine/duel/ai/core.asm, attacks.asm, energy.asm, trainer_cards.asm, retreat.asm,
+  boss_deck_set_up.asm, special_attacks.asm, pkmn_powers.asm...) plus per-deck tables
+  (decks/legendary_dragonite.asm). It drives the duel through Tcg_AIMakeDecision. src/tcg/ai.c's
+  stand-in (weak) goes once it's ported.
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).
 2. ~~engine/duel/core.asm: the duel loop and the menus' rules~~ (done; the menus' screens are part of 5).
-3. engine/duel/effect_functions.asm: the 189 routines in include/tcg_effect_functions.h.
+3. ~~engine/duel/effect_functions.asm: the 189 routines~~ (done).
 4. engine/duel/ai/: Rod's AI (decks/legendary_dragonite.asm and the general AI it uses).
 5. The screens (the game's layouts at 160x144 in the middle of the GBA's), its fonts and gfx.
 6. The Saffron house, Rod, the deck picker, the energy-card prizes (src/energy_cards.c: done).

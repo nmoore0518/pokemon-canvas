@@ -465,9 +465,12 @@ static bool32 DisplayRetreatScreen(void)
     Tcg_CreateArenaOrBenchEnergyCardList(TCG_PLAY_AREA_ARENA);
     Tcg_SortCardsInDuelTempListByID();
     Tcg_DisplayEnergyDiscardScreen(TCG_PLAY_AREA_ARENA);
+    gTcg->energyDiscardMenuDenominator = gTcg->energyCardsRequiredToRetreat;
     for (;;)
     {
-        u32 card = Tcg_HandleEnergyDiscardMenuInput(gTcg->numRetreatEnergiesSelected, gTcg->energyCardsRequiredToRetreat);
+        u32 card;
+        gTcg->energyDiscardMenuNumerator = gTcg->numRetreatEnergiesSelected;
+        card = Tcg_HandleEnergyDiscardMenuInput();
         if (card == TCG_SELECTION_CANCEL)
             return TRUE;
         gTcg->tempCardIndex = card;

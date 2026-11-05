@@ -44,9 +44,59 @@ void Tcg_DrawLargePictureOfCard(void) {}
 void Tcg_PrintUsedTrainerCardDescription(void) {}
 void Tcg_DisplayOpponentUsedAttackScreen(void) {}
 void Tcg_DisplayDuelResult(u32 duelFinished, u16 textId) {}
-void Tcg_DisplayEnergyDiscardScreen(u32 location) {}
+void Tcg_DisplayEnergyDiscardScreen(u32 location)
+{
+    gTcg->energyDiscardPlayAreaLocation = location;
+    gTcg->energyDiscardMenuNumerator = 0;
+    gTcg->energyDiscardMenuDenominator = 1;
+}
 void Tcg_DisplayEnergyDiscardMenu(void) {}
 void Tcg_OpenDuelCheckMenu(void) {}
+void Tcg_EmptyScreen(void) {}
+void Tcg_PlayDeckShuffleAnimation(void) {}
+void Tcg_SetupPlayAreaScreen(void) {}
+void Tcg_InitAndPrintPlayAreaCardInformationAndLocation_WithTextBox(void) {}
+void Tcg_DisplayDrawNCardsScreen(u32 count) {}
+void Tcg_OpenCardPage_FromHand(void) {}
+void Tcg_DisplayCardListDetails(void) {}
+void Tcg_DrawWholeScreenTextBox(u16 textId) {}
+void Tcg_PlaySFX_InvalidChoice(void) {}
+void Tcg_InitAndDrawCardListScreenLayout(bool32 withSelectCheckMenu) {}
+void Tcg_SetCardListHeaderText(u16 headerText, u16 deckText) {}
+void Tcg_SetCardListInfoBoxText(u16 textId) {}
+void Tcg_DrawSymbolOnPlayAreaCursor(u32 location, u32 symbol) {}
+void Tcg_EraseCursor(void) {}
+void Tcg_DrawAIPeekScreen(u32 param) {}
+
+bool32 Tcg_YesOrNoMenuWithText_SetCursorToYes(u16 textId)
+{
+    return FALSE;
+}
+
+u32 Tcg_DisplayCardList(void)
+{
+    if (gTcg->duelTempList[0] == 0xFF)
+        return TCG_SELECTION_CANCEL;
+    gTcg->tempCardIndex = gTcg->duelTempList[0];
+    return gTcg->duelTempList[0];
+}
+
+u32 Tcg_HandlePlayAreaMenuInput(u32 item)
+{
+    return TCG_SELECTION_CANCEL;
+}
+
+u32 Tcg_HandlePeekSelection(void)
+{
+    return TCG_AI_PEEK_TARGET_DECK;
+}
+
+bool32 Tcg_HandleDefendingPokemonAttackSelection(u32 *deckIndex, u32 *attack)
+{
+    *deckIndex = *Tcg_NonTurnVar(TCG_DUELVARS_ARENA_CARD);
+    *attack = 0;
+    return FALSE;
+}
 
 // (CopyPlayerName / CopyOpponentName)
 void Tcg_CopyDuelistName(u32 duelist, u8 *dest)
@@ -89,8 +139,11 @@ u32 Tcg_DisplayHandCardList(u16 textId)
     return TCG_SELECTION_CANCEL;
 }
 
-u32 Tcg_HandleEnergyDiscardMenuInput(u32 selected, u32 required)
+u32 Tcg_HandleEnergyDiscardMenuInput(void)
 {
+    if (gTcg->duelTempList[0] == 0xFF)
+        return TCG_SELECTION_CANCEL;
+    gTcg->tempCardIndex = gTcg->duelTempList[0];
     return gTcg->duelTempList[0];
 }
 

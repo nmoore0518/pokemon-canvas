@@ -52,9 +52,25 @@ void Tcg_DrawLargePictureOfCard(void);                  // (wLoadedCard1)
 void Tcg_PrintUsedTrainerCardDescription(void);
 void Tcg_DisplayOpponentUsedAttackScreen(void);
 void Tcg_DisplayDuelResult(u32 duelFinished, u16 textId);
-void Tcg_DisplayEnergyDiscardScreen(u32 location);
+void Tcg_DisplayEnergyDiscardScreen(u32 location);      // (wEnergyDiscardMenuNumerator 0, ...Denominator 1)
 void Tcg_DisplayEnergyDiscardMenu(void);
 void Tcg_CopyDuelistName(u32 duelist, u8 *dest);
+void Tcg_EmptyScreen(void);
+void Tcg_PlayDeckShuffleAnimation(void);
+void Tcg_SetupPlayAreaScreen(void);
+void Tcg_InitAndPrintPlayAreaCardInformationAndLocation_WithTextBox(void);   // (hTempPlayAreaLocation_ff9d's)
+void Tcg_DisplayDrawNCardsScreen(u32 count);
+void Tcg_OpenCardPage_FromHand(void);                   // (wLoadedCard1)
+void Tcg_DisplayCardListDetails(void);                  // (wDuelTempList)
+void Tcg_DrawWholeScreenTextBox(u16 textId);
+void Tcg_PlaySFX_InvalidChoice(void);
+void Tcg_InitAndDrawCardListScreenLayout(bool32 withSelectCheckMenu);
+void Tcg_SetCardListHeaderText(u16 headerText, u16 deckText);
+void Tcg_SetCardListInfoBoxText(u16 textId);
+enum { TCG_SYM_SPACE, TCG_SYM_GRASS, TCG_SYM_HP_NOK };
+void Tcg_DrawSymbolOnPlayAreaCursor(u32 location, u32 symbol);
+void Tcg_EraseCursor(void);
+void Tcg_DrawAIPeekScreen(u32 param);
 
 // the player choosing (the AI's choices are in src/tcg/ai*.c): TCG_SELECTION_CANCEL is B (the game's carry)
 #define TCG_SELECTION_CANCEL 0xFF
@@ -64,10 +80,15 @@ void Tcg_OpenDuelCheckMenu(void);
 u32 Tcg_OpenPlayAreaScreenForSelection(bool32 excludeArena);   // a PLAY_AREA_* (hTempPlayAreaLocation_ff9d)
 u32 Tcg_DisplayPlaceInitialPokemonCardsScreen(bool32 bench, u16 textId);   // a Basic in the hand
 u32 Tcg_DisplayHandCardList(u16 textId);                // a deck index (wDuelTempList: the hand)
-u32 Tcg_HandleEnergyDiscardMenuInput(u32 selected, u32 required);   // a deck index (wDuelTempList)
+u32 Tcg_HandleEnergyDiscardMenuInput(void);             // a deck index of wDuelTempList (hTempCardIndex_ff98)
 u32 Tcg_HandleAttackMenuInput(u32 count, u32 item);     // an item of wDuelTempList's attacks
 u32 Tcg_SelectPlayAreaPokemonPower(u32 item);           // a PLAY_AREA_*
 bool32 Tcg_YesOrNoMenuWithText(u16 textId);             // TRUE: no
+bool32 Tcg_YesOrNoMenuWithText_SetCursorToYes(u16 textId);
+u32 Tcg_DisplayCardList(void);                          // a card of wDuelTempList (hTempCardIndex_ff98)
+u32 Tcg_HandlePlayAreaMenuInput(u32 item);              // a PLAY_AREA_* (the play area screen's menu)
+u32 Tcg_HandlePeekSelection(void);                      // (Peek: what the player looked at, as the AI's param)
+bool32 Tcg_HandleDefendingPokemonAttackSelection(u32 *deckIndex, u32 *attack);  // TRUE: B
 void Tcg_SelectPrizeCards(u32 count);                   // (takes them: Tcg_TakePrizeCard)
 
 #endif // GUARD_TCG_UI_H

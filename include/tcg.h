@@ -77,8 +77,6 @@ struct TcgDuel
     u8 duelInitialPrizes;           // wDuelInitialPrizes
     u8 tempCardIndex;               // hTempCardIndex_ff98
     u8 tempPlayAreaLocation;        // hTempPlayAreaLocation_ff9d
-    u8 tempPlayAreaLocationFfa1;    // hTempPlayAreaLocation_ffa1
-    u8 tempList[16];                // hTempList
     u8 preEvolutionPokemonCard;     // wPreEvolutionPokemonCard
     const struct TcgCard *loadedCard1, *loadedCard2;   // wLoadedCard1, wLoadedCard2
     u8 loadedCard1Id, loadedCard2Id;
@@ -98,7 +96,6 @@ struct TcgDuel
     u8 tempCardId;                  // wTempCardID_ccc2
     u8 tempCardIndexFf9f;           // hTempCardIndex_ff9f
     u8 tempPlayAreaLocationCceb;    // wTempPlayAreaLocation_cceb
-    u8 temp;                        // hTemp_ffa0
     u8 effectFailed;                // wEffectFailed (EFFECT_FAILED_*)
     u8 defendingWasForcedToSwitch;  // wDefendingWasForcedToSwitch
     u8 metronomeEnergyCost;         // wMetronomeEnergyCost
@@ -121,13 +118,35 @@ struct TcgDuel
     u16 hlText;                     // (the text id the game's routines return in hl, for their caller)
     u16 deText;                     // (and in de: a coin toss's text)
     u8 confusionRetreatCheckWasUnsuccessful;   // wConfusionRetreatCheckWasUnsuccessful
-    u8 tempRetreatCostCards[8];     // hTempRetreatCostCards ($ff-terminated)
     u8 energyCardsRequiredToRetreat, numRetreatEnergiesSelected;
     u8 selectedDuelSubMenuItem;     // wSelectedDuelSubMenuItem
     u8 duelistType;                 // wDuelistType (the turn holder's)
     u8 skipDuelistIsThinkingDelay;  // wSkipDuelistIsThinkingDelay
     u8 opponentTurnEnded;           // wOpponentTurnEnded
     u8 duelResult;                  // wDuelResult (TCG_DUEL_WIN, TCG_DUEL_LOSS)
+    // the game's HRAM at $ffa0: one place, used under several names
+    union
+    {
+        struct
+        {
+            u8 temp;                        // hTemp_ffa0
+            u8 tempPlayAreaLocationFfa1;    // hTempPlayAreaLocation_ffa1
+            u8 tempRetreatCostCards[6];     // hTempRetreatCostCards ($ff-terminated)
+        };
+        struct
+        {
+            u8 unusedFfa0;
+            u8 aiPkmnPowerEffectParam;      // hAIPkmnPowerEffectParam
+            u8 playAreaEffectTarget;        // hPlayAreaEffectTarget, hAIEnergyTransEnergyCard
+            u8 aiEnergyTransPlayAreaLocation;   // hAIEnergyTransPlayAreaLocation
+        };
+        u8 tempList[8];                     // hTempList
+    };
+    u8 curSelectionItem;            // hCurSelectionItem
+    u8 aiMinDamage, aiMaxDamage;    // wAIMinDamage, wAIMaxDamage
+    u8 energyDiscardMenuNumerator, energyDiscardMenuDenominator;   // wEnergyDiscardMenu*
+    u8 energyDiscardPlayAreaLocation;   // wEnergyDiscardPlayAreaLocation
+    u8 duelDisplayedScreen;         // wDuelDisplayedScreen (0: the screen needs redrawing)
     bool8 headless;                 // (no screens, no waiting: the tests, AI-vs-AI runs)
 };
 
@@ -146,6 +165,7 @@ void Tcg_LoadCard1(u32 deckIndex);
 void Tcg_LoadCard2(u32 deckIndex);
 u32 Tcg_CountPrizes(void);
 void Tcg_ShuffleDeck(void);
+void Tcg_ShuffleCards(u8 *cards, u32 count);
 bool32 Tcg_DrawCardFromDeck(u8 *deckIndex);
 void Tcg_ReturnCardToDeck(u32 deckIndex);
 void Tcg_SearchCardInDeckAndAddToHand(u32 deckIndex);
@@ -291,5 +311,6 @@ bool32 Tcg_AIMakeDecision(u32 action);
 u32 TcgAi_KOSwitch(void);       // (AIDoAction_KOSwitch: the bench Pokémon to replace a knocked-out one)
 void TcgAi_StartDuel(void);     // (AIDoAction_StartDuel: its Active and Benched Pokémon)
 void TcgAi_DoTurn(void);        // (AIDoAction_Turn)
+u32 TcgAi_ForcedSwitch(void);   // (AIDoAction_ForcedSwitch: the bench Pokémon the AI's made to switch in)
 
 #endif // GUARD_TCG_H

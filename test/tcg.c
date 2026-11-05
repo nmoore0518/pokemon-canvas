@@ -6,6 +6,7 @@
 #include "test/test.h"
 #include "tcg.h"
 #include "constants/tcg_text.h"
+#include "tcg_effect_functions.h"
 
 // A duel with one Pokémon each in the arena: the player's `attacker` (deck index 0) against the
 // opponent's `defender` (deck index 0), the player's turn, six prizes each (deck indexes 54-59)
@@ -157,8 +158,13 @@ TEST("GymHack: TCG attack: a knocked-out Pokémon is replaced from the bench, an
     *Tcg_TurnVar(TCG_DUELVARS_BENCH1_CARD_HP) = 50;
     *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_POKEMON_IN_PLAY_AREA) = 2;
     Tcg_SwapTurn();
-    Tcg_CopyAttackDataAndDamage_FromDeckIndex(0, 1);        // Ember: 30 x 2
+    Tcg_CopyAttackDataAndDamage_FromDeckIndex(0, 1);        // Ember (30 x 2): no Fire Energy to discard
+    EXPECT(Tcg_UseAttackOrPokemonPower());
+    EXPECT_EQ(gTcg->hlText, TCG_TEXT_NotEnoughFireEnergy);
+    PutCard(1, TCG_CARD_FIRE_ENERGY, TCG_CARD_LOCATION_ARENA);
+    Tcg_CopyAttackDataAndDamage_FromDeckIndex(0, 1);
     EXPECT(!Tcg_UseAttackOrPokemonPower());
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_CARD_LOCATIONS + 1], TCG_CARD_LOCATION_DISCARD_PILE);
     EXPECT_EQ(gTcg->duelFinished, TCG_DUEL_NOT_FINISHED);
     EXPECT_EQ(gTcg->vars[TCG_OPPONENT][TCG_DUELVARS_ARENA_CARD], 1);
     EXPECT_EQ(gTcg->vars[TCG_OPPONENT][TCG_DUELVARS_ARENA_CARD_HP], 50);
@@ -220,4 +226,85 @@ TEST("GymHack: TCG duel: each of the player's decks plays a whole duel against R
     EXPECT_GT(gTcg->duelTurns, 2);
     EXPECT(CardsAccountedFor(TCG_PLAYER));
     EXPECT(CardsAccountedFor(TCG_OPPONENT));
+}
+
+TEST("GymHack: TCG effects: Charizard's Energy Burn makes all its Energy Fire")
+{
+    SetUpDuel(TCG_CARD_CHARIZARD, TCG_CARD_MACHOP);
+    PutCard(1, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_ARENA);
+    PutCard(2, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_ARENA);
+    PutCard(3, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_ARENA);
+    PutCard(4, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_ARENA);
+    Tcg_GetPlayAreaCardAttachedEnergies(TCG_PLAY_AREA_ARENA);
+    EXPECT(Tcg_CheckIfEnoughEnergiesForGivenAttack(0, 1));     // Fire Spin: 4 Fire
+    Tcg_GetPlayAreaCardAttachedEnergies(TCG_PLAY_AREA_ARENA);
+    Tcg_HandleEnergyBurn();
+    EXPECT(!Tcg_CheckIfEnoughEnergiesForGivenAttack(0, 1));
+    gTcg->vars[TCG_PLAYER][TCG_DUELVARS_ARENA_CARD_STATUS] = TCG_ASLEEP;     // (asleep: no Pokémon Power)
+    Tcg_GetPlayAreaCardAttachedEnergies(TCG_PLAY_AREA_ARENA);
+    Tcg_HandleEnergyBurn();
+    EXPECT(Tcg_CheckIfEnoughEnergiesForGivenAttack(0, 1));
+}
+
+TEST("GymHack: TCG effects: Professor Oak discards the hand and draws 7")
+{
+    u32 i;
+    SetUpDuel(TCG_CARD_CHARMANDER, TCG_CARD_MACHOP);
+    for (i = 1; i <= 4; i++)
+    {
+        u8 card;
+        Tcg_DrawCardFromDeck(&card);
+        Tcg_AddCardToHand(card);
+    }
+    gTcg->deck[TCG_PLAYER][1] = TCG_CARD_PROFESSOR_OAK;
+    gTcg->tempCardIndex = 1;
+    EXPECT(!Tcg_PlayTrainerCard());
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_NUMBER_OF_CARDS_IN_HAND], 7);
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_NUMBER_OF_CARDS_IN_DISCARD_PILE], 4);
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_CARD_LOCATIONS + 1], TCG_CARD_LOCATION_DISCARD_PILE);
+}
+
+TEST("GymHack: TCG effects: Potion heals up to 20; Switch swaps in the bench Pokémon")
+{
+    u8 card;
+    SetUpDuel(TCG_CARD_CHARMANDER, TCG_CARD_MACHOP);
+    gTcg->vars[TCG_PLAYER][TCG_DUELVARS_ARENA_CARD_HP] = 20;
+    Tcg_DrawCardFromDeck(&card);
+    Tcg_AddCardToHand(card);
+    gTcg->deck[TCG_PLAYER][card] = TCG_CARD_POTION;
+    gTcg->tempCardIndex = card;
+    EXPECT(!Tcg_PlayTrainerCard());
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_ARENA_CARD_HP], 40);
+    // Switch: with no bench, it can't be played
+    Tcg_DrawCardFromDeck(&card);
+    Tcg_AddCardToHand(card);
+    gTcg->deck[TCG_PLAYER][card] = TCG_CARD_SWITCH;
+    gTcg->tempCardIndex = card;
+    EXPECT(Tcg_PlayTrainerCard());
+    EXPECT_EQ(gTcg->hlText, TCG_TEXT_EffectNoPokemonOnTheBench);
+    PutCard(5, TCG_CARD_MACHOP, TCG_CARD_LOCATION_BENCH_1);
+    gTcg->vars[TCG_PLAYER][TCG_DUELVARS_BENCH] = 5;
+    gTcg->vars[TCG_PLAYER][TCG_DUELVARS_BENCH1_CARD_HP] = 50;
+    gTcg->vars[TCG_PLAYER][TCG_DUELVARS_NUMBER_OF_POKEMON_IN_PLAY_AREA] = 2;
+    gTcg->tempCardIndex = card;
+    EXPECT(!Tcg_PlayTrainerCard());
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_ARENA_CARD], 5);
+    EXPECT_EQ(gTcg->vars[TCG_PLAYER][TCG_DUELVARS_BENCH], 0);
+}
+
+TEST("GymHack: TCG effects: Lapras's Water Gun: +10 for each extra Water Energy, up to +20")
+{
+    u32 i;
+    SetUpDuel(TCG_CARD_LAPRAS, TCG_CARD_MACHOP);
+    for (i = 1; i <= 2; i++)
+        PutCard(i, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_ARENA);
+    Tcg_CopyAttackDataAndDamage_FromDeckIndex(0, 0);
+    gTcg->tempPlayAreaLocation = TCG_PLAY_AREA_ARENA;
+    Tcg_LaprasWaterGunEffect();
+    EXPECT_EQ(gTcg->damage, Tcg_Card(TCG_CARD_LAPRAS)->attacks[0].damage + 10);
+    for (i = 3; i <= 5; i++)
+        PutCard(i, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_ARENA);
+    Tcg_CopyAttackDataAndDamage_FromDeckIndex(0, 0);
+    Tcg_LaprasWaterGunEffect();
+    EXPECT_EQ(gTcg->damage, Tcg_Card(TCG_CARD_LAPRAS)->attacks[0].damage + 20);
 }
