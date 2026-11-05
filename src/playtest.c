@@ -446,6 +446,13 @@ void Playtest_Update(void)
                         a[1] = x, a[2] = y;     // (where it went)
         }
         break;
+    case PLAYTEST_SET_SHINY:
+        if (a[0] < PARTY_SIZE)
+        {
+            bool8 shiny = TRUE;
+            SetMonData(&gPlayerParty[a[0]], MON_DATA_IS_SHINY, &shiny);
+        }
+        break;
     case PLAYTEST_RELEASE:
         if (a[0] < PARTY_SIZE)
         {

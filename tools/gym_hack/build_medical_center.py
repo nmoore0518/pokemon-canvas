@@ -174,6 +174,14 @@ def put_escalator(f, P, kind):
             else:
                 f.raw(x + dx, y + dy, blk(blocks[dy][dx], 0, 3))
     rx = x + (1 if kind.endswith("_l") else 0)
+    # the floor in front is at the escalator's height (4), the floor around that a ramp (0), as in
+    # FireRed's Pokémon Centers: otherwise the player can't step on
+    step = 1 if kind.endswith("_l") else -1
+    fx, fy = rx + step, y + 1
+    f.raw(fx, fy, (f.g[fy][fx] & 0x0FFF) | (4 << 12))
+    for (ax, ay) in ((fx, fy - 1), (fx, fy + 1), (fx + step, fy)):
+        if not (f.g[ay][ax] >> 10) & 3:
+            f.raw(ax, ay, f.g[ay][ax] & 0x0FFF)
     return (rx, y + 1)
 
 
@@ -230,7 +238,7 @@ PUZZLE = [
 OBSTACLES = ["wheelchair", "cart", "boxes"]
 GURNEYS = [(PUZZLE_AT[0] + x, PUZZLE_AT[1] + y) for y, r in enumerate(PUZZLE) for x, c in enumerate(r) if c == "G"]
 WARD_NURSE = (15, 9)
-PAST_GURNEYS = (14, 6)
+PAST_GURNEYS = (12, 6)              # (the box's last tile before its way out: every way through crosses it)
 ORDERLY = (2, 9)
 
 
@@ -360,6 +368,8 @@ def objects_2f(where):
     coords = [{"type": "trigger", "x": PAST_GURNEYS[0], "y": PAST_GURNEYS[1], "elevation": 3,
                "var": "VAR_TEMP_1", "var_value": "0", "script": P + "ThroughGurneys"}]
     o = [obj("OBJ_EVENT_GFX_GURNEY", x, y, "0x0", "MOVEMENT_TYPE_NONE", "FLAG_GOT_HEAL_CHARM") for (x, y) in GURNEYS]
+    for g in o:                                   # (no movement range: like a boulder, it goes where it's pushed)
+        g["movement_range_x"] = g["movement_range_y"] = 0
     o += [obj("OBJ_EVENT_GFX_NURSE_FRLG", *WARD_NURSE, P + "WardNurse", "MOVEMENT_TYPE_FACE_LEFT"),
           obj("OBJ_EVENT_GFX_SCIENTIST", *ORDERLY, P + "Orderly", "MOVEMENT_TYPE_FACE_RIGHT")]
     warps = [warp(*where["down"], MAP_ID.format("1F"), 3, 4), warp(*where["up"], MAP_ID.format("3F"), 0, 4)]

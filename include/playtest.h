@@ -67,6 +67,7 @@ enum
                             //       (args[1], args[2]: where)
     PLAYTEST_TERA,          // args: which (0: an opponent's stored Tera type, 1: the player's in the last battle,
                             //       2: the player's free one, 3: its types now, first | second << 8), party slot -> result: the type
+    PLAYTEST_SET_SHINY,     // args: party slot
 };
 
 // EV spreads for PLAYTEST_TRAIN_MON (252 / 252 / 4)

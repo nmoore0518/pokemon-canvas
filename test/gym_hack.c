@@ -4606,10 +4606,12 @@ TEST("GymHack: the HEAL CHARM: the player's medicine heals 10% more, with it in 
     u16 hp = 1;
     ZeroPlayerPartyMons();
     CreateMon(mon, SPECIES_SNORLAX, 100, 0, OTID_STRUCT_PLAYER_ID);
+    CalculateMonStats(mon);
     SetMonData(mon, MON_DATA_HP, &hp);
     RemoveBagItem(ITEM_HEAL_CHARM, 1);
     EXPECT_EQ(HealCharm_Boost(120), 120);
-    PokemonUseItemEffects(mon, ITEM_HYPER_POTION, 0, 0, FALSE);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_HP), 1);
+    EXPECT_EQ(PokemonUseItemEffects(mon, ITEM_HYPER_POTION, 0, 0, FALSE), FALSE);
     EXPECT_EQ(GetMonData(mon, MON_DATA_HP), 1 + 120);
     AddBagItem(ITEM_HEAL_CHARM, 1);
     EXPECT_EQ(HealCharm_Boost(120), 132);
