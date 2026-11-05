@@ -55,7 +55,6 @@ on the GBA's with a border.
   Tags kept in the strings: <RAMNAME>, <RAMTEXT> (gTcg->txRam2[0] then [1]; NULL: defaultText),
   <RAMNUM> (txRam3[0], [1]), energy symbols. Routines that return a text id in hl set gTcg->hlText.
 - include/tcg_ui.h / src/tcg/ui.c: the screen hooks, under the game's names (no-ops for now).
-  src/tcg/ai.c: TcgAi_KOSwitch stand-in (weak) until the AI's ported.
 - test/tcg.c: damage math (weakness, resistance, PlusPower, Defender, Invisible Wall, the "sla d"
   halving, Growl, double damage), SubtractHP, attached energy, a whole attack with knock-out, prize,
   bench replacement and the win, the status queue.
@@ -75,8 +74,7 @@ on the GBA's with a border.
   game does. On the GBA the duel will run as a loop of its own: the UI's waits do the frames (read
   keys, sprites, wait for VBlank; sound runs in the VBlank interrupt).
 - The player's choices are UI hooks returning a choice or TCG_SELECTION_CANCEL (the game's carry).
-- src/tcg/ai.c: a plain stand-in AI (weak symbols), enough to run whole duels headless: test/tcg.c
-  plays each of the 7 player decks against Rod's, AI vs AI, to the end.
+- test/tcg.c plays each of the 7 player decks against Rod's, AI vs AI, headless, to the end.
 
 - src/tcg/effects.c (engine/duel/effect_functions.asm): all 189 effect routines our cards use, and
   the helpers they call (QueueStatusCondition with Snorlax's Thick Skinned, ApplyAndAnimateHPRecovery,
@@ -85,17 +83,41 @@ on the GBA's with a border.
   HRAM union at $ffa0 (hTemp_ffa0, hTempPlayAreaLocation_ffa1, hTempRetreatCostCards, hTempList,
   hAIPkmnPowerEffectParam...) is a union in struct TcgDuel too, since the routines rely on the aliasing.
 
+- The AI (engine/duel/ai/), include/tcg_ai.h: struct TcgAi is the game's wAI* WRAM, one per
+  duelist (sTcgAi[2]; gTcgAi: the one acting, set by TcgAi_DoAction from whoseTurn), so the AI can
+  play both sides headless. deckId is the game's deck ID (TCG_DECKID_*; TcgAi_SetDeck).
+  - src/tcg/ai_core.c: core.asm, damage_calculation.asm, init.asm. ai_common.c: common.asm.
+    ai_attacks.c: attacks.asm, special_attacks.asm. ai_energy.c: energy.asm. ai_pokemon.c:
+    hand_pokemon.asm, retreat.asm. ai_trainer_cards.c: trainer_cards.asm and the logic table.
+    ai.c: deck_ai.asm (AIDoAction), decks/legendary_dragonite.asm, decks/general.asm,
+    boss_deck_set_up.asm.
+  - Rod plays decks/legendary_dragonite.asm: his lists, the boss opening hand and play area, his
+    Pokémon Trader trades, Kangaskhan's first Energy. The player's decks (only ever AI-driven in the
+    headless runs) get decks/general.asm's AIMainTurnLogic: the game's own opponents for those decks
+    had per-deck logic that isn't ported (it never plays against the player here).
+  - Kept bugs: the avoid-prize check in SetUpBossStartingHandAndDeck ('cp a': does nothing); Rod's
+    retreat list never stored; Professor Oak's "+10 for a non-Pokémon" counts the first Basic-stage
+    Energy or Trainer; the energy-bonus list bug in ProcessEnergyCards.
+  - Not ported: the AI's Pokémon Powers (pkmn_powers.asm: Energy Trans, Rain Dance, Damage Swap, Peek,
+    Heal, Cowardice: TcgAi_HandleAIPkmnPowers / HandleAIEnergyTrans are no-ops; only the player's
+    decks have those Powers). The trainer logic table only has Rod's Trainers (Professor Oak,
+    Pokémon Trader, Breeder, Energy Retrieval, Super Energy Retrieval, Switch, Gambler; Gambler's
+    AIDecide is FALSE for Rod in the game too): in the headless runs the player's side doesn't play
+    the other Trainers. Checks for cards not in our decks (Mewtwo mill, Mr. Mime, Mysterious Fossil...)
+    are left out as elsewhere.
+  - Headless AI-vs-AI (70 duels): Rod won about half, against the general AI on the player's decks,
+    with 2-9 Trainers played a duel; every card accounted for at the end.
+  - Tests: Rod's opening hand (2+2, 4+4), his Professor Oak decision both ways, an attack.
+
 ## Next session: start here
-- engine/duel/ai/: Rod's AI (and the player-deck AI used for headless AI-vs-AI runs). The game's AI
-  is generic (engine/duel/ai/core.asm, attacks.asm, energy.asm, trainer_cards.asm, retreat.asm,
-  boss_deck_set_up.asm, special_attacks.asm, pkmn_powers.asm...) plus per-deck tables
-  (decks/legendary_dragonite.asm). It drives the duel through Tcg_AIMakeDecision. src/tcg/ai.c's
-  stand-in (weak) goes once it's ported.
+- The screens (5 below): the duel's main scene, hand and card list, card detail, play area, attack
+  menu, text boxes, coin toss; the game's layouts at 160x144 centred, its font and gfx. The rules
+  call the hooks in include/tcg_ui.h (src/tcg/ui.c: headless stand-ins now).
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).
 2. ~~engine/duel/core.asm: the duel loop and the menus' rules~~ (done; the menus' screens are part of 5).
 3. ~~engine/duel/effect_functions.asm: the 189 routines~~ (done).
-4. engine/duel/ai/: Rod's AI (decks/legendary_dragonite.asm and the general AI it uses).
+4. ~~engine/duel/ai/: Rod's AI~~ (done; see above for what isn't).
 5. The screens (the game's layouts at 160x144 in the middle of the GBA's), its fonts and gfx.
 6. The Saffron house, Rod, the deck picker, the energy-card prizes (src/energy_cards.c: done).

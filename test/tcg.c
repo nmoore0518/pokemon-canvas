@@ -5,6 +5,7 @@
 #include "global.h"
 #include "test/test.h"
 #include "tcg.h"
+#include "tcg_ai.h"
 #include "constants/tcg_text.h"
 #include "tcg_effect_functions.h"
 
@@ -197,6 +198,8 @@ static u32 RunAiDuel(u32 deck)
     gTcg->vars[TCG_PLAYER][TCG_DUELVARS_DUELIST_TYPE] = TCG_DUELIST_TYPE_AI_OPP;
     gTcg->vars[TCG_OPPONENT][TCG_DUELVARS_DUELIST_TYPE] = TCG_DUELIST_TYPE_AI_OPP;
     gTcg->duelInitialPrizes = 6;
+    TcgAi_SetDeck(TCG_PLAYER, 0);       // (the player's deck: the general decks' AI)
+    TcgAi_SetDeck(TCG_OPPONENT, TCG_DECKID_LEGENDARY_DRAGONITE);
     return Tcg_StartDuel();
 }
 
@@ -307,4 +310,89 @@ TEST("GymHack: TCG effects: Lapras's Water Gun: +10 for each extra Water Energy,
     Tcg_CopyAttackDataAndDamage_FromDeckIndex(0, 0);
     Tcg_LaprasWaterGunEffect();
     EXPECT_EQ(gTcg->damage, Tcg_Card(TCG_CARD_LAPRAS)->attacks[0].damage + 20);
+}
+
+// the opponent's turn, Grandmaster Rod's AI
+static void RodsTurn(void)
+{
+    gTcg->whoseTurn = gTcg->whoseTurnReal = TCG_OPPONENT;
+    TcgAi_SetDeck(TCG_OPPONENT, TCG_DECKID_LEGENDARY_DRAGONITE);
+}
+
+TEST("GymHack: TCG AI: Rod's opening hand has 2 Basics and 2 Energy, and 4 of each with the 6 after the Prizes")
+{
+    u32 i, basics = 0, energy = 0;
+    memset(gTcg, 0, sizeof(*gTcg));
+    gTcg->headless = TRUE;
+    Tcg_SetDecks(gTcgDecks[TCG_DECK_FIRE], gTcgDecks[TCG_DECK_ROD]);
+    RodsTurn();
+    Tcg_ShuffleDeckAndDrawSevenCards();
+    TcgAi_SetUpBossStartingHandAndDeck();
+    EXPECT_EQ(*Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_CARDS_IN_HAND), 7);
+    EXPECT_EQ(*Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_CARDS_NOT_IN_DECK), 7);
+    EXPECT(CardsAccountedFor(TCG_OPPONENT));
+    for (i = 0; i < 7; i++)
+    {
+        const struct TcgCard *c = Tcg_Card(Tcg_GetCardIdFromDeckIndex(*Tcg_TurnVar(TCG_DUELVARS_HAND + i)));
+        if (c->type < TCG_TYPE_ENERGY)
+            basics += (c->stage == TCG_BASIC);
+        else if (c->type != TCG_TYPE_TRAINER)
+            energy++;
+    }
+    EXPECT_GE(basics, 2);
+    EXPECT_GE(energy, 2);
+    for (i = 13; i < 19; i++)
+    {
+        const struct TcgCard *c = Tcg_Card(Tcg_GetCardIdFromDeckIndex(*Tcg_TurnVar(TCG_DUELVARS_DECK_CARDS + i)));
+        if (c->type < TCG_TYPE_ENERGY)
+            basics += (c->stage == TCG_BASIC);
+        else if (c->type != TCG_TYPE_TRAINER)
+            energy++;
+    }
+    EXPECT_GE(basics, 4);
+    EXPECT_GE(energy, 4);
+}
+
+TEST("GymHack: TCG AI: Rod plays Professor Oak with a small hand and no Energy, not with a big one")
+{
+    u32 i, hand;
+    PARAMETRIZE { hand = 1; }
+    PARAMETRIZE { hand = 9; }
+    SetUpDuel(TCG_CARD_MACHOP, TCG_CARD_KANGASKHAN);
+    RodsTurn();
+    for (i = 1; i <= hand; i++)
+    {
+        u8 card;
+        Tcg_DrawCardFromDeck(&card);
+        Tcg_AddCardToHand(card);
+        gTcg->deck[TCG_OPPONENT][card] = (i == 1) ? TCG_CARD_PROFESSOR_OAK : (i & 1) ? TCG_CARD_GRASS_ENERGY : TCG_CARD_POTION;
+    }
+    TcgAi_InitAIDuelVars();
+    TcgAi_InitAITurnVars();
+    TcgAi_ProcessHandTrainerCards(TCG_AI_TRAINER_CARD_PHASE_15);
+    if (hand == 1)
+    {
+        // 30 + 50 (under 4 cards) + 40 (no Energy): played
+        EXPECT_EQ(*Tcg_TurnVar(TCG_DUELVARS_CARD_LOCATIONS + 1), TCG_CARD_LOCATION_DISCARD_PILE);
+        EXPECT_EQ(*Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_CARDS_IN_HAND), 7);
+        EXPECT(gTcgAi->previousAIFlags & TCG_AI_FLAG_USED_PROFESSOR_OAK);
+    }
+    else
+    {
+        // 30 - 30 (9 cards) + 10 (an Energy... the game's bug: the first non-Pokémon): kept
+        EXPECT_EQ(*Tcg_TurnVar(TCG_DUELVARS_CARD_LOCATIONS + 1), TCG_CARD_LOCATION_HAND);
+        EXPECT_EQ(*Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_CARDS_IN_HAND), 9);
+    }
+}
+
+TEST("GymHack: TCG AI: Rod attacks with what he can (Kangaskhan's Fetch, with 1 Energy)")
+{
+    SetUpDuel(TCG_CARD_MACHOP, TCG_CARD_KANGASKHAN);
+    RodsTurn();
+    PutCard(1, TCG_CARD_FIRE_ENERGY, TCG_CARD_LOCATION_ARENA);
+    gTcg->deck[TCG_OPPONENT][1] = TCG_CARD_FIRE_ENERGY;
+    TcgAi_InitAIDuelVars();
+    TcgAi_InitAITurnVars();
+    EXPECT(TcgAi_ProcessAndTryToUseAttack());
+    EXPECT_EQ(gTcg->selectedAttack, 0);
 }
