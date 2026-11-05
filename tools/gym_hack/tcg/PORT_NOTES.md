@@ -128,23 +128,32 @@ on the GBA's with a border.
     stand-in, and returns at once (or the stand-in's choice) when gTcg->headless.
   - Not decided yet: the sound (the GBC game's music on the GBA's GB sound channels, or FireRed's).
 
-  - Screens ported so far: SetupDuel, the main scene and HUDs (duel_screens.c); the duel menu and
-    its shortcuts, box messages, the turn screen, the card lists (hand, placing Pokémon, discard
-    piles, Select/Check and Play/Check) and the graphics loaders of home/tiles.asm (duel_lists.c);
-    the card pages, the large card picture, DisplayCardDetailScreen (card_page.c).
+  - Screens ported so far: SetupDuel, the main scene and HUDs, the AI's thinking box and delay, the
+    used attack and Trainer screens, energy discards (duel_screens.c); the duel menu and its
+    shortcuts, box messages, the turn screen, the card lists (hand, placing Pokémon, discard piles,
+    Select/Check and Play/Check) and home/tiles.asm's loaders (duel_lists.c); the card pages, large
+    card picture, DisplayCardDetailScreen, the attack menu and attack pages (card_page.c); the play
+    area screen (play_area.c); the Check menu, Your/Opp. Play Area, the prizes: choosing, placing
+    (duel_check.c).
   - The way in: special StartTcgDuel (VAR_0x8004 the deck) -> CB2_TcgDuel (src/tcg/tcg_main.c).
-    To look at it in the emulator: boot, then poke gMain.callback2 = CB2_TcgDuel | 1 (the scratchpad's
-    tcg_run.py does that and takes screenshots from a key script).
+    To look at it in the emulator: boot, then poke gMain.callback2 = CB2_TcgDuel | 1. The scratchpad's
+    tcgdrv.py (Duel: tap, shot, peek; temp_list, card, pick(is_basic)) does that.
 
 ## Next session: start here
-- Still stand-ins (src/tcg/ui.c, weak): the play area screens (engine/menus/play_area.asm and
-  core.asm's PrintPlayAreaCardList, OpenPlayAreaScreenForSelection/Viewing,
-  PrintPlayAreaCardInformationAndLocation, DrawYourOrOppPlayAreaScreen), the attack menu
-  (DuelMenu_Attack's screen, HandleAttackMenuInput, the attack pages), retreat/energy discard
-  screens, the duel check menu, prizes (DrawPlayAreaToPlacePrizeCards, SelectPrizeCards), the
-  draw-card and shuffle animations, the coin toss, the AI's "thinking" box and delays, the duel
-  result screen, and the attack/status animations (engine/duel/animations, engine/gfx sprite
-  animations). Then the sound, the Saffron house and Rod, the deck picker, the energy prizes.
+- The animations (the biggest piece left): home/load_animation.asm, play_animation.asm,
+  engine/duel/animations/ (core, commands, screen_effects), engine/gfx/sprite_animations.asm and
+  sprite_vblank.asm; data: data/duel/animations/ (duel_animations.asm: each DUEL_ANIM_*'s sprite,
+  palette, anim, flags, sfx, handler; attack_animations.asm; anims1-4.asm: AnimData* frame tables,
+  ~20k lines of macros: frame_table, frame_data, OAM rows) -> a converter like extract_gfx.py, and
+  the sprites' gfx (gfx/duel/anims/*.png, Sprites table in engine/gfx). They give: the coin toss
+  (TcgUi_CoinToss), drawing/shuffling, attacks and status effects, between-turn poison etc.
+- Then the stand-ins left in src/tcg/ui.c: DisplayUsePokemonPowerScreen, SelectPlayAreaPokemonPower,
+  DisplayNoBasicPokemonInHandScreen, DisplayDrawOneCardScreen / PlayerDrawCardScreen / DrawNCards,
+  RedrawTurnDuelistsMainSceneOrDuelHUD, DisplayDuelResult (and the duel result screen),
+  DisplayCardListDetails, the effects' screens (HandlePlayAreaMenuInput, DrawSymbolOnPlayAreaCursor,
+  Peek: HandlePeekSelection / DrawAIPeekScreen, HandleDefendingPokemonAttackSelection),
+  the Check menu's In Play Area (engine/menus/play_area.asm) and Glossary (engine/menus/glossary.asm).
+- Then the sound, the Saffron house and Rod, the deck picker, the energy prizes.
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).
