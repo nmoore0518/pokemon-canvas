@@ -109,10 +109,30 @@ on the GBA's with a border.
     with 2-9 Trainers played a duel; every card accounted for at the end.
   - Tests: Rod's opening hand (2+2, 4+4), his Professor Oak decision both ways, an attack.
 
+- The screens (in progress): the duel draws as the GBC game did, onto an emulated GBC display
+  (include/tcg_gbc.h, src/tcg/gbc.c): its VRAM ($8000-$9FFF, two banks: tiles, BG maps and CGB
+  attributes), OAM, SCX/SCY/WX/WY, LCDC, CGB palettes (the same BGR555 as the GBA's). Shown on the
+  GBA in mode 0: BG0 the BG map, BG1 the window (in WIN0), BG2 white (the LCD off), OBJ the sprites;
+  WIN1 is the 160x144 in the middle, the border the backdrop outside it. GBC tiles convert to 4bpp as
+  they're written (BG: colours 0-3 as 1-4, so 0 stays opaque; OBJ: as is); the BG maps to GBA entries
+  as they're written, uploaded at VBlank; OAM at VBlank when the game asks (wVBlankOAMCopyToggle).
+  The duel runs as its own loop (blocking, like the game): Tcg_DoFrame waits for the VBlank.
+  - Ported on it, under the game's names: home/lcd, frames, input, palettes, setup, objects, bg_map,
+    tiles (gbc.c); process_text, print_text, text_box, write_number (text.c: the half-width tile
+    pairs and their most-recently-used list, TX_RAM1/2/3 through the text headers); menus (menus.c);
+    engine/copy_card_name.asm (duel_attack.c).
+  - The text is the game's own bytes now (tools/gym_hack/tcg/tcg_charmap.py: its charmaps and text
+    macros), and the graphics its own (tools/gym_hack/tcg/extract_gfx.py: rgbgfx's conversion, laid
+    out as gfx.asm is: gTcgFontsGfx + TCG_GFX_OFFSET_<label>, gTcgCardGfx).
+  - The hooks in include/tcg_ui.h: src/tcg/ui.c's stand-ins are weak; a ported screen replaces its
+    stand-in, and returns at once (or the stand-in's choice) when gTcg->headless.
+  - Not decided yet: the sound (the GBC game's music on the GBA's GB sound channels, or FireRed's).
+
 ## Next session: start here
-- The screens (5 below): the duel's main scene, hand and card list, card detail, play area, attack
-  menu, text boxes, coin toss; the game's layouts at 160x144 centred, its font and gfx. The rules
-  call the hooks in include/tcg_ui.h (src/tcg/ui.c: headless stand-ins now).
+- The duel's screens: engine/duel/core.asm's display routines (DrawDuelMainScene, DrawDuelHUDs, the
+  box messages, the card page, hand and play area lists), engine/menus/duel.asm, play_area.asm,
+  engine/gfx/load_gfx.asm (card gfx, palettes) and color.asm; then the entry (a CB2 that runs
+  Tcg_StartDuel between Tcg_GbcInit and Tcg_GbcFree) to see them in the emulator.
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).

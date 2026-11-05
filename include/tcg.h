@@ -35,6 +35,8 @@ struct TcgCard
     const u8 *name;
     const u8 *description;
     u16 gfx;
+    u8 rarity;          // (TCG_CIRCLE, TCG_DIAMOND, TCG_STAR, TCG_PROMOSTAR)
+    u8 sets;            // (set 1 << 4 | set 2)
     // Pokémon
     u8 hp;
     u8 stage;

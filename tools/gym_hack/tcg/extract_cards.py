@@ -83,8 +83,8 @@ def parse(label, lines):
     card["type"] = first.split()[1]
     card["gfx"] = next(it).split()[1]
     card["name"] = next(it).split()[1]
-    next(it)                                            # rarity
-    next(it)                                            # sets
+    card["rarity"] = next(it).split(";")[0].split(None, 1)[1].strip()
+    card["sets"] = next(it).split(";")[0].split(None, 1)[1].strip()
     card["id"] = next(it).split()[1]
     if card["type"].startswith("TYPE_PKMN"):
         card["hp"] = int(next(it).split()[1])
@@ -217,6 +217,8 @@ def main():
         out.append(f"        .name = {T(c['name'])},")
         out.append(f"        .description = {T(c['desc'])},")
         out.append(f"        .gfx = TCG_GFX_{c['gfx'].replace('CardGfx', '').upper()},")
+        out.append(f"        .rarity = TCG_{c['rarity']},")
+        out.append(f"        .sets = {' | '.join('TCG_' + p.strip() for p in c['sets'].split('|'))},")
         if c["type"].startswith("TYPE_PKMN"):
             out.append(f"        .hp = {c['hp']},")
             out.append(f"        .stage = TCG_{c['stage']},")

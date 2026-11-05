@@ -314,6 +314,15 @@ void Tcg_OpenCardPage(u32 type, u8 exitKeys);
 #define Tcg_OpenCardPage_FromCheckHandOrDiscardPile() Tcg_OpenCardPage(TCG_CARDPAGETYPE_NOT_PLAY_AREA, TCG_PAD_B | TCG_PAD_UP | TCG_PAD_DOWN)
 #define Tcg_OpenCardPage_FromCheckPlayArea() Tcg_OpenCardPage(TCG_CARDPAGETYPE_PLAY_AREA, TCG_PAD_B)
 void Tcg_OpenActivePokemonScreen(void);
+extern u8 gTcgCurPlayAreaSlot, gTcgCurPlayAreaY;
+void Tcg_SetNoLineSeparation(void);
+void Tcg_SetOneLineSeparation(void);
+void Tcg_WriteOneByteNumberInTxSymbol_PadSpace(u32 x, u32 y, u32 n);
+void Tcg_WriteTwoDigitNumberInTxSymbol_PadSpace(u32 x, u32 y, u32 n);
+void Tcg_PrintAttackOrPkmnPowerInformation(const struct TcgAttack *attack, u32 y);
+void Tcg_PrintAttackOrCardDescription(u32 x, u32 y, const u8 *text);
+void Tcg_PlaceCardImageOAM(u8 x, u8 y);
+void Tcg_PrintPlayAreaCardInformationAndLocation(void);     // (src/tcg/play_area.c)
 void Tcg_OpenPlayAreaScreenForViewing(void);
 
 #endif // GUARD_TCG_GBC_H

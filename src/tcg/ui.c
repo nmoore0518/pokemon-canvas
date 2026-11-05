@@ -206,6 +206,5 @@ void __attribute__((weak)) Tcg_SelectPrizeCards(u32 count)
 }
 
 // (not ported yet: src/tcg/card_page.c, play_area.c)
-void __attribute__((weak)) Tcg_OpenCardPage(u32 type, u8 exitKeys) {}
-void __attribute__((weak)) Tcg_OpenActivePokemonScreen(void) {}
+void __attribute__((weak)) Tcg_PrintPlayAreaCardInformationAndLocation(void) {}
 void __attribute__((weak)) Tcg_OpenPlayAreaScreenForViewing(void) {}
