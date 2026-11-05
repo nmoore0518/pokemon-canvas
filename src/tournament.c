@@ -14,6 +14,7 @@
 // player's team is locked in when they enter (healed between rounds); a loss ends it. Prize money
 // is the usual trainer battle's, by the opponent's class.
 #include "global.h"
+#include "drink_machine.h"
 #include "tournament.h"
 #include "data.h"
 #include "event_data.h"
@@ -485,9 +486,12 @@ void Tourney_RecordWin(void)
 void Tourney_RollPrize(void)
 {
     gSpecialVar_Result = FALSE;
-    if (Random() % TOURNEY_EXTRACTOR_ODDS != 0)
+    if (DrinkMachine_TournamentSodaUnlocked() && Random() % DRINK_TOURNEY_SODA_ODDS == 0)
+        gSpecialVar_0x8009 = ITEM_LIMITED_EDITION_SODA;     // (src/drink_machine.c)
+    else if (Random() % TOURNEY_EXTRACTOR_ODDS == 0)
+        gSpecialVar_0x8009 = ITEM_MOVE_EXTRACTOR;
+    else
         return;
-    gSpecialVar_0x8009 = ITEM_MOVE_EXTRACTOR;
     gSpecialVar_Result = TRUE;
 }
 

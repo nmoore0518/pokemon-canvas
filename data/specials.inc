@@ -684,6 +684,16 @@ gSpecials::
 	def_special Gauntlet_OnLoad
 	def_special Gauntlet_SetupBill
 	def_special Gauntlet_ShowBillCard
+	def_special DrinkMachine_Begin
+	def_special DrinkMachine_PushDrinks
+	def_special DrinkMachine_PickDrink
+	def_special DrinkMachine_PushBerries
+	def_special DrinkMachine_PickBerry
+	def_special DrinkMachine_Mix
+	def_special DrinkMachine_ApplySoda
+	def_special DrinkGirl_GiveMachine
+	def_special DrinkGirl_SodasOwed
+	def_special DrinkGirl_GaveMasterySoda
 	def_special Tourney_Begin
 	def_special Tourney_GetStatus
 	def_special Tourney_CheckTeam

@@ -4,6 +4,8 @@ CeladonCity_DepartmentStore_Roof_Frlg_MapScripts::
 CeladonCity_DepartmentStore_Roof_EventScript_ThirstyGirl::
 	lock
 	faceplayer
+	call CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinks
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_DepartmentStore_Roof_EventScript_AfterDrinks
 	call CeladonCity_DepartmentStore_Roof_EventScript_CheckPlayerHasDrinks
 	goto_if_eq VAR_TEMP_1, 0, CeladonCity_DepartmentStore_Roof_EventScript_IWantDrink
 	goto CeladonCity_DepartmentStore_Roof_EventScript_AskGiveDrink
@@ -150,6 +152,60 @@ CeladonCity_DepartmentStore_Roof_EventScript_GiveDrink::
 	call_if_eq VAR_0x8008, ITEM_FRESH_WATER, CeladonCity_DepartmentStore_Roof_EventScript_ExplainTM16
 	call_if_eq VAR_0x8008, ITEM_SODA_POP, CeladonCity_DepartmentStore_Roof_EventScript_ExplainTM20
 	call_if_eq VAR_0x8008, ITEM_LEMONADE, CeladonCity_DepartmentStore_Roof_EventScript_ExplainTM33
+	call CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinks
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_DepartmentStore_Roof_EventScript_Finale
+	msgbox CeladonCity_DepartmentStore_Roof_Text_StillWantOthers
+	release
+	end
+
+@ Pokémon Canvas: all three drinks given, she kicks the machine (src/drink_machine.c)
+CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinks::
+	setvar VAR_RESULT, FALSE
+	goto_if_unset FLAG_GOT_TM16_FROM_THIRSTY_GIRL, CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinksDone
+	goto_if_unset FLAG_GOT_TM20_FROM_THIRSTY_GIRL, CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinksDone
+	goto_if_unset FLAG_GOT_TM33_FROM_THIRSTY_GIRL, CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinksDone
+	setvar VAR_RESULT, TRUE
+CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinksDone::
+	return
+
+CeladonCity_DepartmentStore_Roof_EventScript_AfterDrinks::
+	goto_if_unset FLAG_GOT_DRINK_MACHINE, CeladonCity_DepartmentStore_Roof_EventScript_Finale
+	special DrinkGirl_SodasOwed
+	goto_if_ne VAR_RESULT, 0, CeladonCity_DepartmentStore_Roof_EventScript_MasterySoda
+	msgbox CeladonCity_DepartmentStore_Roof_Text_ComeBackWhenMastered
+	release
+	end
+
+CeladonCity_DepartmentStore_Roof_EventScript_Finale::
+	msgbox CeladonCity_DepartmentStore_Roof_Text_StillStuck
+	closemessage
+	playse SE_M_MEGA_KICK
+	waitse
+	playse SE_VEND
+	waitse
+	msgbox CeladonCity_DepartmentStore_Roof_Text_DrinkCameOut
+	setvar VAR_0x8009, ITEM_LIMITED_EDITION_SODA
+	call GymHack_EventScript_GiveStatItem
+	msgbox CeladonCity_DepartmentStore_Roof_Text_TakeTheMachine
+	special DrinkGirl_GiveMachine
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	playfanfare MUS_OBTAIN_ITEM
+	message CeladonCity_DepartmentStore_Roof_Text_ReceivedDrinkMachine
+	waitmessage
+	waitfanfare
+	call EventScript_RestorePrevTextColor
+	msgbox CeladonCity_DepartmentStore_Roof_Text_ExplainDrinkMachine
+	release
+	end
+
+CeladonCity_DepartmentStore_Roof_EventScript_MasterySoda::
+	msgbox CeladonCity_DepartmentStore_Roof_Text_MasteredAType
+	setvar VAR_0x8009, ITEM_LIMITED_EDITION_SODA
+	call GymHack_EventScript_GiveStatItem
+	special DrinkGirl_GaveMasterySoda
+	special DrinkGirl_SodasOwed
+	goto_if_ne VAR_RESULT, 0, CeladonCity_DepartmentStore_Roof_EventScript_MasterySoda
+	msgbox CeladonCity_DepartmentStore_Roof_Text_ComeBackWhenMastered
 	release
 	end
 
@@ -281,8 +337,8 @@ CeladonCity_DepartmentStore_Roof_EventScript_ExitVendingMachine::
 	end
 
 CeladonCity_DepartmentStore_Roof_Text_ImThirstyGiveHerDrink::
-	.string "I'm thirsty!\n"
-	.string "I want something to drink!\p"
+	.string "My drink got stuck in the vending\n"
+	.string "machine! And now I'm so thirsty!\p"
 	.string "{FONT_NORMAL}Give her a drink?$"
 
 CeladonCity_DepartmentStore_Roof_Text_GiveWhichDrink::
@@ -329,8 +385,8 @@ CeladonCity_DepartmentStore_Roof_Text_DontHaveSpaceForThis::
 	.string "You don't have space for this!$"
 
 CeladonCity_DepartmentStore_Roof_Text_ImNotThirstyAfterAll::
-	.string "No, thank you!\n"
-	.string "I'm not thirsty after all!$"
+	.string "I already had one of those!\n"
+	.string "I want the other ones!$"
 
 CeladonCity_DepartmentStore_Roof_Text_MySisterIsImmature::
 	.string "My sister is a TRAINER, believe it\n"
@@ -339,8 +395,10 @@ CeladonCity_DepartmentStore_Roof_Text_MySisterIsImmature::
 	.string "me nuts!$"
 
 CeladonCity_DepartmentStore_Roof_Text_ImThirstyIWantDrink::
-	.string "I'm thirsty!\n"
-	.string "I want something to drink!$"
+	.string "My drink got stuck in the vending\n"
+	.string "machine! And now I'm so thirsty!\p"
+	.string "I want a FRESH WATER, a SODA POP\n"
+	.string "and a LEMONADE!$"
 
 CeladonCity_DepartmentStore_Roof_Text_FloorSign::
 	.string "ROOFTOP SQUARE:\n"
@@ -362,3 +420,43 @@ CeladonCity_DepartmentStore_Roof_Text_NoMoreRoomForStuff::
 CeladonCity_DepartmentStore_Roof_Text_NotThirsty::
 	.string "Not thirsty!$"
 
+
+CeladonCity_DepartmentStore_Roof_Text_StillWantOthers::
+	.string "I still want the other ones, too!$"
+
+CeladonCity_DepartmentStore_Roof_Text_StillStuck::
+	.string "Ahh, that's all of them!\p"
+	.string "…But my drink's STILL stuck in that\n"
+	.string "dumb machine!\p"
+	.string "Hmph! Take THIS!$"
+
+CeladonCity_DepartmentStore_Roof_Text_DrinkCameOut::
+	.string "Oh! My drink came out!\p"
+	.string "…But I already have all these.\n"
+	.string "Here, you can have it!$"
+
+CeladonCity_DepartmentStore_Roof_Text_TakeTheMachine::
+	.string "And the store's throwing that\n"
+	.string "machine out anyway.\p"
+	.string "You have a gym, right?\n"
+	.string "Put it in your gym!$"
+
+CeladonCity_DepartmentStore_Roof_Text_ReceivedDrinkMachine::
+	.string "{PLAYER} received the\n"
+	.string "DRINK MACHINE!$"
+
+CeladonCity_DepartmentStore_Roof_Text_ExplainDrinkMachine::
+	.string "Set it up from the PC in your gym!\p"
+	.string "Put in a drink and some BERRIES,\n"
+	.string "and it mixes them into medicine!\p"
+	.string "And if you mix that SODA with a\n"
+	.string "type BERRY… something cool happens!$"
+
+CeladonCity_DepartmentStore_Roof_Text_MasteredAType::
+	.string "You mastered a new type? Wow!\n"
+	.string "Here, have another one!$"
+
+CeladonCity_DepartmentStore_Roof_Text_ComeBackWhenMastered::
+	.string "Every time you master a new type,\n"
+	.string "come see me! I'll have another\l"
+	.string "LIMITED EDITION SODA for you!$"

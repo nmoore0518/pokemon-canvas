@@ -128,6 +128,7 @@ enum MonData {
     MON_DATA_EVOLUTION_LOCKED, // Gym Trainer hack
     MON_DATA_STOLEN_MOVES, // Gym Trainer hack: Move Extractor slots (bit per move slot)
     MON_DATA_ENERGY_BOOSTS, // Pokémon Canvas: energy cards' +5 power (bit per move slot; src/energy_cards.c)
+    MON_DATA_SECOND_TYPE, // Pokémon Canvas: a Limited Edition Soda's second type (TYPE_NONE: its species'; src/drink_machine.c)
 };
 
 #define BLOCK_AI_DYNAMAX 15 // Used as dynamax level value by the AI to indicate this mon shouldn't dynamax
@@ -138,10 +139,10 @@ struct PokemonSubstruct0
     enum Type teraType:5; // 30 types.
     enum Item heldItem:10; // 1023 items.
     u16 stolenMoves:4; // Gym Trainer hack: move slots learned with the Move Extractor (they take the Pokémon's primary type)
-    u16 unused_02:2;
+    u16 secondTypeHi:2; // Pokémon Canvas: MON_DATA_SECOND_TYPE's top 2 bits
     u32 experience:21;
     u32 nickname11:8; // 11th character of nickname.
-    u32 unused_04:3;
+    u32 secondTypeLo:3; // Pokémon Canvas: MON_DATA_SECOND_TYPE's low 3 bits
     u8 ppBonuses;
     u8 friendship;
     u16 pokeball:6; // 63 balls.
@@ -979,6 +980,8 @@ bool32 IsStolenMove(struct Pokemon *mon, enum Move move);
 enum Type GetStolenMoveType(struct Pokemon *mon);
 u32 SwapStolenMoveBits(u32 stolen, u32 a, u32 b);
 bool32 IsEnergyBoostedMove(struct Pokemon *mon, enum Move move);
+enum Type GetMonType(struct Pokemon *mon, u32 index);
+void ApplyMonSecondTypeToBattler(enum BattlerId battler);
 enum Type CheckDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum MonState state);
 uq4_12_t GetDynamaxLevelHPMultiplier(u32 dynamaxLevel, bool32 inverseMultiplier);
 enum Species GetRegionalFormByRegion(enum Species species, enum Region region);

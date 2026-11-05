@@ -307,6 +307,17 @@ static s32 FindPlacementAt(s32 x, s32 y)
     return -1;
 }
 
+// Pokémon Canvas: the decoration placed in the gym at a map position (MAP_OFFSET included), or
+// GYM_DECOR_COUNT (src/field_control_avatar.c: the Drink Machine can be talked to)
+u32 GymDecor_IdAtMapPos(s32 x, s32 y)
+{
+    s32 i;
+    if (!InGym())
+        return GYM_DECOR_COUNT;
+    i = FindPlacementAt(x - MAP_OFFSET, y - MAP_OFFSET);
+    return i < 0 ? GYM_DECOR_COUNT : GetSave()->placed[i].id;
+}
+
 static bool32 InEditArea(s32 x, s32 y)
 {
     if (x < GYM_EDIT_X0 || x > GYM_EDIT_X1 || y < GYM_EDIT_Y0 || y > GYM_EDIT_Y1)

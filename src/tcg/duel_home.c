@@ -7,7 +7,7 @@
 #include "random.h"
 
 EWRAM_DATA static struct TcgDuel sTcgDuel = {0};
-struct TcgDuel *gTcg = &sTcgDuel;
+struct TcgDuel *const gTcg = &sTcgDuel;   // (const: initialised data outside EWRAM is dropped in the tests)
 
 #define TCG_PLAY_AREA(loc)  (TCG_CARD_LOCATION_PLAY_AREA | (loc))
 

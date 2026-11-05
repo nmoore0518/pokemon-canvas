@@ -4394,9 +4394,9 @@ static void SetMonTypeIcons(void)
     else
     {
         SetTypeSpritePosAndPal(GetSpeciesType(summary->species, 0), 120, 48, SPRITE_ARR_ID_TYPE);
-        if (GetSpeciesType(summary->species, 0) != GetSpeciesType(summary->species, 1))
+        if (GetSpeciesType(summary->species, 0) != GetMonType(&sMonSummaryScreen->currentMon, 1))   // (Pokémon Canvas: a soda's second type)
         {
-            SetTypeSpritePosAndPal(GetSpeciesType(summary->species, 1), 160, 48, SPRITE_ARR_ID_TYPE + 1);
+            SetTypeSpritePosAndPal(GetMonType(&sMonSummaryScreen->currentMon, 1), 160, 48, SPRITE_ARR_ID_TYPE + 1);
             SetSpriteInvisibility(SPRITE_ARR_ID_TYPE + 1, FALSE);
         }
         else

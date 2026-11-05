@@ -427,6 +427,8 @@ void Playtest_Update(void)
                 gPlaytest.result = sOpponentTera[a[1]];   // (as the battle started)
             else if (a[0] == 1)
                 gPlaytest.result = GymTera_PlayerBattleType(&gPlayerParty[a[1]]);
+            else if (a[0] == 3)
+                gPlaytest.result = GetMonType(&gPlayerParty[a[1]], 0) | (GetMonType(&gPlayerParty[a[1]], 1) << 8);
             else
                 gPlaytest.result = GymTera_FreeType(&gPlayerParty[a[1]]);
         }
@@ -440,7 +442,8 @@ void Playtest_Update(void)
                 GymDecor_SetOwned(a[0], 1);
             for (y = 0; y < 32 && !gPlaytest.result; y++)
                 for (x = 0; x < 32 && !gPlaytest.result; x++)
-                    gPlaytest.result = GymDecor_Place(a[0], 0, x, y);
+                    if ((gPlaytest.result = GymDecor_Place(a[0], 0, x, y)))
+                        a[1] = x, a[2] = y;     // (where it went)
         }
         break;
     case PLAYTEST_RELEASE:

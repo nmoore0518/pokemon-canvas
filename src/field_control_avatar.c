@@ -59,6 +59,7 @@ static void GetInFrontOfPlayerPosition(struct MapPosition *);
 static u16 GetPlayerCurMetatileBehavior(int);
 static bool8 TryStartInteractionScript(struct MapPosition *, u16, enum Direction);
 static const u8 *GetInteractionScript(struct MapPosition *, u8, enum Direction);
+extern const u8 DrinkMachine_EventScript_Use[];
 static const u8 *GetInteractedObjectEventScript(struct MapPosition *, u8, enum Direction);
 static const u8 *GetInteractedBackgroundEventScript(struct MapPosition *, u8, enum Direction);
 static const u8 *GetInteractedMetatileScript(struct MapPosition *, u8, enum Direction);
@@ -316,7 +317,13 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
 
 static const u8 *GetInteractionScript(struct MapPosition *position, u8 metatileBehavior, enum Direction direction)
 {
-    const u8 *script = GetInteractedObjectEventScript(position, metatileBehavior, direction);
+    const u8 *script;
+
+    // Pokémon Canvas: the Drink Machine, placed in the player's gym (src/drink_machine.c)
+    if (GymDecor_IdAtMapPos(position->x, position->y) == GYM_DECOR_DRINK_MACHINE)
+        return DrinkMachine_EventScript_Use;
+
+    script = GetInteractedObjectEventScript(position, metatileBehavior, direction);
     if (script != NULL)
         return script;
 

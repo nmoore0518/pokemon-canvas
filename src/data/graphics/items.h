@@ -2325,5 +2325,7 @@ const u32 gItemIcon_PsychicEnergy[] = INCGFX_U32("graphics/items/icons/gym/psych
 const u16 gItemIconPalette_PsychicEnergy[] = INCGFX_U16("graphics/items/icon_palettes/gym/psychic_energy.pal", ".gbapal");
 const u32 gItemIcon_FightingEnergy[] = INCGFX_U32("graphics/items/icons/gym/fighting_energy.png", ".4bpp.smol");   // (tools/gym_hack/build_energy_items.py)
 const u16 gItemIconPalette_FightingEnergy[] = INCGFX_U16("graphics/items/icon_palettes/gym/fighting_energy.pal", ".gbapal");
+const u32 gItemIcon_LimitedEditionSoda[] = INCGFX_U32("graphics/items/icons/gym/limited_edition_soda.png", ".4bpp.smol");   // (tools/gym_hack/build_limited_soda_icon.py)
+const u16 gItemIconPalette_LimitedEditionSoda[] = INCGFX_U16("graphics/items/icon_palettes/gym/limited_edition_soda.pal", ".gbapal");
 const u32 gItemIcon_DoubleColorlessEnergy[] = INCGFX_U32("graphics/items/icons/gym/doublecolorless_energy.png", ".4bpp.smol");
 const u16 gItemIconPalette_DoubleColorlessEnergy[] = INCGFX_U16("graphics/items/icon_palettes/gym/doublecolorless_energy.pal", ".gbapal");

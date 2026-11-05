@@ -2757,6 +2757,9 @@
 #define FLAG_IN_PAINTING           0x8FC   // (the player is inside one of her paintings)
 #define FLAG_PAINTER_GAVE_SMEARGLE 0x8FD   // (she's given the player their Canvas Smeargle; hides hers)
 #define FLAG_PAINTER_MEGA_DONE     0x8FE   // (she's given the SMEARGLITE)
+
+// Pokémon Canvas: the Drink Machine (src/drink_machine.c; the girl on the Celadon roof)
+#define FLAG_GOT_DRINK_MACHINE     0x8E8   // (she's given it: the gym decoration, and her first LIMITED EDITION SODA)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)

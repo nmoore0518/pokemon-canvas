@@ -183,6 +183,27 @@ def vending_machine():
     return c
 
 
+def drink_machine():
+    """(Pokémon Canvas: the Drink Machine from the Celadon roof, src/drink_machine.c) a teal machine:
+    three bottles in its window, a funnel on top, a cup under the spout"""
+    c = C(2, 2)
+    c.fill_box(2, 3, 29, 30, "TE", "AQ", "DG")
+    c.rect(5, 6, 20, 20, "IC")
+    c.frame(5, 6, 20, 20, "K")
+    for k, (col, top) in enumerate((("BL", 9), ("GR", 10), ("SK", 9))):
+        x = 7 + k * 5
+        c.rect(x + 1, top - 1, x + 1, top, "L")
+        c.rect(x, top + 1, x + 2, 17, col)
+        c.rect(x, 17, x + 2, 18, "K")
+    c.poly([(22, 1), (28, 1), (26, 6), (24, 6)], "ST")
+    c.rect(24, 6, 26, 12, "ST")
+    c.frame(23, 13, 27, 15, "K")
+    c.rect(8, 23, 17, 27, "K")
+    c.rect(11, 24, 14, 27, "W")
+    c.rect(11, 25, 14, 27, "LG")
+    return c
+
+
 def picnic_blanket():
     c = C(2, 2)
     for y in range(2, 30):

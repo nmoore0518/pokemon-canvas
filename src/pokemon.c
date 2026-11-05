@@ -2428,6 +2428,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_ENERGY_BOOSTS:
             retVal = GetSubstruct1(boxMon)->energyBoosts;
             break;
+        case MON_DATA_SECOND_TYPE:
+            retVal = GetSubstruct0(boxMon)->secondTypeLo | (GetSubstruct0(boxMon)->secondTypeHi << 3);
+            break;
         case MON_DATA_DYNAMAX_LEVEL:
             retVal = GetSubstruct3(boxMon)->dynamaxLevel;
             break;
@@ -2916,6 +2919,13 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_ENERGY_BOOSTS:
             SET8(GetSubstruct1(boxMon)->energyBoosts);
             break;
+        case MON_DATA_SECOND_TYPE:
+        {
+            u32 type = *data;
+            GetSubstruct0(boxMon)->secondTypeLo = type & 7;
+            GetSubstruct0(boxMon)->secondTypeHi = (type >> 3) & 3;
+            break;
+        }
         case MON_DATA_DYNAMAX_LEVEL:
             SET8(GetSubstruct3(boxMon)->dynamaxLevel);
             break;
@@ -3488,7 +3498,7 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     dst->abilityNum = GetMonData(src, MON_DATA_ABILITY_NUM);
     dst->otId = GetMonData(src, MON_DATA_OT_ID);
     dst->types[0] = GetSpeciesType(dst->species, 0);
-    dst->types[1] = GetSpeciesType(dst->species, 1);
+    dst->types[1] = GetMonType(src, 1);   // (Pokémon Canvas: a soda's second type)
     dst->types[2] = TYPE_MYSTERY;
     dst->isShiny = IsMonShiny(src);
     dst->affectionHearts = GetMonAffectionHearts(src);
@@ -6704,6 +6714,29 @@ bool32 IsStolenMove(struct Pokemon *mon, enum Move move)
 enum Type GetStolenMoveType(struct Pokemon *mon)
 {
     return GetSpeciesType(GetMonData(mon, MON_DATA_SPECIES), 0);
+}
+
+// Pokémon Canvas: a Pokémon's type (index 0 or 1): its species', but a Limited Edition Soda
+// (src/drink_machine.c) can give it another second type, through evolution and Mega Evolution
+enum Type GetMonType(struct Pokemon *mon, u32 index)
+{
+    enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+    enum Type second = GetMonData(mon, MON_DATA_SECOND_TYPE);
+    if (index == 1 && second != TYPE_NONE && second < NUMBER_OF_MON_TYPES)
+        return second;
+    return GetSpeciesType(species, index);
+}
+
+// (battle: a battler's types just set from its species, then its soda's second type)
+void ApplyMonSecondTypeToBattler(enum BattlerId battler)
+{
+    struct Pokemon *mon = GetBattlerMon(battler);
+    enum Type second;
+    if (mon == NULL || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE)
+        return;
+    second = GetMonData(mon, MON_DATA_SECOND_TYPE);
+    if (second != TYPE_NONE && second < NUMBER_OF_MON_TYPES)
+        gBattleMons[battler].types[1] = second;
 }
 
 // Pokémon Canvas: a slot's energy-boost bit set (an energy card used on it): that move has +5 power

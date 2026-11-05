@@ -799,7 +799,8 @@ TEST("GymHack: decor: every decoration has a name, a price and fits the gym")
         u32 f;
         if (i != GYM_DECOR_BATTLE_STAGE && GymCandidate_GetRecruitByDecor(i) == NULL   // recruits join, they aren't sold
          && gGymDecor[i].category != GYM_DECOR_CAT_TROPHIES                           // (trophies are won)
-         && i != GYM_DECOR_FLOOR_GYM && i != GYM_DECOR_WALLS_GYM)                     // (the gym's own)
+         && i != GYM_DECOR_FLOOR_GYM && i != GYM_DECOR_WALLS_GYM                      // (the gym's own)
+         && i != GYM_DECOR_DRINK_MACHINE)                                             // (a gift)
             EXPECT_GT(gGymDecor[i].price, 0);
         EXPECT(gGymDecor[i].numFacings >= 1 && gGymDecor[i].numFacings <= 4);
         for (f = 0; f < gGymDecor[i].numFacings; f++)
@@ -4483,4 +4484,79 @@ TEST("GymHack: Double Colorless Energy: a PP Max on every move, once")
     EXPECT_EQ(GetMonData(mon, MON_DATA_PP1), GetMovePP(MOVE_EMBER) * 8 / 5);
     EXPECT_EQ(GetMonData(mon, MON_DATA_PP2), GetMovePP(MOVE_GROWL) * 8 / 5);
     EXPECT(!EnergyCard_MaxAllPP(mon));
+}
+
+#include "drink_machine.h"
+TEST("GymHack: the Drink Machine's recipes; anything else makes nothing")
+{
+    u16 b[2];
+#define MIX1(d, x) (b[0] = (x), DrinkMachine_Recipe(d, b, 1))
+#define MIX2(d, x, y) (b[0] = (x), b[1] = (y), DrinkMachine_Recipe(d, b, 2))
+    EXPECT_EQ(MIX1(ITEM_FRESH_WATER, ITEM_ORAN_BERRY), ITEM_SUPER_POTION);
+    EXPECT_EQ(MIX1(ITEM_FRESH_WATER, ITEM_SITRUS_BERRY), ITEM_SUPER_POTION);
+    EXPECT_EQ(MIX1(ITEM_SODA_POP, ITEM_ORAN_BERRY), ITEM_HYPER_POTION);
+    EXPECT_EQ(MIX1(ITEM_LEMONADE, ITEM_ORAN_BERRY), ITEM_HYPER_POTION);
+    EXPECT_EQ(MIX1(ITEM_LEMONADE, ITEM_SITRUS_BERRY), ITEM_MAX_POTION);
+    EXPECT_EQ(MIX1(ITEM_FRESH_WATER, ITEM_CHERI_BERRY), ITEM_FULL_HEAL);
+    EXPECT_EQ(MIX1(ITEM_SODA_POP, ITEM_LUM_BERRY), ITEM_FULL_HEAL);
+    EXPECT_EQ(MIX1(ITEM_FRESH_WATER, ITEM_LEPPA_BERRY), ITEM_ETHER);
+    EXPECT_EQ(MIX1(ITEM_SODA_POP, ITEM_LEPPA_BERRY), ITEM_ELIXIR);
+    EXPECT_EQ(MIX1(ITEM_LEMONADE, ITEM_LEPPA_BERRY), ITEM_MAX_ELIXIR);
+    EXPECT_EQ(MIX2(ITEM_LEMONADE, ITEM_SITRUS_BERRY, ITEM_LUM_BERRY), ITEM_FULL_RESTORE);
+    EXPECT_EQ(MIX2(ITEM_LEMONADE, ITEM_LUM_BERRY, ITEM_SITRUS_BERRY), ITEM_FULL_RESTORE);
+    EXPECT_EQ(MIX2(ITEM_FRESH_WATER, ITEM_ORAN_BERRY, ITEM_SITRUS_BERRY), ITEM_REVIVE);
+    EXPECT_EQ(MIX2(ITEM_LEMONADE, ITEM_ORAN_BERRY, ITEM_SITRUS_BERRY), ITEM_REVIVE);
+    EXPECT_EQ(MIX2(ITEM_LEMONADE, ITEM_SITRUS_BERRY, ITEM_SITRUS_BERRY), ITEM_MAX_REVIVE);
+    // not recipes
+    EXPECT_EQ(DrinkMachine_Recipe(ITEM_FRESH_WATER, b, 0), ITEM_NONE);
+    EXPECT_EQ(MIX1(ITEM_FRESH_WATER, ITEM_OCCA_BERRY), ITEM_NONE);
+    EXPECT_EQ(MIX2(ITEM_SODA_POP, ITEM_SITRUS_BERRY, ITEM_LUM_BERRY), ITEM_NONE);
+    EXPECT_EQ(MIX2(ITEM_LEMONADE, ITEM_CHERI_BERRY, ITEM_LUM_BERRY), ITEM_NONE);
+    EXPECT_EQ(MIX1(ITEM_POTION, ITEM_ORAN_BERRY), ITEM_NONE);
+    // the soda: one type berry, and nothing else
+    EXPECT_EQ(MIX1(ITEM_LIMITED_EDITION_SODA, ITEM_OCCA_BERRY), ITEM_LIMITED_EDITION_SODA);
+    EXPECT_EQ(MIX1(ITEM_LIMITED_EDITION_SODA, ITEM_ROSELI_BERRY), ITEM_LIMITED_EDITION_SODA);
+    EXPECT_EQ(MIX1(ITEM_LIMITED_EDITION_SODA, ITEM_SITRUS_BERRY), ITEM_NONE);
+    EXPECT_EQ(MIX2(ITEM_LIMITED_EDITION_SODA, ITEM_OCCA_BERRY, ITEM_OCCA_BERRY), ITEM_NONE);
+#undef MIX1
+#undef MIX2
+}
+
+TEST("GymHack: the LIMITED EDITION SODA: a second type for good, not the first; it lasts through evolution")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    enum Species species = SPECIES_IVYSAUR;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_BULBASAUR, 20, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(GetMonType(mon, 0), TYPE_GRASS);
+    EXPECT_EQ(GetMonType(mon, 1), TYPE_POISON);
+    EXPECT_EQ(DrinkMachine_GiveSecondType(mon, TYPE_GRASS), DRINK_SODA_FIRST_TYPE);
+    EXPECT_EQ(DrinkMachine_GiveSecondType(mon, TYPE_POISON), DRINK_SODA_ALREADY);
+    EXPECT_EQ(DrinkMachine_GiveSecondType(mon, TYPE_FAIRY), DRINK_SODA_DONE);
+    EXPECT_EQ(GetMonType(mon, 1), TYPE_FAIRY);
+    SetMonData(mon, MON_DATA_SPECIES, &species);
+    EXPECT_EQ(GetMonType(mon, 0), TYPE_GRASS);
+    EXPECT_EQ(GetMonType(mon, 1), TYPE_FAIRY);
+    // again: another type replaces it
+    EXPECT_EQ(DrinkMachine_GiveSecondType(mon, TYPE_STEEL), DRINK_SODA_DONE);
+    EXPECT_EQ(GetMonType(mon, 1), TYPE_STEEL);
+    // a one-type Pokemon gets a second
+    CreateMon(mon, SPECIES_CHARMANDER, 20, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(GetMonType(mon, 1), TYPE_FIRE);
+    EXPECT_EQ(DrinkMachine_GiveSecondType(mon, TYPE_FIRE), DRINK_SODA_FIRST_TYPE);
+    EXPECT_EQ(DrinkMachine_GiveSecondType(mon, TYPE_DRAGON), DRINK_SODA_DONE);
+    EXPECT_EQ(GetMonType(mon, 1), TYPE_DRAGON);
+}
+
+TEST("GymHack: a soda's second type is the battler's")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    struct BattlePokemon bm;
+    u8 t = TYPE_WATER;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_CHARMANDER, 20, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(mon, MON_DATA_SECOND_TYPE, &t);
+    PokemonToBattleMon(mon, &bm);
+    EXPECT_EQ(bm.types[0], TYPE_FIRE);
+    EXPECT_EQ(bm.types[1], TYPE_WATER);
 }

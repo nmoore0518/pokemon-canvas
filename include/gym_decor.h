@@ -94,6 +94,7 @@ bool32 GymDecor_FindPlaced(u32 id, s32 *x, s32 *y);
 u32 GymDecor_CountPlaced(u32 id);
 u32 GymDecor_CountAvailable(u32 id);
 u32 GymDecor_NumPlaced(void);
+u32 GymDecor_IdAtMapPos(s32 x, s32 y);
 bool32 GymDecor_CanPlace(u32 id, u32 facing, s32 x, s32 y);
 bool32 GymDecor_Place(u32 id, u32 facing, s32 x, s32 y);
 bool32 GymDecor_IsOwnedStyle(u32 id);

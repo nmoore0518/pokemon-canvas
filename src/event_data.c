@@ -131,7 +131,7 @@ void ClearMysteryGiftFlags(void)
 void ClearMysteryGiftVars(void)
 {
     VarSet(VAR_GIFT_PICHU_SLOT, 0);
-    VarSet(VAR_GIFT_UNUSED_1, 0);
+    // (VAR_GIFT_UNUSED_1 is VAR_SODAS_FOR_MASTERY now: Pokémon Canvas)
     VarSet(VAR_GIFT_UNUSED_2, 0);
     VarSet(VAR_GIFT_UNUSED_3, 0);
     VarSet(VAR_GIFT_UNUSED_4, 0);

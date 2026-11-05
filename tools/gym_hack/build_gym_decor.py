@@ -253,6 +253,11 @@ for _i, (_k, _n, _p, _u, _d) in enumerate(_RA.WALLS):
     DECORATIONS.append(dict(key=f"WALLS_{_k}", name=_n, price=_p, unlock=_u, desc=_d, kind="WALL_STYLE", style=_i,
                             category="GYM_DECOR_CAT_WALLS"))
 
+# --- Pokémon Canvas: the Drink Machine (src/drink_machine.c): the girl on the Celadon roof gives it.
+# Talking to it mixes drinks. (Last: decorations are numbered in this order, in saves.)
+DECORATIONS.append(dict(key="DRINK_MACHINE", name="DRINK MACHINE", price=0, unlock="FLAG_GOT_DRINK_MACHINE",
+                        desc="Mixes drinks and berries.", art="drink_machine", category="GYM_DECOR_CAT_GENERAL"))
+
 # --- The ways each piece can be turned (START, while decorating): its sides and back
 # (tools/gym_hack/decor_art_turned.py). The chairs turn into each other.
 import decor_art_turned as _TA  # noqa: E402

@@ -99,7 +99,7 @@ struct TcgDuel
     u8 statusConditionQueueIndex;
 };
 
-extern struct TcgDuel *gTcg;
+extern struct TcgDuel *const gTcg;
 
 // src/tcg/duel_home.c: the game's home/duel.asm
 u8 *Tcg_TurnVar(u32 offset);

@@ -1041,6 +1041,8 @@ extern const u32 gItemIcon_PsychicEnergy[];
 extern const u16 gItemIconPalette_PsychicEnergy[];
 extern const u32 gItemIcon_FightingEnergy[];
 extern const u16 gItemIconPalette_FightingEnergy[];
+extern const u32 gItemIcon_LimitedEditionSoda[];
+extern const u16 gItemIconPalette_LimitedEditionSoda[];
 extern const u32 gItemIcon_DoubleColorlessEnergy[];
 extern const u16 gItemIconPalette_DoubleColorlessEnergy[];
 extern const u16 gItemIconPalette_SpiritWard[];

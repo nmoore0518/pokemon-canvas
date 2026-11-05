@@ -1148,6 +1148,7 @@ enum __attribute__((packed)) Item
     ITEM_PSYCHIC_ENERGY = 961,
     ITEM_FIGHTING_ENERGY = 962,
     ITEM_DOUBLE_COLORLESS_ENERGY = 963,   // (PP Max on every move)
+    ITEM_LIMITED_EDITION_SODA = 964,  // Pokémon Canvas: with a type berry in the Drink Machine, a new second type (src/drink_machine.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

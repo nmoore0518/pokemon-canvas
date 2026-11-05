@@ -17145,6 +17145,24 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_DoubleColorlessEnergy,
     },
 
+    [ITEM_LIMITED_EDITION_SODA] =
+    {
+        // Pokémon Canvas: from the girl on the Celadon roof (and, rarely, the tournament). Mixed
+        // with a type berry in the Drink Machine (src/drink_machine.c): a new second type.
+        .name = ITEM_NAME("Limited Ed. Soda"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "A rare soda. Mix it\n"
+            "with a type berry in\n"
+            "a DRINK MACHINE."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_LimitedEditionSoda,
+        .iconPalette = gItemIconPalette_LimitedEditionSoda,
+    },
+
     [ITEM_LUCKY_CLOVER] =
     {
         // Pokémon Canvas: an upgrade material (src/item_upgrades.c)
