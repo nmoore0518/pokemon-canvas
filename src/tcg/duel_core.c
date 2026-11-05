@@ -575,8 +575,12 @@ bool32 Tcg_CheckIfEnoughEnergiesForGivenAttack(u32 deckIndex, u32 attack)
 u32 Tcg_PrintAndLoadAttacksToDuelTempList(void)
 {
     u32 i, n = 0;
+    if (!gTcg->headless)
+        Tcg_DrawWideTextBox();
     gTcg->tempCardIndex = *Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD);
     Tcg_LoadCard1(gTcg->tempCardIndex);
+    if (!gTcg->headless)
+        gTcgGbc->cardPageNumber = 0;
     for (i = 0; i < 2; i++)
     {
         const struct TcgAttack *a = &gTcg->loadedCard1->attacks[i];
@@ -584,6 +588,8 @@ u32 Tcg_PrintAndLoadAttacksToDuelTempList(void)
             continue;
         gTcg->duelTempList[n * 2] = gTcg->tempCardIndex;
         gTcg->duelTempList[n * 2 + 1] = i;
+        if (!gTcg->headless)
+            Tcg_PrintAttackOrPkmnPowerInformation(a, 13 + n * 2);
         n++;
     }
     return n;

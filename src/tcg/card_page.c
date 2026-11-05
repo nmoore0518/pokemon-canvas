@@ -621,3 +621,93 @@ void Tcg_DrawWholeScreenTextBox(u16 textId)
     Tcg_SetOneLineSeparation();
     Tcg_WaitForWideTextBoxInput();
 }
+
+// ---- the attack menu (DuelMenu_Attack's) ----------------------------------------------------------------
+
+static EWRAM_DATA u8 sAttackPageNumber = 0;    // wAttackPageNumber (ATTACKPAGE_*)
+
+// DisplayAttackPage: the page, and the switch to its other one (a second page only if it has one)
+static void DisplayAttackPage(void)
+{
+    const struct TcgCard *c = gTcg->loadedCard1;
+    switch (sAttackPageNumber)
+    {
+    case 0:
+        DisplayPokemonAttackCardPage(&c->attacks[0], c->attacks[0].description[0]);
+        break;
+    case 1:
+        if (c->attacks[0].description[1] == NULL)
+            return;
+        DisplayPokemonAttackCardPage(&c->attacks[0], c->attacks[0].description[1]);
+        break;
+    case 2:
+        DisplayPokemonAttackCardPage(&c->attacks[1], c->attacks[1].description[0]);
+        break;
+    default:
+        if (c->attacks[1].description[1] == NULL)
+            return;
+        DisplayPokemonAttackCardPage(&c->attacks[1], c->attacks[1].description[1]);
+        break;
+    }
+    sAttackPageNumber ^= 1;
+}
+
+// OpenAttackPage: the selected attack's page (left/right: its other page), until A or B
+static void OpenAttackPage(void)
+{
+    G->cardPageNumber = TCG_CARDPAGE_POKEMON_OVERVIEW;
+    gTcgCurPlayAreaSlot = 0;
+    Tcg_EmptyScreen();
+    Tcg_FinishQueuedAnimations();
+    Tcg_LoadLoaded1CardGfx(TCG_V_TILES1 + 0x20 * TCG_TILE_SIZE);
+    Tcg_SetOBP1OrSGB3ToCardPalette();
+    Tcg_SetBGP6OrSGB3ToCardPalette();
+    Tcg_FlushAllPalettesOrSendPal23Packet();
+    Tcg_PlaceCardImageOAM(0x38, 0x30);
+    Tcg_ApplyBGP6OrSGB3ToCardImage(6, 4);
+    gTcg->selectedDuelSubMenuItem = G->hCurMenuItem;
+    sAttackPageNumber = gTcg->duelTempList[G->hCurMenuItem * 2 + 1] ? 2 : 0;
+    for (;;)
+    {
+        DisplayAttackPage();
+        Tcg_EnableLCD();
+        for (;;)
+        {
+            Tcg_DoFrame();
+            if (G->dpadHeld & (TCG_PAD_RIGHT | TCG_PAD_LEFT))
+                break;
+            if (G->keysPressed & (TCG_PAD_A | TCG_PAD_B))
+                return;
+        }
+    }
+}
+
+static const struct TcgMenuParams sAttackMenuParameters = {1, 13, 2, 2, TCG_SYM_CURSOR_R, TCG_SYM_SPACE, NULL};
+
+// the attack menu (PrintAndLoadAttacksToDuelTempList has printed it): an attack (its item), or
+// TCG_SELECTION_CANCEL. START opens the attack's page (then the menu again, from the main scene).
+u32 Tcg_HandleAttackMenuInput(u32 count, u32 item)
+{
+    if (gTcg->headless)
+        return TCG_SELECTION_CANCEL;
+    for (;;)
+    {
+        Tcg_InitializeMenuParameters(item, &sAttackMenuParameters);
+        G->numMenuItems = count;
+        Tcg_LoadCard1(*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD));
+        for (;;)
+        {
+            Tcg_DoFrame();
+            if (G->keysPressed & TCG_PAD_START)
+            {
+                OpenAttackPage();
+                Tcg_DrawDuelMainScene();
+                count = Tcg_PrintAndLoadAttacksToDuelTempList();
+                item = gTcg->selectedDuelSubMenuItem;
+                break;
+            }
+            if (Tcg_HandleMenuInput())
+                return G->hCurMenuItem == 0xFF ? TCG_SELECTION_CANCEL : G->hCurMenuItem;
+        }
+    }
+}
