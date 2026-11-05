@@ -1,6 +1,7 @@
 #include "exotic_safari.h"
 #include "global.h"
 #include "berry_field.h"
+#include "medical_center.h"
 #include "incense.h"
 #include "form_items.h"
 #include "gym_decor.h"
@@ -798,6 +799,7 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
     IncrementRematchStepCounter();
     IncrementDaycareSteps();
     BerryField_OnStep();    // Pokémon Canvas: the berry field grows
+    MedicalCenter_OnStep(); // Pokémon Canvas: a "day" of steps (Pokérus, the Medical Center)
     UpdateFriendshipStepCounter();
     UpdateFarawayIslandStepCounter();
     UpdateFollowerStepCounter();

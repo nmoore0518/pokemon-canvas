@@ -52,7 +52,7 @@ void DoDailyEvents(u32 daysSince)
     UpdateDewfordTrendPerDay(daysSince);
     UpdateTVShowsPerDay(daysSince);
     UpdateWeatherPerDay(daysSince);
-    UpdatePartyPokerusTime(daysSince);
+    // (Pokémon Canvas: Pokérus wears off by the player's steps instead: src/medical_center.c)
     UpdateBirchState(daysSince);
     UpdateFrontierManiac(daysSince);
     UpdateFrontierGambler(daysSince);

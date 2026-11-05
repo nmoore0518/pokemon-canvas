@@ -654,12 +654,13 @@
 #define TRAINER_TRAINING_MATILDA                   648
 #define TRAINER_GIOVANNI_DAD_FINAL                 649 // Pokémon Canvas: GIOVANNI's last battle at VIRIDIAN (synthetic abilities, Type Balls)
 #define TRAINER_COOLTRAINER_STADIUM                650 // Pokémon Canvas: Route 21's hidden cave (Stadium's Master Ball Cup, round 2)
+#define TRAINER_HEAD_NURSE                         651 // Pokémon Canvas: the Universal Pokémon Medical Center's 3F (the physical)
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT_FRLG can be increased but will take up additional saveblock space
 
-#define TRAINERS_COUNT_FRLG                      651
+#define TRAINERS_COUNT_FRLG                      652
 #define MAX_TRAINERS_COUNT_FRLG                  768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_FRLG_H

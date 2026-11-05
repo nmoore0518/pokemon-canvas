@@ -1,4 +1,5 @@
 VermilionCity_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, VermilionCity_OnLoad
 	map_script MAP_SCRIPT_ON_TRANSITION, VermilionCity_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, VermilionCity_OnFrame
 	.byte 0
@@ -19,6 +20,11 @@ VermilionCity_Movement_ExitSSAnne::
 	walk_up
 	walk_up
 	step_end
+
+@ Pokémon Canvas: the Universal Pokémon Medical Center on the lot, once it's built (data/scripts/medical_center_lot.inc)
+VermilionCity_OnLoad::
+	call_if_set FLAG_MEDCENTER_OPEN, VermilionCity_EventScript_MedicalCenterBuilt
+	end
 
 VermilionCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_VERMILION_CITY
@@ -231,6 +237,140 @@ VermilionCity_EventScript_OldMan2::
 	msgbox VermilionCity_Text_BuildingOnThisLand, MSGBOX_NPC
 	end
 
+@ Pokémon Canvas: the foreman (src/medical_center.c). His crew quit: he needs a MACHOP, a MACHOKE, a
+@ MACHAMP and a shiny MACHAMP (not one of Bill's). Each one goes to work for him for good, and each
+@ turns something up in the dig. With the fourth, the Universal Pokémon Medical Center goes up.
+VermilionCity_EventScript_Foreman::
+	lock
+	faceplayer
+	special MedCenter_BufferHelper
+	copyvar VAR_0x8006, VAR_RESULT
+	call_if_eq VAR_0x8006, 0, VermilionCity_EventScript_ForemanIntro
+	call_if_ne VAR_0x8006, 0, VermilionCity_EventScript_ForemanNext
+	msgbox VermilionCity_Text_ForemanAsk, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_ForemanNo
+	msgbox VermilionCity_Text_ForemanWhich
+	special ChoosePartyMon
+	goto_if_ge VAR_0x8004, PARTY_SIZE, VermilionCity_EventScript_ForemanNo
+	special MedCenter_CheckHelper
+	switch VAR_RESULT
+	case HELPER_OK, VermilionCity_EventScript_ForemanTake
+	case HELPER_NOT_SHINY, VermilionCity_EventScript_ForemanNotShiny
+	case HELPER_WITHDRAWN, VermilionCity_EventScript_ForemanWithdrawn
+	case HELPER_EGG, VermilionCity_EventScript_ForemanEgg
+	case HELPER_LAST_MON, VermilionCity_EventScript_ForemanLastMon
+	msgbox VermilionCity_Text_ForemanWrong
+	release
+	end
+
+VermilionCity_EventScript_ForemanIntro::
+	msgbox VermilionCity_Text_ForemanIntro
+	return
+
+VermilionCity_EventScript_ForemanNext::
+	msgbox VermilionCity_Text_ForemanNext
+	return
+
+VermilionCity_EventScript_ForemanTake::
+	msgbox VermilionCity_Text_ForemanThanks
+	special MedCenter_TakeHelper
+	copyvar VAR_0x8006, VAR_RESULT
+	playse SE_M_MEGA_KICK
+	waitse
+	switch VAR_0x8006
+	case 1, VermilionCity_EventScript_ForemanFind1
+	case 2, VermilionCity_EventScript_ForemanFind2
+	case 3, VermilionCity_EventScript_ForemanFind3
+	goto VermilionCity_EventScript_ForemanBuilt
+	end
+
+@ the first dig: the Mt. Moon fossil the player didn't take
+VermilionCity_EventScript_ForemanFind1::
+	msgbox VermilionCity_Text_ForemanFound
+	setvar VAR_0x8009, ITEM_HELIX_FOSSIL
+	call_if_set FLAG_GOT_HELIX_FOSSIL, VermilionCity_EventScript_ForemanDome
+	call GymHack_EventScript_GiveStatItem
+	msgbox VermilionCity_Text_ForemanFossil
+	release
+	end
+
+VermilionCity_EventScript_ForemanDome::
+	setvar VAR_0x8009, ITEM_DOME_FOSSIL
+	return
+
+@ the second: a ROOT or a CLAW FOSSIL; the third: a SKULL or an ARMOR FOSSIL
+VermilionCity_EventScript_ForemanFind2::
+	msgbox VermilionCity_Text_ForemanFoundTwo
+	dynmultichoice 0, 0, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, VermilionCity_Text_RootFossil, VermilionCity_Text_ClawFossil
+	setvar VAR_0x8009, ITEM_ROOT_FOSSIL
+	call_if_eq VAR_RESULT, 1, VermilionCity_EventScript_ForemanClaw
+	call GymHack_EventScript_GiveStatItem
+	msgbox VermilionCity_Text_ForemanFossil
+	release
+	end
+
+VermilionCity_EventScript_ForemanClaw::
+	setvar VAR_0x8009, ITEM_CLAW_FOSSIL
+	return
+
+VermilionCity_EventScript_ForemanFind3::
+	msgbox VermilionCity_Text_ForemanFoundTwo
+	dynmultichoice 0, 0, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, VermilionCity_Text_SkullFossil, VermilionCity_Text_ArmorFossil
+	setvar VAR_0x8009, ITEM_SKULL_FOSSIL
+	call_if_eq VAR_RESULT, 1, VermilionCity_EventScript_ForemanArmor
+	call GymHack_EventScript_GiveStatItem
+	msgbox VermilionCity_Text_ForemanFossil
+	release
+	end
+
+VermilionCity_EventScript_ForemanArmor::
+	setvar VAR_0x8009, ITEM_ARMOR_FOSSIL
+	return
+
+@ the fourth: it goes up (the player out in front of its door)
+VermilionCity_EventScript_ForemanBuilt::
+	msgbox VermilionCity_Text_ForemanBuilding
+	closemessage
+	fadescreen FADE_TO_BLACK
+	playse SE_M_MEGA_KICK
+	waitse
+	delay 20
+	playse SE_M_STRENGTH
+	waitse
+	delay 20
+	playse SE_M_MEGA_KICK
+	waitse
+	delay 30
+	warpsilent MAP_VERMILION_CITY, 35, 14
+	waitstate
+	release
+	end
+
+VermilionCity_EventScript_ForemanNo::
+	msgbox VermilionCity_Text_ForemanNo
+	release
+	end
+
+VermilionCity_EventScript_ForemanNotShiny::
+	msgbox VermilionCity_Text_ForemanNotShiny
+	release
+	end
+
+VermilionCity_EventScript_ForemanWithdrawn::
+	msgbox VermilionCity_Text_ForemanWithdrawn
+	release
+	end
+
+VermilionCity_EventScript_ForemanEgg::
+	msgbox VermilionCity_Text_ForemanEgg
+	release
+	end
+
+VermilionCity_EventScript_ForemanLastMon::
+	msgbox VermilionCity_Text_ForemanLastMon
+	release
+	end
+
 VermilionCity_EventScript_Machop::
 	lock
 	faceplayer
@@ -284,6 +424,83 @@ VermilionCity_Text_BuildingOnThisLand::
 	.string "plot of land. I own it all.\p"
 	.string "My POKéMON is tamping the land\n"
 	.string "to lay the foundation.$"
+
+VermilionCity_Text_ForemanIntro::
+	.string "I'm putting up a building on this\n"
+	.string "plot of land. A big one!\p"
+	.string "But my whole crew quit on me.\n"
+	.string "All I've got left is this MACHOP.\p"
+	.string "Say, could you lend me a hand?\n"
+	.string "Another MACHOP would do it.$"
+
+VermilionCity_Text_ForemanNext::
+	.string "The building's coming along!\n"
+	.string "But I could use a {STR_VAR_1} now.$"
+
+VermilionCity_Text_ForemanAsk::
+	.string "It'd stay on and work for me.\n"
+	.string "Will you send me a {STR_VAR_1}?$"
+
+VermilionCity_Text_ForemanWhich::
+	.string "Which one?$"
+
+VermilionCity_Text_ForemanThanks::
+	.string "Ha! Now that's a worker!\n"
+	.string "Welcome to the crew!$"
+
+VermilionCity_Text_ForemanFound::
+	.string "Hey, look what we dug up! An old\n"
+	.string "fossil. Here, you have it!$"
+
+VermilionCity_Text_ForemanFoundTwo::
+	.string "Would you look at that! Two\n"
+	.string "fossils in the dig. Pick one!$"
+
+VermilionCity_Text_ForemanFossil::
+	.string "They say the lab on CINNABAR can\n"
+	.string "bring those back to life!$"
+
+VermilionCity_Text_RootFossil::
+	.string "ROOT FOSSIL$"
+
+VermilionCity_Text_ClawFossil::
+	.string "CLAW FOSSIL$"
+
+VermilionCity_Text_SkullFossil::
+	.string "SKULL FOSSIL$"
+
+VermilionCity_Text_ArmorFossil::
+	.string "ARMOR FOSSIL$"
+
+VermilionCity_Text_ForemanBuilding::
+	.string "A shiny MACHAMP! With a foreman\n"
+	.string "like that, we'll be done tonight!\p"
+	.string "All right, boys!\n"
+	.string "Let's raise the roof!$"
+
+VermilionCity_Text_ForemanNo::
+	.string "Well, if you change your mind…$"
+
+VermilionCity_Text_ForemanWrong::
+	.string "That's not a {STR_VAR_1}!$"
+
+VermilionCity_Text_ForemanNotShiny::
+	.string "A MACHAMP! But I need a foreman\n"
+	.string "that stands out on the site.\p"
+	.string "One in a different color, you know?\n"
+	.string "A shiny one!$"
+
+VermilionCity_Text_ForemanWithdrawn::
+	.string "Hmm… This one's never done a\n"
+	.string "day of real work in its life.\p"
+	.string "I need one that's earned those\n"
+	.string "colors!$"
+
+VermilionCity_Text_ForemanEgg::
+	.string "An EGG can't lift beams!$"
+
+VermilionCity_Text_ForemanLastMon::
+	.string "I can't take your only POKéMON!$"
 
 VermilionCity_Text_Machop::
 	.string "MACHOP: Guoh! Gogogoh!$"

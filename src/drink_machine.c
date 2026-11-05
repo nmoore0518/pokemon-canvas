@@ -291,5 +291,14 @@ void DrinkGirl_GaveMasterySoda(void)
 // (the tournament itself only opens once every type's been mastered)
 bool32 DrinkMachine_TournamentSodaUnlocked(void)
 {
+    DrinkMachine_FixFlag();
     return FlagGet(FLAG_GOT_DRINK_MACHINE);
+}
+
+// Special: v151-v154 kept FLAG_GOT_DRINK_MACHINE where the Pokédex keeps a seen flag; a save from
+// then that has the machine gets the flag back where it is now
+void DrinkMachine_FixFlag(void)
+{
+    if (!FlagGet(FLAG_GOT_DRINK_MACHINE) && GymDecor_CountOwned(GYM_DECOR_DRINK_MACHINE) != 0)
+        FlagSet(FLAG_GOT_DRINK_MACHINE);
 }

@@ -4597,3 +4597,73 @@ TEST("GymHack: tournament prizes: one every win; a MOVE EXTRACTOR ~20% and a sod
     EXPECT_LT(rareCount, total / 8);
     FlagClear(FLAG_GOT_DRINK_MACHINE);
 }
+
+#include "medical_center.h"
+#include "pokerus.h"
+TEST("GymHack: the HEAL CHARM: the player's medicine heals 10% more, with it in the bag")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    u16 hp = 1;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_SNORLAX, 100, 0, OTID_STRUCT_PLAYER_ID);
+    SetMonData(mon, MON_DATA_HP, &hp);
+    RemoveBagItem(ITEM_HEAL_CHARM, 1);
+    EXPECT_EQ(HealCharm_Boost(120), 120);
+    PokemonUseItemEffects(mon, ITEM_HYPER_POTION, 0, 0, FALSE);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_HP), 1 + 120);
+    AddBagItem(ITEM_HEAL_CHARM, 1);
+    EXPECT_EQ(HealCharm_Boost(120), 132);
+    SetMonData(mon, MON_DATA_HP, &hp);
+    PokemonUseItemEffects(mon, ITEM_HYPER_POTION, 0, 0, FALSE);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_HP), 1 + 132);
+    SetMonData(mon, MON_DATA_HP, &hp);
+    PokemonUseItemEffects(mon, ITEM_MAX_POTION, 0, 0, FALSE);           // (a full heal: just full)
+    EXPECT_EQ(GetMonData(mon, MON_DATA_HP), GetMonData(mon, MON_DATA_MAX_HP));
+    RemoveBagItem(ITEM_HEAL_CHARM, 1);
+}
+
+TEST("GymHack: the Vermilion foreman's helpers: MACHOP, MACHOKE, MACHAMP, then a shiny one not from Bill")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    bool8 fateful = TRUE;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_MACHOP, 20, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 0, 2), HELPER_OK);
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 0, 1), HELPER_LAST_MON);
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 1, 2), HELPER_WRONG_SPECIES);
+    CreateMon(mon, SPECIES_MACHAMP, 50, 0, OTID_STRUCT_PLAYER_ID);
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 2, 2), HELPER_OK);
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 3, 2), GetMonData(mon, MON_DATA_IS_SHINY) ? HELPER_OK : HELPER_NOT_SHINY);
+    {
+        bool8 shiny = TRUE;
+        SetMonData(mon, MON_DATA_IS_SHINY, &shiny);
+    }
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 3, 2), HELPER_OK);
+    SetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER, &fateful);       // (Bill's Palm Pilot)
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 3, 2), HELPER_WITHDRAWN);
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 4, 2), HELPER_WRONG_SPECIES);
+}
+
+TEST("GymHack: Pokérus from the Medical Center wears off a day of steps at a time, and keeps its effect")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    u32 i;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_PIDGEY, 20, 0, OTID_STRUCT_PLAYER_ID);
+    CalculatePlayerPartyCount();
+    EXPECT_EQ(MedCenter_TryGivePokerus(mon), POKERUS_GIVE_DONE);
+    EXPECT(CheckMonPokerus(mon));
+    EXPECT_EQ(MedCenter_TryGivePokerus(mon), POKERUS_GIVE_HAS_IT);
+    FlagSet(FLAG_POKERUS_GIVEN_TODAY);
+    VarSet(VAR_STEP_DAY, 0);
+    for (i = 0; i < MEDCENTER_DAY_STEPS - 1; i++)
+        MedicalCenter_OnStep();
+    EXPECT(FlagGet(FLAG_POKERUS_GIVEN_TODAY));
+    MedicalCenter_OnStep();                                             // (a day: the nurse can give it again)
+    EXPECT(!FlagGet(FLAG_POKERUS_GIVEN_TODAY));
+    for (i = 0; i < 4 * MEDCENTER_DAY_STEPS; i++)                       // (4 days: the longest it lasts)
+        MedicalCenter_OnStep();
+    EXPECT(!CheckMonPokerus(mon));
+    EXPECT(CheckMonHasHadPokerus(mon));                                 // (cured: still double EVs, can't catch it again)
+    EXPECT_EQ(MedCenter_TryGivePokerus(mon), POKERUS_GIVE_HAD_IT);
+}

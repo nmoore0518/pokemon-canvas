@@ -2994,6 +2994,9 @@ static const struct SpriteFrameImage sPicTable_PaintSplotchYellow[] = {
 static const struct SpriteFrameImage sPicTable_PaintPot[] = {
     overworld_frame(gObjectEventPic_PainterDecorSmall, 2, 2, 3),
 };
+static const struct SpriteFrameImage sPicTable_Gurney[] = {
+    overworld_frame(gObjectEventPic_Gurney, 2, 2, 0),
+};
 
 static const struct SpriteFrameImage sPicTable_GauntletPalmPilot[] = {
     overworld_ascending_frames(gObjectEventPic_GauntletPalmPilot, 2, 4),

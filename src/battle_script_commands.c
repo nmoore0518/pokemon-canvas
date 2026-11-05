@@ -9374,6 +9374,9 @@ void BS_ItemRestoreHP(void)
             healAmount = healParam;
             break;
         }
+        // Pokémon Canvas: the HEAL CHARM, for the player's own medicine
+        if (healParam != ITEM6_HEAL_HP_FULL && IsOnPlayerSide(gBattlerAttacker))
+            healAmount = HealCharm_Boost(healAmount);
         if (hp + healAmount > maxHP)
             healAmount = maxHP - hp;
 

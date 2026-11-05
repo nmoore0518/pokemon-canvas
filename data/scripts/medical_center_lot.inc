@@ -1,0 +1,53 @@
+@ The Universal Pokémon Medical Center on Vermilion City's lot (tools/gym_hack/build_medical_center.py:
+@ don't edit). Called from the city's ON_LOAD once FLAG_MEDCENTER_OPEN is set.
+VermilionCity_EventScript_MedicalCenterBuilt::
+	setmetatile 32, 8, 0x328, TRUE
+	setmetatile 33, 8, 0x329, TRUE
+	setmetatile 34, 8, 0x32A, TRUE
+	setmetatile 35, 8, 0x32B, TRUE
+	setmetatile 36, 8, 0x32C, TRUE
+	setmetatile 37, 8, 0x32D, TRUE
+	setmetatile 38, 8, 0x32E, TRUE
+	setmetatile 32, 9, 0x32F, TRUE
+	setmetatile 33, 9, 0x330, TRUE
+	setmetatile 34, 9, 0x331, TRUE
+	setmetatile 35, 9, 0x332, TRUE
+	setmetatile 36, 9, 0x333, TRUE
+	setmetatile 37, 9, 0x334, TRUE
+	setmetatile 38, 9, 0x335, TRUE
+	setmetatile 32, 10, 0x336, TRUE
+	setmetatile 33, 10, 0x337, TRUE
+	setmetatile 34, 10, 0x338, TRUE
+	setmetatile 35, 10, 0x339, TRUE
+	setmetatile 36, 10, 0x33A, TRUE
+	setmetatile 37, 10, 0x33B, TRUE
+	setmetatile 38, 10, 0x33C, TRUE
+	setmetatile 32, 11, 0x33D, TRUE
+	setmetatile 33, 11, 0x33E, TRUE
+	setmetatile 34, 11, 0x33F, TRUE
+	setmetatile 35, 11, 0x340, TRUE
+	setmetatile 36, 11, 0x341, TRUE
+	setmetatile 37, 11, 0x342, TRUE
+	setmetatile 38, 11, 0x343, TRUE
+	setmetatile 32, 12, 0x344, TRUE
+	setmetatile 33, 12, 0x345, TRUE
+	setmetatile 34, 12, 0x346, TRUE
+	setmetatile 35, 12, 0x347, TRUE
+	setmetatile 36, 12, 0x348, TRUE
+	setmetatile 37, 12, 0x349, TRUE
+	setmetatile 38, 12, 0x34A, TRUE
+	setmetatile 32, 13, 0x34B, TRUE
+	setmetatile 33, 13, 0x34C, TRUE
+	setmetatile 34, 13, 0x34D, TRUE
+	setmetatile 35, 13, 0x34E, FALSE
+	setmetatile 36, 13, 0x34F, TRUE
+	setmetatile 37, 13, 0x350, TRUE
+	setmetatile 38, 13, 0x351, TRUE
+	setmetatile 32, 14, 0x001, FALSE
+	setmetatile 33, 14, 0x001, FALSE
+	setmetatile 34, 14, 0x001, FALSE
+	setmetatile 35, 14, 0x001, FALSE
+	setmetatile 36, 14, 0x001, FALSE
+	setmetatile 37, 14, 0x001, FALSE
+	setmetatile 38, 14, 0x001, FALSE
+	return

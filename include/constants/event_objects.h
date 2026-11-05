@@ -564,6 +564,7 @@ enum
     OBJ_EVENT_GFX_PAINT_SPLOTCH_BLUE,
     OBJ_EVENT_GFX_PAINT_SPLOTCH_YELLOW,
     OBJ_EVENT_GFX_PAINT_POT,
+    OBJ_EVENT_GFX_GURNEY,          // Pokémon Canvas: the Medical Center's 2F (tools/gym_hack/medical_center_art.py)
     NUM_OBJ_EVENT_GFX,
 };
 
@@ -893,6 +894,7 @@ enum
 #define OBJ_EVENT_PAL_TAG_PAINTER 0x139c
 #define OBJ_EVENT_PAL_TAG_PAINT_FIGURE 0x139d
 #define OBJ_EVENT_PAL_TAG_PAINTER_DECOR 0x139e
+#define OBJ_EVENT_PAL_TAG_GURNEY 0x139f
 // END Gauntlet palette tags
 #define OBJ_EVENT_PAL_TAG_WHITE                   (OBJ_EVENT_PAL_TAG_NONE - 1)
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF

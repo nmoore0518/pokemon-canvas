@@ -1033,11 +1033,15 @@ static bool8 ShouldJumpLedge(s16 x, s16 y, enum Direction direction)
 
 static bool8 TryPushBoulder(s16 x, s16 y, enum Direction direction)
 {
-    if (FlagGet(FLAG_SYS_USE_STRENGTH))
+    // Pokémon Canvas: the Medical Center's gurneys roll without Strength (src/medical_center.c)
+    u8 gurneyId = GetObjectEventIdByXY(x, y);
+    bool32 gurney = gurneyId != OBJECT_EVENTS_COUNT && gObjectEvents[gurneyId].graphicsId == OBJ_EVENT_GFX_GURNEY;
+
+    if (FlagGet(FLAG_SYS_USE_STRENGTH) || gurney)
     {
         u8 objectEventId = GetObjectEventIdByXY(x, y);
 
-        if (objectEventId != OBJECT_EVENTS_COUNT && (gObjectEvents[objectEventId].graphicsId == OBJ_EVENT_GFX_PUSHABLE_BOULDER || gObjectEvents[objectEventId].graphicsId == OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG))
+        if (objectEventId != OBJECT_EVENTS_COUNT && (gurney || gObjectEvents[objectEventId].graphicsId == OBJ_EVENT_GFX_PUSHABLE_BOULDER || gObjectEvents[objectEventId].graphicsId == OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG))
         {
             x = gObjectEvents[objectEventId].currentCoords.x;
             y = gObjectEvents[objectEventId].currentCoords.y;

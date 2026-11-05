@@ -692,8 +692,19 @@ gSpecials::
 	def_special DrinkMachine_Mix
 	def_special DrinkMachine_ApplySoda
 	def_special DrinkGirl_GiveMachine
+	def_special DrinkMachine_FixFlag
 	def_special DrinkGirl_SodasOwed
 	def_special DrinkGirl_GaveMasterySoda
+	def_special Gauntlet_MarkWithdraw
+	def_special MedCenter_BufferHelper
+	def_special MedCenter_CheckHelper
+	def_special MedCenter_TakeHelper
+	def_special MedCenter_GivePokerus
+	def_special MedCenter_ShowSlide
+	def_special MedCenter_HideSlide
+	def_special Fossil_PushList
+	def_special Fossil_Pick
+	def_special Fossil_BufferRevived
 	def_special Tourney_Begin
 	def_special Tourney_GetStatus
 	def_special Tourney_CheckTeam

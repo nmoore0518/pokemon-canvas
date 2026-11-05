@@ -2759,7 +2759,17 @@
 #define FLAG_PAINTER_MEGA_DONE     0x8FE   // (she's given the SMEARGLITE)
 
 // Pokémon Canvas: the Drink Machine (src/drink_machine.c; the girl on the Celadon roof)
-#define FLAG_GOT_DRINK_MACHINE     0x8E8   // (she's given it: the gym decoration, and her first LIMITED EDITION SODA)
+// FireRed's spare system flags 0x84C on (0x84C-0x88F are free: checked against flags_frlg.h and the
+// ranges above; v151-v154 had the Drink Machine at 0x8E8, inside FLAG_DEX_EXTRA_SEEN's range)
+#define FLAG_GOT_DRINK_MACHINE     0x84C   // (she's given it: the gym decoration, and her first LIMITED EDITION SODA)
+// The Universal Pokémon Medical Center (Vermilion City's building site; src/medical_center.c)
+#define FLAG_MEDCENTER_OPEN        0x84D   // (the foreman's had all four helpers: the building's up; hides him and his MACHOP)
+#define FLAG_TRIAGE_CURED          0x84E   // + a patient 0-5: 1F's patients treated (to 0x853)
+#define FLAG_TRIAGE_REWARD         0x854   // (1F: the nurse's LUM BERRIES and FULL HEALS)
+#define FLAG_GOT_HEAL_CHARM        0x855   // (2F: past the gurneys)
+#define FLAG_MICROSCOPE_SOLVED     0x856   // (3F: the strain found)
+#define FLAG_MEDCENTER_PHYSICAL    0x857   // (3F: the head nurse's physical passed)
+#define FLAG_POKERUS_GIVEN_TODAY   0x858   // (3F: she's given Pokérus this "day" of steps; cleared every MEDCENTER_DAY_STEPS)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)

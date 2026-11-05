@@ -169,6 +169,7 @@ CeladonCity_DepartmentStore_Roof_EventScript_CheckGotAllDrinksDone::
 	return
 
 CeladonCity_DepartmentStore_Roof_EventScript_AfterDrinks::
+	special DrinkMachine_FixFlag
 	goto_if_unset FLAG_GOT_DRINK_MACHINE, CeladonCity_DepartmentStore_Roof_EventScript_Finale
 	special DrinkGirl_SodasOwed
 	goto_if_ne VAR_RESULT, 0, CeladonCity_DepartmentStore_Roof_EventScript_MasterySoda

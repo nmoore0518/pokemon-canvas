@@ -550,6 +550,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotc
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotchBlue;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotchYellow;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintPot;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Gurney;
 // END Gauntlet externs
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -1090,6 +1091,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_PAINT_SPLOTCH_BLUE] = &gObjectEventGraphicsInfo_PaintSplotchBlue,
     [OBJ_EVENT_GFX_PAINT_SPLOTCH_YELLOW] = &gObjectEventGraphicsInfo_PaintSplotchYellow,
     [OBJ_EVENT_GFX_PAINT_POT] = &gObjectEventGraphicsInfo_PaintPot,
+    [OBJ_EVENT_GFX_GURNEY] = &gObjectEventGraphicsInfo_Gurney,
 // END Gauntlet
 };
 

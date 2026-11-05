@@ -980,6 +980,7 @@ bool32 IsStolenMove(struct Pokemon *mon, enum Move move);
 enum Type GetStolenMoveType(struct Pokemon *mon);
 u32 SwapStolenMoveBits(u32 stolen, u32 a, u32 b);
 bool32 IsEnergyBoostedMove(struct Pokemon *mon, enum Move move);
+u32 HealCharm_Boost(u32 amount);
 enum Type GetMonType(struct Pokemon *mon, u32 index);
 void ApplyMonSecondTypeToBattler(enum BattlerId battler);
 enum Type CheckDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum MonState state);

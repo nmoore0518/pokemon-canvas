@@ -8,5 +8,6 @@
 u32 DrinkMachine_Recipe(u32 drink, const u16 *berries, u32 n);
 u32 DrinkMachine_GiveSecondType(struct Pokemon *mon, enum Type type);
 bool32 DrinkMachine_TournamentSodaUnlocked(void);
+void DrinkMachine_FixFlag(void);
 
 #endif // GUARD_DRINK_MACHINE_H

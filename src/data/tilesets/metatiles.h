@@ -412,6 +412,8 @@ const u16 gMetatiles_LeaderAcademyHall[] = INCBIN_U16("data/tilesets/secondary/l
 const u16 gMetatileAttributes_LeaderAcademyHall[] = INCBIN_U16("data/tilesets/secondary/leader_academy_hall_frlg/metatile_attributes.bin");
 const u16 gMetatiles_PlayersBasement[] = INCBIN_U16("data/tilesets/secondary/players_basement_frlg/metatiles.bin");
 const u16 gMetatileAttributes_PlayersBasement[] = INCBIN_U16("data/tilesets/secondary/players_basement_frlg/metatile_attributes.bin");
+const u16 gMetatiles_MedicalCenter[] = INCBIN_U16("data/tilesets/secondary/medical_center_frlg/metatiles.bin");
+const u16 gMetatileAttributes_MedicalCenter[] = INCBIN_U16("data/tilesets/secondary/medical_center_frlg/metatile_attributes.bin");
 const u16 gMetatiles_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatiles.bin");
 const u16 gMetatileAttributes_SafariZoneBuilding[] = INCBIN_U16("data/tilesets/secondary/safari_zone_building_frlg/metatile_attributes.bin");
 

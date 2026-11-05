@@ -3544,6 +3544,15 @@ const u32 sExpCandyExperienceTable[] = {
 };
 
 // Returns TRUE if the item has no effect on the Pokémon, FALSE otherwise
+// Pokémon Canvas: the HEAL CHARM (the Universal Pokémon Medical Center's 2F): with it in the bag, the
+// player's medicine heals 10% more (120 HP: 132)
+u32 HealCharm_Boost(u32 amount)
+{
+    if (CheckBagHasItem(ITEM_HEAL_CHARM, 1))
+        return amount * 11 / 10;
+    return amount;
+}
+
 bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, u8 moveIndex, bool8 usedByAI)
 {
     u32 dataUnsigned;
@@ -3789,6 +3798,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
                                 dataUnsigned = 1;
                             break;
                         }
+                        // Pokémon Canvas: the HEAL CHARM (but not for a full heal, or a level up's HP)
+                        if (!usedByAI && itemEffect[itemEffectParam - 1] != ITEM6_HEAL_HP_FULL
+                         && itemEffect[itemEffectParam - 1] != ITEM6_HEAL_HP_LVL_UP)
+                            dataUnsigned = HealCharm_Boost(dataUnsigned);
 
                         // Only restore HP if not at max health
                         if (maxHP != currentHP)

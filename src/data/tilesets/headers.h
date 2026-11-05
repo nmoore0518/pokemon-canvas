@@ -1696,6 +1696,17 @@ const struct Tileset gTileset_PlayersBasement =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_MedicalCenter =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_MedicalCenter,
+    .palettes = gTilesetPalettes_MedicalCenter,
+    .metatiles = gMetatiles_MedicalCenter,
+    .metatileAttributes = gMetatileAttributes_MedicalCenter,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_SafariZoneBuilding =
 {
     .isCompressed = TRUE,

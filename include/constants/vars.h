@@ -378,6 +378,10 @@
 #define VAR_PAINTER_MON_LO                               0x40BE // (the Smeargle in the painting: its personality)
 #define VAR_PAINTER_MON_HI                               0x40BF
 #define VAR_PAINTING_SEED                                0x40C4 // (the painting's colours)
+// The Universal Pokémon Medical Center (src/medical_center.c): the foreman's helpers given (0-4), and the
+// steps into the current "day" (Pokérus wears off a day at a time). Emerald's unused route vars.
+#define VAR_MEDCENTER_HELPERS                            0x406D
+#define VAR_STEP_DAY                                     0x4077
 #define VAR_SODAS_FOR_MASTERY                            0x40DE // Pokémon Canvas: the LIMITED EDITION SODAS the Celadon roof girl has given for mastered types (src/drink_machine.c; was VAR_GIFT_UNUSED_1)
 
 #if TESTING

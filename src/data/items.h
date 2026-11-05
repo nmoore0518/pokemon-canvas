@@ -17163,6 +17163,24 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_LimitedEditionSoda,
     },
 
+    [ITEM_HEAL_CHARM] =
+    {
+        // Pokémon Canvas: the Universal Pokémon Medical Center's 2F prize (data/maps/VermilionCity_MedicalCenter_2F).
+        // In the bag, the player's medicine heals 10% more HP (src/pokemon.c, src/battle_script_commands.c)
+        .name = ITEM_NAME("Heal Charm"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING(
+            "Your medicine\n"
+            "restores 10% more\n"
+            "HP."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .iconPic = gItemIcon_HealCharm,
+        .iconPalette = gItemIconPalette_HealCharm,
+    },
+
     [ITEM_LUCKY_CLOVER] =
     {
         // Pokémon Canvas: an upgrade material (src/item_upgrades.c)

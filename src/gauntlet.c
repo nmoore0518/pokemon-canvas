@@ -379,6 +379,13 @@ void Gauntlet_ChooseWithdraw(void)
 }
 
 // Special: VAR_GAUNTLET_WITHDRAWS - 1 (after a WITHDRAW)
+// Special, just before the WITHDRAW's givemon: it's marked (src/script_pokemon_util.c)
+void Gauntlet_MarkWithdraw(void)
+{
+    extern bool8 gGiveMonWithdrawn;
+    gGiveMonWithdrawn = TRUE;
+}
+
 void Gauntlet_UseWithdraw(void)
 {
     u32 n = VarGet(VAR_GAUNTLET_WITHDRAWS);
