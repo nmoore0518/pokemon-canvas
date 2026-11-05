@@ -695,7 +695,6 @@ gSpecials::
 	def_special DrinkMachine_FixFlag
 	def_special DrinkGirl_SodasOwed
 	def_special DrinkGirl_GaveMasterySoda
-	def_special Gauntlet_MarkWithdraw
 	def_special MedCenter_BufferHelper
 	def_special MedCenter_CheckHelper
 	def_special MedCenter_TakeHelper

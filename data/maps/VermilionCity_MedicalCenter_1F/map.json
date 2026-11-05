@@ -19,7 +19,7 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_NURSE_FRLG",
-      "x": 5,
+      "x": 6,
       "y": 2,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -33,7 +33,7 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(CHANSEY)",
-      "x": 4,
+      "x": 7,
       "y": 2,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -46,9 +46,23 @@
     },
     {
       "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MART_EMPLOYEE",
+      "x": 14,
+      "y": 2,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "VermilionCity_MedicalCenter_1F_EventScript_Pharmacist",
+      "flag": "0"
+    },
+    {
+      "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_NURSE_FRLG",
-      "x": 8,
-      "y": 6,
+      "x": 12,
+      "y": 8,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 1,
@@ -61,8 +75,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(PSYDUCK)",
-      "x": 9,
-      "y": 5,
+      "x": 13,
+      "y": 7,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -75,8 +89,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(RATTATA)",
-      "x": 11,
-      "y": 5,
+      "x": 15,
+      "y": 7,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -89,8 +103,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(PIDGEY)",
-      "x": 13,
-      "y": 5,
+      "x": 17,
+      "y": 7,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -103,8 +117,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(JIGGLYPUFF)",
-      "x": 9,
-      "y": 9,
+      "x": 13,
+      "y": 11,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -117,8 +131,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(CHARMANDER)",
-      "x": 11,
-      "y": 9,
+      "x": 15,
+      "y": 11,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -131,8 +145,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(SPINDA)",
-      "x": 13,
-      "y": 9,
+      "x": 17,
+      "y": 11,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -145,10 +159,10 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
-      "x": 2,
-      "y": 9,
+      "x": 5,
+      "y": 7,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -158,11 +172,11 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_LITTLE_GIRL",
-      "x": 6,
-      "y": 9,
+      "graphics_id": "OBJ_EVENT_GFX_LITTLE_GIRL_FRLG",
+      "x": 7,
+      "y": 10,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -173,7 +187,7 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(HAPPINY)",
-      "x": 6,
+      "x": 8,
       "y": 10,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
@@ -186,11 +200,39 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_2",
-      "x": 12,
-      "y": 10,
+      "graphics_id": "OBJ_EVENT_GFX_WOMAN_1_FRLG",
+      "x": 4,
+      "y": 13,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "VermilionCity_MedicalCenter_1F_EventScript_Woman",
+      "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_YOUNGSTER_FRLG",
+      "x": 2,
+      "y": 4,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "VermilionCity_MedicalCenter_1F_EventScript_Youngster",
+      "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_2",
+      "x": 13,
+      "y": 13,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -201,8 +243,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(MACHOP)",
-      "x": 13,
-      "y": 10,
+      "x": 14,
+      "y": 13,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -215,8 +257,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(MACHOKE)",
-      "x": 14,
-      "y": 10,
+      "x": 15,
+      "y": 13,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -229,8 +271,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES(MACHAMP)",
-      "x": 15,
-      "y": 10,
+      "x": 16,
+      "y": 13,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -243,8 +285,8 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_SPECIES_SHINY(MACHAMP)",
-      "x": 16,
-      "y": 10,
+      "x": 17,
+      "y": 13,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
@@ -257,22 +299,22 @@
   ],
   "warp_events": [
     {
-      "x": 7,
-      "y": 11,
-      "elevation": 3,
-      "dest_map": "MAP_VERMILION_CITY",
-      "dest_warp_id": "10"
-    },
-    {
-      "x": 8,
-      "y": 11,
-      "elevation": 3,
-      "dest_map": "MAP_VERMILION_CITY",
-      "dest_warp_id": "10"
-    },
-    {
       "x": 9,
-      "y": 11,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_VERMILION_CITY",
+      "dest_warp_id": "10"
+    },
+    {
+      "x": 10,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_VERMILION_CITY",
+      "dest_warp_id": "10"
+    },
+    {
+      "x": 11,
+      "y": 13,
       "elevation": 3,
       "dest_map": "MAP_VERMILION_CITY",
       "dest_warp_id": "10"
@@ -289,7 +331,7 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 10,
+      "x": 12,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
@@ -297,7 +339,7 @@
     },
     {
       "type": "sign",
-      "x": 11,
+      "x": 13,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
@@ -305,7 +347,23 @@
     },
     {
       "type": "sign",
-      "x": 3,
+      "x": 15,
+      "y": 2,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "VermilionCity_MedicalCenter_1F_EventScript_Cabinet"
+    },
+    {
+      "type": "sign",
+      "x": 16,
+      "y": 2,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "VermilionCity_MedicalCenter_1F_EventScript_Cabinet"
+    },
+    {
+      "type": "sign",
+      "x": 5,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
@@ -313,7 +371,7 @@
     },
     {
       "type": "sign",
-      "x": 4,
+      "x": 6,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",

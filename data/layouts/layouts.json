@@ -11563,8 +11563,8 @@
     {
       "id": "LAYOUT_VERMILION_CITY_MEDICAL_CENTER_1F",
       "name": "VermilionCity_MedicalCenter_1F_Layout",
-      "width": 17,
-      "height": 13,
+      "width": 21,
+      "height": 15,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_BuildingFrlg",
@@ -11576,8 +11576,8 @@
     {
       "id": "LAYOUT_VERMILION_CITY_MEDICAL_CENTER_2F",
       "name": "VermilionCity_MedicalCenter_2F_Layout",
-      "width": 17,
-      "height": 13,
+      "width": 27,
+      "height": 15,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_BuildingFrlg",
@@ -11597,6 +11597,45 @@
       "secondary_tileset": "gTileset_MedicalCenter",
       "border_filepath": "data/layouts/VermilionCity_MedicalCenter_3F/border.bin",
       "blockdata_filepath": "data/layouts/VermilionCity_MedicalCenter_3F/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_VERMILION_CITY_MEDICAL_CENTER_201",
+      "name": "VermilionCity_MedicalCenter_201_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_MedicalCenter",
+      "border_filepath": "data/layouts/VermilionCity_MedicalCenter_201/border.bin",
+      "blockdata_filepath": "data/layouts/VermilionCity_MedicalCenter_201/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_VERMILION_CITY_MEDICAL_CENTER_202",
+      "name": "VermilionCity_MedicalCenter_202_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_MedicalCenter",
+      "border_filepath": "data/layouts/VermilionCity_MedicalCenter_202/border.bin",
+      "blockdata_filepath": "data/layouts/VermilionCity_MedicalCenter_202/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_VERMILION_CITY_MEDICAL_CENTER_203",
+      "name": "VermilionCity_MedicalCenter_203_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_MedicalCenter",
+      "border_filepath": "data/layouts/VermilionCity_MedicalCenter_203/border.bin",
+      "blockdata_filepath": "data/layouts/VermilionCity_MedicalCenter_203/map.bin",
       "layout_version": "frlg"
     }
   ]

@@ -1,7 +1,7 @@
 // Pokémon Canvas: the Universal Pokémon Medical Center, on Vermilion City's building site.
 //
 // The foreman (data/maps/VermilionCity_Frlg) needs help: a MACHOP, then a MACHOKE, then a MACHAMP, then
-// a shiny MACHAMP (not one withdrawn from Bill's Palm Pilot). Each one goes to work for him for good
+// a shiny MACHAMP (any: one withdrawn from Bill's Palm Pilot too). Each one goes to work for him for good
 // (VAR_MEDCENTER_HELPERS), and each turns something up in the dig: the Kanto fossil the player didn't
 // take at Mt. Moon, then a Root or Claw Fossil, then a Skull or Armor Fossil. With the fourth the
 // building's done (FLAG_MEDCENTER_OPEN): three floors (data/maps/VermilionCity_MedicalCenter_*,
@@ -72,9 +72,7 @@ u32 MedCenter_HelperCheck(struct Pokemon *mon, u32 helpersSoFar, u32 partyCount)
     if (helpersSoFar == MEDCENTER_NUM_HELPERS - 1)
     {
         if (!GetMonData(mon, MON_DATA_IS_SHINY))
-            return HELPER_NOT_SHINY;
-        if (GetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER))   // (Bill's Palm Pilot: src/gauntlet.c)
-            return HELPER_WITHDRAWN;
+            return HELPER_NOT_SHINY;                // (any shiny one: Bill's Palm Pilot's too)
     }
     if (partyCount <= 1)
         return HELPER_LAST_MON;

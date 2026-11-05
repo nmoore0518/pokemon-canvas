@@ -63,7 +63,7 @@ def solve(w, h, walls, gurneys, start, goal):
 
 if __name__ == "__main__":
     w, h, walls, gurneys = load()
-    start, goal = (2, 6), (14, 6)            # (off the escalator up from the 1F; before the one up to the 3F)
+    start, goal = (2, 6), (24, 10)           # (off the escalator up from the 1F; before the one up to the 3F)
     pushes, moves = solve(w, h, walls, gurneys, start, goal)
     print("fewest pushes:", pushes, "moves:", moves)
     free, _ = solve(w, h, walls, frozenset(), start, goal)

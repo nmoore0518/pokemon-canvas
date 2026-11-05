@@ -4624,7 +4624,7 @@ TEST("GymHack: the HEAL CHARM: the player's medicine heals 10% more, with it in 
     RemoveBagItem(ITEM_HEAL_CHARM, 1);
 }
 
-TEST("GymHack: the Vermilion foreman's helpers: MACHOP, MACHOKE, MACHAMP, then a shiny one not from Bill")
+TEST("GymHack: the Vermilion foreman's helpers: MACHOP, MACHOKE, MACHAMP, then any shiny one")
 {
     struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
     bool8 fateful = TRUE;
@@ -4641,8 +4641,8 @@ TEST("GymHack: the Vermilion foreman's helpers: MACHOP, MACHOKE, MACHAMP, then a
         SetMonData(mon, MON_DATA_IS_SHINY, &shiny);
     }
     EXPECT_EQ(MedCenter_HelperCheck(mon, 3, 2), HELPER_OK);
-    SetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER, &fateful);       // (Bill's Palm Pilot)
-    EXPECT_EQ(MedCenter_HelperCheck(mon, 3, 2), HELPER_WITHDRAWN);
+    SetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER, &fateful);       // (Bill's Palm Pilot: fine too)
+    EXPECT_EQ(MedCenter_HelperCheck(mon, 3, 2), HELPER_OK);
     EXPECT_EQ(MedCenter_HelperCheck(mon, 4, 2), HELPER_WRONG_SPECIES);
 }
 

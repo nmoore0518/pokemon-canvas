@@ -59,22 +59,22 @@ def mirror(c, mid):
 
 
 class Floorplan:
-    def __init__(self, c):
-        self.c = c
-        self.g = [[blk(0x081, 0)] * W for _ in range(H)]
+    def __init__(self, w=None, h=None):
+        self.w, self.h = w or W, h or H
+        W_, H_ = self.w, self.h
+        self.g = [[blk(0x081, 0)] * W_ for _ in range(H_)]
         # the walls: three rows, the lab's
-        for x in range(W):
+        for x in range(W_):
             self.g[0][x] = blk(0x069, 1, 0)
             self.g[1][x] = blk(0x071, 1, 0)
             self.g[2][x] = blk(0x079, 0)
-        self.g[0][0], self.g[0][W - 1] = blk(0x068, 1, 0), blk(0x06A, 1, 0)
-        self.g[1][0], self.g[1][W - 1] = blk(0x070, 1, 0), blk(0x072, 1, 0)
-        self.g[2][0], self.g[2][W - 1] = blk(0x078, 0), blk(0x07A, 0)
-        for y in range(3, H - 1):
+        self.g[0][0], self.g[0][W_ - 1] = blk(0x068, 1, 0), blk(0x06A, 1, 0)
+        self.g[1][0], self.g[1][W_ - 1] = blk(0x070, 1, 0), blk(0x072, 1, 0)
+        self.g[2][0], self.g[2][W_ - 1] = blk(0x078, 0), blk(0x07A, 0)
+        for y in range(3, H_ - 1):
             self.g[y][0] = blk(0x082, 0)
-        for x in range(W):
-            self.g[H - 1][x] = blk(0x008, 1, 0)
-        self.solid = set()
+        for x in range(W_):
+            self.g[H_ - 1][x] = blk(0x008, 1, 0)
 
     def put(self, x, y, m, coll=1, elev=None):
         self.g[y][x] = blk(m, coll, (0 if coll else 3) if elev is None else elev)
@@ -88,6 +88,10 @@ class Floorplan:
             for dx, m in enumerate(row):
                 coll = 0 if (dx, dy) in walk else 1
                 self.put(x + dx, y + dy, m, coll)
+
+    def one(self, P, name, x, y):
+        """a 1 x 1 piece"""
+        self.put(x, y, P[name][0][0], 1)
 
 
 def build_tileset():
@@ -158,11 +162,9 @@ def counter_img():
 # ---------------------------------------------------------------------------------------------
 # The floors
 # ---------------------------------------------------------------------------------------------
-ESC = {"up_l": (0, 5), "down_l": (0, 5), "up_r": (W - 2, 5), "down_r": (W - 2, 5)}   # (top-left; the warp in its middle row)
-
-
-def put_escalator(f, P, kind):
-    x, y = ESC[kind]
+def put_escalator(f, P, kind, y=5):
+    """an escalator (2 x 3) against the left or right wall, its top row at y -> the step you ride"""
+    x = 0 if kind.endswith("_l") else f.w - 2
     blocks = P["esc_" + kind]
     for dy in range(3):
         for dx in range(2):
@@ -185,47 +187,70 @@ def put_escalator(f, P, kind):
     return (rx, y + 1)
 
 
-def mat(f):
-    """the door mat out (the 1F): its warps"""
+def mat(f, x0):
+    """the door mat out: its warps"""
     for i, m in enumerate((0x088, 0x089, 0x08A)):
-        f.put(7 + i, H - 2, m, 0, 3)
+        f.put(x0 + i, f.h - 2, m, 0, 3)
     for i, m in enumerate((0x090, 0x091, 0x092)):
-        f.put(7 + i, H - 1, m, 1, 0)
-    return [(7 + i, H - 2) for i in range(3)]
+        f.put(x0 + i, f.h - 1, m, 1, 0)
+    return [(x0 + i, f.h - 2) for i in range(3)]
 
 
-# 1F: reception, the ER (six beds, six patients), a waiting area. The escalator up on the left.
-TRIAGE_BEDS = [(9, 4), (11, 4), (13, 4), (9, 8), (11, 8), (13, 8)]   # (the bed's head; the patient on its foot)
+def door(f, P, x):
+    """a door in the back wall (the lab's), x its left; -> the tile you walk into (its warp)"""
+    f.piece(P["door"], x, 0, walk={(0, 1)})
+    f.put(x, 1, P["door"][1][0], 0, 3)
+    return (x, 1)
+
+
+def plant(f, P, x, y):
+    f.piece([[P["plant"][0]], [P["plant"][1]]], x, y)
+
+
+def benches(f, P, x, y, n):
+    for i in range(n):
+        f.piece(P["pc_bench"], x + i, y)
+
+
+# 1F (21 x 15): reception, a pharmacy, the ER (six beds, six patients), a waiting area. The escalator
+# up on the left.
+W1, H1 = 21, 15
+TRIAGE_BEDS = [(13, 6), (15, 6), (17, 6), (13, 10), (15, 10), (17, 10)]   # (the bed's head; the patient on its foot)
 
 
 def floor_1f(P):
-    f = Floorplan(None)
-    f.put(2, 1, P["window"][1])
-    f.put(14, 1, P["window"][1])
-    f.piece([P["cross"][0]], 6, 1)
-    f.piece([P["plaque"][0]], 3, 1)
-    f.piece(P["counter"], 3, 3)
+    f = Floorplan(W1, H1)
+    f.put(3, 1, P["window"][1])
+    f.put(10, 1, P["window"][1])
+    f.put(19, 1, P["window"][1])
+    f.piece(P["plaque"], 5, 1)
+    f.piece(P["cross"], 7, 1)
+    f.piece(P["counter"], 4, 3)                       # (reception)
+    f.piece(P["cabinet"], 12, 1)                      # (the pharmacy: its cabinets, its counter)
+    f.piece(P["cabinet"], 15, 1)
+    f.piece(P["counter"], 12, 3)
+    plant(f, P, 1, 1)
     for (x, y) in TRIAGE_BEDS:
         f.piece(P["bed"], x, y)
-    for (x, y) in ((10, 4), (12, 4), (10, 8), (12, 8)):
+    for (x, y) in ((14, 6), (16, 6), (14, 10), (16, 10)):
         f.piece(P["curtain"], x, y)
-    f.piece(P["monitor"], 15, 4)
-    f.piece(P["iv"], 15, 8)
-    f.piece(P["cabinet"], 10, 1)
-    f.piece([[P["plant"][0]], [P["plant"][1]]], 16 - 1, 1)
-    # the waiting area: benches
-    for (x, y) in ((3, 8), (4, 8), (5, 8)):
-        f.piece(P["pc_bench"], x, y)
+    f.piece(P["monitor"], 19, 6)
+    f.piece(P["iv"], 19, 10)
+    benches(f, P, 4, 8, 4)                           # (the waiting area)
+    benches(f, P, 4, 11, 4)
+    f.one(P, "wheelchair", 2, 12)
     rx = put_escalator(f, P, "up_l")
-    exits = mat(f)
+    exits = mat(f, 9)
     return f, {"escalator": rx, "exits": exits}
 
 
-# 2F: the wards. Runaway gurneys between the escalator up from the 1F (left) and the one up to the 3F
-# (right); the nurse with the HEAL CHARM is past them. The puzzle (an 11 x 7 box, walls around it: the
-# player comes in at S, out at T) was picked by a search for one that takes some thought: 5 pushes, 4
-# gurneys moved (tools/gym_hack/medical_center_puzzle.py checks it). '#' inside: wheelchairs, carts, boxes.
-PUZZLE_AT = (3, 2)                 # (the box's top-left on the map)
+# 2F (27 x 15): the wards. A nurses' station and a waiting area; three patient rooms off the back
+# wall; and runaway gurneys in the way of the escalator up to the 3F (the box on the right). The
+# puzzle (an 11 x 7 box, walls around it: the player comes in at S, out at T) was picked by a search
+# for one that takes some thought: 5 pushes, 4 gurneys moved (tools/gym_hack/medical_center_puzzle.py
+# checks it on the map). '#' inside: wheelchairs, carts, boxes.
+W2, H2 = 27, 15
+PUZZLE_AT = (13, 7)                # (the box's top-left on the map)
 PUZZLE = [
     "###########",
     "S.G......##",
@@ -237,61 +262,80 @@ PUZZLE = [
 ]
 OBSTACLES = ["wheelchair", "cart", "boxes"]
 GURNEYS = [(PUZZLE_AT[0] + x, PUZZLE_AT[1] + y) for y, r in enumerate(PUZZLE) for x, c in enumerate(r) if c == "G"]
-WARD_NURSE = (15, 9)
-PAST_GURNEYS = (12, 6)              # (the box's last tile before its way out: every way through crosses it)
-ORDERLY = (2, 9)
+PAST_GURNEYS = (PUZZLE_AT[0] + 9, PUZZLE_AT[1] + 4)   # (the box's last tile before its way out: every way through crosses it)
+ORDERLY = (11, 9)
+WARD_NURSE = (24, 13)
+ROOM_DOORS = [4, 9, 18]            # (the doors' left columns)
+ESC_UP_2F_Y = 9
 
 
 def floor_2f(P):
-    f = Floorplan(None)
-    for x in (4, 9):
-        f.piece(P["door"], x, 0)
-    f.put(7, 1, P["window"][1])
-    f.put(12, 1, P["window"][1])
+    f = Floorplan(W2, H2)
+    doors = [door(f, P, x) for x in ROOM_DOORS]
+    for x in (7, 13, 22):
+        f.put(x, 1, P["window"][1])
+    f.piece(P["cross"], 15, 1)
+    f.piece(P["counter"], 5, 7)                      # (the nurses' station)
+    f.piece(P["cabinet"], 24, 1)
+    benches(f, P, 2, 10, 3)                          # (the waiting areas)
+    benches(f, P, 21, 4, 3)
+    plant(f, P, 1, 1)
+    plant(f, P, 12, 1)
+    plant(f, P, 20, 1)
     zx, zy = PUZZLE_AT
     k = 0
     for y, row in enumerate(PUZZLE):
         for x, ch in enumerate(row):
             mx, my = zx + x, zy + y
-            border = y in (0, len(PUZZLE) - 1) or x in (0, len(row) - 1)
             if ch != "#":
-                if my == 2:
-                    f.put(mx, my, 0x079, 0)
                 continue
-            if my == 2:                                       # (the top: the wall itself, made solid)
-                f.put(mx, my, 0x079, 1, 3)
-            elif border:
-                f.piece([[P["partition"][0][0]]], mx, my)
+            border = y in (0, len(PUZZLE) - 1) or x in (0, len(row) - 1)
+            if border:
+                f.one(P, "partition", mx, my)
             else:
-                f.piece([[P[OBSTACLES[k % len(OBSTACLES)]][0][0]]], mx, my)
+                f.one(P, OBSTACLES[k % len(OBSTACLES)], mx, my)
                 k += 1
-    # below the box, the ward beds: nobody gets round that way
-    for x in range(zx, zx + len(PUZZLE[0])):
-        if (x - zx) % 2 == 0:
-            f.piece(P["bed"], x, 9)
-        else:
-            f.piece(P["monitor"] if (x - zx) % 4 == 1 else P["iv"], x, 9)
-        f.piece([[P["partition"][0][0]]], x, 11)
-    f.piece(P["cabinet"], 14, 1)
+    # the corner beyond the box (the escalator up, the nurse with the HEAL CHARM): closed off above
+    for x in range(zx + len(PUZZLE[0]), W2):
+        f.one(P, "partition", x, zy)
     rd = put_escalator(f, P, "down_l")
-    ru = put_escalator(f, P, "up_r")
-    return f, {"down": rd, "up": ru, "S": (zx, zy + 1), "T": (zx + len(PUZZLE[0]) - 1, zy + 4)}
+    ru = put_escalator(f, P, "up_r", ESC_UP_2F_Y)
+    return f, {"down": rd, "up": ru, "doors": doors}
 
 
-# 3F: the research lab. Five microscopes on their benches (the slides: src/medical_center.c), the
-# head doctor, the head nurse (the physical, then Pokérus), an X-ray, a cabinet, ICU beds.
+# The patient rooms off the 2F (11 x 9 each): a bed with a patient, a monitor, an IV, visitors.
+WR, HR = 11, 9
+ROOMS = ["201", "202", "203"]
+
+
+def floor_room(P, i):
+    f = Floorplan(WR, HR)
+    f.put(3, 1, P["window"][1])
+    f.put(7, 1, P["window"][1])
+    f.piece(P["bed"], 5, 3)
+    f.piece(P["monitor"], 6, 3)
+    f.piece(P["iv"], 4, 3)
+    f.piece(P["curtain"], 9, 3) if i == 1 else f.piece(P["cabinet"], 8, 1)
+    plant(f, P, 1, 1)
+    f.one(P, "wheelchair", 1, 6) if i == 1 else f.one(P, "cart", 9, 6)
+    exits = mat(f, 4)
+    return f, {"exits": exits}
+
+
+# 3F (17 x 13): the research lab. Five microscopes on their benches (the slides: src/medical_center.c),
+# the head doctor, the head nurse (the physical, then Pokérus), an X-ray, a cabinet, ICU beds.
 MICROSCOPES = [(3, 5), (5, 5), (7, 5), (9, 5), (11, 5)]
 
 
 def floor_3f(P):
-    f = Floorplan(None)
+    f = Floorplan(W, H)
     f.piece(P["xray"], 2, 1)
     f.piece(P["cabinet"], 9, 1)
-    f.piece([P["cross"][0]], 6, 1)
+    f.piece(P["cross"], 6, 1)
     f.put(12, 1, P["window"][1])
     for (x, y) in MICROSCOPES:
         f.piece(P["microscope"], x, y)
-    for i, (x, y) in enumerate(((2, 9), (4, 9), (6, 9))):
+    for (x, y) in ((2, 9), (4, 9), (6, 9)):
         f.piece(P["bed"], x, y)
         f.piece(P["monitor"], x + 1, y)
     f.piece(P["display"], 13, 0)
@@ -307,20 +351,18 @@ def preview(floors, out):
     sec = rm.Tileset(rm.tileset_dir("gTileset_MedicalCenter"))
     out.mkdir(parents=True, exist_ok=True)
     for fl, (f, where) in floors.items():
-        img = Image.new("RGB", (W * 16, H * 16))
-        for y in range(H):
-            for x in range(W):
+        img = Image.new("RGB", (f.w * 16, f.h * 16))
+        for y in range(f.h):
+            for x in range(f.w):
                 rm.draw_metatile(img, x * 16, y * 16, f.g[y][x] & 0x3FF, prim, sec)
-        img = img.resize((W * 48, H * 48), Image.NEAREST)
+        img = img.resize((f.w * 32, f.h * 32), Image.NEAREST)
         d = ImageDraw.Draw(img)
-        for y in range(H):
-            for x in range(W):
-                if (f.g[y][x] >> 10) & 3:
-                    d.rectangle((x * 48 + 2, y * 48 + 2, x * 48 + 6, y * 48 + 6), fill=(255, 0, 0))
-        for k, v in where.items():
-            pts = v if isinstance(v, list) else [v]
-            for (x, y) in pts:
-                d.text((x * 48 + 8, y * 48 + 16), k[:6], fill=(255, 0, 255))
+        m = json.loads((ROOT / f"data/maps/{NAME.format(fl)}/map.json").read_text())
+        for o in m["object_events"]:
+            d.rectangle((o["x"] * 32 + 4, o["y"] * 32 + 4, o["x"] * 32 + 28, o["y"] * 32 + 28), outline=(255, 0, 255), width=2)
+            d.text((o["x"] * 32 + 6, o["y"] * 32 + 8), o["graphics_id"].split("(")[-1][:5], fill=(255, 0, 255))
+        for wp in m["warp_events"]:
+            d.rectangle((wp["x"] * 32 + 10, wp["y"] * 32 + 10, wp["x"] * 32 + 22, wp["y"] * 32 + 22), outline=(0, 160, 255), width=2)
         img.save(out / f"{fl}.png")
 
 
@@ -337,27 +379,33 @@ def warp(x, y, dest, wid, elev=3):
 
 
 PATIENTS = ["PSYDUCK", "RATTATA", "PIDGEY", "JIGGLYPUFF", "CHARMANDER", "SPINDA"]
+WARP_1F_ESC = 3                    # (the 1F's warps: the mat's three, then the escalator)
+WARP_2F_ROOMS = 2                  # (the 2F's: down, up, then the rooms' doors)
 
 
 def objects_1f(where):
     P = "VermilionCity_MedicalCenter_1F_EventScript_"
-    o = [obj("OBJ_EVENT_GFX_NURSE_FRLG", 5, 2, P + "Receptionist"),
-         mon("CHANSEY", 4, 2, P + "Chansey"),
-         obj("OBJ_EVENT_GFX_NURSE_FRLG", 8, 6, P + "TriageNurse", "MOVEMENT_TYPE_FACE_RIGHT")]
+    o = [obj("OBJ_EVENT_GFX_NURSE_FRLG", 6, 2, P + "Receptionist"),
+         mon("CHANSEY", 7, 2, P + "Chansey"),
+         obj("OBJ_EVENT_GFX_MART_EMPLOYEE", 14, 2, P + "Pharmacist"),
+         obj("OBJ_EVENT_GFX_NURSE_FRLG", 12, 8, P + "TriageNurse", "MOVEMENT_TYPE_FACE_RIGHT")]
     for i, (x, y) in enumerate(TRIAGE_BEDS):
         o.append(mon(PATIENTS[i], x, y + 1, P + f"Patient{i}", "MOVEMENT_TYPE_FACE_DOWN"))
-    o += [obj("OBJ_EVENT_GFX_OLD_MAN_1", 2, 9, P + "OldMan", "MOVEMENT_TYPE_FACE_UP"),
-          obj("OBJ_EVENT_GFX_LITTLE_GIRL", 6, 9, P + "Girl", "MOVEMENT_TYPE_FACE_LEFT"),
-          mon("HAPPINY", 6, 10, P + "Happiny", "MOVEMENT_TYPE_WANDER_AROUND"),
+    o += [obj("OBJ_EVENT_GFX_OLD_MAN_1", 5, 7, P + "OldMan", "MOVEMENT_TYPE_FACE_DOWN"),
+          obj("OBJ_EVENT_GFX_LITTLE_GIRL_FRLG", 7, 10, P + "Girl", "MOVEMENT_TYPE_FACE_UP"),
+          mon("HAPPINY", 8, 10, P + "Happiny", "MOVEMENT_TYPE_WANDER_AROUND"),
+          obj("OBJ_EVENT_GFX_WOMAN_1_FRLG", 4, 13, P + "Woman", "MOVEMENT_TYPE_FACE_UP"),
+          obj("OBJ_EVENT_GFX_YOUNGSTER_FRLG", 2, 4, P + "Youngster", "MOVEMENT_TYPE_WANDER_AROUND"),
           # the foreman and his crew, who built it
-          obj("OBJ_EVENT_GFX_OLD_MAN_2", 12, 10, P + "Foreman", "MOVEMENT_TYPE_FACE_DOWN"),
-          mon("MACHOP", 13, 10, P + "Machop"),
-          mon("MACHOKE", 14, 10, P + "Machoke"),
-          mon("MACHAMP", 15, 10, P + "Machamp"),
-          mon("MACHAMP", 16, 10, P + "ShinyMachamp", shiny=True)]
+          obj("OBJ_EVENT_GFX_OLD_MAN_2", 13, 13, P + "Foreman", "MOVEMENT_TYPE_FACE_LEFT"),
+          mon("MACHOP", 14, 13, P + "Machop"),
+          mon("MACHOKE", 15, 13, P + "Machoke"),
+          mon("MACHAMP", 16, 13, P + "Machamp"),
+          mon("MACHAMP", 17, 13, P + "ShinyMachamp", shiny=True)]
     warps = [warp(x, y, "MAP_VERMILION_CITY", CITY_WARP) for (x, y) in where["exits"]]
     warps.append(warp(*where["escalator"], MAP_ID.format("2F"), 0, 4))
-    bgs = [sign(10, 2, P + "Cabinet"), sign(11, 2, P + "Cabinet"), sign(3, 2, P + "Plaque"), sign(4, 2, P + "Plaque")]
+    bgs = [sign(12, 2, P + "Cabinet"), sign(13, 2, P + "Cabinet"), sign(15, 2, P + "Cabinet"), sign(16, 2, P + "Cabinet"),
+           sign(5, 2, P + "Plaque"), sign(6, 2, P + "Plaque")]
     return o, warps, bgs
 
 
@@ -370,13 +418,39 @@ def objects_2f(where):
     o = [obj("OBJ_EVENT_GFX_GURNEY", x, y, "0x0", "MOVEMENT_TYPE_NONE", "FLAG_GOT_HEAL_CHARM") for (x, y) in GURNEYS]
     for g in o:                                   # (no movement range: like a boulder, it goes where it's pushed)
         g["movement_range_x"] = g["movement_range_y"] = 0
-    o += [obj("OBJ_EVENT_GFX_NURSE_FRLG", *WARD_NURSE, P + "WardNurse", "MOVEMENT_TYPE_FACE_LEFT"),
-          obj("OBJ_EVENT_GFX_SCIENTIST", *ORDERLY, P + "Orderly", "MOVEMENT_TYPE_FACE_RIGHT")]
-    warps = [warp(*where["down"], MAP_ID.format("1F"), 3, 4), warp(*where["up"], MAP_ID.format("3F"), 0, 4)]
+    o += [obj("OBJ_EVENT_GFX_NURSE_FRLG", *WARD_NURSE, P + "WardNurse", "MOVEMENT_TYPE_FACE_UP"),
+          obj("OBJ_EVENT_GFX_SCIENTIST", *ORDERLY, P + "Orderly", "MOVEMENT_TYPE_FACE_RIGHT"),
+          obj("OBJ_EVENT_GFX_NURSE_FRLG", 7, 6, P + "StationNurse", "MOVEMENT_TYPE_FACE_DOWN"),
+          mon("CHANSEY", 9, 6, P + "Chansey", "MOVEMENT_TYPE_FACE_DOWN"),
+          obj("OBJ_EVENT_GFX_GENTLEMAN_FRLG", 3, 9, P + "Gentleman", "MOVEMENT_TYPE_FACE_DOWN"),
+          obj("OBJ_EVENT_GFX_LASS_FRLG", 4, 12, P + "Lass", "MOVEMENT_TYPE_FACE_UP"),
+          mon("MEOWTH", 5, 12, P + "Meowth", "MOVEMENT_TYPE_FACE_LEFT"),
+          obj("OBJ_EVENT_GFX_OLD_WOMAN_FRLG", 22, 3, P + "OldWoman", "MOVEMENT_TYPE_FACE_DOWN"),
+          obj("OBJ_EVENT_GFX_FISHER", 16, 4, P + "Fisher", "MOVEMENT_TYPE_WANDER_AROUND")]
+    warps = [warp(*where["down"], MAP_ID.format("1F"), WARP_1F_ESC, 4), warp(*where["up"], MAP_ID.format("3F"), 0, 4)]
+    warps += [warp(x, y, MAP_ID.format(ROOMS[i]), 1, 3) for i, (x, y) in enumerate(where["doors"])]   # (the mat's middle)
     bgs = []
-    for x in (4, 9):
-        bgs += [sign(x, 1, P + "WardDoor"), sign(x + 1, 1, P + "WardDoor")]
+    for i, x in enumerate(ROOM_DOORS):
+        bgs.append(sign(x + 1, 1, P + f"RoomSign{i}"))
     return o, warps, bgs, coords
+
+
+ROOM_PEOPLE = [
+    # (patient, its spot on the bed; the visitors)
+    ("PIKACHU", [("OBJ_EVENT_GFX_LITTLE_BOY_FRLG", 4, 5, "FACE_UP"), ("OBJ_EVENT_GFX_NURSE_FRLG", 7, 4, "FACE_LEFT")]),
+    ("GROWLITHE", [("OBJ_EVENT_GFX_OLD_WOMAN_FRLG", 7, 5, "FACE_LEFT"), ("OBJ_EVENT_GFX_SCIENTIST", 3, 5, "FACE_RIGHT")]),
+    ("TOGEPI", [("OBJ_EVENT_GFX_WOMAN_1_FRLG", 7, 4, "FACE_LEFT"), ("OBJ_EVENT_GFX_SPECIES(CHANSEY)", 3, 5, "FACE_RIGHT")]),
+]
+
+
+def objects_room(where, i):
+    P = f"VermilionCity_MedicalCenter_{ROOMS[i]}_EventScript_"
+    patient, people = ROOM_PEOPLE[i]
+    o = [mon(patient, 5, 4, P + "Patient", "MOVEMENT_TYPE_FACE_DOWN")]
+    for k, (gfx, x, y, face) in enumerate(people):
+        o.append(obj(gfx, x, y, P + f"Visitor{k}", "MOVEMENT_TYPE_" + face))
+    warps = [warp(x, y, MAP_ID.format("2F"), WARP_2F_ROOMS + i) for (x, y) in where["exits"]]
+    return o, warps, []
 
 
 def objects_3f(where):
@@ -392,9 +466,15 @@ def objects_3f(where):
     return o, warps, bgs
 
 
+ALL_MAPS = FLOORS + ROOMS
+
+
 def write_maps(P):
     floors = {"1F": floor_1f(P), "2F": floor_2f(P), "3F": floor_3f(P)}
     makers = {"1F": objects_1f, "2F": objects_2f, "3F": objects_3f}
+    for i, r in enumerate(ROOMS):
+        floors[r] = floor_room(P, i)
+        makers[r] = (lambda i: lambda where: objects_room(where, i))(i)
     for fl, (f, where) in floors.items():
         name = NAME.format(fl)
         write_layout(name, LAYOUT_ID.format(fl), f.g, PRIMARY, "gTileset_MedicalCenter", border=0x008 | (1 << 10))
@@ -409,14 +489,14 @@ def write_group():
     gp = ROOT / "data/maps/map_groups.json"
     groups = json.loads(gp.read_text())
     g = groups[GROUP]
-    for fl in FLOORS:
+    for fl in ALL_MAPS:
         if NAME.format(fl) not in g:
             g.append(NAME.format(fl))
     gp.write_text(json.dumps(groups, indent=2) + "\n")
     es = ROOT / "data/event_scripts.s"
     s = es.read_text()
     anchor = '\t.include "data/maps/VermilionCity_PokemonCenter_2F_Frlg/scripts.inc"\n'
-    for fl in reversed(FLOORS):
+    for fl in reversed(ALL_MAPS):
         inc = f'\t.include "data/maps/{NAME.format(fl)}/scripts.inc"\n'
         if inc not in s:
             s = s.replace(anchor, anchor + inc)
@@ -427,10 +507,10 @@ def write_group():
     # Vermilion City: the door's warp (at the end: the others keep their numbers)
     mp = ROOT / f"data/maps/{CITY}/map.json"
     j = json.loads(mp.read_text())
-    door = (LOT[0] + art.EXT_DOOR[0], LOT[1] + art.EXT_DOOR[1])
+    door_at = (LOT[0] + art.EXT_DOOR[0], LOT[1] + art.EXT_DOOR[1])
     ws = [w for w in j["warp_events"] if w["dest_map"] != MAP_ID.format("1F")]
     assert len(ws) == CITY_WARP, len(ws)
-    ws.append(warp(*door, MAP_ID.format("1F"), 0, 0))
+    ws.append(warp(*door_at, MAP_ID.format("1F"), 1, 0))                        # (the mat's middle)
     j["warp_events"] = ws
     for o in j["object_events"]:                       # (the foreman and his MACHOP: gone once it's built)
         if o["script"] in ("VermilionCity_EventScript_OldMan2", "VermilionCity_EventScript_Machop",

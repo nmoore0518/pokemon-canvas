@@ -186,7 +186,41 @@ VermilionCity_MedicalCenter_1F_EventScript_PatientCured::
 	release
 	end
 
+@ ---- The pharmacy ----
+VermilionCity_MedicalCenter_1F_EventScript_Pharmacist::
+	lock
+	faceplayer
+	message gText_HowMayIServeYou
+	waitmessage
+	pokemart VermilionCity_MedicalCenter_1F_Items
+	msgbox gText_PleaseComeAgain
+	release
+	end
+
+	.align 2
+VermilionCity_MedicalCenter_1F_Items::
+	.2byte ITEM_POTION
+	.2byte ITEM_SUPER_POTION
+	.2byte ITEM_HYPER_POTION
+	.2byte ITEM_MAX_POTION
+	.2byte ITEM_REVIVE
+	.2byte ITEM_ANTIDOTE
+	.2byte ITEM_PARALYZE_HEAL
+	.2byte ITEM_AWAKENING
+	.2byte ITEM_BURN_HEAL
+	.2byte ITEM_ICE_HEAL
+	.2byte ITEM_FULL_HEAL
+	pokemartlistend
+
 @ ---- Visitors ----
+VermilionCity_MedicalCenter_1F_EventScript_Woman::
+	msgbox VermilionCity_MedicalCenter_1F_Text_Woman, MSGBOX_NPC
+	end
+
+VermilionCity_MedicalCenter_1F_EventScript_Youngster::
+	msgbox VermilionCity_MedicalCenter_1F_Text_Youngster, MSGBOX_NPC
+	end
+
 VermilionCity_MedicalCenter_1F_EventScript_OldMan::
 	msgbox VermilionCity_MedicalCenter_1F_Text_OldMan, MSGBOX_NPC
 	end
@@ -361,6 +395,14 @@ VermilionCity_MedicalCenter_1F_Text_Cabinet::
 VermilionCity_MedicalCenter_1F_Text_Plaque::
 	.string "UNIVERSAL POKéMON MEDICAL CENTER\n"
 	.string "RECEPTION$"
+
+VermilionCity_MedicalCenter_1F_Text_Woman::
+	.string "The wait's not bad at all.\n"
+	.string "They see you right away here!$"
+
+VermilionCity_MedicalCenter_1F_Text_Youngster::
+	.string "I'm not sick. I just come to watch\n"
+	.string "the CHANSEY work. They're so fast!$"
 
 VermilionCity_MedicalCenter_1F_Text_Foreman::
 	.string "Not bad for a building crew of\n"

@@ -989,7 +989,10 @@
     "VermilionCity_House3_Frlg",
     "VermilionCity_MedicalCenter_1F",
     "VermilionCity_MedicalCenter_2F",
-    "VermilionCity_MedicalCenter_3F"
+    "VermilionCity_MedicalCenter_3F",
+    "VermilionCity_MedicalCenter_201",
+    "VermilionCity_MedicalCenter_202",
+    "VermilionCity_MedicalCenter_203"
   ],
   "gMapGroup_IndoorCeladon_Frlg": [
     "CeladonCity_DepartmentStore_1F_Frlg",

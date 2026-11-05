@@ -12,7 +12,6 @@
 #define HELPER_OK               0
 #define HELPER_WRONG_SPECIES    1
 #define HELPER_NOT_SHINY        2
-#define HELPER_WITHDRAWN        3       // (from Bill's Palm Pilot)
 #define HELPER_EGG              4
 #define HELPER_LAST_MON         5       // (the player's only Pokémon)
 

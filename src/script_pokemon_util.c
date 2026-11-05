@@ -365,21 +365,11 @@ void SetTeraType(struct ScriptContext *ctx)
  * if side/slot are assigned, it will create the mon at the assigned party location
  * if slot == PARTY_SIZE, it will give the mon to first available party or storage slot
  */
-// Pokémon Canvas: the next givemon's Pokémon is one withdrawn from Bill's Palm Pilot (src/gauntlet.c):
-// marked as a fateful encounter (the Vermilion foreman won't take one: src/medical_center.c)
-EWRAM_DATA bool8 gGiveMonWithdrawn = FALSE;
-
 u32 ScriptGiveMonParameterized(u8 side, u8 slot, struct PokemonTemplate *monTemplate)
 {
     struct Pokemon mon;
 
     CreateMonFromTemplate(&mon, monTemplate);
-    if (gGiveMonWithdrawn)
-    {
-        bool8 fateful = TRUE;
-        SetMonData(&mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER, &fateful);
-        gGiveMonWithdrawn = FALSE;
-    }
 
     if (side == B_SIDE_PLAYER)
         return GiveScriptedMonToPlayer(&mon, slot);

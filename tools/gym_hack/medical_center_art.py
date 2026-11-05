@@ -444,81 +444,132 @@ def gurney():
 # The building, in Vermilion City (7 x 6 blocks), its own palette (the city's tileset's slot 11)
 # ---------------------------------------------------------------------------------------------
 EXT = [
-    (255, 0, 255),       # 0 (unused: the building is solid)
+    (255, 0, 255),       # 0 (transparent: Vermilion's grass)
     (41, 41, 57),        # 1 outline
-    (255, 255, 255),     # 2 white
+    (255, 255, 255),     # 2 white, highlights
     (222, 230, 238),     # 3 wall
-    (180, 189, 205),     # 4 wall, shade
-    (123, 131, 148),     # 5 wall, dark
+    (189, 197, 213),     # 4 wall, shade
+    (131, 139, 156),     # 5 wall, dark (under the eaves; the plinth)
     (115, 205, 197),     # 6 teal
     (57, 148, 148),      # 7 teal, dark
-    (164, 222, 255),     # 8 window
-    (82, 148, 213),      # 9 window, dark
+    (180, 230, 255),     # 8 window
+    (74, 139, 205),      # 9 window, dark
     (230, 65, 65),       # 10 red
-    (164, 32, 41),       # 11 red, dark
-    (197, 205, 189),     # 12 roof
-    (148, 156, 139),     # 13 roof, dark
-    (255, 222, 115),     # 14 light (the sign's glow)
-    (115, 205, 164),     # 15 the grass under the eaves (blends with Vermilion's)
+    (156, 32, 41),       # 11 red, dark
+    (189, 197, 172),     # 12 roof
+    (139, 148, 123),     # 13 roof, dark
+    (115, 197, 82),      # 14 the planters' leaves
+    (57, 123, 49),       # 15 leaves, dark
 ]
-E_O, E_W, E_WALL, E_WS, E_WD, E_T, E_TD, E_WIN, E_WIND, E_R, E_RD, E_ROOF, E_ROOFD, E_Y, E_GRASS = range(1, 16)
+E_O, E_W, E_WALL, E_WS, E_WD, E_T, E_TD, E_WIN, E_WIND, E_R, E_RD, E_ROOF, E_ROOFD, E_LEAF, E_LEAFD = range(1, 16)
 EXT_W, EXT_H = 7, 6
 EXT_DOOR = (3, 5)                        # (the door: dx, dy in the building)
 
 
 def exterior():
+    """drawn the way FireRed draws its buildings: a flat roof with ridges and a lit top edge, an
+    overhang that shades the wall under it, the wall lit from the left and shaded on the right, framed
+    windows with sills, a plinth, planters by the door"""
     W_, H_ = EXT_W * 16, EXT_H * 16
-    c = Img(W_, H_, 0)                           # (0: Vermilion's own grass shows through)
-    # the roof: a flat roof, seen from the front, with a teal parapet
-    c.box(2, 2, W_ - 3, 17, E_ROOF)
-    for x in range(4, W_ - 4, 6):
-        c.vline(x, 4, 15, E_ROOFD)
-    c.box(1, 15, W_ - 2, 21, E_T)
-    c.hline(2, W_ - 3, 20, E_TD)
-    # the walls
-    c.box(4, 21, W_ - 5, H_ - 1, E_WALL)
-    c.rect(5, 22, 9, H_ - 2, E_WS)               # (shade at the sides)
-    c.rect(W_ - 10, 22, W_ - 6, H_ - 2, E_WS)
-    # three floors of windows (the 3F, 2F: a row each; the 1F around the door)
-    for row, y in enumerate((26, 46)):
+    c = Img(W_, H_, 0)
+    L, R = 2, W_ - 3                      # (the walls' outer edges)
+    # ---- the roof: rounded top corners, ridges, a light top edge, a dark front lip ----
+    c.rect(L + 1, 1, R - 1, 17, E_ROOF)
+    for x in range(L + 2, R - 1):
+        if (x - L) % 4 == 0:
+            c.vline(x, 3, 15, E_ROOFD)
+    c.rect(R - 4, 3, R - 1, 15, E_ROOFD)  # (the roof's right side, in shade)
+    c.vline(L + 1, 3, 15, E_W)            # (its left, lit)
+    c.hline(L + 2, R - 2, 2, E_W)         # (the lit edge)
+    c.hline(L + 1, R - 1, 16, E_ROOFD)
+    c.hline(L + 2, R - 2, 0, E_O)
+    c.set(L + 1, 1, E_O); c.set(R - 1, 1, E_O)
+    c.vline(L, 2, 18, E_O); c.vline(R, 2, 18, E_O)
+    # the parapet (teal), lit on top, shadowed under
+    c.rect(L, 17, R, 21, E_T)
+    c.hline(L + 1, R - 1, 18, E_W)
+    c.hline(L, R, 21, E_TD)
+    c.hline(L - 1, R + 1, 22, E_O)
+    c.vline(L - 1, 17, 22, E_O); c.vline(R + 1, 17, 22, E_O)
+    # ---- the walls ----
+    wl, wr = L + 2, R - 2
+    c.rect(wl, 23, wr, H_ - 1, E_WALL)
+    c.vline(wl - 1, 23, H_ - 1, E_O); c.vline(wr + 1, 23, H_ - 1, E_O)
+    c.vline(wl, 23, H_ - 2, E_W)                       # (lit from the left)
+    c.rect(wr - 5, 23, wr, H_ - 2, E_WS)               # (shaded on the right)
+    c.vline(wr, 23, H_ - 2, E_WD)
+    c.rect(wl, 23, wr, 25, E_WS)                       # (the overhang's shadow)
+    c.hline(wl, wr, 23, E_WD)
+    for y in range(29, H_ - 6, 6):                     # (panel lines, faint)
+        for x in range(wl + 1, wr - 3, 2):
+            if (x // 2 + y // 6) % 3 == 0:
+                c.set(x, y, E_WS)
+    # ---- windows: a frame lit top-left, the glass with a glint, a sill and its shadow ----
+    def window(x, y, w, h):
+        c.box(x, y, x + w, y + h, E_WIN)
+        c.rect(x + 1, y + h // 2 + 1, x + w - 1, y + h - 1, E_WIND)
+        c.line_glint = None
+        for k in range(min(w, h) // 2):                 # (the glint)
+            c.set(x + 2 + k, y + h // 2 - k, E_W)
+        c.hline(x - 1, x + w + 1, y + h + 1, E_W)       # (the sill)
+        c.hline(x, x + w + 1, y + h + 2, E_WS)
+    for row, y in enumerate((28, 46)):
         for k in range(6):
             x = 12 + k * 15
             if row == 0 and 2 <= k <= 3:
-                continue                         # (the red-cross sign is there)
-            c.box(x, y, x + 10, y + 11, E_WIN)
-            c.rect(x + 1, y + 7, x + 9, y + 10, E_WIND)
-            c.set(x + 2, y + 2, E_W)
-            c.set(x + 3, y + 2, E_W)
-    # the sign: a big red cross on a white disc, at the 3F
-    cx, cy = W_ // 2, 32
+                continue
+            window(x, y, 10, 10)
+    # ---- the sign: a white disc with a red cross, lit top-left, shaded bottom-right ----
+    cx, cy = W_ // 2, 34
     for y in range(cy - 11, cy + 12):
         for x in range(cx - 13, cx + 14):
             d = math.hypot(x - cx + 0.5, (y - cy + 0.5) * 1.15)
             if d < 12.5:
-                c.set(x, y, E_O if d > 11.5 else E_W)
+                shade = (x - cx) + (y - cy) > 9
+                c.set(x, y, E_O if d > 11.5 else (E_WS if shade else E_W))
     c.rect(cx - 3, cy - 8, cx + 2, cy + 7, E_R)
     c.rect(cx - 8, cy - 3, cx + 7, cy + 2, E_R)
     c.vline(cx + 2, cy - 8, cy + 7, E_RD)
     c.hline(cx - 8, cx + 7, cy + 2, E_RD)
-    # a teal band between the 2F and the 1F, the entrance's canopy
-    c.box(4, 60, W_ - 5, 64, E_T)
-    c.hline(5, W_ - 6, 63, E_TD)
-    # the 1F: windows either side of the door
+    c.hline(cx - 2, cx + 1, cy - 7, E_W)
+    # ---- the band between the 2F and the 1F ----
+    c.rect(wl, 60, wr, 63, E_T)
+    c.hline(wl, wr, 60, E_W)
+    c.hline(wl, wr, 63, E_TD)
+    c.hline(wl, wr, 64, E_WS)
+    # ---- the 1F: windows either side of the door ----
     for x in (12, 27, 72, 87):
-        c.box(x, 68, x + 11, 83, E_WIN)
-        c.rect(x + 1, 77, x + 10, 82, E_WIND)
-        c.set(x + 2, 70, E_W)
-    # the door: glass sliding doors under a canopy
+        window(x, 68, 11, 13)
+    # ---- the door: an awning (striped, its shadow under), glass doors with a glint ----
     dx = EXT_DOOR[0] * 16
-    c.box(dx - 6, 62, dx + 21, 67, E_R)
-    c.hline(dx - 5, dx + 20, 66, E_RD)
-    c.box(dx - 1, 68, dx + 16, H_ - 1, E_WD)
-    c.box(dx + 1, 70, dx + 7, H_ - 1, E_WIN)
-    c.box(dx + 8, 70, dx + 14, H_ - 1, E_WIN)
-    c.rect(dx + 2, 86, dx + 6, H_ - 2, E_WIND)
-    c.rect(dx + 9, 86, dx + 13, H_ - 2, E_WIND)
-    # the sign's light above the door
-    c.rect(dx + 5, 64, dx + 10, 64, E_Y)
+    c.rect(dx - 6, 63, dx + 21, 68, E_R)
+    for x in range(dx - 6, dx + 22, 4):
+        c.vline(x, 64, 68, E_W)
+    c.hline(dx - 6, dx + 21, 63, E_W)
+    c.hline(dx - 7, dx + 22, 69, E_O)
+    c.vline(dx - 7, 63, 69, E_O); c.vline(dx + 22, 63, 69, E_O)
+    c.rect(dx - 1, 70, dx + 16, H_ - 1, E_WD)
+    c.hline(dx - 1, dx + 16, 70, E_O)
+    c.box(dx + 1, 72, dx + 7, H_ - 1, E_WIN)
+    c.box(dx + 8, 72, dx + 14, H_ - 1, E_WIN)
+    c.rect(dx + 2, 85, dx + 6, H_ - 2, E_WIND)
+    c.rect(dx + 9, 85, dx + 13, H_ - 2, E_WIND)
+    for k in range(4):
+        c.set(dx + 3 + k, 80 - k, E_W)
+        c.set(dx + 10 + k, 80 - k, E_W)
+    c.rect(dx + 6, 73, dx + 9, 74, E_W)                # (the light over the door)
+    # ---- the plinth along the bottom ----
+    c.rect(wl, H_ - 3, dx - 2, H_ - 1, E_WD)
+    c.rect(dx + 17, H_ - 3, wr, H_ - 1, E_WD)
+    c.hline(wl, dx - 2, H_ - 3, E_WS)
+    c.hline(dx + 17, wr, H_ - 3, E_WS)
+    # ---- planters by the door (like the town's houses) ----
+    for px in (dx - 15, dx + 19):
+        c.box(px, H_ - 7, px + 10, H_ - 1, 15 if False else E_RD)
+        c.rect(px + 1, H_ - 6, px + 9, H_ - 2, E_R)
+        for k in range(5):
+            c.set(px + 1 + 2 * k, H_ - 9, E_LEAF)
+            c.rect(px + 1 + 2 * k, H_ - 8, px + 2 + 2 * k, H_ - 7, E_LEAF if k % 2 else E_LEAFD)
     im = c.im
     im.putpalette([v for col in EXT for v in col])
     return im

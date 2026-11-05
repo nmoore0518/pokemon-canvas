@@ -238,7 +238,7 @@ VermilionCity_EventScript_OldMan2::
 	end
 
 @ Pokémon Canvas: the foreman (src/medical_center.c). His crew quit: he needs a MACHOP, a MACHOKE, a
-@ MACHAMP and a shiny MACHAMP (not one of Bill's). Each one goes to work for him for good, and each
+@ MACHAMP and a shiny MACHAMP. Each one goes to work for him for good, and each
 @ turns something up in the dig. With the fourth, the Universal Pokémon Medical Center goes up.
 VermilionCity_EventScript_Foreman::
 	lock
@@ -256,7 +256,6 @@ VermilionCity_EventScript_Foreman::
 	switch VAR_RESULT
 	case HELPER_OK, VermilionCity_EventScript_ForemanTake
 	case HELPER_NOT_SHINY, VermilionCity_EventScript_ForemanNotShiny
-	case HELPER_WITHDRAWN, VermilionCity_EventScript_ForemanWithdrawn
 	case HELPER_EGG, VermilionCity_EventScript_ForemanEgg
 	case HELPER_LAST_MON, VermilionCity_EventScript_ForemanLastMon
 	msgbox VermilionCity_Text_ForemanWrong
@@ -353,11 +352,6 @@ VermilionCity_EventScript_ForemanNo::
 
 VermilionCity_EventScript_ForemanNotShiny::
 	msgbox VermilionCity_Text_ForemanNotShiny
-	release
-	end
-
-VermilionCity_EventScript_ForemanWithdrawn::
-	msgbox VermilionCity_Text_ForemanWithdrawn
 	release
 	end
 
@@ -489,12 +483,6 @@ VermilionCity_Text_ForemanNotShiny::
 	.string "that stands out on the site.\p"
 	.string "One in a different color, you know?\n"
 	.string "A shiny one!$"
-
-VermilionCity_Text_ForemanWithdrawn::
-	.string "Hmm… This one's never done a\n"
-	.string "day of real work in its life.\p"
-	.string "I need one that's earned those\n"
-	.string "colors!$"
 
 VermilionCity_Text_ForemanEgg::
 	.string "An EGG can't lift beams!$"

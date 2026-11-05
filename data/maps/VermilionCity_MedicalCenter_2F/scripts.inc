@@ -51,8 +51,54 @@ VermilionCity_MedicalCenter_2F_EventScript_OrderlyAfter::
 	release
 	end
 
-VermilionCity_MedicalCenter_2F_EventScript_WardDoor::
-	msgbox VermilionCity_MedicalCenter_2F_Text_WardDoor, MSGBOX_SIGN
+VermilionCity_MedicalCenter_2F_EventScript_StationNurse::
+	msgbox VermilionCity_MedicalCenter_2F_Text_StationNurse, MSGBOX_NPC
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_Chansey::
+	lock
+	faceplayer
+	playmoncry SPECIES_CHANSEY, CRY_MODE_NORMAL
+	msgbox VermilionCity_MedicalCenter_2F_Text_Chansey
+	waitmoncry
+	release
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_Gentleman::
+	msgbox VermilionCity_MedicalCenter_2F_Text_Gentleman, MSGBOX_NPC
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_Lass::
+	msgbox VermilionCity_MedicalCenter_2F_Text_Lass, MSGBOX_NPC
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_Meowth::
+	lock
+	faceplayer
+	playmoncry SPECIES_MEOWTH, CRY_MODE_NORMAL
+	msgbox VermilionCity_MedicalCenter_2F_Text_Meowth
+	waitmoncry
+	release
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_OldWoman::
+	msgbox VermilionCity_MedicalCenter_2F_Text_OldWoman, MSGBOX_NPC
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_Fisher::
+	msgbox VermilionCity_MedicalCenter_2F_Text_Fisher, MSGBOX_NPC
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_RoomSign0::
+	msgbox VermilionCity_MedicalCenter_2F_Text_Room201, MSGBOX_SIGN
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_RoomSign1::
+	msgbox VermilionCity_MedicalCenter_2F_Text_Room202, MSGBOX_SIGN
+	end
+
+VermilionCity_MedicalCenter_2F_EventScript_RoomSign2::
+	msgbox VermilionCity_MedicalCenter_2F_Text_Room203, MSGBOX_SIGN
 	end
 
 VermilionCity_MedicalCenter_2F_Text_Orderly::
@@ -81,6 +127,38 @@ VermilionCity_MedicalCenter_2F_Text_WardNurseAfter::
 	.string "The research lab's upstairs. The\n"
 	.string "doctor's always losing things.$"
 
-VermilionCity_MedicalCenter_2F_Text_WardDoor::
-	.string "The ward is quiet.\n"
-	.string "The patients are resting.$"
+VermilionCity_MedicalCenter_2F_Text_StationNurse::
+	.string "Visiting hours are any time!\n"
+	.string "Our patients love the company.$"
+
+VermilionCity_MedicalCenter_2F_Text_Chansey::
+	.string "CHANSEY: Chansey! Chaaan!$"
+
+VermilionCity_MedicalCenter_2F_Text_Gentleman::
+	.string "My granddaughter's PIKACHU caught\n"
+	.string "a cold. It's in room 201.$"
+
+VermilionCity_MedicalCenter_2F_Text_Lass::
+	.string "MEOWTH and I are waiting for our\n"
+	.string "friend's TOGEPI to come home!$"
+
+VermilionCity_MedicalCenter_2F_Text_Meowth::
+	.string "MEOWTH: Meowth!$"
+
+VermilionCity_MedicalCenter_2F_Text_OldWoman::
+	.string "My GROWLITHE hurt its leg chasing\n"
+	.string "a PONYTA. The silly thing!$"
+
+VermilionCity_MedicalCenter_2F_Text_Fisher::
+	.string "Hooked my own hand fishing off\n"
+	.string "the pier. They patched me up quick.$"
+
+VermilionCity_MedicalCenter_2F_Text_Room201::
+	.string "ROOM 201$"
+
+VermilionCity_MedicalCenter_2F_Text_Room202::
+	.string "ROOM 202$"
+
+VermilionCity_MedicalCenter_2F_Text_Room203::
+	.string "ROOM 203\n"
+	.string "Shh! A new arrival is resting.$"
