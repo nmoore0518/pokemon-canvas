@@ -179,8 +179,15 @@ u32 Tcg_HandleDuelMenuInput(void)
             }
             if (pressed & TCG_PAD_SELECT)
             {
-                // (DuelMenuShortcut_BothActivePokemon: the play areas, the player's from the SELECT presses)
-                Tcg_OpenPlayAreaScreenForViewing();
+                // (DuelMenuShortcut_BothActivePokemon: OpenVariousPlayAreaScreens_FromSelectPresses)
+                Tcg_FinishQueuedAnimations();
+                if (Tcg_OpenInPlayAreaScreen_FromSelectButton())
+                    break;
+                if (Tcg_OpenPlayAreaScreenForViewing_FromSelectPresses())
+                    break;
+                Tcg_SwapTurn();
+                Tcg_OpenPlayAreaScreenForViewing_FromSelectPresses();
+                Tcg_SwapTurn();
                 break;
             }
             if (Tcg_HandleDuelMenuInputStep())

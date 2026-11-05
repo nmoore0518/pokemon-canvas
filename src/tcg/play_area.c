@@ -168,6 +168,7 @@ void Tcg_PrintPlayAreaCardList(void)
     if (gTcg->headless)
         return;
     PrintPlayAreaCardList();
+    Tcg_EnableLCD();
 }
 
 void Tcg_SetupPlayAreaScreen(void)
@@ -248,6 +249,13 @@ static u32 DisplayPlayAreaScreen(u8 noSelectionKeys)
             u32 loc;
             G->waitingFor = TCG_WAIT_PLAY_AREA;
             Tcg_DoFrame();
+            // (SelectingBenchPokemonMenu: from the SELECT presses, SELECT moves on)
+            if (gTcgPlayAreaSelectAction == 2 && (G->keysPressed & TCG_PAD_SELECT))
+            {
+                gTcg->tempCardIndex = card;
+                G->hCurMenuItem = gTcg->tempPlayAreaLocation;
+                return gTcg->tempPlayAreaLocation;
+            }
             if (!Tcg_HandleMenuInput())
                 continue;
             gTcg->selectedDuelSubMenuItem = G->curMenuItem;
@@ -301,9 +309,128 @@ u32 Tcg_OpenPlayAreaScreenForSelection(bool32 excludeArena)
     return DisplayPlayAreaScreen(TCG_PAD_START);
 }
 
+// (OpenVariousPlayAreaScreens_FromSelectPresses.Func_45a9) TRUE (the game's carry): B
+bool32 Tcg_OpenPlayAreaScreenForViewing_FromSelectPresses(void)
+{
+    InitPlayAreaScreen(FALSE);
+    gTcgPlayAreaSelectAction = 2;
+    DisplayPlayAreaScreen(TCG_PAD_START | TCG_PAD_A);
+    gTcgPlayAreaSelectAction = 0;
+    return (G->keysPressed & TCG_PAD_B) != 0;
+}
+
 // (OpenTurnHolderPlayAreaScreen: HasAlivePokemonInPlayArea, OpenPlayAreaScreenForViewing)
 void Tcg_OpenPlayAreaScreenForViewing(void)
 {
     InitPlayAreaScreen(FALSE);
     DisplayPlayAreaScreen(TCG_PAD_START | TCG_PAD_A);
+}
+
+// ---- Pokémon Powers (DisplayPlayAreaScreenToUsePkmnPower, DisplayUsePokemonPowerScreen) ---------------
+
+// (DisplayPlayAreaScreenToUsePkmnPower.DrawScreen) each Pokémon in play's header and location, and
+// its Pokémon Power's name if it has one
+static void DrawPokemonPowerScreen(void)
+{
+    u32 b, n;
+    Tcg_ZeroObjectPositionsAndToggleOAMCopy();
+    Tcg_EmptyScreen();
+    Tcg_LoadDuelCardSymbolTiles();
+    Tcg_LoadDuelCheckPokemonScreenTiles();
+    n = *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_POKEMON_IN_PLAY_AREA);
+    for (b = 0; b < n; b++)
+    {
+        gTcgCurPlayAreaSlot = b;
+        gTcgCurPlayAreaY = b * 3;
+        PrintPlayAreaCardHeader();
+        PrintPlayAreaCardLocation();
+        if (gTcg->loadedCard1->attacks[0].category == TCG_POKEMON_POWER)
+            Tcg_InitTextPrinting_ProcessText(4, gTcgCurPlayAreaY + 1, gTcg->loadedCard1->attacks[0].name);
+    }
+    sNumPlayAreaItems = n;
+    Tcg_EnableLCD();
+}
+
+// the player picks a Pokémon in play with a Pokémon Power (its PLAY_AREA_*), or B
+// (TCG_SELECTION_CANCEL); START opens the Pokémon's card page
+u32 Tcg_SelectPlayAreaPokemonPower(u32 item)
+{
+    if (gTcg->headless)
+        return TCG_SELECTION_CANCEL;
+    for (;;)
+    {
+        DrawPokemonPowerScreen();
+        Tcg_InitializeMenuParameters(item, &sPlayAreaScreenMenuParameters_ActivePokemonIncluded);
+        G->numMenuItems = sNumPlayAreaItems;
+        for (;;)
+        {
+            u32 loc;
+            u8 card;
+            G->waitingFor = TCG_WAIT_PLAY_AREA;
+            Tcg_DoFrame();
+            if (!Tcg_HandleMenuInput())
+                continue;
+            if (G->hCurMenuItem == 0xFF)
+                return TCG_SELECTION_CANCEL;
+            loc = G->hCurMenuItem;
+            item = loc;
+            gTcg->tempPlayAreaLocation = loc;
+            card = *Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD + loc);
+            if (G->keysPressed & TCG_PAD_START)
+            {
+                Tcg_LoadCard1(card);
+                gTcgCurPlayAreaSlot = loc;
+                Tcg_OpenCardPage_FromCheckPlayArea();
+                break;
+            }
+            if (Tcg_Card(Tcg_GetCardIdFromDeckIndex(card))->attacks[0].category != TCG_POKEMON_POWER)
+                continue;
+            return loc;
+        }
+    }
+}
+
+// (DisplayUsePokemonPowerScreen) hTempPlayAreaLocation_ff9d's Pokémon, its Pokémon Power's name
+// and description
+void Tcg_DisplayUsePokemonPowerScreen(void)
+{
+    if (gTcg->headless)
+        return;
+    gTcgCurPlayAreaSlot = gTcg->tempPlayAreaLocation;
+    gTcgCurPlayAreaY = 0;
+    Tcg_ZeroObjectPositionsAndToggleOAMCopy();
+    Tcg_EmptyScreen();
+    Tcg_LoadDuelCardSymbolTiles();
+    Tcg_LoadDuelCheckPokemonScreenTiles();
+    Tcg_PrintPlayAreaCardInformationAndLocation();
+    Tcg_InitTextPrinting_ProcessText(1, 4, gTcg->loadedCard1->attacks[0].name);
+    Tcg_PrintAttackOrCardDescription(1, 6, gTcg->loadedCard1->attacks[0].description[0]);
+}
+
+// ---- the effects' play area selections (effect_functions.asm) -------------------------------------------
+
+static const struct TcgMenuParams sPlayAreaSelectionMenuParameters = {0, 0, 3, TCG_MAX_PLAY_AREA_POKEMON, TCG_SYM_CURSOR_R, TCG_SYM_SPACE, NULL};
+
+// (InitializeMenuParameters with PlayAreaSelectionMenuParameters; the DoFrame/HandleMenuInput loop) a
+// Pokémon in the play area printed last (its PLAY_AREA_*), or B (TCG_SELECTION_CANCEL)
+u32 Tcg_HandlePlayAreaMenuInput(u32 item)
+{
+    if (gTcg->headless)
+        return TCG_SELECTION_CANCEL;
+    Tcg_InitializeMenuParameters(item, &sPlayAreaSelectionMenuParameters);
+    G->numMenuItems = sNumPlayAreaItems;
+    do
+    {
+        G->waitingFor = TCG_WAIT_PLAY_AREA;
+        Tcg_DoFrame();
+    } while (!Tcg_HandleMenuInput());
+    return G->hCurMenuItem == 0xFF ? TCG_SELECTION_CANCEL : G->hCurMenuItem;
+}
+
+// (DrawSymbolOnPlayAreaCursor) `symbol` by the play area screen's row for `location`
+void Tcg_DrawSymbolOnPlayAreaCursor(u32 location, u32 symbol)
+{
+    if (gTcg->headless)
+        return;
+    Tcg_WriteByteToBGMap0(0, location * 3 + 2, symbol);
 }

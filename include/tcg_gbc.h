@@ -330,6 +330,8 @@ void Tcg_PlaceCardImageOAM(u8 x, u8 y);
 void Tcg_PrintPlayAreaCardInformationAndLocation(void);     // (src/tcg/play_area.c)
 void Tcg_PrintPlayAreaCardInformation(void);
 void Tcg_OpenPlayAreaScreenForViewing(void);
+bool32 Tcg_OpenPlayAreaScreenForViewing_FromSelectPresses(void);
+bool32 Tcg_OpenInPlayAreaScreen_FromSelectButton(void);
 
 // src/tcg/duel_check.c, anims.c
 void Tcg_DrawYourOrOppPlayAreaScreen_Layout(u32 duelist, u32 layout);

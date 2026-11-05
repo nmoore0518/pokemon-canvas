@@ -713,3 +713,52 @@ u32 Tcg_HandleAttackMenuInput(u32 count, u32 item)
         }
     }
 }
+
+// (HandleDefendingPokemonAttackSelection) the player picks one of the defending Pokémon's attacks
+// (Amnesia, Metronome): *deckIndex, *attack; TRUE (the game's carry) on B. START opens its page.
+bool32 Tcg_HandleDefendingPokemonAttackSelection(u32 *deckIndex, u32 *attack)
+{
+    u32 item = 0, count;
+    if (gTcg->headless)
+    {
+        *deckIndex = *Tcg_NonTurnVar(TCG_DUELVARS_ARENA_CARD);
+        *attack = 0;
+        return FALSE;
+    }
+    Tcg_DrawDuelMainScene();
+    Tcg_SwapTurn();
+    for (;;)
+    {
+        count = Tcg_PrintAndLoadAttacksToDuelTempList();
+        Tcg_InitializeMenuParameters(item, &sAttackMenuParameters);
+        G->numMenuItems = count;
+        Tcg_EnableLCD();
+        for (;;)
+        {
+            G->waitingFor = TCG_WAIT_ATTACK_MENU;
+            Tcg_DoFrame();
+            if (G->keysPressed & TCG_PAD_B)
+            {
+                Tcg_SwapTurn();
+                return TRUE;
+            }
+            if (G->keysPressed & TCG_PAD_START)
+            {
+                item = G->hCurMenuItem;
+                Tcg_LoadCard1(*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD));
+                OpenAttackPage();
+                Tcg_SwapTurn();
+                Tcg_DrawDuelMainScene();
+                Tcg_SwapTurn();
+                break;
+            }
+            if (Tcg_HandleMenuInput() && G->hCurMenuItem != 0xFF)
+            {
+                *deckIndex = gTcg->duelTempList[G->hCurMenuItem * 2];
+                *attack = gTcg->duelTempList[G->hCurMenuItem * 2 + 1];
+                Tcg_SwapTurn();
+                return FALSE;
+            }
+        }
+    }
+}
