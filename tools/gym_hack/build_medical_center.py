@@ -197,9 +197,16 @@ def mat(f, x0):
 
 
 def door(f, P, x):
-    """a door in the back wall (the lab's), x its left; -> the tile you walk into (its warp)"""
+    """a door in the back wall (the lab's), x its left; -> the tile you walk into (its warp). As in
+    the lab's corridor, the wall ends just after it (its corner piece draws the frame's right side)
+    and starts again"""
     f.piece(P["door"], x, 0, walk={(0, 1)})
     f.put(x, 1, P["door"][1][0], 0, 3)
+    for dy, (end, start) in enumerate(((0x06A, 0x068), (0x072, 0x070))):
+        f.put(x + 2, dy, end, 1, 0)
+        f.put(x + 3, dy, start, 1, 0)
+    f.put(x + 2, 2, 0x07A, 0)
+    f.put(x + 3, 2, 0x078, 0)
     return (x, 1)
 
 
@@ -265,23 +272,22 @@ GURNEYS = [(PUZZLE_AT[0] + x, PUZZLE_AT[1] + y) for y, r in enumerate(PUZZLE) fo
 PAST_GURNEYS = (PUZZLE_AT[0] + 9, PUZZLE_AT[1] + 4)   # (the box's last tile before its way out: every way through crosses it)
 ORDERLY = (11, 9)
 WARD_NURSE = (24, 13)
-ROOM_DOORS = [4, 9, 18]            # (the doors' left columns)
+ROOM_DOORS = [3, 14, 18]           # (the doors' left columns)
 ESC_UP_2F_Y = 9
 
 
 def floor_2f(P):
     f = Floorplan(W2, H2)
     doors = [door(f, P, x) for x in ROOM_DOORS]
-    for x in (7, 13, 22):
+    for x in (8, 22):
         f.put(x, 1, P["window"][1])
-    f.piece(P["cross"], 15, 1)
-    f.piece(P["counter"], 5, 7)                      # (the nurses' station)
+    f.piece(P["cross"], 10, 1)
+    f.piece(P["counter"], 8, 3)                      # (the nurses' station, against the back wall)
     f.piece(P["cabinet"], 24, 1)
     benches(f, P, 2, 10, 3)                          # (the waiting areas)
     benches(f, P, 21, 4, 3)
-    plant(f, P, 1, 1)
-    plant(f, P, 12, 1)
-    plant(f, P, 20, 1)
+    plant(f, P, 13, 1)
+    plant(f, P, 23, 1)
     zx, zy = PUZZLE_AT
     k = 0
     for y, row in enumerate(PUZZLE):
@@ -395,13 +401,9 @@ def objects_1f(where):
           obj("OBJ_EVENT_GFX_LITTLE_GIRL_FRLG", 7, 10, P + "Girl", "MOVEMENT_TYPE_FACE_UP"),
           mon("HAPPINY", 8, 10, P + "Happiny", "MOVEMENT_TYPE_WANDER_AROUND"),
           obj("OBJ_EVENT_GFX_WOMAN_1_FRLG", 4, 13, P + "Woman", "MOVEMENT_TYPE_FACE_UP"),
-          obj("OBJ_EVENT_GFX_YOUNGSTER_FRLG", 2, 4, P + "Youngster", "MOVEMENT_TYPE_WANDER_AROUND"),
-          # the foreman and his crew, who built it
-          obj("OBJ_EVENT_GFX_OLD_MAN_2", 13, 13, P + "Foreman", "MOVEMENT_TYPE_FACE_LEFT"),
-          mon("MACHOP", 14, 13, P + "Machop"),
-          mon("MACHOKE", 15, 13, P + "Machoke"),
-          mon("MACHAMP", 16, 13, P + "Machamp"),
-          mon("MACHAMP", 17, 13, P + "ShinyMachamp", shiny=True)]
+          obj("OBJ_EVENT_GFX_YOUNGSTER_FRLG", 2, 4, P + "Youngster", "MOVEMENT_TYPE_WANDER_AROUND")]
+    # (the foreman and his crew are on the 2F: the 1F's six patients, CHANSEY and HAPPINY already take
+    # most of the sprite palettes there are, 16; more Pokémon and some are drawn in the wrong colors)
     warps = [warp(x, y, "MAP_VERMILION_CITY", CITY_WARP) for (x, y) in where["exits"]]
     warps.append(warp(*where["escalator"], MAP_ID.format("2F"), 0, 4))
     bgs = [sign(12, 2, P + "Cabinet"), sign(13, 2, P + "Cabinet"), sign(15, 2, P + "Cabinet"), sign(16, 2, P + "Cabinet"),
@@ -420,13 +422,20 @@ def objects_2f(where):
         g["movement_range_x"] = g["movement_range_y"] = 0
     o += [obj("OBJ_EVENT_GFX_NURSE_FRLG", *WARD_NURSE, P + "WardNurse", "MOVEMENT_TYPE_FACE_UP"),
           obj("OBJ_EVENT_GFX_SCIENTIST", *ORDERLY, P + "Orderly", "MOVEMENT_TYPE_FACE_RIGHT"),
-          obj("OBJ_EVENT_GFX_NURSE_FRLG", 7, 6, P + "StationNurse", "MOVEMENT_TYPE_FACE_DOWN"),
-          mon("CHANSEY", 9, 6, P + "Chansey", "MOVEMENT_TYPE_FACE_DOWN"),
+          obj("OBJ_EVENT_GFX_NURSE_FRLG", 10, 2, P + "StationNurse", "MOVEMENT_TYPE_FACE_DOWN"),
+          mon("CHANSEY", 9, 2, P + "Chansey", "MOVEMENT_TYPE_FACE_DOWN"),
           obj("OBJ_EVENT_GFX_GENTLEMAN_FRLG", 3, 9, P + "Gentleman", "MOVEMENT_TYPE_FACE_DOWN"),
           obj("OBJ_EVENT_GFX_LASS_FRLG", 4, 12, P + "Lass", "MOVEMENT_TYPE_FACE_UP"),
           mon("MEOWTH", 5, 12, P + "Meowth", "MOVEMENT_TYPE_FACE_LEFT"),
           obj("OBJ_EVENT_GFX_OLD_WOMAN_FRLG", 22, 3, P + "OldWoman", "MOVEMENT_TYPE_FACE_DOWN"),
           obj("OBJ_EVENT_GFX_FISHER", 16, 4, P + "Fisher", "MOVEMENT_TYPE_WANDER_AROUND")]
+    # the foreman and his crew, who built it (their scripts are the 1F's)
+    C = "VermilionCity_MedicalCenter_1F_EventScript_"
+    o += [obj("OBJ_EVENT_GFX_OLD_MAN_2", 4, 13, C + "Foreman", "MOVEMENT_TYPE_FACE_RIGHT"),
+          mon("MACHOP", 5, 13, C + "Machop"),
+          mon("MACHOKE", 6, 13, C + "Machoke"),
+          mon("MACHAMP", 7, 13, C + "Machamp"),
+          mon("MACHAMP", 8, 13, C + "ShinyMachamp", shiny=True)]
     warps = [warp(*where["down"], MAP_ID.format("1F"), WARP_1F_ESC, 4), warp(*where["up"], MAP_ID.format("3F"), 0, 4)]
     warps += [warp(x, y, MAP_ID.format(ROOMS[i]), 1, 3) for i, (x, y) in enumerate(where["doors"])]   # (the mat's middle)
     bgs = []
