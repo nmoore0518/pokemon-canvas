@@ -6479,6 +6479,12 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageContext *ctx)
 {
     u32 holdEffectParamAtk;
     u32 basePower = CalcMoveBasePower(ctx);
+
+    // Pokémon Canvas: an energy card used on this move (src/energy_cards.c): +5 power
+    if (basePower > 1 && IsOnPlayerSide(ctx->battlerAtk)
+     && GetActiveGimmick(ctx->battlerAtk) != GIMMICK_Z_MOVE && GetActiveGimmick(ctx->battlerAtk) != GIMMICK_DYNAMAX
+     && IsEnergyBoostedMove(GetBattlerMon(ctx->battlerAtk), ctx->move))
+        basePower += 5;
     enum BattlerId battlerAtk = ctx->battlerAtk;
     enum BattlerId battlerDef = ctx->battlerDef;
     enum Move move = ctx->move;

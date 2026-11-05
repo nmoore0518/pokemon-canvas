@@ -4411,3 +4411,76 @@ TEST("GymHack: QUICK SKETCH copies the move the player picked, if the target kno
     Painter_ResetForTest();
     VarSet(VAR_PAINTER_SKETCH, 0);
 }
+
+#include "energy_cards.h"
+TEST("GymHack: energy cards: +5 once per damaging move of their types, on any of the four; it follows the move")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    enum Move moves[MAX_MON_MOVES] = {MOVE_EMBER, MOVE_DRAGON_BREATH, MOVE_GROWL, MOVE_THUNDERBOLT};
+    u32 i;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_CHARMANDER, 20, 0, OTID_STRUCT_PLAYER_ID);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
+    // Fire: Fire, Dragon, Flying
+    EXPECT(EnergyCard_CanBoostSlot(mon, 0, ITEM_FIRE_ENERGY));
+    EXPECT(EnergyCard_CanBoostSlot(mon, 1, ITEM_FIRE_ENERGY));
+    EXPECT(!EnergyCard_CanBoostSlot(mon, 2, ITEM_FIRE_ENERGY));     // (Growl: a status move)
+    EXPECT(!EnergyCard_CanBoostSlot(mon, 3, ITEM_FIRE_ENERGY));     // (Electric)
+    EXPECT(EnergyCard_CanBoostSlot(mon, 3, ITEM_LIGHTNING_ENERGY));
+    EXPECT(!EnergyCard_CanBoostAny(mon, ITEM_GRASS_ENERGY));
+    EnergyCard_Boost(mon, 0);
+    EXPECT(!EnergyCard_CanBoostSlot(mon, 0, ITEM_FIRE_ENERGY));     // (once per move)
+    EXPECT(IsEnergyBoostedMove(mon, MOVE_EMBER));
+    EnergyCard_Boost(mon, 1);
+    EnergyCard_Boost(mon, 3);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_ENERGY_BOOSTS), 0xB);
+    // forgetting a move takes its boost; the others keep theirs
+    {
+        enum Move m = MOVE_SCRATCH;
+        SetMonData(mon, MON_DATA_MOVE1 + 1, &m);
+    }
+    EXPECT(!IsEnergyBoostedMove(mon, MOVE_SCRATCH));
+    EXPECT(IsEnergyBoostedMove(mon, MOVE_EMBER));
+    EXPECT(IsEnergyBoostedMove(mon, MOVE_THUNDERBOLT));
+    // the first move forgotten for a new one: the boosts move up with their moves
+    DeleteFirstMoveAndGiveMoveToMon(mon, MOVE_FLAMETHROWER);
+    EXPECT(IsEnergyBoostedMove(mon, MOVE_THUNDERBOLT));
+    EXPECT(!IsEnergyBoostedMove(mon, MOVE_FLAMETHROWER));
+    EXPECT_EQ(GetMonData(mon, MON_DATA_ENERGY_BOOSTS), 0x4);
+    EXPECT_EQ(SwapStolenMoveBits(GetMonData(mon, MON_DATA_ENERGY_BOOSTS), 2, 0), 0x1);
+    // the six type energies cover all eighteen types, each once
+    {
+        static const u16 energies[] = {ITEM_GRASS_ENERGY, ITEM_FIRE_ENERGY, ITEM_WATER_ENERGY, ITEM_LIGHTNING_ENERGY, ITEM_PSYCHIC_ENERGY, ITEM_FIGHTING_ENERGY};
+        u32 t, e;
+        for (t = TYPE_NORMAL; t < NUMBER_OF_MON_TYPES; t++)
+        {
+            u32 n = 0;
+            if (t == TYPE_MYSTERY || t == TYPE_STELLAR)
+                continue;
+            for (e = 0; e < ARRAY_COUNT(energies); e++)
+                n += EnergyCard_CoversType(energies[e], t);
+            EXPECT_EQ(n, 1);
+        }
+    }
+}
+
+TEST("GymHack: Double Colorless Energy: a PP Max on every move, once")
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    enum Move moves[MAX_MON_MOVES] = {MOVE_EMBER, MOVE_GROWL, MOVE_NONE, MOVE_NONE};
+    u32 i, pp;
+    ZeroPlayerPartyMons();
+    CreateMon(mon, SPECIES_CHARMANDER, 20, 0, OTID_STRUCT_PLAYER_ID);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        pp = GetMovePP(moves[i]);
+        SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
+        SetMonData(mon, MON_DATA_PP1 + i, &pp);
+    }
+    EXPECT(EnergyCard_MaxAllPP(mon));
+    EXPECT_EQ(GetMonData(mon, MON_DATA_PP_BONUSES), 0x0F);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_PP1), GetMovePP(MOVE_EMBER) * 8 / 5);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_PP2), GetMovePP(MOVE_GROWL) * 8 / 5);
+    EXPECT(!EnergyCard_MaxAllPP(mon));
+}

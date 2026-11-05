@@ -49,6 +49,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
+#include "energy_cards.h"
 #include "player_pc.h"
 #include "pokemon.h"
 #include "pokemon_icon.h"
@@ -5521,6 +5522,69 @@ static void TryUseItemOnMove(u8 taskId)
     }
 }
 
+// Pokémon Canvas: Grandmaster Rod's energy cards (src/energy_cards.c). A type energy: which move
+// gets +5 power; Double Colorless: PP Max on every move.
+static void EnergyCardMessage(u8 taskId, const u8 *text, bool32 used)
+{
+    gPartyMenuUseExitCallback = used;
+    PlaySE(used ? SE_USE_ITEM : SE_SELECT);
+    if (used)
+        RemoveBagItem(gSpecialVar_ItemId, 1);
+    StringExpandPlaceholders(gStringVar4, text);
+    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    ScheduleBgCopyTilemapToVram(2);
+    gTasks[taskId].func = Task_ClosePartyMenuAfterText;
+}
+
+static void Task_HandleEnergyCardMoveInput(u8 taskId)
+{
+    s8 input = Menu_ProcessInput();
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gPartyMenu.slotId];
+
+    if (input == MENU_NOTHING_CHOSEN)
+        return;
+    if (input == MENU_B_PRESSED)
+    {
+        PlaySE(SE_SELECT);
+        ReturnToUseOnWhichMon(taskId);
+        return;
+    }
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
+    if (!EnergyCard_CanBoostSlot(mon, input, gSpecialVar_ItemId))
+    {
+        EnergyCardMessage(taskId, gText_WontHaveEffect, FALSE);
+        return;
+    }
+    EnergyCard_Boost(mon, input);
+    StringCopy(gStringVar2, GetMoveName(GetMonData(mon, MON_DATA_MOVE1 + input)));
+    EnergyCardMessage(taskId, COMPOUND_STRING("{STR_VAR_2}'s power rose!"), TRUE);
+}
+
+void ItemUseCB_EnergyCard(u8 taskId, TaskFunc task)
+{
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gPartyMenu.slotId];
+
+    GetMonNickname(mon, gStringVar1);
+    if (gSpecialVar_ItemId == ITEM_DOUBLE_COLORLESS_ENERGY)
+    {
+        if (EnergyCard_MaxAllPP(mon))
+            EnergyCardMessage(taskId, COMPOUND_STRING("{STR_VAR_1}'s moves' PP\nrose all the way!"), TRUE);
+        else
+            EnergyCardMessage(taskId, gText_WontHaveEffect, FALSE);
+        return;
+    }
+    if (!EnergyCard_CanBoostAny(mon, gSpecialVar_ItemId))
+    {
+        EnergyCardMessage(taskId, gText_WontHaveEffect, FALSE);
+        return;
+    }
+    PlaySE(SE_SELECT);
+    DisplayPartyMenuStdMessage(PARTY_MSG_ENERGY_WHICH_MOVE);
+    ShowMoveSelectWindow(gPartyMenu.slotId);
+    gTasks[taskId].func = Task_HandleEnergyCardMoveInput;
+}
+
 void ItemUseCB_PPUp(u8 taskId, TaskFunc task)
 {
     PlaySE(SE_SELECT);
@@ -8312,9 +8376,11 @@ static void ShiftMoveSlot(struct BoxPokemon *mon, u8 slotTo, u8 slotFrom)
     ppBonuses &= ~ppBonusMask2;
     ppBonuses |= (ppBonusMove1 << (slotFrom * 2)) + (ppBonusMove2 << (slotTo * 2));
     u8 stolen = SwapStolenMoveBits(GetBoxMonData(mon, MON_DATA_STOLEN_MOVES), slotTo, slotFrom);   // Gym Trainer hack
+    u8 boosts = SwapStolenMoveBits(GetBoxMonData(mon, MON_DATA_ENERGY_BOOSTS), slotTo, slotFrom);  // (and energy boosts)
     SetBoxMonData(mon, MON_DATA_MOVE1 + slotTo, &move0);
     SetBoxMonData(mon, MON_DATA_MOVE1 + slotFrom, &move1);
     SetBoxMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
+    SetBoxMonData(mon, MON_DATA_ENERGY_BOOSTS, &boosts);
     SetBoxMonData(mon, MON_DATA_PP1 + slotTo, &pp0);
     SetBoxMonData(mon, MON_DATA_PP1 + slotFrom, &pp1);
     SetBoxMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);

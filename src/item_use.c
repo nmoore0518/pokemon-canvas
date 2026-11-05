@@ -955,6 +955,13 @@ void ItemUseOutOfBattle_PPUp(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
+// Pokémon Canvas: Grandmaster Rod's energy cards (src/energy_cards.c)
+void ItemUseOutOfBattle_EnergyCard(u8 taskId)
+{
+    gItemUseCB = ItemUseCB_EnergyCard;
+    SetUpItemUseCallback(taskId);
+}
+
 void ItemUseOutOfBattle_RareCandy(u8 taskId)
 {
     gItemUseCB = ItemUseCB_RareCandy;

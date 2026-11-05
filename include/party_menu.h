@@ -96,6 +96,7 @@ void ItemUseCB_ResetEVs(u8 taskId, TaskFunc task);
 void ItemUseCB_ReduceEV(u8 taskId, TaskFunc task);
 void ItemUseCB_PPRecovery(u8 taskId, TaskFunc task);
 void ItemUseCB_PPUp(u8 taskId, TaskFunc task);
+void ItemUseCB_EnergyCard(u8 taskId, TaskFunc task);
 enum Move ItemIdToBattleMoveId(enum Item item);
 bool8 MonKnowsMove(struct Pokemon *mon, enum Move move);
 bool8 BoxMonKnowsMove(struct BoxPokemon *boxMon, enum Move move);

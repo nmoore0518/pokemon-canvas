@@ -127,6 +127,7 @@ enum MonData {
     MON_DATA_EVOLUTION_TRACKER,
     MON_DATA_EVOLUTION_LOCKED, // Gym Trainer hack
     MON_DATA_STOLEN_MOVES, // Gym Trainer hack: Move Extractor slots (bit per move slot)
+    MON_DATA_ENERGY_BOOSTS, // Pokémon Canvas: energy cards' +5 power (bit per move slot; src/energy_cards.c)
 };
 
 #define BLOCK_AI_DYNAMAX 15 // Used as dynamax level value by the AI to indicate this mon shouldn't dynamax
@@ -155,7 +156,8 @@ struct PokemonSubstruct1
     enum Move move2:11; // 2047 moves.
     u16 evolutionTracker2:5;
     enum Move move3:11; // 2047 moves.
-    u16 unused_04:5;
+    u16 energyBoosts:4; // Pokémon Canvas: move slots given +5 power by an energy card (src/energy_cards.c)
+    u16 unused_04:1;
     enum Move move4:11; // 2047 moves.
     u16 unused_06:3;
     u16 hyperTrainedHP:1;
@@ -976,6 +978,7 @@ void TrySetDayLimitToFormChange(struct Pokemon *mon);
 bool32 IsStolenMove(struct Pokemon *mon, enum Move move);
 enum Type GetStolenMoveType(struct Pokemon *mon);
 u32 SwapStolenMoveBits(u32 stolen, u32 a, u32 b);
+bool32 IsEnergyBoostedMove(struct Pokemon *mon, enum Move move);
 enum Type CheckDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum MonState state);
 uq4_12_t GetDynamaxLevelHPMultiplier(u32 dynamaxLevel, bool32 inverseMultiplier);
 enum Species GetRegionalFormByRegion(enum Species species, enum Region region);

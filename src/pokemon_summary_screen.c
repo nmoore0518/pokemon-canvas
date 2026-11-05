@@ -2577,9 +2577,11 @@ static void SwapMonMoves(struct Pokemon *mon, u8 moveIndex1, u8 moveIndex2)
 
     // Swap the moves (and which are extracted: Gym Trainer hack)
     u8 stolen = SwapStolenMoveBits(GetMonData(mon, MON_DATA_STOLEN_MOVES), moveIndex1, moveIndex2);
+    u8 boosts = SwapStolenMoveBits(GetMonData(mon, MON_DATA_ENERGY_BOOSTS), moveIndex1, moveIndex2);   // (Pokémon Canvas)
     SetMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
     SetMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
     SetMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
+    SetMonData(mon, MON_DATA_ENERGY_BOOSTS, &boosts);
     SetMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
     SetMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
     SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
@@ -2614,9 +2616,11 @@ static void SwapBoxMonMoves(struct BoxPokemon *mon, u8 moveIndex1, u8 moveIndex2
 
     // Swap the moves (and which are extracted: Gym Trainer hack)
     u8 stolen = SwapStolenMoveBits(GetBoxMonData(mon, MON_DATA_STOLEN_MOVES), moveIndex1, moveIndex2);
+    u8 boosts = SwapStolenMoveBits(GetBoxMonData(mon, MON_DATA_ENERGY_BOOSTS), moveIndex1, moveIndex2);   // (Pokémon Canvas)
     SetBoxMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
     SetBoxMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
     SetBoxMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
+    SetBoxMonData(mon, MON_DATA_ENERGY_BOOSTS, &boosts);
     SetBoxMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
     SetBoxMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
     SetBoxMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
@@ -4120,6 +4124,8 @@ static void PrintMovePowerAndAccuracy(enum Move moveIndex)
         FillWindowPixelRect(PSS_LABEL_WINDOW_MOVES_POWER_ACC, PIXEL_FILL(0), 53, 0, 19, 32);
 
         u32 power = GetMovePower(moveIndex);
+        if (power >= 2 && IsEnergyBoostedMove(&sMonSummaryScreen->currentMon, moveIndex))
+            power += 5;   // (Pokémon Canvas: an energy card's +5)
         if (power < 2)
         {
             text = gText_ThreeDashes;

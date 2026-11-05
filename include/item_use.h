@@ -21,6 +21,7 @@ void ItemUseOutOfBattle_ReduceEV(u8 taskId);
 void ItemUseOutOfBattle_SacredAsh(u8 taskId);
 void ItemUseOutOfBattle_PPRecovery(u8 taskId);
 void ItemUseOutOfBattle_PPUp(u8 taskId);
+void ItemUseOutOfBattle_EnergyCard(u8 taskId);
 void ItemUseOutOfBattle_RareCandy(u8 taskId);
 void ItemUseOutOfBattle_DynamaxCandy(u8 taskId);
 void ItemUseOutOfBattle_TMHM(u8 taskId);

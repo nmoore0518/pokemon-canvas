@@ -17032,6 +17032,119 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_Smearglite,
     },
 
+    [ITEM_GRASS_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Grass Energy"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Gives one Grass, Bug or Poison\n"
+            "move +5 power for\n"
+            "good."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_GrassEnergy,
+        .iconPalette = gItemIconPalette_GrassEnergy,
+    },
+    [ITEM_FIRE_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Fire Energy"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Gives one Fire, Dragon or Flying\n"
+            "move +5 power for\n"
+            "good."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_FireEnergy,
+        .iconPalette = gItemIconPalette_FireEnergy,
+    },
+    [ITEM_WATER_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Water Energy"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Gives one Water, Ice or Fairy\n"
+            "move +5 power for\n"
+            "good."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_WaterEnergy,
+        .iconPalette = gItemIconPalette_WaterEnergy,
+    },
+    [ITEM_LIGHTNING_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Lightning Energy"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Gives one Electric, Steel or\n"
+            "Normal move +5 power\n"
+            "for good."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_LightningEnergy,
+        .iconPalette = gItemIconPalette_LightningEnergy,
+    },
+    [ITEM_PSYCHIC_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Psychic Energy"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Gives one Psychic, Ghost or\n"
+            "Dark move +5 power\n"
+            "for good."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_PsychicEnergy,
+        .iconPalette = gItemIconPalette_PsychicEnergy,
+    },
+    [ITEM_FIGHTING_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Fighting Energy"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Gives one Fighting, Ground or\n"
+            "Rock move +5 power\n"
+            "for good."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_FightingEnergy,
+        .iconPalette = gItemIconPalette_FightingEnergy,
+    },
+    [ITEM_DOUBLE_COLORLESS_ENERGY] =
+    {
+        // Pokémon Canvas: Grandmaster Rod's, for beating him at cards (src/energy_cards.c)
+        .name = ITEM_NAME("Double Colorless"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Double Colorless\n"
+            "Energy. A PP Max on\n"
+            "all of one's moves."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_STAT_BOOST_DRINK,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_EnergyCard,
+        .iconPic = gItemIcon_DoubleColorlessEnergy,
+        .iconPalette = gItemIconPalette_DoubleColorlessEnergy,
+    },
+
     [ITEM_LUCKY_CLOVER] =
     {
         // Pokémon Canvas: an upgrade material (src/item_upgrades.c)

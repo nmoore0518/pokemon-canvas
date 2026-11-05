@@ -1190,11 +1190,16 @@ void HandleMoveSwitching(enum BattlerId battler)
                 for (i = 0; i < MAX_MON_MOVES; i++)
                     totalPPBonuses |= perMovePPBonuses[i] << (i * 2);
 
+                // (which slots are extracted, and energy-boosted, swap too: Gym Trainer hack, Pokémon Canvas)
+                u8 stolen = SwapStolenMoveBits(GetMonData(GetBattlerMon(battler), MON_DATA_STOLEN_MOVES), gMoveSelectionCursor[battler], gMultiUsePlayerCursor);
+                u8 boosts = SwapStolenMoveBits(GetMonData(GetBattlerMon(battler), MON_DATA_ENERGY_BOOSTS), gMoveSelectionCursor[battler], gMultiUsePlayerCursor);
                 for (i = 0; i < MAX_MON_MOVES; i++)
                 {
                     SetMonData(GetBattlerMon(battler), MON_DATA_MOVE1 + i, &moveStruct.moves[i]);
                     SetMonData(GetBattlerMon(battler), MON_DATA_PP1 + i, &moveStruct.currentPP[i]);
                 }
+                SetMonData(GetBattlerMon(battler), MON_DATA_STOLEN_MOVES, &stolen);
+                SetMonData(GetBattlerMon(battler), MON_DATA_ENERGY_BOOSTS, &boosts);
 
                 SetMonData(GetBattlerMon(battler), MON_DATA_PP_BONUSES, &totalPPBonuses);
             }

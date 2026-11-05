@@ -1759,12 +1759,14 @@ void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, enum Move move)
     pp[MAX_MON_MOVES - 1] = GetMovePP(move);
 
     u8 stolen = GetMonData(mon, MON_DATA_STOLEN_MOVES) >> 1;   // Gym Trainer hack: extracted moves move up too
+    u8 boosts = GetMonData(mon, MON_DATA_ENERGY_BOOSTS) >> 1;  // Pokémon Canvas: and boosted ones
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
         SetMonData(mon, MON_DATA_PP1 + i, &pp[i]);
     }
     SetMonData(mon, MON_DATA_STOLEN_MOVES, &stolen);
+    SetMonData(mon, MON_DATA_ENERGY_BOOSTS, &boosts);
 
     SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
@@ -2423,6 +2425,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_STOLEN_MOVES:
             retVal = GetSubstruct0(boxMon)->stolenMoves;
             break;
+        case MON_DATA_ENERGY_BOOSTS:
+            retVal = GetSubstruct1(boxMon)->energyBoosts;
+            break;
         case MON_DATA_DYNAMAX_LEVEL:
             retVal = GetSubstruct3(boxMon)->dynamaxLevel;
             break;
@@ -2678,7 +2683,10 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             enum Move oldMove = GetSubstruct1(boxMon)->move1;
             SET16(GetSubstruct1(boxMon)->move1);
             if (GetSubstruct1(boxMon)->move1 != oldMove)
+            {
                 GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 0);   // Gym Trainer hack: a new move isn't extracted
+                GetSubstruct1(boxMon)->energyBoosts &= ~(1 << 0);  // Pokémon Canvas: nor boosted
+            }
             break;
         }
         case MON_DATA_MOVE2:
@@ -2686,7 +2694,10 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             enum Move oldMove = GetSubstruct1(boxMon)->move2;
             SET16(GetSubstruct1(boxMon)->move2);
             if (GetSubstruct1(boxMon)->move2 != oldMove)
+            {
                 GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 1);   // Gym Trainer hack: a new move isn't extracted
+                GetSubstruct1(boxMon)->energyBoosts &= ~(1 << 1);  // Pokémon Canvas: nor boosted
+            }
             break;
         }
         case MON_DATA_MOVE3:
@@ -2694,7 +2705,10 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             enum Move oldMove = GetSubstruct1(boxMon)->move3;
             SET16(GetSubstruct1(boxMon)->move3);
             if (GetSubstruct1(boxMon)->move3 != oldMove)
+            {
                 GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 2);   // Gym Trainer hack: a new move isn't extracted
+                GetSubstruct1(boxMon)->energyBoosts &= ~(1 << 2);  // Pokémon Canvas: nor boosted
+            }
             break;
         }
         case MON_DATA_MOVE4:
@@ -2702,7 +2716,10 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             enum Move oldMove = GetSubstruct1(boxMon)->move4;
             SET16(GetSubstruct1(boxMon)->move4);
             if (GetSubstruct1(boxMon)->move4 != oldMove)
+            {
                 GetSubstruct0(boxMon)->stolenMoves &= ~(1 << 3);   // Gym Trainer hack: a new move isn't extracted
+                GetSubstruct1(boxMon)->energyBoosts &= ~(1 << 3);  // Pokémon Canvas: nor boosted
+            }
             break;
         }
         case MON_DATA_PP1:
@@ -2895,6 +2912,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             break;
         case MON_DATA_STOLEN_MOVES:
             SET8(GetSubstruct0(boxMon)->stolenMoves);
+            break;
+        case MON_DATA_ENERGY_BOOSTS:
+            SET8(GetSubstruct1(boxMon)->energyBoosts);
             break;
         case MON_DATA_DYNAMAX_LEVEL:
             SET8(GetSubstruct3(boxMon)->dynamaxLevel);
@@ -6684,6 +6704,19 @@ bool32 IsStolenMove(struct Pokemon *mon, enum Move move)
 enum Type GetStolenMoveType(struct Pokemon *mon)
 {
     return GetSpeciesType(GetMonData(mon, MON_DATA_SPECIES), 0);
+}
+
+// Pokémon Canvas: a slot's energy-boost bit set (an energy card used on it): that move has +5 power
+bool32 IsEnergyBoostedMove(struct Pokemon *mon, enum Move move)
+{
+    u32 i, boosts;
+    if (mon == NULL || move == MOVE_NONE)
+        return FALSE;
+    boosts = GetMonData(mon, MON_DATA_ENERGY_BOOSTS);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        if ((boosts & (1 << i)) && GetMonData(mon, MON_DATA_MOVE1 + i) == move)
+            return TRUE;
+    return FALSE;
 }
 
 // Swaps two slots' extracted bits (when moves trade places)

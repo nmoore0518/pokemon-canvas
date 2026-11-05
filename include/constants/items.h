@@ -1140,6 +1140,14 @@ enum __attribute__((packed)) Item
     ITEM_SILVER_COIN = 954,
     ITEM_GOLD_COIN = 955,
     ITEM_SMEARGLITE = 956,      // Pokémon Canvas: Canvas Smeargle's Mega Stone, a key item (src/painter.c)
+    // Pokémon Canvas: Grandmaster Rod's energy cards (src/energy_cards.c): +5 power on a move of their types
+    ITEM_GRASS_ENERGY = 957,
+    ITEM_FIRE_ENERGY = 958,
+    ITEM_WATER_ENERGY = 959,
+    ITEM_LIGHTNING_ENERGY = 960,
+    ITEM_PSYCHIC_ENERGY = 961,
+    ITEM_FIGHTING_ENERGY = 962,
+    ITEM_DOUBLE_COLORLESS_ENERGY = 963,   // (PP Max on every move)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
