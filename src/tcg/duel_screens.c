@@ -462,3 +462,10 @@ u32 Tcg_HandleEnergyDiscardMenuInput(void)
     gTcg->tempCardIndex = gTcg->duelTempList[G->hCurMenuItem];
     return gTcg->tempCardIndex;
 }
+
+void Tcg_DoFrames(u32 frames)
+{
+    if (gTcg->headless)
+        return;
+    Tcg_DoAFrames(frames);
+}

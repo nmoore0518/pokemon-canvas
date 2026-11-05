@@ -76,6 +76,9 @@ void Tcg_DrawAIPeekScreen(u32 param);
 enum { TCG_DUELMENU_HAND, TCG_DUELMENU_ATTACK, TCG_DUELMENU_CHECK, TCG_DUELMENU_PKMN_POWER, TCG_DUELMENU_RETREAT, TCG_DUELMENU_DONE };
 u32 Tcg_HandleDuelMenuInput(void);                      // (TCG_DUELMENU_*; the B+direction shortcuts are its own)
 void Tcg_OpenDuelCheckMenu(void);
+void Tcg_RedrawPlayAreaPrizeCards(void);                // (Func_82b6: after the AI's taken its prizes)
+void Tcg_OpenInPlayAreaScreen(void);                    // (the Check menu's In Play Area)
+void Tcg_OpenGlossaryScreen(void);                      // (the Check menu's Glossary)
 u32 Tcg_OpenPlayAreaScreenForSelection(bool32 excludeArena);   // a PLAY_AREA_* (hTempPlayAreaLocation_ff9d)
 u32 Tcg_DisplayPlaceInitialPokemonCardsScreen(bool32 bench, u16 textId);   // a Basic in the hand
 u32 Tcg_DisplayHandCardList(u16 textId);                // a deck index (wDuelTempList: the hand)

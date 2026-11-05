@@ -1267,6 +1267,7 @@ static bool32 TurnDuelistTakePrizes(void)
         Tcg_DoFrames(60);
         if (remaining < gTcg->numberPrizeCardsToTake)
             Tcg_LoadTxRam3(remaining);
+        Tcg_RedrawPlayAreaPrizeCards();
         Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_DrewNPrizes);
     }
     return *Tcg_TurnVar(TCG_DUELVARS_PRIZES) == 0;

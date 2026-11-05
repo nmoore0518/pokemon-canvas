@@ -208,3 +208,5 @@ void __attribute__((weak)) Tcg_SelectPrizeCards(u32 count)
 // (not ported yet: src/tcg/card_page.c, play_area.c)
 void __attribute__((weak)) Tcg_PrintPlayAreaCardInformationAndLocation(void) {}
 void __attribute__((weak)) Tcg_OpenPlayAreaScreenForViewing(void) {}
+void __attribute__((weak)) Tcg_OpenInPlayAreaScreen(void) {}
+void __attribute__((weak)) Tcg_OpenGlossaryScreen(void) {}
