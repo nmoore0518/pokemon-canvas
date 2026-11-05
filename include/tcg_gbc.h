@@ -335,6 +335,8 @@ void Tcg_OpenPlayAreaScreenForViewing(void);
 void Tcg_DrawYourOrOppPlayAreaScreen_Layout(u32 duelist, u32 layout);
 void Tcg_ResetAnimationQueue(void);
 bool32 Tcg_CheckAnyAnimationPlaying(void);
+bool32 Tcg_CheckSkipDelayAllowed(void);
+void Tcg_DrawDuelHorizontalSeparator(void);
 void Tcg_PlayDuelAnimation(u32 anim);
 void Tcg_LoadOBPalette(u32 palette, u32 index);
 

@@ -40,6 +40,7 @@ struct TcgAnimState
     u8 vramBuffer[16][4];               // wSpriteVRAMBuffer: (valid, sprite, tile offset, tiles)
     u8 vramBufferSize;
     bool8 allSpriteAnimationsDisabled;  // wAllSpriteAnimationsDisabled
+    bool8 skipDelayAllowed;             // wSkipDelayAllowed
     // the duel animations
     u8 animationQueue[TCG_ANIMATION_QUEUE_LENGTH];   // wAnimationQueue
     u8 activeScreenAnim;                // wActiveScreenAnim
@@ -529,6 +530,13 @@ void Tcg_ResetAnimationQueue(void)
     A->duelAnimSetScreen = 0;
     DefaultScreenAnimationUpdate();
     EnableAndClearSpriteAnimations();
+}
+
+// (CheckSkipDelayAllowed) TRUE when B's held and the skip delay's allowed (the game's config's "Skip
+// some" animations; off unless it's set, as a new game's is)
+bool32 Tcg_CheckSkipDelayAllowed(void)
+{
+    return A->skipDelayAllowed && (G->keysHeld & TCG_PAD_B);
 }
 
 // (CheckAnyAnimationPlaying) TRUE (the game's carry): something's still playing

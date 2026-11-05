@@ -137,7 +137,9 @@ def main():
     pals = palettes()
 
     # the duel's sprites (SPRITE_DUEL_*): their indexes in the Sprites table
-    sprite_names = re.findall(r"const (SPRITE_\w+)", (SRC / "constants/sprite_constants.asm").read_text())
+    st = (SRC / "constants/sprite_constants.asm").read_text()
+    st = st[st.index("const SPRITE_OW_PLAYER"):]  # (the file's first const_defs are SPRITE_ANIM_*'s fields)
+    sprite_names = re.findall(r"const (SPRITE_\w+)", st.split("const_def")[0])
     duel_sprites = {i for i, n in enumerate(sprite_names) if n.startswith("SPRITE_DUEL")}
     # the animations to keep: the duel animations', the damage numbers' (SPRITE_ANIM_79-91), the
     # coin's and the duel's other code's (all SPRITE_ANIM_* named in engine/duel and home)
@@ -147,6 +149,7 @@ def main():
     code = "".join(p.read_text() for d in ("engine/duel", "home", "engine/menus") for p in (SRC / d).rglob("*.asm"))
     used_anims |= set(re.findall(r"\b(SPRITE_ANIM_\d+|SPRITE_ANIM_[A-Z_]+\d*)\b", code))
     used_pals = {a[1] for a in duel_anims if a[1] != "NONE"} | set(re.findall(r"\b(PALETTE_\w+)\b", code))
+    used_pals |= {"PALETTE_PLAYER_PIC", "PALETTE_ROD_PIC"}    # (the duelists' portraits: data/duel/portraits.asm)
     pal_names = re.findall(r"const (PALETTE_\w+)", (SRC / "constants/palette_constants.asm").read_text())
     at = (SRC / "constants/animation_constants.asm").read_text()
     at = at[at.index("const SPRITE_ANIM_LIGHT_NPC_UP"):]
@@ -168,11 +171,20 @@ def main():
             cur_label = m[1]
             continue
         m = re.match(r'INCBIN "([^"]+)"', s)
-        if m and cur_label in {g[0] for g in gfx_labels.values()}:
+        if m and cur_label in {g[0] for g in gfx_labels.values()} | {"PlayerGfx", "RodGfx"}:
             sec.setdefault(cur_label, []).extend(extract_gfx.incbin(m[1]))
     for i, (lab, n) in gfx_labels.items():
         d = sec[lab][:n * 16]
         out.append(f"static const u8 sTcgSprite_{lab}[] =")
+        out.append("{")
+        for k in range(0, len(d), 32):
+            out.append("    " + ", ".join("0x%02X" % b for b in d[k:k + 32]) + ",")
+        out.append("};")
+    out.append("")
+    # the duelists' portraits (TILESET_PLAYER, TILESET_ROD: 6x6 tiles each)
+    for lab, name in (("PlayerGfx", "gTcgPlayerPortraitGfx"), ("RodGfx", "gTcgRodPortraitGfx")):
+        d = sec[lab][:36 * 16]
+        out.append(f"const u8 {name}[] =")
         out.append("{")
         for k in range(0, len(d), 32):
             out.append("    " + ", ".join("0x%02X" % b for b in d[k:k + 32]) + ",")

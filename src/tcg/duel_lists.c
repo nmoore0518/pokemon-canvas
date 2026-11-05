@@ -519,3 +519,16 @@ void Tcg_OpenNonTurnHolderHandScreen_Simple(void)
     Tcg_OpenTurnHolderHandScreen_Simple();
     Tcg_SwapTurn();
 }
+
+// (DisplayCardListDetails) the cards in wDuelTempList: "The card you received" / "You received
+// these cards"
+void Tcg_DisplayCardListDetails(void)
+{
+    if (gTcg->headless || gTcg->duelTempList[0] == 0xff)
+        return;
+    InitAndDrawCardListScreenLayout();
+    Tcg_PrintCardListItems(Tcg_CountCardsInDuelTempList(), 0, 0, &sCardListParameters);
+    Tcg_InitTextPrinting(1, 1);
+    Tcg_PrintTextNoDelay(TCG_TEXT_TheCardYouReceived);
+    Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_YouReceivedTheseCards);
+}

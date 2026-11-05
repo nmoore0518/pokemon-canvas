@@ -16,6 +16,8 @@ struct TcgSpriteAnim
 };
 
 extern const struct TcgSprite gTcgSprites[];
+extern const u8 gTcgPlayerPortraitGfx[];      // (6x6 tiles each)
+extern const u8 gTcgRodPortraitGfx[];
 extern const struct TcgSpriteAnim gTcgSpriteAnims[];
 extern const u16 *const gTcgPalettes[];         // (each: the number of palettes, then 4 colours each)
 extern const u8 gTcgDuelAnimations[][6];        // (sprite, palette, sprite animation, flags, sfx, handler)

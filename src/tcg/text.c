@@ -740,7 +740,14 @@ void Tcg_DrawLabeledTextBox(u32 x, u32 y, u32 w, u32 h, const u8 *label)
 {
     u8 *hl = G->labeledTextBoxTopBorder;
     u32 len, n, addr;
-    const u8 *t = label ? label : (const u8 *)"";
+    u8 name[24];
+    const u8 *t = label;
+    if (t == NULL)
+    {
+        // (CopyText with hl = NULL: the turn duelist's name)
+        Tcg_CopyDuelistName(gTcg->whoseTurn, name);
+        t = name;
+    }
     *hl++ = TCG_TX_SYMBOL;
     *hl++ = TCG_SYM_BOX_TOP_L;
     *hl++ = 0x70;   // (ldfw " ": the full-width space)

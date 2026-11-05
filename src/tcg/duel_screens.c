@@ -156,7 +156,7 @@ static const u8 sDuelHorizontalSeparatorCGBPalData[] =
     0xff
 };
 
-static void DrawDuelHorizontalSeparator(void)
+void Tcg_DrawDuelHorizontalSeparator(void)
 {
     Tcg_WriteDataBlocksToBGMap0(sDuelHorizontalSeparatorTileData);
     Tcg_BankswitchVRAM1();
@@ -338,7 +338,7 @@ static void DrawDuelMainScene_Draw(void)
     }
     Tcg_SwapTurn();
     Tcg_WriteDataBlocksToBGMap0(sDuelEAndHPTileData);
-    DrawDuelHorizontalSeparator();
+    Tcg_DrawDuelHorizontalSeparator();
     DrawDuelHUDs_Draw();
     Tcg_DrawWideTextBox();
     Tcg_EnableLCD();
