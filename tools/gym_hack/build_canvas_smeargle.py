@@ -156,28 +156,18 @@ def megaify(img, seed, shift, paint, outline, splats=5, scale=1.6, fur=FUR):
 
 
 def mega_art():
-    """(tools/gym_hack/canvas_mega_art.py: the same Mega for every type)"""
+    """The Mega's sprites are hand art (mega_anim_front.png, mega_back.png: converted from Nick's
+    reference by tools/gym_hack/art/mega_smeargle_from_ref.py, then touched up): only its palettes
+    and its icon are made here. One look for every type."""
     import canvas_mega_art as M
-    front = Image.open(SRC / "anim_front.png")
-    sheet = Image.new("P", (64, 128))
-    sheet.putpalette(front.getpalette())
-    base = front.crop((0, 0, 64, 64))
-    sheet.paste(M.front(base), (0, 0))
-    sheet.paste(M.front(base, flourish=True), (0, 64))
-    sheet.save(OUT / "mega_anim_front.png")
-    back = Image.open(SRC / "back.png")
-    b = M.back(back)
-    b.putpalette(back.getpalette())
-    b.save(OUT / "mega_back.png")
     icon = Image.open(SRC / "icon.png")
     isheet = Image.new("P", icon.size)
     isheet.putpalette(icon.getpalette())
     for k in range(icon.size[1] // 32):
         isheet.paste(M.icon(icon.crop((0, 32 * k, 32, 32 * k + 32))), (0, 32 * k))
     isheet.save(OUT / "mega_icon.png")
-    normal, shiny = load_pal(SRC / "normal.pal"), load_pal(SRC / "shiny.pal")
-    write_pal(OUT / "mega.pal", M.mega_palette(normal))
-    write_pal(OUT / "mega_shiny.pal", M.mega_palette(shiny))
+    write_pal(OUT / "mega.pal", M.MEGA_PALETTE)
+    write_pal(OUT / "mega_shiny.pal", M.MEGA_SHINY_PALETTE)
 
 
 def tail_icon(src, tail, name):

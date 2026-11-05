@@ -154,6 +154,10 @@ u32 Playtest_ChooseSwitchIn(u32 battler)
         for (k = 0; k < gBattlersCount; k++)
             if (IsOnPlayerSide(k) && gBattlerPartyIndexes[k] == i && IsBattlerAlive(k))
                 active = TRUE;
+        // (in doubles, both fainted: not the one its partner's already sending in)
+        for (k = 0; k < gBattlersCount; k++)
+            if (k != battler && IsOnPlayerSide(k) && !IsBattlerAlive(k) && gBattleStruct->monToSwitchIntoId[k] == i)
+                active = TRUE;
         if (active)
             continue;
         for (k = 0; k < MAX_MON_MOVES; k++)

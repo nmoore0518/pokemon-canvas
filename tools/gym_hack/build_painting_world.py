@@ -33,6 +33,13 @@ DESTINATIONS = [
     "CeladonCity_DepartmentStore_2F_Frlg", "CeruleanCity_House3_Frlg", "FuchsiaCity_WardensHouse_Frlg",
     "LavenderTown_House2_Frlg", "SaffronCity_House_Frlg", "VermilionCity_House3_Frlg", "ViridianCity_School_Frlg",
     "Route16_House_Frlg", "Route2_EastBuilding_Frlg", "Route12_FishingHouse_Frlg", "UndergroundPath_NorthEntrance_Frlg",
+    # later in the game (an early look is fine): Kanto's late dungeons and the Sevii Islands. (Not
+    # maps whose layout changes as they load, like Silph Co.'s doors or the Rocket Hideout's barrier.)
+    "SilphCo_1F_Frlg", "PokemonTower_7F_Frlg", "PowerPlant_Frlg", "CeruleanCave_1F_Frlg", "SeafoamIslands_1F_Frlg",
+    "SafariZone_Center_Frlg", "MtEmber_Summit_Frlg", "CinnabarIsland_PokemonLab_ExperimentRoom_Frlg",
+    "OneIsland_KindleRoad_Frlg", "TwoIsland_CapeBrink_Frlg", "ThreeIsland_BerryForest_Frlg",
+    "FourIsland_IcefallCave_Entrance_Frlg", "SixIsland_PatternBush_Frlg", "SixIsland_RuinValley_Frlg",
+    "SevenIsland_SevaultCanyon_Frlg",
 ]
 INV = {v: k for k, v in B.MB.items()}
 
@@ -50,7 +57,7 @@ def walkable_grid(name):
     raw = struct.unpack(f"<{w * h}H", (ROOT / l["blockdata_filepath"]).read_bytes())
     beh = B.Behaviors((l["primary_tileset"], l["secondary_tileset"]), "frlg")
     warps = {(wp["x"], wp["y"]) for wp in j["warp_events"]}
-    ok = set()
+    ok = {}
     for y in range(h):
         for x in range(w):
             v = raw[y * w + x]
@@ -59,12 +66,19 @@ def walkable_grid(name):
             b = beh(v)
             n = INV.get(b, "")
             if b in B.MB_SURFABLE or "JUMP" in n or "WARP" in n or "DOOR" in n or "LADDER" in n or "STAIRS" in n \
-               or "WATERFALL" in n or "CURRENT" in n or "ICE" in n or "HOLE" in n or "CRACKED" in n:
+               or "WATERFALL" in n or "CURRENT" in n or "ICE" in n or "HOLE" in n or "CRACKED" in n or "SPIN" in n \
+               or "SLIDE" in n or "MUDDY" in n or "BRIDGE" in n:
                 continue
             if (x, y) in warps:
                 continue
-            ok.add((x, y))
+            ok[(x, y)] = v >> 12          # (its elevation)
     return j, w, h, ok
+
+
+def can_step(ok, a, b):
+    # (the game only walks between tiles at one elevation, or through 0 and 15: transitions)
+    ea, eb = ok[a], ok[b]
+    return ea == eb or ea in (0, 15) or eb in (0, 15)
 
 
 def bfs(ok, start):
@@ -74,7 +88,7 @@ def bfs(ok, start):
         x, y = q.popleft()
         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             n = (x + dx, y + dy)
-            if n in ok and n not in dist:
+            if n in ok and n not in dist and can_step(ok, (x, y), n):
                 dist[n] = dist[(x, y)] + 1
                 q.append(n)
     return dist
@@ -116,13 +130,18 @@ def place(name):
     return j, spawn, figure
 
 
+def ok_elev(name, p):
+    e = walkable_grid(name)[3][p]
+    return 3 if e in (0, 15) else e
+
+
 def main():
     rows = []
     for name in DESTINATIONS:
         j, spawn, figure = place(name)
         objs = [o for o in j["object_events"] if o.get("script") != FIGURE_SCRIPT]
         objs.append({"type": "object", "graphics_id": "OBJ_EVENT_GFX_PAINT_FIGURE", "x": figure[0], "y": figure[1],
-                     "elevation": 3, "movement_type": "MOVEMENT_TYPE_LOOK_AROUND", "movement_range_x": 0,
+                     "elevation": ok_elev(name, figure), "movement_type": "MOVEMENT_TYPE_LOOK_AROUND", "movement_range_x": 0,
                      "movement_range_y": 0, "trainer_type": "TRAINER_TYPE_NONE", "trainer_sight_or_berry_tree_id": "0",
                      "script": FIGURE_SCRIPT, "flag": "0"})
         j["object_events"] = objs
