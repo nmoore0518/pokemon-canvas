@@ -120,6 +120,14 @@ struct TcgDuel
     u8 defaultText[24];             // wDefaultText
     u16 hlText;                     // (the text id the game's routines return in hl, for their caller)
     u16 deText;                     // (and in de: a coin toss's text)
+    u8 confusionRetreatCheckWasUnsuccessful;   // wConfusionRetreatCheckWasUnsuccessful
+    u8 tempRetreatCostCards[8];     // hTempRetreatCostCards ($ff-terminated)
+    u8 energyCardsRequiredToRetreat, numRetreatEnergiesSelected;
+    u8 selectedDuelSubMenuItem;     // wSelectedDuelSubMenuItem
+    u8 duelistType;                 // wDuelistType (the turn holder's)
+    u8 skipDuelistIsThinkingDelay;  // wSkipDuelistIsThinkingDelay
+    u8 opponentTurnEnded;           // wOpponentTurnEnded
+    u8 duelResult;                  // wDuelResult (TCG_DUEL_WIN, TCG_DUEL_LOSS)
     bool8 headless;                 // (no screens, no waiting: the tests, AI-vs-AI runs)
 };
 
@@ -251,11 +259,37 @@ void Tcg_ApplyStatusConditionToArenaPokemon(const u8 *entry);
 void Tcg_TakePrizeCard(u32 prize);
 void Tcg_AIPickPrizeCards(void);
 bool32 Tcg_HandleDestinyBondAndBetweenTurnKnockOuts(void);
+bool32 Tcg_HandleBetweenTurnKnockOuts(void);
+bool32 Tcg_HandleConfusionDamageToSelf(void);
 void Tcg_ClearNonTurnTemporaryDuelvars(void);
 void Tcg_UpdateArenaCardLastTurnDamage(void);
 u16 Tcg_PrintThereWasNoEffectFromStatusText(void);
 
+// src/tcg/duel_core.c: the duel's loop, setup, between turns, the duel menu's rules, the AI's actions
+// (engine/duel/core.asm)
+void Tcg_InitializeDuelVariables(void);
+void Tcg_InitTurnDuelistPrizes(void);
+void Tcg_InitVariablesToBeginDuel(void);
+void Tcg_InitVariablesToBeginTurn(void);
+void Tcg_SetAllPlayAreaPokemonCanEvolve(void);
+bool32 Tcg_ShuffleDeckAndDrawSevenCards(void);
+void Tcg_HandleDuelSetup(void);
+void Tcg_HandleBetweenTurnsEvents(void);
+bool32 Tcg_CheckIfActiveCardParalyzedOrAsleep(void);
+bool32 Tcg_HasNoAlivePokemonInBench(void);
+bool32 Tcg_CheckIfEnoughEnergiesToRetreat(void);
+bool32 Tcg_CheckAbleToRetreat(void);
+void Tcg_DiscardRetreatCostCards(void);
+bool32 Tcg_AttemptRetreat(void);
+bool32 Tcg_CheckIfEnoughEnergiesForGivenAttack(u32 deckIndex, u32 attack);
+u32 Tcg_PrintAndLoadAttacksToDuelTempList(void);
+u32 Tcg_StartDuel(void);
+void Tcg_SetDecks(const u8 *playerDeck, const u8 *opponentDeck);
+bool32 Tcg_AIMakeDecision(u32 action);
+
 // src/tcg/ai.c: the AI opponent (engine/duel/ai/)
 u32 TcgAi_KOSwitch(void);       // (AIDoAction_KOSwitch: the bench Pokémon to replace a knocked-out one)
+void TcgAi_StartDuel(void);     // (AIDoAction_StartDuel: its Active and Benched Pokémon)
+void TcgAi_DoTurn(void);        // (AIDoAction_Turn)
 
 #endif // GUARD_TCG_H

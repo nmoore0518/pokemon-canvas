@@ -181,3 +181,43 @@ TEST("GymHack: TCG status queue: an attack's condition lands, unless the defende
     EXPECT_EQ(gTcg->vars[TCG_OPPONENT][TCG_DUELVARS_ARENA_CARD_STATUS], 0);
     EXPECT_EQ(gTcg->hlText, TCG_TEXT_NoDamageOrEffectDueToAgility);
 }
+
+// a whole duel, the AI on both sides (src/tcg/ai.c), headless
+static u32 RunAiDuel(u32 deck)
+{
+    memset(gTcg, 0, sizeof(*gTcg));
+    gTcg->headless = TRUE;
+    Tcg_SetDecks(gTcgDecks[deck], gTcgDecks[TCG_DECK_ROD]);
+    gTcg->vars[TCG_PLAYER][TCG_DUELVARS_DUELIST_TYPE] = TCG_DUELIST_TYPE_AI_OPP;
+    gTcg->vars[TCG_OPPONENT][TCG_DUELVARS_DUELIST_TYPE] = TCG_DUELIST_TYPE_AI_OPP;
+    gTcg->duelInitialPrizes = 6;
+    return Tcg_StartDuel();
+}
+
+// every card of the duelist's 60 is in exactly one place
+static bool32 CardsAccountedFor(u32 duelist)
+{
+    u8 *v = gTcg->vars[duelist];
+    u32 i, inDeck = TCG_DECK_SIZE - v[TCG_DUELVARS_NUMBER_OF_CARDS_NOT_IN_DECK], n = 0;
+    for (i = 0; i < TCG_DECK_SIZE; i++)
+        if (v[TCG_DUELVARS_CARD_LOCATIONS + i] == TCG_CARD_LOCATION_DECK)
+            n++;
+    return n == inDeck;
+}
+
+TEST("GymHack: TCG duel: each of the player's decks plays a whole duel against Rod's")
+{
+    u32 deck;
+    PARAMETRIZE { deck = TCG_DECK_GRASS; }
+    PARAMETRIZE { deck = TCG_DECK_FIRE; }
+    PARAMETRIZE { deck = TCG_DECK_WATER; }
+    PARAMETRIZE { deck = TCG_DECK_LIGHTNING; }
+    PARAMETRIZE { deck = TCG_DECK_PSYCHIC; }
+    PARAMETRIZE { deck = TCG_DECK_FIGHTING; }
+    PARAMETRIZE { deck = TCG_DECK_COLORLESS; }
+    EXPECT_LT(RunAiDuel(deck), 2);              // (TCG_DUEL_WIN or TCG_DUEL_LOSS)
+    EXPECT_NE(gTcg->duelFinished, TCG_DUEL_NOT_FINISHED);
+    EXPECT_GT(gTcg->duelTurns, 2);
+    EXPECT(CardsAccountedFor(TCG_PLAYER));
+    EXPECT(CardsAccountedFor(TCG_OPPONENT));
+}

@@ -63,17 +63,29 @@ on the GBA's with a border.
   Mew Lv8's Neutralizing Shield, Haunter Lv17's Transparency, Venomoth's Shift, Dodrio's Retreat
   Aid, Aerodactyl's Prehistoric Power, Omanyte's Clairvoyance, Clefairy Doll / Mysterious Fossil.
 
+- src/tcg/duel_core.c (engine/duel/core.asm): StartDuel + MainDuelLoop (sudden death on a tie),
+  HandleTurn (draw: an empty deck loses), HandleDuelSetup (mulligans, placing Pokémon, prizes, the
+  first-player coin), ShuffleDeckAndDrawSevenCards, InitializeDuelVariables, InitTurnDuelistPrizes,
+  HandleBetweenTurnsEvents (poison, sleep, paralysis; PlusPower and Defender discarded), the duel menu
+  (PrintDuelMenuAndHandleInput, DuelMenu_Hand/Attack/PkmnPower/Retreat/Done, PlayEnergyCard with Rain
+  Dance, PlayPokemonCard, CheckAbleToRetreat, DisplayRetreatScreen's choosing, AttemptRetreat,
+  CheckIfEnoughEnergiesForGivenAttack, PrintAndLoadAttacksToDuelTempList, DisplayPlayAreaScreenToUsePkmnPower),
+  and AIMakeDecision with the OppAction_* routines the AI drives.
+- The design: like the game, the rules code waits for its screens (blocking calls), so it reads as the
+  game does. On the GBA the duel will run as a loop of its own: the UI's waits do the frames (read
+  keys, sprites, wait for VBlank; sound runs in the VBlank interrupt).
+- The player's choices are UI hooks returning a choice or TCG_SELECTION_CANCEL (the game's carry).
+- src/tcg/ai.c: a plain stand-in AI (weak symbols), enough to run whole duels headless: test/tcg.c
+  plays each of the 7 player decks against Rod's, AI vs AI, to the end.
+
 ## Next session: start here
-- engine/duel/core.asm: the duel loop. Start at MainDuelLoop / StartDuel / HandleDuelSetup
-  (deck shuffle, opening hands, mulligans, basic Pokémon placement, prizes, coin for who goes first),
-  then HandleTurn (draw, the duel menu: hand, attack, retreat, Pokémon Power, done), between turns
-  (poison, sleep and paralysis checks: HandleBetweenTurnsEvents), deck-out and sudden death.
-  The player's menus are UI hooks to add to tcg_ui.h; the AI's turn is TcgAi_*.
+- engine/duel/effect_functions.asm: the 189 effect routines (include/tcg_effect_functions.h). They're
+  weak stubs now, so attacks do their base damage only and Trainers do nothing. Port them in the
+  file's order; each needs its own text, coin tosses, and player/AI selection hooks.
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).
-2. engine/duel/core.asm: the duel loop (MainDuelLoop, HandleTurn, HandleDuelSetup, between turns,
-   prizes, knock-outs, sudden death), the player's menus (hand, attack, retreat, check).
+2. ~~engine/duel/core.asm: the duel loop and the menus' rules~~ (done; the menus' screens are part of 5).
 3. engine/duel/effect_functions.asm: the 189 routines in include/tcg_effect_functions.h.
 4. engine/duel/ai/: Rod's AI (decks/legendary_dragonite.asm and the general AI it uses).
 5. The screens (the game's layouts at 160x144 in the middle of the GBA's), its fonts and gfx.

@@ -32,8 +32,42 @@ void Tcg_PlayStatusConditionQueueAnimations(void);
 void Tcg_WaitAttackAnimation(void);
 void Tcg_FinishQueuedAnimations(void);
 
-// the player choosing (the AI's choices are in src/tcg/ai*.c)
-u32 Tcg_OpenPlayAreaScreenForSelection(void);   // a PLAY_AREA_* (the game's carry: try again)
-void Tcg_SelectPrizeCards(u32 count);           // (takes them: Tcg_TakePrizeCard)
+// more screens
+void Tcg_DisplayDuelBoxMessage(u32 boxMessage);         // (BOXMSG_*, on an empty screen)
+void Tcg_PrintScrollableText_NoTextBoxLabel(u16 textId);
+void Tcg_PlayShuffleAndDrawCardsAnimation(bool32 bothDuelists);
+void Tcg_DisplayNoBasicPokemonInHandScreen(void);
+void Tcg_DrawPlayAreaToPlacePrizeCards(void);
+void Tcg_PlacePrizes(void);
+void Tcg_RedrawTurnDuelistsMainSceneOrDuelHUD(void);
+void Tcg_PlayBetweenTurnsAnimation(u32 duelAnim, u32 damage);
+void Tcg_PlaySFX(u32 sfx);
+void Tcg_PrintPlayAreaCardList(void);
+void Tcg_DisplayDrawOneCardScreen(void);
+void Tcg_DisplayPlayerDrawCardScreen(void);
+void Tcg_DisplayDuelistTurnScreen(void);
+void Tcg_DuelistIsThinking(void);                       // ("<Duelist> is thinking.")
+void Tcg_AIThinkingDelay(void);                         // (AIMakeDecision's wait)
+void Tcg_DrawLargePictureOfCard(void);                  // (wLoadedCard1)
+void Tcg_PrintUsedTrainerCardDescription(void);
+void Tcg_DisplayOpponentUsedAttackScreen(void);
+void Tcg_DisplayDuelResult(u32 duelFinished, u16 textId);
+void Tcg_DisplayEnergyDiscardScreen(u32 location);
+void Tcg_DisplayEnergyDiscardMenu(void);
+void Tcg_CopyDuelistName(u32 duelist, u8 *dest);
+
+// the player choosing (the AI's choices are in src/tcg/ai*.c): TCG_SELECTION_CANCEL is B (the game's carry)
+#define TCG_SELECTION_CANCEL 0xFF
+enum { TCG_DUELMENU_HAND, TCG_DUELMENU_ATTACK, TCG_DUELMENU_CHECK, TCG_DUELMENU_PKMN_POWER, TCG_DUELMENU_RETREAT, TCG_DUELMENU_DONE };
+u32 Tcg_HandleDuelMenuInput(void);                      // (TCG_DUELMENU_*; the B+direction shortcuts are its own)
+void Tcg_OpenDuelCheckMenu(void);
+u32 Tcg_OpenPlayAreaScreenForSelection(bool32 excludeArena);   // a PLAY_AREA_* (hTempPlayAreaLocation_ff9d)
+u32 Tcg_DisplayPlaceInitialPokemonCardsScreen(bool32 bench, u16 textId);   // a Basic in the hand
+u32 Tcg_DisplayHandCardList(u16 textId);                // a deck index (wDuelTempList: the hand)
+u32 Tcg_HandleEnergyDiscardMenuInput(u32 selected, u32 required);   // a deck index (wDuelTempList)
+u32 Tcg_HandleAttackMenuInput(u32 count, u32 item);     // an item of wDuelTempList's attacks
+u32 Tcg_SelectPlayAreaPokemonPower(u32 item);           // a PLAY_AREA_*
+bool32 Tcg_YesOrNoMenuWithText(u16 textId);             // TRUE: no
+void Tcg_SelectPrizeCards(u32 count);                   // (takes them: Tcg_TakePrizeCard)
 
 #endif // GUARD_TCG_UI_H

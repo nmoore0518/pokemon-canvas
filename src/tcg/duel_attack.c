@@ -188,7 +188,6 @@ static bool32 ReturnCarry_PrintHl(void)
     return TRUE;
 }
 
-static bool32 HandleConfusionDamageToSelf(void);
 static bool32 UsePokemonPower(void);
 static void Func_1bb4(void);
 
@@ -215,7 +214,7 @@ bool32 Tcg_UseAttackOrPokemonPower(void)
         return TRUE;
     Tcg_TryExecuteEffectCommandFunction(TCG_EFFECTCMDTYPE_DISCARD_ENERGY);
     if (Tcg_CheckSelfConfusionDamage())
-        return HandleConfusionDamageToSelf();
+        return Tcg_HandleConfusionDamageToSelf();
     Tcg_DrawDuelMainScene_PrintPokemonsAttackText();
     Tcg_WaitForWideTextBoxInput();
     Tcg_TryExecuteEffectCommandFunction(TCG_EFFECTCMDTYPE_REQUIRE_SELECTION);
@@ -262,7 +261,7 @@ bool32 Tcg_HandleAfterDamageEffects(void)
 }
 
 // the attacker hits itself in its confusion: 20 damage
-static bool32 HandleConfusionDamageToSelf(void)
+bool32 Tcg_HandleConfusionDamageToSelf(void)
 {
     Tcg_DrawDuelMainScene();
     gTcg->isDamageToSelf = TRUE;
@@ -1268,7 +1267,9 @@ static bool32 ReplaceKnockedOutPokemon(void)
     {
         Tcg_DrawDuelMainScene();
         Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_SelectPokemonToPlaceInTheArena);
-        gTcg->tempPlayAreaLocation = Tcg_OpenPlayAreaScreenForSelection();
+        do
+            gTcg->tempPlayAreaLocation = Tcg_OpenPlayAreaScreenForSelection(TRUE);
+        while (gTcg->tempPlayAreaLocation == TCG_SELECTION_CANCEL);
     }
     else
     {
@@ -1322,6 +1323,14 @@ static void ClearKnockedOutDamageReductionSubstatus2(void)
 // whether the duel's over (wDuelFinished). TRUE: it is.
 bool32 Tcg_HandleDestinyBondAndBetweenTurnKnockOuts(void)
 {
+    Tcg_HandleDestinyBondSubstatus();
+    return Tcg_HandleBetweenTurnKnockOuts();
+}
+
+// the knock-outs (between turns, or after an attack): prizes taken, knocked-out Pokémon replaced
+// and discarded, and whether the duel's over (wDuelFinished). TRUE: it is.
+bool32 Tcg_HandleBetweenTurnKnockOuts(void)
+{
     static const u8 sResults[] =
     {
         TCG_DUEL_NOT_FINISHED, TCG_TURN_PLAYER_LOST, TCG_TURN_PLAYER_WON,  TCG_TURN_PLAYER_TIED,
@@ -1330,8 +1339,7 @@ bool32 Tcg_HandleDestinyBondAndBetweenTurnKnockOuts(void)
         TCG_TURN_PLAYER_TIED,  TCG_TURN_PLAYER_LOST, TCG_TURN_PLAYER_WON,  TCG_TURN_PLAYER_TIED,
     };
     bool32 finished = FALSE;
-    Tcg_HandleDestinyBondSubstatus();
-    // HandleBetweenTurnKnockOuts: wDuelFinishParam gathers four results, a bit each (rl [hl])
+    // wDuelFinishParam gathers four results, a bit each (the game's rl [hl])
     ClearKnockedOutDamageReductionSubstatus2();
     gTcg->duelFinishParam = 0;
     Tcg_SwapTurn();

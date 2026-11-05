@@ -1,9 +1,11 @@
 // Pokémon Canvas: the Trading Card Game duel's screens (include/tcg_ui.h), as its rules code calls
-// them. So far only the logic is ported: these do nothing yet (and always will with gTcg->headless).
+// them. So far only the rules are ported: these show nothing yet, and the player's choices are
+// stand-ins (the first that's allowed), as they'll stay with gTcg->headless (the tests, AI-vs-AI runs).
 // The game's screens, at 160x144 in the middle of the GBA's, are the next part of the port.
 #include "global.h"
 #include "tcg.h"
 #include "tcg_ui.h"
+#include "string_util.h"
 
 void Tcg_DrawWideTextBox_PrintText(u16 textId) {}
 void Tcg_DrawWideTextBox_WaitForInput(u16 textId) {}
@@ -23,18 +25,90 @@ void Tcg_PlayAttackAnimation(u32 duelist, u32 location, u32 effectiveness, u16 d
 void Tcg_PlayStatusConditionQueueAnimations(void) {}
 void Tcg_WaitAttackAnimation(void) {}
 void Tcg_FinishQueuedAnimations(void) {}
+void Tcg_DisplayDuelBoxMessage(u32 boxMessage) {}
+void Tcg_PrintScrollableText_NoTextBoxLabel(u16 textId) {}
+void Tcg_PlayShuffleAndDrawCardsAnimation(bool32 bothDuelists) {}
+void Tcg_DisplayNoBasicPokemonInHandScreen(void) {}
+void Tcg_DrawPlayAreaToPlacePrizeCards(void) {}
+void Tcg_PlacePrizes(void) {}
+void Tcg_RedrawTurnDuelistsMainSceneOrDuelHUD(void) {}
+void Tcg_PlayBetweenTurnsAnimation(u32 duelAnim, u32 damage) {}
+void Tcg_PlaySFX(u32 sfx) {}
+void Tcg_PrintPlayAreaCardList(void) {}
+void Tcg_DisplayDrawOneCardScreen(void) {}
+void Tcg_DisplayPlayerDrawCardScreen(void) {}
+void Tcg_DisplayDuelistTurnScreen(void) {}
+void Tcg_DuelistIsThinking(void) {}
+void Tcg_AIThinkingDelay(void) {}
+void Tcg_DrawLargePictureOfCard(void) {}
+void Tcg_PrintUsedTrainerCardDescription(void) {}
+void Tcg_DisplayOpponentUsedAttackScreen(void) {}
+void Tcg_DisplayDuelResult(u32 duelFinished, u16 textId) {}
+void Tcg_DisplayEnergyDiscardScreen(u32 location) {}
+void Tcg_DisplayEnergyDiscardMenu(void) {}
+void Tcg_OpenDuelCheckMenu(void) {}
 
-// (until the play area screen's ported: the first benched Pokémon with HP)
-u32 Tcg_OpenPlayAreaScreenForSelection(void)
+// (CopyPlayerName / CopyOpponentName)
+void Tcg_CopyDuelistName(u32 duelist, u8 *dest)
 {
-    u32 i, n = *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_POKEMON_IN_PLAY_AREA);
-    for (i = 1; i < n; i++)
-        if (*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD_HP + i))
-            return i;
-    return TCG_PLAY_AREA_BENCH_1;
+    static const u8 sPlayer[] = _("Player");
+    static const u8 sRod[] = _("Rod");
+    StringCopy(dest, duelist == TCG_PLAYER ? sPlayer : sRod);
 }
 
-// (until the prize screen's ported: the first prizes left)
+u32 Tcg_HandleDuelMenuInput(void)
+{
+    return TCG_DUELMENU_DONE;
+}
+
+u32 Tcg_OpenPlayAreaScreenForSelection(bool32 excludeArena)
+{
+    u32 i, n = *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_POKEMON_IN_PLAY_AREA);
+    for (i = excludeArena ? 1 : 0; i < n; i++)
+        if (*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD_HP + i))
+            return i;
+    return TCG_SELECTION_CANCEL;
+}
+
+u32 Tcg_DisplayPlaceInitialPokemonCardsScreen(bool32 bench, u16 textId)
+{
+    u32 i, n = *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_CARDS_IN_HAND);
+    if (bench)
+        return TCG_SELECTION_CANCEL;
+    for (i = 0; i < n; i++)
+    {
+        const struct TcgCard *c = Tcg_Card(Tcg_GetCardIdFromDeckIndex(*Tcg_TurnVar(TCG_DUELVARS_HAND + i)));
+        if (c->type < TCG_TYPE_ENERGY && c->stage == TCG_BASIC)
+            return *Tcg_TurnVar(TCG_DUELVARS_HAND + i);
+    }
+    return TCG_SELECTION_CANCEL;
+}
+
+u32 Tcg_DisplayHandCardList(u16 textId)
+{
+    return TCG_SELECTION_CANCEL;
+}
+
+u32 Tcg_HandleEnergyDiscardMenuInput(u32 selected, u32 required)
+{
+    return gTcg->duelTempList[0];
+}
+
+u32 Tcg_HandleAttackMenuInput(u32 count, u32 item)
+{
+    return TCG_SELECTION_CANCEL;
+}
+
+u32 Tcg_SelectPlayAreaPokemonPower(u32 item)
+{
+    return TCG_SELECTION_CANCEL;
+}
+
+bool32 Tcg_YesOrNoMenuWithText(u16 textId)
+{
+    return TRUE;
+}
+
 void Tcg_SelectPrizeCards(u32 count)
 {
     u32 i;
