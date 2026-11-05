@@ -49,6 +49,7 @@
 #include "type_icons.h"
 #include "pokedex.h"
 #include "test/battle.h"
+#include "painter.h"
 
 static void PlayerHandleLoadMonSprite(enum BattlerId battler);
 static void PlayerHandleDrawTrainerPic(enum BattlerId battler);
@@ -411,6 +412,113 @@ static void HandleInputChooseAction(enum BattlerId battler)
     }
 }
 
+// Pokémon Canvas: QUICK SKETCH (the painter's: src/painter.c). Once its target's chosen, the move
+// menu shows the target's moves and the player picks the one to copy (A), or goes back (B).
+static EWRAM_DATA u8 sQuickSketchCursor = 0;
+static EWRAM_DATA u8 sQuickSketchTarget = 0;
+static void HandleInputChooseQuickSketch(enum BattlerId battler);
+
+static void QuickSketchShowInfo(enum BattlerId battler)
+{
+    u8 *txtPtr;
+    enum Move move = gBattleMons[sQuickSketchTarget].moves[sQuickSketchCursor];
+    txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
+    StringCopy(txtPtr, move == MOVE_NONE ? COMPOUND_STRING("") : gTypesInfo[GetMoveType(move)].name);
+    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_TYPE);
+    txtPtr = ConvertIntToDecimalStringN(gDisplayedStringBattle, GetMovePP(move), STR_CONV_MODE_RIGHT_ALIGN, 2);
+    *(txtPtr)++ = CHAR_SLASH;
+    ConvertIntToDecimalStringN(txtPtr, GetMovePP(move), STR_CONV_MODE_RIGHT_ALIGN, 2);
+    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_PP_REMAINING);
+}
+
+static void QuickSketchShowMoves(enum BattlerId battler)
+{
+    u32 i;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        MoveSelectionDestroyCursorAt(i);
+        StringCopy(gDisplayedStringBattle, GetMoveName(gBattleMons[sQuickSketchTarget].moves[i]));
+        BattlePutTextOnWindow(gDisplayedStringBattle, i + B_WIN_MOVE_NAME_1);
+    }
+    MoveSelectionCreateCursorAt(sQuickSketchCursor, 0);
+    QuickSketchShowInfo(battler);
+}
+
+// (A on QUICK SKETCH, its target `target`: TRUE if the menu of the target's moves is up instead)
+static bool32 TryStartQuickSketch(enum BattlerId battler, enum BattlerId target)
+{
+    u32 i, slot = gMoveSelectionCursor[battler];
+    if (GetMoveEffect(gBattleMons[battler].moves[slot]) != EFFECT_QUICK_SKETCH || gBattleMons[battler].pp[slot] == 0)
+        return FALSE;
+    sQuickSketchTarget = target;
+    sQuickSketchCursor = 0;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (Painter_QuickSketchCanCopy(battler, gBattleMons[target].moves[i]))
+        {
+            sQuickSketchCursor = i;
+            break;
+        }
+    }
+    MoveSelectionDestroyCursorAt(slot);
+    QuickSketchShowMoves(battler);
+    gBattlerControllerFuncs[battler] = HandleInputChooseQuickSketch;
+    return TRUE;
+}
+
+static void QuickSketchMoveCursor(enum BattlerId battler, u32 to)
+{
+    if (to >= MAX_MON_MOVES || gBattleMons[sQuickSketchTarget].moves[to] == MOVE_NONE)
+        return;
+    PlaySE(SE_SELECT);
+    MoveSelectionDestroyCursorAt(sQuickSketchCursor);
+    sQuickSketchCursor = to;
+    MoveSelectionCreateCursorAt(sQuickSketchCursor, 0);
+    QuickSketchShowInfo(battler);
+}
+
+static void HandleInputChooseQuickSketch(enum BattlerId battler)
+{
+    enum Move move = gBattleMons[sQuickSketchTarget].moves[sQuickSketchCursor];
+    if (JOY_NEW(A_BUTTON))
+    {
+        if (!Painter_QuickSketchCanCopy(battler, move))
+        {
+            PlaySE(SE_FAILURE);
+            return;
+        }
+        PlaySE(SE_SELECT);
+        gQuickSketchChoice[battler] = move;
+        if (gBattleStruct->gimmick.playerSelect)
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | RET_GIMMICK | (sQuickSketchTarget << 8));
+        else
+            BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (sQuickSketchTarget << 8));
+        HideGimmickTriggerSprite();
+        TryHideLastUsedBall();
+        BtlController_Complete(battler);
+    }
+    else if (JOY_NEW(B_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        MoveSelectionDestroyCursorAt(sQuickSketchCursor);
+        MoveSelectionDisplayMoveNames(battler);
+        MoveSelectionCreateCursorAt(gMoveSelectionCursor[battler], 0);
+        MoveSelectionDisplayPPNumber(battler);
+        MoveSelectionDisplayMoveType(battler);
+        gBattlerControllerFuncs[battler] = HandleInputChooseMove;
+        DoBounceEffect(battler, BOUNCE_HEALTHBOX, 7, 1);
+        DoBounceEffect(battler, BOUNCE_MON, 7, 1);
+    }
+    else if (JOY_NEW(DPAD_LEFT) && (sQuickSketchCursor & 1))
+        QuickSketchMoveCursor(battler, sQuickSketchCursor ^ 1);
+    else if (JOY_NEW(DPAD_RIGHT) && !(sQuickSketchCursor & 1))
+        QuickSketchMoveCursor(battler, sQuickSketchCursor ^ 1);
+    else if (JOY_NEW(DPAD_UP) && (sQuickSketchCursor & 2))
+        QuickSketchMoveCursor(battler, sQuickSketchCursor ^ 2);
+    else if (JOY_NEW(DPAD_DOWN) && !(sQuickSketchCursor & 2))
+        QuickSketchMoveCursor(battler, sQuickSketchCursor ^ 2);
+}
+
 void HandleInputChooseTarget(enum BattlerId battler)
 {
     enum BattlerId i;
@@ -440,6 +548,11 @@ void HandleInputChooseTarget(enum BattlerId battler)
     {
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
+        if (TryStartQuickSketch(battler, gMultiUsePlayerCursor))
+        {
+            EndBounceEffect(gMultiUsePlayerCursor, BOUNCE_HEALTHBOX);
+            return;
+        }
         if (gBattleStruct->gimmick.playerSelect)
             BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | RET_GIMMICK | (gMultiUsePlayerCursor << 8));
         else
@@ -750,6 +863,8 @@ void HandleInputChooseMove(enum BattlerId battler)
         {
         case 0:
         default:
+            if (TryStartQuickSketch(battler, gMultiUsePlayerCursor))
+                break;
             if (gBattleStruct->gimmick.playerSelect)
                 BtlController_EmitTwoReturnValues(battler, B_COMM_TO_ENGINE, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | RET_GIMMICK | (gMultiUsePlayerCursor << 8));
             else
@@ -2124,7 +2239,11 @@ void PlayerHandleChooseMove(enum BattlerId battler)
         if (Playtest_Active())
         {
             // (automated playtests: the autopilot's move, at its target)
-            u32 target, slot = Playtest_ChooseMove(battler, &target);
+            u32 target, slot = Playtest_ChooseMove(battler, &target), k;
+            if (GetMoveEffect(gBattleMons[battler].moves[slot & 3]) == EFFECT_QUICK_SKETCH)
+                for (k = 0; k < MAX_MON_MOVES; k++)
+                    if (Painter_QuickSketchCanCopy(battler, gBattleMons[target].moves[k]))
+                        gQuickSketchChoice[battler] = gBattleMons[target].moves[k];
             // (and it Mega Evolves when it can)
             if (gBattleStruct->gimmick.usableGimmick[battler] == GIMMICK_MEGA)
             {

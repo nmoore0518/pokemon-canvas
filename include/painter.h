@@ -13,6 +13,9 @@ bool32 Painting_BlocksCoords(s16 x, s16 y);
 void Painting_RedirectWarp(struct WarpData *warp);
 void Painting_TintPalettes(u32 offset, u32 count, bool32 skipFaded);
 bool32 Painter_SketchAllowed(u32 move);
+bool32 Painter_QuickSketchCanCopy(u32 battler, u32 move);
+u32 Painter_QuickSketchMove(u32 attacker, u32 target);
+extern u16 gQuickSketchChoice[];
 // (specials)
 void Painter_PrepareSketch(void);
 void Painter_Return(void);

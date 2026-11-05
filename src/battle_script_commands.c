@@ -6321,21 +6321,26 @@ static void Cmd_setalwayshitflag(void)
 static void Cmd_copymovepermanently(void)
 {
     CMD_ARGS(const u8 *failInstr);
+    // (Pokémon Canvas: QUICK SKETCH copies the move the player picked, if the target knows it)
+    enum Move copied = (GetMoveEffect(gCurrentMove) == EFFECT_QUICK_SKETCH)
+                     ? Painter_QuickSketchMove(gBattlerAttacker, gBattlerTarget) : gLastPrintedMoves[gBattlerTarget];
 
     gChosenMove = MOVE_UNAVAILABLE;
 
     if (!(gBattleMons[gBattlerAttacker].volatiles.transformed)
-        && gLastPrintedMoves[gBattlerTarget] != MOVE_UNAVAILABLE
-        && !IsMoveSketchBanned(gLastPrintedMoves[gBattlerTarget])
-        && Painter_SketchAllowed(gLastPrintedMoves[gBattlerTarget]))   // (Pokémon Canvas: a Sketch quest's moves only)
+        && copied != MOVE_UNAVAILABLE
+        && copied != MOVE_NONE
+        && !IsMoveSketchBanned(copied)
+        && Painter_SketchAllowed(copied))   // (Pokémon Canvas: a Sketch quest's moves only)
     {
         s32 i;
 
         for (i = 0; i < MAX_MON_MOVES; i++)
         {
-            if (GetMoveEffect(gBattleMons[gBattlerAttacker].moves[i]) == EFFECT_SKETCH)
+            if (GetMoveEffect(gBattleMons[gBattlerAttacker].moves[i]) == EFFECT_SKETCH
+             || GetMoveEffect(gBattleMons[gBattlerAttacker].moves[i]) == EFFECT_QUICK_SKETCH)
                 continue;
-            if (gBattleMons[gBattlerAttacker].moves[i] == gLastPrintedMoves[gBattlerTarget])
+            if (gBattleMons[gBattlerAttacker].moves[i] == copied)
                 break;
         }
 
@@ -6347,8 +6352,8 @@ static void Cmd_copymovepermanently(void)
         {
             struct MovePPInfo movePPData;
 
-            gBattleMons[gBattlerAttacker].moves[gCurrMovePos] = gLastPrintedMoves[gBattlerTarget];
-            gBattleMons[gBattlerAttacker].pp[gCurrMovePos] = GetMovePP(gLastPrintedMoves[gBattlerTarget]);
+            gBattleMons[gBattlerAttacker].moves[gCurrMovePos] = copied;
+            gBattleMons[gBattlerAttacker].pp[gCurrMovePos] = GetMovePP(copied);
 
             for (i = 0; i < MAX_MON_MOVES; i++)
             {
@@ -6360,7 +6365,7 @@ static void Cmd_copymovepermanently(void)
             BtlController_EmitSetMonData(gBattlerAttacker, B_COMM_TO_CONTROLLER, REQUEST_MOVES_PP_BATTLE, 0, sizeof(movePPData), &movePPData);
             MarkBattlerForControllerExec(gBattlerAttacker);
 
-            PREPARE_MOVE_BUFFER(gBattleTextBuff1, gLastPrintedMoves[gBattlerTarget])
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, copied)
 
             gBattlescriptCurrInstr = cmd->nextInstr;
         }

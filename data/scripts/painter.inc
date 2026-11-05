@@ -351,10 +351,11 @@ PainterLoft_Text_Nothing::
 PainterLoft_Text_SketchIntro::
 	.string "Another BADGE! SMEARGLE's been\n"
 	.string "watching you. It's itching to learn.\p"
-	.string "I'll paint SKETCH onto it. In the\n"
-	.string "painting, it can copy one move it\l"
-	.string "sees. Win, and the move is its own.\l"
-	.string "Lose, and the paint washes off.$"
+	.string "I'll paint QUICK SKETCH onto it. In\n"
+	.string "the painting, it can copy any one\l"
+	.string "move the figure knows. Win, and the\l"
+	.string "move is its own. Lose, and the\l"
+	.string "paint washes off.$"
 
 PainterLoft_Text_SketchAsk::
 	.string "Shall we paint a new move?$"
@@ -363,19 +364,19 @@ PainterLoft_Text_WhichType::
 	.string "What kind of move?$"
 
 PainterLoft_Text_WhichSlot::
-	.string "Which move should SKETCH be painted\n"
-	.string "over?$"
+	.string "Which move should QUICK SKETCH be\n"
+	.string "painted over?$"
 
 PainterLoft_Text_ConfirmSlot::
-	.string "SKETCH goes over {STR_VAR_1}'s\n"
+	.string "QUICK SKETCH goes over {STR_VAR_1}'s\n"
 	.string "{STR_VAR_2}. If it doesn't keep a\l"
 	.string "new move, {STR_VAR_2} comes back.\l"
 	.string "All right?$"
 
 PainterLoft_Text_SketchGo::
 	.string "Done. The canvas is on the easel.\n"
-	.string "Remember: SKETCH copies the last move\l"
-	.string "its target used. Watch first.$"
+	.string "Use QUICK SKETCH on the figure and\l"
+	.string "pick whichever of its moves you like.$"
 
 PainterLoft_Text_MegaIntro::
 	.string "The POKéMON LEAGUE! You've seen\n"
@@ -455,8 +456,9 @@ PainterLoft_Text_FirstExplain::
 	.string "It knows MASTERSTROKE: it paints\n"
 	.string "with its own color, your type.\p"
 	.string "After every BADGE, come back. I'll\n"
-	.string "paint SKETCH onto it, and it can\l"
-	.string "learn something new in a painting.$"
+	.string "paint QUICK SKETCH onto it, and it\l"
+	.string "can learn something new in a\l"
+	.string "painting.$"
 
 PainterLoft_Text_FirstLost::
 	.string "Oh dear. That figure paints hard.\p"

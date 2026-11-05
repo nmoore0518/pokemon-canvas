@@ -7,7 +7,8 @@ The forms, all one Smeargle (National Dex 235), 500 base stats, fast and special
   SPECIES_SMEARGLE_CANVAS             typeless (???), its tail unpainted (the painter's: lent out)
   SPECIES_SMEARGLE_CANVAS_<TYPE>      one per type, its tail painted the type's colour (the player's
                                       gym type: given after the first painting)
-  SPECIES_SMEARGLE_CANVAS_<TYPE>_MEGA Mega Smeargle, 600: a bigger brush, paint all over (the
+  SPECIES_SMEARGLE_CANVAS_<TYPE>_MEGA Mega Smeargle, 600: a huge rainbow brush, a palette round its
+                                      neck (one look for every type: canvas_mega_art.py; the
                                       SMEARGLITE, a key item: src/pokemon.c's form check)
 Writes:
   include/constants/canvas_smeargle.h                     the species' numbers (included in species.h)
@@ -155,24 +156,28 @@ def megaify(img, seed, shift, paint, outline, splats=5, scale=1.6, fur=FUR):
 
 
 def mega_art():
+    """(tools/gym_hack/canvas_mega_art.py: the same Mega for every type)"""
+    import canvas_mega_art as M
     front = Image.open(SRC / "anim_front.png")
-    back = Image.open(SRC / "back.png")
-    frames = [megaify(front.crop((0, 64 * i, 64, 64 * i + 64)), 1, 8, PAINT, 6) for i in range(2)]
     sheet = Image.new("P", (64, 128))
     sheet.putpalette(front.getpalette())
-    for i, f in enumerate(frames):
-        sheet.paste(f, (0, 64 * i))
+    base = front.crop((0, 0, 64, 64))
+    sheet.paste(M.front(base), (0, 0))
+    sheet.paste(M.front(base, flourish=True), (0, 64))
     sheet.save(OUT / "mega_anim_front.png")
-    b = megaify(back, 2, -6, PAINT, 6)
+    back = Image.open(SRC / "back.png")
+    b = M.back(back)
     b.putpalette(back.getpalette())
     b.save(OUT / "mega_back.png")
     icon = Image.open(SRC / "icon.png")
     isheet = Image.new("P", icon.size)
     isheet.putpalette(icon.getpalette())
-    for i in range(icon.size[1] // 32):
-        isheet.paste(megaify(icon.crop((0, 32 * i, 32, 32 * i + 32)), 3, 2, ICON_PAINT, 15, splats=0, scale=1.5), (0, 32 * i))
-    for key in TYPES:
-        tail_icon(isheet, ICON_TAIL[key], f"mega_icon_{key.lower()}.png")
+    for k in range(icon.size[1] // 32):
+        isheet.paste(M.icon(icon.crop((0, 32 * k, 32, 32 * k + 32))), (0, 32 * k))
+    isheet.save(OUT / "mega_icon.png")
+    normal, shiny = load_pal(SRC / "normal.pal"), load_pal(SRC / "shiny.pal")
+    write_pal(OUT / "mega.pal", M.mega_palette(normal))
+    write_pal(OUT / "mega_shiny.pal", M.mega_palette(shiny))
 
 
 def tail_icon(src, tail, name):
@@ -236,11 +241,10 @@ def write_graphics():
         lines.append(f'const u16 gMonPalette_SmeargleCanvas{n}[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/{f}.pal", ".gbapal");')
         lines.append(f'const u16 gMonShinyPalette_SmeargleCanvas{n}[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/{f}_shiny.pal", ".gbapal");')
         lines.append(f'const u8 gMonIcon_SmeargleCanvas{n}[] = INCGFX_U8("graphics/pokemon/smeargle/canvas/icon_{f}.png", ".4bpp");')
-        if key is not None:
-            lines.append(f'const u16 gMonPalette_SmeargleCanvas{n}Mega[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/mega_{f}.pal", ".gbapal");')
-            lines.append(f'const u16 gMonShinyPalette_SmeargleCanvas{n}Mega[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/mega_{f}_shiny.pal", ".gbapal");')
-            lines.append(f'const u8 gMonIcon_SmeargleCanvas{n}Mega[] = INCGFX_U8("graphics/pokemon/smeargle/canvas/mega_icon_{f}.png", ".4bpp");')
     lines.append('const u16 gOverworldPalette_SmeargleCanvasTypeless[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/overworld_typeless.pal", ".gbapal");')
+    lines.append('const u16 gMonPalette_SmeargleCanvasMega[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/mega.pal", ".gbapal");')
+    lines.append('const u16 gMonShinyPalette_SmeargleCanvasMega[] = INCGFX_U16("graphics/pokemon/smeargle/canvas/mega_shiny.pal", ".gbapal");')
+    lines.append('const u8 gMonIcon_SmeargleCanvasMega[] = INCGFX_U8("graphics/pokemon/smeargle/canvas/mega_icon.png", ".4bpp");')
     lines.append('const u32 gMonFrontPic_SmeargleCanvasMega[] = INCGFX_U32("graphics/pokemon/smeargle/canvas/mega_anim_front.png", ".4bpp.smol");')
     lines.append('const u32 gMonBackPic_SmeargleCanvasMega[] = INCGFX_U32("graphics/pokemon/smeargle/canvas/mega_back.png", ".4bpp.smol");')
     lines.append("")
@@ -256,16 +260,16 @@ def entry(species, key, mega):
         desc = ('"A Smeargle that has never painted with\\n"\n            "its own colour. It watches trainers\\n"\n'
                 '            "battle, waiting for a style to call its\\n"\n            "own. Its tail is still bare."')
     elif mega:
-        desc = ('"Its brush has grown to twice its size.\\n"\n            "Every stroke leaves the battlefield\\n"\n'
-                '            "a little more its own, and it changes\\n"\n            "colour to match whatever it paints."')
+        desc = ('"Its brush has grown to twice its size\\n"\n            "and holds every colour at once. It\\n"\n'
+                '            "changes type to match whatever move\\n"\n            "it paints with next."')
     else:
         desc = ('"It has found its colour, its trainer\'s\\n"\n            "own, and paints with nothing else.\\n"\n'
                 '            "It learns by watching: a technique seen\\n"\n            "once is a technique copied."')
     tail = ICON_TAIL[key]
-    icon = f"gMonIcon_SmeargleCanvas{n}{'Mega' if mega else ''}"
-    iconPal = tail[0]
-    pal = f"gMonPalette_SmeargleCanvas{n}{'Mega' if mega else ''}"
-    shiny = f"gMonShinyPalette_SmeargleCanvas{n}{'Mega' if mega else ''}"
+    icon = "gMonIcon_SmeargleCanvasMega" if mega else f"gMonIcon_SmeargleCanvas{n}"
+    iconPal = 1 if mega else tail[0]
+    pal = "gMonPalette_SmeargleCanvasMega" if mega else f"gMonPalette_SmeargleCanvas{n}"
+    shiny = "gMonShinyPalette_SmeargleCanvasMega" if mega else f"gMonShinyPalette_SmeargleCanvas{n}"
     front = "gMonFrontPic_SmeargleCanvasMega" if mega else "gMonFrontPic_Smeargle"
     back = "gMonBackPic_SmeargleCanvasMega" if mega else "gMonBackPic_Smeargle"
     forms = f"sSmeargleCanvas{n}{'Mega' if mega else ''}FormChangeTable"
@@ -385,11 +389,6 @@ def main():
         colour = None if key is None else TYPE_COLOURS[key]
         write_pal(OUT / f"{f}.pal", paint_palette(normal, colour))
         write_pal(OUT / f"{f}_shiny.pal", paint_palette(shiny, colour))
-        if key is not None:
-            # (the Mega: the same, with its type's paint brighter)
-            bright = tuple(min(255, int(v * 1.1)) for v in colour)
-            write_pal(OUT / f"mega_{f}.pal", paint_palette(normal, bright))
-            write_pal(OUT / f"mega_{f}_shiny.pal", paint_palette(shiny, bright))
         tail_icon(Image.open(SRC / "icon.png"), ICON_TAIL[key], f"icon_{f}.png")
     ow = load_pal(SRC / "overworld_normal.pal")
     ow[OW_PAINT[0]], ow[OW_PAINT[1]] = ow[4], ow[5]
@@ -423,8 +422,8 @@ def preview(path):
     for i, key in enumerate(keys):
         f = "typeless" if key is None else key.lower()
         sheet.alpha_composite(rgba(front, load_pal(OUT / f"{f}.pal")), ((i % 10) * 64, (i // 10) * 64))
-    for i, key in enumerate(["FIRE", "WATER", "GRASS", "PSYCHIC", "DRAGON"]):
-        pal = load_pal(OUT / f"mega_{key.lower()}.pal")
+    for i, key in enumerate(["", "_shiny"]):
+        pal = load_pal(OUT / f"mega{key}.pal")
         sheet.alpha_composite(rgba(mega[0], pal), (i * 128, 128))
         sheet.alpha_composite(rgba(mega[1], pal), (i * 128 + 64, 128))
         sheet.alpha_composite(rgba(mback, pal), (i * 128, 192))

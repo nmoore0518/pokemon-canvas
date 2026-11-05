@@ -1882,4 +1882,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
         .battleTvScore = 1,
     },
+
+    [EFFECT_QUICK_SKETCH] =
+    {
+        .battleScript = BattleScript_EffectSketch,
+        .battleTvScore = 3,
+        .battleFactoryStyle = FACTORY_STYLE_UNPREDICTABLE,
+    },
 };

@@ -1453,10 +1453,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1475,9 +1475,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasNormalMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasNormalMega,
-        .iconSprite = gMonIcon_SmeargleCanvasNormalMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -1529,10 +1529,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1551,10 +1551,10 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasFightingMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasFightingMega,
-        .iconSprite = gMonIcon_SmeargleCanvasFightingMega,
-        .iconPalIndex = 3,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
+        .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
         FOOTPRINT(Smeargle)
@@ -1605,10 +1605,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1627,10 +1627,10 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasFlyingMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasFlyingMega,
-        .iconSprite = gMonIcon_SmeargleCanvasFlyingMega,
-        .iconPalIndex = 3,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
+        .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
         FOOTPRINT(Smeargle)
@@ -1681,10 +1681,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1703,9 +1703,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasPoisonMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasPoisonMega,
-        .iconSprite = gMonIcon_SmeargleCanvasPoisonMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -1757,10 +1757,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1779,9 +1779,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasGroundMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasGroundMega,
-        .iconSprite = gMonIcon_SmeargleCanvasGroundMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -1833,10 +1833,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1855,9 +1855,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasRockMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasRockMega,
-        .iconSprite = gMonIcon_SmeargleCanvasRockMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -1909,10 +1909,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -1931,9 +1931,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasBugMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasBugMega,
-        .iconSprite = gMonIcon_SmeargleCanvasBugMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -1985,10 +1985,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2007,9 +2007,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasGhostMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasGhostMega,
-        .iconSprite = gMonIcon_SmeargleCanvasGhostMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -2061,10 +2061,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2083,9 +2083,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasSteelMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasSteelMega,
-        .iconSprite = gMonIcon_SmeargleCanvasSteelMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -2137,10 +2137,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2159,10 +2159,10 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasFireMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasFireMega,
-        .iconSprite = gMonIcon_SmeargleCanvasFireMega,
-        .iconPalIndex = 3,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
+        .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
         FOOTPRINT(Smeargle)
@@ -2213,10 +2213,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2235,10 +2235,10 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasWaterMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasWaterMega,
-        .iconSprite = gMonIcon_SmeargleCanvasWaterMega,
-        .iconPalIndex = 3,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
+        .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
         FOOTPRINT(Smeargle)
@@ -2289,10 +2289,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2311,9 +2311,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasGrassMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasGrassMega,
-        .iconSprite = gMonIcon_SmeargleCanvasGrassMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -2365,10 +2365,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2387,9 +2387,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasElectricMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasElectricMega,
-        .iconSprite = gMonIcon_SmeargleCanvasElectricMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -2441,10 +2441,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2463,9 +2463,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasPsychicMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasPsychicMega,
-        .iconSprite = gMonIcon_SmeargleCanvasPsychicMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -2517,10 +2517,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2539,10 +2539,10 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasIceMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasIceMega,
-        .iconSprite = gMonIcon_SmeargleCanvasIceMega,
-        .iconPalIndex = 3,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
+        .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
         FOOTPRINT(Smeargle)
@@ -2593,10 +2593,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2615,10 +2615,10 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasDragonMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasDragonMega,
-        .iconSprite = gMonIcon_SmeargleCanvasDragonMega,
-        .iconPalIndex = 3,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
+        .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
         FOOTPRINT(Smeargle)
@@ -2669,10 +2669,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2691,9 +2691,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasDarkMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasDarkMega,
-        .iconSprite = gMonIcon_SmeargleCanvasDarkMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)
@@ -2745,10 +2745,10 @@
         .height = 16,
         .weight = 640,
         .description = COMPOUND_STRING(
-            "Its brush has grown to twice its size.\n"
-            "Every stroke leaves the battlefield\n"
-            "a little more its own, and it changes\n"
-            "colour to match whatever it paints."),
+            "Its brush has grown to twice its size\n"
+            "and holds every colour at once. It\n"
+            "changes type to match whatever move\n"
+            "it paints with next."),
         .pokemonScale = 287,
         .pokemonOffset = 5,
         .trainerScale = 256,
@@ -2767,9 +2767,9 @@
         .backPicSize = MON_COORDS_SIZE(64, 56),
         .backPicYOffset = 7,
         .backAnimId = BACK_ANIM_H_SLIDE,
-        .palette = gMonPalette_SmeargleCanvasFairyMega,
-        .shinyPalette = gMonShinyPalette_SmeargleCanvasFairyMega,
-        .iconSprite = gMonIcon_SmeargleCanvasFairyMega,
+        .palette = gMonPalette_SmeargleCanvasMega,
+        .shinyPalette = gMonShinyPalette_SmeargleCanvasMega,
+        .iconSprite = gMonIcon_SmeargleCanvasMega,
         .iconPalIndex = 1,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
         SHADOW(6, 7, SHADOW_SIZE_S)

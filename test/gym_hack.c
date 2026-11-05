@@ -4222,7 +4222,7 @@ static void Painter_StartSketchForTest(u32 oldMove)
     Painter_PrepareSketch();
     // (as Painter_Enter does, without the warp)
     VarSet(VAR_PAINTER_SKETCH_MOVE, oldMove);
-    move = MOVE_SKETCH;
+    move = MOVE_QUICK_SKETCH;
     SetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MOVE2, &move);
     FlagSet(FLAG_IN_PAINTING);
 }
@@ -4380,4 +4380,34 @@ TEST("GymHack: the painter's lines fit the message box")
     StringCopy(gStringVar2, COMPOUND_STRING("WWWWWWWWWWWW"));
     for (i = 0; i < ARRAY_COUNT(texts); i++)
         ExpectStoryTextFits(texts[i], 27 * 8 - 4, 99);
+}
+
+TEST("GymHack: QUICK SKETCH copies the move the player picked, if the target knows it and it's the quest's")
+{
+    static const enum Move foe[MAX_MON_MOVES] = {MOVE_EMBER, MOVE_FLAMETHROWER, MOVE_THUNDERBOLT, MOVE_NONE};
+    static const enum Move mine[MAX_MON_MOVES] = {MOVE_MASTERSTROKE, MOVE_QUICK_SKETCH, MOVE_FLAMETHROWER, MOVE_NONE};
+    u32 i;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        gBattleMons[0].moves[i] = mine[i];
+        gBattleMons[1].moves[i] = foe[i];
+    }
+    FlagClear(FLAG_IN_PAINTING);
+    EXPECT(Painter_QuickSketchCanCopy(0, MOVE_EMBER));
+    EXPECT(Painter_QuickSketchCanCopy(0, MOVE_THUNDERBOLT));     // (outside a Sketch quest: anything)
+    EXPECT(!Painter_QuickSketchCanCopy(0, MOVE_FLAMETHROWER));   // (already known)
+    EXPECT(!Painter_QuickSketchCanCopy(0, MOVE_NONE));
+    EXPECT(!Painter_QuickSketchCanCopy(0, MOVE_SKETCH));         // (Sketch-banned)
+    FlagSet(FLAG_IN_PAINTING);
+    VarSet(VAR_PAINTING_MODE, PAINTING_MODE_SKETCH);
+    VarSet(VAR_PAINTER_SKETCH, 2 | (TYPE_FIRE << 8));
+    EXPECT(Painter_QuickSketchCanCopy(0, MOVE_EMBER));
+    EXPECT(!Painter_QuickSketchCanCopy(0, MOVE_THUNDERBOLT));    // (not the quest's type)
+    gQuickSketchChoice[0] = MOVE_EMBER;
+    EXPECT_EQ(Painter_QuickSketchMove(0, 1), MOVE_EMBER);
+    gQuickSketchChoice[0] = MOVE_SURF;
+    EXPECT_EQ(Painter_QuickSketchMove(0, 1), MOVE_NONE);         // (the target doesn't know it)
+    EXPECT_EQ(GetMoveEffect(MOVE_QUICK_SKETCH), EFFECT_QUICK_SKETCH);
+    Painter_ResetForTest();
+    VarSet(VAR_PAINTER_SKETCH, 0);
 }

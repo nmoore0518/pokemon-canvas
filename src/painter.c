@@ -436,9 +436,9 @@ void Painter_Enter(void)
         slot = FindStoredSmeargle();
         mon = &gParties[B_TRAINER_PLAYER][slot];
         VarSet(VAR_PAINTER_SKETCH_MOVE, GetMonData(mon, MON_DATA_MOVE1 + moveSlot));
-        value = MOVE_SKETCH;
+        value = MOVE_QUICK_SKETCH;
         SetMonData(mon, MON_DATA_MOVE1 + moveSlot, &value);
-        value = GetMovePP(MOVE_SKETCH);
+        value = GetMovePP(MOVE_QUICK_SKETCH);
         SetMonData(mon, MON_DATA_PP1 + moveSlot, &value);
         MoveToFront(slot);
         break;
@@ -573,6 +573,33 @@ bool32 Painter_SketchAllowed(u32 move)
     return IsQuestMove(move);
 }
 
+// QUICK SKETCH (the painter's Sketch): the player picks one of the target's moves in the move menu
+// (src/battle_controller_player.c) and it's copied when the move's used (Cmd_copymovepermanently)
+EWRAM_DATA u16 gQuickSketchChoice[MAX_BATTLERS_COUNT] = {0};
+
+// Whether `battler` could copy `move` (one the target knows: not one it knows already, nor one
+// Sketch can't copy, nor, in a Sketch quest, one of another type)
+bool32 Painter_QuickSketchCanCopy(u32 battler, u32 move)
+{
+    u32 i;
+    if (move == MOVE_NONE || move == MOVE_UNAVAILABLE || IsMoveSketchBanned(move) || !Painter_SketchAllowed(move))
+        return FALSE;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        if (gBattleMons[battler].moves[i] == move)
+            return FALSE;
+    return TRUE;
+}
+
+// The move QUICK SKETCH copies: the player's pick, if the target (still) knows it
+u32 Painter_QuickSketchMove(u32 attacker, u32 target)
+{
+    u32 i, move = gQuickSketchChoice[attacker];
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        if (move != MOVE_NONE && gBattleMons[target].moves[i] == move)
+            return move;
+    return MOVE_NONE;
+}
+
 // Special: the figure's battle (a double battle: TRAINER_GYM_CHALLENGER)
 void Painter_SetupFigure(void)
 {
@@ -657,12 +684,12 @@ void Painter_Return(void)
         break;
     case PAINTING_MODE_SKETCH:
     {
-        u32 moveSlot = VarGet(VAR_PAINTER_SKETCH) & 0xFF, old = VarGet(VAR_PAINTER_SKETCH_MOVE), now = MOVE_SKETCH;
+        u32 moveSlot = VarGet(VAR_PAINTER_SKETCH) & 0xFF, old = VarGet(VAR_PAINTER_SKETCH_MOVE), now = MOVE_QUICK_SKETCH;
         if (slot < PARTY_SIZE && moveSlot < MAX_MON_MOVES)
         {
             struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][slot];
             now = GetMonData(mon, MON_DATA_MOVE1 + moveSlot);
-            if (!won || now == MOVE_SKETCH || !IsQuestMove(now))
+            if (!won || now == MOVE_QUICK_SKETCH || !IsQuestMove(now))
             {
                 u32 pp = old != MOVE_NONE ? GetMovePP(old) : 0;
                 SetMonData(mon, MON_DATA_MOVE1 + moveSlot, &old);
@@ -673,7 +700,7 @@ void Painter_Return(void)
             gSpecialVar_Result = PAINTER_RETURN_LEFT;
         else if (!won)
             gSpecialVar_Result = PAINTER_RETURN_SKETCH_LOST;
-        else if (now == MOVE_SKETCH || !IsQuestMove(now))
+        else if (now == MOVE_QUICK_SKETCH || !IsQuestMove(now))
             gSpecialVar_Result = PAINTER_RETURN_NO_SKETCH;
         else
         {

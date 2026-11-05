@@ -19,6 +19,7 @@
 #include "constants/battle.h"
 #include "constants/trainers.h"
 #include "gym_decor.h"
+#include "painter.h"
 
 EWRAM_DATA struct Playtest gPlaytest = {0};
 // (the harness reads these by offset: tools/gym_hack/playtest/)
@@ -92,20 +93,26 @@ u32 Playtest_ChooseMove(u32 battler, u32 *target)
             best = i;   // (something usable, whatever the scores)
             break;
         }
-    // (the painter's Sketch quests: a Pokémon with Sketch waits for a foe's move, then sketches it)
+    // (the painter's Sketch quests: QUICK SKETCH first, at a foe with a move to copy; the controller
+    // picks the move: battle_controller_player.c)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (gBattleMons[battler].moves[i] == MOVE_SKETCH && !(unusable & (1u << i)))
+        if (gBattleMons[battler].moves[i] == MOVE_QUICK_SKETCH && !(unusable & (1u << i)))
         {
             for (k = 0; k < gBattlersCount; k++)
             {
-                if (!IsOnPlayerSide(k) && IsBattlerAlive(k) && gLastPrintedMoves[k] != MOVE_NONE && gLastPrintedMoves[k] != MOVE_UNAVAILABLE)
+                u32 m;
+                if (IsOnPlayerSide(k) || !IsBattlerAlive(k))
+                    continue;
+                for (m = 0; m < MAX_MON_MOVES; m++)
                 {
-                    *target = k;
-                    return i;
+                    if (Painter_QuickSketchCanCopy(battler, gBattleMons[k].moves[m]))
+                    {
+                        *target = k;
+                        return i;
+                    }
                 }
             }
-            unusable |= 1u << i;    // (nothing to sketch yet: Sketch has 1 PP, so not now)
         }
     }
     for (k = 0; k < gBattlersCount; k++)
