@@ -104,6 +104,8 @@ void Tourney_RecordWin(void);
 void Tourney_RecordLoss(void);
 void Tourney_SimBillWon(void);
 void Tourney_RollPrize(void);
+u32 Tourney_DropTotal(void);
+u32 Tourney_DropForRoll(u32 roll, bool32 *rare);
 void Tourney_Forfeit(void);
 void Tourney_BufferChampion(void);
 void Tourney_ShowBoard(void);

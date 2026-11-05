@@ -4570,3 +4570,30 @@ TEST("GymHack: tournament wins can give a LIMITED EDITION SODA once the player h
     EXPECT(DrinkMachine_TournamentSodaUnlocked());     // (whether or not the girl's sodas were collected)
     FlagClear(FLAG_GOT_DRINK_MACHINE);
 }
+
+#include "tournament.h"
+TEST("GymHack: tournament prizes: one every win; a MOVE EXTRACTOR ~20% and a soda ~10% a title run")
+{
+    u32 roll, total, extractor = 0, soda = 0, rareCount = 0;
+    bool32 rare;
+    FlagClear(FLAG_GOT_DRINK_MACHINE);
+    total = Tourney_DropTotal();
+    for (roll = 0; roll < total; roll++)
+        EXPECT_NE(Tourney_DropForRoll(roll, &rare), ITEM_LIMITED_EDITION_SODA);   // (no machine: no soda)
+    FlagSet(FLAG_GOT_DRINK_MACHINE);
+    total = Tourney_DropTotal();
+    EXPECT_EQ(total, 10000);
+    for (roll = 0; roll < total; roll++)
+    {
+        u32 item = Tourney_DropForRoll(roll, &rare);
+        EXPECT(item != ITEM_NONE && item < ITEMS_COUNT);
+        extractor += (item == ITEM_MOVE_EXTRACTOR);
+        soda += (item == ITEM_LIMITED_EDITION_SODA);
+        rareCount += rare;
+    }
+    // per win; over a run of TOURNEY_ROUNDS wins: 1 - (1 - p)^7 ~ 20% and ~10%
+    EXPECT_EQ(extractor, 312);
+    EXPECT_EQ(soda, 149);
+    EXPECT_LT(rareCount, total / 8);
+    FlagClear(FLAG_GOT_DRINK_MACHINE);
+}

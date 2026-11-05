@@ -148,7 +148,7 @@ Tourney_EventScript_Won::
 	call GymChallenge_EventScript_ChallengerLeaves
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	special Tourney_RollPrize
-	call_if_eq VAR_RESULT, TRUE, Tourney_EventScript_RarePrize
+	call Tourney_EventScript_Prize
 	special Tourney_RecordWin
 	goto_if_eq VAR_RESULT, TRUE, Tourney_EventScript_Title
 	call Tourney_EventScript_SayWon
@@ -340,6 +340,22 @@ Tourney_EventScript_SayAnnounceSim::
 	return
 
 @ (hardly ever, after a match: a MOVE EXTRACTOR)
+@ A prize for every match won (src/tournament.c: sTourneyDrops). VAR_RESULT: TOURNEY_PRIZE_*
+Tourney_EventScript_Prize::
+	goto_if_eq VAR_RESULT, TOURNEY_PRIZE_RARE, Tourney_EventScript_RarePrize
+	call_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_PrizeSim
+	call_if_ne VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_PrizeReal
+	call GymHack_EventScript_GiveStatItem
+	return
+
+Tourney_EventScript_PrizeReal::
+	msgbox Tourney_Text_Prize
+	return
+
+Tourney_EventScript_PrizeSim::
+	msgbox Tourney_Text_PrizeSim
+	return
+
 Tourney_EventScript_RarePrize::
 	call_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_RarePrizeSim
 	call_if_ne VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_RarePrizeReal
@@ -353,6 +369,14 @@ Tourney_EventScript_RarePrizeReal::
 Tourney_EventScript_RarePrizeSim::
 	msgbox Tourney_Text_RarePrizeSim
 	return
+
+Tourney_Text_PrizeSim::
+	.string "The simulator printed out a prize\n"
+	.string "for that match!$"
+
+Tourney_Text_Prize::
+	.string "The organizers have a prize for\n"
+	.string "that match!$"
 
 Tourney_Text_RarePrizeSim::
 	.string "The simulator printed out a rare\n"

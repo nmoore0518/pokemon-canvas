@@ -14,6 +14,5 @@
 #define DRINK_SODA_ALREADY     2   // (it's already that type)
 #define DRINK_SODA_CANT        3   // (an Egg, or no Pokémon chosen)
 
-#define DRINK_TOURNEY_SODA_ODDS 50  // (a tournament win: 1 in this, once unlocked)
 
 #endif // GUARD_CONSTANTS_DRINK_MACHINE_H

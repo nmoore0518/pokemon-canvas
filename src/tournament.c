@@ -26,6 +26,7 @@
 #include "overworld.h"
 #include "pokemon.h"
 #include "random.h"
+#include "berry_field.h"
 #include "constants/items.h"
 #include "script.h"
 #include "string_util.h"
@@ -481,18 +482,114 @@ void Tourney_RecordWin(void)
     gSpecialVar_Result = TRUE;
 }
 
-// Special, after a match won (in Bill's simulator too): hardly ever, a MOVE EXTRACTOR as a prize.
-// VAR_RESULT = TRUE if so, VAR_0x8009 = the item
+// ---- A prize for every match won (in Bill's simulator too) ----
+// One roll on this table: weights out of TOURNEY_DROP_TOTAL, roughly by what the item costs (a cheap
+// one often, an expensive one seldom). A title run is TOURNEY_ROUNDS wins, so a MOVE EXTRACTOR at
+// 312/10000 a win is about a 20% chance in a run, a LIMITED EDITION SODA at 149 about 10% (once the
+// player has the Drink Machine: before that, the roll skips it). Some entries are one of a set:
+#define DROP_TYPE_BERRY   0xFFF0   // (any of the 18: GetTeraBerry)
+#define DROP_VITAMIN      0xFFF1
+#define DROP_MINT         0xFFF2
+#define DROP_FUEL         0xFFF3   // (Dad's synthesizer's fuels)
+#define DROP_UPGRADE_1    0xFFF4   // (the Lucky Egg's and Amulet Coin's materials: src/item_upgrades.c)
+#define DROP_UPGRADE_2    0xFFF5
+#define DROP_UPGRADE_3    0xFFF6
+
+struct TourneyDrop { u16 item; u16 weight; bool8 rare; };
+static const struct TourneyDrop sTourneyDrops[] =
+{
+    {DROP_TYPE_BERRY,         2300},
+    {ITEM_PEARL,               700},
+    {ITEM_NUGGET,              700},
+    {ITEM_STARDUST,            600},
+    {DROP_VITAMIN,             600},
+    {ITEM_RARE_CANDY,          500},
+    {DROP_FUEL,                500},
+    {ITEM_BIG_PEARL,           404},
+    {ITEM_PP_UP,               400},
+    {DROP_MINT,                300},
+    {ITEM_FULL_RESTORE,        300},
+    {ITEM_MAX_REVIVE,          300},
+    {ITEM_STAR_PIECE,          300},
+    {ITEM_MOVE_EXTRACTOR,      312, TRUE},
+    {ITEM_MAX_ELIXIR,          250},
+    {ITEM_PP_MAX,              250},
+    {DROP_UPGRADE_1,           250},
+    {ITEM_COMET_SHARD,         150},
+    {ITEM_LIMITED_EDITION_SODA, 149, TRUE},
+    {ITEM_BIG_NUGGET,          120, TRUE},
+    {ITEM_CILANTRO,            120, TRUE},
+    {ITEM_BOTTLE_CAP,          110, TRUE},
+    {ITEM_INCENSE,              90, TRUE},
+    {DROP_UPGRADE_2,            80, TRUE},
+    {ITEM_ABILITY_CAPSULE,      60, TRUE},
+    {ITEM_MULTIVITAMIN,         60, TRUE},
+    {ITEM_GOLD_BOTTLE_CAP,      40, TRUE},
+    {DROP_UPGRADE_3,            30, TRUE},
+    {ITEM_ABILITY_PATCH,        25, TRUE},
+};
+
+static const u16 sDropVitamins[] = {ITEM_HP_UP, ITEM_PROTEIN, ITEM_IRON, ITEM_CALCIUM, ITEM_ZINC, ITEM_CARBOS};
+static const u16 sDropMints[] = {ITEM_ADAMANT_MINT, ITEM_JOLLY_MINT, ITEM_MODEST_MINT, ITEM_TIMID_MINT,
+                                 ITEM_BOLD_MINT, ITEM_IMPISH_MINT, ITEM_CALM_MINT, ITEM_CAREFUL_MINT};
+
+static bool32 DropAvailable(const struct TourneyDrop *d)
+{
+    return d->item != ITEM_LIMITED_EDITION_SODA || DrinkMachine_TournamentSodaUnlocked();
+}
+
+// The weights there are to roll on now
+u32 Tourney_DropTotal(void)
+{
+    u32 i, total = 0;
+    for (i = 0; i < ARRAY_COUNT(sTourneyDrops); i++)
+        if (DropAvailable(&sTourneyDrops[i]))
+            total += sTourneyDrops[i].weight;
+    return total;
+}
+
+// The prize for a roll (0 to Tourney_DropTotal() - 1); *rare: whether it's a rare one
+u32 Tourney_DropForRoll(u32 roll, bool32 *rare)
+{
+    u32 i;
+    u16 item = ITEM_NUGGET;
+    *rare = FALSE;
+    for (i = 0; i < ARRAY_COUNT(sTourneyDrops); i++)
+    {
+        if (!DropAvailable(&sTourneyDrops[i]))
+            continue;
+        if (roll < sTourneyDrops[i].weight)
+        {
+            item = sTourneyDrops[i].item;
+            *rare = sTourneyDrops[i].rare;
+            break;
+        }
+        roll -= sTourneyDrops[i].weight;
+    }
+    switch (item)
+    {
+    case DROP_TYPE_BERRY:
+    {
+        u32 type = TYPE_NORMAL + Random() % 18;     // (NORMAL..FAIRY, but not MYSTERY)
+        return GetTeraBerry(type >= TYPE_MYSTERY ? type + 1 : type);
+    }
+    case DROP_VITAMIN:    return sDropVitamins[Random() % ARRAY_COUNT(sDropVitamins)];
+    case DROP_MINT:       return sDropMints[Random() % ARRAY_COUNT(sDropMints)];
+    case DROP_FUEL:       return Random() % 2 ? ITEM_STRONG_ACID : ITEM_APPLE_JUICE;
+    case DROP_UPGRADE_1:  return Random() % 2 ? ITEM_LUCKY_CLOVER : ITEM_COPPER_COIN;
+    case DROP_UPGRADE_2:  return Random() % 2 ? ITEM_FOUR_LEAF_CLOVER : ITEM_SILVER_COIN;
+    case DROP_UPGRADE_3:  return Random() % 2 ? ITEM_GOLDEN_CLOVER : ITEM_GOLD_COIN;
+    }
+    return item;
+}
+
+// Special, after a match won: its prize. VAR_0x8009 = the item; VAR_RESULT = TOURNEY_PRIZE_RARE for a
+// rare one, else TOURNEY_PRIZE_COMMON
 void Tourney_RollPrize(void)
 {
-    gSpecialVar_Result = FALSE;
-    if (DrinkMachine_TournamentSodaUnlocked() && Random() % DRINK_TOURNEY_SODA_ODDS == 0)
-        gSpecialVar_0x8009 = ITEM_LIMITED_EDITION_SODA;     // (src/drink_machine.c)
-    else if (Random() % TOURNEY_EXTRACTOR_ODDS == 0)
-        gSpecialVar_0x8009 = ITEM_MOVE_EXTRACTOR;
-    else
-        return;
-    gSpecialVar_Result = TRUE;
+    bool32 rare;
+    gSpecialVar_0x8009 = Tourney_DropForRoll(Random() % Tourney_DropTotal(), &rare);
+    gSpecialVar_Result = rare ? TOURNEY_PRIZE_RARE : TOURNEY_PRIZE_COMMON;
 }
 
 // Special: Bill beaten in the simulator, after a simulated title: a WITHDRAW
