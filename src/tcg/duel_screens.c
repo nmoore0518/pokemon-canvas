@@ -469,3 +469,84 @@ void Tcg_DoFrames(u32 frames)
         return;
     Tcg_DoAFrames(frames);
 }
+
+// ---- the coin toss (_TossCoin) ----------------------------------------------------------------------------
+
+static EWRAM_DATA u8 sCoinNumTossed = 0;   // wCoinTossNumTossed (the screen's count: it goes on while the screen's up)
+static EWRAM_DATA u8 sCoinDuelistType = 0; // wCoinTossDuelistType
+
+// one coin of `total` (the `number`th of this toss), its result already decided: the coin screen
+// (its text box and text on the first), the coin spinning (the player presses A; the AI waits),
+// landing, the result and its sound, the tally of circles and crosses
+void TcgUi_CoinToss(u16 textId, u32 number, u32 total, bool32 heads)
+{
+    u8 e;
+    if (gTcg->headless)
+        return;
+    if (number == 0)
+    {
+        if (gTcg->duelDisplayedScreen != TCG_COIN_TOSS)
+        {
+            sCoinNumTossed = 0;
+            Tcg_EmptyScreen();
+            Tcg_LoadDuelCoinTossResultTiles();
+        }
+        if (sCoinNumTossed == 0)
+        {
+            gTcg->duelDisplayedScreen = TCG_COIN_TOSS;
+            Tcg_DrawLabeledTextBox(0, 12, 20, 6, NULL);
+            Tcg_EnableLCD();
+            Tcg_InitTextPrintingInTextbox(1, 14, 19);
+            Tcg_PrintText(textId);
+        }
+        Tcg_EnableLCD();
+        sCoinDuelistType = *Tcg_TurnVar(TCG_DUELVARS_DUELIST_TYPE);
+    }
+    if (total >= 2)
+    {
+        Tcg_WriteTwoDigitNumberInTxSymbol_PadSpace(15, 11, sCoinNumTossed + 1);
+        Tcg_WriteByteToBGMap0(17, 11, TCG_SYM_SLASH);
+        Tcg_WriteTwoDigitNumberInTxSymbol_PadSpace(18, 11, total);
+    }
+    Tcg_ResetAnimationQueue();
+    Tcg_PlayDuelAnimation(TCG_DUEL_ANIM_COIN_SPIN);
+    if (sCoinDuelistType != TCG_DUELIST_TYPE_PLAYER)
+        Tcg_DoAFrames(30);
+    else
+        Tcg_WaitForWideTextBoxInput();
+    Tcg_ResetAnimationQueue();
+    // (the game's TAILS, its 1, is the result it counts as heads)
+    Tcg_PlayDuelAnimation(heads ? TCG_DUEL_ANIM_COIN_TOSS_GOING_TAILS : TCG_DUEL_ANIM_COIN_TOSS_GOING_HEADS);
+    do
+        Tcg_DoFrame();
+    while (Tcg_CheckAnyAnimationPlaying());
+    Tcg_PlayDuelAnimation(heads ? TCG_DUEL_ANIM_COIN_TAILS : TCG_DUEL_ANIM_COIN_HEADS);
+    e = heads;
+    if (sCoinDuelistType != TCG_DUELIST_TYPE_PLAYER)
+        e ^= 1;
+    Tcg_PlaySFX(e ? TCG_SFX_COIN_TOSS_HEADS : TCG_SFX_COIN_TOSS_TAILS);
+    if (total != 1)
+        Tcg_FillRectangle((sCoinNumTossed % 10) * 2, (sCoinNumTossed / 10) * 2, 2, 2, heads ? 0x30 : 0x34, 1, 2);
+    sCoinNumTossed++;
+    if (sCoinDuelistType != TCG_DUELIST_TYPE_PLAYER)
+    {
+        if (sCoinNumTossed == total)
+            Tcg_WaitForWideTextBoxInput();
+        Tcg_DoAFrames(30);
+    }
+    else
+    {
+        Tcg_WaitForWideTextBoxInput();
+    }
+    Tcg_FinishQueuedAnimations();
+    if (number + 1 == total)
+    {
+        Tcg_FinishQueuedAnimations();
+        Tcg_ResetAnimationQueue();
+    }
+}
+
+void TcgUi_CoinTossDone(void)
+{
+    gTcg->duelDisplayedScreen = 0;
+}

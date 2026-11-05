@@ -310,6 +310,7 @@ void Tcg_DoFrame(void)
     Tcg_WaitForVBlank();
     Tcg_ReadJoypad();
     Tcg_HandleDPadRepeat();
+    gTcgGbc->waitingFor = TCG_WAIT_NONE;    // (each wait loop sets it again before its next frame)
 }
 
 void Tcg_DoAFrames(u32 frames)

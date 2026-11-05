@@ -466,6 +466,7 @@ bool32 Tcg_WaitForButtonAorB(void)
 {
     for (;;)
     {
+        G->waitingFor = TCG_WAIT_TEXT_BOX;
         Tcg_DoFrame();
         Tcg_RefreshMenuCursor();
         if (G->keysPressed & TCG_PAD_A)
@@ -565,9 +566,11 @@ void Tcg_WaitForWideTextBoxInput(void)
     Tcg_EnableLCD();
     do
     {
+        G->waitingFor = TCG_WAIT_TEXT_BOX;
         Tcg_DoFrame();
         Tcg_RefreshMenuCursor();
     } while (!(G->keysPressed & (TCG_PAD_A | TCG_PAD_B)));
+    G->waitingFor = TCG_WAIT_NONE;
     Tcg_EraseCursor();
 }
 
@@ -595,6 +598,7 @@ static bool32 HandleYesOrNoMenu_Loop(bool32 refreshFirst)
         refreshFirst = TRUE;
         for (;;)
         {
+            G->waitingFor = TCG_WAIT_YES_NO;
             Tcg_DoFrame();
             Tcg_RefreshMenuCursor();
             if (G->keysPressed & TCG_PAD_A)

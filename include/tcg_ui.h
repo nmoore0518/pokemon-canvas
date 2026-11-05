@@ -27,6 +27,7 @@ void TcgUi_CoinTossDone(void);                  // (wDuelDisplayedScreen = 0)
 
 // animations
 void Tcg_ResetAttackAnimationIsPlaying(void);
+void Tcg_ResetAnimationQueue(void);
 void Tcg_PlayAttackAnimation(u32 duelist, u32 location, u32 effectiveness, u16 damage);
 void Tcg_PlayStatusConditionQueueAnimations(void);
 void Tcg_WaitAttackAnimation(void);

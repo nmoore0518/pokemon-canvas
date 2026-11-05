@@ -365,6 +365,7 @@ void Tcg_HandleBetweenTurnsEvents(void)
         Tcg_SwapTurn();
         return;
     }
+    Tcg_ResetAnimationQueue();
     Tcg_DisplayDuelBoxMessage(TCG_BOXMSG_BETWEEN_TURNS);
     Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_BetweenTurns);
     gTcg->tempNonTurnDuelistCardId = Tcg_GetCardIdFromDeckIndex(*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD));

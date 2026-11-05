@@ -52,6 +52,10 @@
 #define TCG_FLUSH_ALL_PALS  0xC0
 
 // the GBC's WRAM and HRAM that the screens use (wram.asm, hram.asm: the game's names)
+// (gTcgGbc->waitingFor: what input the duel's waiting on, for tests and tools)
+enum { TCG_WAIT_NONE, TCG_WAIT_TEXT_BOX, TCG_WAIT_CARD_LIST, TCG_WAIT_DUEL_MENU, TCG_WAIT_YES_NO,
+       TCG_WAIT_PLAY_AREA, TCG_WAIT_ATTACK_MENU, TCG_WAIT_CHECK_MENU, TCG_WAIT_CARD_PAGE, TCG_WAIT_PRIZES };
+
 struct TcgGbc
 {
     u8 vram[2][0x2000];             // $8000-$9FFF, VRAM banks 0 and 1
@@ -133,6 +137,7 @@ struct TcgGbc
     u8 cardPageExitKeys;            // wCardPageExitKeys
     u8 cardPageType;                // wCardPageType
     u8 cardPageNumber;              // wCardPageNumber
+    u8 waitingFor;                  // (for tests and tools: TCG_WAIT_*, what the duel's waiting on)
     // (the GBA side: the BG maps as GBA screen entries, uploaded at VBlank when changed)
     u16 gbaMap[2][32 * 32] ALIGNED(4);
     bool8 gbaMapDirty[2];
@@ -325,5 +330,12 @@ void Tcg_PlaceCardImageOAM(u8 x, u8 y);
 void Tcg_PrintPlayAreaCardInformationAndLocation(void);     // (src/tcg/play_area.c)
 void Tcg_PrintPlayAreaCardInformation(void);
 void Tcg_OpenPlayAreaScreenForViewing(void);
+
+// src/tcg/duel_check.c, anims.c
+void Tcg_DrawYourOrOppPlayAreaScreen_Layout(u32 duelist, u32 layout);
+void Tcg_ResetAnimationQueue(void);
+bool32 Tcg_CheckAnyAnimationPlaying(void);
+void Tcg_PlayDuelAnimation(u32 anim);
+void Tcg_LoadOBPalette(u32 palette, u32 index);
 
 #endif // GUARD_TCG_GBC_H

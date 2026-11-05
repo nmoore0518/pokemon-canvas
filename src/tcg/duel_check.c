@@ -661,3 +661,11 @@ void Tcg_PlacePrizes(void)
         Tcg_WriteTwoDigitNumberInTxSymbol_PadSpace(18, 7, e);
     }
 }
+
+// (DrawYourOrOppPlayAreaScreen_Bank0 as the animations call it: duelist's play area in layout's
+// layout, and a text box)
+void Tcg_DrawYourOrOppPlayAreaScreen_Layout(u32 duelist, u32 layout)
+{
+    DrawYourOrOppPlayAreaScreen(duelist, layout);
+    Tcg_DrawWideTextBox();
+}

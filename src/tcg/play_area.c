@@ -246,6 +246,7 @@ static u32 DisplayPlayAreaScreen(u8 noSelectionKeys)
         for (;;)
         {
             u32 loc;
+            G->waitingFor = TCG_WAIT_PLAY_AREA;
             Tcg_DoFrame();
             if (!Tcg_HandleMenuInput())
                 continue;

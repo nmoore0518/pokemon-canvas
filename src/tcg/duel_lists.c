@@ -139,6 +139,7 @@ u32 Tcg_HandleDuelMenuInput(void)
         for (;;)
         {
             u8 pressed;
+            G->waitingFor = TCG_WAIT_DUEL_MENU;
             Tcg_DoFrame();
             pressed = G->keysPressed;
             if (G->keysHeld & TCG_PAD_B)
@@ -337,6 +338,7 @@ static u32 DisplayCardList(void)
         for (;;)
         {
             u8 b;
+            G->waitingFor = TCG_WAIT_CARD_LIST;
             if (reload)
             {
                 Tcg_PrintCardListItems(Tcg_CountCardsInDuelTempList(), G->selectedDuelSubMenuScroll,

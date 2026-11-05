@@ -507,6 +507,7 @@ void Tcg_OpenCardPage(u32 type, u8 exitKeys)
         Tcg_EnableLCD();
         for (;;)
         {
+            G->waitingFor = TCG_WAIT_CARD_PAGE;
             Tcg_DoFrame();
             if (G->dpadHeld & G->cardPageExitKeys)
                 return;
@@ -697,6 +698,7 @@ u32 Tcg_HandleAttackMenuInput(u32 count, u32 item)
         Tcg_LoadCard1(*Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD));
         for (;;)
         {
+            G->waitingFor = TCG_WAIT_ATTACK_MENU;
             Tcg_DoFrame();
             if (G->keysPressed & TCG_PAD_START)
             {
