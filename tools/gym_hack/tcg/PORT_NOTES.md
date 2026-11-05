@@ -33,6 +33,29 @@ on the GBA's with a border.
   EmptyPlayAreaSlot, Shift*PokemonToFirstPlayAreaSlots, SwapArenaWithBenchPokemon,
   SwapPlayAreaPokemon, Get(Non)TurnDuelistVariable.
 
+## Design for the rest
+- The game's rules code calls screens and text directly (DrawWideTextBox_WaitForInput, animations,
+  TossCoin's coin screen). The port keeps the logic exactly and routes those through a small UI hook
+  layer (`TcgUi_*`: message, coin toss, animation, card list / play area selection), so the duel can
+  also run headless: for unit tests, and for AI-vs-AI runs to check each player deck is a fair fight
+  against Rod.
+- Link-duel calls (SetOppAction_SerialSendDuelData, ExchangeRNG, SendAttackDataToLinkOpponent) are
+  dropped: only the AI opponent exists here.
+
+## Next session: start here
+- home/duel.asm 1339-1850 has been read (ProcessPlayedPokemonCard, CopyAttackDataAndDamage*,
+  UpdateArenaCardIDsAndClearTwoTurnDuelVars, UseAttackOrPokemonPower, PlayAttackAnimation_DealAttackDamage,
+  HandleAfterDamageEffects, HandleConfusionDamageToSelf, UsePokemonPower, ApplyTransparencyIfApplicable,
+  CheckSelfConfusionDamage, PlayTrainerCard, LoadNonPokemonCardEffectCommands,
+  DealRecoilDamageToSelf / DealConfusionDamageToSelf) but not yet ported. They need, from elsewhere:
+  TryExecuteEffectCommandFunction / CheckMatchingCommand (home), the substatus handlers
+  (HandleNoDamageOrEffectSubstatus, HandleTransparency, CheckSandAttackOrSmokescreenSubstatus,
+  HandleStrikesBack_AgainstResidualAttack, HandleDestinyBondAndBetweenTurnKnockOuts: engine/duel/core.asm),
+  ApplyStatusConditionQueue, UpdateArenaCardLastTurnDamage, ClearNonTurnTemporaryDuelvars(_CopyStatus),
+  TossCoin, CheckCantUseTrainerDueToEffect, CheckIsIncapableOfUsingPkmnPower, ClearChangedTypesIfMuk.
+- Then home/duel.asm 1848-2400 (damage modifiers, SubtractHP, knock-out text, DealDamageToPlayAreaPokemon,
+  retreat cost, CheckLoadedAttackFlag) and on through the list below.
+
 ## To do (in order)
 1. home/duel.asm 1221-2400: GetPlayAreaCardAttachedEnergies, CountCardIDInLocation,
    ProcessPlayedPokemonCard, CopyAttackDataAndDamage, UseAttackOrPokemonPower, damage and
