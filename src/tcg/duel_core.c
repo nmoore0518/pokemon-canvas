@@ -692,10 +692,11 @@ play_energy:
 // OpenPlayerHandScreen: the player's hand; a card picked is played if it can be
 static u32 OpenPlayerHandScreen(void)
 {
+    bool32 reload = FALSE;
     Tcg_CreateHandCardList();
     for (;;)
     {
-        u32 card = Tcg_DisplayHandCardList(TCG_TEXT_PleaseSelectHand);
+        u32 card = reload ? Tcg_ReloadHandCardList() : Tcg_DisplayHandCardList(TCG_TEXT_PleaseSelectHand);
         u32 type;
         bool32 notPlayed;
         if (card == TCG_SELECTION_CANCEL)
@@ -712,6 +713,7 @@ static u32 OpenPlayerHandScreen(void)
         if (!notPlayed)
             return MENU_MAIN_INTERFACE;
         Tcg_CreateHandCardList();     // (ReloadCardListScreen)
+        reload = TRUE;
     }
 }
 

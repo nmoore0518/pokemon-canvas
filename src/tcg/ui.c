@@ -5,7 +5,9 @@
 #include "global.h"
 #include "tcg.h"
 #include "tcg_ui.h"
+#include "tcg_gbc.h"
 #include "string_util.h"
+#include "constants/characters.h"
 
 void __attribute__((weak)) Tcg_DrawWideTextBox_PrintText(u16 textId) {}
 void __attribute__((weak)) Tcg_DrawWideTextBox_WaitForInput(u16 textId) {}
@@ -97,12 +99,36 @@ bool32 __attribute__((weak)) Tcg_HandleDefendingPokemonAttackSelection(u32 *deck
     return FALSE;
 }
 
-// (CopyPlayerName / CopyOpponentName)
-void __attribute__((weak)) Tcg_CopyDuelistName(u32 duelist, u8 *dest)
+// (CopyPlayerName / CopyOpponentName) the name as the game's text: half-width (the player's, from
+// the GBA's characters: its letters, digits, space, . and -; anything else a space)
+void Tcg_CopyDuelistName(u32 duelist, u8 *dest)
 {
-    static const u8 sPlayer[] = _("Player");
-    static const u8 sRod[] = _("Rod");
-    StringCopy(dest, duelist == TCG_PLAYER ? sPlayer : sRod);
+    static const u8 sRod[] = "\x06Rod";
+    const u8 *s;
+    if (duelist != TCG_PLAYER)
+    {
+        memcpy(dest, sRod, sizeof(sRod));
+        return;
+    }
+    *dest++ = TCG_TX_HALFWIDTH;
+    for (s = gSaveBlock2Ptr->playerName; *s != EOS && s < gSaveBlock2Ptr->playerName + PLAYER_NAME_LENGTH; s++)
+    {
+        u8 c = *s;
+        if (c >= CHAR_A && c <= CHAR_A + 25)
+            c = 'A' + c - CHAR_A;
+        else if (c >= CHAR_a && c <= CHAR_a + 25)
+            c = 'a' + c - CHAR_a;
+        else if (c >= CHAR_0 && c <= CHAR_0 + 9)
+            c = '0' + c - CHAR_0;
+        else if (c == CHAR_PERIOD)
+            c = '.';
+        else if (c == CHAR_HYPHEN)
+            c = '-';
+        else
+            c = ' ';
+        *dest++ = c;
+    }
+    *dest = TCG_TX_END;
 }
 
 u32 __attribute__((weak)) Tcg_HandleDuelMenuInput(void)
@@ -134,6 +160,11 @@ u32 __attribute__((weak)) Tcg_DisplayPlaceInitialPokemonCardsScreen(bool32 bench
 }
 
 u32 __attribute__((weak)) Tcg_DisplayHandCardList(u16 textId)
+{
+    return TCG_SELECTION_CANCEL;
+}
+
+u32 __attribute__((weak)) Tcg_ReloadHandCardList(void)
 {
     return TCG_SELECTION_CANCEL;
 }
@@ -173,3 +204,8 @@ void __attribute__((weak)) Tcg_SelectPrizeCards(u32 count)
         }
     }
 }
+
+// (not ported yet: src/tcg/card_page.c, play_area.c)
+void __attribute__((weak)) Tcg_OpenCardPage(u32 type, u8 exitKeys) {}
+void __attribute__((weak)) Tcg_OpenActivePokemonScreen(void) {}
+void __attribute__((weak)) Tcg_OpenPlayAreaScreenForViewing(void) {}

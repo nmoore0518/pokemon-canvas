@@ -120,6 +120,19 @@ struct TcgGbc
     u8 cardListIndicatorYPosition;  // wCardListIndicatorYPosition
     u8 leftmostItemCursorX;         // wLeftmostItemCursorX
     u8 defaultYesOrNo;              // wDefaultYesOrNo
+    // the duel's screens (engine/duel/core.asm)
+    u8 currentDuelMenuItem;         // wCurrentDuelMenuItem
+    u8 selectedDuelSubMenuScroll;   // wSelectedDuelSubMenuItem + 1 (+ 0 is gTcg's)
+    u16 cardListInfoBoxText;        // wCardListInfoBoxText
+    u16 cardListHeaderText;         // wCardListHeaderText
+    u8 sortCardListByID;            // wSortCardListByID
+    u8 noItemSelectionMenuKeys;     // wNoItemSelectionMenuKeys
+    u8 cardListItemSelectionMenuType;   // wCardListItemSelectionMenuType (PLAY_CHECK, SELECT_CHECK)
+    u8 placingInitialBenchPokemon;  // wPlacingInitialBenchPokemon
+    bool8 printSortNumberInCardList;    // wPrintSortNumberInCardListPtr (PrintSortNumberInCardList or none)
+    u8 cardPageExitKeys;            // wCardPageExitKeys
+    u8 cardPageType;                // wCardPageType
+    u8 cardPageNumber;              // wCardPageNumber
     // (the GBA side: the BG maps as GBA screen entries, uploaded at VBlank when changed)
     u16 gbaMap[2][32 * 32] ALIGNED(4);
     bool8 gbaMapDirty[2];
@@ -276,5 +289,31 @@ void Tcg_ApplyBGP6OrSGB3ToCardImage(u32 x, u32 y);
 void Tcg_ApplyBGP7OrSGB2ToCardImage(u32 x, u32 y);
 void Tcg_PrintPlayAreaCardAttachedEnergies(u32 x, u32 y, u32 location);
 void Tcg_DrawHPBar(u32 maxHP, u32 hp);
+
+
+// src/tcg/duel_lists.c: the duel menu, box messages, card lists
+void Tcg_DrawDuelBoxMessage(u32 boxMessage);
+void Tcg_LoadDuelCardSymbolTiles(void);
+void Tcg_LoadDuelCardSymbolTiles2(void);
+void Tcg_LoadDuelFaceDownCardTiles(void);
+void Tcg_LoadDuelCheckPokemonScreenTiles(void);
+void Tcg_LoadCardOrDuelMenuBorderTiles(void);
+void Tcg_LoadCardTypeHeaderTiles(u32 header);
+void Tcg_LoadPlacingThePrizesScreenTiles(void);
+void Tcg_LoadDeckAndDiscardPileIcons(void);
+void Tcg_LoadDuelCoinTossResultTiles(void);
+void Tcg_LoadDuelDrawCardsScreenTiles(void);
+bool32 Tcg_DrawCardListScreenLayout(void);
+void Tcg_PrintCardListHeaderAndInfoBoxTexts(void);
+bool32 Tcg_OpenDiscardPileScreen(void);
+void Tcg_OpenTurnHolderHandScreen_Simple(void);
+void Tcg_OpenNonTurnHolderHandScreen_Simple(void);
+
+// src/tcg/card_page.c: the card pages
+void Tcg_OpenCardPage(u32 type, u8 exitKeys);
+#define Tcg_OpenCardPage_FromCheckHandOrDiscardPile() Tcg_OpenCardPage(TCG_CARDPAGETYPE_NOT_PLAY_AREA, TCG_PAD_B | TCG_PAD_UP | TCG_PAD_DOWN)
+#define Tcg_OpenCardPage_FromCheckPlayArea() Tcg_OpenCardPage(TCG_CARDPAGETYPE_PLAY_AREA, TCG_PAD_B)
+void Tcg_OpenActivePokemonScreen(void);
+void Tcg_OpenPlayAreaScreenForViewing(void);
 
 #endif // GUARD_TCG_GBC_H

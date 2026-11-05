@@ -79,6 +79,7 @@ void Tcg_OpenDuelCheckMenu(void);
 u32 Tcg_OpenPlayAreaScreenForSelection(bool32 excludeArena);   // a PLAY_AREA_* (hTempPlayAreaLocation_ff9d)
 u32 Tcg_DisplayPlaceInitialPokemonCardsScreen(bool32 bench, u16 textId);   // a Basic in the hand
 u32 Tcg_DisplayHandCardList(u16 textId);                // a deck index (wDuelTempList: the hand)
+u32 Tcg_ReloadHandCardList(void);                       // (ReloadCardListScreen: the list again, as it was)
 u32 Tcg_HandleEnergyDiscardMenuInput(void);             // a deck index of wDuelTempList (hTempCardIndex_ff98)
 u32 Tcg_HandleAttackMenuInput(u32 count, u32 item);     // an item of wDuelTempList's attacks
 u32 Tcg_SelectPlayAreaPokemonPower(u32 item);           // a PLAY_AREA_*

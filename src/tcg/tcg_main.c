@@ -31,6 +31,8 @@ void CB2_TcgDuel(void)
     FreeAllSpritePalettes();
     Tcg_GbcInit();
     memset(gTcg, 0, sizeof(*gTcg));
+    if (sTcgPlayerDeck == TCG_DECK_ROD || sTcgPlayerDeck >= TCG_NUM_DUEL_DECKS)
+        sTcgPlayerDeck = TCG_DECK_FIRE;
     Tcg_SetDecks(gTcgDecks[sTcgPlayerDeck], gTcgDecks[TCG_DECK_ROD]);
     gTcg->vars[TCG_PLAYER][TCG_DUELVARS_DUELIST_TYPE] = TCG_DUELIST_TYPE_PLAYER;
     gTcg->vars[TCG_OPPONENT][TCG_DUELVARS_DUELIST_TYPE] = TCG_DUELIST_TYPE_AI_OPP;
