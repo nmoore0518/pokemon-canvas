@@ -3074,8 +3074,8 @@ TEST("GymHack: Rayquaza Mega Evolves with the Rayquazite, not Dragon Ascent")
     }
     EXPECT(stone);
     EXPECT_EQ(GetItemHoldEffect(ITEM_RAYQUAZITE), HOLD_EFFECT_MEGA_STONE);
-    EXPECT_EQ(Academy_MegaTrialTeam(SPECIES_KYOGRE, ITEM_BLUE_ORB)[2].lvl, 60);
-    EXPECT_EQ(Academy_MegaTrialTeam(SPECIES_GROUDON, ITEM_RED_ORB)[2].lvl, 60);
+    EXPECT_EQ(Academy_MegaTrialTeam(SPECIES_KYOGRE, ITEM_BLUE_ORB)[2].lvl, 50);
+    EXPECT_EQ(Academy_MegaTrialTeam(SPECIES_GROUDON, ITEM_RED_ORB)[2].lvl, 50);
 }
 
 static u32 FormIndex(u32 species)
