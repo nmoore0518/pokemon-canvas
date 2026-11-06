@@ -454,9 +454,9 @@ A new bout goes up after every fight, and every time you come down.</li>
 little off. The bouts are mostly even by type, so items, moves and base stats decide them; where one side has the type
 advantage, the other makes up for it or pays more. The underdog always has a chance.</li>
 <li><b>Fixed fights</b>: about one in four is fixed: the favorite takes a dive (its trainer calls bad moves), or it isn't
-holding the item on the card, or it's weaker than the card says. The tipster on the rim tells you which, for ¥3,000 a
-card.</li>
-<li>The bookie works from a plank booth by the ring; talk to him across his counter. The back room, down the ladder in the
+holding the item on the card, or it's weaker than the card says. The tipster on the rim tells you which; his price is
+ten percent of whatever you bet on that bout, added on when you bet (or taken right away if your bet's already down).</li>
+<li>The bookie stands behind a counter along the back wall, like a shop clerk; talk to him across it. The back room, down the ladder in the
 far corner, is closed for now.</li>
 </ul>
 <h3>Saffron City: Grandmaster Rod and the Trading Card Game</h3>

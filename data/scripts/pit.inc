@@ -129,11 +129,16 @@ Pit_EventScript_BookieBet::
 	copyvar VAR_0x8005, VAR_RESULT
 	special Pit_PlaceBet
 	updatemoneybox
+	call_if_eq VAR_RESULT, TRUE, Pit_EventScript_TipsterCut
 	special Pit_BufferBet
 	playse SE_SHOP
 	msgbox Pit_Text_BookieBetTaken
 	hidemoneybox
 	goto Pit_EventScript_Fight
+
+Pit_EventScript_TipsterCut::
+	msgbox Pit_Text_BookieTipsterCut
+	return
 
 Pit_EventScript_BookieBetCancel::
 	hidemoneybox
@@ -459,15 +464,22 @@ Pit_Text_TipsterOffer::
 	.string "Psst. Over here.\p"
 	.string "That card's what they WANT you to\n"
 	.string "see. I know what's really going on.\p"
-	.string "¥3000 and it's yours.$"
+	.string "My price? Ten percent of whatever\n"
+	.string "you put down on this one.\l"
+	.string "The bookie collects it for me.$"
 
 Pit_Text_TipsterNo::
 	.string "Your funeral. Fights down here\n"
 	.string "aren't always what they look like.$"
 
 Pit_Text_TipsterBroke::
-	.string "No dough, no info. That's how it\n"
-	.string "works.$"
+	.string "Your money's already down, and you\n"
+	.string "can't cover my ten percent.\p"
+	.string "No dough, no info.$"
+
+Pit_Text_BookieTipsterCut::
+	.string "Plus ¥{STR_VAR_2} for our friend in\n"
+	.string "the corner. He sends his regards.$"
 
 Pit_Text_TipClean::
 	.string "This one's clean. Far as I can\n"

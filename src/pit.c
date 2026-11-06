@@ -49,7 +49,7 @@
 
 #define FIX_CHANCE      25          // (percent of cards)
 #define HOUSE_CUT       90          // (the bookie pays 90% of fair odds)
-#define TIP_PRICE       3000
+#define TIP_CUT         10          // (the tipster takes this percent of the player's bet on the bout)
 #define MAX_BET         100000
 #define UNDERDOG_MIN    15          // (the underdog's chance, by the card: never less than this)
 
@@ -128,6 +128,7 @@ struct PitCard
     u16 fixItem;
     bool8 ready;
     bool8 tipBought;
+    bool8 tipPaid;              // (his cut's been paid: on a bet placed before the tip)
     u8 betSide;                 // (SIDES: no bet)
     u32 bet;
 };
@@ -504,6 +505,11 @@ void Pit_PushCorners(void)
     gSpecialVar_Result = SIDES;
 }
 
+static u32 TipCut(u32 bet)
+{
+    return sCard.tipBought ? bet * TIP_CUT / 100 : 0;
+}
+
 static const u32 sBets[] = {5000, 10000, 25000, 50000, MAX_BET};
 
 // Special: the bets the player can cover (dynmultichoice); VAR_RESULT = how many (0: broke)
@@ -514,7 +520,7 @@ void Pit_PushBets(void)
     {
         struct ListMenuItem item;
         u8 *name;
-        if (sBets[i] > money)
+        if (sBets[i] + TipCut(sBets[i]) > money)
             break;
         name = Alloc(16);
         ConvertIntToDecimalStringN(gStringVar1, sBets[i], STR_CONV_MODE_LEFT_ALIGN, 6);
@@ -527,19 +533,25 @@ void Pit_PushBets(void)
     gSpecialVar_Result = n;
 }
 
-// Special: VAR_0x8004 = the corner, VAR_0x8005 = the bet (its place in the list): taken.
-// STR_VAR_1 = the Pokémon, STR_VAR_2 = the bet, STR_VAR_3 = what it pays
+// Special: VAR_0x8004 = the corner, VAR_0x8005 = the bet (its place in the list): taken (and the
+// tipster's cut, if he's been paid in kind: VAR_RESULT = TRUE, STR_VAR_2 = his cut, for the line).
+// Pit_BufferBet then has the bet's strings.
 void Pit_PlaceBet(void)
 {
     u32 side = min(gSpecialVar_0x8004, (u16)BLUE), bet = sBets[min(gSpecialVar_0x8005, (u16)(ARRAY_COUNT(sBets) - 1))];
-    if (!IsEnoughMoney(&gSaveBlock1Ptr->money, bet))
+    u32 cut = TipCut(bet);
+    gSpecialVar_Result = FALSE;
+    if (!IsEnoughMoney(&gSaveBlock1Ptr->money, bet + cut))
         return;
-    RemoveMoney(&gSaveBlock1Ptr->money, bet);
+    RemoveMoney(&gSaveBlock1Ptr->money, bet + cut);
+    if (cut > 0)
+    {
+        sCard.tipPaid = TRUE;
+        gSpecialVar_Result = TRUE;
+        ConvertIntToDecimalStringN(gStringVar2, cut, STR_CONV_MODE_LEFT_ALIGN, 6);
+    }
     sCard.betSide = side;
     sCard.bet = bet;
-    StringCopy(gStringVar1, GetSpeciesName(sCard.side[side].species));
-    ConvertIntToDecimalStringN(gStringVar2, bet, STR_CONV_MODE_LEFT_ALIGN, 6);
-    ConvertIntToDecimalStringN(gStringVar3, bet * sCard.side[side].odds / 10, STR_CONV_MODE_LEFT_ALIGN, 7);
 }
 
 // Special (after updatemoneybox, which uses STR_VAR_1): the bet's strings again
@@ -571,22 +583,26 @@ void Pit_HasBet(void)
 // ---------------------------------------------------------------------------
 // The tipster
 // ---------------------------------------------------------------------------
-// Special: VAR_RESULT: 0 can't pay, 1 the fight's clean, 2 a dive (STR_VAR_1 the corner's Pokémon,
-// STR_VAR_2 its fighter), 3 a swapped item (STR_VAR_3 what it's really holding), 4 not the level
-// on the card. (Bought once a card: after that he repeats himself for free.)
+// Special: the tip. His price is TIP_CUT percent of whatever the player bets on this bout: taken
+// with the bet (Pit_PlaceBet), or now, if the bet's already down (STR_VAR_3 = his cut). VAR_RESULT:
+// 0 the bet's down and the player can't pay him, 1 the fight's clean, 2 a dive (STR_VAR_1 the
+// corner's Pokémon, STR_VAR_2 its fighter), 3 a swapped item (STR_VAR_3 what it's really holding),
+// 4 not the level on the card. (Once a card: after that he repeats himself for free.)
 void Pit_BuyTip(void)
 {
     const struct PitSide *s;
-    if (!sCard.tipBought)
+    if (!sCard.tipBought && sCard.betSide < SIDES)
     {
-        if (!IsEnoughMoney(&gSaveBlock1Ptr->money, TIP_PRICE))
+        u32 cut = sCard.bet * TIP_CUT / 100;
+        if (!IsEnoughMoney(&gSaveBlock1Ptr->money, cut))
         {
             gSpecialVar_Result = 0;
             return;
         }
-        RemoveMoney(&gSaveBlock1Ptr->money, TIP_PRICE);
-        sCard.tipBought = TRUE;
+        RemoveMoney(&gSaveBlock1Ptr->money, cut);
+        sCard.tipPaid = TRUE;
     }
+    sCard.tipBought = TRUE;
     s = &sCard.side[sCard.fixSide];
     StringCopy(gStringVar1, GetSpeciesName(s->species));
     StringCopy(gStringVar2, sFighters[s->fighter].name);

@@ -4947,26 +4947,47 @@ TEST("GymHack: the pit's and the gym rooms' lines fit the message box")
     }
 }
 
-TEST("GymHack: the pit: odds pay more on the long shot; the tipster charges once a card")
+TEST("GymHack: the pit: the tipster takes ten percent of the bet, once a card")
 {
     u32 card, fixed = 0;
-    SetMoney(&gSaveBlock1Ptr->money, 0);
-    Pit_NextCard();
-    Pit_BuyTip();
-    EXPECT_EQ(gSpecialVar_Result, 0);          // (can't pay)
     for (card = 0; card < 200; card++)
     {
+        // (the tip first: free now, then 10% on top of the bet)
         Pit_NextCard();
-        SetMoney(&gSaveBlock1Ptr->money, 3000);
+        SetMoney(&gSaveBlock1Ptr->money, 11000);
         Pit_BuyTip();
         EXPECT_GE(gSpecialVar_Result, 1);
-        EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 0);
-        Pit_BuyTip();                          // (the second time's free)
-        EXPECT_GE(gSpecialVar_Result, 1);
+        EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 11000);
         fixed += (gSpecialVar_Result >= 2);
+        Pit_BuyTip();
+        EXPECT_GE(gSpecialVar_Result, 1);
+        gSpecialVar_0x8004 = 0;
+        gSpecialVar_0x8005 = 1;                // (¥10000)
+        Pit_PlaceBet();
+        EXPECT_EQ(gSpecialVar_Result, TRUE);
+        EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 0);
+        Pit_BuyTip();                          // (paid up: no more)
+        EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 0);
     }
-    EXPECT_GT(fixed, 20);                      // (about 30% fixed)
+    EXPECT_GT(fixed, 20);                      // (about 25% fixed)
     EXPECT_LT(fixed, 100);
+
+    // The bet first: his cut's taken when he talks, if it can be paid
+    Pit_NextCard();
+    SetMoney(&gSaveBlock1Ptr->money, 5000);
+    gSpecialVar_0x8004 = 1;
+    gSpecialVar_0x8005 = 0;                    // (¥5000)
+    Pit_PlaceBet();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 0);
+    Pit_BuyTip();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    SetMoney(&gSaveBlock1Ptr->money, 600);
+    Pit_BuyTip();
+    EXPECT_GE(gSpecialVar_Result, 1);
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 100);
+    Pit_BuyTip();
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 100);
 }
 
 TEST("GymHack: the pit: every bout's fair: the underdog pays at most about x6, the favorite at least x1.1")

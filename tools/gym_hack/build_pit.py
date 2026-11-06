@@ -108,12 +108,11 @@ PIT_W, PIT_H = 27, 21
 RING = (8, 6, 18, 13)           # the fence (x0, y0, x1, y1); the fight inside it
 PIT_LADDER = (13, 18)           # (up to the hall)
 BACK_LADDER = (24, 3)           # (down to the back room)
-BOOTH = (20, 15, 22, 16)        # the planks behind the counter
-COUNTER_Y = 14
-CARD_SIGN = (19, 14)            # the card: tonight's bout (on the booth's corner)
+COUNTER = (18, 22, 3)           # the bookie's counter against the back wall (x0, x1, y), like a shop's
+CARD_SIGN = (17, 3)             # the card: tonight's bout (at the counter's end)
 RED_TRAINER, BLUE_TRAINER = (9, 10), (17, 10)
 RED_MON, BLUE_MON = (12, 10), (14, 10)
-BOOKIE = (21, 15)
+BOOKIE = (20, 2)
 TIPSTER = (3, 12)
 CROWD = [  # (x, y, look, facing)
     (9, 5, "OBJ_EVENT_GFX_BIKER", "DOWN"), (12, 5, "OBJ_EVENT_GFX_ROCKER", "DOWN"),
@@ -124,8 +123,8 @@ CROWD = [  # (x, y, look, facing)
 
 # gTileset_Pit's own blocks, after Diglett's Cave's (0x280 + its 157)
 PIT_FIRST = 0x280 + 157
-RING_H, RING_L, RING_R, COUNTER = PIT_FIRST, PIT_FIRST + 1, PIT_FIRST + 2, PIT_FIRST + 3
-PLANK = 0x1BE                   # (the General tileset's deck: used as is)
+RING_H, RING_L, RING_R = PIT_FIRST, PIT_FIRST + 1, PIT_FIRST + 2
+COUNTER_L, COUNTER_M, COUNTER_R = PIT_FIRST + 3, PIT_FIRST + 4, PIT_FIRST + 5   # (the General tileset's deck, as a counter)
 
 
 def pit_room():
@@ -138,14 +137,9 @@ def pit_room():
     for y in range(y0 + 1, y1):
         r.put(x0, y, RING_L, True)
         r.put(x1, y, RING_R, True)
-    bx0, by0, bx1, by1 = BOOTH
-    r.floor(bx0, by0, bx1, by1, PLANK)
-    for x in range(bx0, bx1 + 1):
-        r.put(x, COUNTER_Y, COUNTER, True)
-        r.put(x, by1 + 1, RING_H, True)
-    for y in range(by0, by1 + 1):
-        r.put(bx0 - 1, y, RING_L, True)
-        r.put(bx1 + 1, y, RING_R, True)
+    cx0, cx1, cy = COUNTER
+    for x in range(cx0, cx1 + 1):
+        r.put(x, cy, COUNTER_L if x == cx0 else COUNTER_R if x == cx1 else COUNTER_M, True)
     r.put(*PIT_LADDER, LADDER)
     r.put(*BACK_LADDER, LADDER)
     r.put(*CARD_SIGN, SIGN, True)
@@ -155,7 +149,7 @@ def pit_room():
             for dx in range(2):
                 r.put(x + dx, y + dy, BOULDER[dy][dx], True)
     r.put(5, 4, PEBBLES[0], True)
-    r.put(20, 3, PEBBLES[1], True)
+    r.put(4, 17, PEBBLES[1], True)
     return r
 
 
@@ -192,7 +186,8 @@ def write_tileset():
     mt.append(dirt + gen(0xE6)[4:]); at.append(covered)                       # RING_H: logs across
     mt.append(dirt + gen(0xF1)[4:]); at.append(covered)                       # RING_L: logs down its right
     mt.append(dirt + gen(0xF0)[4:]); at.append(covered)                       # RING_R: logs down its left
-    mt.append(gen(PLANK)[:4] + gen(0xE7)[4:]); at.append(covered | mb("MB_COUNTER"))   # COUNTER
+    for m in (0x1BD, 0x1BE, 0x1BF):                                           # COUNTER_L/M/R
+        mt.append(gen(m)); at.append(covered | mb("MB_COUNTER"))
     (dst / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in mt))
     (dst / "metatile_attributes.bin").write_bytes(struct.pack(f"<{len(at)}I", *at))
     # (registered once: the same graphics as Diglett's Cave)
@@ -273,7 +268,7 @@ def events(key):
             obj("OBJ_EVENT_GFX_VAR_1", BLUE_MON, "LEFT", "Pit_EventScript_BlueMon", "LOCALID_PIT_BLUE_MON"),
             obj("OBJ_EVENT_GFX_VAR_2", RED_TRAINER, "RIGHT", "Pit_EventScript_RedTrainer", "LOCALID_PIT_RED_TRAINER"),
             obj("OBJ_EVENT_GFX_VAR_3", BLUE_TRAINER, "LEFT", "Pit_EventScript_BlueTrainer", "LOCALID_PIT_BLUE_TRAINER"),
-            obj("OBJ_EVENT_GFX_GENTLEMAN_FRLG", BOOKIE, "UP", "Pit_EventScript_Bookie", "LOCALID_PIT_BOOKIE"),
+            obj("OBJ_EVENT_GFX_GENTLEMAN_FRLG", BOOKIE, "DOWN", "Pit_EventScript_Bookie", "LOCALID_PIT_BOOKIE"),
             obj("OBJ_EVENT_GFX_MAN_4", TIPSTER, "RIGHT", "Pit_EventScript_Tipster", "LOCALID_PIT_TIPSTER"),
         ]
         for i, (x, y, gfx, facing) in enumerate(CROWD):
