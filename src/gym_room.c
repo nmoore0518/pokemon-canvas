@@ -321,6 +321,7 @@ struct RoomMap
     const struct GymRoomInfo *info;
     u8 room;
     u8 kind[ROOM_CELLS];
+    u8 lowest[ROOM_CELLS];      // (a piece's square: in its bottom row, where it stands)
     u16 look[ROOM_CELLS];
     u8 floor[ROOM_CELLS];
 };
@@ -366,6 +367,7 @@ static void MarkPiece(struct RoomMap *map, u32 id, u32 facing, s32 x0, s32 y0, b
             if (!InRoom(map, cx, cy))
                 continue;
             map->kind[CELL(cx, cy)] = CELL_PIECE;
+            map->lowest[CELL(cx, cy)] = (y == f->height - 1);
             map->look[CELL(cx, cy)] = (editing && f->editLooks) ? f->editLooks[k] : f->looks[k];
         }
     }
@@ -494,12 +496,20 @@ static void LookTiles(const struct RoomMap *map, s32 x, s32 y, u32 lookId, u16 *
 static void FaceTiles(const struct RoomMap *map, s32 x, s32 y, const struct GymWallStyle *ws, u16 *out)
 {
     u32 variant = (IsFace(map, x - 1, y) ? 0 : 1) | (IsFace(map, x + 1, y) ? 0 : 2), k;
+    if (Base(map, x, y) == GYM_BASE_WALL_FACE && ws == &sGymWallStyles[0])
+    {
+        // (the gym's own back wall)
+        for (k = 0; k < 4; k++)
+            out[k] = RefEntry(sGymLooks[GYM_LOOK_ORIGINAL_WALL_FACE].tiles[k], 0);
+        return;
+    }
     for (k = 0; k < 4; k++)
         out[k] = RefEntry(ws->face[variant][k], 0);
 }
 
-// Whether a piece's look can stand in front of a wall's face (the face goes in its bottom layer:
-// not a rug or the like, flat on the floor)
+// Whether a piece's look can overlap a wall's face, the face showing behind it (the face goes in
+// its bottom layer): not a rug or the like, flat on the floor. (Only a tall piece's upper squares
+// overlap the wall: it stands on the floor in front.)
 static bool32 LookFitsFace(u32 lookId)
 {
     const struct GymLook *look = &sGymLooks[lookId];
@@ -764,9 +774,10 @@ bool32 GymRoom_Overflowed(void)
     return sOverflow;
 }
 
-// Whether decoration `id` (facing that way) at (x, y) would leave every wall face whole: a piece
-// in front of a wall's face has to be one the face can show behind (not a rug), and no pool can
-// go there. (Checked with the piece there, without the preview: walls make faces below them.)
+// Whether decoration `id` (facing that way) at (x, y) would leave every wall whole: a piece can
+// overlap a wall's face only with its upper squares (it stands on the floor in front, against the
+// wall) and only where the face can show behind it (not a rug); no pool can go there. Checked
+// with the piece there, without the preview: a wall makes a face below it, over what's there.
 bool32 GymRoom_PieceFitsWalls(u32 id, u32 facing, s32 x, s32 y)
 {
     struct RoomMap *map = Alloc(sizeof(struct RoomMap));
@@ -785,10 +796,11 @@ bool32 GymRoom_PieceFitsWalls(u32 id, u32 facing, s32 x, s32 y)
         for (cx = x; cx < x + w && ok; cx++)
         {
             u32 kind;
-            if (!InRoom(map, cx, cy) || Base(map, cx, cy) == GYM_BASE_WALL_FACE)
+            if (!InRoom(map, cx, cy))
                 continue;
             kind = map->kind[CELL(cx, cy)];
-            if (kind == CELL_PIECE && IsFace(map, cx, cy) && !LookFitsFace(map->look[CELL(cx, cy)]))
+            if (kind == CELL_PIECE && IsFace(map, cx, cy)
+             && (map->lowest[CELL(cx, cy)] || !LookFitsFace(map->look[CELL(cx, cy)])))
                 ok = FALSE;
             else if (kind == CELL_WATER && cy > 0 && IsWall(map, cx, cy - 1) && Base(map, cx, cy - 1) != GYM_BASE_WALL_TOP)
                 ok = FALSE;
@@ -796,6 +808,13 @@ bool32 GymRoom_PieceFitsWalls(u32 id, u32 facing, s32 x, s32 y)
     }
     Free(map);
     return ok;
+}
+
+// Whether square (x, y) of a room is its back wall's face (a tall piece's top can overlap it)
+bool32 GymRoom_IsBackWallFace(u32 room, s32 x, s32 y)
+{
+    return GymRoom_GetBase(room, x, y) == GYM_BASE_WALL_FACE && !OpenDoorAt(room, x, y)
+        && !GymRoom_IsDoorFront(room, x, y + 1);
 }
 
 // (src/fieldmap.c, after the gym's tileset is copied to video memory: that copy is queued, so the

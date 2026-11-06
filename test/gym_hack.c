@@ -800,26 +800,37 @@ TEST("GymHack: decor: a turned piece takes up its turned shape")
     EXPECT_EQ(gGymDecor[GYM_DECOR_POTTED_PLANT].numFacings, 1);
 }
 
-TEST("GymHack: decor: pieces stand right against a wall, its face showing behind them")
+TEST("GymHack: decor: tall pieces stand right against a wall, their tops over its face")
 {
     GymDecor_ClearAll();
     GymDecor_SetOwned(GYM_DECOR_GYM_WALL, 5);
     GymDecor_SetOwned(GYM_DECOR_TRASH_CAN, 5);
+    GymDecor_SetOwned(GYM_DECOR_POTTED_PLANT, 5);
+    GymDecor_SetOwned(GYM_DECOR_BOOKSHELF, 2);
     GymDecor_SetOwned(GYM_DECOR_GREEN_RUG, 1);
     GymDecor_SetOwned(GYM_DECOR_POOL_WATER, 1);
     EXPECT(GymDecor_Place(GYM_DECOR_GYM_WALL, 0, 5, 5));
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 6));     // its face: right up against it
-    EXPECT(!GymDecor_CanPlace(GYM_DECOR_GREEN_RUG, 0, 5, 6));    // (but not a rug, flat on the floor,
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_POTTED_PLANT, 0, 5, 6));  // (its top over the wall's face)
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 6));    // (one square tall: it'd be in the wall)
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 7));     // (in front of it)
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_GREEN_RUG, 0, 5, 6));    // (nor a rug, flat on the floor,
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_POOL_WATER, 0, 5, 6));   // or a pool)
-    EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 5, 6));
-    // A wall can go up behind a piece too, but not behind a rug
-    EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 9, 6));
+    EXPECT(GymDecor_Place(GYM_DECOR_POTTED_PLANT, 0, 5, 6));
+    // The gym's own back wall: a tall piece's top can overlap it, nothing else
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 3, 1));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 3, 1));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 3, 0));
+    EXPECT(GymDecor_Place(GYM_DECOR_BOOKSHELF, 0, 3, 1));
+    // A wall can go up behind a tall piece, but not right behind a short one or a rug
+    EXPECT(GymDecor_Place(GYM_DECOR_POTTED_PLANT, 0, 9, 6));
     EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 9, 5));
+    EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 11, 6));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 11, 5));
     EXPECT(GymDecor_Place(GYM_DECOR_GREEN_RUG, 0, 13, 6));
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 13, 5));
     EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 13, 4));     // (not right behind it)
     // The wall goes on down, over the piece's square once it's moved
-    EXPECT(GymDecor_RemoveAt(5, 6));
+    EXPECT(GymDecor_RemoveAt(5, 7));
     EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 5, 6));
 }
 
@@ -846,11 +857,14 @@ TEST("GymHack: decor: the extra rooms share the storage, with their own floors a
     FlagClear(FLAG_GYM_ROOM_BACK);
     GymDecor_SetOwned(GYM_DECOR_TRASH_CAN, 2);
     GymDecor_SetOwned(GYM_DECOR_TABLE, 1);
+    GymDecor_SetOwned(GYM_DECOR_BOOKSHELF, 1);
     SetLocation(MAP_PALLET_TOWN_GYM);
     EXPECT_EQ(GymRoom_Current(), GYM_ROOM_MAIN);
     // A doorway's way through is kept clear once it's open
     EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 12, 2));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 12, 1));   // (over the wall, till the doorway's there)
     FlagSet(FLAG_GYM_ROOM_BACK);
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 12, 1));
     EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 12, 2));
     EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 11, 2));
     // The back room: its own size, floors and walls; the gym's storage

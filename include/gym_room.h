@@ -69,6 +69,7 @@ const struct GymRoomInfo *GymRoom_CurrentInfo(void);
 bool32 GymRoom_IsDoorFront(u32 room, s32 x, s32 y);
 u32 GymRoom_GetBase(u32 room, s32 x, s32 y);
 bool32 GymRoom_PieceFitsWalls(u32 id, u32 facing, s32 x, s32 y);
+bool32 GymRoom_IsBackWallFace(u32 room, s32 x, s32 y);
 
 // sGymRoomBase codes
 #define GYM_BASE_FLOOR          0xFFFF

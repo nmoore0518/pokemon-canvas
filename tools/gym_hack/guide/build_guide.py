@@ -655,8 +655,9 @@ unlocks.</p>
 <li><b>Turning</b>: most furniture can be turned to face any way, and changes shape to match (a couch is 3 wide from the front
 and 3 long from the side). Round things look the same every way, so they don't turn.</li>
 <li><b>Walls and pools join up</b>: GYM WALLs are one square each and join into one wall, with its front face showing on the
-square below. Furniture can stand right against a wall, on that square, with the wall's face showing behind it (rugs, mats
-and pools can't: they'd cover it). POOL WATER joins the same way: any shape of pool gets a rim only round its
+square below. Furniture can stand right against any wall, the gym's own back wall included: a tall piece (a bookshelf, a
+plant) overlaps the wall with its top, the wall showing behind it, and a short one (a trash can) stands on the first square of
+floor in front. Rugs, mats and pools can't overlap a wall. POOL WATER joins the same way: any shape of pool gets a rim only round its
 outside. You can SURF in it.</li>
 <li><b>Floors</b> (bought once, then use them anywhere): wood, stone, red carpet, sand, metal grating, grass, steel, ice and
 <b>lava</b> (nobody can walk on it: it works like a wall, for fire gyms). Pick a floor in DECORATE (or switch to it with L/R): A paints the

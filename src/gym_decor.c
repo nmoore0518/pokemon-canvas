@@ -389,6 +389,18 @@ static bool32 InEditArea(s32 x, s32 y)
     return InEditAreaOf(CurrentRoom(), x, y);
 }
 
+// Where a piece's square can go: the room's floor, or (not its bottom row: the piece stands on the
+// floor in front) the back wall's face, right above the floor (GymRoom_PieceFitsWalls checks the
+// piece's look)
+static bool32 CanHoldPieceSquare(u32 room, s32 x, s32 y, bool32 bottomRow)
+{
+    const struct GymRoomInfo *info = GymRoom_GetInfo(room);
+    if (InEditAreaOf(room, x, y))
+        return TRUE;
+    return !bottomRow && y == info->edit[1] - 1 && x >= info->edit[0] && x <= info->edit[2]
+        && GymRoom_IsBackWallFace(room, x, y);
+}
+
 bool32 GymDecor_CanPlace(u32 id, u32 facing, s32 x, s32 y)
 {
     const struct GymDecor *d = &gGymDecor[id];
@@ -406,7 +418,7 @@ bool32 GymDecor_CanPlace(u32 id, u32 facing, s32 x, s32 y)
     {
         for (cx = x; cx < x + w; cx++)
         {
-            if (!InEditArea(cx, cy) || FindPlacementAt(cx, cy) >= 0)
+            if (!CanHoldPieceSquare(CurrentRoom(), cx, cy, cy == y + h - 1) || FindPlacementAt(cx, cy) >= 0)
                 return FALSE;
         }
     }
@@ -466,7 +478,10 @@ static void PutAwayMisplaced(void)
             Footprint(p->id, GYM_PLACEMENT_FACING(p), &w, &h);
             for (y = p->y; y < p->y + h && ok; y++)
                 for (x = p->x; x < p->x + w && ok; x++)
-                    ok = InEditAreaOf(room, x, y);
+                    ok = CanHoldPieceSquare(room, x, y, y == p->y + h - 1);
+            // (v171 let a piece's bottom row stand in a wall's face)
+            if (ok && room == CurrentRoom() && GymRoom_Current() != GYM_ROOM_NONE)
+                ok = GymRoom_PieceFitsWalls(p->id, GYM_PLACEMENT_FACING(p), p->x, p->y);
         }
         if (!ok)
         {
