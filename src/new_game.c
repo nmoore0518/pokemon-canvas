@@ -210,7 +210,7 @@ void NewGameInitData(void)
     Archive_Clear();
     TeamBuilder_Clear();
     DeactivateAllRoamers();
-    gSaveBlock1Ptr->registeredItem = ITEM_NONE;
+    RegisteredItems_Clear();   // (Pokémon Canvas: and the other four)
     ClearBag();
     NewGameInitPCItems();
     ClearPokeblocks();

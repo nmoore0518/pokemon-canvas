@@ -784,6 +784,8 @@ gSpecials::
 	def_special GymDecor_Sell
 	def_special GymDecor_PutAllAway
 	def_special GymDecor_WarpToPC
+	def_special RegisteredItems_PushList
+	def_special RegisteredItems_UseChosen
 	def_special GymRooms_OakReward
 	def_special GymRooms_GiveReward
 	def_special Tourney_RollPrize

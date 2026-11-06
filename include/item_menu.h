@@ -107,6 +107,19 @@ void CB2_ReturnToBagMenuPocket(void);
 void CB2_BagMenuFromStartMenu(void);
 u16 GetItemListPosition(u8 pocketId);
 bool8 UseRegisteredKeyItemOnField(void);
+
+// Pokémon Canvas: up to REGISTERED_ITEMS_MAX items registered for SELECT (it asks which, with two
+// or more): SaveBlock1's registeredItem, then gRegisteredItemsExtra (saved in sector 31)
+#define REGISTERED_ITEMS_MAX 5
+extern u16 gRegisteredItemsExtra[REGISTERED_ITEMS_MAX - 1];
+u16 GetRegisteredItem(u32 i);
+bool32 IsItemRegistered(u16 itemId);
+u32 CountRegisteredItems(void);
+bool32 ToggleRegisteredItem(u16 itemId);
+void RegisteredItems_Validate(void);
+void RegisteredItems_Clear(void);
+void RegisteredItems_PushList(void);
+void RegisteredItems_UseChosen(void);
 void CB2_GoToSellMenu(void);
 void GoToBagMenu(u8 location, u8 pocket, MainCallback exitCallback);
 void DoWallyTutorialBagMenu(void);

@@ -25,6 +25,8 @@
 #include "link.h"
 #include "mail.h"
 #include "malloc.h"
+#include "script_menu.h"
+#include "event_object_lock.h"
 #include "map_name_popup.h"
 #include "menu.h"
 #include "money.h"
@@ -1030,7 +1032,7 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
         else
         {
             // Print registered icon
-            if (gSaveBlock1Ptr->registeredItem != ITEM_NONE && gSaveBlock1Ptr->registeredItem == itemSlot.itemId)
+            if (IsItemRegistered(itemSlot.itemId))
                 BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 96, y - 1, 24, 16);
         }
     }
@@ -1729,7 +1731,7 @@ static void OpenContextMenu(u8 taskId)
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_KeyItemsPocket);
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_KeyItemsPocket, sizeof(sContextMenuItems_KeyItemsPocket));
-                if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                if (IsItemRegistered(gSpecialVar_ItemId))
                     gBagMenu->contextMenuItemsBuffer[1] = ACTION_DESELECT;
                 if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE || gSpecialVar_ItemId == ITEM_BICYCLE)
                 {
@@ -2047,10 +2049,15 @@ static void ItemMenu_Register(u8 taskId)
     u16 *scrollPos = &gBagPosition.scrollPosition[gBagPosition.pocket];
     u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
 
-    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
-        gSaveBlock1Ptr->registeredItem = ITEM_NONE;
-    else
-        gSaveBlock1Ptr->registeredItem = gSpecialVar_ItemId;
+    // Pokémon Canvas: up to REGISTERED_ITEMS_MAX items (SELECT offers a choice of them)
+    if (!ToggleRegisteredItem(gSpecialVar_ItemId))
+    {
+        RemoveContextWindow();
+        ConvertIntToDecimalStringN(gStringVar1, REGISTERED_ITEMS_MAX, STR_CONV_MODE_LEFT_ALIGN, 1);
+        StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("You can register up to {STR_VAR_1}\nitems. Deselect one first."));
+        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, HandleErrorMessage);
+        return;
+    }
     DestroyListMenuTask(tListTaskId, scrollPos, cursorPos);
     LoadBagItemListBuffers(gBagPosition.pocket);
     tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
@@ -2186,6 +2193,13 @@ bool8 UseRegisteredKeyItemOnField(void)
         return FALSE;
     HideMapNamePopUpWindow();
     ChangeBgY_ScreenOff(0, 0, BG_COORD_SET);
+    // Pokémon Canvas: with more than one registered, SELECT asks which
+    RegisteredItems_Validate();
+    if (CountRegisteredItems() > 1)
+    {
+        ScriptContext_SetupScript(EventScript_ChooseRegisteredItem);
+        return TRUE;
+    }
     if (gSaveBlock1Ptr->registeredItem != ITEM_NONE)
     {
         if (CheckBagHasItem(gSaveBlock1Ptr->registeredItem, 1) == TRUE)
@@ -2206,6 +2220,145 @@ bool8 UseRegisteredKeyItemOnField(void)
     }
     ScriptContext_SetupScript(EventScript_SelectWithoutRegisteredItem);
     return TRUE;
+}
+
+// ---- Pokémon Canvas: up to REGISTERED_ITEMS_MAX items for SELECT -------------------------------
+// The first is FireRed's own (SaveBlock1's registeredItem); the rest are kept in sector 31 (src/save.c).
+EWRAM_DATA u16 gRegisteredItemsExtra[REGISTERED_ITEMS_MAX - 1] = {0};
+
+static u16 *RegisteredSlot(u32 i)
+{
+    return i == 0 ? &gSaveBlock1Ptr->registeredItem : &gRegisteredItemsExtra[i - 1];
+}
+
+u16 GetRegisteredItem(u32 i)
+{
+    return i < REGISTERED_ITEMS_MAX ? *RegisteredSlot(i) : ITEM_NONE;
+}
+
+bool32 IsItemRegistered(u16 itemId)
+{
+    u32 i;
+    if (itemId == ITEM_NONE)
+        return FALSE;
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+    {
+        if (*RegisteredSlot(i) == itemId)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// (no gaps: the registered come first, in the order they were registered)
+static void CompactRegisteredItems(void)
+{
+    u32 i, n = 0;
+    u16 items[REGISTERED_ITEMS_MAX];
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+    {
+        u16 item = *RegisteredSlot(i);
+        if (item != ITEM_NONE && item < ITEMS_COUNT)
+        {
+            u32 k;
+            bool32 dup = FALSE;
+            for (k = 0; k < n; k++)
+                dup |= (items[k] == item);
+            if (!dup)
+                items[n++] = item;
+        }
+    }
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+        *RegisteredSlot(i) = i < n ? items[i] : ITEM_NONE;
+}
+
+u32 CountRegisteredItems(void)
+{
+    u32 i, n = 0;
+    CompactRegisteredItems();
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+        n += (*RegisteredSlot(i) != ITEM_NONE);
+    return n;
+}
+
+// Registers it (at the end), or deregisters it if it was. FALSE: all REGISTERED_ITEMS_MAX are taken.
+bool32 ToggleRegisteredItem(u16 itemId)
+{
+    u32 i;
+    CompactRegisteredItems();
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+    {
+        if (*RegisteredSlot(i) == itemId)
+        {
+            *RegisteredSlot(i) = ITEM_NONE;
+            CompactRegisteredItems();
+            return TRUE;
+        }
+    }
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+    {
+        if (*RegisteredSlot(i) == ITEM_NONE)
+        {
+            *RegisteredSlot(i) = itemId;
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+// The ones no longer in the bag are let go
+void RegisteredItems_Validate(void)
+{
+    u32 i;
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+    {
+        u16 item = *RegisteredSlot(i);
+        if (item != ITEM_NONE && (item >= ITEMS_COUNT || !CheckBagHasItem(item, 1)))
+            *RegisteredSlot(i) = ITEM_NONE;
+    }
+    CompactRegisteredItems();
+}
+
+void RegisteredItems_Clear(void)
+{
+    u32 i;
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+        *RegisteredSlot(i) = ITEM_NONE;
+}
+
+// Special: the registered items, for SELECT's list (dynmultichoice); VAR_RESULT = how many
+void RegisteredItems_PushList(void)
+{
+    u32 i, n = CountRegisteredItems();
+    for (i = 0; i < n; i++)
+    {
+        struct ListMenuItem item;
+        u8 *name = Alloc(ITEM_NAME_LENGTH + 1);
+        CopyItemName(*RegisteredSlot(i), name);
+        item.name = name;
+        item.id = i;
+        MultichoiceDynamic_PushElement(item);
+    }
+    gSpecialVar_Result = n;
+}
+
+// Special: VAR_RESULT = the chosen one's place in the list: it's used, as SELECT would use it
+// (the script ends after, with the player still held: the item lets them go)
+void RegisteredItems_UseChosen(void)
+{
+    u16 item = GetRegisteredItem(gSpecialVar_Result);
+    u8 taskId;
+    if (item == ITEM_NONE || !CheckBagHasItem(item, 1))
+    {
+        ScriptUnfreezeObjectEvents();
+        UnlockPlayerFieldControls();
+        return;
+    }
+    FreezeObjectEvents();
+    PlayerFreeze();
+    StopPlayerAvatar();
+    gSpecialVar_ItemId = item;
+    taskId = CreateTask(GetItemFieldFunc(item), 8);
+    gTasks[taskId].tUsingRegisteredKeyItem = TRUE;
 }
 
 #undef tUsingRegisteredKeyItem

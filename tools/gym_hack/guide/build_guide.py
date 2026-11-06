@@ -349,6 +349,8 @@ offers RENAME (press A) for your own Pokémon in your party.</li>
 <li><b>A bag with ten pockets</b>, with room for one of every item in the game (and 46 kinds of Poké Ball): Items (evolution items, training items,
 valuables), Medicine, Poké Balls, Battle Items, Hold Items, Mega Stones, Berries, TMs &amp; HMs, Tools (the key items you use, and
 can register to SELECT) and Key Items.</li>
+<li><b>Up to five items on SELECT.</b> REGISTER up to five tools from the bag (DESELECT takes one off). With one registered,
+SELECT uses it straight away; with more, SELECT shows a short list of them to pick from (B to cancel).</li>
 <li><b>Terastallization.</b> Archer gives you the Tera Orb after Viridian. It never needs charging; one Pokémon a battle.
 See <a href="#tera">Terastallization</a>.</li>
 <li><b>The Spirit Ward.</b> A Max Repel that never runs out: hold it up or put it away from the Tools pocket (or register

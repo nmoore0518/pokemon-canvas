@@ -1,4 +1,5 @@
 #include "global.h"
+#include "item_menu.h"
 #include "berry_field.h"
 #include "tournament.h"
 #include "mastery_hall.h"
@@ -733,6 +734,9 @@ STATIC_ASSERT(TOURNEY_SAVE_OFFSET + sizeof(struct TourneySave) <= SECTOR_DATA_SI
 // (and after the tournament: the berry field, src/berry_field.c)
 #define BERRY_FIELD_SAVE_OFFSET ((TOURNEY_SAVE_OFFSET + sizeof(struct TourneySave) + 3) & ~3)
 STATIC_ASSERT(BERRY_FIELD_SAVE_OFFSET + sizeof(struct BerryFieldSave) <= SECTOR_DATA_SIZE, BerryFieldSaveFreeSpace);
+// (and the items registered for SELECT after the first: older saves have zeros there, ITEM_NONE)
+#define REGISTERED_ITEMS_SAVE_OFFSET ((BERRY_FIELD_SAVE_OFFSET + sizeof(struct BerryFieldSave) + 3) & ~3)
+STATIC_ASSERT(REGISTERED_ITEMS_SAVE_OFFSET + sizeof(gRegisteredItemsExtra) <= SECTOR_DATA_SIZE, RegisteredItemsFreeSpace);
 
 static void SaveExtraSectors(void)
 {
@@ -749,6 +753,7 @@ static void SaveExtraSectors(void)
     memcpy(&sector->data[TOURNEY_SAVE_OFFSET], &gTourneySave, sizeof(gTourneySave));
     BerryField_SealSave();
     memcpy(&sector->data[BERRY_FIELD_SAVE_OFFSET], &gBerryFieldSave, sizeof(gBerryFieldSave));
+    memcpy(&sector->data[REGISTERED_ITEMS_SAVE_OFFSET], gRegisteredItemsExtra, sizeof(gRegisteredItemsExtra));
     sector->id = CalculateChecksum((void *)storage, STORAGE_EXTRA_SIZE);
     TryWriteSector(SECTOR_ID_EXTRA_STORAGE, sector->data);
     HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave));
@@ -765,6 +770,7 @@ static void LoadExtraSectors(u8 status)
         TeamBuilder_Clear();
         Tourney_ClearSave();
         BerryField_Clear();
+        memset(gRegisteredItemsExtra, 0, sizeof(gRegisteredItemsExtra));
         return;
     }
     Bag_UpgradeLayout();
@@ -777,6 +783,8 @@ static void LoadExtraSectors(u8 status)
     Tourney_ValidateSave();
     memcpy(&gBerryFieldSave, &gSaveDataBuffer.data[BERRY_FIELD_SAVE_OFFSET], sizeof(gBerryFieldSave));
     BerryField_Validate();
+    memcpy(gRegisteredItemsExtra, &gSaveDataBuffer.data[REGISTERED_ITEMS_SAVE_OFFSET], sizeof(gRegisteredItemsExtra));
+    RegisteredItems_Validate();
     // (sector 30: the Type Mastery Hall of Fame and BILL'S ARCHIVE - or, from before the archive,
     // the Hall alone)
     // (and, from before the team builder, the two without it)

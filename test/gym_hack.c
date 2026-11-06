@@ -4882,3 +4882,24 @@ TEST("GymHack: Pokérus from the Medical Center wears off a day of steps at a ti
     EXPECT(CheckMonHasHadPokerus(mon));                                 // (cured: still double EVs, can't catch it again)
     EXPECT_EQ(MedCenter_TryGivePokerus(mon), POKERUS_GIVE_HAD_IT);
 }
+
+#include "item_menu.h"
+TEST("GymHack: SELECT: up to five items registered, in order; a sixth is refused")
+{
+    u32 i;
+    static const u16 items[] = {ITEM_BICYCLE, ITEM_OLD_ROD, ITEM_GOOD_ROD, ITEM_SUPER_ROD, ITEM_TOWN_MAP, ITEM_ITEMFINDER};
+    RegisteredItems_Clear();
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
+        EXPECT(ToggleRegisteredItem(items[i]));
+    EXPECT(!ToggleRegisteredItem(items[5]));
+    EXPECT_EQ(CountRegisteredItems(), 5);
+    EXPECT(ToggleRegisteredItem(items[1]));         // (deselected: the rest move up)
+    EXPECT(!IsItemRegistered(items[1]));
+    EXPECT_EQ(GetRegisteredItem(1), items[2]);
+    EXPECT(ToggleRegisteredItem(items[5]));
+    EXPECT_EQ(GetRegisteredItem(4), items[5]);
+    SwapRegisteredBike();
+    EXPECT_EQ(GetRegisteredItem(0), ITEM_BICYCLE);  // (FireRed's one bike: not swapped)
+    RegisteredItems_Clear();
+    EXPECT_EQ(CountRegisteredItems(), 0);
+}

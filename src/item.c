@@ -485,14 +485,14 @@ void CompactPCItems(void)
 
 void SwapRegisteredBike(void)
 {
-    switch (gSaveBlock1Ptr->registeredItem)
+    u32 i;
+    for (i = 0; i < REGISTERED_ITEMS_MAX; i++)
     {
-    case ITEM_MACH_BIKE:
-        gSaveBlock1Ptr->registeredItem = ITEM_ACRO_BIKE;
-        break;
-    case ITEM_ACRO_BIKE:
-        gSaveBlock1Ptr->registeredItem = ITEM_MACH_BIKE;
-        break;
+        u16 *slot = i == 0 ? &gSaveBlock1Ptr->registeredItem : &gRegisteredItemsExtra[i - 1];
+        if (*slot == ITEM_MACH_BIKE)
+            *slot = ITEM_ACRO_BIKE;
+        else if (*slot == ITEM_ACRO_BIKE)
+            *slot = ITEM_MACH_BIKE;
     }
 }
 

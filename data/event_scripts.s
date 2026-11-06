@@ -1625,6 +1625,19 @@ EventScript_SelectWithoutRegisteredItem::
 	msgbox gText_SelectWithoutRegisteredItem, MSGBOX_SIGN
 	end
 
+@ Pokémon Canvas: SELECT with two or more items registered: which one? (src/item_menu.c)
+EventScript_ChooseRegisteredItem::
+	lockall
+	special RegisteredItems_PushList
+	dynmultistack 0, 0, FALSE, 5, TRUE, 0, DYN_MULTICHOICE_CB_NONE
+	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, EventScript_ChooseRegisteredItemCancel
+	special RegisteredItems_UseChosen
+	end
+
+EventScript_ChooseRegisteredItemCancel::
+	releaseall
+	end
+
 	.include "data/scripts/field_poison.inc"
 
 Common_EventScript_NopReturn::
