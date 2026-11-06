@@ -637,6 +637,8 @@ struct SaveBlock2
     /*0x64C*/ struct BattleFrontier frontier;
     struct ItemSlot bagPokeBalls2[BAG_POKEBALLS_COUNT_2]; // (Pokémon Canvas: the Poké Balls pocket's second part;
                                                           //  older saves have zeros here: empty slots)
+    struct ItemSlot bagHoldItems2[BAG_HOLD_ITEMS_COUNT_2]; // (Pokémon Canvas: the Hold Items pocket's second part;
+                                                           //  the last 12 bytes of the sector. Zeros in older saves)
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;

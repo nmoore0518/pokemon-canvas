@@ -1096,6 +1096,8 @@ gStdScripts_End::
 	.include "data/scripts/gym_practice.inc"
 	.include "data/scripts/gym_candidate.inc"
 	.include "data/scripts/move_extractor.inc"
+	.include "data/scripts/tower_graves.inc"
+	.include "data/scripts/tower_graves_signs.inc"
 	.include "data/scripts/dad_story.inc"
 	.include "data/text/dad_story.inc"
 	.include "data/scripts/gym_tera.inc"

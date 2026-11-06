@@ -577,6 +577,9 @@ gSpecials::
 	def_special SetWalkingIntoSignVars
 	def_special StartOldManTutorialBattle
 	def_special MissingNo_ArmEncounter
+	def_special TowerGraves_Read
+	def_special TowerGraves_SummonGhosts
+	def_special TowerGraves_DismissGhosts
 	def_special DaisyMassageServices
 	def_special GetLeadMonFriendship
 	def_special OpenMuseumFossilPic

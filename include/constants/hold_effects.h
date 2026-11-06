@@ -93,6 +93,7 @@ enum HoldEffect
     // Gen5 hold effects
     HOLD_EFFECT_FLOAT_STONE,
     HOLD_EFFECT_EVIOLITE,
+    HOLD_EFFECT_EVIOLATE,   // (Pokémon Canvas: Attack and Sp. Atk x1.5 if it can still evolve)
     HOLD_EFFECT_ASSAULT_VEST,
     HOLD_EFFECT_DRIVE,
     HOLD_EFFECT_GEMS,

@@ -1150,6 +1150,7 @@ enum __attribute__((packed)) Item
     ITEM_DOUBLE_COLORLESS_ENERGY = 963,   // (PP Max on every move)
     ITEM_LIMITED_EDITION_SODA = 964,  // Pokémon Canvas: with a type berry in the Drink Machine, a new second type (src/drink_machine.c)
     ITEM_HEAL_CHARM = 965,      // Pokémon Canvas: the player's healing items heal 10% more (the Medical Center's 2F; src/pokemon.c)
+    ITEM_EVIOLATE = 966,        // Pokémon Canvas: Eviolite's offensive twin (Attack and Sp. Atk); the Pokémon Tower's ghost girl (src/tower_graves.c)
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,

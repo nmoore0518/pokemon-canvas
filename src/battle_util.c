@@ -6851,6 +6851,8 @@ static inline uq4_12_t ApplyDefensiveBadgeBoost(uq4_12_t modifier, enum BattlerI
     return modifier;
 }
 
+static bool32 CanEvolve(enum Species species);
+
 static inline u32 CalcAttackStat(struct DamageContext *ctx)
 {
     u8 atkStage;
@@ -7111,6 +7113,15 @@ static inline u32 CalcAttackStat(struct DamageContext *ctx)
     case HOLD_EFFECT_CHOICE_SPECS:
         if (IsBattleMoveSpecial(move) && GetActiveGimmick(battlerAtk) != GIMMICK_DYNAMAX)
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
+        break;
+    case HOLD_EFFECT_EVIOLATE:  // (Pokémon Canvas: Eviolite's offensive twin)
+        {
+            enum Species species = gBattleMons[battlerAtk].species;
+            if (gBattleMons[battlerAtk].volatiles.transformed && gBattleMons[battlerAtk].volatiles.transformedMonSpecies != SPECIES_NONE)
+                species = gBattleMons[battlerAtk].volatiles.transformedMonSpecies;
+            if (CanEvolve(species))
+                modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
+        }
         break;
     default:
         break;

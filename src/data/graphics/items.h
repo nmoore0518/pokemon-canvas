@@ -2329,5 +2329,7 @@ const u32 gItemIcon_LimitedEditionSoda[] = INCGFX_U32("graphics/items/icons/gym/
 const u16 gItemIconPalette_LimitedEditionSoda[] = INCGFX_U16("graphics/items/icon_palettes/gym/limited_edition_soda.pal", ".gbapal");
 const u32 gItemIcon_HealCharm[] = INCGFX_U32("graphics/items/icons/gym/heal_charm.png", ".4bpp.smol");   // (tools/gym_hack/build_heal_charm_icon.py)
 const u16 gItemIconPalette_HealCharm[] = INCGFX_U16("graphics/items/icon_palettes/gym/heal_charm.pal", ".gbapal");
+const u32 gItemIcon_Eviolate[] = INCGFX_U32("graphics/items/icons/gym/eviolate.png", ".4bpp.smol");   // (tools/gym_hack/build_eviolate_icon.py)
+const u16 gItemIconPalette_Eviolate[] = INCGFX_U16("graphics/items/icon_palettes/gym/eviolate.pal", ".gbapal");
 const u32 gItemIcon_DoubleColorlessEnergy[] = INCGFX_U32("graphics/items/icons/gym/doublecolorless_energy.png", ".4bpp.smol");
 const u16 gItemIconPalette_DoubleColorlessEnergy[] = INCGFX_U16("graphics/items/icon_palettes/gym/doublecolorless_energy.pal", ".gbapal");

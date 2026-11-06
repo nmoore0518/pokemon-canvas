@@ -6,6 +6,8 @@
 #include "battle_main.h"
 #include "event_data.h"
 #include "gym_hack.h"
+#include "tower_graves.h"
+#include "dad_story.h"
 #include "gauntlet.h"
 #include "tournament.h"
 #include "mastery_hall.h"
@@ -265,6 +267,39 @@ TEST("GymHack: MissingNo. (Bird/Normal, typeless first) is on no gym's team")
         EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_WRONG_TYPE);
     }
     EXPECT_EQ(StringCompare(gStringVar2, COMPOUND_STRING("Bird")), 0);
+}
+
+TEST("GymHack: the Pokemon Tower has ten unevolved graves and DAD's ace")
+{
+    u32 i, unevolved = 0;
+    VarSet(VAR_PLAYER_TYPE, TYPE_FIRE);
+    EXPECT_EQ(TowerGraves_Count(), 30);
+    for (i = 0; i < TowerGraves_Count(); i++)
+        unevolved += GymHack_SpeciesCanEvolve(TowerGraves_GetSpecies(i));
+    EXPECT_EQ(unevolved, TOWER_GRAVES_UNEVOLVED);
+    for (i = TYPE_NORMAL; i < NUMBER_OF_MON_TYPES; i++)
+        EXPECT(!GymHack_SpeciesCanEvolve(DadStory_GetAce(i)));
+}
+
+TEST("GymHack: the tenth unevolved grave brings the ghost girl, once")
+{
+    u32 i, calls = 0;
+    VarSet(VAR_TOWER_GRAVES, 0);
+    FlagClear(FLAG_GOT_EVIOLATE);
+    for (i = 0; i < TowerGraves_Count(); i++)
+    {
+        gSpecialVar_0x8004 = i;
+        TowerGraves_Read();
+        if (gSpecialVar_Result && calls++ == 0)
+            EXPECT_EQ(i, 28);   // (FERN's ODDISH: the last of the ten, in order)
+    }
+    EXPECT_EQ(calls, 2);        // (28, then 29: until the Eviolate is taken, every grave calls her)
+    FlagSet(FLAG_GOT_EVIOLATE);
+    gSpecialVar_0x8004 = 0;
+    TowerGraves_Read();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+    FlagClear(FLAG_GOT_EVIOLATE);
+    VarSet(VAR_TOWER_GRAVES, 0);
 }
 
 TEST("GymHack: two of the same species break the rules")
@@ -4686,3 +4721,4 @@ TEST("GymHack: Pokérus from the Medical Center wears off a day of steps at a ti
     EXPECT(CheckMonHasHadPokerus(mon));                                 // (cured: still double EVs, can't catch it again)
     EXPECT_EQ(MedCenter_TryGivePokerus(mon), POKERUS_GIVE_HAD_IT);
 }
+

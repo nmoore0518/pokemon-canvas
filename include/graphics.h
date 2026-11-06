@@ -1045,6 +1045,8 @@ extern const u32 gItemIcon_LimitedEditionSoda[];
 extern const u16 gItemIconPalette_LimitedEditionSoda[];
 extern const u32 gItemIcon_HealCharm[];
 extern const u16 gItemIconPalette_HealCharm[];
+extern const u32 gItemIcon_Eviolate[];
+extern const u16 gItemIconPalette_Eviolate[];
 extern const u32 gItemIcon_DoubleColorlessEnergy[];
 extern const u16 gItemIconPalette_DoubleColorlessEnergy[];
 extern const u16 gItemIconPalette_SpiritWard[];

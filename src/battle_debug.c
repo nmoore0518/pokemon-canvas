@@ -2245,6 +2245,7 @@ static const u8 *const sHoldEffectNames[HOLD_EFFECT_COUNT] =
     [HOLD_EFFECT_PLATE]            = COMPOUND_STRING("Plate"),
     [HOLD_EFFECT_FLOAT_STONE]      = COMPOUND_STRING("Float Stone"),
     [HOLD_EFFECT_EVIOLITE]         = COMPOUND_STRING("Eviolite"),
+    [HOLD_EFFECT_EVIOLATE]         = COMPOUND_STRING("Eviolate"),
     [HOLD_EFFECT_ASSAULT_VEST]     = COMPOUND_STRING("Assault Vest"),
     [HOLD_EFFECT_DRIVE]            = COMPOUND_STRING("Drive"),
     [HOLD_EFFECT_GEMS]             = COMPOUND_STRING("Gems"),

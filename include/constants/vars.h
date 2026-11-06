@@ -382,6 +382,9 @@
 // steps into the current "day" (Pokérus wears off a day at a time). Emerald's unused route vars.
 #define VAR_MEDCENTER_HELPERS                            0x406D
 #define VAR_STEP_DAY                                     0x4077
+// The Pokémon Tower's graves (src/tower_graves.c): bit n = the nth unevolved Pokémon's grave read (10 of them).
+// Emerald's Lilycove fan club var; FireRed's scripts never use it.
+#define VAR_TOWER_GRAVES                                 0x4095
 #define VAR_SODAS_FOR_MASTERY                            0x40DE // Pokémon Canvas: the LIMITED EDITION SODAS the Celadon roof girl has given for mastered types (src/drink_machine.c; was VAR_GIFT_UNUSED_1)
 
 #if TESTING

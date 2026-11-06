@@ -114,7 +114,10 @@ void Academy_PushExchange(void)
     for (i = 0; i < ARRAY_COUNT(sBPItems); i++)
     {
         struct ListMenuItem entry;
-        u8 *name = Alloc(32), *end;
+        u8 *name, *end;
+        if (sBPItems[i].item == ITEM_EVIOLITE && FlagGet(FLAG_GOT_EVIOLITE))
+            continue;   // (Pokémon Canvas: one Eviolite in the game, as one Eviolate)
+        name = Alloc(32);
         end = CopyItemName(sBPItems[i].item, name);
         while (end - name < 15)
             *end++ = CHAR_SPACE;
@@ -141,7 +144,11 @@ void Academy_SpendBP(void)
 {
     gSpecialVar_Result = (GetBP() >= gSpecialVar_0x8006);
     if (gSpecialVar_Result)
+    {
         gSaveBlock2Ptr->frontier.battlePoints -= gSpecialVar_0x8006;
+        if (gSpecialVar_0x8005 == ITEM_EVIOLITE)
+            FlagSet(FLAG_GOT_EVIOLITE);
+    }
 }
 
 // ---------------------------------------------------------------------------

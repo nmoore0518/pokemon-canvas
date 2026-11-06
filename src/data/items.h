@@ -17181,6 +17181,27 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_HealCharm,
     },
 
+    [ITEM_EVIOLATE] =
+    {
+        // Pokémon Canvas: Eviolite's offensive twin, one in the game: the Pokémon Tower's ghost girl
+        // (src/tower_graves.c). Attack and Sp. Atk x1.5 for a Pokémon that can still evolve (src/battle_util.c)
+        .name = ITEM_NAME("Eviolate"),
+        .price = 0,
+        .holdEffect = HOLD_EFFECT_EVIOLATE,
+        .holdEffectParam = 50,
+        .description = COMPOUND_STRING(
+            "Ups the offensive\n"
+            "stats of Pokémon\n"
+            "that can evolve."),
+        .pocket = POCKET_ITEMS,
+        .sortType = ITEM_TYPE_HELD_ITEM,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .flingPower = 40,
+        .iconPic = gItemIcon_Eviolate,
+        .iconPalette = gItemIconPalette_Eviolate,
+    },
+
     [ITEM_LUCKY_CLOVER] =
     {
         // Pokémon Canvas: an upgrade material (src/item_upgrades.c)

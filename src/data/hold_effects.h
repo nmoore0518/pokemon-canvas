@@ -416,6 +416,10 @@ const struct HoldEffectInfo gHoldEffectsInfo[HOLD_EFFECT_COUNT] =
     {
     },
 
+    [HOLD_EFFECT_EVIOLATE] =
+    {
+    },
+
     [HOLD_EFFECT_ASSAULT_VEST] =
     {
     },

@@ -132,7 +132,7 @@ void SetBagItemsPointers(void)
     SetPocket(POCKET_MEDICINE, BAG_MEDICINE_SLOTS, BAG_MEDICINE_COUNT, NULL, 0);
     SetPocket(POCKET_POKE_BALLS, gSaveBlock1Ptr->bag.pokeBalls, BAG_POKEBALLS_COUNT_1, gSaveBlock2Ptr->bagPokeBalls2, BAG_POKEBALLS_COUNT_2);
     SetPocket(POCKET_BATTLE_ITEMS, gSaveBlock1Ptr->bagBattleItems, BAG_BATTLE_ITEMS_COUNT, NULL, 0);
-    SetPocket(POCKET_HOLD_ITEMS, BAG_HOLD_SLOTS, BAG_HOLD_ITEMS_COUNT, NULL, 0);
+    SetPocket(POCKET_HOLD_ITEMS, BAG_HOLD_SLOTS, BAG_HOLD_ITEMS_COUNT, gSaveBlock2Ptr->bagHoldItems2, BAG_HOLD_ITEMS_COUNT_2);
     SetPocket(POCKET_MEGA_STONES, gSaveBlock3Ptr->bagMegaStones, BAG_MEGA_STONES_COUNT, NULL, 0);
     SetPocket(POCKET_BERRIES, gSaveBlock1Ptr->bag.berries, BAG_BERRIES_COUNT, NULL, 0);
     SetPocket(POCKET_TM_HM, gSaveBlock3Ptr->bagTMsHMs, BAG_TMHM_COUNT, NULL, 0);
@@ -546,6 +546,7 @@ void ClearBag(void)
     memset(BAG_HOLD_SLOTS, 0, (BAG_HOLD_ITEMS_COUNT + BAG_ITEMS_COUNT_2) * sizeof(struct ItemSlot));
     memset(gSaveBlock1Ptr->bagBattleItems, 0, sizeof(gSaveBlock1Ptr->bagBattleItems));
     memset(gSaveBlock2Ptr->bagPokeBalls2, 0, sizeof(gSaveBlock2Ptr->bagPokeBalls2));
+    memset(gSaveBlock2Ptr->bagHoldItems2, 0, sizeof(gSaveBlock2Ptr->bagHoldItems2));
     gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_POCKETS;
 }
 

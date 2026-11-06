@@ -1,4 +1,5 @@
 PokemonTower_4F_Frlg_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, TowerGraves_EventScript_HideGhosts
 	.byte 0
 
 PokemonTower_4F_EventScript_Paula::
