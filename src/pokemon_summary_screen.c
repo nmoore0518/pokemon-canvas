@@ -4441,7 +4441,7 @@ static enum Type SummaryScreen_GetDynamicMoveType(struct Pokemon *mon, enum Move
 {
     if (IsStolenMove(mon, move))   // Gym Trainer hack: Move Extractor
         return GetStolenMoveType(mon);
-    if (!P_SHOW_DYNAMIC_TYPES)
+    if (!P_SHOW_DYNAMIC_TYPES && GetMoveEffect(move) != EFFECT_REVELATION_DANCE)   // (Pokémon Canvas: Masterstroke's the user's type)
         return type;
 
     if (gBattleStruct == NULL)

@@ -1852,7 +1852,8 @@ static void MoveSelectionDisplayMoveType(enum BattlerId battler)
     {
         type = GetStolenMoveType(GetBattlerMon(battler));
     }
-    else if (P_SHOW_DYNAMIC_TYPES) // Non-vanilla changes to battle UI showing dynamic types
+    else if (P_SHOW_DYNAMIC_TYPES || effect == EFFECT_REVELATION_DANCE) // Non-vanilla changes to battle UI showing dynamic types
+                                                                        // (Pokémon Canvas: Masterstroke shows the user's type)
     {
         struct Pokemon *mon = GetBattlerMon(battler);
         type = CheckDynamicMoveType(mon, move, battler, MON_IN_BATTLE);
