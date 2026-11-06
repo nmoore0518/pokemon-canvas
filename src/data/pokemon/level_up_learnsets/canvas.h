@@ -269,3 +269,11 @@ static const struct LevelUpMove sValyreonLevelUpLearnset[] = {
     LEVEL_UP_MOVE(55, MOVE_LAST_RESORT),
     LEVEL_UP_END
 };
+
+// Pokémon Canvas: MissingNo., as Red and Blue have it (Water Gun twice, then Sky Attack, all at level 1)
+static const struct LevelUpMove sMissingnoLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE(1, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE(1, MOVE_SKY_ATTACK),
+    LEVEL_UP_END
+};

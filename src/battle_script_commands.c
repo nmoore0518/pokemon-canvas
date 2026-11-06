@@ -8473,7 +8473,8 @@ static void Cmd_trysetcaughtmondexflags(void)
     enum Species species = GetMonData(caughtMon, MON_DATA_SPECIES);
     u32 personality = GetMonData(caughtMon, MON_DATA_PERSONALITY);
 
-    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
+    if (SpeciesToNationalPokedexNum(species) == NATIONAL_DEX_NONE   // (Pokémon Canvas: MissingNo., in no Pokédex)
+     || GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }

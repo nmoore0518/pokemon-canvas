@@ -3,6 +3,7 @@
 #include "painter.h"
 #include "playtest.h"
 #include "event_mons.h"
+#include "missingno.h"
 #include "overworld.h"
 #include "battle_pyramid.h"
 #include "battle_setup.h"
@@ -904,6 +905,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     SetDefaultFlashLevel();
     Overworld_ClearSavedMusic();
     EventMons_OnMapLoad();   // Pokémon Canvas: Eternamax is the pitch's alone
+    MissingNo_OnMapLoad();   // Pokémon Canvas: grass rewrites the old man's name (src/missingno.c)
     RunOnTransitionMapScript();
     InitMap();
     CopySecondaryTilesetToVramUsingHeap(gMapHeader.mapLayout);
@@ -975,6 +977,7 @@ static void LoadMapFromWarp(bool32 a1)
     SetDefaultFlashLevel();
     Overworld_ClearSavedMusic();
     EventMons_OnMapLoad();   // Pokémon Canvas: Eternamax is the pitch's alone
+    MissingNo_OnMapLoad();   // Pokémon Canvas: grass rewrites the old man's name (src/missingno.c)
     RunOnTransitionMapScript();
     UpdateLocationHistoryForRoamer();
     MoveAllRoamersToOtherLocationSets();

@@ -576,6 +576,7 @@ gSpecials::
 	def_special DisableMsgBoxWalkaway
 	def_special SetWalkingIntoSignVars
 	def_special StartOldManTutorialBattle
+	def_special MissingNo_ArmEncounter
 	def_special DaisyMassageServices
 	def_special GetLeadMonFriendship
 	def_special OpenMuseumFossilPic

@@ -26,6 +26,7 @@
 #include "script.h"
 #include "tv.h"
 #include "wild_encounter.h"
+#include "missingno.h"
 #include "battle_debug.h"
 #include "battle_pike.h"
 #include "battle_pyramid.h"
@@ -711,6 +712,7 @@ bool8 AreLegendariesInSootopolisPreventingEncounters(void)
 
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
 {
+    MissingNo_UpdateCoast();   // (Pokémon Canvas: on Cinnabar's coast, or off it)
     if (Painting_IsActive())   // (Pokémon Canvas: nothing wild in the painter's paintings)
         return FALSE;
 
@@ -819,9 +821,15 @@ bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
                 return FALSE;
             else if (prevMetatileBehavior != curMetatileBehavior && !AllowWildCheckOnNewMetatile())
                 return FALSE;
-            else if (WildEncounterCheck(gWildMonHeaders[headerId].encounterTypes[timeOfDay].waterMonsInfo->encounterRate, FALSE) != TRUE)
+            else if (WildEncounterCheck(MissingNo_WaterEncounterRate(gWildMonHeaders[headerId].encounterTypes[timeOfDay].waterMonsInfo->encounterRate), FALSE) != TRUE)
                 return FALSE;
 
+            if (MissingNo_TryWaterEncounter())   // (Pokémon Canvas: Cinnabar's coast, after the old man's demo)
+            {
+                gIsSurfingEncounter = TRUE;
+                BattleSetup_StartWildBattle();
+                return TRUE;
+            }
             if (TryStartRoamerEncounter())
             {
                 roamer = &gSaveBlock1Ptr->roamer[gEncounteredRoamerIndex];

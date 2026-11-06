@@ -250,6 +250,23 @@ TEST("GymHack: only the primary type counts")
     EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_WRONG_TYPE);
 }
 
+TEST("GymHack: MissingNo. (Bird/Normal, typeless first) is on no gym's team")
+{
+    u32 type;
+    EXPECT_EQ(gSpeciesInfo[SPECIES_MISSINGNO].types[0], TYPE_MYSTERY);
+    EXPECT_EQ(gSpeciesInfo[SPECIES_MISSINGNO].types[1], TYPE_NORMAL);
+    for (type = TYPE_NORMAL; type < NUMBER_OF_MON_TYPES; type++)
+    {
+        if (type == TYPE_MYSTERY || type == TYPE_STELLAR)
+            continue;
+        SetPlayerType(type);
+        ZeroPlayerPartyMons();
+        RUN_OVERWORLD_SCRIPT(givemon SPECIES_MISSINGNO, 30;);
+        EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_WRONG_TYPE);
+    }
+    EXPECT_EQ(StringCompare(gStringVar2, COMPOUND_STRING("Bird")), 0);
+}
+
 TEST("GymHack: two of the same species break the rules")
 {
     SetPlayerType(TYPE_FIRE);

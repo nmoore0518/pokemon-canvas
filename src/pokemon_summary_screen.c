@@ -974,7 +974,14 @@ static const union AnimCmd sSpriteAnim_CategoryTough[] = {
     ANIMCMD_FRAME((CONTEST_CATEGORY_TOUGH + NUMBER_OF_MON_TYPES) * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
-static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT] = {
+// Pokémon Canvas: MissingNo.'s BIRD (its typeless TYPE_MYSTERY, as Red and Blue named it): the sheet's
+// last icon, after the contest categories (graphics/types/bird.png)
+#define TYPE_ICON_BIRD (NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT)
+static const union AnimCmd sSpriteAnim_TypeBird[] = {
+    ANIMCMD_FRAME(TYPE_ICON_BIRD * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT + 1] = {
     [TYPE_NONE] = sSpriteAnim_TypeNone,
     [TYPE_NORMAL] = sSpriteAnim_TypeNormal,
     [TYPE_FIGHTING] = sSpriteAnim_TypeFighting,
@@ -1001,12 +1008,13 @@ static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMBER_OF_MON_TYPES
     [NUMBER_OF_MON_TYPES + CONTEST_CATEGORY_CUTE] = sSpriteAnim_CategoryCute,
     [NUMBER_OF_MON_TYPES + CONTEST_CATEGORY_SMART] = sSpriteAnim_CategorySmart,
     [NUMBER_OF_MON_TYPES + CONTEST_CATEGORY_TOUGH] = sSpriteAnim_CategoryTough,
+    [TYPE_ICON_BIRD] = sSpriteAnim_TypeBird,
 };
 
 const struct CompressedSpriteSheet gSpriteSheet_MoveTypes =
 {
     .data = gMoveTypes_Gfx,
-    .size = (NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT) * 0x100,
+    .size = (NUMBER_OF_MON_TYPES + CONTEST_CATEGORIES_COUNT + 1) * 0x100,  // (+1: MissingNo.'s BIRD)
     .tag = TAG_MOVE_TYPES
 };
 const struct SpriteTemplate gSpriteTemplate_MoveTypes =
@@ -4374,7 +4382,9 @@ void SetTypeSpritePosAndPal(enum Type typeId, u8 x, u8 y, u8 spriteArrayId)
 {
     struct Sprite *sprite = &gSprites[sMonSummaryScreen->spriteIds[spriteArrayId]];
     StartSpriteAnim(sprite, typeId);
-    if (typeId < NUMBER_OF_MON_TYPES)
+    if (typeId == TYPE_ICON_BIRD)
+        sprite->oam.paletteNum = gTypesInfo[TYPE_FLYING].palette;
+    else if (typeId < NUMBER_OF_MON_TYPES)
         sprite->oam.paletteNum = gTypesInfo[typeId].palette;
     else
         sprite->oam.paletteNum = gContestCategoryInfo[typeId - NUMBER_OF_MON_TYPES].palette;
@@ -4393,7 +4403,10 @@ static void SetMonTypeIcons(void)
     }
     else
     {
-        SetTypeSpritePosAndPal(GetSpeciesType(summary->species, 0), 120, 48, SPRITE_ARR_ID_TYPE);
+        if (summary->species == SPECIES_MISSINGNO && GetSpeciesType(summary->species, 0) == TYPE_MYSTERY)
+            SetTypeSpritePosAndPal(TYPE_ICON_BIRD, 120, 48, SPRITE_ARR_ID_TYPE);
+        else
+            SetTypeSpritePosAndPal(GetSpeciesType(summary->species, 0), 120, 48, SPRITE_ARR_ID_TYPE);
         if (GetSpeciesType(summary->species, 0) != GetMonType(&sMonSummaryScreen->currentMon, 1))   // (Pokémon Canvas: a soda's second type)
         {
             SetTypeSpritePosAndPal(GetMonType(&sMonSummaryScreen->currentMon, 1), 160, 48, SPRITE_ARR_ID_TYPE + 1);

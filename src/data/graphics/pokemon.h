@@ -27788,6 +27788,16 @@ const u32 gObjectEventPic_Substitute[] = INCGFX_COMP("graphics/pokemon/question_
     const u8 gMonFootprint_Cleffabill[] = INCGFX_U8("graphics/pokemon/cleffabill/footprint.png", ".1bpp");
 #endif //P_FOOTPRINTS
 
+// Pokémon Canvas: MissingNo. (tools/gym_hack/missingno_art.py)
+    const u32 gMonFrontPic_Missingno[] = INCGFX_U32("graphics/pokemon/missingno/anim_front.png", ".4bpp.smol");
+    const u16 gMonPalette_Missingno[] = INCGFX_U16("graphics/pokemon/missingno/normal.pal", ".gbapal");
+    const u32 gMonBackPic_Missingno[] = INCGFX_U32("graphics/pokemon/missingno/back.png", ".4bpp.smol");
+    const u16 gMonShinyPalette_Missingno[] = INCGFX_U16("graphics/pokemon/missingno/shiny.pal", ".gbapal");
+    const u8 gMonIcon_Missingno[] = INCGFX_U8("graphics/pokemon/missingno/icon.png", ".4bpp");
+#if P_FOOTPRINTS
+    const u8 gMonFootprint_Missingno[] = INCGFX_U8("graphics/pokemon/missingno/footprint.png", ".1bpp");
+#endif //P_FOOTPRINTS
+
     const u32 gMonFrontPic_Egg[] = INCGFX_U32("graphics/pokemon/egg/anim_front.png", ".4bpp.smol");
     const u16 gMonPalette_Egg[] = INCGFX_U16("graphics/pokemon/egg/normal.pal", ".gbapal");
     const u8 gMonIcon_Egg[] = INCGFX_U8("graphics/pokemon/egg/icon.png", ".4bpp");

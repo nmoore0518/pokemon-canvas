@@ -276,7 +276,10 @@ u32 GymHack_CheckTeam(void)
         {
             GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_NICKNAME, gStringVar1);
             StringGet_Nickname(gStringVar1);
-            StringCopy(gStringVar2, gTypesInfo[GetPrimaryType(species)].name);
+            if (species == SPECIES_MISSINGNO)   // (its typeless first type: Red and Blue's BIRD)
+                StringCopy(gStringVar2, COMPOUND_STRING("Bird"));
+            else
+                StringCopy(gStringVar2, gTypesInfo[GetPrimaryType(species)].name);
             StringCopy(gStringVar3, gTypesInfo[playerType].name);
             return GYM_HACK_TEAM_WRONG_TYPE;
         }

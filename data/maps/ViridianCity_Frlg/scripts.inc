@@ -117,16 +117,32 @@ ViridianCity_EventScript_AskIfTeachyTVHelpful::
 	msgbox ViridianCity_Text_HowsTeachyTVHelping, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, ViridianCity_EventScript_TeachyTVNotHelpful
 	msgbox ViridianCity_Text_MyGrandsonOnTheShow
-	release
-	end
+	goto ViridianCity_EventScript_AskShowAgain
 
 ViridianCity_EventScript_TeachyTVNotHelpful::
 	msgbox ViridianCity_Text_TooBusyForTeachyTV
-	release
-	end
+	goto ViridianCity_EventScript_AskShowAgain
 
 ViridianCity_EventScript_TutorialCompleted::
 	msgbox ViridianCity_Text_WeakenMonsFirstToCatch
+	goto ViridianCity_EventScript_AskShowAgain
+
+@ Pokémon Canvas: the catching demo again, whenever asked (and MissingNo.'s door, src/missingno.c:
+@ the demo leaves the old man's name where Cinnabar's coast looks for its POKéMON)
+ViridianCity_EventScript_AskShowAgain::
+	msgbox ViridianCity_Text_ShowYouAgain, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ViridianCity_EventScript_ShowAgainNo
+	closemessage
+	special StartOldManTutorialBattle
+	waitstate
+	special MissingNo_ArmEncounter
+	lock
+	faceplayer
+	msgbox ViridianCity_Text_ThereThatsHowItsDone
+	release
+	end
+
+ViridianCity_EventScript_ShowAgainNo::
 	release
 	end
 
@@ -234,6 +250,7 @@ ViridianCity_EventScript_DoTutorialBattle::
 	closemessage
 	special StartOldManTutorialBattle
 	waitstate
+	special MissingNo_ArmEncounter
 	lock
 	faceplayer
 	msgbox ViridianCity_Text_ThatWasEducationalTakeThis
@@ -367,3 +384,10 @@ ViridianCity_Text_GymSign::
 ViridianCity_Text_GymDoorsAreLocked::
 	.string "VIRIDIAN GYM's doors are locked…$"
 
+
+ViridianCity_Text_ShowYouAgain::
+	.string "Shall I show you how to catch\n"
+	.string "a POKéMON again?$"
+
+ViridianCity_Text_ThereThatsHowItsDone::
+	.string "There! That's how it's done.$"

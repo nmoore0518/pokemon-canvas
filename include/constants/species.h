@@ -1709,6 +1709,7 @@ enum __attribute__((packed)) Species
     SPECIES_VALYREON,
     SPECIES_PIKACHU_SURFING, // Pokémon Canvas: Surfing Pikachu (the Stadium trainer's gift, Route 21's hidden cave)
     CANVAS_SMEARGLE_SPECIES  // Pokémon Canvas: the painter's Smeargle (src/painter.c; tools/gym_hack/build_canvas_smeargle.py)
+    SPECIES_MISSINGNO,       // Pokémon Canvas: MissingNo. (Cinnabar's east coast, after the Viridian old man's demo: src/missingno.c)
     SPECIES_CUSTOM_END,
 
     SPECIES_EGG = SPECIES_CUSTOM_END,
