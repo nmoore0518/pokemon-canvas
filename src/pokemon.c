@@ -6183,14 +6183,7 @@ enum Species GetFormChangeTargetSpecies_Internal(struct FormChangeContext ctx)
                 targetSpecies = formChanges[i].targetSpecies;
             break;
         case FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE:
-            // Pokémon Canvas: Canvas Smeargle's (param1 MOVE_NONE: no move needed; param2 an item the
-            // player's bag must hold, the SMEARGLITE: a key item, not held)
-            if (formChanges[i].param1 == MOVE_NONE)
-            {
-                if (formChanges[i].param2 != ITEM_NONE && CheckBagHasItem(formChanges[i].param2, 1))
-                    targetSpecies = formChanges[i].targetSpecies;
-            }
-            else if (ctx.moves[0] == formChanges[i].param1
+            if (ctx.moves[0] == formChanges[i].param1
                 || ctx.moves[1] == formChanges[i].param1
                 || ctx.moves[2] == formChanges[i].param1
                 || ctx.moves[3] == formChanges[i].param1)

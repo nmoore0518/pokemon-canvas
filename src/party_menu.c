@@ -5062,7 +5062,6 @@ void Task_AbilityPatch(u8 taskId)
         // Can't use.
         if (GetSpeciesAbility(tSpecies, tAbilityNum) == 0
             || !tSpecies
-            || GetMonData(&gParties[B_TRAINER_PLAYER][tMonId], MON_DATA_ABILITY_NUM) == ABILITY_NUM_SYNTHETIC // Pokémon Canvas: it's for good
             )
         {
             gPartyMenuUseExitCallback = FALSE;

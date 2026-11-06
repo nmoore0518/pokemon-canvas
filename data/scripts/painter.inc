@@ -483,10 +483,9 @@ PainterLoft_Text_MegaWon::
 	.string "every color. Here, it's yours.$"
 
 PainterLoft_Text_MegaExplain::
-	.string "Keep it in your BAG, and SMEARGLE\n"
-	.string "can MEGA EVOLVE. No need to hold it:\l"
-	.string "it's not a stone you wear. It's one\l"
-	.string "you carry.$"
+	.string "Let SMEARGLE hold it, and it can\n"
+	.string "MEGA EVOLVE, like with any MEGA\l"
+	.string "STONE.$"
 
 PainterLoft_Text_MegaLost::
 	.string "That one's hard to paint over. Rest\n"

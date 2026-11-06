@@ -581,6 +581,25 @@ static void Bag_PutOldSlots(const struct ItemSlot *slots, u32 count)
 // Gym Trainer hack: an older save's bag goes into the ten pockets: FireRed's (five small pockets
 // in SaveBlock1) or v99's (the Key Items, Balls and Berries in SaveBlock1, the TMs and 297 items in
 // SaveBlock3)
+// Pokémon Canvas: the Smearglite was a key item (Canvas Smeargle Mega Evolved with it in the bag); now
+// it's held, like any Mega Stone, so it lives in Hold Items. An older save's copy moves over.
+static void Bag_MoveSmearglite(void)
+{
+    u32 i;
+    for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
+    {
+        if (gSaveBlock1Ptr->bag.keyItems[i].itemId == ITEM_SMEARGLITE)
+        {
+            gSaveBlock1Ptr->bag.keyItems[i].itemId = ITEM_NONE;
+            gSaveBlock1Ptr->bag.keyItems[i].quantity = 0;
+            CompactItemsInBagPocket(POCKET_KEY_ITEMS);
+            if (!CheckBagHasItem(ITEM_SMEARGLITE, 1))
+                AddBagItem(ITEM_SMEARGLITE, 1);
+            return;
+        }
+    }
+}
+
 void Bag_UpgradeLayout(void)
 {
     u32 oldLayout = gSaveBlock3Ptr->bagLayout;
@@ -588,7 +607,10 @@ void Bag_UpgradeLayout(void)
     struct ItemSlot *buffer;
 
     if (oldLayout == BAG_LAYOUT_POCKETS)
+    {
+        Bag_MoveSmearglite();
         return;
+    }
     if (oldLayout == BAG_LAYOUT_POCKETS_V100 || oldLayout == BAG_LAYOUT_POCKETS_V122)
     {
         // (only the berry trees' bytes moved: the hold items, then the items that didn't fit in

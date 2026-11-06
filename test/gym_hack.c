@@ -3642,14 +3642,18 @@ TEST("GymHack: Ball Changer moves the Pokemon into the new ball and gives back t
     EXPECT_GT(GetMonData(mon, MON_DATA_ATK), atk);   // the Bug Ball's boost
 }
 
-TEST("GymHack: the Ability Capsule leaves a synthetic ability alone")
+TEST("GymHack: the Ability Capsule switches a synthetic ability back to a regular one")
 {
     u8 slots[NUM_ABILITY_SLOTS];
     u32 slot = ABILITY_NUM_SYNTHETIC;
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
     ZeroPlayerPartyMons();
     RUN_OVERWORLD_SCRIPT(givemon SPECIES_BULBASAUR, 10;);
-    SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_ABILITY_NUM, &slot);
-    EXPECT_EQ(StatItems_GetAbilityChoices(&gParties[B_TRAINER_PLAYER][0], slots), 0);
+    SetMonData(mon, MON_DATA_ABILITY_NUM, &slot);
+    EXPECT_GT(StatItems_GetAbilityChoices(mon, slots), 0);
+    EXPECT(StatItems_SetAbilitySlot(mon, 0));
+    EXPECT_EQ(GetMonData(mon, MON_DATA_ABILITY_NUM), 0);
+    EXPECT_EQ(GetMonAbility(mon), GetAbilityBySpecies(SPECIES_BULBASAUR, 0));
 }
 
 #include "dad_story.h"
@@ -4395,14 +4399,16 @@ TEST("GymHack: the lent Smeargle goes back after the first painting")
     Painter_ResetForTest();
 }
 
-TEST("GymHack: Mega Smeargle needs the SMEARGLITE in the bag, not held")
+TEST("GymHack: Mega Smeargle needs to hold the SMEARGLITE, like any Mega Stone")
 {
-    struct FormChangeContext ctx = {.method = FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE, .currentSpecies = SPECIES_SMEARGLE_CANVAS_FIRE};
-    RemoveBagItem(ITEM_SMEARGLITE, 99);
-    EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE);
+    struct FormChangeContext ctx = {.method = FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, .currentSpecies = SPECIES_SMEARGLE_CANVAS_FIRE};
     AddBagItem(ITEM_SMEARGLITE, 1);
-    EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE_MEGA);
+    EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE);   // (in the bag: no)
     RemoveBagItem(ITEM_SMEARGLITE, 99);
+    ctx.heldItem = ITEM_SMEARGLITE;
+    EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE_MEGA);
+    EXPECT_EQ(GetItemPocket(ITEM_SMEARGLITE), POCKET_HOLD_ITEMS);
+    EXPECT_EQ(GetItemHoldEffect(ITEM_SMEARGLITE), HOLD_EFFECT_MEGA_STONE);
 }
 
 extern const u8 PainterLoft_Text_NoBadge[], PainterLoft_Text_FirstIntro[], PainterLoft_Text_FirstAsk[], PainterLoft_Text_FirstGo[], PainterLoft_Text_NoRoom[], PainterLoft_Text_Later[], PainterLoft_Text_Ready[], PainterLoft_Text_NeedSmeargle[], PainterLoft_Text_TooFew[], PainterLoft_Text_Nothing[], PainterLoft_Text_SketchIntro[], PainterLoft_Text_SketchAsk[], PainterLoft_Text_WhichType[], PainterLoft_Text_WhichSlot[], PainterLoft_Text_ConfirmSlot[], PainterLoft_Text_SketchGo[], PainterLoft_Text_MegaIntro[], PainterLoft_Text_MegaAsk[], PainterLoft_Text_MegaGo[], PainterLoft_Text_BothAsk[], PainterLoft_Text_EaselBlank[], PainterLoft_Text_EaselAsk[], PainterLoft_Text_Lend[], PainterLoft_Text_Borrowed[], PainterLoft_Text_SteppingIn[], PainterLoft_Text_Smeargle[], PainterLoft_Text_Canvases[], PainterLoft_Text_Paint[], PainterLoft_Text_PaintPot[], PainterLoft_Text_CameBackEarly[], PainterLoft_Text_FirstWon[], PainterLoft_Text_ReceivedSmeargle[], PainterLoft_Text_GiftToPC[], PainterLoft_Text_GiftNoRoom[], PainterLoft_Text_FirstExplain[], PainterLoft_Text_FirstLost[], PainterLoft_Text_Sketched[], PainterLoft_Text_NoSketch[], PainterLoft_Text_SketchLost[], PainterLoft_Text_MegaWon[], PainterLoft_Text_MegaExplain[], PainterLoft_Text_MegaLost[], PaintWorld_Text_FigureFirst[], PaintWorld_Text_FigureSketch[], PaintWorld_Text_FigureMega[], PaintWorld_Text_FigureDefeat[], PaintWorld_Text_Dissolve[];

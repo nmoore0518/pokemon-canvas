@@ -354,7 +354,7 @@ MANUAL += [
     ("SPECIES_PIKACHU_STARTER", "Oak's lab", "Oak's quiz, once Electric is mastered (Lv 5)", "post-game"),
     ("SPECIES_EEVEE_STARTER", "Oak's lab", "Oak's quiz, once Normal is mastered (Lv 5)", "post-game"),
     ("SPECIES_PIKACHU_SURFING", "Route 21: the islet cave", "Gift: beat COOL♂ (his Stadium team, Lv 100) with a Pikachu in your party (Lv 50, with Surf); with nothing but Pikachu, a shiny one. It plays Pikachu's Beach in Route 19's beach house", ""),
-    ("SPECIES_SMEARGLE_CANVAS", "Pewter City: the painter's loft", "Lent by the painter after your 1st badge; win a battle in a painting with it and it becomes a Canvas Smeargle of your gym's type (one of 18, one per type), yours to keep. The Smearglite (after the League) Mega Evolves it", "After Badge 1"),
+    ("SPECIES_SMEARGLE_CANVAS", "Pewter City: the painter's loft", "Lent by the painter after your 1st badge; win a battle in a painting with it and it becomes a Canvas Smeargle of your gym's type (one of 18, one per type), yours to keep. Holding the Smearglite (after the League), it Mega Evolves", "After Badge 1"),
     ("SPECIES_MISSINGNO", "Cinnabar Island: east coast", "Watch the Viridian old man's catching demo, go straight to Cinnabar (no grass on the way) and surf down the east coast: 1 in 5 encounters there (its level comes from your name). Leaving the coast resets it", ""),
     ("SPECIES_SCATTERBUG_FANCY", "Kalos Safari: Lumiose City", "Gift: show the collector 6 Vivillon patterns (Lv 5); then wild in the Kalos zone (rare)", "post-game"),
     ("SPECIES_SCATTERBUG_POKEBALL", "Kalos Safari: Lumiose City", "Gift: show the collector all 18 patterns (Lv 5); then wild in the Kalos zone (rare)", "post-game"),

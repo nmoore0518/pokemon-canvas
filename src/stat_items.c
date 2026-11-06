@@ -98,8 +98,6 @@ u32 StatItems_GetAbilityChoices(struct Pokemon *mon, u8 *slots)
     enum Species species = GetMonData(mon, MON_DATA_SPECIES);
     enum Ability seen[NUM_ABILITY_SLOTS];
     u32 i, j, n = 0;
-    if (GetMonData(mon, MON_DATA_ABILITY_NUM) == ABILITY_NUM_SYNTHETIC)
-        return 0; // Pokémon Canvas: a synthetic ability is for good
     for (i = 0; i < NUM_NORMAL_ABILITY_SLOTS; i++)
     {
         enum Ability ability = gSpeciesInfo[species].abilities[i];

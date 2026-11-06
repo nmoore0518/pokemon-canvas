@@ -148,6 +148,8 @@ def main():
     used_anims = {a[2] for a in duel_anims if a[2] != "NONE"}
     code = "".join(p.read_text() for d in ("engine/duel", "home", "engine/menus") for p in (SRC / d).rglob("*.asm"))
     used_anims |= set(re.findall(r"\b(SPRITE_ANIM_\d+|SPRITE_ANIM_[A-Z_]+\d*)\b", code))
+    # (the damage digits 1-9: the code only names SPRITE_ANIM_79, the 0, and adds the digit to it)
+    used_anims |= {f"SPRITE_ANIM_{n}" for n in range(79, 92)}
     used_pals = {a[1] for a in duel_anims if a[1] != "NONE"} | set(re.findall(r"\b(PALETTE_\w+)\b", code))
     used_pals |= {"PALETTE_PLAYER_PIC", "PALETTE_ROD_PIC"}    # (the duelists' portraits: data/duel/portraits.asm)
     pal_names = re.findall(r"const (PALETTE_\w+)", (SRC / "constants/palette_constants.asm").read_text())

@@ -4,6 +4,7 @@
 
 #include "global.h"
 #include "test/test.h"
+#include "tcg_anims.h"
 #include "tcg.h"
 #include "tcg_ai.h"
 #include "constants/tcg_text.h"
@@ -395,4 +396,11 @@ TEST("GymHack: TCG AI: Rod attacks with what he can (Kangaskhan's Fetch, with 1 
     TcgAi_InitAITurnVars();
     EXPECT(TcgAi_ProcessAndTryToUseAttack());
     EXPECT_EQ(gTcg->selectedAttack, 0);
+}
+
+TEST("GymHack: TCG duel: every damage digit (0-9) has its animation")
+{
+    u32 i;
+    for (i = TCG_SPRITE_ANIM_79; i <= TCG_SPRITE_ANIM_79 + 9; i++)
+        EXPECT(gTcgSpriteAnims[i].frameData != NULL);
 }

@@ -387,7 +387,7 @@ battle with it and it finds its colour: a <b>Canvas Smeargle</b> of your gym's t
 paints Sketch into it. The figure's Pokémon use only moves of that type (more of them with each badge). Win, and the move
 Smeargle sketched is kept; lose (you can retry) and the slot gets its old move back.</li>
 <li><b>After the League</b>: the Mega's painting, a figure with a Mega Evolution. Win it for the <b>Smearglite</b> (a key
-item: Canvas Smeargle Mega Evolves with it in the bag). After that, Sketch quests whenever you like.</li>
+held item: a Canvas Smeargle holding it Mega Evolves, like any Mega Stone). After that, Sketch quests whenever you like.</li>
 </ul>
 <h3>Viridian City and Cinnabar Island: MissingNo.</h3>
 <p>Once you've watched the old man in Viridian City show you how to catch a Pokémon (he'll show you again any time after
@@ -625,19 +625,21 @@ try again. Win, and the gym and your own badge are yours, and his aide explains 
 GYM = """
 <h3>Challengers</h3>
 <p>Talk to Oak's aide (right of the entrance statues) to open the doors: challengers come one at a time, Battle Frontier style,
-until one beats you. Your team must follow the one-type rule; it's healed between battles and losing doesn't white out. You
+until one beats you. Your team must follow the League's rules (one type, no two alike, no two holding the same item); it's healed between battles and losing doesn't white out. You
 battle on your <b>Battle Stage</b> (a free decoration: place it, and challengers walk from the door to it along whatever path
 your decorations leave).</p>
 <ul>
 <li><b>Random trainers</b>: 4-6 different fully evolved Pokémon from the first 386, legendaries included, smart AI.</li>
-<li><b>Famous challengers</b> (every 7th in a streak, and sometimes otherwise): the eight Gym Leaders, the Elite Four, your
+<li><b>Famous challengers</b> (every 7th in a streak, and sometimes otherwise): the Kanto Gym Leaders (not Giovanni: he's gone), the Elite Four, your
 rival and Oak, their real teams levelled to match.</li>
 <li><b>Townsfolk</b> (now and then): Mom, Nurse Joy, Bill, Daisy and Mr. Fuji, with teams of their own.</li>
 <li>Every team's average level is your party's average.</li>
 </ul>
-<p>Each win pays ¥2,000 plus ¥200 per win in the streak (doubled for famous challengers and townsfolk) and an item; famous
-challengers, every 10th win and the odd lucky win give something rare: a Gold Bottle Cap, Ability Capsule, Cilantro,
-Multivitamin or a Master Ball. Very rarely (about 1 win in 150) it's a <b>Move Extractor</b>. Whoever ends your streak earns your badge, and the statue lists them.</p>
+<p>Each win pays ¥2,000 plus ¥200 per win in the streak (up to ¥10,000, at 40 wins; doubled for famous challengers,
+townsfolk and your mentor) and an item. Usually it's a common one: a Rare Candy, Nugget, PP Up, Full Restore, Max Revive,
+Max Elixir or a vitamin (less often a Bottle Cap, PP Max or Big Nugget). Famous challengers, townsfolk, every 10th win and
+about 1 win in 16 give something rare instead: a Gold Bottle Cap, Ability Capsule, Cilantro, Multivitamin or a Master Ball.
+About 1 win in 150 it's a <b>Move Extractor</b>. Whoever ends your streak earns your badge, and the statue lists them.</p>
 
 <h3>Decorating</h3>
 <p>The PC left of the entrance: <b>BUY DECORATIONS</b> lists everything unlocked so far (choose how many: up/down one at a
@@ -776,8 +778,9 @@ wall switch; four loose pages; crates.</p>
 <p>Every species has one <b>synthetic ability</b>: an existing ability, a little better than its own (the Pokédex lists
 each). Feed the machine 3 Strong Acid (Evil) or 3 Apple Juice (Nice) and a Pokémon, and it comes out with it. In Evil
 Mode its friendship drops to zero; in Nice Mode it loved the juice so much it's a little happier. A synthetic ability
-stays through evolution (it becomes the evolved species' one) and isn't passed on by breeding; the Ability Capsule and
-Patch don't work on it. A few Pokémon whose ability changes their form (Aegislash, Wishiwashi, Mimikyu...) can't be
+stays through evolution (it becomes the evolved species' one) and isn't passed on by breeding. It isn't for good: an
+Ability Capsule switches it back to a regular ability and an Ability Patch to the hidden one, and the Synthesizer can put it
+back again (3 more Strong Acid or Apple Juice), as often as you like. A few Pokémon whose ability changes their form (Aegislash, Wishiwashi, Mimikyu...) can't be
 synthesized.</p>
 <h3>The Ball Maker</h3>
 <p>Put in a Pokémon of level 50 or more and get a <b>Type Ball</b> of its primary type. In Evil Mode the Pokémon doesn't
@@ -797,8 +800,8 @@ own Tera type is.</li>
 Convention, ordinary trainers, wild Pokémon) a Pokémon uses its own Tera type, but only if it's a type you've mastered
 (or your gym's type). Until you master a type, it's your gym's type everywhere. A mastered type stays yours when your gym
 changes type.</li>
-<li><b>Changing a Tera type.</b> Once you've mastered a type, Archer can set any party Pokémon's Tera type to your gym's type
-or any type you've mastered. It costs 3 of that type's Tera berry (below).</li>
+<li><b>Changing a Tera type.</b> Once you've mastered a type, talk to <b>Archer at the Viridian Gym</b> (he stands where
+Giovanni did): he sets any party Pokémon's Tera type to your gym's type or any type you've mastered. It costs 3 of that type's Tera berry (below).</li>
 <li><b>Who else Terastallizes.</b> From the moment you have the Orb, the important opponents' aces do too. In League battles
 they pick a type that resists your gym's type; in the tournament, Bill's battles and the Convention, they go for the
 type their team is built around. Ordinary trainers never do.</li>

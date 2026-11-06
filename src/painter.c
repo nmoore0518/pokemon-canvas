@@ -13,7 +13,7 @@
 //     only moves of that type, from a list that grows with the badges (sSketchMoves). A move
 //     sketched and the battle won is kept; otherwise the slot gets its old move back.
 //   - After the League: the Mega's painting, its figure with a Mega; the prize the SMEARGLITE
-//     (a key item: Canvas Smeargle Mega Evolve with it in the bag). Then Sketch quests any time.
+//     (held, like any Mega Stone: Canvas Smeargle Mega Evolve with it). Then Sketch quests any time.
 #include "global.h"
 #include "painter.h"
 #include "constants/rgb.h"
