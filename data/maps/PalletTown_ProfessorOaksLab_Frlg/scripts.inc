@@ -570,6 +570,7 @@ PalletTown_ProfessorOaksLab_EventScript_RivalChoseStarter::
 PalletTown_ProfessorOaksLab_EventScript_ProfOak::
 	lock
 	faceplayer
+	call GymRooms_EventScript_LabOak   @ Pokémon Canvas: a room for the gym, for every 100 kinds caught
 	call EventMons_EventScript_OakPartners   @ Pokémon Canvas: the Let's Go partners, for a mastered Electric or Normal
 	call GymSwitch_EventScript_LabOak   @ Gym Trainer hack: changing the gym's type
 	goto_if_set SHOWED_OAK_COMPLETE_DEX, PalletTown_ProfessorOaksLab_EventScript_OakJustShownCompleteDex

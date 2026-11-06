@@ -279,6 +279,15 @@ def wall_face(style, left_cap, right_cap):
     return c
 
 
+def wall_door(style):
+    """A doorway in the back wall's front face (16x16): the face, with a dark opening"""
+    light, fill, dark, line, edge = WALL_COLORS[style]["face"]
+    c = wall_face(style, False, False)
+    c.rect(2, 1, 13, 15, edge)                   # the frame
+    c.rect(3, 2, 12, 15, "K")                    # the way through
+    return c
+
+
 def water_quarter(case):
     """The top left quarter of a pool square: water, and a stone rim where it meets the floor"""
     c = Canvas(1, 1)

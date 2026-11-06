@@ -201,7 +201,7 @@ GymDecor_EventScript_EditDoneReturnToPC::
 	lockall
 	msgbox GymDecor_Text_LayoutSavedBackToPC, MSGBOX_DEFAULT
 	closemessage
-	warp MAP_PALLET_TOWN_GYM, GYM_PC_FRONT_X, GYM_PC_FRONT_Y
+	special GymDecor_WarpToPC
 	waitstate
 	releaseall
 	end

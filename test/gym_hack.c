@@ -630,6 +630,8 @@ TEST("GymHack: type finder only counts primary types")
 #include "text.h"
 #include "constants/gym_room.h"
 #include "gym_room.h"
+#include "pokedex.h"
+#include "fieldmap.h"
 
 TEST("GymHack: decor: buying takes the money and adds to storage")
 {
@@ -798,19 +800,111 @@ TEST("GymHack: decor: a turned piece takes up its turned shape")
     EXPECT_EQ(gGymDecor[GYM_DECOR_POTTED_PLANT].numFacings, 1);
 }
 
-TEST("GymHack: decor: only walls go on a wall's front face")
+TEST("GymHack: decor: pieces stand right against a wall, its face showing behind them")
 {
     GymDecor_ClearAll();
     GymDecor_SetOwned(GYM_DECOR_GYM_WALL, 5);
     GymDecor_SetOwned(GYM_DECOR_TRASH_CAN, 5);
+    GymDecor_SetOwned(GYM_DECOR_GREEN_RUG, 1);
+    GymDecor_SetOwned(GYM_DECOR_POOL_WATER, 1);
     EXPECT(GymDecor_Place(GYM_DECOR_GYM_WALL, 0, 5, 5));
-    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 6));    // its face
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 6, 6));
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 5, 6));      // the wall goes on down
-    EXPECT(GymDecor_Place(GYM_DECOR_GYM_WALL, 0, 5, 6));
-    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 7));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 6));     // its face: right up against it
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_GREEN_RUG, 0, 5, 6));    // (but not a rug, flat on the floor,
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_POOL_WATER, 0, 5, 6));   // or a pool)
+    EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 5, 6));
+    // A wall can go up behind a piece too, but not behind a rug
+    EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 9, 6));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 9, 5));
+    EXPECT(GymDecor_Place(GYM_DECOR_GREEN_RUG, 0, 13, 6));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 13, 5));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 13, 4));     // (not right behind it)
+    // The wall goes on down, over the piece's square once it's moved
     EXPECT(GymDecor_RemoveAt(5, 6));
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 5, 7));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_GYM_WALL, 0, 5, 6));
+}
+
+TEST("GymHack: decor: the floor round the statues, the PC and the doormat can be painted")
+{
+    GymDecor_ClearAll();
+    EXPECT(GymRoom_IsPaintable(10, GYM_ROOM_HEIGHT - 4));       // (behind the statues)
+    EXPECT(GymRoom_IsPaintable(14, GYM_ROOM_HEIGHT - 4));
+    EXPECT(GymRoom_IsPaintable(GYM_PC_FRONT_X, GYM_PC_FRONT_Y - 1));
+    EXPECT(!GymRoom_IsPaintable(10, GYM_ROOM_HEIGHT - 3));      // (the statues themselves)
+    EXPECT(!GymRoom_IsPaintable(12, GYM_ROOM_HEIGHT - 1));      // (below the doormat)
+}
+
+static void SetLocation(u16 map)
+{
+    gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(map);
+    gSaveBlock1Ptr->location.mapNum = MAP_NUM(map);
+}
+
+TEST("GymHack: decor: the extra rooms share the storage, with their own floors and walls")
+{
+    struct WarpData saved = gSaveBlock1Ptr->location;
+    GymDecor_ClearAll();
+    FlagClear(FLAG_GYM_ROOM_BACK);
+    GymDecor_SetOwned(GYM_DECOR_TRASH_CAN, 2);
+    GymDecor_SetOwned(GYM_DECOR_TABLE, 1);
+    SetLocation(MAP_PALLET_TOWN_GYM);
+    EXPECT_EQ(GymRoom_Current(), GYM_ROOM_MAIN);
+    // A doorway's way through is kept clear once it's open
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 12, 2));
+    FlagSet(FLAG_GYM_ROOM_BACK);
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 12, 2));
+    EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 11, 2));
+    // The back room: its own size, floors and walls; the gym's storage
+    SetLocation(MAP_PALLET_TOWN_GYM_BACK_ROOM);
+    EXPECT_EQ(GymRoom_Current(), GYM_ROOM_BACK);
+    EXPECT_EQ(GymRoom_CurrentInfo()->width, GYM_EXTRA_ROOM_WIDTH);
+    EXPECT_EQ(GymDecor_CountAvailable(GYM_DECOR_TRASH_CAN), 1);
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 11, 2));   // (the gym's is in the gym)
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 20, 5));  // (outside this room)
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_BATTLE_STAGE, 0, 3, 4)); // (only in the gym)
+    EXPECT(GymDecor_Place(GYM_DECOR_TABLE, 0, 3, 4));
+    EXPECT_EQ(GymDecor_IdAtMapPos(3 + MAP_OFFSET, 4 + MAP_OFFSET), GYM_DECOR_TABLE);
+    GymRoom_SetFloor(8, 8, 2);
+    GymRoom_SetWallStyle(3);
+    EXPECT_EQ(GymRoom_GetFloor(8, 8), 2);
+    GymDecor_PutAllAway();                                       // (this room's, not the gym's)
+    EXPECT_EQ(GymDecor_NumPlaced(), 1);
+    EXPECT(GymDecor_Place(GYM_DECOR_TABLE, 0, 3, 4));
+    SetLocation(MAP_PALLET_TOWN_GYM);
+    EXPECT_EQ(GymRoom_GetFloor(8, 8), 0);
+    EXPECT_EQ(GymRoom_GetWallStyle(), 0);
+    EXPECT_EQ(GymDecor_IdAtMapPos(3 + MAP_OFFSET, 4 + MAP_OFFSET), GYM_DECOR_COUNT);
+    EXPECT_EQ(GymDecor_CountPlaced(GYM_DECOR_TABLE), 1);
+    SetLocation(MAP_PALLET_TOWN_GYM_LEFT_ROOM);
+    EXPECT_EQ(GymRoom_GetFloor(8, 8), 0);
+    EXPECT_EQ(GymRoom_CurrentInfo()->pcFrontX, GYM_EXTRA_ROOM_WIDTH - 2);
+    FlagClear(FLAG_GYM_ROOM_BACK);
+    gSaveBlock1Ptr->location = saved;
+}
+
+TEST("GymHack: decor: Oak builds a room for every 100 kinds caught")
+{
+    u32 i;
+    FlagClear(FLAG_GYM_ROOM_BACK);
+    FlagClear(FLAG_GYM_ROOM_LEFT);
+    FlagClear(FLAG_GYM_ROOM_RIGHT);
+    FlagSet(FLAG_PALLET_GYM_OPEN);
+    for (i = 1; i <= 99; i++)
+        GetSetPokedexFlag(i, FLAG_SET_CAUGHT);
+    GymRooms_OakReward();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    GetSetPokedexFlag(100, FLAG_SET_CAUGHT);
+    GymRooms_OakReward();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    gSpecialVar_0x8004 = 1;
+    GymRooms_GiveReward();
+    EXPECT(FlagGet(FLAG_GYM_ROOM_BACK));
+    GymRooms_OakReward();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    for (i = 101; i <= 200; i++)
+        GetSetPokedexFlag(i, FLAG_SET_CAUGHT);
+    GymRooms_OakReward();
+    EXPECT_EQ(gSpecialVar_Result, 2);
+    FlagClear(FLAG_GYM_ROOM_BACK);
 }
 
 TEST("GymHack: decor: floors are painted square by square, and fill an area")
@@ -4774,4 +4868,3 @@ TEST("GymHack: Pokérus from the Medical Center wears off a day of steps at a ti
     EXPECT(CheckMonHasHadPokerus(mon));                                 // (cured: still double EVs, can't catch it again)
     EXPECT_EQ(MedCenter_TryGivePokerus(mon), POKERUS_GIVE_HAD_IT);
 }
-

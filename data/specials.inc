@@ -783,6 +783,9 @@ gSpecials::
 	def_special GymDecor_BufferSellInfo
 	def_special GymDecor_Sell
 	def_special GymDecor_PutAllAway
+	def_special GymDecor_WarpToPC
+	def_special GymRooms_OakReward
+	def_special GymRooms_GiveReward
 	def_special Tourney_RollPrize
 	def_special GymDecor_ChooseQuantity
 	def_special GymDecor_ApplyWallStyle

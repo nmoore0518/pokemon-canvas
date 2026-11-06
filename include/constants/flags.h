@@ -2775,6 +2775,10 @@
 #define FLAG_MICROSCOPE_SOLVED     0x856   // (3F: the strain found)
 #define FLAG_MEDCENTER_PHYSICAL    0x857   // (3F: the head nurse's physical passed)
 #define FLAG_POKERUS_GIVEN_TODAY   0x858   // (3F: she's given Pokérus this "day" of steps; cleared every MEDCENTER_DAY_STEPS)
+// The gym's extra rooms, from Oak for 100, 200 and 300 kinds caught (src/gym_room.c): their doorways are open
+#define FLAG_GYM_ROOM_BACK         0x859
+#define FLAG_GYM_ROOM_LEFT         0x85A
+#define FLAG_GYM_ROOM_RIGHT        0x85B
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)

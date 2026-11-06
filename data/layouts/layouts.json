@@ -5386,6 +5386,45 @@
       "layout_version": "frlg"
     },
     {
+      "id": "LAYOUT_PALLET_TOWN_GYM_BACK_ROOM",
+      "name": "PalletTown_Gym_BackRoom_Layout",
+      "width": 17,
+      "height": 15,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_PalletGym",
+      "border_filepath": "data/layouts/PalletTown_Gym_BackRoom/border.bin",
+      "blockdata_filepath": "data/layouts/PalletTown_Gym_BackRoom/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_PALLET_TOWN_GYM_LEFT_ROOM",
+      "name": "PalletTown_Gym_LeftRoom_Layout",
+      "width": 17,
+      "height": 15,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_PalletGym",
+      "border_filepath": "data/layouts/PalletTown_Gym_LeftRoom/border.bin",
+      "blockdata_filepath": "data/layouts/PalletTown_Gym_LeftRoom/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_PALLET_TOWN_GYM_RIGHT_ROOM",
+      "name": "PalletTown_Gym_RightRoom_Layout",
+      "width": 17,
+      "height": 15,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_PalletGym",
+      "border_filepath": "data/layouts/PalletTown_Gym_RightRoom/border.bin",
+      "blockdata_filepath": "data/layouts/PalletTown_Gym_RightRoom/map.bin",
+      "layout_version": "frlg"
+    },
+    {
       "id": "LAYOUT_VIRIDIAN_CITY",
       "name": "ViridianCity_Layout",
       "width": 48,

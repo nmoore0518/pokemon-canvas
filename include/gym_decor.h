@@ -82,8 +82,20 @@ struct GymDecorSaveData
     struct GymRoomStyle style;          // (where placements 560-649 were: never used)
 };
 
+// The extra rooms' floors and wall styles (in Emerald's contest winners, unused in FireRed)
+#define GYM_EXTRA_ROOMS 3
+struct GymRoomsSave
+{
+    u16 magic;
+    u8 wallStyle[GYM_EXTRA_ROOMS];
+    u8 unused;
+    u8 floors[GYM_EXTRA_ROOMS][128];    // 4 bits a square (17 x 15)
+};
+
 struct GymDecorSaveData *GymDecor_GetSaveData(void);
 struct GymRoomStyle *GymDecor_GetRoomStyle(void);
+u8 *GymDecor_GetFloors(u32 room);
+u8 *GymDecor_GetWallStyle(u32 room);
 
 bool32 GymDecor_IsUnlocked(u32 id);
 void GymDecor_Give(u32 id);
@@ -131,6 +143,8 @@ void GymDecor_SetOwned(u32 id, u32 count);
 
 // Edit mode hooks
 bool32 GymDecor_IsEditing(void);
+bool32 GymDecor_InRoom(void);
+void GymDecor_WarpToPC(void);
 bool32 GymDecor_HandleEditInput(struct FieldInput *input);
 
 // Dynamic multichoice callbacks (the shop and storage lists)
@@ -141,6 +155,8 @@ void GymDecor_SellListOnSelectionChanged(struct DynamicListMenuEventArgs *eventA
 void GymDecor_ListOnDestroy(struct DynamicListMenuEventArgs *eventArgs);
 
 bool32 GymDecor_CheckNewUnlocks(void);
+void GymRooms_OakReward(void);
+void GymRooms_GiveReward(void);
 void GymDecor_MarkUnlocksSeen(void);
 
 #endif // GUARD_GYM_DECOR_H

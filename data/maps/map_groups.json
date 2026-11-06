@@ -936,7 +936,10 @@
     "PalletTown_Mart_Frlg",
     "PalletTown_Gym_Frlg",
     "PalletTown_TrainingHall_Frlg",
-    "PalletTown_PlayersHouse_B1F_Frlg"
+    "PalletTown_PlayersHouse_B1F_Frlg",
+    "PalletTown_Gym_BackRoom",
+    "PalletTown_Gym_LeftRoom",
+    "PalletTown_Gym_RightRoom"
   ],
   "gMapGroup_IndoorViridian_Frlg": [
     "ViridianCity_House_Frlg",

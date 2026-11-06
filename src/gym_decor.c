@@ -46,14 +46,20 @@
 #include "sprite.h"
 #include "task.h"
 #include "international_string_util.h"
+#include "pokedex.h"
+#include "field_screen_effect.h"
+#include "palette.h"
 
-#define ROOM_GYM 0
+#define ROOM_GYM GYM_ROOM_MAIN
 #define DECOR_NONE 0xFF
 
 STATIC_ASSERT(sizeof(struct GymDecorSaveData) == 2860, GymDecorSaveKeepsItsSize);   // (the gym challenge's records follow it)
 STATIC_ASSERT(sizeof(struct GymDecorSaveData) <= sizeof(((struct SaveBlock1 *)0)->secretBases), GymDecorSaveFitsInSecretBases);
 STATIC_ASSERT(GYM_DECOR_COUNT <= GYM_DECOR_MAX_TYPES, GymDecorCatalogFitsSave);
 STATIC_ASSERT(GYM_ROOM_WIDTH * GYM_ROOM_HEIGHT <= 2 * sizeof(((struct GymRoomStyle *)0)->floors), GymFloorsFitSave);
+STATIC_ASSERT(GYM_EXTRA_ROOM_WIDTH * GYM_EXTRA_ROOM_HEIGHT <= 2 * sizeof(((struct GymRoomsSave *)0)->floors[0]), GymRoomFloorsFitSave);
+STATIC_ASSERT(sizeof(struct GymRoomsSave) <= sizeof(((struct SaveBlock1 *)0)->contestWinners), GymRoomsFitInContestWinners);
+STATIC_ASSERT(GYM_EXTRA_ROOMS == GYM_ROOM_COUNT - 1, GymExtraRoomsCount);
 
 extern const u8 GymDecor_EventScript_EditDone[];
 extern const u8 GymDecor_EventScript_EditDoneReturnToPC[];
@@ -97,15 +103,64 @@ struct GymRoomStyle *GymDecor_GetRoomStyle(void)
     return &GetSave()->style;
 }
 
+// The extra rooms' floors and wall styles live where Emerald keeps its contest winners (never
+// used in FireRed; a new game puts placeholder pictures there, so they're cleared the first time)
+#define GYM_ROOMS_SAVE_MAGIC 0x6D52     // "Rm"
+
+static struct GymRoomsSave *GetRoomsSave(void)
+{
+    struct GymRoomsSave *save = (struct GymRoomsSave *)gSaveBlock1Ptr->contestWinners;
+    if (save->magic != GYM_ROOMS_SAVE_MAGIC)
+    {
+        memset(save, 0, sizeof(*save));
+        save->magic = GYM_ROOMS_SAVE_MAGIC;
+    }
+    return save;
+}
+
+u8 *GymDecor_GetFloors(u32 room)
+{
+    if (room == GYM_ROOM_MAIN || room >= GYM_ROOM_COUNT)
+        return GetSave()->style.floors;
+    return GetRoomsSave()->floors[room - 1];
+}
+
+u8 *GymDecor_GetWallStyle(u32 room)
+{
+    if (room == GYM_ROOM_MAIN || room >= GYM_ROOM_COUNT)
+        return &GetSave()->style.wallStyle;
+    return &GetRoomsSave()->wallStyle[room - 1];
+}
+
 static bool32 IsStyle(u32 id)
 {
     return gGymDecor[id].kind == GYM_DECOR_KIND_FLOOR || gGymDecor[id].kind == GYM_DECOR_KIND_WALL_STYLE;
 }
 
+// In the gym itself
 static bool32 InGym(void)
 {
     return gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_PALLET_TOWN_GYM)
         && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_PALLET_TOWN_GYM);
+}
+
+// In the gym or one of its extra rooms
+bool32 GymDecor_InRoom(void)
+{
+    return GymRoom_Current() != GYM_ROOM_NONE;
+}
+
+static u32 CurrentRoom(void)
+{
+    u32 room = GymRoom_Current();
+    return room == GYM_ROOM_NONE ? ROOM_GYM : room;
+}
+
+// Only in the gym itself: the practice trainers, and the battle stage (the challenges and the
+// legend use it)
+static bool32 MainRoomOnly(u32 id)
+{
+    return gGymDecor[id].category == GYM_DECOR_CAT_TRAINERS || id == GYM_DECOR_BATTLE_STAGE;
 }
 
 // ---------------------------------------------------------------------------
@@ -225,14 +280,14 @@ u32 GymDecor_CountOwned(u32 id)
     return GetSave()->owned[id];
 }
 
-// Where decoration `id` is placed (its top-left block), if it is
+// Where decoration `id` is placed in the gym (its top-left block), if it is
 bool32 GymDecor_FindPlaced(u32 id, s32 *x, s32 *y)
 {
     struct GymDecorSaveData *save = GetSave();
     u32 i;
     for (i = 0; i < save->numPlaced; i++)
     {
-        if (save->placed[i].id == id)
+        if (save->placed[i].id == id && GYM_PLACEMENT_ROOM(&save->placed[i]) == ROOM_GYM)
         {
             *x = save->placed[i].x;
             *y = save->placed[i].y;
@@ -290,15 +345,16 @@ static void Footprint(u32 id, u32 facing, s32 *w, s32 *h)
     *h = d->facings[facing].height;
 }
 
-// The placement covering (x, y), or -1
+// The placement covering (x, y) in this room, or -1
 static s32 FindPlacementAt(s32 x, s32 y)
 {
     struct GymDecorSaveData *save = GetSave();
     s32 i, w, h;
+    u32 room = CurrentRoom();
     for (i = save->numPlaced - 1; i >= 0; i--)
     {
         const struct GymDecorPlacement *p = &save->placed[i];
-        if (GYM_PLACEMENT_ROOM(p) != ROOM_GYM || p->id >= GYM_DECOR_COUNT)
+        if (GYM_PLACEMENT_ROOM(p) != room || p->id >= GYM_DECOR_COUNT)
             continue;
         Footprint(p->id, GYM_PLACEMENT_FACING(p), &w, &h);
         if (x >= p->x && x < p->x + w && y >= p->y && y < p->y + h)
@@ -307,24 +363,30 @@ static s32 FindPlacementAt(s32 x, s32 y)
     return -1;
 }
 
-// Pokémon Canvas: the decoration placed in the gym at a map position (MAP_OFFSET included), or
-// GYM_DECOR_COUNT (src/field_control_avatar.c: the Drink Machine can be talked to)
+// Pokémon Canvas: the decoration placed in the gym (or a room) at a map position (MAP_OFFSET
+// included), or GYM_DECOR_COUNT (src/field_control_avatar.c: the Drink Machine can be talked to)
 u32 GymDecor_IdAtMapPos(s32 x, s32 y)
 {
     s32 i;
-    if (!InGym())
+    if (!GymDecor_InRoom())
         return GYM_DECOR_COUNT;
     i = FindPlacementAt(x - MAP_OFFSET, y - MAP_OFFSET);
     return i < 0 ? GYM_DECOR_COUNT : GetSave()->placed[i].id;
 }
 
+static bool32 InEditAreaOf(u32 room, s32 x, s32 y)
+{
+    const struct GymRoomInfo *info = GymRoom_GetInfo(room);
+    if (x < info->edit[0] || x > info->edit[2] || y < info->edit[1] || y > info->edit[3])
+        return FALSE;
+    if (x >= info->reserved[0] && x <= info->reserved[2] && y >= info->reserved[1] && y <= info->reserved[3])
+        return FALSE;
+    return !GymRoom_IsDoorFront(room, x, y);       // (the way through a doorway stays clear)
+}
+
 static bool32 InEditArea(s32 x, s32 y)
 {
-    if (x < GYM_EDIT_X0 || x > GYM_EDIT_X1 || y < GYM_EDIT_Y0 || y > GYM_EDIT_Y1)
-        return FALSE;
-    if (x >= GYM_RESERVED_X0 && x <= GYM_RESERVED_X1 && y >= GYM_RESERVED_Y0 && y <= GYM_RESERVED_Y1)
-        return FALSE;
-    return TRUE;
+    return InEditAreaOf(CurrentRoom(), x, y);
 }
 
 bool32 GymDecor_CanPlace(u32 id, u32 facing, s32 x, s32 y)
@@ -337,6 +399,8 @@ bool32 GymDecor_CanPlace(u32 id, u32 facing, s32 x, s32 y)
         return FALSE;
     if (d->category == GYM_DECOR_CAT_TRAINERS && GymDecor_CountPlacedTrainers() >= GYM_PRACTICE_SLOTS)
         return FALSE;
+    if (MainRoomOnly(id) && CurrentRoom() != ROOM_GYM)
+        return FALSE;
     Footprint(id, facing, &w, &h);
     for (cy = y; cy < y + h; cy++)
     {
@@ -346,10 +410,8 @@ bool32 GymDecor_CanPlace(u32 id, u32 facing, s32 x, s32 y)
                 return FALSE;
         }
     }
-    // (a wall's front face: only another wall can go there)
-    if (d->kind != GYM_DECOR_KIND_WALL && GymRoom_HasWallFace(x, y, w, h))
-        return FALSE;
-    return TRUE;
+    // (pieces can stand in front of a wall's face, where it shows behind them; not rugs or pools)
+    return GymRoom_PieceFitsWalls(id, facing, x, y);
 }
 
 bool32 GymDecor_Place(u32 id, u32 facing, s32 x, s32 y)
@@ -362,7 +424,7 @@ bool32 GymDecor_Place(u32 id, u32 facing, s32 x, s32 y)
     p->id = id;
     p->x = x;
     p->y = y;
-    p->room = (ROOM_GYM << 2) | facing;
+    p->room = (CurrentRoom() << 2) | facing;
     return TRUE;
 }
 
@@ -386,7 +448,8 @@ bool32 GymDecor_TakeAt(s32 x, s32 y, u32 *id, u32 *facing)
     return TRUE;
 }
 
-// Pieces placed where nothing can go any more (older saves had no side walls) go back to storage
+// Pieces placed where nothing can go any more (older saves had no side walls; a doorway that's
+// opened needs the way through it clear) go back to storage
 static void PutAwayMisplaced(void)
 {
     struct GymDecorSaveData *save = GetSave();
@@ -396,13 +459,14 @@ static void PutAwayMisplaced(void)
     for (i = save->numPlaced - 1; i >= 0; i--)
     {
         const struct GymDecorPlacement *p = &save->placed[i];
-        bool32 ok = p->id < GYM_DECOR_COUNT;
+        u32 room = GYM_PLACEMENT_ROOM(p);
+        bool32 ok = p->id < GYM_DECOR_COUNT && room < GYM_ROOM_COUNT && !(room != ROOM_GYM && MainRoomOnly(p->id));
         if (ok)
         {
             Footprint(p->id, GYM_PLACEMENT_FACING(p), &w, &h);
             for (y = p->y; y < p->y + h && ok; y++)
                 for (x = p->x; x < p->x + w && ok; x++)
-                    ok = InEditArea(x, y);
+                    ok = InEditAreaOf(room, x, y);
         }
         if (!ok)
         {
@@ -466,9 +530,10 @@ static bool32 InShop(u32 id)
     return GymDecor_IsUnlocked(id) && gGymDecor[id].price != 0;   // free ones aren't sold
 }
 
+// (in an extra room, not what only goes in the gym itself)
 static bool32 InStorage(u32 id)
 {
-    return GymDecor_CountOwned(id) > 0;
+    return GymDecor_CountOwned(id) > 0 && !(MainRoomOnly(id) && CurrentRoom() != ROOM_GYM);
 }
 
 // Pushes the categories that have something in them (VAR_RESULT = how many)
@@ -614,15 +679,22 @@ void GymDecor_Sell(void)
     AddMoney(&gSaveBlock1Ptr->money, SellPrice(id) * n);
 }
 
-// Special (in the gym): everything placed goes back to storage (floors and walls stay as they are)
+// Special (in the gym or a room): everything placed there goes back to storage (floors and
+// walls stay as they are)
 void GymDecor_PutAllAway(void)
 {
-    GetSave()->numPlaced = 0;
-    if (InGym())
+    struct GymDecorSaveData *save = GetSave();
+    u32 room = CurrentRoom(), i, n = 0;
+    for (i = 0; i < save->numPlaced; i++)
     {
-        GymRoom_Build(FALSE);
-        PlaceTrainers();
+        if (GYM_PLACEMENT_ROOM(&save->placed[i]) != room)
+            save->placed[n++] = save->placed[i];
     }
+    save->numPlaced = n;
+    if (GymDecor_InRoom())
+        GymRoom_Build(FALSE);
+    if (InGym())
+        PlaceTrainers();
 }
 
 // ---- How many: a little window, UP/DOWN 1 at a time, LEFT/RIGHT 10 ----
@@ -791,7 +863,7 @@ void GymDecor_ApplyWallStyle(void)
     if (id < GYM_DECOR_COUNT && gGymDecor[id].kind == GYM_DECOR_KIND_WALL_STYLE && GymDecor_CountOwned(id))
     {
         GymRoom_SetWallStyle(gGymDecor[id].style);
-        if (InGym())
+        if (GymDecor_InRoom())
             GymRoom_Build(FALSE);
     }
 }
@@ -803,22 +875,76 @@ bool32 GymDecor_IsOwnedStyle(u32 id)
 
 static u32 CountFloorSquares(u32 style)
 {
+    const struct GymRoomInfo *info = GymRoom_CurrentInfo();
     s32 x, y;
     u32 n = 0;
-    for (y = 0; y < GYM_ROOM_HEIGHT; y++)
-        for (x = 0; x < GYM_ROOM_WIDTH; x++)
+    for (y = 0; y < info->height; y++)
+        for (x = 0; x < info->width; x++)
             if (GymRoom_IsPaintable(x, y) && GymRoom_GetFloor(x, y) == style)
                 n++;
     return n;
 }
 
-// A small window next to the list: price, how many you have, and a description
+// ---- The decoration's picture, in the window's top right corner (a sprite) ----
+#include "data/gym_decor_icons.h"
+
+#define TAG_DECOR_ICON  0x7742
+#define ICON_X          (8 + 11 * 8 - 18)      // (its middle: the window is at (1, 5), 11 tiles wide)
+#define ICON_Y          (5 * 8 + 16)
+
+static EWRAM_DATA u8 sIconSpriteId = 0;
+
+static const struct OamData sOam_DecorIcon =
+{
+    .shape = SPRITE_SHAPE(32x32),
+    .size = SPRITE_SIZE(32x32),
+    .priority = 0,
+};
+
+static void ShowIcon(u32 id)
+{
+    u16 tile;
+    if (id >= GYM_DECOR_COUNT)
+        return;
+    if (sIconSpriteId == MAX_SPRITES)
+    {
+        struct SpriteSheet sheet = { sGymDecorIconTiles[id], sizeof(sGymDecorIconTiles[0]), TAG_DECOR_ICON };
+        struct SpritePalette pal = { sGymDecorIconPals[id], TAG_DECOR_ICON };
+        struct SpriteTemplate template =
+        {
+            .tileTag = TAG_DECOR_ICON, .paletteTag = TAG_DECOR_ICON, .oam = &sOam_DecorIcon,
+            .anims = gDummySpriteAnimTable, .affineAnims = gDummySpriteAffineAnimTable, .callback = SpriteCallbackDummy,
+        };
+        LoadSpriteSheet(&sheet);
+        LoadSpritePalette(&pal);
+        sIconSpriteId = CreateSprite(&template, ICON_X, ICON_Y, 0);
+        return;
+    }
+    tile = GetSpriteTileStartByTag(TAG_DECOR_ICON);
+    if (tile != 0xFFFF)
+        CpuCopy32(sGymDecorIconTiles[id], (void *)(OBJ_VRAM0 + tile * TILE_SIZE_4BPP), sizeof(sGymDecorIconTiles[0]));
+    LoadPalette(sGymDecorIconPals[id], OBJ_PLTT_ID(IndexOfSpritePaletteTag(TAG_DECOR_ICON)), PLTT_SIZE_4BPP);
+}
+
+static void HideIcon(void)
+{
+    if (sIconSpriteId != MAX_SPRITES)
+    {
+        DestroySprite(&gSprites[sIconSpriteId]);
+        FreeSpriteTilesByTag(TAG_DECOR_ICON);
+        FreeSpritePaletteByTag(TAG_DECOR_ICON);
+        sIconSpriteId = MAX_SPRITES;
+    }
+}
+
+// A small window next to the list: price, how many you have, a description and a picture
 void GymDecor_ListOnInit(struct DynamicListMenuEventArgs *eventArgs)
 {
     // Its tiles go right after the list's (the list is at most 5 rows tall)
     const struct WindowTemplate *list = &gWindows[eventArgs->windowId].window;
     struct WindowTemplate template = CreateWindowTemplate(0, 1, 5, 11, 8, 15, list->baseBlock + list->width * list->height);
     sListAuxWindowId = AddWindow(&template);
+    sIconSpriteId = MAX_SPRITES;
     SetStandardWindowBorderStyle(sListAuxWindowId, FALSE);
     FillWindowPixelBuffer(sListAuxWindowId, PIXEL_FILL(1));
     PutWindowTilemap(sListAuxWindowId);
@@ -857,22 +983,28 @@ static void WrapLine(u8 *str, u32 maxWidth, u32 fontId)
 
 enum { LIST_OWNED, LIST_SHOP, LIST_SELL };
 
+// A line of the window, left of the picture (in the small font if it'd run into it)
+static void PrintStat(const u8 *str, u32 y)
+{
+    u32 font = GetStringWidth(FONT_NORMAL, str, 0) > 52 ? FONT_SMALL : FONT_NORMAL;
+    AddTextPrinterParameterized(sListAuxWindowId, font, str, 2, y, TEXT_SKIP_DRAW, NULL);
+}
+
 static void PrintListInfo(u32 id, u32 mode)
 {
     u8 *str;
     u8 *line;
+    bool32 shop = (mode == LIST_SHOP);
     if (sListAuxWindowId == WINDOW_NONE || id >= GYM_DECOR_COUNT)
         return;
     str = Alloc(160);
     FillWindowPixelBuffer(sListAuxWindowId, PIXEL_FILL(1));
-    bool32 shop = (mode == LIST_SHOP);
     if (mode == LIST_SELL)
     {
         ConvertIntToDecimalStringN(gStringVar1, SellPrice(id), STR_CONV_MODE_LEFT_ALIGN, 6);
-        line = StringCopy(str, COMPOUND_STRING("SELLS: "));
-        StringExpandPlaceholders(line, gText_PokedollarVar1);
-        AddTextPrinterParameterized(sListAuxWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
-        line = StringCopy(str, COMPOUND_STRING("IN STORAGE: "));
+        StringExpandPlaceholders(str, gText_PokedollarVar1);
+        PrintStat(str, 1);
+        line = StringCopy(str, COMPOUND_STRING("HAVE: "));
         ConvertIntToDecimalStringN(line, GymDecor_CountAvailable(id), STR_CONV_MODE_LEFT_ALIGN, 3);
     }
     else if (IsStyle(id))
@@ -887,21 +1019,21 @@ static void PrintListInfo(u32 id, u32 mode)
         {
             StringCopy(str, COMPOUND_STRING("OWNED"));
         }
-        AddTextPrinterParameterized(sListAuxWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
+        PrintStat(str, 1);
         if (gGymDecor[id].kind == GYM_DECOR_KIND_WALL_STYLE)
         {
             if (GymRoom_GetWallStyle() == gGymDecor[id].style)
                 StringCopy(str, COMPOUND_STRING("IN USE"));
             else
-                StringCopy(str, shop && !GymDecor_CountOwned(id) ? COMPOUND_STRING("ALL WALLS") : COMPOUND_STRING("NOT IN USE"));
+                StringCopy(str, shop && !GymDecor_CountOwned(id) ? COMPOUND_STRING("ALL WALLS") : COMPOUND_STRING("NOT USED"));
         }
         else if (shop && !GymDecor_CountOwned(id))
         {
-            StringCopy(str, COMPOUND_STRING("PAINT ANYWHERE"));
+            StringCopy(str, COMPOUND_STRING("ANYWHERE"));
         }
         else
         {
-            line = StringCopy(str, COMPOUND_STRING("SQUARES: "));
+            line = StringCopy(str, COMPOUND_STRING("USED: "));
             ConvertIntToDecimalStringN(line, CountFloorSquares(gGymDecor[id].style), STR_CONV_MODE_LEFT_ALIGN, 3);
         }
     }
@@ -909,24 +1041,25 @@ static void PrintListInfo(u32 id, u32 mode)
     {
         ConvertIntToDecimalStringN(gStringVar1, gGymDecor[id].price, STR_CONV_MODE_LEFT_ALIGN, 6);
         StringExpandPlaceholders(str, gText_PokedollarVar1);
-        AddTextPrinterParameterized(sListAuxWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
+        PrintStat(str, 1);
         line = StringCopy(str, COMPOUND_STRING("HAVE: "));
         ConvertIntToDecimalStringN(line, GymDecor_CountOwned(id), STR_CONV_MODE_LEFT_ALIGN, 3);
     }
     else
     {
-        line = StringCopy(str, COMPOUND_STRING("IN STORAGE: "));
+        line = StringCopy(str, COMPOUND_STRING("LEFT: "));
         ConvertIntToDecimalStringN(line, GymDecor_CountAvailable(id), STR_CONV_MODE_LEFT_ALIGN, 3);
-        AddTextPrinterParameterized(sListAuxWindowId, FONT_NORMAL, str, 2, 1, TEXT_SKIP_DRAW, NULL);
+        PrintStat(str, 1);
         line = StringCopy(str, COMPOUND_STRING("PLACED: "));
         ConvertIntToDecimalStringN(line, GymDecor_CountPlaced(id), STR_CONV_MODE_LEFT_ALIGN, 3);
     }
-    AddTextPrinterParameterized(sListAuxWindowId, FONT_NORMAL, str, 2, 15, TEXT_SKIP_DRAW, NULL);
+    PrintStat(str, 15);
     StringCopy(str, gGymDecor[id].description);
     WrapLine(str, 11 * 8 - 4, FONT_SMALL);
     AddTextPrinterParameterized(sListAuxWindowId, FONT_SMALL, str, 2, 31, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sListAuxWindowId, COPYWIN_GFX);
     Free(str);
+    ShowIcon(id);
 }
 
 void GymDecor_ShopListOnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs)
@@ -946,12 +1079,57 @@ void GymDecor_SellListOnSelectionChanged(struct DynamicListMenuEventArgs *eventA
 
 void GymDecor_ListOnDestroy(struct DynamicListMenuEventArgs *eventArgs)
 {
+    HideIcon();
     if (sListAuxWindowId != WINDOW_NONE)
     {
         ClearStdWindowAndFrameToTransparent(sListAuxWindowId, TRUE);
         RemoveWindow(sListAuxWindowId);
         sListAuxWindowId = WINDOW_NONE;
     }
+}
+
+// Special (then waitstate): back to this room's PC (decorating left the player boxed in)
+void GymDecor_WarpToPC(void)
+{
+    const struct GymRoomInfo *info = GymRoom_CurrentInfo();
+    SetWarpDestination(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE,
+                       info->pcFrontX, info->pcFrontY);
+    DoWarp();
+    ResetInitialPlayerAvatarState();
+}
+
+// ---------------------------------------------------------------------------
+// The extra rooms: Oak has one built for every 100 kinds of POKéMON caught, once the gym's open
+// ---------------------------------------------------------------------------
+static const u16 sRoomFlags[GYM_EXTRA_ROOMS] = {FLAG_GYM_ROOM_BACK, FLAG_GYM_ROOM_LEFT, FLAG_GYM_ROOM_RIGHT};
+#define CAUGHT_PER_ROOM 100
+
+// Special: VAR_RESULT = the room the player has earned and doesn't have yet (1 the back room, 2
+// the left, 3 the right; 0 none), STR_VAR_1 = how many kinds that took
+void GymRooms_OakReward(void)
+{
+    u32 i, caught = GetNationalPokedexCount(FLAG_GET_CAUGHT);
+    gSpecialVar_Result = 0;
+    if (!FlagGet(FLAG_PALLET_GYM_OPEN))
+        return;
+    for (i = 0; i < GYM_EXTRA_ROOMS; i++)
+    {
+        if (FlagGet(sRoomFlags[i]))
+            continue;
+        if (caught >= (i + 1) * CAUGHT_PER_ROOM)
+        {
+            gSpecialVar_Result = i + 1;
+            ConvertIntToDecimalStringN(gStringVar1, (i + 1) * CAUGHT_PER_ROOM, STR_CONV_MODE_LEFT_ALIGN, 3);
+        }
+        return;
+    }
+}
+
+// Special: VAR_0x8004 = the room (1-3): it's the player's
+void GymRooms_GiveReward(void)
+{
+    if (gSpecialVar_0x8004 >= 1 && gSpecialVar_0x8004 <= GYM_EXTRA_ROOMS)
+        FlagSet(sRoomFlags[gSpecialVar_0x8004 - 1]);
 }
 
 // ---------------------------------------------------------------------------
@@ -983,7 +1161,7 @@ u32 GymDecor_CountPlacedTrainers(void)
     u32 i, n = 0;
     for (i = 0; i < save->numPlaced; i++)
     {
-        if (IsTrainer(save->placed[i].id))
+        if (IsTrainer(save->placed[i].id) && GYM_PLACEMENT_ROOM(&save->placed[i]) == ROOM_GYM)
             n++;
     }
     return n;
@@ -998,7 +1176,7 @@ bool32 GymDecor_GetTrainerSlot(u32 slot, u32 *decor, u32 *instance, s32 *x, s32 
     for (i = 0; i < save->numPlaced; i++)
     {
         const struct GymDecorPlacement *p = &save->placed[i];
-        if (!IsTrainer(p->id))
+        if (!IsTrainer(p->id) || GYM_PLACEMENT_ROOM(p) != ROOM_GYM)
             continue;
         if (n == slot)
         {
@@ -1149,6 +1327,7 @@ static void StartOverlays(void)
     struct SpriteSheet sheet = { sOverlayTiles, sizeof(sOverlayTiles), TAG_DECOR_OVERLAY };
     struct SpritePalette red = { sOverlayRedPal, TAG_DECOR_OVERLAY_RED };
     struct SpritePalette shade = { sOverlayShadePal, TAG_DECOR_OVERLAY_SHADE };
+    const struct GymRoomInfo *info = GymRoom_CurrentInfo();
     s32 x, y;
     LoadSpriteSheet(&sheet);
     LoadSpritePalette(&red);
@@ -1160,9 +1339,9 @@ static void StartOverlays(void)
     // (the kept-clear area, in 2x2 squares)
     sNumRedSprites = 0;
     sNumShadeSprites = 0;
-    for (y = GYM_RESERVED_Y0; y <= GYM_RESERVED_Y1 && y < GYM_ROOM_HEIGHT; y += 2)
+    for (y = info->reserved[1]; y <= info->reserved[3] && y < info->height; y += 2)
     {
-        for (x = GYM_RESERVED_X0; x <= GYM_RESERVED_X1; x += 2)
+        for (x = info->reserved[0]; x <= info->reserved[2]; x += 2)
         {
             u8 id;
             if (sNumShadeSprites >= MAX_SHADE_SPRITES)
@@ -1194,7 +1373,7 @@ static void ShowRedOverlay(s32 x0, s32 y0, s32 w, s32 h)
         for (x = x0; x < x0 + w; x++)
         {
             u8 id;
-            if (x < 0 || y < 0 || x >= GYM_ROOM_WIDTH || y >= GYM_ROOM_HEIGHT || sNumRedSprites >= MAX_RED_SPRITES)
+            if (x < 0 || y < 0 || x >= GymRoom_CurrentInfo()->width || y >= GymRoom_CurrentInfo()->height || sNumRedSprites >= MAX_RED_SPRITES)
                 continue;
             id = CreateOverlaySprite(&sOverlayRedTemplate, x, y, 8);
             if (id != MAX_SPRITES)
@@ -1222,7 +1401,7 @@ static void StopOverlays(void)
 // ---------------------------------------------------------------------------
 bool32 GymDecor_IsEditing(void)
 {
-    return sEditing && InGym();
+    return sEditing && GymDecor_InRoom();
 }
 
 static bool32 IsFloor(u32 id)
@@ -1328,7 +1507,7 @@ static void GetTargetRect(s32 *x, s32 *y, u32 id, u32 facing)
 // Floors can go anywhere in the room with a floor, but lava stays out of the kept-clear area
 static bool32 CanPaintSquare(s32 x, s32 y)
 {
-    return GymRoom_IsPaintable(x, y) && y < GYM_ROOM_HEIGHT - 1;
+    return GymRoom_IsPaintable(x, y) && y < GymRoom_CurrentInfo()->height - 1;
 }
 
 static bool32 CanPaintLavaSquare(s32 x, s32 y)
@@ -1405,7 +1584,8 @@ static void SelectNext(s32 step)
     for (i = 0; i < GYM_DECOR_COUNT; i++)
     {
         id = (id + GYM_DECOR_COUNT + step) % GYM_DECOR_COUNT;
-        if (gGymDecor[id].kind != GYM_DECOR_KIND_WALL_STYLE && GymDecor_CountAvailable(id) > 0)
+        if (gGymDecor[id].kind != GYM_DECOR_KIND_WALL_STYLE && GymDecor_CountAvailable(id) > 0
+         && !(MainRoomOnly(id) && CurrentRoom() != ROOM_GYM))
         {
             sSelected = id;
             sFacing = 0;
@@ -1422,13 +1602,15 @@ void GymDecor_StartEditing(void)
     sSelected = gSpecialVar_0x8004 < GYM_DECOR_COUNT ? gSpecialVar_0x8004 : DECOR_NONE;
     sFacing = 0;
     sPainting = FALSE;
-    if (sSelected != DECOR_NONE && (GymDecor_CountAvailable(sSelected) == 0 || gGymDecor[sSelected].kind == GYM_DECOR_KIND_WALL_STYLE))
+    if (sSelected != DECOR_NONE && (GymDecor_CountAvailable(sSelected) == 0 || gGymDecor[sSelected].kind == GYM_DECOR_KIND_WALL_STYLE
+                                    || (MainRoomOnly(sSelected) && CurrentRoom() != ROOM_GYM)))
         SelectNext(1);
     sPreviewId = DECOR_NONE;
     sJustPlaced = FALSE;
     GymRoom_SetPreview(GYM_PREVIEW_NONE, 0, 0, 0, 0);
     GymRoom_Build(TRUE);   // shows invisible walls
-    HideTrainers();
+    if (InGym())
+        HideTrainers();
     // (the player stays in front of everything, the overlays included)
     gObjectEvents[gPlayerAvatar.objectEventId].fixedPriority = TRUE;
     gSprites[gPlayerAvatar.spriteId].oam.priority = 1;
@@ -1440,6 +1622,7 @@ void GymDecor_StartEditing(void)
 // Can the player walk from where they stand back to the PC?
 static bool32 CanReachPC(void)
 {
+    const struct GymRoomInfo *info = GymRoom_CurrentInfo();
     u8 *seen = AllocZeroed(GYM_ROOM_WIDTH * GYM_ROOM_HEIGHT);
     s16 *queue = Alloc(GYM_ROOM_WIDTH * GYM_ROOM_HEIGHT * sizeof(s16));
     s32 head = 0, tail = 0;
@@ -1450,7 +1633,7 @@ static bool32 CanReachPC(void)
     PlayerGetDestCoords(&px, &py);
     px -= MAP_OFFSET;
     py -= MAP_OFFSET;
-    if (px < 0 || py < 0 || px >= GYM_ROOM_WIDTH || py >= GYM_ROOM_HEIGHT
+    if (px < 0 || py < 0 || px >= info->width || py >= info->height
      || MapGridGetCollisionAt(px + MAP_OFFSET, py + MAP_OFFSET)
      || MapGridGetElevationAt(px + MAP_OFFSET, py + MAP_OFFSET) != 3)
         goto done;
@@ -1459,7 +1642,7 @@ static bool32 CanReachPC(void)
     while (head < tail)
     {
         s32 cur = queue[head++], x = cur % GYM_ROOM_WIDTH, y = cur / GYM_ROOM_WIDTH, i;
-        if (x == GYM_PC_FRONT_X && y == GYM_PC_FRONT_Y)
+        if (x == info->pcFrontX && y == info->pcFrontY)
         {
             found = TRUE;
             break;
@@ -1467,7 +1650,7 @@ static bool32 CanReachPC(void)
         for (i = 0; i < 4; i++)
         {
             s32 nx = x + dx[i], ny = y + dy[i];
-            if (nx < 0 || ny < 0 || nx >= GYM_ROOM_WIDTH || ny >= GYM_ROOM_HEIGHT || seen[nx + ny * GYM_ROOM_WIDTH])
+            if (nx < 0 || ny < 0 || nx >= info->width || ny >= info->height || seen[nx + ny * GYM_ROOM_WIDTH])
                 continue;
             seen[nx + ny * GYM_ROOM_WIDTH] = TRUE;
             if (MapGridGetCollisionAt(nx + MAP_OFFSET, ny + MAP_OFFSET)
@@ -1491,7 +1674,8 @@ static void StopEditing(void)
     sEditing = FALSE;
     GymRoom_SetPreview(GYM_PREVIEW_NONE, 0, 0, 0, 0);
     GymRoom_Build(FALSE);   // hides invisible walls again
-    PlaceTrainers();
+    if (InGym())
+        PlaceTrainers();
     if (CanReachPC())
         ScriptContext_SetupScript(GymDecor_EventScript_EditDone);
     else
@@ -1561,6 +1745,7 @@ bool32 GymDecor_HandleEditInput(struct FieldInput *input)
     // Keep the player inside the room, and off the doormat
     if (input->dpadDirection != DIR_NONE)
     {
+        const struct GymRoomInfo *info = GymRoom_CurrentInfo();
         PlayerGetDestCoords(&px, &py);
         px -= MAP_OFFSET;
         py -= MAP_OFFSET;
@@ -1572,8 +1757,8 @@ bool32 GymDecor_HandleEditInput(struct FieldInput *input)
         case DIR_EAST:  px++; break;
         default: break;
         }
-        if (px < GYM_EDIT_X0 || px > GYM_EDIT_X1 || py < GYM_EDIT_Y0 || py > GYM_ROOM_HEIGHT - 2
-         || (py == GYM_ROOM_HEIGHT - 2 && px >= GYM_MAT_X0 && px <= GYM_MAT_X1))
+        if (px < info->edit[0] || px > info->edit[2] || py < info->edit[1] || py > info->height - 2
+         || (py == info->height - 2 && info->matX0 != 0xFF && px >= info->matX0 && px <= info->matX1))
             input->dpadDirection = DIR_NONE;
     }
 

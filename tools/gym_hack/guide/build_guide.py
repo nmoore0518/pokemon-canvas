@@ -642,8 +642,8 @@ about 1 win in 16 give something rare instead: a Gold Bottle Cap, Ability Capsul
 About 1 win in 150 it's a <b>Move Extractor</b>. Whoever ends your streak earns your badge, and the statue lists them.</p>
 
 <h3>Decorating</h3>
-<p>The PC left of the entrance: <b>BUY DECORATIONS</b> lists everything unlocked so far (choose how many: up/down one at a
-time, left/right ten); <b>SELL DECORATIONS</b> sells what's in storage for half price; <b>PUT ALL AWAY</b> clears the gym
+<p>The PC left of the entrance: <b>BUY DECORATIONS</b> lists everything unlocked so far, with a picture of each piece (choose
+how many: up/down one at a time, left/right ten); <b>SELL DECORATIONS</b> sells what's in storage for half price; <b>PUT ALL AWAY</b> clears the gym
 (floors and walls stay); <b>DECORATE</b> lets you walk the gym
 (through things) and place the piece shown in front of you: A places, <b>START turns it</b>, SELECT picks up the one in
 front (to move it: it's now the piece in hand), L/R switch pieces, B finishes. A piece turns red where it can't go, and the area by the door, statues and PC is shaded
@@ -654,15 +654,27 @@ unlocks.</p>
 <ul>
 <li><b>Turning</b>: most furniture can be turned to face any way, and changes shape to match (a couch is 3 wide from the front
 and 3 long from the side). Round things look the same every way, so they don't turn.</li>
-<li><b>Walls and pools join up</b>: GYM WALLs are one square each and join into one wall (with its front face showing on the
-square below, where only another wall can go). POOL WATER joins the same way: any shape of pool gets a rim only round its
+<li><b>Walls and pools join up</b>: GYM WALLs are one square each and join into one wall, with its front face showing on the
+square below. Furniture can stand right against a wall, on that square, with the wall's face showing behind it (rugs, mats
+and pools can't: they'd cover it). POOL WATER joins the same way: any shape of pool gets a rim only round its
 outside. You can SURF in it.</li>
 <li><b>Floors</b> (bought once, then use them anywhere): wood, stone, red carpet, sand, metal grating, grass, steel, ice and
 <b>lava</b> (nobody can walk on it: it works like a wall, for fire gyms). Pick a floor in DECORATE (or switch to it with L/R): A paints the
-square in front, hold A to keep painting as you walk, and SELECT fills the whole patch of floor in front of you.</li>
+square in front, hold A to keep painting as you walk, and SELECT fills the whole patch of floor in front of you. The floor
+round the statues, the PC and the doormat can be painted too.</li>
 <li><b>Wall styles</b> (bought once): brick, wood, stone, hedge or steel. Choosing one in DECORATE changes every wall in the
-gym, the back wall included.</li>
+room you're in, the back wall included.</li>
 </ul>
+
+<h3>Extra rooms</h3>
+<p>Oak has a room built onto your gym for every 100 kinds of POKéMON you catch: talk to him in his lab once you've caught
+<b>100</b>, <b>200</b> and <b>300</b>. Each one opens a doorway in the gym: the first in the back wall (behind the middle of
+the room), the second in the left wall and the third in the right wall, halfway down. Walk through and keep going to go in.</p>
+<p>The rooms are smaller than the gym (15 by 12 squares of floor) and each has its own PC by the way in. Decorate them as you
+would the gym: the decorations come from the same storage, and each room has its own floors and its own wall style (bought
+once, used anywhere), so one can be a trophy room and another a room for your favorite type. Trainers and the Battle Stage
+stay in the gym itself. The square in front of each doorway is kept clear (anything already there goes back to storage when
+the doorway opens). PUT ALL AWAY only clears the room you're in.</p>
 <h3>Practice trainers</h3>
 <p>Under TRAINERS in the PC: Rookie (¥5,000), Skilled (¥10,000) and Expert (¥20,000) trainers; up to 11 placed at once. Each
 has a fresh random team of your type for practice battles (no prize, no whiteout, healed after). Some trainers on the road

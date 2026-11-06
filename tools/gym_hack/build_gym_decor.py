@@ -841,7 +841,8 @@ def build():
         for lc, rc in ((False, False), (True, False), (False, True), (True, True)):
             refs = canvas_refs(RA.wall_face(key, lc, rc))
             faces.append([refs[(tx, ty)] for ty in range(2) for tx in range(2)])
-        walls.append((quarters, faces))
+        refs = canvas_refs(RA.wall_door(key))
+        walls.append((quarters, faces, [refs[(tx, ty)] for ty in range(2) for tx in range(2)]))
     water = [quarter_refs(RA.water_quarter(case)) for case in RA.QUARTER_CASES]
     water_attr = with_layer(GYM_ATTR[0x291 - 0x280] & 0x1FF if False else 0, LAYER_COVERED)
     cer_attrs = read_attrs(rm.tileset_dir("gTileset_CeruleanGym") / "metatile_attributes.bin")
@@ -872,15 +873,181 @@ def build():
         room[2][x] = "GYM_BASE_FLOOR_SHADOW"
     for y in range(1, RH - 1):             # the side walls, down to the bottom row
         room[y][0] = room[y][RW - 1] = "GYM_BASE_WALL_TOP"
+    # The extra rooms (tools/gym_hack/build_gym_rooms.py)
+    import build_gym_rooms as GR
+    rooms = [("MAIN", RW, RH, room)]
+    pc_bottom = metatile_look(ts, ts.cell(FIXED["PC_BOTTOM"], False)[0], True)
+    for key in GR.ORDER:
+        r = GR.ROOMS[key]
+        rows = [[None] * GR.W for _ in range(GR.H)]
+        for x in range(GR.W):
+            rows[0][x] = "GYM_BASE_WALL_TOP"
+            rows[1][x] = "GYM_BASE_WALL_FACE"
+            rows[2][x] = "GYM_BASE_FLOOR_SHADOW"
+            rows[GR.H - 1][x] = metatile_look(ts, VOID, True)
+        for y in range(1, GR.H - 1):
+            rows[y][0] = rows[y][GR.W - 1] = "GYM_BASE_WALL_TOP"
+        if r["mat"]:
+            for x, m, below in zip(r["mat"], MAT_TILES, BELOW_MAT):
+                rows[GR.H - 2][x] = metatile_look(ts, m, False)
+                rows[GR.H - 1][x] = metatile_look(ts, below, True)
+        px, py = r["pc"]
+        rows[py][px] = pc_bottom
+        rooms.append((key, GR.W, GR.H, rows))
     # (the original back wall, for the gym's own wall style)
     orig_top = [metatile_look(ts, 0x2D3 if x == RW // 2 else 0x291, True) for x in range(RW)]
     orig_face = metatile_look(ts, 0x299, True)
     orig_shadow = metatile_look(ts, 0x282, False)
 
     # The badge pedestal's badge: fixed video memory tiles
-    write_c(catalog, floors, shadow_look, walls, water, water_behavior, room, orig_top, orig_face, orig_shadow, ts)
+    write_c(catalog, floors, shadow_look, walls, water, water_behavior, rooms, orig_top, orig_face, orig_shadow, ts)
+    write_icons(catalog, floors, walls, water, ts)
     print(f"gym art: {len(BANK.tiles)} tiles, {len(LOOKS.list)} looks")
     return base, catalog, fixed
+
+
+ICON_SIZE = 32
+
+
+def write_icons(catalog, floors, walls, water, ts):
+    """A small picture of each decoration (32x32, 15 colors) for the PC's lists:
+    src/data/gym_decor_icons.h"""
+    from PIL import Image
+    import gym_room_art as RA
+    prim = rm.Tileset(PRIM)
+    pals = [rm.load_pal(p) for p in sorted((PRIM / "palettes").glob("*.pal"))][:7] + ts.pals[7:]
+    tile_cache = {}
+
+    def tile_img(ref):
+        if ref == 0:
+            return None
+        if ref not in tile_cache:
+            pal = (ref >> 14) & 0xF
+            if ref & REF_FIXED:
+                t = ref & 0x3FF
+                if t < 0x280:
+                    px = list(prim.tile(t).getdata())
+                elif BADGE_VRAM <= t < BADGE_VRAM + 16:
+                    px = [0] * 64
+                else:
+                    px = tile_pixels(ts, t)
+            else:
+                px = list(BANK.tiles[ref & 0xFFF])
+            img = Image.new("RGBA", (8, 8), (0, 0, 0, 0))
+            colors = pals[pal]
+            img.putdata([(0, 0, 0, 0) if c == 0 else tuple(colors[c][:3]) + (255,) for c in px])
+            if ref & REF_HFLIP:
+                img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            if ref & REF_VFLIP:
+                img = img.transpose(Image.FLIP_TOP_BOTTOM)
+            tile_cache[ref] = img
+        return tile_cache[ref]
+
+    def flip(ref, f):
+        return ref ^ ((REF_HFLIP if f & 1 else 0) | (REF_VFLIP if f & 2 else 0)) if ref else 0
+
+    def draw(img, x, y, refs):
+        for k, r in enumerate(refs):
+            t = tile_img(r)
+            if t is not None:
+                img.alpha_composite(t, (x + (k % 2) * 8, y + (k // 2) * 8))
+
+    def draw_look(img, x, y, look, floor=False):
+        refs, _, flags = LOOKS.list[look]
+        if floor or not (flags & LOOK_FLOOR_UNDER):
+            draw(img, x, y, refs[:4])
+        draw(img, x, y, refs[4:])
+
+    cases = {c: i for i, c in enumerate(RA.QUARTER_CASES)}
+
+    def qcase(u, l, diag):
+        if u and l:
+            return cases["FULL" if diag else "INNER"]
+        return cases["VERT" if u else ("HORZ" if l else "OUTER")]
+
+    def joined(img, cells, quarters, shown=None):
+        # (walls' tops and pools: each quarter from what's beside it)
+        for (cx, cy) in (shown or cells):
+            for qy in range(2):
+                for qx in range(2):
+                    sx, sy = (1 if qx else -1), (1 if qy else -1)
+                    u, l, d = (cx, cy + sy) in cells, (cx + sx, cy) in cells, (cx + sx, cy + sy) in cells
+                    t = tile_img(flip(quarters[qcase(u, l, d)], qx | (qy << 1)))
+                    if t is not None:
+                        img.alpha_composite(t, (cx * 16 + qx * 8, cy * 16 + qy * 8))
+
+    icons = []
+    for d, facings in catalog:
+        kind = d.get("kind", "PIECE")
+        if kind == "PIECE" and facings:
+            rows = facings[0]
+            img = Image.new("RGBA", (len(rows[0]) * 16, len(rows) * 16), (0, 0, 0, 0))
+            for y, row in enumerate(rows):
+                for x, (look, edit) in enumerate(row):
+                    draw_look(img, x * 16, y * 16, edit if edit is not None else look)
+        elif kind == "FLOOR":
+            img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
+            for k, look in enumerate(floors[d.get("style", 0)]):
+                draw_look(img, (k % 2) * 16, (k // 2) * 16, look, True)
+        elif kind == "WALL_STYLE" or kind == "WALL":
+            quarters, faces, _ = walls[d.get("style", 0) if kind == "WALL_STYLE" else 0]
+            if kind == "WALL":
+                img = Image.new("RGBA", (16, 32), (0, 0, 0, 0))
+                joined(img, {(0, 0)}, quarters)
+                draw(img, 0, 16, faces[3])
+            else:
+                img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
+                # (a stretch of back wall: the walls beyond the picture only shape its edges)
+                joined(img, {(x, y) for x in range(-1, 3) for y in (-1, 0)}, quarters, [(0, 0), (1, 0)])
+                draw(img, 0, 16, faces[0])
+                draw(img, 16, 16, faces[0])
+        elif kind == "WATER":
+            img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
+            joined(img, {(0, 0), (1, 0), (0, 1), (1, 1)}, water)
+        else:
+            img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+        box = img.getbbox()
+        if box:
+            img = img.crop(box)
+        if img.width > ICON_SIZE or img.height > ICON_SIZE:
+            k = min(ICON_SIZE / img.width, ICON_SIZE / img.height)
+            img = img.resize((max(1, round(img.width * k)), max(1, round(img.height * k))), Image.LANCZOS)
+        out = Image.new("RGBA", (ICON_SIZE, ICON_SIZE), (0, 0, 0, 0))
+        out.alpha_composite(img, ((ICON_SIZE - img.width) // 2, (ICON_SIZE - img.height) // 2))
+        # 15 colors (and 0: see-through)
+        px = [(r, g, b) if a >= 128 else None for r, g, b, a in out.getdata()]
+        opaque = [c for c in px if c is not None]
+        colors = sorted(set(opaque))
+        if len(colors) > 15:
+            q = Image.new("RGB", (len(opaque), 1))
+            q.putdata(opaque)
+            q = q.quantize(15, method=Image.Quantize.MEDIANCUT)
+            qp = q.getpalette()[:45]
+            colors = [tuple(qp[i:i + 3]) for i in range(0, 45, 3)]
+            idx = iter(q.get_flattened_data() if hasattr(q, 'get_flattened_data') else q.getdata())
+            px = [None if c is None else colors[next(idx)] for c in px]
+        index = {c: i + 1 for i, c in enumerate(colors)}
+        data = [0 if c is None else index[c] for c in px]
+        words = []
+        for ty in range(ICON_SIZE // 8):
+            for tx in range(ICON_SIZE // 8):
+                b = bytes(data[(ty * 8 + y) * ICON_SIZE + tx * 8 + x] | (data[(ty * 8 + y) * ICON_SIZE + tx * 8 + x + 1] << 4)
+                          for y in range(8) for x in range(0, 8, 2))
+                words += struct.unpack("<8I", b)
+        pal = [0] + [(r >> 3) | ((g >> 3) << 5) | ((b >> 3) << 10) for r, g, b in colors]
+        pal += [0] * (16 - len(pal))
+        icons.append((d["key"], words, pal))
+    parts = ["// Generated by tools/gym_hack/build_gym_decor.py. Don't edit by hand.\n",
+             "// A small picture of each decoration (32x32), for the GYM PC's lists.\n\n",
+             f"static const u32 sGymDecorIconTiles[GYM_DECOR_COUNT][{ICON_SIZE * ICON_SIZE // 8}] =\n{{\n"]
+    for key, words, _ in icons:
+        parts.append(f"    [GYM_DECOR_{key}] = {{" + ", ".join(f"0x{w:08X}" for w in words) + "},\n")
+    parts.append("};\n\nstatic const u16 sGymDecorIconPals[GYM_DECOR_COUNT][16] =\n{\n")
+    for key, _, pal in icons:
+        parts.append(f"    [GYM_DECOR_{key}] = {{" + ", ".join(f"0x{c:04X}" for c in pal) + "},\n")
+    parts.append("};\n")
+    (ROOT / "src/data/gym_decor_icons.h").write_text("".join(parts))
+    return icons
 
 
 def free_vram(fixed_tiles):
@@ -890,7 +1057,7 @@ def free_vram(fixed_tiles):
     return [t for t in range(1, 0x400) if t not in used]
 
 
-def write_c(catalog, floors, shadow_look, walls, water, water_behavior, room, orig_top, orig_face, orig_shadow, ts):
+def write_c(catalog, floors, shadow_look, walls, water, water_behavior, rooms, orig_top, orig_face, orig_shadow, ts):
     import gym_room_art as RA
     ids = "\n".join(f"    GYM_DECOR_{d['key']}," for d, _ in catalog)
     (ROOT / "include/constants/gym_decor.h").write_text(f"""// Generated by tools/gym_hack/build_gym_decor.py. Don't edit by hand.
@@ -951,17 +1118,43 @@ enum GymDecorId
     parts.append("};\n")
     parts.append(f"#define GYM_LOOK_SHADOW {shadow_look}\n\n")
     parts.append("static const struct GymWallStyle sGymWallStyles[GYM_WALL_STYLE_COUNT] =\n{\n")
-    for quarters, faces in walls:
+    for quarters, faces, door in walls:
         parts.append("    {\n        .top = {" + ", ".join(f"0x{r:05X}" for r in quarters) + "},\n        .face = {"
-                     + ", ".join("{" + ", ".join(f"0x{r:05X}" for r in f) + "}" for f in faces) + "},\n    },\n")
+                     + ", ".join("{" + ", ".join(f"0x{r:05X}" for r in f) + "}" for f in faces) + "},\n"
+                     + "        .door = {" + ", ".join(f"0x{r:05X}" for r in door) + "},\n    },\n")
     parts.append("};\n")
     parts.append("static const u32 sGymWaterQuarters[5] = {" + ", ".join(f"0x{r:05X}" for r in water) + "};\n")
     parts.append(f"#define GYM_WATER_BEHAVIOR 0x{water_behavior:X}\n\n")
     # The empty room
-    parts.append("// The empty room: a look for each fixed square; GYM_BASE_FLOOR where the floor is\n")
-    parts.append("static const u16 sGymRoomBase[GYM_ROOM_HEIGHT][GYM_ROOM_WIDTH] =\n{\n")
-    for row in room:
-        parts.append("    {" + ", ".join("GYM_BASE_FLOOR" if v is None else str(v) for v in row) + "},\n")
+    # The empty rooms, and where things are in them
+    import build_gym_rooms as GR
+    import build_pallet_gym as PG
+    parts.append("// The empty rooms: a look for each fixed square; GYM_BASE_FLOOR where the floor is\n")
+    for key, w, h, rows in rooms:
+        parts.append(f"static const u16 sGymRoomBase_{key}[{h} * {w}] =\n{{\n")
+        for row in rows:
+            parts.append("    " + ", ".join("GYM_BASE_FLOOR" if v is None else str(v) for v in row) + ",\n")
+        parts.append("};\n")
+    parts.append("\nstatic const struct GymRoomInfo sGymRooms[GYM_ROOM_COUNT] =\n{\n")
+    infos = [("MAIN", "MAP_PALLET_TOWN_GYM", PG.W, PG.H, PG.EDIT_AREA, PG.RESERVED, PG.PC_FRONT, PG.MAT)]
+    for key in GR.ORDER:
+        r = GR.ROOMS[key]
+        infos.append((key, r["id"], GR.W, GR.H, GR.EDIT_AREA, r["reserved"], GR.pc_front(key), r["mat"]))
+    for key, map_id, w, h, edit, res, pcf, mat in infos:
+        mx0, mx1 = (mat[0], mat[-1]) if mat else (0xFF, 0xFF)
+        parts.append(f"    [GYM_ROOM_{key}] = {{sGymRoomBase_{key}, {map_id}, {w}, {h}, {{{', '.join(map(str, edit))}}}, "
+                     f"{{{', '.join(map(str, res))}}}, {pcf[0]}, {pcf[1]}, {mx0}, {mx1}}},\n")
+    parts.append("};\n\n")
+    parts.append("// The doorways between the rooms: open once the room is the player's (flag), or always (0)\n")
+    parts.append("static const struct GymRoomDoor sGymRoomDoors[] =\n{\n")
+    for key in GR.ORDER:
+        (x, y), (fx, fy), way = GR.GYM_DOORS[key]
+        parts.append(f"    {{GYM_ROOM_MAIN, {x}, {y}, {fx}, {fy}, MB_{way}_ARROW_WARP, {GR.FLAGS[key]}}},\n")
+    for key in GR.ORDER:
+        r = GR.ROOMS[key]
+        if r["door"]:
+            (x, y), (fx, fy), way = r["door"]
+            parts.append(f"    {{GYM_ROOM_{key}, {x}, {y}, {fx}, {fy}, MB_{way}_ARROW_WARP, 0}},\n")
     parts.append("};\n")
     parts.append("static const u16 sGymOriginalWallTop[GYM_ROOM_WIDTH] = {" + ", ".join(str(v) for v in orig_top) + "};\n")
     parts.append(f"#define GYM_LOOK_ORIGINAL_WALL_FACE {orig_face}\n#define GYM_LOOK_ORIGINAL_WALL_SHADOW {orig_shadow}\n\n")

@@ -1,0 +1,53 @@
+{
+  "id": "MAP_PALLET_TOWN_GYM_BACK_ROOM",
+  "name": "PalletTown_Gym_BackRoom",
+  "layout": "LAYOUT_PALLET_TOWN_GYM_BACK_ROOM",
+  "music": "MUS_RG_GYM",
+  "region": "REGION_KANTO",
+  "region_map_section": "MAPSEC_PALLET_TOWN",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_INDOOR",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": false,
+  "show_map_name": false,
+  "floor_number": 0,
+  "battle_scene": "MAP_BATTLE_SCENE_GYM",
+  "connections": null,
+  "object_events": [],
+  "warp_events": [
+    {
+      "x": 7,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_PALLET_TOWN_GYM",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 8,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_PALLET_TOWN_GYM",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 9,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_PALLET_TOWN_GYM",
+      "dest_warp_id": "3"
+    }
+  ],
+  "coord_events": [],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 5,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "GymDecor_EventScript_GymPC"
+    }
+  ]
+}
