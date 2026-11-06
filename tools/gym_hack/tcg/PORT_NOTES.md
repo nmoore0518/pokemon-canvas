@@ -140,20 +140,18 @@ on the GBA's with a border.
     tcgdrv.py (Duel: tap, shot, peek; temp_list, card, pick(is_basic)) does that.
 
 ## Next session: start here
-- The animations (the biggest piece left): home/load_animation.asm, play_animation.asm,
-  engine/duel/animations/ (core, commands, screen_effects), engine/gfx/sprite_animations.asm and
-  sprite_vblank.asm; data: data/duel/animations/ (duel_animations.asm: each DUEL_ANIM_*'s sprite,
-  palette, anim, flags, sfx, handler; attack_animations.asm; anims1-4.asm: AnimData* frame tables,
-  ~20k lines of macros: frame_table, frame_data, OAM rows) -> a converter like extract_gfx.py, and
-  the sprites' gfx (gfx/duel/anims/*.png, Sprites table in engine/gfx). They give: the coin toss
-  (TcgUi_CoinToss), drawing/shuffling, attacks and status effects, between-turn poison etc.
-- Then the stand-ins left in src/tcg/ui.c: DisplayUsePokemonPowerScreen, SelectPlayAreaPokemonPower,
-  DisplayNoBasicPokemonInHandScreen, DisplayDrawOneCardScreen / PlayerDrawCardScreen / DrawNCards,
-  RedrawTurnDuelistsMainSceneOrDuelHUD, DisplayDuelResult (and the duel result screen),
-  DisplayCardListDetails, the effects' screens (HandlePlayAreaMenuInput, DrawSymbolOnPlayAreaCursor,
-  Peek: HandlePeekSelection / DrawAIPeekScreen, HandleDefendingPokemonAttackSelection),
-  the Check menu's In Play Area (engine/menus/play_area.asm) and Glossary (engine/menus/glossary.asm).
-- Then the sound, the Saffron house and Rod, the deck picker, the energy prizes.
+- Done: the animations, every screen the duel uses (the shuffle/draw and result screens with the
+  portraits, Pokémon Powers, Peek, In Play Area, Glossary...), and the way in: Saffron City's card
+  house (tools/gym_hack/build_tcg_house.py: the doorless house left of the Copycat's gets a door;
+  SaffronCity_TcgHouse_Frlg, Rod at the card table). Rod's script picks one of the 7 decks
+  (dynmultichoice), runs special StartTcgDuel, and gives the deck's energy card on a win
+  (unlimited rematches). Its text is PLACEHOLDER: Nick writes the dialogue.
+- Left: the sound (Tcg_PlaySFX / the duel music: a port of poketcg's audio engine onto the GBA's
+  PSG channels; Nick's said music is low priority). The stand-in Tcg_PlaySFX is silent.
+- Untested in the emulator: the Pokémon Power screens, Peek, Energy Trans/Damage Swap selection,
+  Amnesia/Metronome's attack selection (no quick way to set up those cards yet).
+- Testing: tools in the session scratchpad (tcgdrv.py) poke gMain.callback2 = CB2_TcgDuel; the
+  debug menu's Script 3 can be pointed at MAP_SAFFRON_CITY_TCG_HOUSE locally (not committed).
 
 ## To do (in order)
 1. ~~home/duel.asm 1221-2400~~ (done).
@@ -161,4 +159,5 @@ on the GBA's with a border.
 3. ~~engine/duel/effect_functions.asm: the 189 routines~~ (done).
 4. ~~engine/duel/ai/: Rod's AI~~ (done; see above for what isn't).
 5. The screens (the game's layouts at 160x144 in the middle of the GBA's), its fonts and gfx.
-6. The Saffron house, Rod, the deck picker, the energy-card prizes (src/energy_cards.c: done).
+6. ~~The Saffron house, Rod, the deck picker, the energy-card prizes~~ (done; text is placeholder).
+7. The sound.

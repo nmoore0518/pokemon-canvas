@@ -56,6 +56,15 @@ def main():
                 cstep = expr(args[1], known) if len(args) > 1 else "1"
                 cval = f"({cval})"
                 continue
+            m = re.match(r"const_skip\b\s*([^;]*)", s)
+            if m:
+                n = m[1].strip() or "1"
+                cval = f"({cval} + ({n}) * ({cstep}))"
+                continue
+            m = re.match(r"const_next\s+([^;]+)", s)
+            if m:
+                cval = f"({expr(m[1].strip(), known)})"
+                continue
             m = re.match(r"const\s+(\w+)", s)
             if m:
                 out.append(f"#define TCG_{m[1]} {cval}")

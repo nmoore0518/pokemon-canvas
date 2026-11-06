@@ -369,6 +369,13 @@
       "elevation": 0,
       "dest_map": "MAP_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB",
       "dest_warp_id": "0"
+    },
+    {
+      "x": 18,
+      "y": 14,
+      "elevation": 0,
+      "dest_map": "MAP_SAFFRON_CITY_TCG_HOUSE",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],

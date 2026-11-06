@@ -125,9 +125,9 @@ def main():
     duel_anims = []
     rows, cur = [], []
     for line in (SRC / "data/duel/animations/duel_animations.asm").read_text().splitlines():
-        m = re.match(r"db\s+(\w+)", strip(line))
+        m = re.match(r"db\s+(.+)", strip(line))
         if m:
-            cur.append(m[1])
+            cur.append(re.sub(r"\s+", " ", m[1].strip()))
             if len(cur) == 6:
                 duel_anims.append(cur)
                 cur = []
@@ -254,7 +254,9 @@ def main():
     out.append("const u8 gTcgDuelAnimations[][6] =")
     out.append("{")
     for a in duel_anims:
-        out.append("    {" + ", ".join("0" if v == "NONE" else ("TCG_" + v if not re.match(r"^\$?[0-9]", v) else cval(num(v))) for v in a) + "},")
+        out.append("    {" + ", ".join("0" if v == "NONE" else
+                                   (re.sub(r"\b([A-Z][A-Z0-9_]+)\b", r"TCG_\1", v) if not re.match(r"^\$?[0-9]", v) else cval(num(v)))
+                                   for v in a) + "},")
     out.append("};")
     out.append("")
 

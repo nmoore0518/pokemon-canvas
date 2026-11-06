@@ -975,6 +975,7 @@ gStdScripts_End::
 	.include "data/maps/SaffronCity_Dojo_Frlg/scripts.inc"
 	.include "data/maps/SaffronCity_Gym_Frlg/scripts.inc"
 	.include "data/maps/SaffronCity_House_Frlg/scripts.inc"
+	.include "data/maps/SaffronCity_TcgHouse_Frlg/scripts.inc"
 	.include "data/maps/SaffronCity_Mart_Frlg/scripts.inc"
 	.include "data/maps/SaffronCity_PokemonCenter_1F_Frlg/scripts.inc"
 	.include "data/maps/SaffronCity_PokemonCenter_2F_Frlg/scripts.inc"
