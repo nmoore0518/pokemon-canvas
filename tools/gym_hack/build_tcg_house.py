@@ -7,7 +7,7 @@
   house's door (its metatiles, copied over the same columns), at DOOR, and a warp in.
 - gTileset_TcgHouse (data/tilesets/secondary/tcg_house_frlg): the house's usual secondary tileset
   (generic_building_1_frlg) and new metatiles from tools/gym_hack/tcg_house_art.py: a long card table
-  with a playmat and cards (its own palette, 9), the game's card back, big (10) and a bookcase of card
+  with a playmat and cards (its own palette, 9), the card back (10) and a bookcase of card
   binders (11), each drawn over the building tiles' bottom layers they replace.
 - LAYOUT_SAFFRON_CITY_TCG_HOUSE: the Saffron house's layout (House5_Frlg) with them: the table where
   the little table and its chairs were, the card back where the map was (the window beside it a column left), the binders where the
