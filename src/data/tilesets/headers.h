@@ -2730,8 +2730,8 @@ const struct Tileset gTileset_Pit =
 {
     .isCompressed = TRUE,
     .isSecondary = TRUE,
-    .tiles = gTilesetTiles_DiglettsCave,
-    .palettes = gTilesetPalettes_DiglettsCave,
+    .tiles = gTilesetTiles_Pit,
+    .palettes = gTilesetPalettes_Pit,
     .metatiles = gMetatiles_Pit,
     .metatileAttributes = gMetatileAttributes_Pit,
     .callback = NULL,

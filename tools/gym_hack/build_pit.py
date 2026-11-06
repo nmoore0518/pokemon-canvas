@@ -124,7 +124,21 @@ CROWD = [  # (x, y, look, facing)
 # gTileset_Pit's own blocks, after Diglett's Cave's (0x280 + its 157)
 PIT_FIRST = 0x280 + 157
 RING_H, RING_L, RING_R = PIT_FIRST, PIT_FIRST + 1, PIT_FIRST + 2
-COUNTER_L, COUNTER_M, COUNTER_R = PIT_FIRST + 3, PIT_FIRST + 4, PIT_FIRST + 5   # (the General tileset's deck, as a counter)
+COUNTER_L, COUNTER_M, COUNTER_R = PIT_FIRST + 3, PIT_FIRST + 4, PIT_FIRST + 5   # the counter: a shop's, in dark wood
+COUNTER_TOP = (PIT_FIRST + 6, PIT_FIRST + 7, PIT_FIRST + 8)    # (the dirt behind it, under its top's edge)
+COUNTER_PAL = 7                 # (a palette Diglett's Cave doesn't use)
+COUNTER_TILE = 0x380            # (its tiles, after Diglett's Cave's 256)
+# The Mart's counter, recoloured: its colours -> dark red-brown wood
+COUNTER_COLOURS = {
+    (82, 82, 106): (49, 24, 24),       # outline
+    (123, 123, 123): (90, 45, 40),     # the top's far edge
+    (255, 255, 255): (181, 98, 74),    # the top
+    (222, 213, 230): (156, 79, 62),    # its shine
+    (180, 180, 164): (123, 57, 49),
+    (189, 230, 255): (148, 66, 57),    # the front
+    (139, 180, 222): (115, 44, 41),
+    (222, 205, 106): (82, 36, 33),     # the kick plate
+}
 
 
 def pit_room():
@@ -144,6 +158,8 @@ def pit_room():
     r.put(*BACK_LADDER, LADDER)
     r.put(*CARD_SIGN, SIGN, True)
     r.walls()
+    for x in range(cx0, cx1 + 1):       # (after the walls: behind the counter's the bookie's, no one else's)
+        r.put(x, cy - 1, COUNTER_TOP[0 if x == cx0 else 2 if x == cx1 else 1], True)
     for (x, y) in ((2, 2), (2, 16), (22, 7)):
         for dy in range(2):
             for dx in range(2):
@@ -167,6 +183,61 @@ def mb(name):
     raise KeyError(name)
 
 
+def counter_graphics(dst):
+    """The Mart's counter (gTileset_Mart's 0x2B0-0x2B2, with the top's edge that overhangs the
+    square behind it), recoloured, added to the pit's tiles.png and palette COUNTER_PAL. Returns,
+    for the left end, the middle and the right end: (the square behind's 4 tiles, the counter's 4),
+    as numbers from COUNTER_TILE (0 is a blank tile)"""
+    sys.path.insert(0, str(ROOT / "tools/gym_hack"))
+    import render_map as rm
+    from PIL import Image
+    prim = rm.Tileset(rm.tileset_dir("gTileset_BuildingFrlg"))
+    mart = rm.Tileset(ROOT / "data/tilesets/secondary/mart_frlg")
+    src = Image.new("RGB", (48, 32))
+    for i, m in enumerate((0x2A8, 0x2A9, 0x2AA)):
+        rm.draw_metatile(src, i * 16, 0, m, prim, mart)
+    for i, m in enumerate((0x2B0, 0x2B1, 0x2B2)):
+        rm.draw_metatile(src, i * 16, 16, m, prim, mart)
+    colours = list(dict.fromkeys(COUNTER_COLOURS.values()))
+    def piece(cols):
+        # 16 x 32: the square behind (only the top's edge: rows 12-15), then the counter (no shadow)
+        img = Image.new("P", (16, 32), 0)
+        for x, sx in enumerate(cols):
+            for y in range(12, 31):
+                c = COUNTER_COLOURS.get(src.getpixel((sx, y)))       # (not the Mart's floor)
+                if c:
+                    img.putpixel((x, y), 1 + colours.index(c))
+        return img
+    pieces = [piece(range(0, 16)), piece(list(range(8, 16)) * 2), piece(range(32, 48))]
+    tiles_png = dst / "tiles.png"
+    old = Image.open(tiles_png)
+    assert old.size == (128, 128)          # (256 tiles: 0x280-0x37F)
+    new = Image.new("P", (128, 128 + 16))
+    new.putpalette(old.getpalette())
+    new.paste(old, (0, 0))
+    found, out = [Image.new("P", (8, 8), 0).tobytes()], []
+    for img in pieces:
+        quads = []
+        for half in range(2):
+            q = []
+            for k in range(4):
+                t = img.crop(((k % 2) * 8, half * 16 + (k // 2) * 8, (k % 2) * 8 + 8, half * 16 + (k // 2) * 8 + 8)).tobytes()
+                if t not in found:
+                    found.append(t)
+                q.append(found.index(t))
+            quads.append(q)
+        out.append(quads)
+    assert len(found) <= 32
+    for i, t in enumerate(found):
+        tile = Image.frombytes("P", (8, 8), t)
+        new.paste(tile, ((i % 16) * 8, 128 + (i // 16) * 8))
+    new.save(tiles_png)
+    pal = [(0, 0, 0)] + colours + [(0, 0, 0)] * (15 - len(colours))
+    (dst / "palettes" / f"{COUNTER_PAL:02d}.pal").write_text(
+        "JASC-PAL\r\n0100\r\n16\r\n" + "".join(f"{r} {g} {b}\r\n" for r, g, b in pal))
+    return out
+
+
 def write_tileset():
     """gTileset_Pit: Diglett's Cave's tiles and palettes (src/data/tilesets: the same graphics),
     its blocks, and the pit's own"""
@@ -186,8 +257,14 @@ def write_tileset():
     mt.append(dirt + gen(0xE6)[4:]); at.append(covered)                       # RING_H: logs across
     mt.append(dirt + gen(0xF1)[4:]); at.append(covered)                       # RING_L: logs down its right
     mt.append(dirt + gen(0xF0)[4:]); at.append(covered)                       # RING_R: logs down its left
-    for m in (0x1BD, 0x1BE, 0x1BF):                                           # COUNTER_L/M/R
-        mt.append(gen(m)); at.append(covered | mb("MB_COUNTER"))
+    counter_tiles = counter_graphics(dst)
+    blank = COUNTER_TILE
+    e = lambda t: (COUNTER_TILE + t) | (COUNTER_PAL << 12)
+    for k in range(3):                                                        # COUNTER_L/M/R
+        mt.append(dirt + [e(counter_tiles[k][1][i]) for i in range(4)]); at.append(covered | mb("MB_COUNTER"))
+    for k in range(3):                                                        # COUNTER_TOP
+        top = counter_tiles[k][0]
+        mt.append(dirt + [blank | (COUNTER_PAL << 12)] * 2 + [e(top[2]), e(top[3])]); at.append(covered)
     (dst / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in mt))
     (dst / "metatile_attributes.bin").write_bytes(struct.pack(f"<{len(at)}I", *at))
     # (registered once: the same graphics as Diglett's Cave)
@@ -197,6 +274,14 @@ def write_tileset():
         t += ('\nconst u16 gMetatiles_Pit[] = INCBIN_U16("data/tilesets/secondary/pit/metatiles.bin");\n'
               'const u16 gMetatileAttributes_Pit[] = INCBIN_U16("data/tilesets/secondary/pit/metatile_attributes.bin");\n')
         mh.write_text(t)
+    gh = ROOT / "src/data/tilesets/graphics.h"
+    t = gh.read_text()
+    if "gTilesetTiles_Pit[]" not in t:
+        t += ('\nconst u32 gTilesetTiles_Pit[] = INCGFX_U32("data/tilesets/secondary/pit/tiles.png", ".4bpp.fastSmol");\n\n'
+              'const u16 gTilesetPalettes_Pit[][16] =\n{\n'
+              + "".join(f'    INCGFX_U16("data/tilesets/secondary/pit/palettes/{i:02d}.pal", ".gbapal"),\n' for i in range(16))
+              + '};\n')
+        gh.write_text(t)
     hh = ROOT / "src/data/tilesets/headers.h"
     t = hh.read_text()
     if "gTileset_Pit =" not in t:
@@ -206,8 +291,8 @@ const struct Tileset gTileset_Pit =
 {
     .isCompressed = TRUE,
     .isSecondary = TRUE,
-    .tiles = gTilesetTiles_DiglettsCave,
-    .palettes = gTilesetPalettes_DiglettsCave,
+    .tiles = gTilesetTiles_Pit,
+    .palettes = gTilesetPalettes_Pit,
     .metatiles = gMetatiles_Pit,
     .metatileAttributes = gMetatileAttributes_Pit,
     .callback = NULL,
