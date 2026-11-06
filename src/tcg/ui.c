@@ -35,7 +35,6 @@ void __attribute__((weak)) Tcg_DrawPlayAreaToPlacePrizeCards(void) {}
 void __attribute__((weak)) Tcg_PlacePrizes(void) {}
 void __attribute__((weak)) Tcg_RedrawTurnDuelistsMainSceneOrDuelHUD(void) {}
 void __attribute__((weak)) Tcg_PlayBetweenTurnsAnimation(u32 duelAnim, u32 damage) {}
-void __attribute__((weak)) Tcg_PlaySFX(u32 sfx) {}
 void __attribute__((weak)) Tcg_PrintPlayAreaCardList(void) {}
 void __attribute__((weak)) Tcg_DisplayDrawOneCardScreen(void) {}
 void __attribute__((weak)) Tcg_DisplayPlayerDrawCardScreen(void) {}
@@ -61,7 +60,6 @@ void __attribute__((weak)) Tcg_DisplayDrawNCardsScreen(u32 count) {}
 void __attribute__((weak)) Tcg_OpenCardPage_FromHand(void) {}
 void __attribute__((weak)) Tcg_DisplayCardListDetails(void) {}
 void __attribute__((weak)) Tcg_DrawWholeScreenTextBox(u16 textId) {}
-void __attribute__((weak)) Tcg_PlaySFX_InvalidChoice(void) {}
 void __attribute__((weak)) Tcg_InitAndDrawCardListScreenLayout(bool32 withSelectCheckMenu) {}
 void __attribute__((weak)) Tcg_SetCardListHeaderText(u16 headerText, u16 deckText) {}
 void __attribute__((weak)) Tcg_SetCardListInfoBoxText(u16 textId) {}

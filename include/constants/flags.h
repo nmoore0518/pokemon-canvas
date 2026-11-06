@@ -2712,6 +2712,7 @@
 #define FLAG_EVENT_MAGEARNA_ORIGINAL          0x4F1
 #define FLAG_EXOTIC_LEGEND_ZARUDE_DADA        0x4F2   // (Glimwood's glade, Celebi along, Zarude caught)
 #define FLAG_EXOTIC_LEGEND_ETERNATUS_ETERNAMAX 0x4F3  // (the Darkest Day, on the pitch)
+#define FLAG_MET_ROD                          0x4F9   // (Saffron's card house: Grandmaster ROD has introduced himself)
 // (0x4F4: Pallet Town's Lucky Egg, constants/flags_frlg.h)
 #define FLAG_TOURNEY_BEAT_KALOS               0x4F5   // (the tournament, src/tournament.c: a Kalos trainer beaten)
 #define FLAG_TOURNEY_BEAT_AZ                  0x4F6   // (... AZ beaten)

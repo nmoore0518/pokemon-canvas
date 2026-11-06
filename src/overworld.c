@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tcg_sound.h"
 #include "painter.h"
 #include "playtest.h"
 #include "event_mons.h"
@@ -1295,6 +1296,8 @@ void Overworld_PlaySpecialMapMusic(void)
 {
     u16 music = GetCurrLocationDefaultMusic();
 
+    TcgSound_PlayMapMusic(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum);   // (Pokémon Canvas: the card house's own, src/tcg/sound.c)
+
     if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_STOP)
     {
         StopMapMusic();
@@ -1331,6 +1334,7 @@ void Overworld_ClearSavedMusic(void)
 
 static void TransitionMapMusic(void)
 {
+    TcgSound_PlayMapMusic(sWarpDestination.mapGroup, sWarpDestination.mapNum);
     if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_STOP)
     {
         StopMapMusic();

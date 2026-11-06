@@ -11637,6 +11637,19 @@
       "border_filepath": "data/layouts/VermilionCity_MedicalCenter_203/border.bin",
       "blockdata_filepath": "data/layouts/VermilionCity_MedicalCenter_203/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_SAFFRON_CITY_TCG_HOUSE",
+      "name": "SaffronCity_TcgHouse_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_BuildingFrlg",
+      "secondary_tileset": "gTileset_TcgHouse",
+      "border_filepath": "data/layouts/SaffronCity_TcgHouse_Frlg/border.bin",
+      "blockdata_filepath": "data/layouts/SaffronCity_TcgHouse_Frlg/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

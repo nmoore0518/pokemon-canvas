@@ -5,6 +5,7 @@
 #include "tcg_gbc.h"
 #include "tcg_ui.h"
 #include "tcg_anims.h"
+#include "tcg_sound.h"
 
 #define G gTcgGbc
 
@@ -387,12 +388,16 @@ void Tcg_DisplayDuelResult(u32 duelFinished, u16 textId)
     else
         anim = TCG_DUEL_ANIM_DUEL_LOSS;
     Tcg_PlayDuelAnimation(anim);
+    Tcg_PlaySong(duelFinished == TCG_TURN_PLAYER_TIED ? TCG_MUSIC_MATCH_DRAW
+                 : anim == TCG_DUEL_ANIM_DUEL_WIN ? TCG_MUSIC_MATCH_VICTORY : TCG_MUSIC_MATCH_LOSS);
     // (the game prints the text as the opponent's turn: its <RAMNAME> is the opponent's)
     gTcg->whoseTurn = TCG_OPPONENT;
     Tcg_DrawWideTextBox_PrintText(textId);
     Tcg_EnableLCD();
-    // (.wait_song: the result's jingle; there's no music yet, so a moment instead)
-    Tcg_DoAFrames(120);
+    // (.wait_song: the result's jingle; then PlayDefaultSong, the area's music: none here)
+    do
+        Tcg_DoFrame();
+    while (Tcg_IsSongPlaying());
     Tcg_WaitForWideTextBoxInput();
     Tcg_FinishQueuedAnimations();
     gTcg->whoseTurn = prevTurn;

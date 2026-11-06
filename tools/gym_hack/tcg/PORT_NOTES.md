@@ -145,9 +145,13 @@ on the GBA's with a border.
   house (tools/gym_hack/build_tcg_house.py: the doorless house left of the Copycat's gets a door;
   SaffronCity_TcgHouse_Frlg, Rod at the card table). Rod's script picks one of the 7 decks
   (dynmultichoice), runs special StartTcgDuel, and gives the deck's energy card on a win
-  (unlimited rematches). Its text is PLACEHOLDER: Nick writes the dialogue.
-- Left: the sound (Tcg_PlaySFX / the duel music: a port of poketcg's audio engine onto the GBA's
-  PSG channels; Nick's said music is low priority). The stand-in Tcg_PlaySFX is silent.
+  (unlimited rematches). FLAG_MET_ROD: his introduction's been given.
+- The sound: src/tcg/sound.c is poketcg's engine (audio/music1.asm, sfx.asm) on the GBA's Game Boy
+  channels, its RAM a copy of the game's; tools/gym_hack/tcg/extract_audio.py assembles all 31 songs
+  and 96 sound effects (40KB) into src/data/tcg/audio.h. It runs from the main VBlank interrupt
+  (src/main.c). The duel plays Rod's Duel Theme 3 and the result jingles; the card house plays the
+  Pokémon Dome's music (src/overworld.c asks TcgSound_PlayMapMusic on every map music change; the
+  map's own music is MUS_NONE), and waits quietly while a fanfare plays.
 - Untested in the emulator: the Pokémon Power screens, Peek, Energy Trans/Damage Swap selection,
   Amnesia/Metronome's attack selection (no quick way to set up those cards yet).
 - Testing: tools in the session scratchpad (tcgdrv.py) poke gMain.callback2 = CB2_TcgDuel; the
@@ -159,5 +163,5 @@ on the GBA's with a border.
 3. ~~engine/duel/effect_functions.asm: the 189 routines~~ (done).
 4. ~~engine/duel/ai/: Rod's AI~~ (done; see above for what isn't).
 5. The screens (the game's layouts at 160x144 in the middle of the GBA's), its fonts and gfx.
-6. ~~The Saffron house, Rod, the deck picker, the energy-card prizes~~ (done; text is placeholder).
-7. The sound.
+6. ~~The Saffron house, Rod, the deck picker, the energy-card prizes~~ (done).
+7. ~~The sound~~ (done).

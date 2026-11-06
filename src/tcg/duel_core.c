@@ -11,6 +11,7 @@
 // the frames), so the rules read as they do in the game. Link-duel code is left out.
 #include "global.h"
 #include "tcg.h"
+#include "tcg_sound.h"
 #include "tcg_ui.h"
 #include "tcg_gbc.h"
 #include "constants/tcg_text.h"
@@ -974,7 +975,8 @@ u32 Tcg_StartDuel(void)
             gTcg->whoseTurn = TCG_PLAYER;
             return gTcg->duelResult;
         }
-        // .tied_duel: sudden death, one prize each
+        // .tied_duel: sudden death, one prize each (to the duel's music again: wDuelTheme, Rod's)
+        Tcg_PlaySong(TCG_MUSIC_DUEL_THEME_3);
         Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_StartSuddenDeathMatch);
         gTcg->duelInitialPrizes = 1;
         Tcg_InitVariablesToBeginDuel();

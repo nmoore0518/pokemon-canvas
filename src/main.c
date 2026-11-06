@@ -1,4 +1,5 @@
 #include "global.h"
+#include "tcg_sound.h"
 #include "crt0.h"
 #include "malloc.h"
 #include "link.h"
@@ -372,6 +373,7 @@ static void VBlankIntr(void)
     gPcmDmaCounter = gSoundInfo.pcmDmaCounter;
 
     m4aSoundMain();
+    TcgSound_Update();      // (Pokémon Canvas: the Trading Card Game's music, when it's on: src/tcg/sound.c)
     TryReceiveLinkBattleData();
 
     if (!gTestRunnerEnabled && (!gMain.inBattle || !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_RECORDED))))

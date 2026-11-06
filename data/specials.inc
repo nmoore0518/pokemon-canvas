@@ -925,3 +925,4 @@ gSpecials::
 	def_special Outfit_UnlockAllGymUniforms
 	def_special GymCandidate_BufferMentorPreBattle
 	def_special StartTcgDuel
+	def_special PlayTcgHouseMusic
