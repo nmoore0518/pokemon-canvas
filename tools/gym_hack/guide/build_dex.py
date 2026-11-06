@@ -152,6 +152,7 @@ TYPE_COLORS = {
     "ICE": "#96D9D6", "FIGHTING": "#C22E28", "POISON": "#A33EA1", "GROUND": "#E2BF65", "FLYING": "#A98FF3",
     "PSYCHIC": "#F95587", "BUG": "#A6B91A", "ROCK": "#B6A136", "GHOST": "#735797", "DRAGON": "#6F35FC",
     "DARK": "#705746", "STEEL": "#B7B7CE", "FAIRY": "#D685AD", "STELLAR": "#40B5A5",
+    "BIRD": "#8C8C9C",  # (Pokémon Canvas: MissingNo.)
 }
 STAT_KEYS = [("baseHP", "HP"), ("baseAttack", "Atk"), ("baseDefense", "Def"), ("baseSpAttack", "SpA"),
              ("baseSpDefense", "SpD"), ("baseSpeed", "Spe")]
@@ -326,6 +327,12 @@ MANUAL = [
     ("SPECIES_OMANYTE", "Cinnabar Lab", "Revive the Helix Fossil (Mt. Moon)", "After Badge 5"),
     ("SPECIES_KABUTO", "Cinnabar Lab", "Revive the Dome Fossil (Mt. Moon)", "After Badge 5"),
     ("SPECIES_AERODACTYL", "Cinnabar Lab", "Revive the Old Amber (Pewter Museum)", "After Badge 5"),
+    ("SPECIES_OMANYTE", "Cinnabar Lab", "...or the other Mt. Moon fossil, from the Vermilion foreman's dig (his first helper, a Machop)", "After Badge 5"),
+    ("SPECIES_KABUTO", "Cinnabar Lab", "...or the other Mt. Moon fossil, from the Vermilion foreman's dig (his first helper, a Machop)", "After Badge 5"),
+    ("SPECIES_LILEEP", "Cinnabar Lab", "Revive the Root Fossil: the Vermilion foreman's dig, after his second helper (a Machoke; Root or Claw)", "After Badge 5"),
+    ("SPECIES_ANORITH", "Cinnabar Lab", "Revive the Claw Fossil: the Vermilion foreman's dig, after his second helper (a Machoke; Root or Claw)", "After Badge 5"),
+    ("SPECIES_CRANIDOS", "Cinnabar Lab", "Revive the Skull Fossil: the Vermilion foreman's dig, after his third helper (a Machamp; Skull or Armor)", "After Badge 5"),
+    ("SPECIES_SHIELDON", "Cinnabar Lab", "Revive the Armor Fossil: the Vermilion foreman's dig, after his third helper (a Machamp; Skull or Armor)", "After Badge 5"),
     ("SPECIES_HITMONLEE", "Saffron Fighting Dojo", "Gift: beat the dojo, choose Hitmonlee or Hitmonchan (Lv 25)", "After Badge 5"),
     ("SPECIES_HITMONCHAN", "Saffron Fighting Dojo", "Gift: beat the dojo, choose Hitmonlee or Hitmonchan (Lv 25)", "After Badge 5"),
     ("SPECIES_CHANSEY", "Viridian Gym", "Dad's Chansey: Mom's gift after Giovanni's last battle (Lv 50; its own Chansey, with 100 Attack and Sp. Atk and Triage; can't evolve, breed or be traded)", "Badge 8"),
@@ -346,6 +353,9 @@ MANUAL += [
     ("SPECIES_PIKACHU_PARTNER", "Pallet Town, house", "All 7 caps found: the Partner Cap Pikachu (Lv 5)", ""),
     ("SPECIES_PIKACHU_STARTER", "Oak's lab", "Oak's quiz, once Electric is mastered (Lv 5)", "post-game"),
     ("SPECIES_EEVEE_STARTER", "Oak's lab", "Oak's quiz, once Normal is mastered (Lv 5)", "post-game"),
+    ("SPECIES_PIKACHU_SURFING", "Route 21: the islet cave", "Gift: beat COOL♂ (his Stadium team, Lv 100) with a Pikachu in your party (Lv 50, with Surf); with nothing but Pikachu, a shiny one. It plays Pikachu's Beach in Route 19's beach house", ""),
+    ("SPECIES_SMEARGLE_CANVAS", "Pewter City: the painter's loft", "Lent by the painter after your 1st badge; win a battle in a painting with it and it becomes a Canvas Smeargle of your gym's type (one of 18, one per type), yours to keep. The Smearglite (after the League) Mega Evolves it", "After Badge 1"),
+    ("SPECIES_MISSINGNO", "Cinnabar Island: east coast", "Watch the Viridian old man's catching demo, go straight to Cinnabar (no grass on the way) and surf down the east coast: 1 in 5 encounters there (its level comes from your name). Leaving the coast resets it", ""),
     ("SPECIES_SCATTERBUG_FANCY", "Kalos Safari: Lumiose City", "Gift: show the collector 6 Vivillon patterns (Lv 5); then wild in the Kalos zone (rare)", "post-game"),
     ("SPECIES_SCATTERBUG_POKEBALL", "Kalos Safari: Lumiose City", "Gift: show the collector all 18 patterns (Lv 5); then wild in the Kalos zone (rare)", "post-game"),
     ("SPECIES_GRENINJA_BATTLE_BOND", "Kalos Safari: Azure Bay", "A Froakie (Lv 5) from the trainer on the shore, once you've beaten a Kalos trainer in the tournament; it evolves into this Greninja", "post-game"),
@@ -583,7 +593,7 @@ def esc(s):
 
 
 def card(info, data, loc, prevo, family_line):
-    types = "".join(f'<span class="type" style="background:{TYPE_COLORS.get(t, "#888")}">{t.title()}</span>' for t in info["types"])
+    types = "".join(f'<span class="type" style="background:{TYPE_COLORS.get(t, "#888")}">{"???" if t == "MYSTERY" else t.title()}</span>' for t in info["types"])
     pic = sprite(info, data)
     img = f'<img class="pic" src="{pic.as_uri()}">' if pic else '<div class="pic"></div>'
     total = sum(info["stats"])
@@ -595,6 +605,7 @@ def card(info, data, loc, prevo, family_line):
     abil_txt = ", ".join(dict.fromkeys(a for a in abil[:2] if a and a != "-------" and a != "None"))
     if len(abil) > 2 and abil[2] and abil[2] not in ("-------", "None") and abil[2] not in abil[:2]:
         abil_txt += f" · <i>Hidden: {abil[2]}</i>"
+    abil_txt = abil_txt or "None"
     synth = data.get("synthetic", {}).get(info["key"])
     synth_txt = ""
     if info["key"] in data.get("synthetic_blocked", ()):
@@ -789,7 +800,10 @@ def main():
         if not info["dex"] or info["mega"]:
             continue
         info["dex_num"] = dexnums.get(info["dex"], 0)
-        if not info["dex_num"]:
+        if key == "SPECIES_MISSINGNO":      # (Pokémon Canvas: #000, Bird/Normal as Red and Blue showed it)
+            info["types"] = ["BIRD", "NORMAL"]
+            info["dex_num"] = 0
+        elif not info["dex_num"]:
             continue
         infos[key] = info
     # evolution links

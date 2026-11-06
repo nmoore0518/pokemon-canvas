@@ -22,6 +22,7 @@ OUT_DIR = ROOT / "build/guide"
 import build_dex as D        # noqa: E402
 import safari_maps as M      # noqa: E402
 import trainer_teams as TT   # noqa: E402
+import item_list as IL       # noqa: E402
 
 TYPE_COLORS = D.TYPE_COLORS
 
@@ -275,6 +276,11 @@ ul.legend li { break-inside: avoid; margin-bottom: 2px; }
 .toc { columns: 2; }
 .toc a { color: #1d1d1f; text-decoration: none; }
 ol.steps li { margin-bottom: 4px; }
+table.items td { vertical-align: middle; }
+table.items td.ic { width: 30px; text-align: center; }
+table.items td.nm { width: 30%; }
+table.items .ds { font-size: 7.6pt; color: #555; }
+img.icon { width: 24px; height: 24px; image-rendering: pixelated; }
 """
 
 
@@ -305,9 +311,14 @@ RULES = """
 Bulbasaur counts as Grass; a Poison/Grass Pokémon wouldn't.</li>
 <li><b>No duplicates.</b> No two party Pokémon may be the same species (different stages of one family are fine: Ivysaur and
 Venusaur together are allowed).</li>
-<li>The rules are checked before Gym Leader and rival battles, and once at the League's door for the Elite Four and the
-Champion. Break them and the game explains why and lets you fix your team. Ordinary trainers and wild battles have no rules,
+<li><b>No two holding the same item.</b> Like VGC's item clause: two Pokémon can't both hold, say, Leftovers (an item and
+no item are always fine).</li>
+<li>The rules are checked before Gym Leader and rival battles, once at the League's door for the Elite Four and the
+Champion, before your gym's challengers, the Academy's candidates and Oak's finale, and before every Gym Leader Convention
+battle. Break them and the game explains why and lets you fix your team. Ordinary trainers and wild battles have no rules,
 so you can catch and train anything; only your gym battles care.</li>
+<li><b>The tournament</b> (and Bill's simulator) has its own rules: any type goes, but no two of the same species and no two
+holding the same item, checked when you sign up and before every match.</li>
 <li><b>Birds are Flying first</b> in this game (Pidgey, Spearow, Doduo, Natu, Taillow, Hoothoot, Wingull lines, Farfetch'd,
 Aerodactyl), so Flying is a real team type.</li>
 </ul>
@@ -354,11 +365,101 @@ Stone is earned in a trial (see <a href="#academy">the Leader Academy</a>).</li>
 FireRed had RIBBON) shows the Pokémon's Tera type once you have the Tera Orb. A new LEVEL-UP MOVES page lists every move the
 species learns and when.</li>
 <li><b>Gym type finder.</b> On the Town Map, SELECT marks every area where a Pokémon of your type can be found.</li>
+<li><b>A new opening.</b> After the Game Freak screen: a night battle in a gym, the eight badges, your walk up to your own gym
+in Pallet Town, and a painter's brush.</li>
 <li><b>The Sevii Islands are gone.</b> Johto replaces them as the post-game area, and Moltres now waits on Victory Road 2F
 (level 50), as in Red and Blue.</li>
 </ul>
 """
 
+QUESTS = """
+<p>Each Kanto town has something new to do (Viridian's Penny and her Eevee are in <a href="#items">Items</a>; Pallet
+Town's is your gym). In story order:</p>
+<h3>Pewter City: the painter and her Smeargle</h3>
+<p>A painter has moved into a loft in Pewter City (its door is in the northwest corner of town). Her easel is a way into her paintings: each is a real place
+somewhere in the world, in scrambled colours, with nobody there but a figure made of paint who challenges you to a double
+battle. Nothing gets out of a painting: walk off the edge, use a door, Fly, Dig or an Escape Rope and you come back out of
+the easel.</p>
+<ul>
+<li><b>After your 1st badge</b> she lends you her Smeargle, unpainted and typeless, to watch a real battle. Win a painting's
+battle with it and it finds its colour: a <b>Canvas Smeargle</b> of your gym's type, yours to keep.</li>
+<li><b>After each badge after that</b>, one <b>Sketch quest</b>: pick a type and one of Canvas Smeargle's move slots, and she
+paints Sketch into it. The figure's Pokémon use only moves of that type (more of them with each badge). Win, and the move
+Smeargle sketched is kept; lose (you can retry) and the slot gets its old move back.</li>
+<li><b>After the League</b>: the Mega's painting, a figure with a Mega Evolution. Win it for the <b>Smearglite</b> (a key
+item: Canvas Smeargle Mega Evolves with it in the bag). After that, Sketch quests whenever you like.</li>
+</ul>
+<h3>Viridian City and Cinnabar Island: MissingNo.</h3>
+<p>Once you've watched the old man in Viridian City show you how to catch a Pokémon (he'll show you again any time after
+the first), go straight to Cinnabar Island, by Fly or the Hot Air Balloon, without walking through any grass. Surf up and
+down the column of water along Cinnabar's east coast: one wild Pokémon in five there is <b>MissingNo.</b>, a real Pokémon
+you can catch. Its level comes from your name, as it did in Red and Blue (so usually level 100). Step off the coast, or
+through grass anywhere, and it's gone until you watch the demo again. No items are duplicated.</p>
+<p>MissingNo. is Bird/Normal (its "Bird" type is typeless), with Red and Blue's stats (HP 33, Attack 136, Defense 0, Special
+6, Speed 29), Water Gun, Water Gun and Sky Attack, and its old TMs. It isn't in the Pokédex (No. 000), and its Bird type
+means no gym will take it.</p>
+<h3>Vermilion City: the Universal Pokémon Medical Center</h3>
+<p>The foreman on the building site on the east side of town needs help: bring him a <b>Machop</b>, then a <b>Machoke</b>, then a
+<b>Machamp</b>, then a <b>shiny Machamp</b> (any: one from Bill's Palm Pilot counts). Each one stays to work for him, and
+each turns something up in the dig: the Mt. Moon fossil you didn't take, then a Root or Claw Fossil (your pick), then a
+Skull or Armor Fossil. Cinnabar's lab revives them all. With the fourth, the building goes up: the Medical Center, with a
+puzzle on each floor.</p>
+<ul>
+<li><b>1F, triage:</b> six patients, each needing the right medicine. Psyduck: Burn Heal. Rattata: Antidote. Pidgey:
+Paralyze Heal. Jigglypuff: Awakening. Charmander: Ice Heal. Spinda: Persim Berry. Treat all six and the triage nurse gives
+you 5 Lum Berries and 5 Full Heals. The pharmacy sells medicine.</li>
+<li><b>2F, the wards:</b> runaway gurneys block the way. Push them like boulders (no Strength needed); they reset when you
+leave the floor. The nurse past them gives you the <b>Heal Charm</b> (a key item: your healing items heal 10% more HP).</li>
+<li><b>3F, the research lab:</b> the head doctor describes Pokérus. Check the five microscopes: the middle one (third from the left) has it. Then pass
+the head nurse's physical (a battle), and she'll give one of your Pokémon Pokérus once a "day" (a day here is 1,000 steps;
+there's no clock, and Pokérus wears off a day at a time).</li>
+</ul>
+<h3>Lavender Town: the graves in the Pokémon Tower</h3>
+<p>Thirty of the gravestones on floors 2F-4F can be read: each shows its Pokémon, its name and its trainer. Ten of them were
+Pokémon that could have evolved and never did: Charmander, Pidgey, Caterpie and Rattata on 2F; Growlithe, Eevee and
+Magikarp on 3F; Vulpix, Abra and Oddish on 4F. Read all ten, and a ghost girl and her Scyther appear beside you. She gives
+you the <b>Eviolate</b>: Eviolite for Attack and Sp. Atk (1.5x for a Pokémon that can still evolve). There's only one. One
+grave on 3F, near the bottom, has no trainer's name.</p>
+<h3>Celadon City: the Drink Machine</h3>
+<p>The girl on the Dept. Store roof is thirsty, as in FireRed (a Fresh Water, a Soda Pop and a Lemonade, for three TMs). Once
+she's had all three, her own drink is still stuck in the vending machine; she kicks it, out comes a <b>Limited Edition
+Soda</b> (yours: she has plenty), and since the store's throwing the machine out, she gives you that too: the <b>Drink
+Machine</b>, a gym decoration. Talk to it in your gym to mix a drink with up to two berries; only
+a recipe uses anything up.</p>
+<table class="grid"><tr><th>Drink + berries</th><th>Makes</th></tr>
+<tr><td>Fresh Water + a healing berry</td><td>Super Potion</td></tr>
+<tr><td>Soda Pop + a healing berry</td><td>Hyper Potion</td></tr>
+<tr><td>Lemonade + Oran / + Sitrus</td><td>Hyper Potion / Max Potion</td></tr>
+<tr><td>a drink + a status berry</td><td>Full Heal</td></tr>
+<tr><td>Lemonade + Sitrus + Lum</td><td>Full Restore</td></tr>
+<tr><td>a drink + two healing berries</td><td>Revive (Lemonade + two Sitrus: Max Revive)</td></tr>
+<tr><td>a drink + Leppa</td><td>Ether, Elixir or Max Elixir (by the drink)</td></tr>
+<tr><td>Limited Edition Soda + a Tera berry</td><td>a Pokémon in your party gets the berry's type as its second type, for good
+(through evolution and Mega Evolution); not its first type</td></tr>
+</table>
+<p>She gives you another Limited Edition Soda for each type you master, and they turn up, rarely, as tournament prizes.</p>
+<h3>Saffron City: Grandmaster Rod and the Trading Card Game</h3>
+<p>The doorless house left of the Copycat's has a door now. Inside is <b>Rod</b>, Grandmaster of the Pokémon Trading Card
+Game, and a real duel: the Game Boy Trading Card Game's own rules and AI, with its music. Pick one of seven classic decks
+(Flower Power, Fire Charge, Go Go Rain Dance, Zapping Selfdestruct, Strange Psyshock, First-Strike, Colorless) against his
+Legendary Dragonite deck. Win, and he gives you that deck's <b>energy card</b>; rematches are unlimited.</p>
+<ul>
+<li><b>Grass, Fire, Water, Lightning, Psychic and Fighting Energy</b> (Medicine pocket): +5 base power on one damaging move
+of their types, for good. Each covers three types (Grass: Grass, Bug, Poison; Fire: Fire, Dragon, Flying; and so on: the
+item's description says which). Once per move slot; the boost follows the move and goes if it's forgotten. The summary
+shows it.</li>
+<li><b>Double Colorless Energy</b> (from the Colorless deck): every move's PP raised as far as PP Ups go.</li>
+</ul>
+<h3>Route 21: Surfing Pikachu and Pikachu's Beach</h3>
+<p>East of the line of rocks near Cinnabar, one rock is missing: surf through to a tiny islet with a cave. Inside, by a
+solid-gold Diglett statue, is <b>COOL♂</b>, the "Cool" trainer from Pokémon Stadium's Master Ball Cup, with his Stadium team
+at level 100 (Mew, Tauros, Starmie, Rhydon, Exeggutor, Jolteon). Battle him as often as you like. Beat him with a Pikachu in
+your party and he gives you a level 50 <b>Surfing Pikachu</b> (Surf, Thunderbolt, Quick Attack, Agility); beat him with a team
+of nothing but Pikachu for a shiny one. One of each.</p>
+<p>With a Surfing Pikachu in your party, the Surfin' Dude in the beach house on Route 19 runs <b>Pikachu's Beach</b>,
+Pokémon Yellow's surfing minigame: ride the waves, jump off the crests and spin for points (land at the angle of the water
+or wipe out), and reach the goal before HP runs out. He keeps your best score. SELECT quits.</p>
+"""
 ITEMS = """
 <h3>Training items</h3>
 <ul>
@@ -753,10 +854,14 @@ Champions and the rest of the Pokémon world's rivals, villains, Frontier Brains
 title.</li>
 <li>Seeding is rough: champions and legends are spread through the bracket so they meet late; everyone else is placed at
 random. You're unseeded. Every tournament is a new draw.</li>
-<li>Everyone's Pokémon are level 100, with the smartest AI. Any of your Pokémon may play, no type rule.</li>
+<li>Everyone's Pokémon are level 100, with the smartest AI. Any of your Pokémon may play, no type rule; but no two of the
+same species, and no two holding the same item.</li>
 <li>Your team is locked in when you sign up: the Pokémon with you then, no more and no fewer (any order). You're healed
 between rounds, and you can rest between rounds and come back.</li>
-<li>Each win pays the usual prize money for the opponent's class (a Leader, Elite Four or Champion pays ¥10,000).</li>
+<li>Each win pays the usual prize money for the opponent's class (a Leader, Elite Four or Champion pays ¥10,000), and a
+prize: usually a Tera berry, a valuable, vitamins, a Rare Candy or the like; now and then something rare (a Bottle Cap,
+Cilantro, an Ability Capsule or Patch, a Multivitamin, a Gold Bottle Cap, a Move Extractor, the Incense, a clover or coin for
+the Lucky Egg and Amulet Coin, a Limited Edition Soda once you have the Drink Machine). The item list says which.</li>
 <li><b>One loss ends it.</b> The rest of the tournament plays out without you; then you can sign up for a new one. You can
 also forfeit.</li>
 </ul>
@@ -852,9 +957,9 @@ def build(out):
 <li><a href="#about">About the game</a></li><li><a href="#types">Choosing your type</a></li>
 <li><a href="#walk">Walkthrough</a></li><li><a href="#gym">Running your gym</a></li>
 <li><a href="#pc">Your PC</a></li><li><a href="#lab">Dad's lab and the wardrobe</a></li><li><a href="#academy">The Leader Academy</a></li>
-<li><a href="#items">Items</a></li><li><a href="#training">Training houses</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
+<li><a href="#quests">Side quests around Kanto</a></li><li><a href="#items">Items</a></li><li><a href="#training">Training houses</a></li><li><a href="#johto">Johto and the Gym Leader Convention</a></li>
 <li><a href="#tournament">The tournament</a></li><li><a href="#event">Event Pokémon</a></li>
-<li><a href="#teams">Trainers and their teams</a></li><li><a href="#safari">The Exotic Pokémon Safari</a></li></ol></div>""", newpage=False))
+<li><a href="#teams">Trainers and their teams</a></li><li><a href="#safari">The Exotic Pokémon Safari</a></li><li><a href="#itemlist">Item list</a></li></ol></div>""", newpage=False))
     parts.append(chapter("1. About the game", INTRO + RULES + DIFFERENCES, newpage=False, anchor="about"))
     parts.append(chapter("2. Choosing your type", "<p>Oak lists the types from the strongest possible team (the six best "
                          "species of that type in the first 386) to the weakest. Your rival's type beats yours. Your mentor "
@@ -865,20 +970,26 @@ def build(out):
     parts.append(chapter("5. Your PC", PC, newpage=False, anchor="pc"))
     parts.append(chapter("6. Dad's lab and the wardrobe", LAB, anchor="lab"))
     parts.append(chapter("7. The Leader Academy", ACADEMY, anchor="academy"))
-    parts.append(chapter("8. Items", ITEMS, anchor="items"))
-    parts.append(chapter("9. Training houses", training_section(), anchor="training"))
-    parts.append(chapter("10. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
-    parts.append(chapter("11. The tournament", TOURNAMENT, anchor="tournament"))
-    parts.append(chapter("12. Event Pokémon", EVENT, anchor="event"))
+    parts.append(chapter("8. Side quests around Kanto", QUESTS, anchor="quests"))
+    parts.append(chapter("9. Items", ITEMS, anchor="items"))
+    parts.append(chapter("10. Training houses", training_section(), anchor="training"))
+    parts.append(chapter("11. Johto and the Gym Leader Convention", JOHTO, anchor="johto"))
+    parts.append(chapter("12. The tournament", TOURNAMENT, anchor="tournament"))
+    parts.append(chapter("13. Event Pokémon", EVENT, anchor="event"))
     rival, _ = rivals_and_legends()
     player_for_rival = {}
     for t, starter, *_ in TYPES:
         rt = rival.get(starter.upper())
         if rt:
             player_for_rival.setdefault(rt, []).append(t)
-    parts.append(chapter("13. Trainers and their teams", TT.build(badge, player_for_rival), anchor="teams"))
-    parts.append(chapter("14. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
+    parts.append(chapter("14. Trainers and their teams", TT.build(badge, player_for_rival), anchor="teams"))
+    parts.append(chapter("15. The Exotic Pokémon Safari", SAFARI_INTRO, anchor="safari"))
     parts.append(safari_section())
+    tables, n = IL.html(esc)
+    parts.append(chapter("16. Item list", f"<p>Every item you can get ({n} of them), pocket by pocket, with what it does and "
+                         "where it's found: item balls, hidden items (the Itemfinder helps), shops and gifts. Lists of more than "
+                         "eight places are cut short. Many wild Pokémon also hold items, and Thief or Covet takes them.</p>"
+                         + "".join(tables), anchor="itemlist"))
     html = "<!doctype html><html><head><meta charset='utf-8'><style>" + CSS + TT.TEAM_CSS + "</style></head><body>" + "".join(parts) + "</body></html>"
     hp = OUT_DIR / "guide.html"
     hp.write_text(html)
