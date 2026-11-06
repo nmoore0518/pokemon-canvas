@@ -669,8 +669,7 @@ room you're in, the back wall included.</li>
 
 <h3>Extra rooms</h3>
 <p>Oak has a room built onto your gym for every 100 kinds of POKéMON you catch: talk to him in his lab once you've caught
-<b>100</b>, <b>200</b> and <b>300</b>. Each one opens a doorway in the gym: the first in the back wall (behind the middle of
-the room), the second in the left wall and the third in the right wall, halfway down. Walk through and keep going to go in.</p>
+<b>100</b>, <b>200</b> and <b>300</b>. Each one opens a doorway in the gym: the first in the back wall (near its right end), the second in the left wall and the third in the right wall, halfway down. Walk through and keep going to go in.</p>
 <p>The rooms are smaller than the gym (15 by 12 squares of floor) and each has its own PC by the way in. Decorate them as you
 would the gym: the decorations come from the same storage, and each room has its own floors and its own wall style (bought
 once, used anywhere), so one can be a trophy room and another a room for your favorite type. Trainers and the Battle Stage

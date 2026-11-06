@@ -2520,7 +2520,7 @@ static const struct GymRoomInfo sGymRooms[GYM_ROOM_COUNT] =
 // The doorways between the rooms: open once the room is the player's (flag), or always (0)
 static const struct GymRoomDoor sGymRoomDoors[] =
 {
-    {GYM_ROOM_MAIN, 12, 1, 12, 2, MB_NORTH_ARROW_WARP, FLAG_GYM_ROOM_BACK},
+    {GYM_ROOM_MAIN, 21, 1, 21, 2, MB_NORTH_ARROW_WARP, FLAG_GYM_ROOM_BACK},
     {GYM_ROOM_MAIN, 0, 13, 1, 13, MB_WEST_ARROW_WARP, FLAG_GYM_ROOM_LEFT},
     {GYM_ROOM_MAIN, 24, 13, 23, 13, MB_EAST_ARROW_WARP, FLAG_GYM_ROOM_RIGHT},
     {GYM_ROOM_LEFT, 16, 7, 15, 7, MB_EAST_ARROW_WARP, 0},

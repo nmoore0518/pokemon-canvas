@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 # The gym (build_pallet_gym.py: 25 x 28) and its doorways: (x, y, the square in front, the way through)
 GYM_DOORS = {
-    "BACK":  ((12, 1), (12, 2), "NORTH"),
+    "BACK":  ((21, 1), (21, 2), "NORTH"),     # (off to the side: the middle of the back wall is for decorating)
     "LEFT":  ((0, 13), (1, 13), "WEST"),
     "RIGHT": ((24, 13), (23, 13), "EAST"),
 }

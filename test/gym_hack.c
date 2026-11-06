@@ -861,11 +861,11 @@ TEST("GymHack: decor: the extra rooms share the storage, with their own floors a
     SetLocation(MAP_PALLET_TOWN_GYM);
     EXPECT_EQ(GymRoom_Current(), GYM_ROOM_MAIN);
     // A doorway's way through is kept clear once it's open
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 12, 2));
-    EXPECT(GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 12, 1));   // (over the wall, till the doorway's there)
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 21, 2));
+    EXPECT(GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 20, 1));   // (over the wall, till the doorway's there)
     FlagSet(FLAG_GYM_ROOM_BACK);
-    EXPECT(!GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 12, 1));
-    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 12, 2));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_BOOKSHELF, 0, 20, 1));
+    EXPECT(!GymDecor_CanPlace(GYM_DECOR_TRASH_CAN, 0, 21, 2));
     EXPECT(GymDecor_Place(GYM_DECOR_TRASH_CAN, 0, 11, 2));
     // The back room: its own size, floors and walls; the gym's storage
     SetLocation(MAP_PALLET_TOWN_GYM_BACK_ROOM);
