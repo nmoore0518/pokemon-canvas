@@ -2199,7 +2199,7 @@ static const struct NamingScreenTemplate sCodeScreenTemplate =
     .addGenderIcon = FALSE,
     .initialPage = KBPAGE_LETTERS_UPPER,
     .unused = 35,
-    .title = COMPOUND_STRING("Enter code:"),
+    .title = COMPOUND_STRING("The password?"),   // (Pokémon Canvas: the pit's doorman)
 };
 
 static const struct NamingScreenTemplate sRivalNamingScreenTemplate =

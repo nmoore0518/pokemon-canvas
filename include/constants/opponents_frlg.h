@@ -655,6 +655,7 @@
 #define TRAINER_GIOVANNI_DAD_FINAL                 649 // Pokémon Canvas: GIOVANNI's last battle at VIRIDIAN (synthetic abilities, Type Balls)
 #define TRAINER_COOLTRAINER_STADIUM                650 // Pokémon Canvas: Route 21's hidden cave (Stadium's Master Ball Cup, round 2)
 #define TRAINER_HEAD_NURSE                         651 // Pokémon Canvas: the Universal Pokémon Medical Center's 3F (the physical)
+#define TRAINER_PIT_RED                            652 // Pokémon Canvas: the pit's red corner (src/pit.c; not in the table: built at run time)
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
 //       only space for 25 additional trainers before trainer flag space overflows.

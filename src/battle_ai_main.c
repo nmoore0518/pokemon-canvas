@@ -358,7 +358,8 @@ void BattleAI_SetupFlags(void)
         u64 aiFlags = GetAiFlags(TRAINER_BATTLE_PARAM.opponentA, B_BATTLER_1)
                     | GetAiFlags(TRAINER_BATTLE_PARAM.opponentB, B_BATTLER_3);
         gAiThinkingStruct->aiFlags[B_BATTLER_2] = aiFlags;
-        gAiThinkingStruct->aiFlags[B_BATTLER_0] = aiFlags;
+        if (!IsAiVsAiBattle())   // Pokémon Canvas: (AI vs AI: the player's side keeps its own: the pit's fighters)
+            gAiThinkingStruct->aiFlags[B_BATTLER_0] = aiFlags;
     }
 }
 

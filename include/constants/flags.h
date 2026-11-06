@@ -2779,6 +2779,10 @@
 #define FLAG_GYM_ROOM_BACK         0x859
 #define FLAG_GYM_ROOM_LEFT         0x85A
 #define FLAG_GYM_ROOM_RIGHT        0x85B
+// The pit under Celadon (src/pit.c, data/scripts/pit.inc)
+#define FLAG_PIT_DOOR_FOUND        0x85C   // (the panel in the wall's been found: no more surprise)
+#define FLAG_PIT_PASSWORD_GIVEN    0x85D   // (the doorman's let the player by: he stands aside)
+#define FLAG_PIT_BOOKIE_MET        0x85E   // (the bookie's explained himself)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)

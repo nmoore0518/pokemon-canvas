@@ -786,6 +786,21 @@ gSpecials::
 	def_special GymDecor_WarpToPC
 	def_special RegisteredItems_PushList
 	def_special RegisteredItems_UseChosen
+	def_special Pit_OnTransition
+	def_special Pit_NextCard
+	def_special Pit_BufferCardPage
+	def_special Pit_BufferCard
+	def_special Pit_PushCorners
+	def_special Pit_PushBets
+	def_special Pit_PlaceBet
+	def_special Pit_BufferBet
+	def_special Pit_HasBet
+	def_special Pit_BuyTip
+	def_special Pit_TipBought
+	def_special Pit_SetupFight
+	def_special Pit_EndFight
+	def_special Pit_AskPassword
+	def_special Pit_CheckPassword
 	def_special GymRooms_OakReward
 	def_special GymRooms_GiveReward
 	def_special Tourney_RollPrize

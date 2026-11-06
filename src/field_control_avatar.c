@@ -1,5 +1,6 @@
 #include "exotic_safari.h"
 #include "global.h"
+#include "pit.h"
 #include "berry_field.h"
 #include "medical_center.h"
 #include "incense.h"
@@ -215,6 +216,8 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     if (input->heldDirection && input->dpadDirection == playerDirection)
     {
         if (TryArrowWarp(&position, metatileBehavior, playerDirection) == TRUE)
+            return TRUE;
+        if (Pit_TryHiddenDoor(position.x, position.y, playerDirection))   // Pokémon Canvas: Celadon's hidden door
             return TRUE;
     }
 

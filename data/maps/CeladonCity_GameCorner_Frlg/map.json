@@ -170,6 +170,34 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "CeladonCity_GameCorner_EventScript_RocketGrunt",
       "flag": "FLAG_HIDE_GAME_CORNER_ROCKET"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MAN_2",
+      "x": 14,
+      "y": 12,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Pit_EventScript_GameCornerWhisperer",
+      "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_BALDING_MAN",
+      "x": 15,
+      "y": 12,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Pit_EventScript_GameCornerListener",
+      "flag": "0"
     }
   ],
   "warp_events": [

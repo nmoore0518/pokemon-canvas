@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pit.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_anim_scripts.h"
@@ -5642,6 +5643,8 @@ enum Obedience GetAttackerObedienceForAction(void)
     if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
         return OBEYS;
     if (Academy_RentalTeamActive()) // the Leader Academy's level-100 rentals
+        return OBEYS;
+    if (Pit_FightActive())          // Pokémon Canvas: the pit's fighters' own Pokémon
         return OBEYS;
     if (B_OBEDIENCE_MECHANICS < GEN_8 && !IsOtherTrainer(gBattleMons[gBattlerAttacker].otId, gBattleMons[gBattlerAttacker].otName))
         return OBEYS;

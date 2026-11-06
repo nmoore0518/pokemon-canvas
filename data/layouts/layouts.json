@@ -11689,6 +11689,45 @@
       "border_filepath": "data/layouts/SaffronCity_TcgHouse_Frlg/border.bin",
       "blockdata_filepath": "data/layouts/SaffronCity_TcgHouse_Frlg/map.bin",
       "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_CELADON_CITY_PIT_HALL",
+      "name": "CeladonCity_PitHall_Layout",
+      "width": 9,
+      "height": 10,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_DiglettsCave",
+      "border_filepath": "data/layouts/CeladonCity_PitHall/border.bin",
+      "blockdata_filepath": "data/layouts/CeladonCity_PitHall/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_CELADON_CITY_PIT",
+      "name": "CeladonCity_Pit_Layout",
+      "width": 23,
+      "height": 17,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_DiglettsCave",
+      "border_filepath": "data/layouts/CeladonCity_Pit/border.bin",
+      "blockdata_filepath": "data/layouts/CeladonCity_Pit/map.bin",
+      "layout_version": "frlg"
+    },
+    {
+      "id": "LAYOUT_CELADON_CITY_PIT_BACK_ROOM",
+      "name": "CeladonCity_PitBackRoom_Layout",
+      "width": 11,
+      "height": 9,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General_Frlg",
+      "secondary_tileset": "gTileset_DiglettsCave",
+      "border_filepath": "data/layouts/CeladonCity_PitBackRoom/border.bin",
+      "blockdata_filepath": "data/layouts/CeladonCity_PitBackRoom/map.bin",
+      "layout_version": "frlg"
     }
   ]
 }

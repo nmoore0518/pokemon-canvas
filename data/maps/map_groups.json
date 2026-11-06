@@ -1017,7 +1017,10 @@
     "CeladonCity_Gym_Frlg",
     "CeladonCity_Restaurant_Frlg",
     "CeladonCity_House1_Frlg",
-    "CeladonCity_Hotel_Frlg"
+    "CeladonCity_Hotel_Frlg",
+    "CeladonCity_PitHall",
+    "CeladonCity_Pit",
+    "CeladonCity_PitBackRoom"
   ],
   "gMapGroup_IndoorFuchsia_Frlg": [
     "FuchsiaCity_SafariZone_Entrance_Frlg",

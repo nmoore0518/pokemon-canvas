@@ -282,6 +282,8 @@ static inline u16 GetPartnerIdFromTrainerId(u16 trainerId)
 const struct Trainer *GymHack_GetRivalTrainer(u16 trainerId);
 // Gym Trainer hack: the current challenger at the player's gym (src/gym_challenge.c)
 const struct Trainer *GymChallenge_GetTrainer(u16 trainerId);
+// Pokémon Canvas: the pit's red corner, in the player's place (src/pit.c)
+const struct Trainer *Pit_GetTrainer(u16 trainerId);
 
 static inline const struct Trainer *GetTrainerStructFromId(u16 trainerId)
 {
@@ -292,6 +294,9 @@ static inline const struct Trainer *GetTrainerStructFromId(u16 trainerId)
     const struct Trainer *challenger = GymChallenge_GetTrainer(trainerId);
     if (challenger != NULL)
         return challenger;
+    const struct Trainer *pitFighter = Pit_GetTrainer(trainerId);
+    if (pitFighter != NULL)
+        return pitFighter;
     enum DifficultyLevel difficulty;
 
     if (IsPartnerTrainerId(trainerId))

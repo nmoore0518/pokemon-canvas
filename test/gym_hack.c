@@ -4903,3 +4903,68 @@ TEST("GymHack: SELECT: up to five items registered, in order; a sixth is refused
     RegisteredItems_Clear();
     EXPECT_EQ(CountRegisteredItems(), 0);
 }
+
+#include "pit.h"
+extern const u8 Pit_Text_HiddenDoorFound[], Pit_Text_DoormanStop[], Pit_Text_DoormanWrong[], Pit_Text_DoormanRight[],
+    Pit_Text_DoormanLetIn[], Pit_Text_CardHeader[], Pit_Text_BookieFirst[], Pit_Text_BookieCard[], Pit_Text_BookieBetTaken[],
+    Pit_Text_BookieLater[], Pit_Text_BookieBroke[], Pit_Text_BookieWatch[], Pit_Text_BookieAlreadyBet[], Pit_Text_BookieBell[],
+    Pit_Text_BookieResult[], Pit_Text_BetWon[], Pit_Text_BetLost[], Pit_Text_BookieNextBout[], Pit_Text_TipsterOffer[],
+    Pit_Text_TipsterNo[], Pit_Text_TipsterBroke[], Pit_Text_TipClean[], Pit_Text_TipDive[], Pit_Text_TipItem[], Pit_Text_TipLevel[],
+    Pit_Text_Crowd0[], Pit_Text_Crowd1[], Pit_Text_Crowd2[], Pit_Text_Crowd3[], Pit_Text_Crowd4[], Pit_Text_Crowd5[],
+    Pit_Text_Crowd6[], Pit_Text_Crowd7[], Pit_Text_BackRoomKeeper[], Pit_Text_Overheard[], Pit_Text_WhispererCaught[],
+    Pit_Text_ListenerBeatIt[], Pit_Text_BlueLoses[];
+extern const u8 GymRooms_Text_OakCaughtSoMany[], GymRooms_Text_OakBackRoom[], GymRooms_Text_OakLeftRoom[],
+    GymRooms_Text_OakRightRoom[], GymRooms_Text_DoorwayOpened[], GymRooms_Text_OakShowItOff[];
+
+TEST("GymHack: the pit's and the gym rooms' lines fit the message box")
+{
+    static const u8 *const texts[] = {Pit_Text_HiddenDoorFound, Pit_Text_DoormanStop, Pit_Text_DoormanWrong, Pit_Text_DoormanRight,
+        Pit_Text_DoormanLetIn, Pit_Text_CardHeader, Pit_Text_BookieFirst, Pit_Text_BookieCard, Pit_Text_BookieBetTaken,
+        Pit_Text_BookieLater, Pit_Text_BookieBroke, Pit_Text_BookieWatch, Pit_Text_BookieAlreadyBet, Pit_Text_BookieBell,
+        Pit_Text_BookieResult, Pit_Text_BetWon, Pit_Text_BetLost, Pit_Text_BookieNextBout, Pit_Text_TipsterOffer,
+        Pit_Text_TipsterNo, Pit_Text_TipsterBroke, Pit_Text_TipClean, Pit_Text_TipDive, Pit_Text_TipItem, Pit_Text_TipLevel,
+        Pit_Text_Crowd0, Pit_Text_Crowd1, Pit_Text_Crowd2, Pit_Text_Crowd3, Pit_Text_Crowd4, Pit_Text_Crowd5,
+        Pit_Text_Crowd6, Pit_Text_Crowd7, Pit_Text_BackRoomKeeper, Pit_Text_Overheard, Pit_Text_WhispererCaught,
+        Pit_Text_ListenerBeatIt, Pit_Text_BlueLoses, GymRooms_Text_OakCaughtSoMany, GymRooms_Text_OakBackRoom,
+        GymRooms_Text_OakLeftRoom, GymRooms_Text_OakRightRoom, GymRooms_Text_DoorwayOpened, GymRooms_Text_OakShowItOff};
+    u32 i, page, card;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, COMPOUND_STRING("CRAWDAUNT"));
+    StringCopy(gStringVar2, COMPOUND_STRING("9999999"));
+    StringCopy(gStringVar3, COMPOUND_STRING("LAGGING TAIL"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+    // The card on the rim, for many cards
+    for (card = 0; card < 60; card++)
+    {
+        Pit_NextCard();
+        for (page = 0; page < 5; page++)
+        {
+            gSpecialVar_0x8004 = page;
+            Pit_BufferCardPage();
+            ExpectLinesFit(gStringVar4, 27 * 8 - 4, FALSE);
+        }
+    }
+}
+
+TEST("GymHack: the pit: odds pay more on the long shot; the tipster charges once a card")
+{
+    u32 card, fixed = 0;
+    SetMoney(&gSaveBlock1Ptr->money, 0);
+    Pit_NextCard();
+    Pit_BuyTip();
+    EXPECT_EQ(gSpecialVar_Result, 0);          // (can't pay)
+    for (card = 0; card < 200; card++)
+    {
+        Pit_NextCard();
+        SetMoney(&gSaveBlock1Ptr->money, 3000);
+        Pit_BuyTip();
+        EXPECT_GE(gSpecialVar_Result, 1);
+        EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 0);
+        Pit_BuyTip();                          // (the second time's free)
+        EXPECT_GE(gSpecialVar_Result, 1);
+        fixed += (gSpecialVar_Result >= 2);
+    }
+    EXPECT_GT(fixed, 20);                      // (about 30% fixed)
+    EXPECT_LT(fixed, 100);
+}

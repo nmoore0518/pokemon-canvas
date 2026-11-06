@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pit.h"
 #include "playtest.h"
 #include "battle.h"
 #include "battle_ai_main.h"
@@ -60,6 +61,8 @@ static void AnimateMonAfterKnockout(enum BattlerId battler);
 bool32 IsAiVsAiBattle(void)
 {
     if (Playtest_AutoBattle())   // Pokémon Canvas: automated playtests (include/playtest.h)
+        return TRUE;
+    if (Pit_FightActive())       // Pokémon Canvas: the pit's fights: two trainers' AI (src/pit.c)
         return TRUE;
     return (B_FLAG_AI_VS_AI_BATTLE && FlagGet(B_FLAG_AI_VS_AI_BATTLE));
 }
