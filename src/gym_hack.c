@@ -366,13 +366,6 @@ void GymHack_CheckTeamSpecial(void)
     gSpecialVar_Result = GymHack_CheckTeam();
 }
 
-// special: VAR_RESULT = the item clause alone (the Gym Leader Convention: any team, but no two
-// Pokémon holding the same item)
-void GymHack_CheckItemClauseSpecial(void)
-{
-    gSpecialVar_Result = GymHack_CheckTeamRules(TEAM_RULE_ITEM);
-}
-
 // special: reloads the current map with the player where they stand. Used
 // after a blocked battle so that a rival who walked up for a scripted battle
 // is put back, ready to try again once the team is fixed.

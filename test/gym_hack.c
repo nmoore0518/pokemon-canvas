@@ -316,7 +316,7 @@ TEST("GymHack: two Pokemon holding the same item break the rules")
     RUN_OVERWORLD_SCRIPT(givemon SPECIES_MAGBY, 10, item=ITEM_EVIOLITE;);
     EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_DUPLICATE_ITEM);
     EXPECT_EQ(StringCompare(gStringVar1, GetItemName(ITEM_EVIOLITE)), 0);
-    EXPECT_EQ(GymHack_CheckTeamRules(TEAM_RULE_ITEM), GYM_HACK_TEAM_DUPLICATE_ITEM);  // (the Convention's)
+    EXPECT_EQ(GymHack_CheckTeamRules(TEAM_RULE_ITEM), GYM_HACK_TEAM_DUPLICATE_ITEM);
 }
 
 TEST("GymHack: the tournament's clauses: any type, but no two alike and no two items alike")
