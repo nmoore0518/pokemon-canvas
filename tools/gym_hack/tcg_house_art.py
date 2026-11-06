@@ -1,6 +1,6 @@
 """The art for Saffron City's card house (tools/gym_hack/build_tcg_house.py): drawn over FireRed's
 building tiles. table(): a long card table (4x2 metatiles) with a playmat and both duelists' cards;
-poster(): a framed Dragonite (the Trading Card Game's own card art, src: graphics/tcg/cards);
+poster(): the game's card back (as its play area screens draw a face-down card), at twice its size;
 shelf(): a bookcase of card binders (1x3 metatiles). Each is the top layer, RGBA (alpha 0: clear).
 """
 import collections
@@ -100,21 +100,36 @@ def table():
     rect(im, 31, 10, 2, 3, COIN); im.putpixel((30, 11), COIN + (255,)); im.putpixel((33, 11), COIN + (255,))
     return im
 
+# the game's card back (its face-down card in the play area screens: CGB symbols $60-$63, palette 2),
+# as the duel draws it at 11x15
+CARD_BACK = [
+    "###########",
+    "#bbbbbbbbb#",
+    "#bbbbbbbbb#",
+    "#bbbbbbbbb#",
+    "#bbbbbbbbb#",
+    "#bbb...bbb#",
+    "#bb.....bb#",
+    "#bb.##..bb#",
+    "#bb.##..bb#",
+    "#bbb...bbb#",
+    "#bbbbbbbbb#",
+    "#bbbbbbbbb#",
+    "#bbbbbbbbb#",
+    "#bbbbbbbbb#",
+    "###########",
+]
+CARD_BACK_COLORS = {"#": (0, 0, 0), "b": (99, 90, 165), ".": (231, 231, 198)}
+
+
 def poster():
-    src = Image.open(ROOT / 'graphics/tcg/cards/dragonite1.png').convert('RGB')
-    src = src.crop((4, 0, 60, 48))           # 56x48 -> 28x24 (each 2x2's commonest colour)
-    art = Image.new('RGB', (28, 24))
-    for y in range(24):
-        for x in range(28):
-            c = collections.Counter(src.getpixel((2 * x + i, 2 * y + j)) for i in (0, 1) for j in (0, 1))
-            art.putpixel((x, y), c.most_common(1)[0][0])
+    """the card back, twice its size (22x30), hung on the wall with a little shadow"""
     im = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
-    GOLD_D, GOLD = (156, 106, 41), (230, 180, 74)
-    rect(im, 0, 3, 32, 29, GOLD_D)
-    rect(im, 1, 4, 30, 27, GOLD)
-    rect(im, 2, 5, 28, 25, GOLD_D)
-    im.paste(art, (2, 6))
-    rect(im, 2, 30, 28, 1, GOLD_D)
+    x0, y0 = 5, 1
+    rect(im, x0 + 2, y0 + 2, 22, 30 - 1, (123, 123, 123))      # (the shadow)
+    for y, row in enumerate(CARD_BACK):
+        for x, ch in enumerate(row):
+            rect(im, x0 + 2 * x, y0 + 2 * y, 2, 2, CARD_BACK_COLORS[ch])
     return im
 
 def shelf():

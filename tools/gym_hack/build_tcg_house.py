@@ -7,10 +7,10 @@
   house's door (its metatiles, copied over the same columns), at DOOR, and a warp in.
 - gTileset_TcgHouse (data/tilesets/secondary/tcg_house_frlg): the house's usual secondary tileset
   (generic_building_1_frlg) and new metatiles from tools/gym_hack/tcg_house_art.py: a long card table
-  with a playmat and cards (its own palette, 9), a framed Dragonite (10) and a bookcase of card
+  with a playmat and cards (its own palette, 9), the game's card back, big (10) and a bookcase of card
   binders (11), each drawn over the building tiles' bottom layers they replace.
 - LAYOUT_SAFFRON_CITY_TCG_HOUSE: the Saffron house's layout (House5_Frlg) with them: the table where
-  the little table and its chairs were, the Dragonite where the map was, the binders where the
+  the little table and its chairs were, the card back where the map was (the window beside it a column left), the binders where the
   drawers were.
 - SaffronCity_TcgHouse_Frlg: the new map, its door back out and ROD (a Cool Trainer) at the
   table's end; into the map groups (last in Saffron's indoor group: no other map's number changes)
@@ -141,6 +141,8 @@ def layout(pieces):
                 raw[(y0 + dy) * w + x0 + dx] = m | (c << 10) | (v & 0xF000)
     put(4, 4, pieces["table"], 1)
     put(9, 0, pieces["poster"])
+    for y in (0, 1):    # (the right window: a column left, out of the card's way)
+        raw[y * w + 7], raw[y * w + 8] = raw[y * w + 8], raw[y * w + 7]
     put(2, 0, pieces["shelf"], 1)
     d = ROOT / LAYOUT_DIR
     d.mkdir(parents=True, exist_ok=True)
