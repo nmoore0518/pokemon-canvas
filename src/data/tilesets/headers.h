@@ -2724,3 +2724,15 @@ const struct Tileset gTileset_UnovaSkyarrow =
 };
 
 // </clone UnovaSkyarrow>
+
+// Pokémon Canvas: the pit under Celadon (tools/gym_hack/build_pit.py): Diglett's Cave, and a log fence
+const struct Tileset gTileset_Pit =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_DiglettsCave,
+    .palettes = gTilesetPalettes_DiglettsCave,
+    .metatiles = gMetatiles_Pit,
+    .metatileAttributes = gMetatileAttributes_Pit,
+    .callback = NULL,
+};

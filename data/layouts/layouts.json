@@ -11706,12 +11706,12 @@
     {
       "id": "LAYOUT_CELADON_CITY_PIT",
       "name": "CeladonCity_Pit_Layout",
-      "width": 23,
-      "height": 17,
+      "width": 27,
+      "height": 21,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_DiglettsCave",
+      "secondary_tileset": "gTileset_Pit",
       "border_filepath": "data/layouts/CeladonCity_Pit/border.bin",
       "blockdata_filepath": "data/layouts/CeladonCity_Pit/map.bin",
       "layout_version": "frlg"

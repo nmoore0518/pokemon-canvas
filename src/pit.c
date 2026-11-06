@@ -47,10 +47,11 @@
 #include "malloc.h"
 #include "list_menu.h"
 
-#define FIX_CHANCE      30          // (percent of cards)
+#define FIX_CHANCE      25          // (percent of cards)
 #define HOUSE_CUT       90          // (the bookie pays 90% of fair odds)
 #define TIP_PRICE       3000
-#define MAX_BET         50000
+#define MAX_BET         100000
+#define UNDERDOG_MIN    15          // (the underdog's chance, by the card: never less than this)
 
 enum { RED, BLUE, SIDES };
 enum { PIT_FIX_NONE, PIT_FIX_DIVE, PIT_FIX_ITEM, PIT_FIX_LEVEL };
@@ -278,7 +279,7 @@ static u32 RedChance(void)
     struct PitSide *r = &sCard.side[RED], *b = &sCard.side[BLUE];
     s32 redHits, blueHits, margin, i;
     // (each half-hit of difference, roughly, from a coin toss to a sure thing)
-    static const u8 sChance[] = {50, 58, 66, 73, 79, 84, 88, 91, 93, 95};
+    static const u8 sChance[] = {50, 57, 63, 69, 74, 78, 81, 84, 87, 90, 93, 95};
     CreateSideMon(&mons[RED], r, r->level, r->item);
     CreateSideMon(&mons[BLUE], b, b->level, b->item);
     redHits = HitsToKO(&mons[RED], r, &mons[BLUE], b);       // (x10: tenths of a hit)
@@ -315,9 +316,39 @@ static void NewSide(struct PitSide *s, u32 fighter, u32 level)
     PickMoves(s);
 }
 
+// The best `a` can do to `d` by type: its attacks' effectiveness, the best of them (x4: 4 neutral)
+static u32 BestEffect(const struct PitSide *a, const struct PitSide *d)
+{
+    u32 i, best = 0;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        u32 move = a->moves[i];
+        if (move == MOVE_NONE || GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS || GetMovePower(move) <= 1)
+            continue;
+        best = max(best, (u32)(Effectiveness(GetMoveType(move), d->species) * 4 / UQ_4_12(1.0)));
+    }
+    return best;
+}
+
+// Whether the two make a fair bout: types roughly even (a one-sided type advantage now and then,
+// when the other side makes it up some other way), both able to hurt each other, and the
+// underdog with a real chance by the card. `tries` loosens it, so a card always comes.
+static bool32 FairBout(u32 redChance, u32 tries)
+{
+    const struct PitSide *r = &sCard.side[RED], *b = &sCard.side[BLUE];
+    u32 effR = BestEffect(r, b), effB = BestEffect(b, r);
+    if (effR == 0 || effB == 0)
+        return FALSE;
+    if (tries < 40 && ((effR >= 8 && effB < 8) || (effB >= 8 && effR < 8)) && Random() % 4 != 0)
+        return FALSE;
+    if (tries < 60 && (redChance < UNDERDOG_MIN || redChance > 100 - UNDERDOG_MIN))
+        return FALSE;
+    return TRUE;
+}
+
 static void NewCard(void)
 {
-    u32 level = CardLevel(), a, b, redChance;
+    u32 level = CardLevel(), a, b, redChance, tries = 0;
     memset(&sCard, 0, sizeof(sCard));
     a = Random() % ARRAY_COUNT(sFighters);
     do
@@ -325,9 +356,17 @@ static void NewCard(void)
     while (b == a);
     NewSide(&sCard.side[RED], a, level + Random() % 5 - 2);
     do
-        NewSide(&sCard.side[BLUE], b, level + Random() % 5 - 2);
-    while (sCard.side[BLUE].species == sCard.side[RED].species);
-    redChance = RedChance();
+    {
+        // (now and then a new red corner too, so a hard one doesn't stick)
+        if (tries > 0 && tries % 10 == 0)
+            NewSide(&sCard.side[RED], a, level + Random() % 5 - 2);
+        do
+            NewSide(&sCard.side[BLUE], b, level + Random() % 5 - 2);
+        while (sCard.side[BLUE].species == sCard.side[RED].species);
+        redChance = RedChance();
+        tries++;
+    } while (!FairBout(redChance, tries) && tries < 80);
+    redChance = min(max(redChance, (u32)UNDERDOG_MIN), 100u - UNDERDOG_MIN);
     sCard.side[RED].odds = OddsFor(redChance);
     sCard.side[BLUE].odds = OddsFor(100 - redChance);
     // The fix: the favorite takes a dive
@@ -465,7 +504,7 @@ void Pit_PushCorners(void)
     gSpecialVar_Result = SIDES;
 }
 
-static const u32 sBets[] = {1000, 5000, 10000, 25000, MAX_BET};
+static const u32 sBets[] = {5000, 10000, 25000, 50000, MAX_BET};
 
 // Special: the bets the player can cover (dynmultichoice); VAR_RESULT = how many (0: broke)
 void Pit_PushBets(void)
@@ -510,6 +549,17 @@ void Pit_BufferBet(void)
     StringCopy(gStringVar1, GetSpeciesName(sCard.side[side].species));
     ConvertIntToDecimalStringN(gStringVar2, sCard.bet, STR_CONV_MODE_LEFT_ALIGN, 6);
     ConvertIntToDecimalStringN(gStringVar3, sCard.bet * sCard.side[side].odds / 10, STR_CONV_MODE_LEFT_ALIGN, 7);
+}
+
+// What the bookie pays on a corner (x10), and its Pokémon (for tests)
+u32 Pit_GetOdds(u32 side)
+{
+    return sCard.side[min(side, (u32)BLUE)].odds;
+}
+
+u32 Pit_GetSpecies(u32 side)
+{
+    return sCard.side[min(side, (u32)BLUE)].species;
 }
 
 // Special: VAR_RESULT = TRUE if the player has a bet on this bout

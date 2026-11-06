@@ -441,21 +441,23 @@ a recipe uses anything up.</p>
 </table>
 <p>She gives you another Limited Edition Soda for each type you master, and they turn up, rarely, as tournament prizes.</p>
 <h3>Celadon City: the pit</h3>
-<p>Under Celadon there's a fighting pit where the crowd bets on other trainers' battles (the League allows prize money between
-two trainers, but not a crowd wagering on them, so it's underground). Listen in on a pair of gamblers in the Game Corner
+<p>Under Celadon there's a fighting pit where the crowd bets on other trainers' battles. It's underground because the League
+would never sanction it: the way these fighters treat their Pokémon breaks every rule it has. Listen in on a pair of gamblers in the Game Corner
 to learn where it is and the password. The doorman in the hall below asks for it (type it in; capitals or not).</p>
 <ul>
 <li><b>The card</b>: the sign on the rim shows tonight's bout: each corner's fighter and Pokémon, its level, ability, held
 item and moves, and the bookie's odds. The two Pokémon stand in the pit.</li>
-<li><b>Betting</b>: talk to the bookie: pick a corner and bet ¥1,000 to ¥50,000 (or just watch). The fight is a real battle,
+<li><b>Betting</b>: talk to the bookie: pick a corner and bet ¥5,000 to ¥100,000 (or just watch). The fight is a real battle,
 the two trainers' AI against each other. A winning bet pays your stake times the odds; a loss costs the stake, nothing else.
 A new bout goes up after every fight, and every time you come down.</li>
 <li><b>The odds</b> come from the card (who knocks out whom first, and who's faster), minus the house's cut, and they're a
-little off: know your type matchups and you'll find the good bets.</li>
-<li><b>Fixed fights</b>: about one in three is fixed: the favorite takes a dive (its trainer calls bad moves), or it isn't
+little off. The bouts are mostly even by type, so items, moves and base stats decide them; where one side has the type
+advantage, the other makes up for it or pays more. The underdog always has a chance.</li>
+<li><b>Fixed fights</b>: about one in four is fixed: the favorite takes a dive (its trainer calls bad moves), or it isn't
 holding the item on the card, or it's weaker than the card says. The tipster on the rim tells you which, for ¥3,000 a
 card.</li>
-<li>The back room, behind the ladder in the far corner, is closed for now.</li>
+<li>The bookie works from a plank booth by the ring; talk to him across his counter. The back room, down the ladder in the
+far corner, is closed for now.</li>
 </ul>
 <h3>Saffron City: Grandmaster Rod and the Trading Card Game</h3>
 <p>The doorless house left of the Copycat's has a door now. Inside is <b>Rod</b>, Grandmaster of the Pokémon Trading Card

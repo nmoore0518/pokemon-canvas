@@ -4968,3 +4968,17 @@ TEST("GymHack: the pit: odds pay more on the long shot; the tipster charges once
     EXPECT_GT(fixed, 20);                      // (about 30% fixed)
     EXPECT_LT(fixed, 100);
 }
+
+TEST("GymHack: the pit: every bout's fair: the underdog pays at most about x6, the favorite at least x1.1")
+{
+    u32 card;
+    for (card = 0; card < 150; card++)
+    {
+        Pit_NextCard();
+        EXPECT_NE(Pit_GetSpecies(0), Pit_GetSpecies(1));
+        EXPECT_GE(Pit_GetOdds(0), 11);
+        EXPECT_GE(Pit_GetOdds(1), 11);
+        EXPECT_LE(Pit_GetOdds(0), 61);
+        EXPECT_LE(Pit_GetOdds(1), 61);
+    }
+}

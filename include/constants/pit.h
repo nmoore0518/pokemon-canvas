@@ -6,13 +6,13 @@
 #define PIT_DOOR_X 43
 #define PIT_DOOR_Y 21
 // In the pit: where the fighters and their Pokémon stand
-#define PIT_RED_TRAINER_X 7
-#define PIT_RED_TRAINER_Y 7
-#define PIT_BLUE_TRAINER_X 15
-#define PIT_BLUE_TRAINER_Y 7
-#define PIT_RED_MON_X 10
-#define PIT_RED_MON_Y 7
-#define PIT_BLUE_MON_X 12
-#define PIT_BLUE_MON_Y 7
+#define PIT_RED_TRAINER_X 9
+#define PIT_RED_TRAINER_Y 10
+#define PIT_BLUE_TRAINER_X 17
+#define PIT_BLUE_TRAINER_Y 10
+#define PIT_RED_MON_X 12
+#define PIT_RED_MON_Y 10
+#define PIT_BLUE_MON_X 14
+#define PIT_BLUE_MON_Y 10
 
 #endif // GUARD_CONSTANTS_PIT_H

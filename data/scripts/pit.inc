@@ -362,8 +362,8 @@ Pit_Text_DoormanRight::
 	.string "…Huh. Somebody's got a big mouth.\p"
 	.string "Fine. Down you go. You didn't see\n"
 	.string "me, I didn't see you.\p"
-	.string "And if a cop ever asks, you were\n"
-	.string "at the movies.$"
+	.string "And whatever you hear down there,\n"
+	.string "it's just the crowd. Got it?$"
 
 Pit_Text_DoormanLetIn::
 	.string "Go on down. Keep your voice low\n"
@@ -377,15 +377,14 @@ Pit_Text_BookieFirst::
 	.string "Well, well. Fresh meat.\p"
 	.string "You know why this place is down a\n"
 	.string "hole, right?\p"
-	.string "Upstairs, two trainers can put up\n"
-	.string "prize money on their own battle.\l"
-	.string "League purse. All nice and legal.\p"
-	.string "But a crowd putting money on\n"
-	.string "somebody ELSE'S fight?\p"
-	.string "League shut that down years ago.\n"
-	.string "Said it got fights thrown.\p"
-	.string "Heh. They weren't wrong.\p"
-	.string "Anyway. Fighter on the card, odds\n"
+	.string "The League's got rules about how a\n"
+	.string "trainer treats their POKéMON.\l"
+	.string "Rest. Healing. Stop when it's hurt.\p"
+	.string "Down here, we're a little more…\n"
+	.string "relaxed about all that.\p"
+	.string "Hey, don't look at me like that.\n"
+	.string "We treat 'em fine. I swear.\p"
+	.string "Anyway. Fighters on the card, odds\n"
 	.string "on the board. Pick a corner, lay\l"
 	.string "your money down. Winner pays out.\p"
 	.string "And kid? The house always takes\n"
@@ -502,8 +501,9 @@ Pit_Text_Crowd1::
 	.string "here. Still can't pick a winner.$"
 
 Pit_Text_Crowd2::
-	.string "You didn't see me here. My wife\n"
-	.string "thinks I'm at the Game Corner.$"
+	.string "Where do the losers go after?\p"
+	.string "…Kid, down here you learn not to\n"
+	.string "ask that.$"
 
 Pit_Text_Crowd3::
 	.string "The bookie's odds are always a\n"
@@ -520,8 +520,10 @@ Pit_Text_Crowd5::
 	.string "fur fly!$"
 
 Pit_Text_Crowd6::
-	.string "The League calls this “unsanctioned\n"
-	.string "wagering.” I call it Tuesday.$"
+	.string "The League says these fighters\n"
+	.string "mistreat their POKéMON.\p"
+	.string "Look at 'em. They're fine.\n"
+	.string "…Mostly.$"
 
 Pit_Text_Crowd7::
 	.string "Lost my boat on a sure thing last\n"

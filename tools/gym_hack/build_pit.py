@@ -101,37 +101,124 @@ def hall():
     return r
 
 
-# ---- The pit: rock all round a sunken dirt ring; the crowd on its rim ----
-PIT_W, PIT_H = 23, 17
-RING = (7, 5, 15, 9)            # the dirt (x0, y0, x1, y1)
-PIT_LADDER = (11, 14)           # (up to the hall)
-BACK_LADDER = (20, 3)           # (down to the back room)
-CARD_SIGN = (14, 12)            # the card: tonight's bout (a sign on the rim)
-RED_TRAINER, BLUE_TRAINER = (7, 7), (15, 7)
-RED_MON, BLUE_MON = (10, 7), (12, 7)
-BOOKIE = (13, 12)
-TIPSTER = (3, 10)
+# ---- The pit: a big dirt cave, a log-fenced ring in the middle with the crowd round it, and
+# the bookie in a plank booth with a counter. Its own tileset (gTileset_Pit: Diglett's Cave, plus
+# blocks with the General tileset's log fence and planks over its dirt) ----
+PIT_W, PIT_H = 27, 21
+RING = (8, 6, 18, 13)           # the fence (x0, y0, x1, y1); the fight inside it
+PIT_LADDER = (13, 18)           # (up to the hall)
+BACK_LADDER = (24, 3)           # (down to the back room)
+BOOTH = (20, 15, 22, 16)        # the planks behind the counter
+COUNTER_Y = 14
+CARD_SIGN = (19, 14)            # the card: tonight's bout (on the booth's corner)
+RED_TRAINER, BLUE_TRAINER = (9, 10), (17, 10)
+RED_MON, BLUE_MON = (12, 10), (14, 10)
+BOOKIE = (21, 15)
+TIPSTER = (3, 12)
 CROWD = [  # (x, y, look, facing)
-    (8, 3, "OBJ_EVENT_GFX_BIKER", "DOWN"), (10, 3, "OBJ_EVENT_GFX_ROCKER", "DOWN"),
-    (13, 3, "OBJ_EVENT_GFX_MAN_2", "DOWN"), (15, 3, "OBJ_EVENT_GFX_BALDING_MAN", "DOWN"),
-    (4, 6, "OBJ_EVENT_GFX_WOMAN_3", "RIGHT"), (18, 8, "OBJ_EVENT_GFX_CRUSH_GIRL", "LEFT"),
-    (8, 11, "OBJ_EVENT_GFX_GYM_GUY", "UP"), (17, 11, "OBJ_EVENT_GFX_FISHER", "UP"),
+    (9, 5, "OBJ_EVENT_GFX_BIKER", "DOWN"), (12, 5, "OBJ_EVENT_GFX_ROCKER", "DOWN"),
+    (16, 5, "OBJ_EVENT_GFX_MAN_2", "DOWN"), (7, 8, "OBJ_EVENT_GFX_WOMAN_3", "RIGHT"),
+    (19, 9, "OBJ_EVENT_GFX_CRUSH_GIRL", "LEFT"), (7, 12, "OBJ_EVENT_GFX_BALDING_MAN", "RIGHT"),
+    (10, 14, "OBJ_EVENT_GFX_GYM_GUY", "UP"), (15, 14, "OBJ_EVENT_GFX_FISHER", "UP"),
 ]
+
+# gTileset_Pit's own blocks, after Diglett's Cave's (0x280 + its 157)
+PIT_FIRST = 0x280 + 157
+RING_H, RING_L, RING_R, COUNTER = PIT_FIRST, PIT_FIRST + 1, PIT_FIRST + 2, PIT_FIRST + 3
+PLANK = 0x1BE                   # (the General tileset's deck: used as is)
 
 
 def pit_room():
     r = Room(PIT_W, PIT_H)
-    r.floor(2, 2, 20, 14)
-    r.pit(*RING)
+    r.floor(2, 2, PIT_W - 3, PIT_H - 3, DIRT)
+    x0, y0, x1, y1 = RING
+    for x in range(x0, x1 + 1):
+        r.put(x, y0, RING_H, True)
+        r.put(x, y1, RING_H, True)
+    for y in range(y0 + 1, y1):
+        r.put(x0, y, RING_L, True)
+        r.put(x1, y, RING_R, True)
+    bx0, by0, bx1, by1 = BOOTH
+    r.floor(bx0, by0, bx1, by1, PLANK)
+    for x in range(bx0, bx1 + 1):
+        r.put(x, COUNTER_Y, COUNTER, True)
+        r.put(x, by1 + 1, RING_H, True)
+    for y in range(by0, by1 + 1):
+        r.put(bx0 - 1, y, RING_L, True)
+        r.put(bx1 + 1, y, RING_R, True)
     r.put(*PIT_LADDER, LADDER)
     r.put(*BACK_LADDER, LADDER)
     r.put(*CARD_SIGN, SIGN, True)
-    for (x, y) in ((3, 3), (19, 13), (5, 13)):
+    r.walls()
+    for (x, y) in ((2, 2), (2, 16), (22, 7)):
         for dy in range(2):
             for dx in range(2):
                 r.put(x + dx, y + dy, BOULDER[dy][dx], True)
-    r.walls()
+    r.put(5, 4, PEBBLES[0], True)
+    r.put(20, 3, PEBBLES[1], True)
     return r
+
+
+def mb(name):
+    import re
+    n = -1
+    for line in (ROOT / "include/constants/metatile_behaviors.h").read_text().splitlines():
+        if "enum" in line:
+            n = -1
+        m = re.match(r"\s+(MB_\w+)", line)
+        if m:
+            n += 1
+            if m.group(1) == name:
+                return n
+    raise KeyError(name)
+
+
+def write_tileset():
+    """gTileset_Pit: Diglett's Cave's tiles and palettes (src/data/tilesets: the same graphics),
+    its blocks, and the pit's own"""
+    src = ROOT / "data/tilesets/secondary/digletts_cave_frlg"
+    dst = ROOT / "data/tilesets/secondary/pit"
+    prim = ROOT / "data/tilesets/primary/general_frlg"
+    import shutil
+    if dst.exists():
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst)
+    mt = [list(struct.unpack_from("<8H", (src / "metatiles.bin").read_bytes(), i * 16)) for i in range(157)]
+    at = list(struct.unpack(f"<{157}I", (src / "metatile_attributes.bin").read_bytes()))
+    pmt = (prim / "metatiles.bin").read_bytes()
+    gen = lambda m: list(struct.unpack_from("<8H", pmt, m * 16))
+    dirt = mt[DIRT - 0x280][:4]
+    covered = 1 << 29
+    mt.append(dirt + gen(0xE6)[4:]); at.append(covered)                       # RING_H: logs across
+    mt.append(dirt + gen(0xF1)[4:]); at.append(covered)                       # RING_L: logs down its right
+    mt.append(dirt + gen(0xF0)[4:]); at.append(covered)                       # RING_R: logs down its left
+    mt.append(gen(PLANK)[:4] + gen(0xE7)[4:]); at.append(covered | mb("MB_COUNTER"))   # COUNTER
+    (dst / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in mt))
+    (dst / "metatile_attributes.bin").write_bytes(struct.pack(f"<{len(at)}I", *at))
+    # (registered once: the same graphics as Diglett's Cave)
+    mh = ROOT / "src/data/tilesets/metatiles.h"
+    t = mh.read_text()
+    if "gMetatiles_Pit[]" not in t:
+        t += ('\nconst u16 gMetatiles_Pit[] = INCBIN_U16("data/tilesets/secondary/pit/metatiles.bin");\n'
+              'const u16 gMetatileAttributes_Pit[] = INCBIN_U16("data/tilesets/secondary/pit/metatile_attributes.bin");\n')
+        mh.write_text(t)
+    hh = ROOT / "src/data/tilesets/headers.h"
+    t = hh.read_text()
+    if "gTileset_Pit =" not in t:
+        t += """
+// Pokémon Canvas: the pit under Celadon (tools/gym_hack/build_pit.py): Diglett's Cave, and a log fence
+const struct Tileset gTileset_Pit =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_DiglettsCave,
+    .palettes = gTilesetPalettes_DiglettsCave,
+    .metatiles = gMetatiles_Pit,
+    .metatileAttributes = gMetatileAttributes_Pit,
+    .callback = NULL,
+};
+"""
+        hh.write_text(t)
 
 
 # ---- The back room (for now: a door that stays shut, and the man who keeps it) ----
@@ -204,6 +291,7 @@ def events(key):
 
 
 def write_maps():
+    write_tileset()
     lay_path = ROOT / "data/layouts/layouts.json"
     lays = json.loads(lay_path.read_text())
     groups_path = ROOT / "data/maps/map_groups.json"
@@ -219,7 +307,8 @@ def write_maps():
         lid = "LAYOUT_" + m["id"][4:]
         entry = {"id": lid, "name": m["name"] + "_Layout", "width": r.w, "height": r.h,
                  "border_width": 2, "border_height": 2,
-                 "primary_tileset": "gTileset_General_Frlg", "secondary_tileset": "gTileset_DiglettsCave",
+                 "primary_tileset": "gTileset_General_Frlg",
+                 "secondary_tileset": "gTileset_Pit" if key == "pit" else "gTileset_DiglettsCave",
                  "border_filepath": f"data/layouts/{m['name']}/border.bin",
                  "blockdata_filepath": f"data/layouts/{m['name']}/map.bin", "layout_version": "frlg"}
         for i, l in enumerate(lays["layouts"]):
@@ -311,8 +400,8 @@ def preview(out_dir):
     import render_map as rm
     from PIL import Image, ImageDraw
     prim = rm.Tileset(rm.tileset_dir("gTileset_General_Frlg"))
-    sec = rm.Tileset(rm.tileset_dir("gTileset_DiglettsCave"))
     for key in ORDER:
+        sec = rm.Tileset(ROOT / ("data/tilesets/secondary/pit" if key == "pit" else "data/tilesets/secondary/digletts_cave_frlg"))
         r = MAPS[key]["build"]()
         img = Image.new("RGB", (r.w * 16, r.h * 16))
         for y in range(r.h):
@@ -326,6 +415,7 @@ def preview(out_dir):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
+        write_tileset()
         preview(sys.argv[1])
     else:
         write_maps()

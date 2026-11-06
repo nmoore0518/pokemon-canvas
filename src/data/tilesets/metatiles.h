@@ -707,3 +707,6 @@ const u16 gMetatileAttributes_KalosCave[] = INCBIN_U16("data/tilesets/secondary/
 const u16 gMetatiles_UnovaSkyarrow[] = INCBIN_U16("data/tilesets/secondary/unova_skyarrow/metatiles.bin");
 const u16 gMetatileAttributes_UnovaSkyarrow[] = INCBIN_U16("data/tilesets/secondary/unova_skyarrow/metatile_attributes.bin");
 // </clone UnovaSkyarrow>
+
+const u16 gMetatiles_Pit[] = INCBIN_U16("data/tilesets/secondary/pit/metatiles.bin");
+const u16 gMetatileAttributes_Pit[] = INCBIN_U16("data/tilesets/secondary/pit/metatile_attributes.bin");
