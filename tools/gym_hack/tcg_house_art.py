@@ -1,6 +1,6 @@
 """The art for Saffron City's card house (tools/gym_hack/build_tcg_house.py): drawn over FireRed's
 building tiles. table(): a long card table (4x2 metatiles) with a playmat and both duelists' cards;
-poster(): the card back (from Nick's picture of the TCG's), 30x30, hung on the wall;
+poster(): the card back (from Nick's picture of the TCG's) in a gold frame, 32x32;
 shelf(): a bookcase of card binders (1x3 metatiles). Each is the top layer, RGBA (alpha 0: clear).
 """
 import collections
@@ -101,7 +101,7 @@ def table():
     return im
 
 # the card back (graphics/tcg_house/card_back_source.png: Nick's picture of the TCG's), boxed down
-# to 30x30 and mapped onto these colours (its border and swirl's blues, the logos' yellows, the
+# to 26x26 and mapped onto these colours (its border and swirl's blues, the logos' yellows, the
 # Poke Ball's red, white and grey, its button's light blue)
 CARD_BACK_PALETTE = [(16, 40, 160), (32, 72, 200), (64, 120, 224), (120, 168, 240), (184, 208, 248),
                      (240, 244, 252), (248, 200, 24), (200, 150, 16), (224, 40, 32), (150, 24, 24),
@@ -109,17 +109,19 @@ CARD_BACK_PALETTE = [(16, 40, 160), (32, 72, 200), (64, 120, 224), (120, 168, 24
 
 
 def poster():
-    """the card back, hung on the wall (30x30, with a little shadow)"""
+    """the card back in a gold frame (32x32: the frame 3px, the card 26x26), as a picture on the wall"""
     from PIL import ImageEnhance
     src = Image.open(ROOT / 'graphics/tcg_house/card_back_source.png').convert('RGB')
-    art = ImageEnhance.Color(src.resize((30, 30), Image.BOX)).enhance(1.4)
+    art = ImageEnhance.Color(src.resize((26, 26), Image.BOX)).enhance(1.4)
     im = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
-    rect(im, 2, 2, 30, 30, (123, 123, 123))     # (the shadow)
-    for y in range(30):
-        for x in range(30):
+    rect(im, 0, 0, 32, 32, (40, 40, 48))        # (the frame's edge,
+    rect(im, 1, 1, 30, 30, (248, 200, 24))      # its gold,
+    rect(im, 2, 2, 28, 28, (200, 150, 16))      # and its inner edge: the card's colours)
+    for y in range(26):
+        for x in range(26):
             c = art.getpixel((x, y))
             near = min(CARD_BACK_PALETTE, key=lambda p: sum((a - b) ** 2 for a, b in zip(p, c)))
-            im.putpixel((1 + x, 1 + y), near + (255,))
+            im.putpixel((3 + x, 3 + y), near + (255,))
     return im
 
 def shelf():
