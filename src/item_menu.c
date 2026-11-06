@@ -60,7 +60,7 @@
 // By default, the largest pocket is BAG_TMHM_COUNT at 64.
 // (Gym Trainer hack: the hold items, at 239)
 #define MAX_POCKET_ITEMS  (max(max(max(BAG_TMHM_COUNT, BAG_BERRIES_COUNT), max(BAG_ITEMS_COUNT, BAG_KEYITEMS_COUNT)), \
-                           max(max(BAG_POKEBALLS_COUNT, BAG_MEDICINE_COUNT), max(BAG_HOLD_ITEMS_COUNT + BAG_HOLD_ITEMS_COUNT_2, BAG_MEGA_STONES_COUNT))) + 1)
+                           max(max(BAG_POKEBALLS_COUNT, BAG_MEDICINE_COUNT), max(BAG_HOLD_ITEMS_COUNT + BAG_HOLD_ITEMS_COUNT_2, BAG_MEGA_STONES_COUNT + BAG_MEGA_STONES_COUNT_2))) + 1)
 
 // Up to 8 item slots can be visible at a time
 #define MAX_ITEMS_SHOWN 8

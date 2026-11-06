@@ -118,7 +118,7 @@ enum Language
 //   SaveBlock1's berryTrees (no berry trees either): Hold Items, Items (the rest)
 //   the end of SaveBlock1: Battle Items
 //   the end of SaveBlock2: the rest of the Poké Balls (Pokémon Canvas: room for the Type Balls), and
-//   the rest of the Hold Items (Pokémon Canvas: room for the Eviolate)
+//   the rest of the Hold Items (Pokémon Canvas: room for the Eviolate) and of the Mega Stones (the Smearglite)
 // src/item.c Bag_UpgradeLayout moves an older save's bag over.
 #define BAG_ITEMS_COUNT_1       204     // (in SaveBlock3)
 #define BAG_ITEMS_COUNT_2        26     // (after the hold items)
@@ -129,8 +129,9 @@ enum Language
 #define BAG_POKEBALLS_COUNT     (BAG_POKEBALLS_COUNT_1 + BAG_POKEBALLS_COUNT_2)
 #define BAG_BATTLE_ITEMS_COUNT   29
 #define BAG_HOLD_ITEMS_COUNT    230
-#define BAG_HOLD_ITEMS_COUNT_2    3     // (Pokémon Canvas: the Hold Items pocket's second part, the last bytes of SaveBlock2)
+#define BAG_HOLD_ITEMS_COUNT_2    2     // (Pokémon Canvas: the Hold Items pocket's second part, near the end of SaveBlock2)
 #define BAG_MEGA_STONES_COUNT    93
+#define BAG_MEGA_STONES_COUNT_2   1     // (Pokémon Canvas: the Mega Stones pocket's second part, the last slot of SaveBlock2: the Smearglite's room)
 #define BAG_BERRIES_COUNT        68
 #define BAG_TMHM_COUNT          108
 #define BAG_TOOLS_COUNT          37

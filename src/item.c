@@ -133,7 +133,7 @@ void SetBagItemsPointers(void)
     SetPocket(POCKET_POKE_BALLS, gSaveBlock1Ptr->bag.pokeBalls, BAG_POKEBALLS_COUNT_1, gSaveBlock2Ptr->bagPokeBalls2, BAG_POKEBALLS_COUNT_2);
     SetPocket(POCKET_BATTLE_ITEMS, gSaveBlock1Ptr->bagBattleItems, BAG_BATTLE_ITEMS_COUNT, NULL, 0);
     SetPocket(POCKET_HOLD_ITEMS, BAG_HOLD_SLOTS, BAG_HOLD_ITEMS_COUNT, gSaveBlock2Ptr->bagHoldItems2, BAG_HOLD_ITEMS_COUNT_2);
-    SetPocket(POCKET_MEGA_STONES, gSaveBlock3Ptr->bagMegaStones, BAG_MEGA_STONES_COUNT, NULL, 0);
+    SetPocket(POCKET_MEGA_STONES, gSaveBlock3Ptr->bagMegaStones, BAG_MEGA_STONES_COUNT, gSaveBlock2Ptr->bagMegaStones2, BAG_MEGA_STONES_COUNT_2);
     SetPocket(POCKET_BERRIES, gSaveBlock1Ptr->bag.berries, BAG_BERRIES_COUNT, NULL, 0);
     SetPocket(POCKET_TM_HM, gSaveBlock3Ptr->bagTMsHMs, BAG_TMHM_COUNT, NULL, 0);
     SetPocket(POCKET_TOOLS, gSaveBlock1Ptr->bag.tools, BAG_TOOLS_COUNT, NULL, 0);
@@ -547,6 +547,7 @@ void ClearBag(void)
     memset(gSaveBlock1Ptr->bagBattleItems, 0, sizeof(gSaveBlock1Ptr->bagBattleItems));
     memset(gSaveBlock2Ptr->bagPokeBalls2, 0, sizeof(gSaveBlock2Ptr->bagPokeBalls2));
     memset(gSaveBlock2Ptr->bagHoldItems2, 0, sizeof(gSaveBlock2Ptr->bagHoldItems2));
+    memset(gSaveBlock2Ptr->bagMegaStones2, 0, sizeof(gSaveBlock2Ptr->bagMegaStones2));
     gSaveBlock3Ptr->bagLayout = BAG_LAYOUT_POCKETS;
 }
 
@@ -581,23 +582,46 @@ static void Bag_PutOldSlots(const struct ItemSlot *slots, u32 count)
 // Gym Trainer hack: an older save's bag goes into the ten pockets: FireRed's (five small pockets
 // in SaveBlock1) or v99's (the Key Items, Balls and Berries in SaveBlock1, the TMs and 297 items in
 // SaveBlock3)
-// Pokémon Canvas: the Smearglite was a key item (Canvas Smeargle Mega Evolved with it in the bag); now
-// it's held, like any Mega Stone, so it lives in Hold Items. An older save's copy moves over.
-static void Bag_MoveSmearglite(void)
+// Pokémon Canvas: an older save's bag, put right. The Smearglite was a key item, then a hold item; now
+// it's a Mega Stone (held), in the Mega Stones pocket. And the Mega Stones pocket's extra slot was the
+// Hold Items pocket's third: whatever's there that isn't a Mega Stone goes back to its pocket.
+static bool32 TakeOut(struct ItemSlot *slots, u32 count, enum Pocket pocket, enum Item item)
 {
     u32 i;
-    for (i = 0; i < BAG_KEYITEMS_COUNT; i++)
+    for (i = 0; i < count; i++)
     {
-        if (gSaveBlock1Ptr->bag.keyItems[i].itemId == ITEM_SMEARGLITE)
+        if (slots[i].itemId == item)
         {
-            gSaveBlock1Ptr->bag.keyItems[i].itemId = ITEM_NONE;
-            gSaveBlock1Ptr->bag.keyItems[i].quantity = 0;
-            CompactItemsInBagPocket(POCKET_KEY_ITEMS);
-            if (!CheckBagHasItem(ITEM_SMEARGLITE, 1))
-                AddBagItem(ITEM_SMEARGLITE, 1);
-            return;
+            slots[i].itemId = ITEM_NONE;
+            slots[i].quantity = 0;
+            CompactItemsInBagPocket(pocket);
+            return TRUE;
         }
     }
+    return FALSE;
+}
+
+static void Bag_FixPockets(void)
+{
+    struct ItemSlot *extra = &gSaveBlock2Ptr->bagMegaStones2[0];
+    bool32 had = FALSE;
+
+    if (extra->itemId != ITEM_NONE && GetItemPocket(extra->itemId) != POCKET_MEGA_STONES)
+    {
+        enum Item item = extra->itemId;
+        u32 count = extra->quantity ^ gSaveBlock2Ptr->encryptionKey;
+        extra->itemId = ITEM_NONE;
+        extra->quantity = 0;
+        if (item == ITEM_SMEARGLITE)
+            had = TRUE;
+        else if (item < ITEMS_COUNT)
+            AddBagItem(item, count);
+    }
+    had |= TakeOut(gSaveBlock1Ptr->bag.keyItems, BAG_KEYITEMS_COUNT, POCKET_KEY_ITEMS, ITEM_SMEARGLITE);
+    had |= TakeOut((struct ItemSlot *)gSaveBlock1Ptr->berryTrees, BAG_HOLD_ITEMS_COUNT, POCKET_HOLD_ITEMS, ITEM_SMEARGLITE);
+    had |= TakeOut(gSaveBlock2Ptr->bagHoldItems2, BAG_HOLD_ITEMS_COUNT_2, POCKET_HOLD_ITEMS, ITEM_SMEARGLITE);
+    if (had && !CheckBagHasItem(ITEM_SMEARGLITE, 1))
+        AddBagItem(ITEM_SMEARGLITE, 1);
 }
 
 void Bag_UpgradeLayout(void)
@@ -608,7 +632,7 @@ void Bag_UpgradeLayout(void)
 
     if (oldLayout == BAG_LAYOUT_POCKETS)
     {
-        Bag_MoveSmearglite();
+        Bag_FixPockets();
         return;
     }
     if (oldLayout == BAG_LAYOUT_POCKETS_V100 || oldLayout == BAG_LAYOUT_POCKETS_V122)

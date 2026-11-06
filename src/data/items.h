@@ -17017,8 +17017,7 @@ const struct ItemInfo gItemsInfo[] =
     [ITEM_SMEARGLITE] =
     {
         // Pokémon Canvas: the painter's, for beating the Mega in her painting after the League
-        // (src/painter.c). A Canvas Smeargle holding it Mega Evolves, like any Mega Stone. (In Hold
-        // Items: the Mega Stones pocket is full.)
+        // (src/painter.c). A Canvas Smeargle holding it Mega Evolves, like any Mega Stone.
         .name = ITEM_NAME("Smearglite"),
         .price = 0,
         .holdEffect = HOLD_EFFECT_MEGA_STONE,
@@ -17027,7 +17026,7 @@ const struct ItemInfo gItemsInfo[] =
             "color. Canvas Smeargle\n"
             "Mega Evolve with it."),
         .pocket = POCKET_ITEMS,
-        .sortType = ITEM_TYPE_HELD_ITEM,
+        .sortType = ITEM_TYPE_MEGA_STONE,
         .type = ITEM_USE_BAG_MENU,
         .flingPower = 80,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,

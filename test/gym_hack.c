@@ -4399,6 +4399,22 @@ TEST("GymHack: the lent Smeargle goes back after the first painting")
     Painter_ResetForTest();
 }
 
+TEST("GymHack: bag: an older save's Smearglite moves into the Mega Stones pocket")
+{
+    ClearBag();
+    gSaveBlock1Ptr->bag.keyItems[0] = (struct ItemSlot) {ITEM_SMEARGLITE, 1 ^ gSaveBlock2Ptr->encryptionKey};
+    Bag_UpgradeLayout();
+    EXPECT(CheckBagHasItem(ITEM_SMEARGLITE, 1));
+    EXPECT_EQ(gSaveBlock1Ptr->bag.keyItems[0].itemId, ITEM_NONE);
+    // (Hold Items' old third slot is the Mega Stones' extra one now: what's there that isn't a stone goes back)
+    ClearBag();
+    gSaveBlock2Ptr->bagMegaStones2[0] = (struct ItemSlot) {ITEM_LEFTOVERS, 2 ^ gSaveBlock2Ptr->encryptionKey};
+    Bag_UpgradeLayout();
+    EXPECT(CheckBagHasItem(ITEM_LEFTOVERS, 2));
+    EXPECT_EQ(gSaveBlock2Ptr->bagMegaStones2[0].itemId, ITEM_NONE);
+    ClearBag();
+}
+
 TEST("GymHack: Mega Smeargle needs to hold the SMEARGLITE, like any Mega Stone")
 {
     struct FormChangeContext ctx = {.method = FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM, .currentSpecies = SPECIES_SMEARGLE_CANVAS_FIRE};
@@ -4407,7 +4423,7 @@ TEST("GymHack: Mega Smeargle needs to hold the SMEARGLITE, like any Mega Stone")
     RemoveBagItem(ITEM_SMEARGLITE, 99);
     ctx.heldItem = ITEM_SMEARGLITE;
     EXPECT_EQ(GetFormChangeTargetSpecies_Internal(ctx), SPECIES_SMEARGLE_CANVAS_FIRE_MEGA);
-    EXPECT_EQ(GetItemPocket(ITEM_SMEARGLITE), POCKET_HOLD_ITEMS);
+    EXPECT_EQ(GetItemPocket(ITEM_SMEARGLITE), POCKET_MEGA_STONES);
     EXPECT_EQ(GetItemHoldEffect(ITEM_SMEARGLITE), HOLD_EFFECT_MEGA_STONE);
 }
 
