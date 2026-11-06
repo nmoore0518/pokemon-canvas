@@ -2714,7 +2714,6 @@
 #define FLAG_EXOTIC_LEGEND_ETERNATUS_ETERNAMAX 0x4F3  // (the Darkest Day, on the pitch)
 #define FLAG_MET_ROD                          0x4F9   // (Saffron's card house: Grandmaster ROD has introduced himself)
 #define FLAG_GOT_EVIOLATE                     0x4FA   // (the Pokémon Tower's ghost girl: the game's one Eviolate, src/tower_graves.c)
-#define FLAG_GOT_EVIOLITE                     0x4FF   // (the Leader Academy's BP counter: the game's one Eviolite)
 // (0x4F4: Pallet Town's Lucky Egg, constants/flags_frlg.h)
 #define FLAG_TOURNEY_BEAT_KALOS               0x4F5   // (the tournament, src/tournament.c: a Kalos trainer beaten)
 #define FLAG_TOURNEY_BEAT_AZ                  0x4F6   // (... AZ beaten)

@@ -32,6 +32,12 @@ Convention_EventScript_AllCleared::
 	msgbox Convention_Text_AllCleared
 	goto Convention_EventScript_ChooseHall
 
+@ (Pokémon Canvas: no two of the player's POKéMON may hold the same item)
+Convention_EventScript_ItemClause::
+	call EventScript_GymHack_ShowTeamRuleMessage
+	release
+	end
+
 Convention_EventScript_Bye::
 	msgbox Convention_Text_Bye
 	release
@@ -47,6 +53,8 @@ Convention_EventScript_Trainer::
 	msgbox gGymChallengeIntroText
 	closemessage
 Convention_EventScript_Battle::
+	special GymHack_CheckItemClauseSpecial
+	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, Convention_EventScript_ItemClause
 	fadescreen FADE_TO_BLACK
 	special Convention_ShowTitleCard
 	waitstate

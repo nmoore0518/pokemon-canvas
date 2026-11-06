@@ -648,6 +648,7 @@ gSpecials::
 	def_special GymHack_LockInPlayerType
 	def_special GymHack_BufferRivalChoice
 	def_special GymHack_CheckTeamSpecial
+	def_special GymHack_CheckItemClauseSpecial
 	def_special GymHack_WarpInPlace
 	def_special GymHack_SkipNextShowMon
 	def_special GymDecor_DrawRoom
@@ -711,6 +712,7 @@ gSpecials::
 	def_special Tourney_Begin
 	def_special Tourney_GetStatus
 	def_special Tourney_CheckTeam
+	def_special Tourney_CheckClauses
 	def_special Tourney_SetupNext
 	def_special Tourney_ShowTitleCard
 	def_special Tourney_RecordWin

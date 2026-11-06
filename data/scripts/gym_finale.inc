@@ -85,7 +85,8 @@ GymFinale_EventScript_PutOff::
 	end
 
 GymFinale_EventScript_TeamBreaksRules::
-	msgbox GymFinale_Text_OakRulesStillApply
+	call_if_eq VAR_RESULT, GYM_HACK_TEAM_DUPLICATE_ITEM, EventScript_GymHack_ShowTeamRuleMessage
+	call_if_ne VAR_RESULT, GYM_HACK_TEAM_DUPLICATE_ITEM, GymFinale_EventScript_OakRulesMsg
 	setvar VAR_GYM_FINALE, GYM_FINALE_OAK_IN_GYM
 	fadedefaultbgm
 	releaseall
@@ -195,6 +196,10 @@ GymFinale_Text_OakComeBackWhenReady::
 	.string "shape.\p"
 	.string "Come challenge me in the GYM when\n"
 	.string "you're ready. I'll be waiting!$"
+
+GymFinale_EventScript_OakRulesMsg::
+	msgbox GymFinale_Text_OakRulesStillApply
+	return
 
 GymFinale_Text_OakRulesStillApply::
 	.string "OAK: Hold on!\p"

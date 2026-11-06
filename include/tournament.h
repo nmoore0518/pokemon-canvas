@@ -98,6 +98,7 @@ u32 Tourney_HallCount(void);
 void Tourney_Begin(void);
 void Tourney_GetStatus(void);
 void Tourney_CheckTeam(void);
+void Tourney_CheckClauses(void);
 void Tourney_SetupNext(void);
 void Tourney_ShowTitleCard(void);
 void Tourney_RecordWin(void);

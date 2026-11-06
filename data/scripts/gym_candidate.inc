@@ -260,7 +260,13 @@ GymCandidate_EventScript_NotYet::
 	end
 
 GymCandidate_EventScript_TeamBreaksRules::
+	goto_if_eq VAR_RESULT, GYM_HACK_TEAM_DUPLICATE_ITEM, GymCandidate_EventScript_ItemClause
 	msgbox GymCandidate_Text_TeamBreaksRules
+	release
+	end
+
+GymCandidate_EventScript_ItemClause::
+	call EventScript_GymHack_ShowTeamRuleMessage
 	release
 	end
 

@@ -13,6 +13,8 @@ void GymHack_CheckTeamSpecial(void);
 void GymHack_WarpInPlace(void);
 
 u32 GymHack_CheckTeam(void);
+u32 GymHack_CheckTeamRules(u32 rules);
+void GymHack_CheckItemClauseSpecial(void);
 bool32 GymHack_SpeciesCanEvolve(u32 species);
 bool32 GymHack_IsRuleBattleTrainer(u32 trainerId);
 const u8 *GymHack_GetBlockedBattleScript(void);

@@ -33,6 +33,7 @@
 #include "title_card.h"
 #include "constants/flags.h"
 #include "constants/gym_hack.h"
+#include "gym_hack.h"
 #include "constants/rgb.h"
 #include "constants/species.h"
 #include "constants/vars.h"
@@ -366,6 +367,13 @@ void Tourney_Begin(void)
 void Tourney_CheckTeam(void)
 {
     gSpecialVar_Result = TeamMatches();
+}
+
+// VAR_RESULT = the tournament's clauses (GYM_HACK_TEAM_*): any type, but no two of the same species and
+// no two holding the same item (checked at sign-up and before every match); STR_VAR_1 = what's doubled
+void Tourney_CheckClauses(void)
+{
+    gSpecialVar_Result = GymHack_CheckTeamRules(TEAM_RULES_OPEN);
 }
 
 // The player's next opponent set up (their team at level 100, lines, walking sprite in

@@ -302,6 +302,37 @@ TEST("GymHack: the tenth unevolved grave brings the ghost girl, once")
     VarSet(VAR_TOWER_GRAVES, 0);
 }
 
+TEST("GymHack: two Pokemon holding the same item break the rules")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(
+        givemon SPECIES_CHARMANDER, 10, item=ITEM_EVIOLITE;
+        givemon SPECIES_VULPIX, 10, item=ITEM_LEFTOVERS;
+        givemon SPECIES_GROWLITHE, 10;
+        givemon SPECIES_PONYTA, 10;
+    );
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_OK);   // (different items, and no item, are fine)
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_MAGBY, 10, item=ITEM_EVIOLITE;);
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_DUPLICATE_ITEM);
+    EXPECT_EQ(StringCompare(gStringVar1, GetItemName(ITEM_EVIOLITE)), 0);
+    EXPECT_EQ(GymHack_CheckTeamRules(TEAM_RULE_ITEM), GYM_HACK_TEAM_DUPLICATE_ITEM);  // (the Convention's)
+}
+
+TEST("GymHack: the tournament's clauses: any type, but no two alike and no two items alike")
+{
+    SetPlayerType(TYPE_FIRE);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_SQUIRTLE, 10; givemon SPECIES_BULBASAUR, 10, item=ITEM_EVIOLITE;);
+    EXPECT_EQ(GymHack_CheckTeamRules(TEAM_RULES_OPEN), GYM_HACK_TEAM_OK);
+    EXPECT_EQ(GymHack_CheckTeam(), GYM_HACK_TEAM_WRONG_TYPE);
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_PIKACHU, 10, item=ITEM_EVIOLITE;);
+    EXPECT_EQ(GymHack_CheckTeamRules(TEAM_RULES_OPEN), GYM_HACK_TEAM_DUPLICATE_ITEM);
+    ZeroPlayerPartyMons();
+    RUN_OVERWORLD_SCRIPT(givemon SPECIES_SQUIRTLE, 10; givemon SPECIES_WARTORTLE, 20; givemon SPECIES_SQUIRTLE, 12;);
+    EXPECT_EQ(GymHack_CheckTeamRules(TEAM_RULES_OPEN), GYM_HACK_TEAM_DUPLICATE);
+}
+
 TEST("GymHack: two of the same species break the rules")
 {
     SetPlayerType(TYPE_FIRE);

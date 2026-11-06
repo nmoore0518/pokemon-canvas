@@ -17,6 +17,11 @@ EventScript_GymHack_TeamNotAllowed::
 EventScript_GymHack_ShowTeamRuleMessage::
 	call_if_eq VAR_RESULT, GYM_HACK_TEAM_WRONG_TYPE, EventScript_GymHack_MsgWrongType
 	call_if_eq VAR_RESULT, GYM_HACK_TEAM_DUPLICATE, EventScript_GymHack_MsgDuplicate
+	call_if_eq VAR_RESULT, GYM_HACK_TEAM_DUPLICATE_ITEM, EventScript_GymHack_MsgDuplicateItem
+	return
+
+EventScript_GymHack_MsgDuplicateItem::
+	msgbox Text_GymHack_DuplicateItem
 	return
 
 EventScript_GymHack_MsgWrongType::
@@ -39,6 +44,13 @@ Text_GymHack_Duplicate::
 	.string "You have more than one\n"
 	.string "{STR_VAR_1}!\p"
 	.string "Leave one in a PC and come back.$"
+
+Text_GymHack_DuplicateItem::
+	.string "LEAGUE RULES: No two POKéMON on\n"
+	.string "your team may hold the same item.\p"
+	.string "More than one is holding\n"
+	.string "{STR_VAR_1}!\p"
+	.string "Take one off and come back.$"
 
 @ ---------------------------------------------------------------------------
 @ HM key items. "...WithItem" scripts run when walking up to a tree, boulder or

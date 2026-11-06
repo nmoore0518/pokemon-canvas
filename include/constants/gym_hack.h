@@ -5,6 +5,14 @@
 #define GYM_HACK_TEAM_OK          0
 #define GYM_HACK_TEAM_WRONG_TYPE  1 // a party Pokemon's primary type isn't the player's type
 #define GYM_HACK_TEAM_DUPLICATE   2 // two party Pokemon are the same species
+#define GYM_HACK_TEAM_DUPLICATE_ITEM 3 // two party Pokemon hold the same item (Pokémon Canvas: the item clause)
+
+// Which rules GymHack_CheckTeamRules checks (Pokémon Canvas)
+#define TEAM_RULE_TYPE      (1 << 0)    // every Pokémon's primary type is the player's (the GYM rule)
+#define TEAM_RULE_SPECIES   (1 << 1)    // no two of the same species
+#define TEAM_RULE_ITEM      (1 << 2)    // no two holding the same item
+#define TEAM_RULES_GYM      (TEAM_RULE_TYPE | TEAM_RULE_SPECIES | TEAM_RULE_ITEM)  // (gyms, rivals, the LEAGUE, gym challenges)
+#define TEAM_RULES_OPEN     (TEAM_RULE_SPECIES | TEAM_RULE_ITEM)                   // (the tournament: any type)
 
 // checkfieldmove sets VAR_RESULT to this when no party Pokemon knows the move
 // but the player has the matching key item (Hedge Clippers, etc.)

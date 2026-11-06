@@ -89,6 +89,8 @@ Tourney_EventScript_LastResults::
 Tourney_EventScript_Enter::
 	call Tourney_EventScript_SayRules
 	goto_if_eq VAR_RESULT, NO, Tourney_EventScript_NotNow
+	special Tourney_CheckClauses
+	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, Tourney_EventScript_BreaksClause
 	call_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_SimFormat
 	special Tourney_Begin
 	call Tourney_EventScript_SayDraw
@@ -100,6 +102,8 @@ Tourney_EventScript_Enter::
 Tourney_EventScript_Match::
 	special Tourney_CheckTeam
 	goto_if_eq VAR_RESULT, FALSE, Tourney_EventScript_WrongTeam
+	special Tourney_CheckClauses
+	goto_if_ne VAR_RESULT, GYM_HACK_TEAM_OK, Tourney_EventScript_BreaksClause
 	special HealPlayerParty
 	special GymChallenge_PlanPlayerWalk
 	goto_if_eq VAR_RESULT, 0, GymChallenge_EventScript_CantReachSpot
@@ -178,6 +182,30 @@ Tourney_EventScript_Continue::
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
 	goto Tourney_EventScript_NextMatch
+
+@ (Pokémon Canvas: the tournament's clauses: any type, but no two of the same species and no two
+@ holding the same item. VAR_RESULT = GYM_HACK_TEAM_*, STR_VAR_1 = what's doubled)
+Tourney_EventScript_BreaksClause::
+	call_if_eq VAR_RESULT, GYM_HACK_TEAM_DUPLICATE, Tourney_EventScript_SpeciesClause
+	call_if_eq VAR_RESULT, GYM_HACK_TEAM_DUPLICATE_ITEM, Tourney_EventScript_ItemClause
+	release
+	end
+
+Tourney_EventScript_SpeciesClause::
+	goto_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_SimSpeciesClause
+	msgbox Gauntlet_Text_SpeciesClause
+	return
+Tourney_EventScript_SimSpeciesClause::
+	msgbox Gauntlet_Text_SimSpeciesClause
+	return
+
+Tourney_EventScript_ItemClause::
+	goto_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_SimItemClause
+	msgbox Gauntlet_Text_ItemClause
+	return
+Tourney_EventScript_SimItemClause::
+	msgbox Gauntlet_Text_SimItemClause
+	return
 
 Tourney_EventScript_WrongTeam::
 	goto_if_eq VAR_GAUNTLET_STATE, GAUNTLET_SIMULATOR, Tourney_EventScript_SimWrongTeam
@@ -634,6 +662,9 @@ Gauntlet_Text_Rules:
 	.string "And the team you sign up with is\n"
 	.string "the team you play with: the\l"
 	.string "POKéMON with you now, no others.\p"
+	.string "Any type goes. But no two of the\n"
+	.string "same POKéMON, and no two holding\l"
+	.string "the same item.\p"
 	.string "Sign up?$"
 
 Gauntlet_Text_Draw:
@@ -678,6 +709,27 @@ Gauntlet_Text_Champion:
 	.string "???: {STR_VAR_1} took the title.\p"
 	.string "There's always another draw,\n"
 	.string "LEADER. Sign up when you're ready.$"
+
+Gauntlet_Text_SpeciesClause:
+	.string "???: Hold it. No two of the same\n"
+	.string "POKéMON in this tournament.\p"
+	.string "You've got more than one\n"
+	.string "{STR_VAR_1}. Fix that first.$"
+
+Gauntlet_Text_ItemClause:
+	.string "???: Hold it. No two POKéMON may\n"
+	.string "hold the same item.\p"
+	.string "More than one is holding\n"
+	.string "{STR_VAR_1}. Fix that first.$"
+
+Gauntlet_Text_SimSpeciesClause:
+	.string "RULES CHECK: no two of the same\n"
+	.string "POKéMON. More than one {STR_VAR_1}.$"
+
+Gauntlet_Text_SimItemClause:
+	.string "RULES CHECK: no two POKéMON may\n"
+	.string "hold the same item. More than one\l"
+	.string "is holding {STR_VAR_1}.$"
 
 Gauntlet_Text_WrongTeam:
 	.string "???: That's not the team you\n"
@@ -857,7 +909,8 @@ Gauntlet_Text_SimStart:
 	.string "from BILL's records, and you.\p"
 	.string "Win it, then beat BILL's own data,\n"
 	.string "for a WITHDRAW.\p"
-	.string "The team with you now is locked in.\p"
+	.string "The team with you now is locked in.\n"
+	.string "No two alike, no two items alike.\p"
 	.string "Start the simulation?$"
 
 Gauntlet_Text_SimDraw:

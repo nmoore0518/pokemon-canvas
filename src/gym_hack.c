@@ -254,25 +254,26 @@ const struct Trainer *GymHack_GetRivalTrainer(u16 trainerId)
 // Team rules
 // ---------------------------------------------------------------------------
 
-// Checks the player's party against the rules. On a violation, buffers text
-// for the message: WRONG_TYPE -> STR_VAR_1 = the Pokemon's nickname,
-// STR_VAR_2 = its type, STR_VAR_3 = the player's type; DUPLICATE ->
-// STR_VAR_1 = the species name. Eggs don't count.
-u32 GymHack_CheckTeam(void)
+// Checks the player's party against the rules (TEAM_RULE_*). On a violation, buffers text for the
+// message: WRONG_TYPE -> STR_VAR_1 = the Pokemon's nickname, STR_VAR_2 = its type, STR_VAR_3 = the
+// player's type; DUPLICATE -> STR_VAR_1 = the species name; DUPLICATE_ITEM -> STR_VAR_1 = the item's
+// name. Eggs don't count. (With the type rule, nothing is checked before a type is chosen.)
+u32 GymHack_CheckTeamRules(u32 rules)
 {
     u32 playerType = VarGet(VAR_PLAYER_TYPE);
     u32 i, j;
 
-    if (playerType == TYPE_NONE)
-        return GYM_HACK_TEAM_OK;
+    if ((rules & TEAM_RULE_TYPE) && playerType == TYPE_NONE)
+        return GYM_HACK_TEAM_OK;    // (the gyms' rules start once there's a type: before, none apply)
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
         u32 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
+        u32 item = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM);
         if (species == SPECIES_NONE || GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG))
             continue;
 
-        if (GetPrimaryType(species) != playerType)
+        if ((rules & TEAM_RULE_TYPE) && GetPrimaryType(species) != playerType)
         {
             GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_NICKNAME, gStringVar1);
             StringGet_Nickname(gStringVar1);
@@ -289,14 +290,26 @@ u32 GymHack_CheckTeam(void)
             u32 other = GetMonData(&gParties[B_TRAINER_PLAYER][j], MON_DATA_SPECIES);
             if (other == SPECIES_NONE || GetMonData(&gParties[B_TRAINER_PLAYER][j], MON_DATA_IS_EGG))
                 continue;
-            if (GET_BASE_SPECIES_ID(other) == GET_BASE_SPECIES_ID(species))
+            if ((rules & TEAM_RULE_SPECIES) && GET_BASE_SPECIES_ID(other) == GET_BASE_SPECIES_ID(species))
             {
                 StringCopy(gStringVar1, GetSpeciesName(species));
                 return GYM_HACK_TEAM_DUPLICATE;
             }
+            if ((rules & TEAM_RULE_ITEM) && item != ITEM_NONE
+             && GetMonData(&gParties[B_TRAINER_PLAYER][j], MON_DATA_HELD_ITEM) == item)
+            {
+                CopyItemName(item, gStringVar1);
+                return GYM_HACK_TEAM_DUPLICATE_ITEM;
+            }
         }
     }
     return GYM_HACK_TEAM_OK;
+}
+
+// The gyms' rules: one type, no two alike, no two holding the same item
+u32 GymHack_CheckTeam(void)
+{
+    return GymHack_CheckTeamRules(TEAM_RULES_GYM);
 }
 
 // Battles where the rules are checked right before the battle starts. The
@@ -351,6 +364,13 @@ const u8 *GymHack_GetBlockedBattleScript(void)
 void GymHack_CheckTeamSpecial(void)
 {
     gSpecialVar_Result = GymHack_CheckTeam();
+}
+
+// special: VAR_RESULT = the item clause alone (the Gym Leader Convention: any team, but no two
+// Pokémon holding the same item)
+void GymHack_CheckItemClauseSpecial(void)
+{
+    gSpecialVar_Result = GymHack_CheckTeamRules(TEAM_RULE_ITEM);
 }
 
 // special: reloads the current map with the player where they stand. Used
