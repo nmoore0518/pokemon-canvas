@@ -33,6 +33,12 @@ def used(t):
     return [k for k in t if k in words]
 
 
+# Pokémon Canvas's own texts (after the game's), in the same encoding
+EXTRA = [
+    ("RainDanceWaterOnly", r'"\x06Rain Dance only attaches Water\x0a" "Energy to Water Pok`mon."'),
+]
+
+
 def tname(n):
     """the label without its "Text" (HandText_2: Hand_2, YourDiscardPileText2: YourDiscardPile2)"""
     return re.sub(r"Text(\w*)$", r"\1", n)
@@ -45,6 +51,7 @@ def main():
          "#ifndef GUARD_CONSTANTS_TCG_TEXT_H", "#define GUARD_CONSTANTS_TCG_TEXT_H", "", "enum TcgText", "{",
          "    TCG_TEXT_NONE,"]
     h += [f"    TCG_TEXT_{tname(n)}," for n in names]
+    h += [f"    TCG_TEXT_{n}," for n, _ in EXTRA]
     h += ["    TCG_NUM_TEXTS,", "};", ""]
     # the text symbols (TX_SYMBOL's: constants/charmaps.asm's txsymbol), SYM_*
     cm = Charmaps(SRC)
@@ -56,6 +63,7 @@ def main():
          "// game's own words and encoding (tools/gym_hack/tcg/tcg_charmap.py)", "",
          "const u8 *const gTcgTexts[TCG_NUM_TEXTS] =", "{", '    [TCG_TEXT_NONE] = (const u8 *)"",']
     c += [f"    [TCG_TEXT_{tname(n)}] = (const u8 *){c_bytes(t[n])}," for n in names]
+    c += [f"    [TCG_TEXT_{n}] = (const u8 *){b}," for n, b in EXTRA]
     c += ["};", ""]
     (ROOT / "src/data/tcg/text.h").write_text("\n".join(c))
     print(len(names), "texts")

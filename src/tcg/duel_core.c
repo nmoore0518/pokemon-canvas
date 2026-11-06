@@ -674,7 +674,8 @@ static bool32 PlayEnergyCard(u32 type)
             goto play_energy;
         if (!gTcg->alreadyPlayedEnergy)
             goto play_energy_set_played;
-        Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_MayOnlyAttachOneEnergyCard);
+        // (Pokémon Canvas: why the extra one can't go there)
+        Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_RainDanceWaterOnly);
         return TRUE;
     }
     if (gTcg->alreadyPlayedEnergy)

@@ -620,4 +620,5 @@ const u8 *const gTcgTexts[TCG_NUM_TEXTS] =
     [TCG_TEXT_Tech] = (const u8 *)"\x06TECH",
     [TCG_TEXT_StrangeLifeform] = (const u8 *)"\x06Strange Life-form",
     [TCG_TEXT_GrandMaster] = (const u8 *)"\x06Grand Master",
+    [TCG_TEXT_RainDanceWaterOnly] = (const u8 *)"\x06Rain Dance only attaches Water\x0a" "Energy to Water Pok`mon.",
 };

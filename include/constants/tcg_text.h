@@ -621,6 +621,7 @@ enum TcgText
     TCG_TEXT_Tech,
     TCG_TEXT_StrangeLifeform,
     TCG_TEXT_GrandMaster,
+    TCG_TEXT_RainDanceWaterOnly,
     TCG_NUM_TEXTS,
 };
 

@@ -404,3 +404,27 @@ TEST("GymHack: TCG duel: every damage digit (0-9) has its animation")
     for (i = TCG_SPRITE_ANIM_79; i <= TCG_SPRITE_ANIM_79 + 9; i++)
         EXPECT(gTcgSpriteAnims[i].frameData != NULL);
 }
+
+TEST("GymHack: TCG Blastoise's Rain Dance: any number of Water Energy onto Water Pokemon")
+{
+    SetUpDuel(TCG_CARD_BLASTOISE, TCG_CARD_BULBASAUR);
+    EXPECT(Tcg_IsRainDanceActive());
+    PutCard(1, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_HAND);
+    gTcg->tempCardIndex = 1;
+    gTcg->tempPlayAreaLocation = TCG_PLAY_AREA_ARENA;
+    EXPECT(Tcg_CheckRainDanceScenario());
+    // (from the bench, onto a benched Water Pokémon)
+    SetUpDuel(TCG_CARD_SQUIRTLE, TCG_CARD_BULBASAUR);
+    EXPECT(!Tcg_IsRainDanceActive());
+    PutCard(2, TCG_CARD_BLASTOISE, TCG_CARD_LOCATION_BENCH_1);
+    *Tcg_TurnVar(TCG_DUELVARS_BENCH) = 2;
+    *Tcg_TurnVar(TCG_DUELVARS_BENCH1_CARD_HP) = 100;
+    *Tcg_TurnVar(TCG_DUELVARS_NUMBER_OF_POKEMON_IN_PLAY_AREA) = 2;
+    EXPECT(Tcg_IsRainDanceActive());
+    PutCard(1, TCG_CARD_WATER_ENERGY, TCG_CARD_LOCATION_HAND);
+    gTcg->tempCardIndex = 1;
+    gTcg->tempPlayAreaLocation = TCG_PLAY_AREA_ARENA;
+    EXPECT(Tcg_CheckRainDanceScenario());
+    gTcg->tempPlayAreaLocation = TCG_PLAY_AREA_BENCH_1;
+    EXPECT(Tcg_CheckRainDanceScenario());
+}
