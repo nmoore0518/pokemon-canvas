@@ -440,7 +440,7 @@ void Academy_SetupTeacher(void)
 // ---------------------------------------------------------------------------
 // The Mega Evolution room (behind the headmaster's desk; open once she's given the player the Mega
 // Bracelet, after their eighth badge). Its keeper, Primrose, lends the stone for one Pokémon: that
-// Pokémon alone, holding it, against her three (level 55-60, her Mega last). Win and the stone is
+// Pokémon alone, holding it, against her three (level 45-50, her Mega last). Win and the stone is
 // the player's. Her team is made for each stone (the same every time): Pokémon the player's one
 // is at least even with - nothing that hits it super effectively, nothing it can't hit at least
 // normally with its own types - and her moves leave out anything super effective on it.
@@ -650,7 +650,7 @@ static void BuildMegaTrialTeam(u32 me, u32 stone)
     }
     for (k = 0; k < MEGA_TEAM; k++)
     {
-        InitTrialMon(&sAcademyParty[k], picked[k], k == MEGA_TEAM - 1 ? 60 : 55 + TrialRandom(&seed) % 5, &seed);
+        InitTrialMon(&sAcademyParty[k], picked[k], k == MEGA_TEAM - 1 ? 50 : 45 + TrialRandom(&seed) % 5, &seed);
         PickMoves(&sAcademyParty[k], me, meMega);
     }
     GetMegaStones(picked[MEGA_TEAM - 1], stones, NULL);

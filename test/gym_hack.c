@@ -3009,7 +3009,7 @@ TEST("GymHack: the TEAM BUILDER's saved teams start empty")
     EXPECT_EQ(gExtraSave.teams.teams[3].species[2], SPECIES_PIKACHU);
 }
 
-// Primrose's Mega trials: for every stone, three Pokémon at 55-60, her Mega last holding its stone,
+// Primrose's Mega trials: for every stone, three Pokémon at 45-50, her Mega last holding its stone,
 // none of them with a type or move that hits the player's Pokémon (or its Mega) super effectively
 TEST("GymHack: Mega trial teams are fair to the Pokemon taking the trial")
 {
@@ -3030,13 +3030,13 @@ TEST("GymHack: Mega trial teams are fair to the Pokemon taking the trial")
                 continue;
             team = Academy_MegaTrialTeam(species, stone);
             checked++;
-            EXPECT_EQ(team[2].lvl, 60);
+            EXPECT_EQ(team[2].lvl, 50);
             EXPECT_NE(team[2].heldItem, ITEM_NONE);
             for (k = 0; k < 3; k++)
             {
                 u32 lvl = team[k].lvl;
-                EXPECT_GE(lvl, 55);
-                EXPECT_LE(lvl, 60);
+                EXPECT_GE(lvl, 45);
+                EXPECT_LE(lvl, 50);
                 EXPECT_NE(team[k].species, species);
                 for (m = 0; m < MAX_MON_MOVES; m++)
                 {

@@ -773,7 +773,7 @@ room. A Mega Stone, she says, only answers a bond it has seen proven, so you ear
 <li>Pick a party Pokémon that can Mega Evolve (Charizard and Mewtwo pick X or Y). Primrose lends it the stone, the rest of
 your party is set aside, and it battles her three Pokémon alone.</li>
 <li>Win and the stone is yours to keep. Lose and try again any time.</li>
-<li>Her teams are levels 55-59 with a level-60 Mega last, chosen so none of them is super effective against your Pokémon.
+<li>Her teams are levels 45-49 with a level-50 Mega last, chosen so none of them is super effective against your Pokémon.
 The levels never change, so training up is the way through.</li>
 <li>Rayquaza needs a stone like everyone else (the Rayquazite), and Kyogre and Groudon earn the Blue and Red Orbs the
 same way.</li>
