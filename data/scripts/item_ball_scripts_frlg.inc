@@ -676,3 +676,12 @@ SevenIsland_SevaultCanyon_House_EventScript_ItemLuckyPunch::
 SilphCo_4F_EventScript_ItemTM41::
 	finditem ITEM_TM41
 	end
+
+@ Pokémon Canvas: the Rocket Warehouse's TM36 and the Memorial Pillar's TM42 (the Sevii Islands are gone)
+RocketHideout_B4F_EventScript_ItemTM36::
+	finditem ITEM_TM36
+	end
+
+SilphCo_9F_EventScript_ItemTM42::
+	finditem ITEM_TM42
+	end

@@ -2713,6 +2713,9 @@
 #define FLAG_EXOTIC_LEGEND_ZARUDE_DADA        0x4F2   // (Glimwood's glade, Celebi along, Zarude caught)
 #define FLAG_EXOTIC_LEGEND_ETERNATUS_ETERNAMAX 0x4F3  // (the Darkest Day, on the pitch)
 #define FLAG_MET_ROD                          0x4F9   // (Saffron's card house: Grandmaster ROD has introduced himself)
+// FireRed's Rocket Warehouse item balls (Five Island: gone with the Sevii Islands), for the TMs they held
+#define FLAG_HIDE_ROCKET_HIDEOUT_B4F_TM36     0x1F5   // (was FLAG_HIDE_FIVE_ISLAND_ROCKET_WAREHOUSE_TM36)
+#define FLAG_HIDE_SILPH_CO_9F_TM42            0x1F6   // (was FLAG_HIDE_FIVE_ISLAND_ROCKET_WAREHOUSE_PEARL; TM42 was the Memorial Pillar's)
 #define FLAG_GOT_EVIOLATE                     0x4FA   // (the Pokémon Tower's ghost girl: the game's one Eviolate, src/tower_graves.c)
 // (0x4F4: Pallet Town's Lucky Egg, constants/flags_frlg.h)
 #define FLAG_TOURNEY_BEAT_KALOS               0x4F5   // (the tournament, src/tournament.c: a Kalos trainer beaten)
