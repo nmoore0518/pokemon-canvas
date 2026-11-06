@@ -32,7 +32,9 @@ LADDER = 0x285
 SIGN = 0x2CD
 PEBBLES = (0x282, 0x283)
 BOULDER = ((0x2D5, 0x2D6), (0x2DD, 0x2DE))
-EDGE_H, EDGE_V = 0x2E1, 0x2DA                   # the higher rock round the room (its edge lines)
+# the higher rock round the room: its edges where it meets the floor (a boulder's sides, turned
+# inside out: the floor's above it, below it, to its right, to its left)
+EDGE_ABOVE, EDGE_BELOW, EDGE_RIGHT, EDGE_LEFT = 0x2D1, 0x2E1, 0x2DA, 0x2D8
 
 
 def block(m, collision=0, elevation=3):
@@ -74,11 +76,17 @@ class Room:
                 if walk[y][x] or (self.g[y][x] & 0x3FF) != ROCK:
                     continue
                 below = y + 1 < self.h and walk[y + 1][x]
-                side = (x + 1 < self.w and walk[y][x + 1]) or (x > 0 and walk[y][x - 1])
+                above = y > 0 and walk[y - 1][x]
+                right = x + 1 < self.w and walk[y][x + 1]
+                left = x > 0 and walk[y][x - 1]
                 if below:
-                    self.g[y][x] = block(EDGE_H, 1, 0)
-                elif side:
-                    self.g[y][x] = block(EDGE_V, 1, 0)
+                    self.g[y][x] = block(EDGE_BELOW, 1, 0)
+                elif right:
+                    self.g[y][x] = block(EDGE_RIGHT, 1, 0)
+                elif left:
+                    self.g[y][x] = block(EDGE_LEFT, 1, 0)
+                elif above:
+                    self.g[y][x] = block(EDGE_ABOVE, 1, 0)
 
     def flat(self):
         return [b for row in self.g for b in row]
@@ -123,9 +131,10 @@ CROWD = [  # (x, y, look, facing)
 
 # gTileset_Pit's own blocks, after Diglett's Cave's (0x280 + its 157)
 PIT_FIRST = 0x280 + 157
-RING_H, RING_L, RING_R = PIT_FIRST, PIT_FIRST + 1, PIT_FIRST + 2
+RING_H, RING_V = PIT_FIRST, PIT_FIRST + 1        # the ring's fence: posts and rails (PIT_FIRST + 2: spare)
 COUNTER_L, COUNTER_M, COUNTER_R = PIT_FIRST + 3, PIT_FIRST + 4, PIT_FIRST + 5   # the counter: a shop's, in dark wood
 COUNTER_TOP = (PIT_FIRST + 6, PIT_FIRST + 7, PIT_FIRST + 8)    # (the dirt behind it, under its top's edge)
+RING_TL, RING_TR, RING_BL, RING_BR = (PIT_FIRST + 9 + i for i in range(4))   # (its corners)
 COUNTER_PAL = 7                 # (a palette Diglett's Cave doesn't use)
 COUNTER_TILE = 0x380            # (its tiles, after Diglett's Cave's 256)
 # The Mart's counter, recoloured: its colours -> dark red-brown wood
@@ -145,12 +154,16 @@ def pit_room():
     r = Room(PIT_W, PIT_H)
     r.floor(2, 2, PIT_W - 3, PIT_H - 3, DIRT)
     x0, y0, x1, y1 = RING
-    for x in range(x0, x1 + 1):
+    for x in range(x0 + 1, x1):
         r.put(x, y0, RING_H, True)
         r.put(x, y1, RING_H, True)
     for y in range(y0 + 1, y1):
-        r.put(x0, y, RING_L, True)
-        r.put(x1, y, RING_R, True)
+        r.put(x0, y, RING_V, True)
+        r.put(x1, y, RING_V, True)
+    r.put(x0, y0, RING_TL, True)
+    r.put(x1, y0, RING_TR, True)
+    r.put(x0, y1, RING_BL, True)
+    r.put(x1, y1, RING_BR, True)
     cx0, cx1, cy = COUNTER
     for x in range(cx0, cx1 + 1):
         r.put(x, cy, COUNTER_L if x == cx0 else COUNTER_R if x == cx1 else COUNTER_M, True)
@@ -209,6 +222,8 @@ def counter_graphics(dst):
                     img.putpixel((x, y), 1 + colours.index(c))
         return img
     pieces = [piece(range(0, 16)), piece(list(range(8, 16)) * 2), piece(range(32, 48))]
+    colours += [c for c in FENCE_COLOURS.values() if c not in colours]
+    fences = {k: fence_piece(k, lambda c: 1 + colours.index(FENCE_COLOURS[c])) for k in ("H", "V", "TL", "TR", "BL", "BR")}
     tiles_png = dst / "tiles.png"
     old = Image.open(tiles_png)
     assert old.size == (128, 128)          # (256 tiles: 0x280-0x37F)
@@ -227,7 +242,16 @@ def counter_graphics(dst):
                 q.append(found.index(t))
             quads.append(q)
         out.append(quads)
-    assert len(found) <= 32
+    fence_out = {}
+    for k, img in fences.items():
+        q = []
+        for i in range(4):
+            t = img.crop(((i % 2) * 8, (i // 2) * 8, (i % 2) * 8 + 8, (i // 2) * 8 + 8)).tobytes()
+            if t not in found:
+                found.append(t)
+            q.append(found.index(t))
+        fence_out[k] = q
+    assert len(found) <= 32 and len(colours) <= 15
     for i, t in enumerate(found):
         tile = Image.frombytes("P", (8, 8), t)
         new.paste(tile, ((i % 16) * 8, 128 + (i // 16) * 8))
@@ -235,7 +259,41 @@ def counter_graphics(dst):
     pal = [(0, 0, 0)] + colours + [(0, 0, 0)] * (15 - len(colours))
     (dst / "palettes" / f"{COUNTER_PAL:02d}.pal").write_text(
         "JASC-PAL\r\n0100\r\n16\r\n" + "".join(f"{r} {g} {b}\r\n" for r, g, b in pal))
-    return out
+    return out, fence_out
+
+
+# The ring's fence: wooden posts, two rails between them (drawn here: 16 x 16, a post in the middle
+# of each square, so the sides and the corners meet)
+FENCE_COLOURS = {"O": (49, 24, 24), "L": (165, 115, 66), "M": (123, 82, 49), "D": (90, 57, 33)}
+
+
+def fence_piece(kind, index):
+    from PIL import Image
+    img = Image.new("P", (16, 16), 0)
+    def px(x, y, c):
+        img.putpixel((x, y), index(c))
+    def rails(x0, x1):          # (across: two rails, an outline above and below each)
+        for x in range(x0, x1 + 1):
+            for y, c in ((4, "O"), (5, "L"), (6, "M"), (7, "O"), (9, "O"), (10, "L"), (11, "M"), (12, "O")):
+                px(x, y, c)
+    def rail_down(y0, y1):      # (down: the top of a rail, seen from above)
+        for y in range(y0, y1 + 1):
+            for x, c in ((6, "O"), (7, "L"), (8, "M"), (9, "O")):
+                px(x, y, c)
+    if kind in ("H", "TL", "BL"):
+        rails(8, 15)
+    if kind in ("H", "TR", "BR"):
+        rails(0, 7)
+    if kind in ("V", "TL", "TR"):
+        rail_down(13, 15)
+    if kind in ("V", "BL", "BR"):
+        rail_down(0, 2)
+    # the post
+    for y in range(2, 15):
+        for x in range(5, 11):
+            edge = x in (5, 10) or y in (2, 14)
+            px(x, y, "O" if edge else "L" if y <= 4 else "D" if x == 9 else "M")
+    return img
 
 
 def write_tileset():
@@ -254,17 +312,18 @@ def write_tileset():
     gen = lambda m: list(struct.unpack_from("<8H", pmt, m * 16))
     dirt = mt[DIRT - 0x280][:4]
     covered = 1 << 29
-    mt.append(dirt + gen(0xE6)[4:]); at.append(covered)                       # RING_H: logs across
-    mt.append(dirt + gen(0xF1)[4:]); at.append(covered)                       # RING_L: logs down its right
-    mt.append(dirt + gen(0xF0)[4:]); at.append(covered)                       # RING_R: logs down its left
-    counter_tiles = counter_graphics(dst)
+    counter_tiles, fence_tiles = counter_graphics(dst)
     blank = COUNTER_TILE
     e = lambda t: (COUNTER_TILE + t) | (COUNTER_PAL << 12)
+    for k in ("H", "V", "V"):                                                 # RING_H, RING_V, (spare)
+        mt.append(dirt + [e(t) for t in fence_tiles[k]]); at.append(covered)
     for k in range(3):                                                        # COUNTER_L/M/R
         mt.append(dirt + [e(counter_tiles[k][1][i]) for i in range(4)]); at.append(covered | mb("MB_COUNTER"))
     for k in range(3):                                                        # COUNTER_TOP
         top = counter_tiles[k][0]
         mt.append(dirt + [blank | (COUNTER_PAL << 12)] * 2 + [e(top[2]), e(top[3])]); at.append(covered)
+    for k in ("TL", "TR", "BL", "BR"):                                        # RING_TL...
+        mt.append(dirt + [e(t) for t in fence_tiles[k]]); at.append(covered)
     (dst / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in mt))
     (dst / "metatile_attributes.bin").write_bytes(struct.pack(f"<{len(at)}I", *at))
     # (registered once: the same graphics as Diglett's Cave)
