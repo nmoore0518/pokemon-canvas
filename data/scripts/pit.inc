@@ -40,8 +40,9 @@ Pit_EventScript_Doorman::
 	goto_if_eq VAR_RESULT, FALSE, Pit_EventScript_DoormanWrong
 	msgbox Pit_Text_DoormanRight
 	closemessage
-	applymovement LOCALID_PIT_DOORMAN, Pit_Movement_StepAside
-	waitmovement 0
+	getplayerxy VAR_0x8004, VAR_0x8005
+	call_if_eq VAR_0x8004, 5, Pit_EventScript_DoormanStepBack
+	call_if_ne VAR_0x8004, 5, Pit_EventScript_DoormanStepRight
 	setflag FLAG_PIT_PASSWORD_GIVEN
 	call Pit_EventScript_DoormanAside
 	release
@@ -56,6 +57,22 @@ Pit_EventScript_DoormanLetIn::
 	msgbox Pit_Text_DoormanLetIn
 	release
 	end
+
+@ (the player's below him: he steps right, out of the way; on his right: he steps back, down)
+Pit_EventScript_DoormanStepRight::
+	applymovement LOCALID_PIT_DOORMAN, Pit_Movement_StepAside
+	waitmovement 0
+	return
+
+Pit_EventScript_DoormanStepBack::
+	applymovement LOCALID_PIT_DOORMAN, Pit_Movement_StepBack
+	waitmovement 0
+	return
+
+Pit_Movement_StepBack:
+	walk_down
+	face_right
+	step_end
 
 Pit_Movement_StepAside:
 	walk_right
