@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pit_boss.h"
 #include "item_menu.h"
 #include "berry_field.h"
 #include "tournament.h"
@@ -737,6 +738,12 @@ STATIC_ASSERT(BERRY_FIELD_SAVE_OFFSET + sizeof(struct BerryFieldSave) <= SECTOR_
 // (and the items registered for SELECT after the first: older saves have zeros there, ITEM_NONE)
 #define REGISTERED_ITEMS_SAVE_OFFSET ((BERRY_FIELD_SAVE_OFFSET + sizeof(struct BerryFieldSave) + 3) & ~3)
 STATIC_ASSERT(REGISTERED_ITEMS_SAVE_OFFSET + sizeof(gRegisteredItemsExtra) <= SECTOR_DATA_SIZE, RegisteredItemsFreeSpace);
+// (and the back room's: src/pit_boss.c. Older saves: zeros there, cleared on load. The Pokémon he's
+// won is in sector 30, after the Mastery Hall's data: PIT_BOSS_HELD_OFFSET)
+#define PIT_BOSS_HELD_OFFSET ((sizeof(struct ExtraSaveData) + 3) & ~3)
+STATIC_ASSERT(PIT_BOSS_HELD_OFFSET + sizeof(struct BoxPokemon) <= SECTOR_DATA_SIZE, PitBossHeldFreeSpace);
+#define PIT_BOSS_SAVE_OFFSET ((REGISTERED_ITEMS_SAVE_OFFSET + sizeof(gRegisteredItemsExtra) + 3) & ~3)
+STATIC_ASSERT(PIT_BOSS_SAVE_OFFSET + sizeof(struct PitBossSave) <= SECTOR_DATA_SIZE, PitBossFreeSpace);
 
 static void SaveExtraSectors(void)
 {
@@ -754,9 +761,17 @@ static void SaveExtraSectors(void)
     BerryField_SealSave();
     memcpy(&sector->data[BERRY_FIELD_SAVE_OFFSET], &gBerryFieldSave, sizeof(gBerryFieldSave));
     memcpy(&sector->data[REGISTERED_ITEMS_SAVE_OFFSET], gRegisteredItemsExtra, sizeof(gRegisteredItemsExtra));
+    memcpy(&sector->data[PIT_BOSS_SAVE_OFFSET], &gPitBossSave, sizeof(gPitBossSave));
     sector->id = CalculateChecksum((void *)storage, STORAGE_EXTRA_SIZE);
     TryWriteSector(SECTOR_ID_EXTRA_STORAGE, sector->data);
-    HandleWriteSectorNBytes(SECTOR_ID_MASTERY_HALL, (u8 *)&gExtraSave, sizeof(gExtraSave));
+    // (sector 30: as HandleWriteSectorNBytes, with the back room's Pokémon after the checksummed part)
+    for (i = 0; i < SECTOR_SIZE; i++)
+        ((u8 *)sector)[i] = 0;
+    sector->signature = SECTOR_SIGNATURE;
+    memcpy(sector->data, &gExtraSave, sizeof(gExtraSave));
+    memcpy(&sector->data[PIT_BOSS_HELD_OFFSET], &gPitBossHeld, sizeof(gPitBossHeld));
+    sector->id = CalculateChecksum((u8 *)&gExtraSave, sizeof(gExtraSave));
+    TryWriteSector(SECTOR_ID_MASTERY_HALL, sector->data);
 }
 
 // ...and read back after a load. A save from before them: its PC is rearranged (the boxes come last
@@ -771,6 +786,7 @@ static void LoadExtraSectors(u8 status)
         Tourney_ClearSave();
         BerryField_Clear();
         memset(gRegisteredItemsExtra, 0, sizeof(gRegisteredItemsExtra));
+        PitBoss_Clear();
         return;
     }
     Bag_UpgradeLayout();
@@ -785,6 +801,7 @@ static void LoadExtraSectors(u8 status)
     BerryField_Validate();
     memcpy(gRegisteredItemsExtra, &gSaveDataBuffer.data[REGISTERED_ITEMS_SAVE_OFFSET], sizeof(gRegisteredItemsExtra));
     RegisteredItems_Validate();
+    memcpy(&gPitBossSave, &gSaveDataBuffer.data[PIT_BOSS_SAVE_OFFSET], sizeof(gPitBossSave));
     // (sector 30: the Type Mastery Hall of Fame and BILL'S ARCHIVE - or, from before the archive,
     // the Hall alone)
     // (and, from before the team builder, the two without it)
@@ -801,6 +818,9 @@ static void LoadExtraSectors(u8 status)
     MasteryHall_Validate();
     Archive_Validate();
     TeamBuilder_Validate();
+    // (the sector's still in the buffer: the back room's Pokémon after the Hall's data)
+    memcpy(&gPitBossHeld, &gSaveDataBuffer.data[PIT_BOSS_HELD_OFFSET], sizeof(gPitBossHeld));
+    PitBoss_Validate();
 }
 
 u8 HandleSavingData(u8 saveType)

@@ -4911,7 +4911,7 @@ extern const u8 Pit_Text_HiddenDoorFound[], Pit_Text_DoormanStop[], Pit_Text_Doo
     Pit_Text_BookieResult[], Pit_Text_BetWon[], Pit_Text_BetLost[], Pit_Text_BookieNextBout[], Pit_Text_TipsterOffer[],
     Pit_Text_TipsterNo[], Pit_Text_TipsterBroke[], Pit_Text_TipClean[], Pit_Text_TipDive[], Pit_Text_TipItem[], Pit_Text_TipLevel[],
     Pit_Text_Crowd0[], Pit_Text_Crowd1[], Pit_Text_Crowd2[], Pit_Text_Crowd3[], Pit_Text_Crowd4[], Pit_Text_Crowd5[],
-    Pit_Text_Crowd6[], Pit_Text_Crowd7[], Pit_Text_BackRoomKeeper[], Pit_Text_Overheard[], Pit_Text_WhispererCaught[],
+    Pit_Text_Crowd6[], Pit_Text_Crowd7[], Pit_Text_Overheard[], Pit_Text_WhispererCaught[],
     Pit_Text_ListenerBeatIt[], Pit_Text_BlueLoses[];
 extern const u8 GymRooms_Text_OakCaughtSoMany[], GymRooms_Text_OakBackRoom[], GymRooms_Text_OakLeftRoom[],
     GymRooms_Text_OakRightRoom[], GymRooms_Text_DoorwayOpened[], GymRooms_Text_OakShowItOff[];
@@ -4924,7 +4924,7 @@ TEST("GymHack: the pit's and the gym rooms' lines fit the message box")
         Pit_Text_BookieResult, Pit_Text_BetWon, Pit_Text_BetLost, Pit_Text_BookieNextBout, Pit_Text_TipsterOffer,
         Pit_Text_TipsterNo, Pit_Text_TipsterBroke, Pit_Text_TipClean, Pit_Text_TipDive, Pit_Text_TipItem, Pit_Text_TipLevel,
         Pit_Text_Crowd0, Pit_Text_Crowd1, Pit_Text_Crowd2, Pit_Text_Crowd3, Pit_Text_Crowd4, Pit_Text_Crowd5,
-        Pit_Text_Crowd6, Pit_Text_Crowd7, Pit_Text_BackRoomKeeper, Pit_Text_Overheard, Pit_Text_WhispererCaught,
+        Pit_Text_Crowd6, Pit_Text_Crowd7, Pit_Text_Overheard, Pit_Text_WhispererCaught,
         Pit_Text_ListenerBeatIt, Pit_Text_BlueLoses, GymRooms_Text_OakCaughtSoMany, GymRooms_Text_OakBackRoom,
         GymRooms_Text_OakLeftRoom, GymRooms_Text_OakRightRoom, GymRooms_Text_DoorwayOpened, GymRooms_Text_OakShowItOff};
     u32 i, page, card;
@@ -5002,4 +5002,177 @@ TEST("GymHack: the pit: every bout's fair: the underdog pays at most about x6, t
         EXPECT_LE(Pit_GetOdds(0), 61);
         EXPECT_LE(Pit_GetOdds(1), 61);
     }
+}
+
+#include "pit_boss.h"
+#include "gym_legend.h"
+extern const u8 Pit_Text_Saving[], Pit_Text_Saved[], PitBoss_Text_TheMon[], PitBoss_Text_Rules[], PitBoss_Text_Today[],
+    PitBoss_Text_ShowMe[], PitBoss_Text_Confirm[], PitBoss_Text_Official[], PitBoss_Text_Defeat[], PitBoss_Text_Won[],
+    PitBoss_Text_Received[], PitBoss_Text_ToPC[], PitBoss_Text_Draw[], PitBoss_Text_Lost[], PitBoss_Text_Forfeited[],
+    PitBoss_Text_TellBuyBack[], PitBoss_Text_OfferBuyBack[], PitBoss_Text_BoughtBack[], PitBoss_Text_BoughtBackToPC[],
+    PitBoss_Text_KeepIt[], PitBoss_Text_BuyBackBroke[], PitBoss_Text_BuyBackNoRoom[], PitBoss_Text_CleanedOut[],
+    PitBoss_Text_NoDeal[], PitBoss_Text_Egg[], PitBoss_Text_Fainted[], PitBoss_Text_OnlyOne[], PitBoss_Text_TooStrong[],
+    PitBoss_Text_TooWeak[];
+
+TEST("GymHack: the back room's lines fit the message box")
+{
+    static const u8 *const texts[] = {Pit_Text_Saving, Pit_Text_Saved, PitBoss_Text_TheMon, PitBoss_Text_Rules,
+        PitBoss_Text_Today, PitBoss_Text_ShowMe, PitBoss_Text_Confirm, PitBoss_Text_Official, PitBoss_Text_Defeat,
+        PitBoss_Text_Won, PitBoss_Text_Received, PitBoss_Text_ToPC, PitBoss_Text_Draw, PitBoss_Text_Lost,
+        PitBoss_Text_Forfeited, PitBoss_Text_TellBuyBack, PitBoss_Text_OfferBuyBack, PitBoss_Text_BoughtBack,
+        PitBoss_Text_BoughtBackToPC, PitBoss_Text_KeepIt, PitBoss_Text_BuyBackBroke, PitBoss_Text_BuyBackNoRoom,
+        PitBoss_Text_CleanedOut, PitBoss_Text_NoDeal, PitBoss_Text_Egg, PitBoss_Text_Fainted, PitBoss_Text_OnlyOne,
+        PitBoss_Text_TooStrong, PitBoss_Text_TooWeak};
+    u32 i;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, COMPOUND_STRING("Crabominable"));
+    StringCopy(gStringVar2, COMPOUND_STRING("Feraligatr"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+}
+
+TEST("GymHack: the back room: his Pokémon of the day - rare, now and then a legendary, never a gym legendary")
+{
+    u32 day, legends = 0, type, species, changes = 0, last = SPECIES_NONE;
+    PitBoss_Clear();
+    for (day = 0; day < 300; day++)
+    {
+        const struct SpeciesInfo *info;
+        gPitBossSave.day = day;
+        species = PitBoss_GetSpecies();
+        EXPECT_NE(species, SPECIES_NONE);
+        EXPECT_EQ(species, PitBoss_GetSpecies());          // (the same all day)
+        info = &gSpeciesInfo[species];
+        legends += info->isRestrictedLegendary || info->isSubLegendary || info->isMythical;
+        for (type = 0; type < NUMBER_OF_MON_TYPES; type++)
+            EXPECT_NE(species, gGymLegends[type]);
+        changes += (species != last);
+        last = species;
+    }
+    EXPECT_GT(changes, 250);
+    EXPECT_LT(legends, 25);         // (about 3%)
+}
+
+static void BackRoomParty(u32 species0, u32 level0, u32 species1)
+{
+    u32 i, iv = MAX_PER_STAT_IVS;
+    ZeroPlayerPartyMons();
+    CreateMon(&gParties[B_TRAINER_PLAYER][0], species0, level0, 0, OTID_STRUCT_PLAYER_ID);
+    for (i = 0; i < NUM_STATS; i++)
+        SetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HP_IV + i, &iv);
+    CalculateMonStats(&gParties[B_TRAINER_PLAYER][0]);
+    if (species1 != SPECIES_NONE)
+        CreateMon(&gParties[B_TRAINER_PLAYER][1], species1, 20, 1, OTID_STRUCT_PLAYER_ID);
+    CalculatePlayerPartyCount();
+}
+
+TEST("GymHack: the back room: a fair fight only - his Pokémon at the stake's level, stats within 10%")
+{
+    u32 day, strongDay = 0xFFFF, weakDay = 0xFFFF;
+    PitBoss_Clear();
+    for (day = 0; day < 500 && (strongDay == 0xFFFF || weakDay == 0xFFFF); day++)
+    {
+        gPitBossSave.day = day;
+        if (GetSpeciesBaseStatTotal(PitBoss_GetSpecies()) >= 540)
+            strongDay = day;
+        else if (GetSpeciesBaseStatTotal(PitBoss_GetSpecies()) <= 330)
+            weakDay = day;
+    }
+    EXPECT_NE(strongDay, 0xFFFF);
+    EXPECT_NE(weakDay, 0xFFFF);
+    gSpecialVar_0x8004 = 0;
+
+    // The same Pokémon, perfect IVs: about even
+    gPitBossSave.day = strongDay;
+    BackRoomParty(PitBoss_GetSpecies(), 50, SPECIES_PIDGEY);
+    PitBoss_CheckStake();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    // A Magikarp against a strong one: too weak; a Mewtwo against a weak one: too strong
+    BackRoomParty(SPECIES_MAGIKARP, 50, SPECIES_PIDGEY);
+    PitBoss_CheckStake();
+    EXPECT_EQ(gSpecialVar_Result, 6);
+    gPitBossSave.day = weakDay;
+    BackRoomParty(SPECIES_MEWTWO, 50, SPECIES_PIDGEY);
+    PitBoss_CheckStake();
+    EXPECT_EQ(gSpecialVar_Result, 5);
+    // Not the player's only Pokémon
+    BackRoomParty(SPECIES_MEWTWO, 50, SPECIES_NONE);
+    PitBoss_CheckStake();
+    EXPECT_EQ(gSpecialVar_Result, 4);
+}
+
+TEST("GymHack: the back room: lose and he keeps it (sold back for 500000); win and his is the player's")
+{
+    u32 boss;
+    PitBoss_Clear();
+    gPitBossSave.day = 7;
+    boss = PitBoss_GetSpecies();
+    gSpecialVar_0x8004 = 0;
+
+    // Lost
+    BackRoomParty(SPECIES_RAICHU, 40, SPECIES_PIDGEY);
+    PitBoss_HoldStake();
+    EXPECT(gPitBossSave.stakeHeld);
+    PitBoss_SetupFight();
+    EXPECT(PitBoss_FightActive());
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 1);
+    gBattleOutcome = B_OUTCOME_LOST;
+    PitBoss_EndFight();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 1);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIDGEY);
+    EXPECT(!gPitBossSave.stakeHeld);
+    PitBoss_HasHeld();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    SetMoney(&gSaveBlock1Ptr->money, 499999);
+    PitBoss_BuyBack();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    SetMoney(&gSaveBlock1Ptr->money, 500000);
+    PitBoss_BuyBack();
+    EXPECT_EQ(gSpecialVar_Result, 1);
+    EXPECT_EQ(GetMoney(&gSaveBlock1Ptr->money), 0);
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 2);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_SPECIES), SPECIES_RAICHU);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_HP), GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_MAX_HP));
+    PitBoss_HasHeld();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
+
+    // Won
+    FlagClear(FLAG_PIT_BOSS_BEATEN);
+    BackRoomParty(SPECIES_RAICHU, 40, SPECIES_PIDGEY);
+    PitBoss_HoldStake();
+    PitBoss_SetupFight();
+    gBattleOutcome = B_OUTCOME_WON;
+    PitBoss_EndFight();
+    EXPECT_EQ(gSpecialVar_Result, 0);
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 3);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_RAICHU);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_SPECIES), boss);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_LEVEL), 40);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_SPEED_IV), MAX_PER_STAT_IVS);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_OT_ID), GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_OT_ID));
+    EXPECT(!GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_SANITY_IS_BAD_EGG));
+    EXPECT(FlagGet(FLAG_PIT_BOSS_BEATEN));
+    // (a new day: he's got another)
+    PitBoss_NewDay();
+    EXPECT(!FlagGet(FLAG_PIT_BOSS_BEATEN));
+    EXPECT_EQ(gPitBossSave.day, 8);
+}
+
+TEST("GymHack: the back room: switching off mid-battle loses the stake")
+{
+    PitBoss_Clear();
+    gSpecialVar_0x8004 = 1;
+    BackRoomParty(SPECIES_PIDGEY, 30, SPECIES_RAICHU);
+    PitBoss_HoldStake();
+    // (the save before the battle; the power goes off; the save's loaded; a step)
+    PitBoss_OnStep();
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 1);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_PIDGEY);
+    PitBoss_HasHeld();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    PitBoss_CheckForfeit();
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    PitBoss_CheckForfeit();
+    EXPECT_EQ(gSpecialVar_Result, FALSE);
 }

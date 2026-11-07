@@ -360,10 +360,11 @@ const struct Tileset gTileset_Pit =
         hh.write_text(t)
 
 
-# ---- The back room (for now: a door that stays shut, and the man who keeps it) ----
+# ---- The back room: the boss, and his Pokémon of the day ----
 BACK_W, BACK_H = 11, 9
 BACK_LADDER_UP = (5, 7)
-BACK_KEEPER = (5, 3)
+BACK_KEEPER = (5, 3)            # the boss: Pokémon for Pokémon (src/pit_boss.c)
+BACK_BOSS_MON = (6, 3)          # (his Pokémon of the day)
 
 
 def back_room():
@@ -424,7 +425,9 @@ def events(key):
             bg_events=[{"type": "sign", "x": CARD_SIGN[0], "y": CARD_SIGN[1], "elevation": 0,
                         "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY", "script": "Pit_EventScript_Card"}])
     return dict(
-        object_events=[obj("OBJ_EVENT_GFX_ROCKER", BACK_KEEPER, "DOWN", "Pit_EventScript_BackRoomKeeper", "LOCALID_PIT_BACK_KEEPER")],
+        object_events=[obj("OBJ_EVENT_GFX_ROCKER", BACK_KEEPER, "DOWN", "Pit_EventScript_BackRoomKeeper", "LOCALID_PIT_BACK_KEEPER"),
+                       {**obj("OBJ_EVENT_GFX_VAR_0", BACK_BOSS_MON, "DOWN", "Pit_EventScript_BackRoomMon", "LOCALID_PIT_BOSS_MON"),
+                        "flag": "FLAG_PIT_BOSS_BEATEN"}],
         warp_events=[warp(BACK_LADDER_UP, "MAP_CELADON_CITY_PIT", 1)],
         bg_events=[])
 

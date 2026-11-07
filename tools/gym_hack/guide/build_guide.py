@@ -456,8 +456,21 @@ advantage, the other makes up for it or pays more. The underdog always has a cha
 <li><b>Fixed fights</b>: about one in four is fixed: the favorite takes a dive (its trainer calls bad moves), or it isn't
 holding the item on the card, or it's weaker than the card says. The tipster on the rim tells you which; his price is
 ten percent of whatever you bet on that bout, added on when you bet (or taken right away if your bet's already down).</li>
-<li>The bookie stands behind a counter along the back wall, like a shop clerk; talk to him across it. The back room, down the ladder in the
-far corner, is closed for now.</li>
+<li>The bookie stands behind a counter along the back wall, like a shop clerk; talk to him across it.</li>
+<li><b>The game saves itself</b> before and after any bout you've bet on. There's no switching off to take a bet back.</li>
+</ul>
+<p><b>The back room</b>, down the ladder in the far corner, doesn't deal in money. Its boss bets Pokémon: you put one up and he
+puts up his, one on one. Win, and his Pokémon is yours to keep. Lose, and he keeps yours, for good.</p>
+<ul>
+<li><b>His Pokémon</b> changes every "day" of steps. It's something hard to come by: a Pokémon that's rare in the wild, or the
+final form of one whose earlier forms are the only ones found wild, and once in a while a legendary (never a gym's). It has
+perfect IVs, full EVs and a good item. It's always the same level as the Pokémon you put up.</li>
+<li><b>A fair fight only</b>: he compares the two Pokémon's stats at that level, and he turns yours down if it's more than
+10% stronger or weaker than his.</li>
+<li>You need at least one other Pokémon (not an Egg) to bet one. Once you've won his Pokémon, he has nothing to put up
+until the next day. If both Pokémon go down together, the deal's off.</li>
+<li><b>The game saves</b> when you shake on it and again after the battle. Switch off mid-battle and he counts it as a
+loss.</li>
 </ul>
 <h3>Saffron City: Grandmaster Rod and the Trading Card Game</h3>
 <p>The doorless house left of the Copycat's has a door now. Inside is <b>Rod</b>, Grandmaster of the Pokémon Trading Card

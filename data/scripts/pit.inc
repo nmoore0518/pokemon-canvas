@@ -162,6 +162,8 @@ Pit_EventScript_BookieAlreadyBet::
 
 @ The bout: the bell, the battle (the two fighters' AI), the payout, the next card
 Pit_EventScript_Fight::
+	special Pit_HasBet
+	call_if_eq VAR_RESULT, TRUE, Pit_EventScript_AutoSave
 	msgbox Pit_Text_BookieBell
 	closemessage
 	playse SE_APPLAUSE
@@ -190,6 +192,7 @@ Pit_EventScript_Fight::
 	waitse
 	call_if_eq VAR_0x8007, 1, Pit_EventScript_BetWon
 	call_if_eq VAR_0x8007, 2, Pit_EventScript_BetLost
+	call_if_ne VAR_0x8007, 0, Pit_EventScript_AutoSave
 	msgbox Pit_Text_BookieNextBout
 	closemessage
 	fadescreen FADE_TO_BLACK
@@ -328,8 +331,177 @@ Pit_EventScript_Crowd7::
 	end
 
 @ The back room (for now: shut)
+@ ---- The save: before and after a battle with something on it (no taking it back) ----------
+Pit_EventScript_AutoSave::
+	message Pit_Text_Saving
+	waitmessage
+	special Pit_AutoSave
+	playse SE_SAVE
+	waitse
+	msgbox Pit_Text_Saved
+	return
+
+@ ---- The back room: Pokémon for Pokémon ------------------------------------------------
+Pit_EventScript_BackRoomTransition::
+	special PitBoss_OnTransition
+	end
+
+Pit_EventScript_BackRoomMon::
+	lock
+	special PitBoss_BufferDay
+	msgbox PitBoss_Text_TheMon
+	release
+	end
+
 Pit_EventScript_BackRoomKeeper::
-	msgbox Pit_Text_BackRoomKeeper, MSGBOX_NPC
+	lock
+	faceplayer
+	special PitBoss_CheckForfeit
+	goto_if_eq VAR_RESULT, TRUE, PitBoss_EventScript_Forfeited
+	goto_if_set FLAG_PIT_BOSS_MET, PitBoss_EventScript_Main
+	msgbox PitBoss_Text_Rules
+	setflag FLAG_PIT_BOSS_MET
+	goto PitBoss_EventScript_Main
+
+PitBoss_EventScript_Forfeited::
+	setflag FLAG_PIT_BOSS_MET
+	msgbox PitBoss_Text_Forfeited
+	goto PitBoss_EventScript_TellBuyBack
+
+PitBoss_EventScript_Main::
+	special PitBoss_HasHeld
+	call_if_eq VAR_RESULT, TRUE, PitBoss_EventScript_OfferBuyBack
+	goto_if_set FLAG_PIT_BOSS_BEATEN, PitBoss_EventScript_CleanedOut
+	special PitBoss_BufferDay
+	msgbox PitBoss_Text_Today, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_NoDeal
+	msgbox PitBoss_Text_ShowMe
+	special ChoosePartyMon
+	special PitBoss_CheckStake
+	switch VAR_RESULT
+	case 1, PitBoss_EventScript_NoDeal
+	case 2, PitBoss_EventScript_Egg
+	case 3, PitBoss_EventScript_Fainted
+	case 4, PitBoss_EventScript_OnlyOne
+	case 5, PitBoss_EventScript_TooStrong
+	case 6, PitBoss_EventScript_TooWeak
+	msgbox PitBoss_Text_Confirm, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_NoDeal
+	msgbox PitBoss_Text_Official
+	special PitBoss_HoldStake
+	call Pit_EventScript_AutoSave
+	closemessage
+	special PitBoss_SetupFight
+	setflag FLAG_GYM_CHALLENGE_BATTLE
+	cleartrainerflag TRAINER_GYM_CHALLENGER
+	trainerbattle_no_intro TRAINER_GYM_CHALLENGER, PitBoss_Text_Defeat
+	clearflag FLAG_GYM_CHALLENGE_BATTLE
+	special GymChallenge_EndPractice
+	special PitBoss_EndFight
+	switch VAR_RESULT
+	case 0, PitBoss_EventScript_Won
+	case 2, PitBoss_EventScript_Draw
+	msgbox PitBoss_Text_Lost
+	call Pit_EventScript_AutoSave
+	goto PitBoss_EventScript_TellBuyBack
+
+PitBoss_EventScript_Won::
+	msgbox PitBoss_Text_Won
+	playfanfare MUS_OBTAIN_ITEM
+	message PitBoss_Text_Received
+	waitmessage
+	waitfanfare
+	call_if_eq VAR_0x8005, TRUE, PitBoss_EventScript_ToPC
+	removeobject LOCALID_PIT_BOSS_MON
+	call Pit_EventScript_AutoSave
+	release
+	end
+
+PitBoss_EventScript_ToPC::
+	msgbox PitBoss_Text_ToPC
+	return
+
+PitBoss_EventScript_Draw::
+	msgbox PitBoss_Text_Draw
+	call Pit_EventScript_AutoSave
+	release
+	end
+
+@ (after a loss: the buyback, first mentioned)
+PitBoss_EventScript_TellBuyBack::
+	msgbox PitBoss_Text_TellBuyBack
+	setflag FLAG_PIT_BOSS_BUYBACK_TOLD
+	release
+	end
+
+PitBoss_EventScript_OfferBuyBack::
+	showmoneybox 0, 0
+	msgbox PitBoss_Text_OfferBuyBack, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_KeepIt
+	special PitBoss_BuyBack
+	switch VAR_RESULT
+	case 0, PitBoss_EventScript_BuyBackBroke
+	case 3, PitBoss_EventScript_BuyBackNoRoom
+	updatemoneybox
+	playse SE_SHOP
+	msgbox PitBoss_Text_BoughtBack
+	call_if_eq VAR_RESULT, 2, PitBoss_EventScript_BoughtBackToPC
+	hidemoneybox
+	call Pit_EventScript_AutoSave
+	return
+
+PitBoss_EventScript_BoughtBackToPC::
+	msgbox PitBoss_Text_BoughtBackToPC
+	return
+
+PitBoss_EventScript_KeepIt::
+	msgbox PitBoss_Text_KeepIt
+	hidemoneybox
+	return
+
+PitBoss_EventScript_BuyBackBroke::
+	msgbox PitBoss_Text_BuyBackBroke
+	hidemoneybox
+	return
+
+PitBoss_EventScript_BuyBackNoRoom::
+	msgbox PitBoss_Text_BuyBackNoRoom
+	hidemoneybox
+	return
+
+PitBoss_EventScript_CleanedOut::
+	msgbox PitBoss_Text_CleanedOut
+	release
+	end
+
+PitBoss_EventScript_NoDeal::
+	msgbox PitBoss_Text_NoDeal
+	release
+	end
+
+PitBoss_EventScript_Egg::
+	msgbox PitBoss_Text_Egg
+	release
+	end
+
+PitBoss_EventScript_Fainted::
+	msgbox PitBoss_Text_Fainted
+	release
+	end
+
+PitBoss_EventScript_OnlyOne::
+	msgbox PitBoss_Text_OnlyOne
+	release
+	end
+
+PitBoss_EventScript_TooStrong::
+	msgbox PitBoss_Text_TooStrong
+	release
+	end
+
+PitBoss_EventScript_TooWeak::
+	msgbox PitBoss_Text_TooWeak
+	release
 	end
 
 @ ---- The Game Corner: the password, overheard ---------------------------------------
@@ -542,11 +714,132 @@ Pit_Text_Crowd7::
 	.string "week. Now I'm just here to watch\l"
 	.string "other people lose theirs.$"
 
-Pit_Text_BackRoomKeeper::
-	.string "The back room's for the real\n"
-	.string "money. Big stakes. Bigger losers.\p"
-	.string "The boss isn't taking games\n"
-	.string "tonight. Beat it.$"
+Pit_Text_Saving::
+	.string "SAVING…\n"
+	.string "DON'T TURN OFF THE POWER.$"
+
+Pit_Text_Saved::
+	.string "{PLAYER} saved the game.$"
+
+PitBoss_Text_TheMon::
+	.string "The boss's {STR_VAR_1}. It's watching\n"
+	.string "you very closely.$"
+
+PitBoss_Text_Rules::
+	.string "Money's for the suckers out front.\n"
+	.string "Back here, we bet POKéMON.\p"
+	.string "You put one up. I put one up. One\n"
+	.string "on one, same level.\p"
+	.string "Winner walks out with both.\p"
+	.string "Lose, and yours stays here. With\n"
+	.string "me. For good.$"
+
+PitBoss_Text_Today::
+	.string "Today I'm putting up a {STR_VAR_1}.\n"
+	.string "Want a shot at it?$"
+
+PitBoss_Text_ShowMe::
+	.string "Show me what you're putting up.$"
+
+PitBoss_Text_Confirm::
+	.string "Your {STR_VAR_2} against my\n"
+	.string "{STR_VAR_1}. Same level. One on one.\p"
+	.string "Lose, and your {STR_VAR_2} is mine.\n"
+	.string "Permanently. No take-backs.\p"
+	.string "Deal?$"
+
+PitBoss_Text_Official::
+	.string "Then we make it official.$"
+
+PitBoss_Text_Defeat::
+	.string "…Huh.$"
+
+PitBoss_Text_Won::
+	.string "…Well. A deal's a deal.\n"
+	.string "Take it. Free and clear.$"
+
+PitBoss_Text_Received::
+	.string "{PLAYER} received the {STR_VAR_1}!$"
+
+PitBoss_Text_ToPC::
+	.string "The {STR_VAR_1} was sent to the PC.$"
+
+PitBoss_Text_Draw::
+	.string "Both down? Then nobody wins.\n"
+	.string "Take yours and get out.$"
+
+PitBoss_Text_Lost::
+	.string "Your {STR_VAR_2} is mine now.$"
+
+PitBoss_Text_Forfeited::
+	.string "The lights went out on you, huh?\n"
+	.string "Funny how that happens.\p"
+	.string "Rules are rules. You walked out on\n"
+	.string "a deal. Your {STR_VAR_2} stayed\l"
+	.string "down here.$"
+
+PitBoss_Text_TellBuyBack::
+	.string "…Don't look at me like that.\n"
+	.string "I'm a businessman.\p"
+	.string "¥500000, cash, and you can have it\n"
+	.string "back.\p"
+	.string "Offer stands till I win another one\n"
+	.string "off you.$"
+
+PitBoss_Text_OfferBuyBack::
+	.string "Here for your {STR_VAR_2}?\n"
+	.string "¥500000. Cash.$"
+
+PitBoss_Text_BoughtBack::
+	.string "Pleasure doing business.\n"
+	.string "{STR_VAR_2}'s yours again.$"
+
+PitBoss_Text_BoughtBackToPC::
+	.string "{STR_VAR_2} was sent to the PC.$"
+
+PitBoss_Text_KeepIt::
+	.string "Suit yourself. It's not going\n"
+	.string "anywhere. Yet.$"
+
+PitBoss_Text_BuyBackBroke::
+	.string "That's not ¥500000. No cash, no\n"
+	.string "deal.$"
+
+PitBoss_Text_BuyBackNoRoom::
+	.string "You've got nowhere to put it.\n"
+	.string "Make some room first.$"
+
+PitBoss_Text_CleanedOut::
+	.string "You cleaned me out today.\n"
+	.string "Come back tomorrow.$"
+
+PitBoss_Text_NoDeal::
+	.string "Suit yourself.$"
+
+PitBoss_Text_Egg::
+	.string "An EGG? Funny. Real funny.$"
+
+PitBoss_Text_Fainted::
+	.string "That one can barely stand.\n"
+	.string "Patch it up first.$"
+
+PitBoss_Text_OnlyOne::
+	.string "That's all you've got? Lose, and\n"
+	.string "you walk out with nothing.\p"
+	.string "Come back with more than one\n"
+	.string "POKéMON.$"
+
+PitBoss_Text_TooStrong::
+	.string "Your {STR_VAR_2}? Against my\n"
+	.string "{STR_VAR_1}? That's a mugging.\p"
+	.string "I only take fair fights. Bring me\n"
+	.string "something closer to even.$"
+
+PitBoss_Text_TooWeak::
+	.string "That's what you're putting up?\n"
+	.string "My {STR_VAR_1} would tear it apart.\p"
+	.string "I only take fair fights. Bring me\n"
+	.string "something with some bite.$"
 
 Pit_Text_Overheard::
 	.string "(The man is whispering to his\n"

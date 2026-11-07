@@ -169,11 +169,12 @@ static bool32 HasMove(const u16 *moves, u32 n, u32 move)
 
 // Its four: its strongest attacks from its level-up moves (its own types first, no two of a type
 // where it can help), then whatever it learned last to fill up
-static void PickMoves(struct PitSide *s)
+// (and the back room's: src/pit_boss.c)
+void Pit_PickMoves(u32 species, u32 level, u16 *moves)
 {
-    const struct LevelUpMove *ls = GetSpeciesLevelUpLearnset(s->species);
+    const struct LevelUpMove *ls = GetSpeciesLevelUpLearnset(species);
     u32 n = 0, pass, i, k;
-    memset(s->moves, 0, sizeof(s->moves));
+    memset(moves, 0, sizeof(u16) * MAX_MON_MOVES);
     for (pass = 0; pass < 3 && n < MAX_MON_MOVES; pass++)
     {
         for (k = 0; k < MAX_MON_MOVES && n < MAX_MON_MOVES; k++)
@@ -183,12 +184,12 @@ static void PickMoves(struct PitSide *s)
             {
                 u32 move = ls[i].move, type, score;
                 bool32 stab, dupType = FALSE, j;
-                if (ls[i].level > s->level || HasMove(s->moves, n, move) || GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS)
+                if (ls[i].level > level || HasMove(moves, n, move) || GetMoveCategory(move) == DAMAGE_CATEGORY_STATUS)
                     continue;
                 type = GetMoveType(move);
-                stab = (type == GetSpeciesType(s->species, 0) || type == GetSpeciesType(s->species, 1));
+                stab = (type == GetSpeciesType(species, 0) || type == GetSpeciesType(species, 1));
                 for (j = 0; j < n; j++)
-                    dupType |= (GetMoveType(s->moves[j]) == type);
+                    dupType |= (GetMoveType(moves[j]) == type);
                 if (pass == 0 && !stab)
                     continue;
                 if (pass < 2 && dupType)
@@ -199,7 +200,7 @@ static void PickMoves(struct PitSide *s)
             }
             if (best == MOVE_NONE)
                 break;
-            s->moves[n++] = best;
+            moves[n++] = best;
         }
     }
     // (filling up: the last moves it learned)
@@ -207,9 +208,14 @@ static void PickMoves(struct PitSide *s)
         ;
     while (i-- > 0 && n < MAX_MON_MOVES)
     {
-        if (ls[i].level <= s->level && !HasMove(s->moves, n, ls[i].move))
-            s->moves[n++] = ls[i].move;
+        if (ls[i].level <= level && !HasMove(moves, n, ls[i].move))
+            moves[n++] = ls[i].move;
     }
+}
+
+static void PickMoves(struct PitSide *s)
+{
+    Pit_PickMoves(s->species, s->level, s->moves);
 }
 
 static void CreateSideMon(struct Pokemon *mon, const struct PitSide *s, u32 level, u32 item)

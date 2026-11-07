@@ -16,6 +16,7 @@
 // a day (as the real games do by the clock, src/clock.c no longer does) and the head nurse can give
 // it again (FLAG_POKERUS_GIVEN_TODAY).
 #include "global.h"
+#include "pit_boss.h"
 #include "medical_center.h"
 #include "decompress.h"
 #include "event_data.h"
@@ -44,8 +45,10 @@ void MedicalCenter_OnStep(void)
         steps = 0;
         UpdatePartyPokerusTime(1);
         FlagClear(FLAG_POKERUS_GIVEN_TODAY);
+        PitBoss_NewDay();
     }
     VarSet(VAR_STEP_DAY, steps);
+    PitBoss_OnStep();
 }
 
 // ---- The foreman's helpers ----

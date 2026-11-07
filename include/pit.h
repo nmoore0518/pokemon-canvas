@@ -13,6 +13,7 @@ u32 Pit_GetSpecies(u32 side);
 // Specials
 void Pit_OnTransition(void);
 void Pit_NextCard(void);
+void Pit_PickMoves(u32 species, u32 level, u16 *moves);
 void Pit_BufferCardPage(void);
 void Pit_BufferCard(void);
 void Pit_PushCorners(void);

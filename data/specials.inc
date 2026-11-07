@@ -801,6 +801,16 @@ gSpecials::
 	def_special Pit_EndFight
 	def_special Pit_AskPassword
 	def_special Pit_CheckPassword
+	def_special Pit_AutoSave
+	def_special PitBoss_OnTransition
+	def_special PitBoss_CheckForfeit
+	def_special PitBoss_BufferDay
+	def_special PitBoss_HasHeld
+	def_special PitBoss_BuyBack
+	def_special PitBoss_CheckStake
+	def_special PitBoss_HoldStake
+	def_special PitBoss_SetupFight
+	def_special PitBoss_EndFight
 	def_special GymRooms_OakReward
 	def_special GymRooms_GiveReward
 	def_special Tourney_RollPrize

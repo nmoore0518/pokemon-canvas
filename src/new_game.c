@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pit_boss.h"
 #include "berry_field.h"
 #include "mastery_hall.h"
 #include "archive.h"
@@ -211,6 +212,7 @@ void NewGameInitData(void)
     TeamBuilder_Clear();
     DeactivateAllRoamers();
     RegisteredItems_Clear();   // (Pokémon Canvas: and the other four)
+    PitBoss_Clear();
     ClearBag();
     NewGameInitPCItems();
     ClearPokeblocks();
