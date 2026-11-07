@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gym_hack.h"
 #include "pokemon.h"
 #include "battle.h"
 #include "daycare.h"
@@ -1004,6 +1005,7 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
     species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
     if (P_INCENSE_BREEDING < GEN_9)
         AlterEggSpeciesWithIncenseItem(&species, daycare);
+    species = GymHack_UnlockedEggSpecies(species);      // (Pokémon Canvas: no Gen 4+ before the gym)
     SetInitialEggData(&egg, species, daycare);
     InheritIVs(&egg, daycare);
     InheritPokeball(&egg, daycare);

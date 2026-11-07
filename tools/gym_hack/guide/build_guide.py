@@ -296,7 +296,8 @@ candidates: you and your rival. League rules say a Gym Leader uses one type, so 
 the whole League challenge with it. Earn the approval of all eight Gym Leaders and the Elite Four, become Champion, and
 then win the gym itself. After that the game opens up: challengers line up at your door, you decorate and train in your
 own gym, you can master other types, the Gym Leader Convention waits in Johto, the Exotic Pokémon Safari in Fuchsia
-City holds Pokémon from every region, and at the very end an underground tournament of the world's strongest trainers hides
+City holds Pokémon from every region (until you have your gym, nothing past the first 386 can be had at all: no
+evolving into, hatching or winning one), and at the very end an underground tournament of the world's strongest trainers hides
 one last secret. Along the way, the Leader Academy on Route 11 trains Gym Leader candidates (and hands out Mega Stones).</p>
 <p>There's a second story running under the first: your father's. Your mom says he wanted to be a Gym Leader too,
 "among other things". Team Rocket's grunts keep saying you look just like him, Giovanni says he knew him, and his old lab
@@ -463,7 +464,8 @@ ten percent of whatever you bet on that bout, added on when you bet (or taken ri
 puts up his, one on one. Win, and his Pokémon is yours to keep. Lose, and he keeps yours, for good.</p>
 <ul>
 <li><b>His Pokémon</b> changes every "day" of steps. It's something hard to come by: a Pokémon that's rare in the wild, or the
-final form of one whose earlier forms are the only ones found wild, and once in a while a legendary (never a gym's). It has
+final form of one whose earlier forms are the only ones found wild, and (once you have your gym) once in a while a
+legendary (never a gym's). Before your gym, it's never a legendary or anything past the first 386. It has
 perfect IVs, full EVs and a good item. It's always the same level as the Pokémon you put up.</li>
 <li><b>A fair fight only</b>: he compares the two Pokémon's stats at that level, and he turns yours down if it's more than
 10% stronger than his, or more than 20% weaker. Between 10% and 20% weaker, he'll warn you you're outclassed and

@@ -5,7 +5,8 @@
 // His Pokémon of the day (a new one every "day" of steps: src/medical_center.c) is something
 // hard to come by: one that's rare in the wild (tools/gym_hack/build_pit_boss_pool.py), the final
 // form of one only its earlier forms are found wild, or (now and then) a legendary - not the gym
-// legendaries (src/gym_legend.c). It has perfect IVs, a full set of EVs and a good item, and it's
+// legendaries (src/gym_legend.c). Before the player has their gym: no legendaries, nothing from
+// Gen 4 on (GymHack_SpeciesLocked). It has perfect IVs, a full set of EVs and a good item, and it's
 // always the level of the Pokémon the player puts up. He only takes a fair fight: the two
 // Pokémon's stats at that level (PitBoss_Power) within POWER_MARGIN percent of each other.
 //
@@ -21,6 +22,7 @@
 #include "event_data.h"
 #include "gym_challenge.h"
 #include "gym_legend.h"
+#include "gym_hack.h"
 #include "money.h"
 #include "pokedex.h"
 #include "pokemon.h"
@@ -54,6 +56,7 @@ static EWRAM_DATA u8 sBossEvs[NUM_STATS] = {0};
 static EWRAM_DATA u16 sPool[1024] = {0};
 static EWRAM_DATA u16 sPoolSize[2] = {0};      // (the pools, worked out once: [0] the rare ones, [1] the legendaries)
 static EWRAM_DATA u16 sLegends[128] = {0};
+static EWRAM_DATA bool8 sPoolsForGym = FALSE;  // (worked out before the gym or after: before, no Gen 4+, no legendaries)
 static EWRAM_DATA u32 sSeed = 0;
 
 // ---------------------------------------------------------------------------
@@ -138,7 +141,7 @@ static bool32 HasEvolution(u32 species)
 
 static void AddToPool(u32 *n, u32 species)
 {
-    if (*n < ARRAY_COUNT(sPool) && !InList(sPool, *n, species))
+    if (*n < ARRAY_COUNT(sPool) && !GymHack_SpeciesLocked(species) && !InList(sPool, *n, species))
         sPool[(*n)++] = species;
 }
 
@@ -171,8 +174,10 @@ static void AddFinalForms(u32 *n, u32 species, u32 depth)
 static void BuildPools(void)
 {
     u32 n = 0, i;
-    if (sPoolSize[0] != 0)
+    bool32 gym = FlagGet(FLAG_PALLET_GYM_AWARDED);
+    if (sPoolSize[0] != 0 && sPoolsForGym == gym)
         return;
+    sPoolsForGym = gym;
     for (i = 0; i < ARRAY_COUNT(sRareWildSpecies); i++)
     {
         u32 s = sRareWildSpecies[i];
@@ -183,7 +188,7 @@ static void BuildPools(void)
         AddFinalForms(&n, sWildSpecies[i], 0);
     sPoolSize[0] = n;
     n = 0;
-    for (i = 1; i < NUM_SPECIES; i++)
+    for (i = 1; i < NUM_SPECIES && gym; i++)
     {
         if (IsSpeciesEnabled(i) && IsLegend(i) && !IsBattleForm(i) && GET_BASE_SPECIES_ID(i) == i && !IsGymLegend(i))
             AddLegend(&n, i);
