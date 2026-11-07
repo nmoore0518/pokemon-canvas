@@ -39,6 +39,7 @@
 #define PIT_BOSS_MAGIC  0xB055
 #define LEGEND_CHANCE   3           // (percent of days)
 #define POWER_MARGIN    10          // (percent)
+#define UNDERDOG_MARGIN 20          // (percent: weaker than POWER_MARGIN but within this, he'll take it if the player insists)
 #define BUYBACK_PRICE   500000
 
 struct PitBossSave gPitBossSave;
@@ -427,7 +428,8 @@ void PitBoss_BuyBack(void)
 
 // After ChoosePartyMon (VAR_0x8004 = the slot): can it go in? VAR_RESULT:
 // 0 yes (STR_VAR_1 his Pokémon, STR_VAR_2 the player's), 1 nothing chosen, 2 an Egg, 3 fainted,
-// 4 it's the player's only Pokémon, 5 too strong, 6 too weak
+// 4 it's the player's only Pokémon, 5 too strong, 6 too weak, 7 weaker, but he'll take it if the
+// player insists (an underdog: within UNDERDOG_MARGIN)
 void PitBoss_CheckStake(void)
 {
     struct Pokemon *mine, boss;
@@ -470,8 +472,10 @@ void PitBoss_CheckStake(void)
     bp = PitBoss_Power(&boss);
     if (mp * 100 > bp * (100 + POWER_MARGIN))
         gSpecialVar_Result = 5;
-    else if (mp * 100 < bp * (100 - POWER_MARGIN))
+    else if (mp * 100 < bp * (100 - UNDERDOG_MARGIN))
         gSpecialVar_Result = 6;
+    else if (mp * 100 < bp * (100 - POWER_MARGIN))
+        gSpecialVar_Result = 7;
     else
         gSpecialVar_Result = 0;
 }

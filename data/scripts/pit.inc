@@ -385,6 +385,8 @@ PitBoss_EventScript_Main::
 	case 4, PitBoss_EventScript_OnlyOne
 	case 5, PitBoss_EventScript_TooStrong
 	case 6, PitBoss_EventScript_TooWeak
+	case 7, PitBoss_EventScript_Underdog
+PitBoss_EventScript_Confirm::
 	msgbox PitBoss_Text_Confirm, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_NoDeal
 	msgbox PitBoss_Text_Official
@@ -498,6 +500,14 @@ PitBoss_EventScript_TooStrong::
 	msgbox PitBoss_Text_TooStrong
 	release
 	end
+
+@ (outclassed, but not hopelessly: his call's the player's to make - twice)
+PitBoss_EventScript_Underdog::
+	msgbox PitBoss_Text_Underdog, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_NoDeal
+	msgbox PitBoss_Text_UnderdogSure, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_NoDeal
+	goto PitBoss_EventScript_Confirm
 
 PitBoss_EventScript_TooWeak::
 	msgbox PitBoss_Text_TooWeak
@@ -834,6 +844,17 @@ PitBoss_Text_TooStrong::
 	.string "{STR_VAR_1}? That's a mugging.\p"
 	.string "I only take fair fights. Bring me\n"
 	.string "something closer to even.$"
+
+PitBoss_Text_Underdog::
+	.string "Your {STR_VAR_2}? Against my\n"
+	.string "{STR_VAR_1}? It's outclassed, kid.\p"
+	.string "You'll probably lose it.\p"
+	.string "But if you want to throw it away,\n"
+	.string "I'll take it. Still want to go?$"
+
+PitBoss_Text_UnderdogSure::
+	.string "You're sure? Totally sure?\n"
+	.string "No crying when it's gone.$"
 
 PitBoss_Text_TooWeak::
 	.string "That's what you're putting up?\n"

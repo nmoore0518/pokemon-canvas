@@ -5012,7 +5012,7 @@ extern const u8 Pit_Text_Saving[], Pit_Text_Saved[], PitBoss_Text_TheMon[], PitB
     PitBoss_Text_TellBuyBack[], PitBoss_Text_OfferBuyBack[], PitBoss_Text_BoughtBack[], PitBoss_Text_BoughtBackToPC[],
     PitBoss_Text_KeepIt[], PitBoss_Text_BuyBackBroke[], PitBoss_Text_BuyBackNoRoom[], PitBoss_Text_CleanedOut[],
     PitBoss_Text_NoDeal[], PitBoss_Text_Egg[], PitBoss_Text_Fainted[], PitBoss_Text_OnlyOne[], PitBoss_Text_TooStrong[],
-    PitBoss_Text_TooWeak[];
+    PitBoss_Text_TooWeak[], PitBoss_Text_Underdog[], PitBoss_Text_UnderdogSure[];
 
 TEST("GymHack: the back room's lines fit the message box")
 {
@@ -5022,7 +5022,7 @@ TEST("GymHack: the back room's lines fit the message box")
         PitBoss_Text_Forfeited, PitBoss_Text_TellBuyBack, PitBoss_Text_OfferBuyBack, PitBoss_Text_BoughtBack,
         PitBoss_Text_BoughtBackToPC, PitBoss_Text_KeepIt, PitBoss_Text_BuyBackBroke, PitBoss_Text_BuyBackNoRoom,
         PitBoss_Text_CleanedOut, PitBoss_Text_NoDeal, PitBoss_Text_Egg, PitBoss_Text_Fainted, PitBoss_Text_OnlyOne,
-        PitBoss_Text_TooStrong, PitBoss_Text_TooWeak};
+        PitBoss_Text_TooStrong, PitBoss_Text_TooWeak, PitBoss_Text_Underdog, PitBoss_Text_UnderdogSure};
     u32 i;
     StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
     StringCopy(gStringVar1, COMPOUND_STRING("Crabominable"));
@@ -5095,6 +5095,28 @@ TEST("GymHack: the back room: a fair fight only - his Pokémon at the stake's le
     BackRoomParty(SPECIES_MEWTWO, 50, SPECIES_PIDGEY);
     PitBoss_CheckStake();
     EXPECT_EQ(gSpecialVar_Result, 5);
+    // Within 10% either way: yes; more than 10% stronger: no; 10-20% weaker: only if the player
+    // insists (7); weaker still: no
+    {
+        static const u16 tries[] = {SPECIES_RATTATA, SPECIES_PIDGEOTTO, SPECIES_RATICATE, SPECIES_ARBOK, SPECIES_PERSIAN,
+            SPECIES_GOLDUCK, SPECIES_PRIMEAPE, SPECIES_NIDOKING, SPECIES_RAPIDASH, SPECIES_SLOWBRO, SPECIES_DODRIO,
+            SPECIES_HYPNO, SPECIES_KINGLER, SPECIES_ELECTRODE, SPECIES_RHYDON, SPECIES_SCYTHER, SPECIES_GYARADOS,
+            SPECIES_ARCANINE, SPECIES_TYRANITAR, SPECIES_SNORLAX, SPECIES_SANDSLASH, SPECIES_FEAROW, SPECIES_VILEPLUME};
+        u32 i, seen[8] = {0};
+        gPitBossSave.day = strongDay;
+        for (i = 0; i < ARRAY_COUNT(tries); i++)
+        {
+            u32 mp, bp = PitBoss_DayPower(50), want;
+            BackRoomParty(tries[i], 50, SPECIES_PIDGEY);
+            mp = PitBoss_Power(&gParties[B_TRAINER_PLAYER][0]);
+            want = (mp * 100 > bp * 110) ? 5 : (mp * 100 >= bp * 90) ? 0 : (mp * 100 >= bp * 80) ? 7 : 6;
+            PitBoss_CheckStake();
+            EXPECT_EQ(gSpecialVar_Result, want);
+            seen[want]++;
+        }
+        EXPECT_GT(seen[7], 0);
+        EXPECT_GT(seen[6], 0);
+    }
     // Not the player's only Pokémon
     BackRoomParty(SPECIES_MEWTWO, 50, SPECIES_NONE);
     PitBoss_CheckStake();

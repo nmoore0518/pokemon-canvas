@@ -466,7 +466,8 @@ puts up his, one on one. Win, and his Pokémon is yours to keep. Lose, and he ke
 final form of one whose earlier forms are the only ones found wild, and once in a while a legendary (never a gym's). It has
 perfect IVs, full EVs and a good item. It's always the same level as the Pokémon you put up.</li>
 <li><b>A fair fight only</b>: he compares the two Pokémon's stats at that level, and he turns yours down if it's more than
-10% stronger or weaker than his.</li>
+10% stronger than his, or more than 20% weaker. Between 10% and 20% weaker, he'll warn you you're outclassed and
+take the bet anyway if you insist: a long shot, but with the right type matchup, not a hopeless one.</li>
 <li>You need at least one other Pokémon (not an Egg) to bet one. Once you've won his Pokémon, he has nothing to put up
 until the next day. If both Pokémon go down together, the deal's off.</li>
 <li><b>The game saves</b> when you shake on it and again after the battle. Switch off mid-battle and he counts it as a
