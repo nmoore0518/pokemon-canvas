@@ -36,8 +36,8 @@ name as the old one so your save carries over. Updates are meant to keep old sav
 
 ## Bugs and suggestions
 
-This is a work in progress, and reports help a lot. *(The report form's link goes here.)*
-Please include the version number of the patch you're playing.
+This is a work in progress, and reports help a lot: open an issue on this repository's
+[Issues page](../../issues). Please include the version number of the patch you're playing.
 
 ## Made with AI
 
