@@ -44,6 +44,19 @@ jobs:
       - name: Build the release version
         run: make firered RELEASE=1 -j$(nproc) -O
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build the Player's Guide and Pokédex
+        run: |
+          sudo apt-get install -y --no-install-recommends fonts-dejavu-core
+          python3 -m pip install --quiet pillow playwright
+          python3 -m playwright install --with-deps chromium
+          python3 tools/gym_hack/guide/build_guide.py --out Pokemon-Canvas-Players-Guide.pdf
+          python3 tools/gym_hack/guide/build_dex.py --out Pokemon-Canvas-Pokedex.pdf
+          ls -l *.pdf
+
       - name: Get the clean FireRed
         env:
           GH_TOKEN: ${{ github.token }}
@@ -97,5 +110,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
         run: |
-          gh release create "$TAG" "pokemon-canvas-$TAG.bps" --repo "$PUBLIC_REPO" \
-            --title "Pokémon Canvas $TAG" --notes-file notes.md --latest
+          # (the PDFs keep the same names every version, so .../releases/latest/download/<name>
+          # always links to the newest)
+          files=("pokemon-canvas-$TAG.bps" Pokemon-Canvas-Players-Guide.pdf Pokemon-Canvas-Pokedex.pdf)
+          if gh release view "$TAG" --repo "$PUBLIC_REPO" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${files[@]}" --repo "$PUBLIC_REPO" --clobber
+          else
+            gh release create "$TAG" "${files[@]}" --repo "$PUBLIC_REPO" \
+              --title "Pokémon Canvas $TAG" --notes-file notes.md --latest
+          fi

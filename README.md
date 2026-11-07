@@ -36,6 +36,15 @@ and win the gym. Then it's yours to run:
 **Updating:** patch your clean FireRed ROM again with the new `.bps`, and give the new ROM the same
 name as the old one so your save carries over. Updates are meant to keep old saves working.
 
+## Guides
+
+- [Player's Guide (PDF)](https://github.com/nmoore0518/pokemon-canvas/releases/latest/download/Pokemon-Canvas-Players-Guide.pdf):
+  the story, your gym, side quests, trainer teams, items and the safari (spoilers throughout).
+- [Pokédex (PDF)](https://github.com/nmoore0518/pokemon-canvas/releases/latest/download/Pokemon-Canvas-Pokedex.pdf):
+  every Pokémon's stats, abilities, evolutions, moves and where to find it.
+
+Both are rebuilt with each release, so these links always open the newest.
+
 ## Bugs and suggestions
 
 This is a work in progress, and reports help a lot: open an issue on this repository's

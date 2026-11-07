@@ -10,3 +10,5 @@
 4. Play it in an emulator such as mGBA, or on a flash cart.
 
 **Updating from an earlier version:** patch your clean FireRed ROM with this file, and give the new ROM the same name as the old one so your save carries over.
+
+**Guides:** the Player's Guide (`Pokemon-Canvas-Players-Guide.pdf`) and the Pokédex (`Pokemon-Canvas-Pokedex.pdf`) for this version are attached below too.

@@ -16,9 +16,13 @@ github.com: **Releases → Draft a new release → Choose a tag**, type the new 
 **Create new tag on publish**, target `main`, then **Publish release**. (Claude can't push tags from its sessions, so this step is yours.)
 
 That starts the **Release** workflow (Actions tab, about 15 minutes). It builds the release version
-(no debug menus), makes `pokemon-canvas-v0.2.bps` against the clean FireRed, copies the code to
-**pokemon-canvas**, and publishes the release there with the changes since the last version
-(the commit messages) and patching instructions.
+(no debug menus), makes `pokemon-canvas-v0.2.bps` against the clean FireRed, builds the Player's
+Guide and Pokédex PDFs, copies the code to **pokemon-canvas**, and publishes the release there with
+the patch, both PDFs, the changes since the last version (the commit messages) and patching
+instructions. The PDFs keep the same names every version, so these links always give the newest:
+
+- https://github.com/nmoore0518/pokemon-canvas/releases/latest/download/Pokemon-Canvas-Players-Guide.pdf
+- https://github.com/nmoore0518/pokemon-canvas/releases/latest/download/Pokemon-Canvas-Pokedex.pdf
 
 If it fails partway, fix the problem and run it again: Actions → **Release** → **Run workflow**,
 with the same tag.
