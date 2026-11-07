@@ -266,13 +266,13 @@ static bool32 HandleNoDamageOrEffect(void)
 // the turn holder's Active Pokémon heals `amount` (not past its HP), with the animation
 static void ApplyAndAnimateHPRecovery(u16 amount)
 {
-    u32 maxHp, hp;
+    u32 maxHp, hp, damage = Tcg_GetCardDamageAndMaxHP(TCG_PLAY_AREA_ARENA, NULL);
     u8 *hpVar;
-    if (Tcg_GetCardDamageAndMaxHP(TCG_PLAY_AREA_ARENA, NULL) == 0)
+    if (damage == 0)
         return;
     gTcg->loadedAttack.animation = TCG_ATK_ANIM_HEAL;
     // (the game's bug: h isn't set to hWhoseTurn, so the animation plays on whichever side h was)
-    Tcg_PlayAttackAnimation(gTcg->whoseTurn, TCG_PLAY_AREA_ARENA, 1, 0);
+    Tcg_PlayAttackAnimation(gTcg->whoseTurn, TCG_PLAY_AREA_ARENA, 1, amount < damage ? amount : damage);
     Tcg_GetCardDamageAndMaxHP(TCG_PLAY_AREA_ARENA, &maxHp);
     hpVar = Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD_HP);
     hp = *hpVar + amount;
@@ -470,7 +470,7 @@ static void HealPlayAreaCardHP(u32 amount)
 {
     Tcg_ResetAttackAnimationIsPlaying();
     gTcg->loadedAttack.animation = TCG_ATK_ANIM_HEALING_WIND_PLAY_AREA;
-    Tcg_PlayAttackAnimation(gTcg->whoseTurn, gTcg->tempPlayAreaLocation, 1, 0);
+    Tcg_PlayAttackAnimation(gTcg->whoseTurn, gTcg->tempPlayAreaLocation, 1, amount);   // (the amount shows on the card)
     Tcg_WaitAttackAnimation();
     Tcg_LoadTxRam3(amount);
     gTcg->txRam2[0] = NULL;
@@ -1931,7 +1931,7 @@ bool32 Tcg_HealingWind_PlayAreaHealEffect(void)
         if (damage < heal)
             heal = damage;
         *Tcg_TurnVar(TCG_DUELVARS_ARENA_CARD_HP + e) += heal;
-        Tcg_PlayAttackAnimation(gTcg->whoseTurn, e, 1, 0);
+        Tcg_PlayAttackAnimation(gTcg->whoseTurn, e, 1, heal);
         Tcg_WaitAttackAnimation();
     }
     return FALSE;

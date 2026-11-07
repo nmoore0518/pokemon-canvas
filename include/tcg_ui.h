@@ -74,7 +74,8 @@ void Tcg_DrawAIPeekScreen(u32 param);
 
 // the player choosing (the AI's choices are in src/tcg/ai*.c): TCG_SELECTION_CANCEL is B (the game's carry)
 #define TCG_SELECTION_CANCEL 0xFF
-enum { TCG_DUELMENU_HAND, TCG_DUELMENU_ATTACK, TCG_DUELMENU_CHECK, TCG_DUELMENU_PKMN_POWER, TCG_DUELMENU_RETREAT, TCG_DUELMENU_DONE };
+enum { TCG_DUELMENU_HAND, TCG_DUELMENU_ATTACK, TCG_DUELMENU_CHECK, TCG_DUELMENU_PKMN_POWER, TCG_DUELMENU_RETREAT, TCG_DUELMENU_DONE,
+       TCG_DUELMENU_GIVE_UP };   // (Pokémon Canvas: B on its own, in the duel menu)
 u32 Tcg_HandleDuelMenuInput(void);                      // (TCG_DUELMENU_*; the B+direction shortcuts are its own)
 void Tcg_OpenDuelCheckMenu(void);
 void Tcg_RedrawPlayAreaPrizeCards(void);                // (Func_82b6: after the AI's taken its prizes)

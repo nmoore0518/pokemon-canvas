@@ -479,7 +479,8 @@ loss.</li>
 <p>The doorless house left of the Copycat's has a door now. Inside is <b>Rod</b>, Grandmaster of the Pokémon Trading Card
 Game, and a real duel: the Game Boy Trading Card Game's own rules and AI, with its music. Pick one of seven classic decks
 (Flower Power, Fire Charge, Go Go Rain Dance, Zapping Selfdestruct, Strange Psyshock, First-Strike, Colorless) against his
-Legendary Dragonite deck. Win, and he gives you that deck's <b>energy card</b>; rematches are unlimited.</p>
+Legendary Dragonite deck. Win, and he gives you that deck's <b>energy card</b>; rematches are unlimited. To quit a duel
+early, press B at the duel menu and say yes: it counts as a loss.</p>
 <ul>
 <li><b>Grass, Fire, Water, Lightning, Psychic and Fighting Energy</b> (Medicine pocket): +5 base power on one damaging move
 of their types, for good. Each covers three types (Grass: Grass, Bug, Poison; Fire: Fire, Dragon, Flying; and so on: the

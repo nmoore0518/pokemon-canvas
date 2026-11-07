@@ -124,6 +124,7 @@ static bool32 OpenNonTurnHolderDiscardPileScreen(void)
 u32 Tcg_HandleDuelMenuInput(void)
 {
     bool32 redrawScene = FALSE;
+    bool32 bAlone = FALSE;      // (Pokémon Canvas: B pressed and let go with nothing else: give up?)
     if (gTcg->headless)
         return TCG_DUELMENU_DONE;
     for (;;)
@@ -142,6 +143,12 @@ u32 Tcg_HandleDuelMenuInput(void)
             G->waitingFor = TCG_WAIT_DUEL_MENU;
             Tcg_DoFrame();
             pressed = G->keysPressed;
+            if (pressed & TCG_PAD_B)
+                bAlone = TRUE;
+            else if (pressed)
+                bAlone = FALSE;
+            if (bAlone && !(G->keysHeld & TCG_PAD_B))
+                return TCG_DUELMENU_GIVE_UP;
             if (G->keysHeld & TCG_PAD_B)
             {
                 if (pressed & TCG_PAD_UP)

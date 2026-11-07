@@ -621,4 +621,6 @@ const u8 *const gTcgTexts[TCG_NUM_TEXTS] =
     [TCG_TEXT_StrangeLifeform] = (const u8 *)"\x06Strange Life-form",
     [TCG_TEXT_GrandMaster] = (const u8 *)"\x06Grand Master",
     [TCG_TEXT_RainDanceWaterOnly] = (const u8 *)"\x06Rain Dance only attaches Water\x0a" "Energy to Water Pok`mon.",
+    [TCG_TEXT_GiveUpDuel] = (const u8 *)"\x06Give up and lose this duel\x3f",
+    [TCG_TEXT_GaveUpDuel] = (const u8 *)"\x06You gave up the duel.",
 };

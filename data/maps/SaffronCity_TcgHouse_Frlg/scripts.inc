@@ -86,7 +86,10 @@ SaffronCity_TcgHouse_Text_WantToDuelAgain::
 
 SaffronCity_TcgHouse_Text_ChooseDeck::
 	.string "Pick a deck from my collection.\n"
-	.string "Every one of them is a classic.$"
+	.string "Every one of them is a classic.\p"
+	.string "And if you want out, press B at\n"
+	.string "the duel menu to give up. It counts\l"
+	.string "as a loss, though.$"
 
 SaffronCity_TcgHouse_Text_LetsDuel::
 	.string "Nice pick. Shuffle up.\p"

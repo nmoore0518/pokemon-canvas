@@ -622,6 +622,8 @@ enum TcgText
     TCG_TEXT_StrangeLifeform,
     TCG_TEXT_GrandMaster,
     TCG_TEXT_RainDanceWaterOnly,
+    TCG_TEXT_GiveUpDuel,
+    TCG_TEXT_GaveUpDuel,
     TCG_NUM_TEXTS,
 };
 

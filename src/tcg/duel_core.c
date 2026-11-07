@@ -884,6 +884,16 @@ static void PlayerTurn(void)
         case TCG_DUELMENU_RETREAT:
             next = DuelMenu_Retreat();
             break;
+        case TCG_DUELMENU_GIVE_UP:
+            // (Pokémon Canvas: quitting early counts as a loss)
+            next = MENU_MAIN_INTERFACE;
+            if (!Tcg_YesOrNoMenuWithText(TCG_TEXT_GiveUpDuel))   // (FALSE: yes)
+            {
+                Tcg_DrawWideTextBox_WaitForInput(TCG_TEXT_GaveUpDuel);
+                gTcg->duelFinished = TCG_TURN_PLAYER_LOST;
+                return;
+            }
+            break;
         case TCG_DUELMENU_DONE:
         default:
             Tcg_ClearNonTurnTemporaryDuelvars();

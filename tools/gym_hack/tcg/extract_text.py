@@ -36,6 +36,8 @@ def used(t):
 # Pokémon Canvas's own texts (after the game's), in the same encoding
 EXTRA = [
     ("RainDanceWaterOnly", r'"\x06Rain Dance only attaches Water\x0a" "Energy to Water Pok`mon."'),
+    ("GiveUpDuel", r'"\x06Give up and lose this duel\x3f"'),
+    ("GaveUpDuel", r'"\x06You gave up the duel."'),
 ]
 
 
