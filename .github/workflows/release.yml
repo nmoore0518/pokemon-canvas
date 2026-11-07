@@ -86,6 +86,9 @@ jobs:
 
       - name: Copy the code to the public repo
         run: |
+          # Checkout leaves this repo's own token in an auth header that git would send
+          # instead of the one in the URL, and that token can't write to the public repo.
+          git config --local --unset-all http.https://github.com/.extraheader || true
           url="https://x-access-token:${{ secrets.PUBLIC_REPO_TOKEN }}@github.com/$PUBLIC_REPO.git"
           git push "$url" "$TAG^{commit}:refs/heads/main" --force
           git push "$url" "refs/tags/$TAG" --force
