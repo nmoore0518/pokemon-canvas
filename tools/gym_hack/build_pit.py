@@ -135,6 +135,9 @@ RING_H, RING_V = PIT_FIRST, PIT_FIRST + 1        # the ring's fence: posts and r
 COUNTER_L, COUNTER_M, COUNTER_R = PIT_FIRST + 3, PIT_FIRST + 4, PIT_FIRST + 5   # the counter: a shop's, in dark wood
 COUNTER_TOP = (PIT_FIRST + 6, PIT_FIRST + 7, PIT_FIRST + 8)    # (the dirt behind it, under its top's edge)
 RING_TL, RING_TR, RING_BL, RING_BR = (PIT_FIRST + 9 + i for i in range(4))   # (its corners)
+# The back room's: a steel grating floor (bolted down over the dirt), and on it Pokémon cages
+# (shut, and one hanging open), crates and stains
+GRATE, CAGE, CAGE_OPEN, CRATE, STAIN, STAIN_2 = (PIT_FIRST + 13 + i for i in range(6))
 COUNTER_PAL = 7                 # (a palette Diglett's Cave doesn't use)
 COUNTER_TILE = 0x380            # (its tiles, after Diglett's Cave's 256)
 # The Mart's counter, recoloured: its colours -> dark red-brown wood
@@ -223,11 +226,15 @@ def counter_graphics(dst):
         return img
     pieces = [piece(range(0, 16)), piece(list(range(8, 16)) * 2), piece(range(32, 48))]
     colours += [c for c in FENCE_COLOURS.values() if c not in colours]
-    fences = {k: fence_piece(k, lambda c: 1 + colours.index(FENCE_COLOURS[c])) for k in ("H", "V", "TL", "TR", "BL", "BR")}
+    colours += [c for c in GREY_COLOURS.values() if c not in colours]
+    keyed = {**FENCE_COLOURS, **GREY_COLOURS, **STAIN_COLOURS}
+    index = lambda c: 1 + colours.index(keyed[c])
+    fences = {k: fence_piece(k, index) for k in ("H", "V", "TL", "TR", "BL", "BR")}
+    fences.update({k: back_room_piece(k, index) for k in ("GRATE", "CAGE", "CAGE_OPEN", "CRATE", "STAIN", "STAIN_2")})
     tiles_png = dst / "tiles.png"
     old = Image.open(tiles_png)
     assert old.size == (128, 128)          # (256 tiles: 0x280-0x37F)
-    new = Image.new("P", (128, 128 + 16))
+    new = Image.new("P", (128, 128 + 32))
     new.putpalette(old.getpalette())
     new.paste(old, (0, 0))
     found, out = [Image.new("P", (8, 8), 0).tobytes()], []
@@ -251,7 +258,7 @@ def counter_graphics(dst):
                 found.append(t)
             q.append(found.index(t))
         fence_out[k] = q
-    assert len(found) <= 32 and len(colours) <= 15
+    assert len(found) <= 64 and len(colours) <= 15, (len(found), len(colours))
     for i, t in enumerate(found):
         tile = Image.frombytes("P", (8, 8), t)
         new.paste(tile, ((i % 16) * 8, 128 + (i // 16) * 8))
@@ -296,6 +303,81 @@ def fence_piece(kind, index):
     return img
 
 
+# The back room's greys (steel) and its stains (the counter's darkest reds)
+GREY_COLOURS = {"K": (33, 35, 41), "G": (82, 86, 96), "S": (130, 136, 148), "H": (184, 190, 200)}
+STAIN_COLOURS = {"R": (82, 36, 33), "r": (115, 44, 41)}
+
+
+def back_room_piece(kind, index):
+    """16 x 16. The grating (and the stains on it) is a floor: every pixel set. The cages and the
+    crate go over it (0: see through)"""
+    from PIL import Image
+    img = Image.new("P", (16, 16), 0)
+    def px(x, y, c):
+        img.putpixel((x, y), index(c))
+    if kind in ("GRATE", "STAIN", "STAIN_2"):
+        # bearing bars across (a lit top edge), cross rods showing in the gaps between them; a seam and
+        # bolts where the panels meet
+        for y in range(16):
+            for x in range(16):
+                row = y % 4
+                c = "S" if row == 0 else "G" if row == 1 else "G" if x % 8 == 3 else "K"
+                if x == 15 or y == 15:
+                    c = "K"
+                if (x, y) in ((1, 1), (13, 1), (1, 13), (13, 13)):
+                    c = "H"
+                px(x, y, c)
+        if kind != "GRATE":
+            import math
+            # (a dried pool, ragged at the edges, soaked into the gaps)
+            cx, cy = (7.0, 8.0) if kind == "STAIN" else (8.5, 7.0)
+            for y in range(16):
+                for x in range(16):
+                    a = math.atan2(y - cy, x - cx)
+                    r = math.hypot((x - cx) / 1.25, y - cy)
+                    edge = 5.2 + 1.3 * math.sin(3 * a + (1 if kind == "STAIN" else 2.5)) + 0.8 * math.sin(7 * a)
+                    if r < edge - 1.5:
+                        px(x, y, "R" if y % 4 >= 2 else "r")
+                    elif r < edge and y % 4 >= 2:
+                        px(x, y, "R")
+        return img
+    if kind in ("CAGE", "CAGE_OPEN"):
+        for y in range(1, 15):
+            for x in range(1, 15):
+                edge = x in (1, 14) or y in (1, 14)
+                if edge:
+                    c = "K"
+                elif y <= 4:                                    # (its top: wire mesh)
+                    c = "G" if (x + y) % 2 == 0 else "S"
+                elif y == 5:
+                    c = "H"
+                elif y == 13:
+                    c = "G"
+                else:                                           # (its front: bars, dark inside)
+                    c = "S" if x % 2 == 0 else "K"
+                    if kind == "CAGE_OPEN" and 4 <= x <= 11 and y >= 6:
+                        c = "K"                                 # (the door's gone: empty)
+                px(x, y, c)
+        if kind == "CAGE":
+            for x, y in ((7, 9), (8, 9), (7, 10), (8, 10)):     # (the padlock)
+                px(x, y, "L" if y == 9 else "M")
+        else:
+            for y in range(7, 15):                              # (the door, hanging off its hinge)
+                px(3, y, "H")
+                px(2, y, "S")
+        return img
+    if kind == "CRATE":
+        for y in range(1, 15):
+            for x in range(1, 15):
+                edge = x in (1, 14) or y in (1, 14)
+                c = "O" if edge else "L" if y <= 4 else "D" if y in (5, 9) or x in (2, 13) else "M"
+                px(x, y, c)
+        for i in range(8):                                      # (a brace across its front)
+            px(4 + i, 12 - (i * 6) // 8, "D")
+        return img
+    raise KeyError(kind)
+
+
 def write_tileset():
     """gTileset_Pit: Diglett's Cave's tiles and palettes (src/data/tilesets: the same graphics),
     its blocks, and the pit's own"""
@@ -324,6 +406,13 @@ def write_tileset():
         mt.append(dirt + [blank | (COUNTER_PAL << 12)] * 2 + [e(top[2]), e(top[3])]); at.append(covered)
     for k in ("TL", "TR", "BL", "BR"):                                        # RING_TL...
         mt.append(dirt + [e(t) for t in fence_tiles[k]]); at.append(covered)
+    grate = [e(t) for t in fence_tiles["GRATE"]]
+    blank4 = [blank | (COUNTER_PAL << 12)] * 4
+    mt.append(grate + blank4); at.append(0)                                   # GRATE
+    for k in ("CAGE", "CAGE_OPEN", "CRATE"):
+        mt.append(grate + [e(t) for t in fence_tiles[k]]); at.append(covered)
+    for k in ("STAIN", "STAIN_2"):
+        mt.append([e(t) for t in fence_tiles[k]] + blank4); at.append(0)
     (dst / "metatiles.bin").write_bytes(b"".join(struct.pack("<8H", *m) for m in mt))
     (dst / "metatile_attributes.bin").write_bytes(struct.pack(f"<{len(at)}I", *at))
     # (registered once: the same graphics as Diglett's Cave)
@@ -360,19 +449,29 @@ const struct Tileset gTileset_Pit =
         hh.write_text(t)
 
 
-# ---- The back room: the boss, and his Pokémon of the day ----
-BACK_W, BACK_H = 11, 9
-BACK_LADDER_UP = (5, 7)
-BACK_KEEPER = (5, 3)            # the boss: Pokémon for Pokémon (src/pit_boss.c)
-BACK_BOSS_MON = (6, 3)          # (his Pokémon of the day)
+# ---- The back room: the boss, and his Pokémon of the day, on a steel grating floor among the
+# cages and crates ----
+BACK_W, BACK_H = 15, 12
+BACK_LADDER_UP = (7, 9)
+BACK_KEEPER = (7, 3)            # the boss: Pokémon for Pokémon (src/pit_boss.c)
+BACK_BOSS_MON = (8, 3)          # (his Pokémon of the day)
+BACK_DECOR = [  # (x, y, block)
+    (2, 2, CAGE), (3, 2, CAGE), (4, 2, CAGE_OPEN), (2, 3, CAGE), (2, 4, CAGE),
+    (2, 8, CAGE_OPEN), (2, 9, CAGE),
+    (11, 2, CRATE), (12, 2, CRATE), (12, 3, CRATE), (12, 8, CRATE), (12, 9, CRATE), (11, 9, CAGE),
+]
+BACK_STAINS = [(5, 6, STAIN), (9, 7, STAIN_2)]
 
 
 def back_room():
     r = Room(BACK_W, BACK_H)
-    r.floor(2, 2, 8, 7)
-    r.floor(4, 2, 6, 4, DIRT)
+    r.floor(2, 2, 12, 9, GRATE)
+    for x, y, m in BACK_STAINS:
+        r.put(x, y, m)
     r.put(*BACK_LADDER_UP, LADDER)
     r.walls()
+    for x, y, m in BACK_DECOR:      # (after the walls: they're not walls)
+        r.put(x, y, m, True)
     return r
 
 
@@ -450,7 +549,7 @@ def write_maps():
         entry = {"id": lid, "name": m["name"] + "_Layout", "width": r.w, "height": r.h,
                  "border_width": 2, "border_height": 2,
                  "primary_tileset": "gTileset_General_Frlg",
-                 "secondary_tileset": "gTileset_Pit" if key == "pit" else "gTileset_DiglettsCave",
+                 "secondary_tileset": "gTileset_Pit" if key in ("pit", "back") else "gTileset_DiglettsCave",
                  "border_filepath": f"data/layouts/{m['name']}/border.bin",
                  "blockdata_filepath": f"data/layouts/{m['name']}/map.bin", "layout_version": "frlg"}
         for i, l in enumerate(lays["layouts"]):
@@ -543,7 +642,7 @@ def preview(out_dir):
     from PIL import Image, ImageDraw
     prim = rm.Tileset(rm.tileset_dir("gTileset_General_Frlg"))
     for key in ORDER:
-        sec = rm.Tileset(ROOT / ("data/tilesets/secondary/pit" if key == "pit" else "data/tilesets/secondary/digletts_cave_frlg"))
+        sec = rm.Tileset(ROOT / ("data/tilesets/secondary/pit" if key in ("pit", "back") else "data/tilesets/secondary/digletts_cave_frlg"))
         r = MAPS[key]["build"]()
         img = Image.new("RGB", (r.w * 16, r.h * 16))
         for y in range(r.h):

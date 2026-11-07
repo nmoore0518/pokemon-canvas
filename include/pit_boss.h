@@ -26,6 +26,7 @@ void PitBoss_OnStep(void);
 bool32 PitBoss_FightActive(void);
 u32 PitBoss_Power(struct Pokemon *mon);
 u32 PitBoss_GetSpecies(void);
+u32 PitBoss_DayPower(u32 level);
 
 // Specials
 void PitBoss_OnTransition(void);

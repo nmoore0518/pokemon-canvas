@@ -278,6 +278,16 @@ u32 PitBoss_GetSpecies(void)
     return p.species;
 }
 
+// (his Pokémon of the day's power at a level: for the tests)
+u32 PitBoss_DayPower(u32 level)
+{
+    struct BossPick p;
+    struct Pokemon mon;
+    PickDay(&p);
+    CreateBossMon(&mon, &p, level, FALSE);
+    return PitBoss_Power(&mon);
+}
+
 // ---------------------------------------------------------------------------
 // The days
 // ---------------------------------------------------------------------------

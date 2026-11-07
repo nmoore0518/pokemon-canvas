@@ -11719,12 +11719,12 @@
     {
       "id": "LAYOUT_CELADON_CITY_PIT_BACK_ROOM",
       "name": "CeladonCity_PitBackRoom_Layout",
-      "width": 11,
-      "height": 9,
+      "width": 15,
+      "height": 12,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General_Frlg",
-      "secondary_tileset": "gTileset_DiglettsCave",
+      "secondary_tileset": "gTileset_Pit",
       "border_filepath": "data/layouts/CeladonCity_PitBackRoom/border.bin",
       "blockdata_filepath": "data/layouts/CeladonCity_PitBackRoom/map.bin",
       "layout_version": "frlg"
