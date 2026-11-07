@@ -1,5 +1,4 @@
 #include "global.h"
-#include "gym_hack.h"
 #include "berry_field.h"
 #include "item_upgrades.h"
 #include "basement_machines.h"
@@ -4559,7 +4558,7 @@ static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum 
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
             bool32 conditionsMet = FALSE;
-            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
 
             // Check main primary evolution method
@@ -4589,7 +4588,7 @@ static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum 
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
             bool32 conditionsMet = FALSE;
-            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
 
             switch (evolutions[i].method)
@@ -4614,7 +4613,7 @@ static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum 
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
             bool32 conditionsMet = FALSE;
-            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
 
             switch (evolutions[i].method)
@@ -4642,7 +4641,7 @@ static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum 
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
             bool32 conditionsMet = FALSE;
-            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
 
             switch (evolutions[i].method)
@@ -4667,7 +4666,7 @@ static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum 
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
             bool32 conditionsMet = FALSE;
-            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
 
             switch (evolutions[i].method)
@@ -4691,7 +4690,7 @@ static enum Species GetEvolutionTargetSpeciesInternal(struct Pokemon *mon, enum 
     case EVO_MODE_SCRIPT_TRIGGER:
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
-            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
             if (evolutions[i].method != EVO_SCRIPT_TRIGGER)
                 continue;
@@ -4734,7 +4733,7 @@ bool8 IsMonPastEvolutionLevel(struct Pokemon *mon)
 
     for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
     {
-        if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE || GymHack_SpeciesLocked(evolutions[i].targetSpecies))
+        if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
             continue;
 
         switch (evolutions[i].method)

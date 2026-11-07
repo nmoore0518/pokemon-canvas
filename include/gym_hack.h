@@ -37,9 +37,8 @@ extern const u8 EventScript_GymHack_UseCanOfSpinach[];
 extern const u8 EventScript_GymHack_UseSledgehammer[];
 extern const u8 EventScript_GymHack_UseRocketBoots[];
 
-// Gen 4+ Pokémon are the gym's reward: none can be had (evolved into, hatched, won) before it
+// Gen 4+ Pokémon are the gym's reward: none can be obtained before it (evolving and breeding still work)
 bool32 GymHack_IsModernSpecies(u32 species);
 bool32 GymHack_SpeciesLocked(u32 species);
-u32 GymHack_UnlockedEggSpecies(u32 species);
 
 #endif // GUARD_GYM_HACK_H

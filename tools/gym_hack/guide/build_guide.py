@@ -296,8 +296,8 @@ candidates: you and your rival. League rules say a Gym Leader uses one type, so 
 the whole League challenge with it. Earn the approval of all eight Gym Leaders and the Elite Four, become Champion, and
 then win the gym itself. After that the game opens up: challengers line up at your door, you decorate and train in your
 own gym, you can master other types, the Gym Leader Convention waits in Johto, the Exotic Pokémon Safari in Fuchsia
-City holds Pokémon from every region (until you have your gym, nothing past the first 386 can be had at all: no
-evolving into, hatching or winning one), and at the very end an underground tournament of the world's strongest trainers hides
+City holds Pokémon from every region (until you have your gym, nothing past the first 386 can be caught or won;
+your own Pokémon can still evolve or breed into them), and at the very end an underground tournament of the world's strongest trainers hides
 one last secret. Along the way, the Leader Academy on Route 11 trains Gym Leader candidates (and hands out Mega Stones).</p>
 <p>There's a second story running under the first: your father's. Your mom says he wanted to be a Gym Leader too,
 "among other things". Team Rocket's grunts keep saying you look just like him, Giovanni says he knew him, and his old lab

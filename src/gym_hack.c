@@ -495,10 +495,10 @@ u32 GymHack_GetTypeFinderMapSecs(u16 *out, u32 max, u32 regionMapType)
 
 // ---------------------------------------------------------------------------
 // Gen 4+ Pokémon: the gym's reward. Until the League makes the player a Gym Leader
-// (FLAG_PALLET_GYM_AWARDED), none can be had - not evolved into (GetEvolutionTargetSpecies), not
-// hatched (GymHack_UnlockedEggSpecies), not won in the pit's back room (src/pit_boss.c). The
-// places they're found wild (the Exotic Safari) and given open after it anyway. (By species: an
-// Alolan or Galarian form of an older Pokémon isn't one; the hack's own species aren't either.)
+// (FLAG_PALLET_GYM_AWARDED), none can be obtained: the places they're found wild (the Exotic
+// Safari, Johto) open after it, and the pit's back room (src/pit_boss.c) leaves them out of its
+// prizes till then. (Evolving and breeding into one still work.) By species: an Alolan or
+// Galarian form of an older Pokémon isn't one; the hack's own species aren't either.
 // ---------------------------------------------------------------------------
 bool32 GymHack_IsModernSpecies(u32 species)
 {
@@ -512,19 +512,4 @@ bool32 GymHack_IsModernSpecies(u32 species)
 bool32 GymHack_SpeciesLocked(u32 species)
 {
     return !FlagGet(FLAG_PALLET_GYM_AWARDED) && GymHack_IsModernSpecies(species);
-}
-
-// An Egg that would hatch a locked Pokémon (Munchlax from a Snorlax...) hatches the first form it
-// grows into that isn't (Snorlax)
-u32 GymHack_UnlockedEggSpecies(u32 species)
-{
-    u32 i;
-    for (i = 0; i < 3 && GymHack_SpeciesLocked(species); i++)
-    {
-        const struct Evolution *evos = GetSpeciesEvolutions(species);
-        if (evos == NULL || evos[0].method == EVOLUTIONS_END)
-            break;
-        species = evos[0].targetSpecies;
-    }
-    return species;
 }

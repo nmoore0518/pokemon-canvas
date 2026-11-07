@@ -2584,7 +2584,6 @@ static u16 EvoWithItem(u16 species, u8 level, u32 personality, u16 item)
 
 TEST("GymHack: the cross-generation, trade and time-of-day evolutions all work here")
 {
-    FlagSet(FLAG_PALLET_GYM_AWARDED);   // (after the gym: Gen 4+ evolutions are open)
     EXPECT_EQ(EvoWithItem(SPECIES_MAGNETON, 40, 0, ITEM_THUNDER_STONE), SPECIES_MAGNEZONE);
     EXPECT_EQ(EvoWithItem(SPECIES_EEVEE, 20, 0, ITEM_LEAF_STONE), SPECIES_LEAFEON);
     EXPECT_EQ(EvoWithItem(SPECIES_EEVEE, 20, 0, ITEM_ICE_STONE), SPECIES_GLACEON);
@@ -2602,7 +2601,6 @@ TEST("GymHack: the cross-generation, trade and time-of-day evolutions all work h
 
 TEST("GymHack: Alcremie's cream comes from the Milcery's personality")
 {
-    FlagSet(FLAG_PALLET_GYM_AWARDED);   // (after the gym: Gen 4+ evolutions are open)
     EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 0, ITEM_BERRY_SWEET), SPECIES_ALCREMIE_BERRY_VANILLA_CREAM);
     EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 3 << 8, ITEM_BERRY_SWEET), SPECIES_ALCREMIE_BERRY_MINT_CREAM);
     EXPECT_EQ(EvoWithItem(SPECIES_MILCERY, 30, 8 << 8, ITEM_STRAWBERRY_SWEET), SPECIES_ALCREMIE_STRAWBERRY_RAINBOW_SWIRL);
@@ -3197,7 +3195,6 @@ TEST("GymHack: the caps need the Cap Case, and each is traded once")
 
 TEST("GymHack: a Battle Bond Froakie's line ends in Greninja's Battle Bond form")
 {
-    FlagSet(FLAG_PALLET_GYM_AWARDED);   // (after the gym: Gen 4+ evolutions are open)
     struct Pokemon mon;
     bool32 bond = TRUE;
     CreateRandomMon(&mon, SPECIES_FROGADIER, 40);
@@ -4020,7 +4017,6 @@ TEST("GymHack: eeveelutions: the Pokédex keeps seen and caught for every new nu
 #include "penny.h"
 TEST("GymHack: Penny: every type has an Eevee evolution, and the item really evolves it")
 {
-    FlagSet(FLAG_PALLET_GYM_AWARDED);   // (after the gym: Gen 4+ evolutions are open)
     u32 type;
     struct Pokemon mon;
     for (type = TYPE_NORMAL; type < NUMBER_OF_MON_TYPES; type++)
@@ -5205,14 +5201,13 @@ TEST("GymHack: the back room: switching off mid-battle loses the stake")
     EXPECT_EQ(gSpecialVar_Result, FALSE);
 }
 
-TEST("GymHack: no Gen 4+ Pokémon before the gym: not evolved into, not hatched, not won in the back room")
+TEST("GymHack: no Gen 4+ Pokémon to win in the back room before the gym (evolving and breeding still work)")
 {
     struct Pokemon mon;
     u32 day, species, legends = 0, modern = 0;
     bool32 canStop;
 
     EXPECT(GymHack_IsModernSpecies(SPECIES_MAGNEZONE));
-    EXPECT(GymHack_IsModernSpecies(SPECIES_LEAFEON));
     EXPECT(GymHack_IsModernSpecies(SPECIES_MUNCHLAX));
     EXPECT(!GymHack_IsModernSpecies(SPECIES_MAGNETON));
     EXPECT(!GymHack_IsModernSpecies(SPECIES_RAICHU_ALOLA));
@@ -5221,11 +5216,7 @@ TEST("GymHack: no Gen 4+ Pokémon before the gym: not evolved into, not hatched,
     // Before
     FlagClear(FLAG_PALLET_GYM_AWARDED);
     CreateMon(&mon, SPECIES_EEVEE, 30, 0, OTID_STRUCT_PLAYER_ID);
-    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_LEAF_STONE, NULL, &canStop, CHECK_EVO), SPECIES_NONE);
-    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_FIRE_STONE, NULL, &canStop, CHECK_EVO), SPECIES_FLAREON);
-    EXPECT_EQ(GymHack_UnlockedEggSpecies(SPECIES_MUNCHLAX), SPECIES_SNORLAX);
-    EXPECT_EQ(GymHack_UnlockedEggSpecies(SPECIES_HAPPINY), SPECIES_CHANSEY);
-    EXPECT_EQ(GymHack_UnlockedEggSpecies(SPECIES_PICHU), SPECIES_PICHU);
+    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_LEAF_STONE, NULL, &canStop, CHECK_EVO), SPECIES_LEAFEON);
     PitBoss_Clear();
     for (day = 0; day < 400; day++)
     {
@@ -5241,8 +5232,6 @@ TEST("GymHack: no Gen 4+ Pokémon before the gym: not evolved into, not hatched,
 
     // After
     FlagSet(FLAG_PALLET_GYM_AWARDED);
-    EXPECT_EQ(GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_LEAF_STONE, NULL, &canStop, CHECK_EVO), SPECIES_LEAFEON);
-    EXPECT_EQ(GymHack_UnlockedEggSpecies(SPECIES_MUNCHLAX), SPECIES_MUNCHLAX);
     for (day = 0; day < 400; day++)
     {
         const struct SpeciesInfo *info;
