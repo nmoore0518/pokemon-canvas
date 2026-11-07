@@ -5,6 +5,7 @@
 struct Trainer;
 
 bool32 Pit_FightActive(void);
+const u8 *Pit_GetIntroText(void);
 const struct Trainer *Pit_GetTrainer(u16 trainerId);
 bool32 Pit_TryHiddenDoor(s32 x, s32 y, u32 direction);
 u32 Pit_GetOdds(u32 side);

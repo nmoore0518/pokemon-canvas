@@ -141,6 +141,7 @@ static EWRAM_DATA u8 sSavedName[PLAYER_NAME_LENGTH + 1] = {0};
 static EWRAM_DATA struct Trainer sRedTrainer = {0};
 static EWRAM_DATA struct TrainerMon sBlueMon = {0};
 static EWRAM_DATA u16 sSavedPartnerId = 0;
+static EWRAM_DATA u8 sIntroText[64] = {0};
 
 // ---------------------------------------------------------------------------
 // The card
@@ -625,6 +626,11 @@ void Pit_TipBought(void)
 // ---------------------------------------------------------------------------
 // The fight
 // ---------------------------------------------------------------------------
+const u8 *Pit_GetIntroText(void)
+{
+    return sIntroText;
+}
+
 bool32 Pit_FightActive(void)
 {
     return sFightActive;
@@ -679,6 +685,9 @@ void Pit_SetupFight(void)
     sRedTrainer.aiFlags = FighterAI(RED);
     sRedTrainer.battleType = TRAINER_BATTLE_TYPE_SINGLES;
     StringCopyN(sRedTrainer.trainerName, red->name, TRAINER_NAME_LENGTH);
+    // (the battle's first line: the red corner's fighter, in full - the player's name holds only 7)
+    StringCopy(sIntroText, red->name);
+    StringAppend(sIntroText, COMPOUND_STRING(" is challenged by {B_TRAINER1_NAME_WITH_CLASS}!\p"));
     sSavedPartnerId = gPartnerTrainerId;
     gPartnerTrainerId = TRAINER_PIT_RED;
 

@@ -123,7 +123,7 @@ Pit_EventScript_BookieBet::
 	goto_if_eq VAR_RESULT, 0, Pit_EventScript_BookieBroke
 	message Pit_Text_BookieHowMuch
 	waitmessage
-	showmoneybox 0, 0
+	showmoneybox 18, 0
 	dynmultistack 0, 0, FALSE, 5, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, Pit_EventScript_BookieBetCancel
 	copyvar VAR_0x8005, VAR_RESULT
@@ -437,7 +437,7 @@ PitBoss_EventScript_TellBuyBack::
 	end
 
 PitBoss_EventScript_OfferBuyBack::
-	showmoneybox 0, 0
+	showmoneybox 18, 0
 	msgbox PitBoss_Text_OfferBuyBack, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, PitBoss_EventScript_KeepIt
 	special PitBoss_BuyBack

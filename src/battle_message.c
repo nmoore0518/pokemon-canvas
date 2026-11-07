@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pit.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_ai_record.h"
@@ -2503,6 +2504,8 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                     stringPtr = sText_TwoTrainersWantToBattle;
                 else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
                     stringPtr = sText_TwoTrainersWantToBattle;
+                else if (Pit_FightActive())
+                    stringPtr = Pit_GetIntroText();     // (Pokémon Canvas: "<red> is challenged by <blue>!")
                 else
                     stringPtr = sText_Trainer1WantsToBattle;
             }

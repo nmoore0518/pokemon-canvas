@@ -27,7 +27,7 @@ ROCK = 0x291                    # the cave's rock (its top): the pit's rim, walk
 DIRT = 0x281                    # the cave floor: the pit itself
 PIT_TL, PIT_T, PIT_TR = 0x29B, 0x299, 0x29C     # the pit's far wall (seen from above: its face)
 PIT_L, PIT_R = 0x292, 0x290
-PIT_BL, PIT_B, PIT_BR = 0x2A3, 0x289, 0x2D2     # the near edge
+PIT_BL, PIT_B, PIT_BR = 0x2A3, 0x289, 0x2A4     # the near edge
 LADDER = 0x285
 SIGN = 0x2CD
 PEBBLES = (0x282, 0x283)
@@ -57,6 +57,11 @@ class Room:
     def pit(self, x0, y0, x1, y1):
         """a sunken pit: dirt inside (x0..x1, y0..y1), walls round it"""
         self.floor(x0, y0, x1, y1, DIRT)
+        self.border(x0, y0, x1, y1)
+
+    def border(self, x0, y0, x1, y1):
+        """the cave's walls round a floor (x0..x1, y0..y1), as Diglett's Cave has them: a face along
+        the top, sides and a near edge, and their corners"""
         for x in range(x0, x1 + 1):
             self.put(x, y0 - 1, PIT_T, True)
             self.put(x, y1 + 1, PIT_B, True)
@@ -104,8 +109,13 @@ def hall():
     r.floor(3, 1, 5, 8, DIRT)
     r.put(*HALL_LADDER_UP, LADDER)
     r.put(*HALL_LADDER_DOWN, LADDER)
-    r.put(3, 5, PEBBLES[0])
-    r.walls()
+    r.border(3, 1, 5, 8)
+    # (heaps of rock either side of the ladder and on the doorman's left: no way to it but past him.
+    # His right's clear: where he stands aside, once he's had the password)
+    r.put(HALL_LADDER_DOWN[0] - 1, DOORMAN[1], PEBBLES[0], True)
+    r.put(HALL_LADDER_DOWN[0] - 1, HALL_LADDER_DOWN[1], PEBBLES[1], True)
+    r.put(HALL_LADDER_DOWN[0] + 1, HALL_LADDER_DOWN[1], PEBBLES[0], True)
+    r.put(3, 5, PEBBLES[0], True)
     return r
 
 
@@ -173,7 +183,7 @@ def pit_room():
     r.put(*PIT_LADDER, LADDER)
     r.put(*BACK_LADDER, LADDER)
     r.put(*CARD_SIGN, SIGN, True)
-    r.walls()
+    r.border(2, 2, PIT_W - 3, PIT_H - 3)
     for x in range(cx0, cx1 + 1):       # (after the walls: behind the counter's the bookie's, no one else's)
         r.put(x, cy - 1, COUNTER_TOP[0 if x == cx0 else 2 if x == cx1 else 1], True)
     for (x, y) in ((2, 2), (2, 16), (22, 7)):
@@ -403,7 +413,8 @@ def write_tileset():
         mt.append(dirt + [e(counter_tiles[k][1][i]) for i in range(4)]); at.append(covered | mb("MB_COUNTER"))
     for k in range(3):                                                        # COUNTER_TOP
         top = counter_tiles[k][0]
-        mt.append(dirt + [blank | (COUNTER_PAL << 12)] * 2 + [e(top[2]), e(top[3])]); at.append(covered)
+        # (its top layer over the sprites: the counter's edge in front of the bookie's feet, as in a shop)
+        mt.append(dirt + [blank | (COUNTER_PAL << 12)] * 2 + [e(top[2]), e(top[3])]); at.append(0)
     for k in ("TL", "TR", "BL", "BR"):                                        # RING_TL...
         mt.append(dirt + [e(t) for t in fence_tiles[k]]); at.append(covered)
     grate = [e(t) for t in fence_tiles["GRATE"]]
@@ -469,7 +480,7 @@ def back_room():
     for x, y, m in BACK_STAINS:
         r.put(x, y, m)
     r.put(*BACK_LADDER_UP, LADDER)
-    r.walls()
+    r.border(2, 2, 12, 9)
     for x, y, m in BACK_DECOR:      # (after the walls: they're not walls)
         r.put(x, y, m, True)
     return r
