@@ -552,6 +552,8 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintSplotc
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PaintPot;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Gurney;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LeaderAide;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CeremonyBalloons;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CeremonyPodium;
 // END Gauntlet externs
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -1094,6 +1096,8 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_PAINT_POT] = &gObjectEventGraphicsInfo_PaintPot,
     [OBJ_EVENT_GFX_GURNEY] = &gObjectEventGraphicsInfo_Gurney,
     [OBJ_EVENT_GFX_LEADER_AIDE] = &gObjectEventGraphicsInfo_LeaderAide,
+    [OBJ_EVENT_GFX_CEREMONY_BALLOONS] = &gObjectEventGraphicsInfo_CeremonyBalloons,
+    [OBJ_EVENT_GFX_CEREMONY_PODIUM] = &gObjectEventGraphicsInfo_CeremonyPodium,
 // END Gauntlet
 };
 

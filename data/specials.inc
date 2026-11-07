@@ -802,6 +802,7 @@ gSpecials::
 	def_special Pit_AskPassword
 	def_special Pit_CheckPassword
 	def_special Pit_AutoSave
+	def_special GymCandidate_SetupCeremony
 	def_special PitBoss_OnTransition
 	def_special PitBoss_CheckForfeit
 	def_special PitBoss_BufferDay

@@ -652,11 +652,14 @@ main hall and she calls you to her desk.</p>
 Champion <i>and</i> Leader of the Pallet Town Gym.</p>
 
 <h3>9. The finale: Oak's challenge</h3>
-<p>After the credits, Oak meets you outside your house and takes you to the gym, and then he can't let it go: it's his town,
-next to his lab ("Remember when I said I'd run it myself? I wasn't joking!"). He challenges you for the gym. You can put it
-off; he'll wait in the gym. His team (Tauros, Exeggutor, Arcanine, Gyarados, Snorlax, Dragonite) has full IVs and EVs, held
-items and the smartest AI, one level above your average (never below 65); no healing items. Losing just sends you home to
-try again. Win, and the gym and your own badge are yours, and his aide explains the challenger system.</p>
+<p>Beat your rival and Oak sends you home: the League is holding an opening ceremony for your gym. In Pallet Town the
+whole crowd is on the rise in front of it, balloons and all (your mom, Daisy, your mentor and other Gym Leaders), and a
+League official announces Pallet Town's new Gym Leader. Oak isn't there. He's waiting inside the gym, and he can't let it
+go: it's his town, next to his lab ("Remember when I said I'd run it myself? I wasn't joking!"). He challenges you for the
+gym. You can put it off; he'll wait in the gym. His team (Tauros, Exeggutor, Arcanine, Gyarados, Snorlax, Dragonite) has full
+IVs and EVs, held items and the smartest AI, one level above your average (never below 65); no healing items. Losing just
+sends you home to try again. Win, and the gym and your own badge are yours, your team enters the Hall of Fame, and the
+credits roll. You wake up at home; walk into your gym for your first day, where Oak's aide explains the challenger system.</p>
 <p>From then on, a second aide in Oak's lab (in an orange coat, by the bookshelves) keeps track of everything a Gym Leader
 can do: pick a topic (challengers, the convention, the Exotic Safari, new Pokémon, changing types, the gym rooms, the
 legendaries, Penny's Eevee, the costumes) and he tells you what it is and where to go. Your mentor's visit with the

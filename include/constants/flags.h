@@ -2787,6 +2787,7 @@
 #define FLAG_PIT_BOSS_BEATEN       0x860   // (his Pokémon of the day's been won: it's gone till the next "day"; hides it)
 #define FLAG_PIT_BOSS_BUYBACK_TOLD 0x861   // (he's offered to sell back a Pokémon he won)
 #define FLAG_HIDE_LEADER_AIDE      0x862   // (Oak's lab: the LEADER's AIDE, there once the gym is the player's; set on the lab's ON_TRANSITION)
+#define FLAG_HIDE_PALLET_CEREMONY  0x864   // (Pallet Town: the gym's opening ceremony, its crowd and balloons; shown only while VAR_GYM_FINALE is GYM_FINALE_CEREMONY)
 #define FLAG_LEADER_AIDE_MET       0x863   // (he's introduced himself)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)

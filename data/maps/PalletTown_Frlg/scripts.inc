@@ -21,6 +21,7 @@ PalletTown_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_PALLET_TOWN
 	call DadStory_EventScript_PalletTransition
 	call Johto_EventScript_TryInviteWaiting
+	call GymFinale_EventScript_CeremonyTransition
 	call_if_set FLAG_PALLET_LADY_NOT_BLOCKING_SIGN, PalletTown_EventScript_TryReadySignLady
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY, 0, PalletTown_EventScript_SetSignLadyPos
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_SIGN_LADY, 1, PalletTown_EventScript_SetSignLadyDone
@@ -49,6 +50,7 @@ PalletTown_EventScript_MoveSignLadyToRouteEntrance::
 	return
 
 PalletTown_OnFrame::
+	map_script_2 VAR_GYM_FINALE, GYM_FINALE_CEREMONY, GymFinale_EventScript_Ceremony
 	map_script_2 VAR_GYM_FINALE, GYM_FINALE_OAK_WAITS, GymFinale_EventScript_OakAtTheDoor
 	map_script_2 VAR_MAP_SCENE_PALLET_TOWN_OAK, 2, PalletTown_EventScript_OakRatingScene
 	map_script_2 VAR_DAD_STORY, DAD_STORY_SENDOFF, DadStory_EventScript_Sendoff

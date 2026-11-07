@@ -565,7 +565,9 @@ enum
     OBJ_EVENT_GFX_PAINT_SPLOTCH_YELLOW,
     OBJ_EVENT_GFX_PAINT_POT,
     OBJ_EVENT_GFX_GURNEY,          // Pokémon Canvas: the Medical Center's 2F (tools/gym_hack/medical_center_art.py)
-    OBJ_EVENT_GFX_LEADER_AIDE,     // Pokémon Canvas: the LEADER's AIDE in Oak's lab (the Scientist, in the orange of the blue NPC palette)
+    OBJ_EVENT_GFX_LEADER_AIDE,
+    OBJ_EVENT_GFX_CEREMONY_BALLOONS,   // Pokémon Canvas: the Pallet Town Gym's opening (tools/gym_hack/ceremony_art.py)
+    OBJ_EVENT_GFX_CEREMONY_PODIUM,     // Pokémon Canvas: the LEADER's AIDE in Oak's lab (the Scientist, in the orange of the blue NPC palette)
     NUM_OBJ_EVENT_GFX,
 };
 
@@ -896,6 +898,7 @@ enum
 #define OBJ_EVENT_PAL_TAG_PAINT_FIGURE 0x139d
 #define OBJ_EVENT_PAL_TAG_PAINTER_DECOR 0x139e
 #define OBJ_EVENT_PAL_TAG_GURNEY 0x139f
+#define OBJ_EVENT_PAL_TAG_CEREMONY 0x13a0
 // END Gauntlet palette tags
 #define OBJ_EVENT_PAL_TAG_WHITE                   (OBJ_EVENT_PAL_TAG_NONE - 1)
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF

@@ -45,6 +45,8 @@
 #define GYM_FINALE_OAK_WAITS       1   // Oak meets the player outside their house and takes them to the gym
 #define GYM_FINALE_OAK_IN_GYM      2   // the player put off Oak's challenge; he waits in the gym
 #define GYM_FINALE_DONE            3   // the player beat Oak: the gym is theirs
+#define GYM_FINALE_CEREMONY        4   // the League won (from v190): the gym's opening ceremony waits in Pallet Town
+#define GYM_FINALE_OAK_INSIDE      5   // the ceremony's over: Oak is waiting in the gym, and challenges the player as they walk in
 
 // VAR_MENTOR_STAGE bits
 #define MENTOR_MET          (1 << 0)

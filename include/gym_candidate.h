@@ -76,6 +76,7 @@ void GymCandidate_BufferRecruit(void);
 void GymCandidate_Recruit(void);
 void GymCandidate_BufferMentorName(void);
 void GymCandidate_PrepareMentorVisit(void);
+void GymCandidate_SetupCeremony(void);
 void GymCandidate_PrepareMentorIntro(void);
 void GymCandidate_PrepareMentorGift(void);
 void GymCandidate_BufferMentorIntro(void);

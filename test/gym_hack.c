@@ -5264,3 +5264,26 @@ TEST("GymHack: the LEADER's AIDE's lines (and the mentor's, and Oak's) fit the m
     for (i = 0; i < ARRAY_COUNT(texts); i++)
         ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
 }
+
+extern const u8 GymFinale_Text_OakCongratulations[], GymFinale_Text_OakSeeYouAtTheCeremony[], GymFinale_Text_CeremonyMomHere[],
+    GymFinale_Text_CeremonyOfficial1[], GymFinale_Text_CeremonyOfficial2[], GymFinale_Text_CeremonyOfficial3[],
+    GymFinale_Text_CeremonyMentor[], GymFinale_Text_CeremonyMomProud[], GymFinale_Text_CeremonyDaisyWheresGrandpa[],
+    GymFinale_Text_CeremonyOfficialGoIn[], GymFinale_Text_CeremonyMomAfter[], GymFinale_Text_CeremonyDaisyAfter[],
+    GymFinale_Text_CeremonyMentorAfter[], GymFinale_Text_CeremonyLeaderAfter[], GymFinale_Text_OakHeardTheCheering[],
+    GymFinale_Text_OakWontGiveItUpSpeeches[], GymFinale_Text_OakHallOfFame[], GymFinale_Text_OakFirstDay[];
+
+TEST("GymHack: the gym's opening ceremony's lines fit the message box")
+{
+    static const u8 *const texts[] = {GymFinale_Text_OakCongratulations, GymFinale_Text_OakSeeYouAtTheCeremony,
+        GymFinale_Text_CeremonyMomHere, GymFinale_Text_CeremonyOfficial1, GymFinale_Text_CeremonyOfficial2,
+        GymFinale_Text_CeremonyOfficial3, GymFinale_Text_CeremonyMentor, GymFinale_Text_CeremonyMomProud,
+        GymFinale_Text_CeremonyDaisyWheresGrandpa, GymFinale_Text_CeremonyOfficialGoIn, GymFinale_Text_CeremonyMomAfter,
+        GymFinale_Text_CeremonyDaisyAfter, GymFinale_Text_CeremonyMentorAfter, GymFinale_Text_CeremonyLeaderAfter,
+        GymFinale_Text_OakHeardTheCheering, GymFinale_Text_OakWontGiveItUpSpeeches, GymFinale_Text_OakHallOfFame,
+        GymFinale_Text_OakFirstDay};
+    u32 i;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, COMPOUND_STRING("LT. SURGE"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+}

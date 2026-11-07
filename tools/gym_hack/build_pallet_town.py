@@ -720,6 +720,20 @@ SIGN_LADY_AT_EXIT = (NORTH_EXIT[0], 2)
 FAT_MAN_HOME = (46, 12)
 # Pokémon Canvas: MOM waits two steps below the lab door to send the player off (data/scripts/dad_story.inc)
 MOM_SENDOFF = (LAB_DOOR[0], LAB_DOOR[1] + 3)
+# The gym's opening ceremony (data/scripts/gym_finale.inc), on the rise in front of the gym: the
+# LEAGUE official behind his podium at the door, the player arriving up the steps to face him, the
+# crowd either side, balloons at the corners
+CEREMONY_OFFICIAL = (GYM_DOOR[0], GYM_DOOR[1] + 1)
+CEREMONY_PODIUM = (GYM_DOOR[0], GYM_DOOR[1] + 2)
+CEREMONY_PLAYER = (GYM_DOOR[0], GYM_DOOR[1] + 3)
+CEREMONY_CROWD = [  # (local id, gfx, spot, facing, script)
+    ("LOCALID_PALLET_CEREMONY_MOM", "OBJ_EVENT_GFX_MOM_FRLG", (-2, 3), "RIGHT", "GymFinale_EventScript_CeremonyMom"),
+    ("LOCALID_PALLET_CEREMONY_DAISY", "OBJ_EVENT_GFX_DAISY", (-3, 2), "RIGHT", "GymFinale_EventScript_CeremonyDaisy"),
+    ("LOCALID_PALLET_CEREMONY_MENTOR", "OBJ_EVENT_GFX_VAR_0", (2, 3), "LEFT", "GymFinale_EventScript_CeremonyMentor"),
+    ("LOCALID_PALLET_CEREMONY_LEADER_1", "OBJ_EVENT_GFX_VAR_1", (3, 2), "LEFT", "GymFinale_EventScript_CeremonyLeader"),
+    ("LOCALID_PALLET_CEREMONY_LEADER_2", "OBJ_EVENT_GFX_VAR_2", (4, 3), "LEFT", "GymFinale_EventScript_CeremonyLeader"),
+]
+CEREMONY_BALLOONS = [(-5, 1), (5, 1), (-5, 3), (5, 3)]
 
 
 def obj(local_id, gfx, pos, move, rx, ry, script, flag="0"):
@@ -750,6 +764,15 @@ def write_map_json():
             1, 1, "0x0", "FLAG_HIDE_OAK_IN_PALLET_TOWN"),
         obj("LOCALID_PALLET_SENDOFF_MOM", "OBJ_EVENT_GFX_MOM_FRLG", MOM_SENDOFF, "MOVEMENT_TYPE_FACE_UP",
             1, 1, "0x0", "FLAG_HIDE_SENDOFF_MOM"),
+        # the gym's opening ceremony
+        obj("LOCALID_PALLET_CEREMONY_OFFICIAL", "OBJ_EVENT_GFX_GENTLEMAN_FRLG", CEREMONY_OFFICIAL, "MOVEMENT_TYPE_FACE_DOWN",
+            0, 0, "0x0", "FLAG_HIDE_PALLET_CEREMONY"),
+        obj("LOCALID_PALLET_CEREMONY_PODIUM", "OBJ_EVENT_GFX_CEREMONY_PODIUM", CEREMONY_PODIUM, "MOVEMENT_TYPE_FACE_DOWN",
+            0, 0, "0x0", "FLAG_HIDE_PALLET_CEREMONY"),
+        *[obj(lid, gfx, (GYM_DOOR[0] + dx, GYM_DOOR[1] + dy), f"MOVEMENT_TYPE_FACE_{facing}", 0, 0, script,
+              "FLAG_HIDE_PALLET_CEREMONY") for lid, gfx, (dx, dy), facing, script in CEREMONY_CROWD],
+        *[obj(None, "OBJ_EVENT_GFX_CEREMONY_BALLOONS", (GYM_DOOR[0] + dx, GYM_DOOR[1] + dy), "MOVEMENT_TYPE_FACE_DOWN",
+              0, 0, "0x0", "FLAG_HIDE_PALLET_CEREMONY") for dx, dy in CEREMONY_BALLOONS],
     ]
     m["warp_events"] = [{"x": d[0], "y": d[1], "elevation": 0, "dest_map": dest, "dest_warp_id": str(w)}
                         for d, dest, w in WARPS]

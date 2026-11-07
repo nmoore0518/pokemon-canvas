@@ -199,6 +199,7 @@ Johto_Text_GuardTalk::
 Johto_EventScript_TryInviteWaiting::
 	goto_if_unset FLAG_PALLET_GYM_AWARDED, Common_EventScript_NopReturn
 	goto_if_ne VAR_JOHTO_STATE, JOHTO_NOT_INVITED, Common_EventScript_NopReturn
+	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_GYM, 4, Common_EventScript_NopReturn   @ (the gym's first day comes first)
 	setvar VAR_JOHTO_STATE, JOHTO_INVITE_WAITING
 	return
 

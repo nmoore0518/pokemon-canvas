@@ -909,4 +909,7 @@ const u16 gObjectEventPic_PainterDecorSmall[] = INCGFX_U16("graphics/object_even
 const u16 gObjectEventPal_PainterDecor[] = INCGFX_U16("graphics/object_events/pics/misc/painter_decor.pal", ".gbapal");
 const u16 gObjectEventPic_Gurney[] = INCGFX_U16("graphics/object_events/pics/misc/gurney.png", ".4bpp");
 const u16 gObjectEventPal_Gurney[] = INCGFX_U16("graphics/object_events/pics/misc/gurney.png", ".gbapal");
+const u16 gObjectEventPic_CeremonyBalloons[] = INCGFX_U16("graphics/object_events/pics/misc/ceremony_balloons.png", ".4bpp");
+const u16 gObjectEventPic_CeremonyPodium[] = INCGFX_U16("graphics/object_events/pics/misc/ceremony_podium.png", ".4bpp");
+const u16 gObjectEventPal_Ceremony[] = INCGFX_U16("graphics/object_events/pics/misc/ceremony_balloons.png", ".gbapal");
 // END Gauntlet

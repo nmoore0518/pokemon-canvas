@@ -676,6 +676,26 @@ void GymCandidate_PrepareMentorVisit(void)
     StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
 }
 
+// Special (the gym's opening ceremony in Pallet Town, data/scripts/gym_finale.inc): the crowd's
+// looks. VAR_OBJ_GFX_ID_0 = the player's mentor (STR_VAR_1 their name; VAR_RESULT = whether there
+// is one: if not, another LEADER stands there), VAR_OBJ_GFX_ID_1/2 = two more KANTO LEADERS
+void GymCandidate_SetupCeremony(void)
+{
+    static const u16 sLeaders[] = {OBJ_EVENT_GFX_BROCK, OBJ_EVENT_GFX_MISTY, OBJ_EVENT_GFX_ERIKA, OBJ_EVENT_GFX_KOGA};
+    const struct GymCandidateMentor *mentor = PlayerMentor();
+    u32 mentorGfx = (mentor != NULL) ? sMentorPeople[mentor->who].gfx : OBJ_EVENT_GFX_LT_SURGE;
+    u32 i, n = 0;
+    gSpecialVar_Result = (mentor != NULL);
+    VarSet(VAR_OBJ_GFX_ID_0, mentorGfx);
+    if (mentor != NULL)
+        StringCopy(gStringVar1, GymCandidate_GetMentorName(mentor->who));
+    for (i = 0; i < ARRAY_COUNT(sLeaders) && n < 2; i++)
+    {
+        if (sLeaders[i] != mentorGfx)
+            VarSet(VAR_OBJ_GFX_ID_1 + n++, sLeaders[i]);
+    }
+}
+
 // Special: VAR_0x8009 = the gym (1 or 6) -> gStringVar4 = what the mentor says with the gift
 void GymCandidate_BufferMentorGift(void)
 {

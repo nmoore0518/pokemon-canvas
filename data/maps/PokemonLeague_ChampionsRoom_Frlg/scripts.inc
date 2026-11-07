@@ -87,6 +87,7 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
 	delay 20
+	goto_if_eq VAR_GYM_FINALE, GYM_FINALE_NONE, GymFinale_EventScript_ToTheCeremony   @ (Pokémon Canvas: the Hall of Fame waits for the gym)
 	msgbox PokemonLeague_ChampionsRoom_Text_OakPlayerComeWithMe
 	closemessage
 	delay 13
