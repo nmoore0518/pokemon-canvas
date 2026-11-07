@@ -263,7 +263,9 @@ GymFinale_Text_OakHowItWorks::
 	.string "And now that the GYM is officially\n"
 	.string "yours, the PC sells a BADGE\l"
 	.string "PEDESTAL too.\p"
-	.string "I'll be in my lab.\n"
+	.string "I'll be in my lab. And my new\n"
+	.string "AIDE there keeps track of all a\l"
+	.string "GYM LEADER can do. Ask anytime!\p"
 	.string "Make PALLET TOWN proud, {PLAYER}!$"
 
 @ ---- The Champion's room (first time): Oak arrives before the final battle ----

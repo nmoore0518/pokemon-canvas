@@ -220,6 +220,8 @@ Johto_EventScript_Invitation::
 	call Johto_EventScript_ReceiveGymCharm
 	special GymCandidate_BufferMentorName
 	msgbox Johto_Text_MentorGymCharmHow
+	special GymCandidate_BufferMentorName
+	msgbox Johto_Text_MentorLeaderPerks
 	call GymCandidate_EventScript_VisitorWalksOut
 	setvar VAR_JOHTO_STATE, JOHTO_INVITED
 	releaseall
@@ -232,6 +234,7 @@ Johto_EventScript_InvitationByMail::
 	msgbox Johto_Text_GymCharmByMail
 	call Johto_EventScript_ReceiveGymCharm
 	msgbox Johto_Text_GymCharmHowByMail
+	msgbox Johto_Text_LeaderPerksByMail
 	setvar VAR_JOHTO_STATE, JOHTO_INVITED
 	releaseall
 	end
@@ -286,6 +289,33 @@ Johto_Text_MentorGymCharmHow::
 	.string "often around you.\p"
 	.string "And if your GYM ever changes type,\n"
 	.string "the charm changes with it!$"
+
+@ (Claude's draft, Nov 6: Nick may rewrite it) what a GYM LEADER can do now
+Johto_Text_MentorLeaderPerks::
+	.string "{STR_VAR_1}: Being a LEADER opens a\n"
+	.string "lot of doors, you know.\p"
+	.string "GYM LEADERS can get a pass to the\n"
+	.string "EXOTIC POKéMON SAFARI in FUCHSIA.\p"
+	.string "POKéMON from every region live\n"
+	.string "there. HOENN, SINNOH, all the way\l"
+	.string "to PALDEA!\p"
+	.string "Keep a streak going here, and\n"
+	.string "you'll master your type. Then OAK\l"
+	.string "will let you take on a new one.\p"
+	.string "Catch enough kinds of POKéMON,\n"
+	.string "and OAK will build onto your GYM.\p"
+	.string "And there's plenty more. OAK's\n"
+	.string "AIDE in his lab keeps track of it\l"
+	.string "all. Ask him anything!$"
+
+Johto_Text_LeaderPerksByMail::
+	.string "There's a note at the bottom…\p"
+	.string "“GYM LEADERS may now buy a pass to\n"
+	.string "the EXOTIC POKéMON SAFARI in\l"
+	.string "FUCHSIA CITY, home to POKéMON from\l"
+	.string "every region.\p"
+	.string "For everything else a LEADER can\n"
+	.string "do, see PROF. OAK's AIDE.”$"
 
 Johto_Text_GymCharmByMail::
 	.string "There's something else in the\n"

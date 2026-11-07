@@ -5245,3 +5245,22 @@ TEST("GymHack: no Gen 4+ Pokémon to win in the back room before the gym (evolvi
     EXPECT_GT(modern, 100);
     FlagClear(FLAG_PALLET_GYM_AWARDED);
 }
+
+extern const u8 LeaderAide_Text_Intro[], LeaderAide_Text_Again[], LeaderAide_Text_WhichTopic[], LeaderAide_Text_Bye[],
+    LeaderAide_Text_Challengers[], LeaderAide_Text_Convention[], LeaderAide_Text_Safari[], LeaderAide_Text_NewPokemon[],
+    LeaderAide_Text_Mastery[], LeaderAide_Text_Rooms[], LeaderAide_Text_Legends[], LeaderAide_Text_Penny[],
+    LeaderAide_Text_Costumes[], Johto_Text_MentorLeaderPerks[], Johto_Text_LeaderPerksByMail[], GymFinale_Text_OakHowItWorks[];
+
+TEST("GymHack: the LEADER's AIDE's lines (and the mentor's, and Oak's) fit the message box")
+{
+    static const u8 *const texts[] = {LeaderAide_Text_Intro, LeaderAide_Text_Again, LeaderAide_Text_WhichTopic,
+        LeaderAide_Text_Bye, LeaderAide_Text_Challengers, LeaderAide_Text_Convention, LeaderAide_Text_Safari,
+        LeaderAide_Text_NewPokemon, LeaderAide_Text_Mastery, LeaderAide_Text_Rooms, LeaderAide_Text_Legends,
+        LeaderAide_Text_Penny, LeaderAide_Text_Costumes, Johto_Text_MentorLeaderPerks, Johto_Text_LeaderPerksByMail,
+        GymFinale_Text_OakHowItWorks};
+    u32 i;
+    StringCopy(gSaveBlock2Ptr->playerName, COMPOUND_STRING("WWWWWWW"));
+    StringCopy(gStringVar1, COMPOUND_STRING("ROXANNE"));
+    for (i = 0; i < ARRAY_COUNT(texts); i++)
+        ExpectLinesFit(texts[i], 27 * 8 - 4, TRUE);
+}

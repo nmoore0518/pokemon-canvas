@@ -565,6 +565,7 @@ enum
     OBJ_EVENT_GFX_PAINT_SPLOTCH_YELLOW,
     OBJ_EVENT_GFX_PAINT_POT,
     OBJ_EVENT_GFX_GURNEY,          // Pokémon Canvas: the Medical Center's 2F (tools/gym_hack/medical_center_art.py)
+    OBJ_EVENT_GFX_LEADER_AIDE,     // Pokémon Canvas: the LEADER's AIDE in Oak's lab (the Scientist, in the orange of the blue NPC palette)
     NUM_OBJ_EVENT_GFX,
 };
 

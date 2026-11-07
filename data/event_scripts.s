@@ -1120,6 +1120,7 @@ gStdScripts_End::
 	.include "data/scripts/gauntlet.inc"
 	.include "data/scripts/drink_machine.inc"
 	.include "data/scripts/event_mons.inc"
+	.include "data/scripts/leader_aide.inc"
 	.include "data/scripts/event_mons_text.inc"
 	.include "data/maps/johto.inc"
 	.include "data/maps/exotic_safari.inc"

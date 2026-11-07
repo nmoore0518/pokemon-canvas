@@ -657,6 +657,10 @@ next to his lab ("Remember when I said I'd run it myself? I wasn't joking!"). He
 off; he'll wait in the gym. His team (Tauros, Exeggutor, Arcanine, Gyarados, Snorlax, Dragonite) has full IVs and EVs, held
 items and the smartest AI, one level above your average (never below 65); no healing items. Losing just sends you home to
 try again. Win, and the gym and your own badge are yours, and his aide explains the challenger system.</p>
+<p>From then on, a second aide in Oak's lab (in an orange coat, by the bookshelves) keeps track of everything a Gym Leader
+can do: pick a topic (challengers, the convention, the Exotic Safari, new Pokémon, changing types, the gym rooms, the
+legendaries, Penny's Eevee, the costumes) and he tells you what it is and where to go. Your mentor's visit with the
+convention invitation sums up the highlights too.</p>
 """
 
 GYM = """

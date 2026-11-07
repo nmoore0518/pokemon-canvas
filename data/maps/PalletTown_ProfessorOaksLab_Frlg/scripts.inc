@@ -14,6 +14,7 @@ PalletTown_ProfessorOaksLab_Frlg_MapScripts::
 PalletTown_ProfessorOaksLab_OnTransition::
 	setflag FLAG_VISITED_OAKS_LAB
 	setflag FLAG_HIDE_PALLET_GYM_CHALLENGER   @ Gym Trainer hack: the mentor's visit
+	call LeaderAide_EventScript_LabTransition  @ Pokémon Canvas: the LEADER's AIDE, once the gym is the player's
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForStarterScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForNationalDexScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_SetNationalDexSceneFinished

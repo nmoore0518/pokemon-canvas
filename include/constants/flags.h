@@ -2786,6 +2786,8 @@
 #define FLAG_PIT_BOSS_MET          0x85F   // (the back room's boss has laid out his rules)
 #define FLAG_PIT_BOSS_BEATEN       0x860   // (his Pokémon of the day's been won: it's gone till the next "day"; hides it)
 #define FLAG_PIT_BOSS_BUYBACK_TOLD 0x861   // (he's offered to sell back a Pokémon he won)
+#define FLAG_HIDE_LEADER_AIDE      0x862   // (Oak's lab: the LEADER's AIDE, there once the gym is the player's; set on the lab's ON_TRANSITION)
+#define FLAG_LEADER_AIDE_MET       0x863   // (he's introduced himself)
 #define FLAG_DAISY_TOLD_COINS      0x413   // (Daisy has told the player about Grandpa's coins and the Amulet Coin)
 #define FLAG_CHANSEY_PLAQUE_READ   0x414   // (the Chansey statue's small print, about clovers, has been read)
 #define FLAG_OUTFIT_VARS_MOVED     0x415   // (the save's outfits are in their own vars: src/outfits.c Outfit_FixOldSave)
