@@ -13,7 +13,7 @@ Two repositories:
 
 Push a tag named for the version (`v0.1`, `v0.2`, `v0.2.1`, ...) to **gym-trainer-hack**. Easiest on
 github.com: **Releases → Draft a new release → Choose a tag**, type the new version (e.g. `v0.2`),
-**Create new tag on publish**, target `main`, then **Publish release**. (Or ask Claude to tag it.)
+**Create new tag on publish**, target `main`, then **Publish release**. (Claude can't push tags from its sessions, so this step is yours.)
 
 That starts the **Release** workflow (Actions tab, about 15 minutes). It builds the release version
 (no debug menus), makes `pokemon-canvas-v0.2.bps` against the clean FireRed, copies the code to
