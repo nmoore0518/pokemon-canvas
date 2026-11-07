@@ -1,53 +1,60 @@
-# About `pokeemerald-expansion`
+# Pokémon Canvas
 
-![Gif that shows debugging functionality that is unique to pokeemerald-expansion such as rerolling Trainer ID, Cheat Start, PC from Debug Menu, Debug PC Fill, Pokémon Sprite Visualizer, Debug Warp to Map, and Battle Debug Menu](https://github.com/user-attachments/assets/cf9dfbee-4c6b-4bca-8e0a-07f116ef891c) ![Gif that shows overworld functionality that is unique to pokeemerald-expansion such as indoor running, BW2 style map popups, overworld followers, DNA Splicers, Gen 1 style fishing, OW Item descriptions, Quick Run from Battle, Use Last Ball, Wild Double Battles, and Catch from EXP](https://github.com/user-attachments/assets/383af243-0904-4d41-bced-721492fbc48e) ![Gif that shows off a number of modern Pokémon battle mechanics happening in the pokeemerald-expansion engine: 2 vs 1 battles, modern Pokémon, items, moves, abilities, fully customizable opponents and partners, Trainer Slides, and generational gimmicks](https://github.com/user-attachments/assets/50c576bc-415e-4d66-a38f-ad712f3316be)
+A Pokémon FireRed hack where you don't just beat the gyms: you become a Gym Leader.
 
-<!-- If you want to re-record or change these gifs, here are some notes that I used: https://files.catbox.moe/05001g.md -->
+On day one, Professor Oak tells you the Pokémon League is opening a ninth gym, in Pallet Town, and
+you and your rival are the candidates. A Gym Leader uses one type, so you pick yours in his lab and
+run the whole League challenge with it. Earn the approval of Kanto's Gym Leaders, become Champion,
+and win the gym. Then it's yours to run:
 
-**`pokeemerald-expansion`** is a GBA ROM hack base that equips developers with a comprehensive toolkit for creating Pokémon ROM hacks. **`pokeemerald-expansion`** is built on top of [pret's `pokeemerald`](https://github.com/pret/pokeemerald) decompilation project. **It is not a playable Pokémon game on its own.**
+- **Your own gym:** challengers line up at your door. Decorate it (floors, walls, furniture, pools),
+  hire practice trainers, add rooms, and keep your win streak going.
+- **Master every type:** win enough in a row and you can switch your gym to a new type, each with
+  its own legendary.
+- **The Gym Leader Convention** in Johto: Gym Leaders, Elite Four and Champions from every
+  generation, in a hall for every type.
+- **The Exotic Pokémon Safari:** zones for every region from Johto to Paldea, so every Pokémon
+  through Generation 9 can be caught.
+- **And more:** a new side quest in every Kanto town, the Pokémon Trading Card Game against a
+  Grandmaster, an underground fighting pit in Celadon, and a tournament of the world's strongest
+  trainers at the very end.
 
-# [Features](FEATURES.md)
+## How to play
 
-**`pokeemerald-expansion`** offers hundreds of features from various [core series Pokémon games](https://bulbapedia.bulbagarden.net/wiki/Core_series), along with popular quality-of-life enhancements designed to streamline development and improve the player experience. A full list of those features can be found in [`FEATURES.md`](FEATURES.md).
+1. **Get the patch:** download the newest `.bps` file from this repository's
+   [Releases page](../../releases/latest).
+2. **Get a FireRed ROM:** you need your own copy of **Pokémon FireRed (USA) version 1.0**. No ROM
+   is provided here. The patcher will refuse any other version.
+3. **Patch it:** open [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/) in your browser
+   (nothing to install), pick your FireRed ROM and the `.bps` file, and click **Apply patch**.
+   [Floating IPS](https://github.com/Alcaro/Flips) works too.
+4. **Play it** in an emulator such as [mGBA](https://mgba.io/), or on a flash cart (the game is
+   32 MB).
 
-# [Credits](CREDITS.md)
+**Updating:** patch your clean FireRed ROM again with the new `.bps`, and give the new ROM the same
+name as the old one so your save carries over. Updates are meant to keep old saves working.
 
- [![](https://img.shields.io/github/all-contributors/rh-hideout/pokeemerald-expansion/upcoming)](CREDITS.md)
+## Bugs and suggestions
 
-If you use **`pokeemerald-expansion`**, please credit **RHH (Rom Hacking Hideout)**. Optionally, include the version number for clarity.
+This is a work in progress, and reports help a lot. *(The report form's link goes here.)*
+Please include the version number of the patch you're playing.
 
-```
-Based off RHH's pokeemerald-expansion 1.17.1 https://github.com/rh-hideout/pokeemerald-expansion/
-```
+## Made with AI
 
-Please consider [crediting all contributors](CREDITS.md) involved in the project!
+The hack's code, scripts, map edits and much of its original art were made with an AI assistant
+(Claude, by Anthropic), directed by Nick. Everything borrowed from other projects is listed in
+[CREDITS.md](CREDITS.md).
 
-# Choosing `pokeemerald` or **`pokeemerald-expansion`**
+## Credits
 
-- **`pokeemerald-expansion`** supports multiplayer functionality with other games built on **`pokeemerald-expansion`**. It is not compatible with official Pokémon games.
-- If compatibility with official games is important, use [`pokeemerald`](https://github.com/pret/pokeemerald). Otherwise, we recommend using **`pokeemerald-expansion`**.
-- **`pokeemerald-expansion`** incorporates regular updates from `pokeemerald`, including bug fixes and documentation improvements.
+Based off RHH's pokeemerald-expansion 1.17.2 https://github.com/rh-hideout/pokeemerald-expansion/
+and pret's decompilations. See [CREDITS.md](CREDITS.md) for everyone whose work is in the game.
 
-# [Getting Started](INSTALL.md)
+Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is a free, unofficial fan project
+and is not affiliated with them.
 
-❗❗ **Important**: Do not use GitHub's "Download Zip" option as it will not include commit history. This is necessary if you want to update or merge other feature branches.
+## For developers
 
-If you're new to git and GitHub, [Team Aqua's Asset Repo](https://github.com/Pawkkie/Team-Aquas-Asset-Repo/) has a [guide to forking and cloning the repository](https://github.com/Pawkkie/Team-Aquas-Asset-Repo/wiki/The-Basics-of-GitHub). Then you can follow one of the following guides:
-
-## 📥 [Installing **`pokeemerald-expansion`**](INSTALL.md)
-## 🏗️ [Building **`pokeemerald-expansion`**](INSTALL.md#Building-pokeemerald-expansion)
-## 🚚 [Migrating from **`pokeemerald`**](INSTALL.md#Migrating-from-pokeemerald)
-## 🚀 [Updating **`pokeemerald-expansion`**](INSTALL.md#Updating-pokeemerald-expansion)
-
-# [Documentation](https://rh-hideout.github.io/pokeemerald-expansion/)
-
-For detailed documentation, visit the [pokeemerald-expansion documentation page](https://rh-hideout.github.io/pokeemerald-expansion/).
-
-# [Contributions](CONTRIBUTING.md)
-If you are looking to [report a bug](CONTRIBUTING.md#Bug-Report), [open a pull request](CONTRIBUTING.md#Pull-Requests), or [request a feature](CONTRIBUTING.md#Feature-Request), our [`CONTRIBUTING.md`](CONTRIBUTING.md) has guides for each.
-
-# [Community](https://discord.gg/6CzjAG6GZk)
-
-[![](https://dcbadge.limes.pink/api/server/6CzjAG6GZk)](https://discord.gg/6CzjAG6GZk)
-
-Our community uses the [ROM Hacking Hideout (RHH) Discord server](https://discord.gg/6CzjAG6GZk) to communicate and organize. Most of our discussions take place there, and we welcome anybody to join us!
+The full source is here. [GYM_HACK.md](GYM_HACK.md) explains how the hack is put together, and
+[INSTALL.md](INSTALL.md) how to build it. The engine's own README is in
+[docs/pokeemerald-expansion-README.md](docs/pokeemerald-expansion-README.md).

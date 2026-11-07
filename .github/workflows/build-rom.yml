@@ -1,6 +1,8 @@
 # Builds the game every time something is pushed to main, and attaches the
 # playable ROM to the run. To download it: GitHub repo -> Actions tab -> the
 # latest "Build ROM" run -> "gym-trainer-hack-rom" under Artifacts.
+# Only in the private development repo: the public copy (pokemon-canvas) gets
+# patches, never the ROM (see release.yml).
 name: Build ROM
 
 on:
@@ -15,6 +17,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.repository == 'nmoore0518/gym-trainer-hack'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

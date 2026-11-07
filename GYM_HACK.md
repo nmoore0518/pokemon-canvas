@@ -5,9 +5,12 @@ Gym Leader: they pick one type at the start and build their team, and later thei
 
 ## Getting the game
 
-Every push to `main` builds the ROM automatically on GitHub:
-**Actions** tab → latest **Build ROM** run → download **gym-trainer-hack-rom** under *Artifacts*
-(it arrives as a .zip with `pokefirered.gba` inside). A build takes roughly 10-15 minutes.
+Players: download the patch from the public repo's releases (see [README.md](README.md)).
+
+Development (the private gym-trainer-hack repo): every push to `main` builds the ROM automatically
+on GitHub: **Actions** tab → latest **Build ROM** run → download **gym-trainer-hack-rom** under
+*Artifacts* (it arrives as a .zip with `pokefirered.gba` inside). A build takes roughly 10-15
+minutes. Publishing a version (a patch on the public repo): [RELEASING.md](RELEASING.md).
 
 Debug menu: hold **R** and press **Start** in the overworld.
 
