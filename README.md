@@ -1,5 +1,7 @@
 # Pokémon Canvas
 
+<p><img src="docs/screenshots/1-title.png" width="240"> <img src="docs/screenshots/7-gym-ceremony.png" width="240"> <img src="docs/screenshots/3-gym-decorating.png" width="240"> <img src="docs/screenshots/4-double-battle.png" width="240"></p>
+
 A Pokémon FireRed hack where you don't just beat the gyms: you become a Gym Leader.
 
 On day one, Professor Oak tells you the Pokémon League is opening a ninth gym, in Pallet Town, and
