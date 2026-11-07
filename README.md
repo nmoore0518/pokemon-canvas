@@ -23,8 +23,10 @@ and win the gym. Then it's yours to run:
 
 1. **Get the patch:** download the newest `.bps` file from this repository's
    [Releases page](../../releases/latest).
-2. **Get a FireRed ROM:** you need your own copy of **Pokémon FireRed (USA) version 1.0**. No ROM
-   is provided here. The patcher will refuse any other version.
+2. **Get a FireRed ROM:** you need your own copy of **Pokémon FireRed (USA) Rev 1 (v1.1)**. No ROM
+   is provided here. The patcher will refuse any other version, including the original 1.0.
+   To check yours, its SHA1 should be `dd5945db9b930750cb39d00c84da8571feebf417` (Rom Patcher JS
+   shows it when you pick the file).
 3. **Patch it:** open [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/) in your browser
    (nothing to install), pick your FireRed ROM and the `.bps` file, and click **Apply patch**.
    [Floating IPS](https://github.com/Alcaro/Flips) works too.

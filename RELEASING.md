@@ -43,7 +43,7 @@ Do these in order.
    **Change repository visibility** → **Private**. (Do this before step 5.)
 5. **Upload the clean FireRed.** In **gym-trainer-hack**: **Releases** → **Draft a new release** →
    **Choose a tag** → type `base-rom` → **Create new tag on publish**. Title: `Base ROM (private)`.
-   Drag in your **Pokémon FireRed (USA) version 1.0** `.gba`. Tick **Set as a pre-release**.
+   Drag in your **Pokémon FireRed (USA) Rev 1 (v1.1)** `.gba`. Tick **Set as a pre-release**.
    **Publish release**. The Release workflow checks it's the right ROM.
 6. **Optional, in pokemon-canvas:** **Settings** → **Actions** → **General** → **Disable actions**
    (the workflows skip themselves there anyway), and make sure **Issues** is ticked under
@@ -53,5 +53,6 @@ Do these in order.
 
 - Private repos get 2,000 free GitHub Actions minutes a month (public ones are unlimited). A build
   takes about 10-15 minutes, so that's well over 100 builds a month.
-- The patch is made against FireRed (USA) 1.0, so that's the only ROM players can patch.
+- The patch is made against FireRed (USA) Rev 1 (v1.1), SHA1
+  `dd5945db9b930750cb39d00c84da8571feebf417`, so that's the only ROM players can patch.
 - Players keep their saves across versions: patch the clean ROM again, same file name as before.

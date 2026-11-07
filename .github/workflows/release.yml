@@ -1,7 +1,7 @@
 # Publishes a version to the public repo (pokemon-canvas): push a tag like v192
 # here (in the private development repo), and this
 #   1. builds the release version (no debug menus),
-#   2. makes the BPS patch against a clean Pokémon FireRed (USA) 1.0, kept as an
+#   2. makes the BPS patch against a clean Pokémon FireRed (USA) Rev 1 (v1.1), kept as an
 #      asset of this repo's private "base-rom" release (never in the code),
 #   3. copies the code (as of the tag) to the public repo,
 #   4. publishes a release there with the patch and the version's changes.
@@ -52,10 +52,11 @@ jobs:
           gh release download base-rom --pattern '*.gba' --dir base
           mv base/*.gba base/firered.gba
           sha1sum base/firered.gba
-          code=$(dd if=base/firered.gba bs=1 skip=172 count=4 2>/dev/null)
-          rev=$(od -An -tu1 -j 188 -N1 base/firered.gba | tr -d ' ')
-          if [ "$code" != "BPRE" ] || [ "$rev" != "0" ]; then
-            echo "::error::The base-rom release must hold Pokémon FireRed (USA) version 1.0 (found $code, revision $rev)"
+          # The one ROM every player must patch: FireRed (USA) Rev 1 (v1.1).
+          want=dd5945db9b930750cb39d00c84da8571feebf417
+          have=$(sha1sum base/firered.gba | cut -d' ' -f1)
+          if [ "$have" != "$want" ]; then
+            echo "::error::The base-rom release must hold a clean Pokémon FireRed (USA) Rev 1 / v1.1 (SHA1 $want, found $have)"
             exit 1
           fi
 
