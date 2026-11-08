@@ -51,7 +51,7 @@ jobs:
       - name: Build the Player's Guide and Pokédex
         run: |
           sudo apt-get install -y --no-install-recommends fonts-dejavu-core
-          python3 -m pip install --quiet pillow playwright
+          python3 -m pip install --quiet pillow numpy openpyxl playwright
           python3 -m playwright install --with-deps chromium
           mkdir -p build/guide
           python3 tools/gym_hack/guide/build_guide.py --out Pokemon-Canvas-Players-Guide.pdf
